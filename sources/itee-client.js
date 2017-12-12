@@ -3,8 +3,6 @@
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  * @see https://github.com/Itee
  *
- * @namespace T
- *
  * @file The main entry point for Itee-Client, it contains all exports of the library
  *
  */

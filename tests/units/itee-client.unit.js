@@ -1,3 +1,12 @@
+/**
+ * @author Tristan Valcke <valcketristan@gmail.com>
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ * @see https://github.com/Itee
+ *
+ * @file The main entry point about unit tests of the library
+ *
+ */
+
 /* global describe, beforeEach, before, after, afterEach, context, it */
 
 describe( 'Array', () => {

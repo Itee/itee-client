@@ -1,5 +1,11 @@
-// Karma configuration
-// Generated on Thu Nov 17 2016 15:49:15 GMT+0100 (Paris, Madrid)
+/**
+ * @author Tristan Valcke <valcketristan@gmail.com>
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ * @see https://github.com/Itee
+ *
+ * @file The file manage the karma configuration for run benchmarks that are under `tests/benchmarks` folder
+ *
+ */
 
 /* eslint-env node */
 

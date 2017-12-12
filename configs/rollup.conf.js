@@ -1,3 +1,13 @@
+/**
+ * @author Tristan Valcke <valcketristan@gmail.com>
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ * @see https://github.com/Itee
+ *
+ * @file The file manage the rollup configuration for build the library using differents arguments. It allow to build with two type of environment (dev and prod), and differents output format.
+ * Use npm run help to display all available build options.
+ *
+ */
+
 /* eslint-env node */
 
 const path        = require( 'path' )
