@@ -150,7 +150,7 @@ gulp.task( 'doc', () => {
 
     const config = require( './configs/jsdoc.conf' )
 
-    return gulp.src( [ 'sources/**/*' ], { read: false } )
+    return gulp.src( [ '' ], { read: false } )
                .pipe( jsdoc( config ) )
 
 } )

@@ -4,7 +4,7 @@
     "dictionaries": ["jsdoc","closure"]
   },
   "source": {
-    "include": ["README.md", "LICENSE.md", "gulpfile.js"],
+    "include": ["README.md"],
     "includePattern": ".+\\.js(doc|x)?$",
     "excludePattern": "(node_modules|documentation|builds)"
   },
