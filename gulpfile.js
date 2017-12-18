@@ -23,14 +23,14 @@ const eslint = require( 'gulp-eslint' )
 // OR
 //const standard    = require( 'gulp-standard' )
 
-const log    = util.log
-const colors = util.colors
-const red    = colors.red
+const log     = util.log
+const colors  = util.colors
+const red     = colors.red
 const green   = colors.green
-const blue   = colors.blue
-const cyan   = colors.cyan
-const yellow    = colors.yellow
-const magenta    = colors.magenta
+const blue    = colors.blue
+const cyan    = colors.cyan
+const yellow  = colors.yellow
+const magenta = colors.magenta
 
 /////////////////////
 /////// HELP ////////
@@ -51,18 +51,18 @@ gulp.task( 'help', ( done ) => {
     log( blue( 'npm run' ), cyan( 'lint' ), ' - Will run the eslint in pedantic mode with auto fix when possible.' )
     log( blue( 'npm run' ), cyan( 'doc' ), ' - Will run jsdoc, and create documentation under `documentation` folder, using the docdash theme' )
     log( blue( 'npm run' ), cyan( 'test' ), ' - Will run the test framworks (unit and bench), and create reports under `test/report` folder, using the mochawesome theme' )
-    log( blue( 'npm run' ), cyan( 'unit' ), ' - Will run the karma server for unit tests.', red('( /!\\ Deprecated: will be remove as soon as test script is fixed !!! )') )
-    log( blue( 'npm run' ), cyan( 'bench' ), ' - Will run the karma server for benchmarks.', red('( /!\\ Deprecated: will be remove as soon as test script is fixed !!! )') )
-    log( blue( 'npm run' ), cyan( 'build' ), yellow('--'), green('<options>'), ' - Will build the application for development and/or production environments.', yellow('Note: The two dash are only required if you provide options !') )
+    log( blue( 'npm run' ), cyan( 'unit' ), ' - Will run the karma server for unit tests.', red( '( /!\\ Deprecated: will be remove as soon as test script is fixed !!! )' ) )
+    log( blue( 'npm run' ), cyan( 'bench' ), ' - Will run the karma server for benchmarks.', red( '( /!\\ Deprecated: will be remove as soon as test script is fixed !!! )' ) )
+    log( blue( 'npm run' ), cyan( 'build' ), yellow( '--' ), green( '<options>' ), ' - Will build the application for development and/or production environments.', yellow( 'Note: The two dash are only required if you provide options !' ) )
     log( '  The available options are:' )
-    log( '      ', green('-d'), 'or', green('--dev'), ' - to build in development environment' )
-    log( '      ', green('-p'), 'or', green('--prod'), ' - to build in production environment' )
+    log( '      ', green( '-d' ), 'or', green( '--dev' ), ' - to build in development environment' )
+    log( '      ', green( '-p' ), 'or', green( '--prod' ), ' - to build in production environment' )
     log( '       (in case no environment is provide both will be compile)' )
     log( '' )
-    log( '      ', green('-f:'), magenta('<format>'), 'or', green('--format:'), magenta('<format>'), ' - to specify the output build type.' )
-    log( '       where format could be any of:', magenta('amd'), magenta('cjs'), magenta('es'), magenta('iife'), magenta('umd') )
+    log( '      ', green( '-f:' ), magenta( '<format>' ), 'or', green( '--format:' ), magenta( '<format>' ), ' - to specify the output build type.' )
+    log( '       where format could be any of:', magenta( 'amd' ), magenta( 'cjs' ), magenta( 'es' ), magenta( 'iife' ), magenta( 'umd' ) )
     log( '' )
-    log( '      ', green('-s'), 'or', green('--sourcemap'), ' - to build with related source map' )
+    log( '      ', green( '-s' ), 'or', green( '--sourcemap' ), ' - to build with related source map' )
     log( '' )
     log( blue( 'npm run' ), cyan( 'release' ), ' - Will run all the lint, test stuff, and if succeed will build the application in both environments.' )
     log( '' )
@@ -179,7 +179,7 @@ gulp.task( 'bench', () => {
 /////////////////////
 ////// BUILDS ///////
 /////////////////////
-gulp.task( 'build', ['clean'], ( done ) => {
+gulp.task( 'build', [ 'clean' ], ( done ) => {
 
     const options = processArguments( process.argv )
     const configs = createBuildsConfigs( options )
@@ -191,8 +191,8 @@ gulp.task( 'build', ['clean'], ( done ) => {
 
         let defaultOptions = {
             environments: [ 'development', 'production' ],
-            formats: [ 'amd', 'cjs', 'es', 'iife', 'umd' ],
-            sourceMap: false
+            formats:      [ 'amd', 'cjs', 'es', 'iife', 'umd' ],
+            sourceMap:    false
         }
 
         const argv = processArgv.slice( 4 ) // Ignore nodejs, script paths and gulp params
