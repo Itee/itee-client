@@ -4330,9 +4330,9 @@ Object.assign( Ray.prototype, {
  * https://github.com/mrdoob/eventdispatcher.js/
  */
 
-function EventDispatcher$1() {}
+function EventDispatcher() {}
 
-Object.assign( EventDispatcher$1.prototype, {
+Object.assign( EventDispatcher.prototype, {
 
 	addEventListener: function ( type, listener ) {
 
@@ -5280,7 +5280,7 @@ function Object3D() {
 Object3D.DefaultUp = new Vector3$1( 0, 1, 0 );
 Object3D.DefaultMatrixAutoUpdate = true;
 
-Object.assign( Object3D.prototype, EventDispatcher$1.prototype, {
+Object.assign( Object3D.prototype, EventDispatcher.prototype, {
 
 	isObject3D: true,
 
@@ -7341,7 +7341,7 @@ function Material() {
 
 }
 
-Object.assign( Material.prototype, EventDispatcher$1.prototype, {
+Object.assign( Material.prototype, EventDispatcher.prototype, {
 
 	isMaterial: true,
 
@@ -9132,7 +9132,7 @@ function Geometry() {
 
 }
 
-Object.assign( Geometry.prototype, EventDispatcher$1.prototype, {
+Object.assign( Geometry.prototype, EventDispatcher.prototype, {
 
 	isGeometry: true,
 
@@ -10555,7 +10555,7 @@ function BufferGeometry() {
 
 BufferGeometry.MaxIndex = 65535;
 
-Object.assign( BufferGeometry.prototype, EventDispatcher$1.prototype, {
+Object.assign( BufferGeometry.prototype, EventDispatcher.prototype, {
 
 	isBufferGeometry: true,
 
@@ -15464,7 +15464,7 @@ Object.defineProperty( Texture.prototype, "needsUpdate", {
 
 } );
 
-Object.assign( Texture.prototype, EventDispatcher$1.prototype, {
+Object.assign( Texture.prototype, EventDispatcher.prototype, {
 
 	constructor: Texture,
 
@@ -26217,7 +26217,7 @@ scope.dispatchEvent( { type: 'pan' } );
 
 };
 
-OrbitControls.prototype = Object.create( EventDispatcher$1.prototype );
+OrbitControls.prototype = Object.create( EventDispatcher.prototype );
 OrbitControls.prototype.constructor = OrbitControls;
 
 Object.defineProperties( OrbitControls.prototype, {
@@ -30937,9 +30937,9 @@ if ( Object.assign === undefined ) {
  * https://github.com/mrdoob/eventdispatcher.js/
  */
 
-function EventDispatcher$2() {}
+function EventDispatcher$1() {}
 
-Object.assign( EventDispatcher$2.prototype, {
+Object.assign( EventDispatcher$1.prototype, {
 
 	addEventListener: function ( type, listener ) {
 
@@ -34506,7 +34506,7 @@ Object.defineProperty( Texture$1.prototype, "needsUpdate", {
 
 } );
 
-Object.assign( Texture$1.prototype, EventDispatcher$2.prototype, {
+Object.assign( Texture$1.prototype, EventDispatcher$1.prototype, {
 
 	constructor: Texture$1,
 
@@ -35407,7 +35407,7 @@ function WebGLRenderTarget( width, height, options ) {
 
 }
 
-Object.assign( WebGLRenderTarget.prototype, EventDispatcher$2.prototype, {
+Object.assign( WebGLRenderTarget.prototype, EventDispatcher$1.prototype, {
 
 	isWebGLRenderTarget: true,
 
@@ -38532,7 +38532,7 @@ function Material$1() {
 
 }
 
-Object.assign( Material$1.prototype, EventDispatcher$2.prototype, {
+Object.assign( Material$1.prototype, EventDispatcher$1.prototype, {
 
 	isMaterial: true,
 
@@ -41112,7 +41112,7 @@ function Object3D$1() {
 Object3D$1.DefaultUp = new Vector3$2( 0, 1, 0 );
 Object3D$1.DefaultMatrixAutoUpdate = true;
 
-Object.assign( Object3D$1.prototype, EventDispatcher$2.prototype, {
+Object.assign( Object3D$1.prototype, EventDispatcher$1.prototype, {
 
 	isObject3D: true,
 
@@ -42123,7 +42123,7 @@ function Geometry$1() {
 
 }
 
-Object.assign( Geometry$1.prototype, EventDispatcher$2.prototype, {
+Object.assign( Geometry$1.prototype, EventDispatcher$1.prototype, {
 
 	isGeometry: true,
 
@@ -44256,7 +44256,7 @@ function BufferGeometry$1() {
 
 BufferGeometry$1.MaxIndex = 65535;
 
-Object.assign( BufferGeometry$1.prototype, EventDispatcher$2.prototype, {
+Object.assign( BufferGeometry$1.prototype, EventDispatcher$1.prototype, {
 
 	isBufferGeometry: true,
 
@@ -70294,7 +70294,7 @@ function AnimationMixer( root ) {
 
 }
 
-Object.assign( AnimationMixer.prototype, EventDispatcher$2.prototype, {
+Object.assign( AnimationMixer.prototype, EventDispatcher$1.prototype, {
 
 	_bindAction: function ( action, prototypeAction ) {
 		var this$1 = this;
@@ -74667,175 +74667,23 @@ CubeCamera.prototype.updateCubeMap = function ( renderer, scene ) {
 
 };
 
-/**
- * @author mrdoob / http://mrdoob.com/
- */
+var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
-var Stats = function () {
 
-	var mode = 0;
 
-	var container = document.createElement( 'div' );
-	container.style.cssText = 'position:fixed;top:0;left:0;cursor:pointer;opacity:0.9;z-index:10000';
-	container.addEventListener( 'click', function ( event ) {
 
-		event.preventDefault();
-		showPanel( ++ mode % container.children.length );
 
-	}, false );
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
 
-	//
-
-	function addPanel( panel ) {
-
-		container.appendChild( panel.dom );
-		return panel;
-
-	}
-
-	function showPanel( id ) {
-
-		for ( var i = 0; i < container.children.length; i ++ ) {
-
-			container.children[ i ].style.display = i === id ? 'block' : 'none';
-
-		}
-
-		mode = id;
-
-	}
-
-	//
-
-	var beginTime = ( performance || Date ).now(), prevTime = beginTime, frames = 0;
-
-	var fpsPanel = addPanel( new Stats.Panel( 'FPS', '#0ff', '#002' ) );
-	var msPanel = addPanel( new Stats.Panel( 'MS', '#0f0', '#020' ) );
-
-	if ( self.performance && self.performance.memory ) {
-
-		var memPanel = addPanel( new Stats.Panel( 'MB', '#f08', '#201' ) );
-
-	}
-
-	showPanel( 0 );
-
-	return {
-
-		REVISION: 16,
-
-		dom: container,
-
-		addPanel: addPanel,
-		showPanel: showPanel,
-
-		begin: function () {
-
-			beginTime = ( performance || Date ).now();
-
-		},
-
-		end: function () {
-
-			frames ++;
-
-			var time = ( performance || Date ).now();
-
-			msPanel.update( time - beginTime, 200 );
-
-			if ( time > prevTime + 1000 ) {
-
-				fpsPanel.update( ( frames * 1000 ) / ( time - prevTime ), 100 );
-
-				prevTime = time;
-				frames = 0;
-
-				if ( memPanel ) {
-
-					var memory = performance.memory;
-					memPanel.update( memory.usedJSHeapSize / 1048576, memory.jsHeapSizeLimit / 1048576 );
-
-				}
-
-			}
-
-			return time;
-
-		},
-
-		update: function () {
-
-			beginTime = this.end();
-
-		},
-
-		// Backwards Compatibility
-
-		domElement: container,
-		setMode: showPanel
-
-	};
-
-};
-
-Stats.Panel = function ( name, fg, bg ) {
-
-	var min = Infinity, max = 0, round = Math.round;
-	var PR = round( window.devicePixelRatio || 1 );
-
-	var WIDTH = 80 * PR, HEIGHT = 48 * PR,
-			TEXT_X = 3 * PR, TEXT_Y = 2 * PR,
-			GRAPH_X = 3 * PR, GRAPH_Y = 15 * PR,
-			GRAPH_WIDTH = 74 * PR, GRAPH_HEIGHT = 30 * PR;
-
-	var canvas = document.createElement( 'canvas' );
-	canvas.width = WIDTH;
-	canvas.height = HEIGHT;
-	canvas.style.cssText = 'width:80px;height:48px';
-
-	var context = canvas.getContext( '2d' );
-	context.font = 'bold ' + ( 9 * PR ) + 'px Helvetica,Arial,sans-serif';
-	context.textBaseline = 'top';
-
-	context.fillStyle = bg;
-	context.fillRect( 0, 0, WIDTH, HEIGHT );
-
-	context.fillStyle = fg;
-	context.fillText( name, TEXT_X, TEXT_Y );
-	context.fillRect( GRAPH_X, GRAPH_Y, GRAPH_WIDTH, GRAPH_HEIGHT );
-
-	context.fillStyle = bg;
-	context.globalAlpha = 0.9;
-	context.fillRect( GRAPH_X, GRAPH_Y, GRAPH_WIDTH, GRAPH_HEIGHT );
-
-	return {
-
-		dom: canvas,
-
-		update: function ( value, maxValue ) {
-
-			min = Math.min( min, value );
-			max = Math.max( max, value );
-
-			context.fillStyle = bg;
-			context.globalAlpha = 1;
-			context.fillRect( 0, 0, WIDTH, GRAPH_Y );
-			context.fillStyle = fg;
-			context.fillText( round( value ) + ' ' + name + ' (' + round( min ) + '-' + round( max ) + ')', TEXT_X, TEXT_Y );
-
-			context.drawImage( canvas, GRAPH_X + PR, GRAPH_Y, GRAPH_WIDTH - PR, GRAPH_HEIGHT, GRAPH_X, GRAPH_Y, GRAPH_WIDTH - PR, GRAPH_HEIGHT );
-
-			context.fillRect( GRAPH_X + GRAPH_WIDTH - PR, GRAPH_Y, PR, GRAPH_HEIGHT );
-
-			context.fillStyle = bg;
-			context.globalAlpha = 0.9;
-			context.fillRect( GRAPH_X + GRAPH_WIDTH - PR, GRAPH_Y, PR, round( ( 1 - ( value / maxValue ) ) * GRAPH_HEIGHT ) );
-
-		}
-
-	};
-
-};
+var stats_min = createCommonjsModule(function (module, exports) {
+// stats.js - http://github.com/mrdoob/stats.js
+(function(f,e){module.exports=e();})(commonjsGlobal,function(){var f=function(){function e(a){c.appendChild(a.dom);return a}function u(a){for(var d=0;d<c.children.length;d++){ c.children[d].style.display=d===a?"block":"none"; }l=a;}var l=0,c=document.createElement("div");c.style.cssText="position:fixed;top:0;left:0;cursor:pointer;opacity:0.9;z-index:10000";c.addEventListener("click",function(a){a.preventDefault();
+u(++l%c.children.length);},!1);var k=(performance||Date).now(),g=k,a=0,r=e(new f.Panel("FPS","#0ff","#002")),h=e(new f.Panel("MS","#0f0","#020"));if(self.performance&&self.performance.memory){ var t=e(new f.Panel("MB","#f08","#201")); }u(0);return{REVISION:16,dom:c,addPanel:e,showPanel:u,begin:function(){k=(performance||Date).now();},end:function(){a++;var c=(performance||Date).now();h.update(c-k,200);if(c>g+1E3&&(r.update(1E3*a/(c-g),100), g=c, a=0, t)){var d=performance.memory;t.update(d.usedJSHeapSize/
+1048576,d.jsHeapSizeLimit/1048576);}return c},update:function(){k=this.end();},domElement:c,setMode:u}};f.Panel=function(e,f,l){var c=Infinity,k=0,g=Math.round,a=g(window.devicePixelRatio||1),r=80*a,h=48*a,t=3*a,v=2*a,d=3*a,m=15*a,n=74*a,p=30*a,q=document.createElement("canvas");q.width=r;q.height=h;q.style.cssText="width:80px;height:48px";var b=q.getContext("2d");b.font="bold "+9*a+"px Helvetica,Arial,sans-serif";b.textBaseline="top";b.fillStyle=l;b.fillRect(0,0,r,h);b.fillStyle=f;b.fillText(e,t,v);
+b.fillRect(d,m,n,p);b.fillStyle=l;b.globalAlpha=.9;b.fillRect(d,m,n,p);return{dom:q,update:function(h,w){c=Math.min(c,h);k=Math.max(k,h);b.fillStyle=l;b.globalAlpha=1;b.fillRect(0,0,r,m);b.fillStyle=f;b.fillText(g(h)+" "+e+" ("+g(c)+"-"+g(k)+")",t,v);b.drawImage(q,d+a,m,n-a,p,d,m,n-a,p);b.fillRect(d+n-a,m,a,p);b.fillStyle=l;b.globalAlpha=.9;b.fillRect(d+n-a,m,a,g((1-h/w)*p));}}};return f});
+});
 
 /**
  * @author szimek / https://github.com/szimek/
@@ -74872,7 +74720,7 @@ function WebGLRenderTarget$1( width, height, options ) {
 
 }
 
-Object.assign( WebGLRenderTarget$1.prototype, EventDispatcher$1.prototype, {
+Object.assign( WebGLRenderTarget$1.prototype, EventDispatcher.prototype, {
 
 	isWebGLRenderTarget: true,
 
@@ -75503,7 +75351,7 @@ function TViewport ( container ) {
 
     if ( this.settings.showStat ) {
 
-        this.stats                           = new Stats();
+        this.stats                           = new stats_min();
         this.stats.domElement.style.position = 'absolute';
         this.stats.domElement.style.top      = null;
         this.stats.domElement.style.left     = null;
@@ -75620,11 +75468,9 @@ Object.assign( TViewport, {
 } );
 
 // Public methods
-Object.assign( TViewport.prototype, EventDispatcher.prototype, {
+Object.assign( TViewport.prototype, EventDispatcher$1.prototype, {
 
     toggleAutorun: function toggleAutorun () {
-
-
 
         // Toggle running state
         this.autorun = !this.autorun;
@@ -75632,6 +75478,7 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
         if ( this.autorun ) {
             this.update();
         }
+
     },
 
     toggleCamera: function toggleCamera () {
@@ -77694,7 +77541,7 @@ function AnimationMixer$1( root ) {
 
 }
 
-Object.assign( AnimationMixer$1.prototype, EventDispatcher$1.prototype, {
+Object.assign( AnimationMixer$1.prototype, EventDispatcher.prototype, {
 
 	_bindAction: function ( action, prototypeAction ) {
 		var this$1 = this;
