@@ -43,7 +43,7 @@ import {
     ArrowHelper,
     MeshPhongMaterial
 } from 'three'
-import Stats from '../../node_modules/stats.js/src/Stats'
+import Stats from 'stats.js'
 
 // extended three
 import { OrbitControls } from '../third_party/three_extended/OrbitControls'
