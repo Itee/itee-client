@@ -75018,9 +75018,9 @@ var AnaglyphEffect = function ( renderer, width, height ) {
 
 /**
  * @author alteredq / http://alteredqualia.com/
- * @authod mrdoob / http://mrdoob.com/
- * @authod arodic / http://aleksandarrodic.com/
- * @authod fonserbc / http://fonserbc.github.io/
+ * @author mrdoob / http://mrdoob.com/
+ * @author arodic / http://aleksandarrodic.com/
+ * @author fonserbc / http://fonserbc.github.io/
 */
 
 var StereoEffect = function ( renderer ) {
