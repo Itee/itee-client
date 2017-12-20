@@ -25,7 +25,38 @@ const commonJs    = require( 'rollup-plugin-commonjs' )
 const replace     = require( 'rollup-plugin-replace' )
 const uglify      = require( 'rollup-plugin-uglify-es' )
 
-module.exports = function rollupConfigure ( format, onProduction, wantSourceMap ) {
+function glsl () {
+
+    return {
+        transform ( code, id ) {
+            if ( !/\.glsl$/.test( id ) ) {
+                return
+            }
+
+            var transformedCode = 'export default ' + JSON.stringify(
+                code
+                    .replace( /[ \t]*\/\/.*\n/g, '' )
+                    .replace( /[ \t]*\/\*[\s\S]*?\*\//g, '' )
+                    .replace( /\n{2,}/g, '\n' )
+            ) + ';'
+            return {
+                code: transformedCode,
+                map:  { mappings: '' }
+            }
+        }
+    }
+
+}
+
+/**
+ * Will create an appropriate configuration object for rollup, related to the given arguments.
+ *
+ * @param {string} format - The desired module format output. Available values are: 'es', 'cjs', 'amd', 'iife' and 'umd'
+ * @param {boolean} onProduction - The building environment. True for production, developement otherwise.
+ * @param {boolean} wantSourceMap - Set to true if sourcemap must be include in the output.
+ * @returns {object} The rollup configuration
+ */
+function CreateRollupConfiguration ( format, onProduction, wantSourceMap ) {
 
     const _format        = format || 'umd'
     const _onProduction  = onProduction || false
@@ -43,6 +74,7 @@ module.exports = function rollupConfigure ( format, onProduction, wantSourceMap 
             input:    inputFilePath,
             external: [],
             plugins:  [
+                glsl(),
                 buble(),
                 commonJs( {
                     include: 'node_modules/**'
@@ -79,7 +111,9 @@ module.exports = function rollupConfigure ( format, onProduction, wantSourceMap 
             file:    outputFilePath,
             format:  format,
             name:    'Itee',
-            globals: {},
+            globals: {
+//                'three': 'THREE'
+            },
 
             // advanced options
             paths:     {},
@@ -100,3 +134,5 @@ module.exports = function rollupConfigure ( format, onProduction, wantSourceMap 
     }
 
 }
+
+module.exports = CreateRollupConfiguration
