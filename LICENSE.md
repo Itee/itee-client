@@ -20,4 +20,4 @@ ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 You should have received a copy of the [BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause) along 
-with this program.  If not, see [https://opensource.org/licenses/BSD-3-Clause).
+with this program.  If not, see [https://opensource.org/licenses/BSD-3-Clause](https://opensource.org/licenses/BSD-3-Clause).
