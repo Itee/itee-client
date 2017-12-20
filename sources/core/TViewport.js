@@ -41,7 +41,8 @@ import {
     Vector2,
     Color,
     ArrowHelper,
-    MeshPhongMaterial
+    MeshPhongMaterial,
+    EventDispatcher
 } from 'three'
 import Stats from 'stats.js'
 
@@ -265,14 +266,13 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
     toggleAutorun () {
 
-
-
         // Toggle running state
         this.autorun = !this.autorun
         // Restart loop if wanted
         if ( this.autorun ) {
             this.update()
         }
+
     },
 
     toggleCamera () {
