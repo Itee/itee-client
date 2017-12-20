@@ -46,9 +46,9 @@ import {
 import Stats from '../../node_modules/stats.js/src/Stats'
 
 // extended three
-import { OrbitControls } from '../../builds/tmp/OrbitControls'
-import { AnaglyphEffect } from '../../builds/tmp/AnaglyphEffect'
-import { StereoEffect } from '../../builds/tmp/StereoEffect'
+import { OrbitControls } from '../third_party/three_extended/OrbitControls'
+import { AnaglyphEffect } from '../third_party/three_extended/AnaglyphEffect'
+import { StereoEffect } from '../third_party/three_extended/StereoEffect'
 
 import { TOrbitControlsHelper } from '../objects3d/TOrbitControlsHelper'
 

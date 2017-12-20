@@ -30,7 +30,7 @@ export { TPointsManager } from './managers/database/TPointsManager'
 // Export Three stuff
 
 // Export extended Three stuff
-export { AnaglyphEffect } from '../builds/tmp/AnaglyphEffect'
-export { Detector as WebGLDetector } from '../builds/tmp/Detector'
-export { OrbitControls } from '../builds/tmp/OrbitControls'
-export { StereoEffect } from '../builds/tmp/StereoEffect'
+export { AnaglyphEffect } from '../sources/third_party/three_extended/AnaglyphEffect'
+export { Detector as WebGLDetector } from '../sources/third_party/three_extended/Detector'
+export { OrbitControls } from '../sources/third_party/three_extended/OrbitControls'
+export { StereoEffect } from '../sources/third_party/three_extended/StereoEffect'

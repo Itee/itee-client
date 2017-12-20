@@ -21,7 +21,7 @@ import { Face3 } from '../../../node_modules/three/src/core/Face3'
 import { ObjectLoader } from '../../../node_modules/three/src/loaders/ObjectLoader'
 import { TextureLoader } from '../../../node_modules/three/src/loaders/TextureLoader'
 
-import { OrbitControls } from '../../../builds/tmp/OrbitControls'
+import { OrbitControls } from '../../../sources/third_party/three_extended/OrbitControls'
 
 /**
  * Store the platform endianness to make correct parsing of buffer

@@ -8,7 +8,7 @@
  *
  */
 
-import { OrbitControls } from '../../builds/tmp/OrbitControls'
+import { OrbitControls } from '../third_party/three_extended/OrbitControls'
 
 import { VertexColors } from '../../node_modules/three/src/constants'
 import { LineSegments } from '../../node_modules/three/src/objects/LineSegments'
