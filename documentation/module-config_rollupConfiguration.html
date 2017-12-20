@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Home - Documentation</title>
+    <title>config/rollupConfiguration - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -27,70 +27,10 @@
 
 <div id="main">
     
-
+    <h1 class="page-title">config/rollupConfiguration</h1>
     
 
-
-
     
-
-
-
-
-
-
-
-
-
-    
-
-
-    <section class="readme">
-        <article><h1><center>[IteeClient]</center></h1><p>The itee client is the end user part of the itee solution predicted for running WebGL 3d content.
-It allow to make fast, and light call to itee server counter part to create/read/update/delete data from webgl server.</p>
-<h2>How to install</h2><p>From npm:</p>
-<pre class="prettyprint source"><code>npm install itee-client</code></pre><p>If you want to build the repository from source follow these instructions:</p>
-<pre class="prettyprint source"><code>git clone https://github.com/Itee/itee-client.git
-npm install
-npm run build</code></pre><p>then copy/paste the builded module you need from builds folder.</p>
-<h2>How to use</h2><p>First of all, you should take a look to the documentation ! You could find an &quot;hello world&quot; example in tutorial section.
-In case you have clone the repository you could auto-generate the library documentation using: </p>
-<pre class="prettyprint source"><code>npm run doc</code></pre><h2>How to contribute</h2><p>Coming soon...</p>
-<h2>BSD-3-Clause License</h2><div class="prettyprint source">
-<code style=" color: #ddd; font-size: 16px; ">
-<p><b>Copyright (c) 2015-Present, Itee, Valcke Tristan <a href="https://github.com/Itee">https://github.com/Itee</a>. All rights reserved.</b></p>
-
-<p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</p>
-
-<ul>
-<li>Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.</li>
-
-<li>Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.</li>
-
-<li>Neither the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.</li>
-</ul>
-
-<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR
-ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON
-ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
-
-<p>You should have received a copy of the <a href="https://opensource.org/licenses/BSD-3-Clause">BSD-3-Clause</a> along 
-with this program.  If not, see <a href="https://opensource.org/licenses/BSD-3-Clause">https://opensource.org/licenses/BSD-3-Clause</a>.</p>
-</code>
-</div></article>
-    </section>
-
-
-
-
-
 
 
 
@@ -99,9 +39,8 @@ with this program.  If not, see <a href="https://opensource.org/licenses/BSD-3-C
 
 <header>
     
-        <h2>
-        sources/itee-client.js
-        </h2>
+        
+            
         
     
 </header>
@@ -110,13 +49,21 @@ with this program.  If not, see <a href="https://opensource.org/licenses/BSD-3-C
     <div class="container-overview">
     
         
+            <div class="description">The file manage the rollup configuration for build the library using differents arguments. It allow to build with two type of environment (dev and prod), and differents output format.Use npm run help to display all available build options.</div>
+        
+
+        
+            
+
+
+
 
 <dl class="details">
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="sources_itee-client.js.html">sources/itee-client.js</a>, <a href="sources_itee-client.js.html#line1">line 1</a>
+        <a href="configs_rollup.conf.js.html">configs/rollup.conf.js</a>, <a href="configs_rollup.conf.js.html#line1">line 1</a>
     </li></ul></dd>
     
 
@@ -164,9 +111,30 @@ with this program.  If not, see <a href="https://opensource.org/licenses/BSD-3-C
 
 
 
-        
-            <div class="description">The main entry point for Itee-Client, it contains all exports of the library</div>
-        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         
     
@@ -174,6 +142,22 @@ with this program.  If not, see <a href="https://opensource.org/licenses/BSD-3-C
 
     
 
+    
+        <h3 class="subsection-title">Requires</h3>
+
+        <ul>
+            <li><a href="https://nodejs.org/api/path.html">path</a></li>
+        
+            <li><a href="https://github.com/rollup/rollup-plugin-buble">rollup-plugin-buble</a></li>
+        
+            <li><a href="https://github.com/rollup/rollup-plugin-node-resolve">rollup-plugin-node-resolve</a></li>
+        
+            <li><a href="https://github.com/rollup/rollup-plugin-commonjs">rollup-plugin-commonjs</a></li>
+        
+            <li><a href="https://github.com/rollup/rollup-plugin-replace">rollup-plugin-replace</a></li>
+        
+            <li><a href="https://github.com/TrySound/rollup-plugin-uglify">rollup-plugin-uglify-es</a></li>
+        </ul>
     
 
     
@@ -185,42 +169,26 @@ with this program.  If not, see <a href="https://opensource.org/licenses/BSD-3-C
     
 
     
+        <h3 class="subsection-title">Methods</h3>
 
-    
-
-    
-</article>
-
-</section>
-
-
-
-
-
-
-
-<section>
-
-<header>
-    
-        <h2>
-        tests/benchmarks/itee-client.bench.js
-        </h2>
         
-    
-</header>
+            
 
-<article>
-    <div class="container-overview">
     
-        
+
+    <h4 class="name" id="~CreateRollupConfiguration"><span class="type-signature">(inner) </span>CreateRollupConfiguration<span class="signature">(format, onProduction, wantSourceMap)</span><span class="type-signature"> &rarr; {object}</span></h4>
+
+    
+
+
+
 
 <dl class="details">
 
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tests_benchmarks_itee-client.bench.js.html">tests/benchmarks/itee-client.bench.js</a>, <a href="tests_benchmarks_itee-client.bench.js.html#line1">line 1</a>
+        <a href="configs_rollup.conf.js.html">configs/rollup.conf.js</a>, <a href="configs_rollup.conf.js.html#line59">line 59</a>
     </li></ul></dd>
     
 
@@ -241,19 +209,9 @@ with this program.  If not, see <a href="https://opensource.org/licenses/BSD-3-C
     
 
     
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li><a href="https://github.com/Itee">Tristan Valcke</a></li>
-        </ul>
-    </dd>
-    
 
     
 
-    
-    <dt class="tag-license">License:</dt>
-    <dd class="tag-license"><ul class="dummy"><li><a href="https://opensource.org/licenses/BSD-3-Clause">BSD-3-Clause</a></li></ul></dd>
     
 
     
@@ -268,130 +226,153 @@ with this program.  If not, see <a href="https://opensource.org/licenses/BSD-3-C
 
 
 
+
+<div class="description">
+    Will create an appropriate configuration object for rollup, related to the given arguments.
+</div>
+
+
+
+
+
+
+
+
+
+
+
+    <h5>Parameters:</h5>
+    
+
+<table class="params">
+    <thead>
+    <tr>
         
-            <div class="description">The main entry point about benchmarks of the library</div>
-        
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
-    
-
-    
-
-    
-</article>
-
-</section>
-
-
-
-
-
-
-
-<section>
-
-<header>
-    
-        <h2>
-        tests/units/itee-client.unit.js
-        </h2>
-        
-    
-</header>
-
-<article>
-    <div class="container-overview">
-    
+        <th>Name</th>
         
 
-<dl class="details">
+        <th>Type</th>
 
-    
-    <dt class="tag-source">Source:</dt>
-    <dd class="tag-source"><ul class="dummy"><li>
-        <a href="tests_units_itee-client.unit.js.html">tests/units/itee-client.unit.js</a>, <a href="tests_units_itee-client.unit.js.html#line1">line 1</a>
-    </li></ul></dd>
-    
+        
 
-    
+        
 
-    
+        <th class="last">Description</th>
+    </tr>
+    </thead>
 
+    <tbody>
     
 
-    
+        <tr>
+            
+                <td class="name"><code>format</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">string</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The desired module format output. Available values are: 'es', 'cjs', 'amd', 'iife' and 'umd'</td>
+        </tr>
 
     
 
-    
+        <tr>
+            
+                <td class="name"><code>onProduction</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">The building environment. True for production, developement otherwise.</td>
+        </tr>
 
     
 
-    
+        <tr>
+            
+                <td class="name"><code>wantSourceMap</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">boolean</span>
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">Set to true if sourcemap must be include in the output.</td>
+        </tr>
 
     
-    <dt class="tag-author">Author:</dt>
-    <dd class="tag-author">
-        <ul>
-            <li><a href="https://github.com/Itee">Tristan Valcke</a></li>
-        </ul>
+    </tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h5>Returns:</h5>
+
+        
+<div class="param-desc">
+    The rollup configuration
+</div>
+
+
+
+<dl class="param-type">
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">object</span>
+
+
     </dd>
-    
-
-    
-
-    
-    <dt class="tag-license">License:</dt>
-    <dd class="tag-license"><ul class="dummy"><li><a href="https://opensource.org/licenses/BSD-3-Clause">BSD-3-Clause</a></li></ul></dd>
-    
-
-    
-
-    
-
-    
-
-    
 </dl>
 
-
+    
 
 
         
-            <div class="description">The main entry point about unit tests of the library</div>
-        
-
-        
-    
-    </div>
-
-    
-
-    
-
-    
-
-     
-
-    
-
-    
-
     
 
     

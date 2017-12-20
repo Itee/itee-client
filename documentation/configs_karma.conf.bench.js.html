@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>sources/itee-client.js - Documentation</title>
+    <title>configs/karma.conf.bench.js - Documentation</title>
 
     <script src="scripts/prettify/prettify.js"></script>
     <script src="scripts/prettify/lang-css.js"></script>
@@ -27,7 +27,7 @@
 
 <div id="main">
     
-    <h1 class="page-title">sources/itee-client.js</h1>
+    <h1 class="page-title">configs/karma.conf.bench.js</h1>
     
 
     
@@ -41,30 +41,81 @@
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  *
- * @file The main entry point for Itee-Client, it contains all exports of the library
+ * @module config/karmaBenchConfiguration
+ *
+ * @description The file manage the karma configuration for run benchmarks that are under `tests/benchmarks` folder
  *
  */
 
-export {
-    HttpStatusCode,
-    HttpVerb,
-    ResponseType
-} from './core/TConstants'
-export { TApplication } from './core/TApplication'
-export { TCache } from './core/TCache'
-export { TOrchestrator } from './core/TOrchestrator'
-export { TViewport } from './core/TViewport'
-export { TFactory } from './factories/TFactory'
-export { TUniversalLoader } from './loaders/TUniversalLoader'
-export { TOrbitControlsHelper } from './objects3d/TOrbitControlsHelper'
-export { TErrorManager } from './managers/TErrorManager'
-export { TProgressManager } from './managers/TProgressManager'
-export { TDataBaseManager } from './managers/TDataBaseManager'
-export { TScenesManager } from './managers/database/TScenesManager'
-export { TObjectsManager } from './managers/database/TObjectsManager'
-export { TGeometriesManager } from './managers/database/TGeometriesManager'
-export { TMaterialsManager } from './managers/database/TMaterialsManager'
-export { TPointsManager } from './managers/database/TPointsManager'
+/* eslint-env node */
+
+/**
+ * Will assign an appropriate configuration object for karma.
+ *
+ * @param {object} config - The karma configuration object to extend
+ */
+function CreateKarmaBenchmarkConfiguration( config ) {
+
+    config.set( {
+
+        // base path that will be used to resolve all patterns (eg. files, exclude)
+        basePath: '../',
+
+        // frameworks to use
+        // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
+        frameworks: [ 'benchmark' ],
+
+        // list of files / patterns to load in the browser
+        files: [
+            'tests/benchmarks/**/*.bench.js'
+        ],
+
+        // list of files to exclude
+        exclude: [],
+
+        // preprocess matching files before serving them to the browser
+        // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
+        preprocessors: {},
+
+        // test results reporter to use
+        // possible values: 'dots', 'progress'
+        // available reporters: https://npmjs.org/browse/keyword/karma-reporter
+        reporters: [ 'progress' ],
+
+        // web server port
+        port: 9876,
+
+        // enable / disable colors in the output (reporters and logs)
+        colors: true,
+
+        // level of logging
+        // possible values: config.LOG_DISABLE || config.LOG_ERROR || config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG
+        logLevel: config.LOG_INFO,
+
+        // enable / disable watching file and executing tests whenever any file changes
+        autoWatch: false,
+
+        // start these browsers
+        // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
+        browsers: [ 'Chrome' ],
+        //        browsers: ['Chrome', 'Firefox', 'Safari', 'IE'],
+
+        // Continuous Integration mode
+        // if true, Karma captures browsers, runs the tests and exits
+        singleRun: true,
+
+        // Concurrency level
+        // how many browser should be started simultaneous
+        concurrency: 1,
+
+        // If browser does not capture in given timeout [ms], kill it
+        captureTimeout: 60000
+
+    } )
+
+}
+
+module.exports = CreateKarmaBenchmarkConfiguration
 </code></pre>
         </article>
     </section>
