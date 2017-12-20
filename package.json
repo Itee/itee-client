@@ -30,7 +30,9 @@
     "build": "gulp build",
     "release": "gulp release"
   },
-  "dependencies": {},
+  "dependencies": {
+    "three": "git+ssh://git@github.com/Itee/three.js.git#0177f65ab5692f2b5807ef063ae3a96a54c6b5cc"
+  },
   "devDependencies": {
     "babel-eslint": "^8.0.3",
     "benchmark": "^2.1.4",
