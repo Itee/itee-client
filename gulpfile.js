@@ -33,13 +33,12 @@
 const gulp        = require( 'gulp' )
 const util        = require( 'gulp-util' )
 const jsdoc       = require( 'gulp-jsdoc3' )
+const eslint      = require( 'gulp-eslint' )
+const inject      = require( 'gulp-inject-string' )
+const replace     = require( 'gulp-replace' )
 const del         = require( 'del' )
 const runSequence = require( 'run-sequence' )
 const rollup      = require( 'rollup' )
-
-const eslint = require( 'gulp-eslint' )
-// OR
-//const standard    = require( 'gulp-standard' )
 
 const log     = util.log
 const colors  = util.colors
@@ -204,10 +203,107 @@ gulp.task( 'bench', () => {
 
 } )
 
-/////////////////////
-////// BUILDS ///////
-/////////////////////
-gulp.task( 'build', [ 'clean' ], ( done ) => {
+/**
+ * @private
+ * @method gulp _convert-orbit-controls-to-es6-module
+ * @description Will convert/patch the orbit controls from three, and output the result under `builds/tmp`. This dependency is required in some Itee client modules.
+ */
+gulp.task( '_convert-orbit-controls-to-es6-module', () => {
+
+    return gulp.src( './node_modules/three/examples/js/controls/OrbitControls.js' )
+               .pipe( inject.prepend( "import {OrthographicCamera} from '../../node_modules/three/src/cameras/OrthographicCamera'\n" ) )
+               .pipe( inject.prepend( "import {PerspectiveCamera} from '../../node_modules/three/src/cameras/PerspectiveCamera'\n" ) )
+               .pipe( inject.prepend( "import {EventDispatcher} from '../../node_modules/three/src/core/EventDispatcher'\n" ) )
+               .pipe( inject.prepend( "import {Quaternion} from '../../node_modules/three/src/math/Quaternion'\n" ) )
+               .pipe( inject.prepend( "import {Spherical} from '../../node_modules/three/src/math/Spherical'\n" ) )
+               .pipe( inject.prepend( "import {Vector3} from '../../node_modules/three/src/math/Vector3'\n" ) )
+               .pipe( inject.prepend( "import {Vector2} from '../../node_modules/three/src/math/Vector2'\n" ) )
+               .pipe( inject.prepend( "import {MOUSE} from '../../node_modules/three/src/constants'\n" ) )
+               .pipe( replace( /THREE.(\w*) = function/g, 'var $1 = function' ) )
+               .pipe( replace( 'THREE.', '' ) )
+               .pipe( replace( 'rotateStart.copy( rotateEnd );', 'rotateStart.copy( rotateEnd );\n//[TV - PATCH - 28/11/2016] Emit rotate event\nscope.dispatchEvent( { type: \'rotate\' } );' ) )
+               .pipe( replace( 'dollyStart.copy( dollyEnd );', 'dollyStart.copy( dollyEnd );\n//[TV - PATCH - 28/11/2016] Emit zoom event\nscope.dispatchEvent( { type: \'zoom\' } );' ) )
+               .pipe( replace( 'panStart.copy( panEnd );', 'panStart.copy( panEnd );\n//[TV - PATCH - 28/11/2016] Emit pan event\nscope.dispatchEvent( { type: \'pan\' } );' ) )
+               .pipe( inject.append( '\nexport {OrbitControls}\n' ) )
+               .pipe( gulp.dest( './builds/tmp/' ) )
+
+} )
+
+/**
+ * @private
+ * @method gulp _convert-anaglyph-effect-to-es6-module
+ * @description Will convert/patch the anaglyph effect from three, and output the result under `builds/tmp`. This dependency is required in some Itee client modules.
+ */
+gulp.task( '_convert-anaglyph-effect-to-es6-module', () => {
+
+    return gulp.src( './node_modules/three/examples/js/effects/AnaglyphEffect.js' )
+               .pipe( inject.prepend( "import {Matrix3} from '../../node_modules/three/src/math/Matrix3'\n" ) )
+               .pipe( inject.prepend( "import {OrthographicCamera} from '../../node_modules/three/src/cameras/OrthographicCamera'\n" ) )
+               .pipe( inject.prepend( "import {StereoCamera} from '../../node_modules/three/src/cameras/StereoCamera'\n" ) )
+               .pipe( inject.prepend( "import {Scene} from '../../node_modules/three/src/scenes/Scene'\n" ) )
+               .pipe( inject.prepend( "import {LinearFilter} from '../../node_modules/three/src/constants'\n" ) )
+               .pipe( inject.prepend( "import {NearestFilter} from '../../node_modules/three/src/constants'\n" ) )
+               .pipe( inject.prepend( "import {RGBAFormat} from '../../node_modules/three/src/constants'\n" ) )
+               .pipe( inject.prepend( "import {WebGLRenderTarget} from '../../node_modules/three/src/renderers/WebGLRenderTarget'\n" ) )
+               .pipe( inject.prepend( "import {ShaderMaterial} from '../../node_modules/three/src/materials/ShaderMaterial'\n" ) )
+               .pipe( inject.prepend( "import {Mesh} from '../../node_modules/three/src/objects/Mesh'\n" ) )
+               .pipe( inject.prepend( "import {PlaneBufferGeometry} from '../../node_modules/three/src/geometries/PlaneGeometry'\n" ) )
+               .pipe( replace( /THREE.(\w*) = function/g, 'var $1 = function' ) )
+               .pipe( replace( 'THREE.', '' ) )
+               .pipe( inject.append( '\nexport {AnaglyphEffect}\n' ) )
+               .pipe( gulp.dest( './builds/tmp/' ) )
+
+} )
+
+/**
+ * @private
+ * @method gulp _convert-stereo-effect-to-es6-module
+ * @description Will convert/patch the stereo effect from three, and output the result under `builds/tmp`. This dependency is required in some Itee client modules.
+ */
+gulp.task( '_convert-stereo-effect-to-es6-module', () => {
+
+    return gulp.src( './node_modules/three/examples/js/effects/StereoEffect.js' )
+               .pipe( inject.prepend( "import {StereoCamera} from '../../node_modules/three/src/cameras/StereoCamera'\n" ) )
+               .pipe( replace( /THREE.(\w*) = function/g, 'var $1 = function' ) )
+               .pipe( replace( 'THREE.', '' ) )
+               .pipe( inject.append( '\nexport {StereoEffect}\n' ) )
+               .pipe( gulp.dest( './builds/tmp/' ) )
+
+} )
+
+/**
+ * @private
+ * @method gulp _convert-detector-to-es6-module
+ * @description Will convert/patch the webgl detector from three, and output the result under `builds/tmp`. This dependency is required in some Itee client modules.
+ */
+gulp.task( '_convert-detector-to-es6-module', () => {
+
+    return gulp.src( './node_modules/three/examples/js/Detector.js' )
+               .pipe( inject.append( '\nexport {Detector}\n' ) )
+               .pipe( gulp.dest( './builds/tmp/' ) )
+
+} )
+
+/**
+ * @private
+ * @method gulp _extendThree
+ * @description Will convert/patch three, and output the result under `builds/tmp`. This dependencies are required in some Itee client modules.
+ */
+gulp.task( '_extendThree', ( done ) => {
+
+    runSequence(
+        'clean',
+        [
+            '_convert-orbit-controls-to-es6-module',
+            '_convert-stereo-effect-to-es6-module',
+            '_convert-anaglyph-effect-to-es6-module',
+            '_convert-detector-to-es6-module'
+        ],
+        done
+    )
+
+} )
+
 /**
  * @method npm run build
  * @description Will build itee client module using optional arguments, running clean and _extendThree tasks before. See help to further informations.
@@ -331,6 +427,7 @@ gulp.task( 'release', ( done ) => {
 
     runSequence(
         'clean',
+        '_extendThree',
         [
             'lint',
             'doc',
