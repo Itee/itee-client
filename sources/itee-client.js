@@ -26,3 +26,11 @@ export { TObjectsManager } from './managers/database/TObjectsManager'
 export { TGeometriesManager } from './managers/database/TGeometriesManager'
 export { TMaterialsManager } from './managers/database/TMaterialsManager'
 export { TPointsManager } from './managers/database/TPointsManager'
+
+// Export Three stuff
+
+// Export extended Three stuff
+export { AnaglyphEffect } from '../builds/tmp/AnaglyphEffect'
+export { Detector as WebGLDetector } from '../builds/tmp/Detector'
+export { OrbitControls } from '../builds/tmp/OrbitControls'
+export { StereoEffect } from '../builds/tmp/StereoEffect'
