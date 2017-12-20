@@ -266,6 +266,7 @@ gulp.task( '_convert-stereo-effect-to-es6-module', () => {
                .pipe( inject.prepend( "import {StereoCamera} from '../../../node_modules/three/src/cameras/StereoCamera'\n" ) )
                .pipe( replace( /THREE.(\w*) = function/g, 'var $1 = function' ) )
                .pipe( replace( 'THREE.', '' ) )
+               .pipe( replace( '@authod', '@author' ) )
                .pipe( inject.append( '\nexport {StereoEffect}\n' ) )
                .pipe( gulp.dest( './sources/third_party/three_extended' ) )
 
