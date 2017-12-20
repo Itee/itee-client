@@ -1,9 +1,10 @@
 /**
- * @author Tristan Valcke <valcketristan@gmail.com>
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
- * @see https://github.com/Itee
  *
- * @file The file manage the karma configuration for run unit tests that are under `tests/units` folder
+ * @module config/karmaUnitConfiguration
+ *
+ * @description The file manage the karma configuration for run unit tests that are under `tests/units` folder
  *
  */
 
