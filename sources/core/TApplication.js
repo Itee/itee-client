@@ -316,30 +316,30 @@ function TApplication ( container, parameters, onReady ) {
         parameters = parameters || {}
 
         // Init docks and panels
-        var navBar = document.getElementById( 'mainNavBar' );
+        //        var navBar = document.getElementById( 'mainNavBar' );
 
         // Compute available screen height without navBar
-        var navBarHeight  = (navBar) ? navBar.clientHeight : 0;
-        var contentHeight = $( window ).height() - navBarHeight;
+        //        var navBarHeight  = (navBar) ? navBar.clientHeight : 0;
+        //        var contentHeight = $( window ).height() - navBarHeight;
 
         // Init navbar
-        var importInput = $( "#importInput" )
-        $( '#importBtn' ).on( "click", function ( event ) {
+        var importBtn     = document.getElementById( "#importBtn" )
+        importBtn.onclick = function ( event ) {
             self.popupImportFilesModal.call( self )
-        } )
+        }
 
         this.toggleXRay = false;
-        var xRayBtn     = $( "#xRayBtn" )
-        xRayBtn.on( "click", function ( event ) {
+        var xRayBtn     = document.getElementById( "#xRayBtn" )
+        xRayBtn.onclick = function ( event ) {
 
             self.toggleXRay = !self.toggleXRay;
             self.changeMaterialSide.call( self, self.webglViewport.scene.children, self.toggleXRay )
 
-        } )
+        }
 
         this.toggleSelection = false;
-        var selectBtn        = $( "#selectBtn" )
-        selectBtn.on( "click", function ( event ) {
+        var selectBtn        = document.getElementById( "#selectBtn" )
+        selectBtn.onclick    = function ( event ) {
 
             self.toggleSelection             = !self.toggleSelection;
             self.webglViewport.isRaycastable = self.toggleSelection;
@@ -347,13 +347,22 @@ function TApplication ( container, parameters, onReady ) {
             //            var cursor = ( self.toggleSelection ) ? 'pointer' : 'default';
             //            $('html').css('cursor', 'wait');
 
-        } )
+        }
 
-        var cameraModeDropDown = $( '#cameraMode' ).find( 'li' )
-        cameraModeDropDown.on( 'click', function ( event ) {
-            var cameraMode = $( this ).find( 'a' ).attr( 'data-value' )
-            self.setCameraMode.call( self, cameraMode )
-        } )
+        var cameraModeDropDown = document.getElementById( '#cameraMode' )
+        var cameraModes        = cameraModeDropDown.getElementsByTagName( 'li' );
+        for ( var i = 0 ; i < cameraModes.length ; i++ ) {
+            cameraModes[ i ].addEventListener(
+                'click',
+                function ( event ) {
+
+                    var cameraMode = $( this ).find( 'a' ).attr( 'data-value' )
+                    self.setCameraMode.call( self, cameraMode )
+
+                },
+                false
+            );
+        }
 
         var switchRenderEffectDropDown = $( '#renderEffectDropDown' ).find( 'li' )
         switchRenderEffectDropDown.on( 'click', function ( event ) {
@@ -367,29 +376,29 @@ function TApplication ( container, parameters, onReady ) {
         this.mainContainer.initialize();
         window.addEventListener( 'resize', function () { self.mainContainer.invalidate() }, true );
 
-        this.detailBtn = $( "#detailBtn" )
-        this.detailBtn.on( "click", event => {
+        this.detailBtn         = document.getElementById( "#detailBtn" )
+        this.detailBtn.onclick = function ( event ) {
 
             var carlId = event.currentTarget.value.slice( 0, -4 ).toUpperCase()
             parent.postMessage( `GISDetailAction#-#${carlId};com.carl.xnet.equipment.backend.bean.BoxBean#+#`, '*' )
 
-        } )
+        }
 
-        this.historyBtn = $( "#historyBtn" )
-        this.historyBtn.on( "click", event => {
+        this.historyBtn         = document.getElementById( "#historyBtn" )
+        this.historyBtn.onclick = function ( event ) {
 
             var carlId = event.currentTarget.value.slice( 0, -4 ).toUpperCase()
             parent.postMessage( `WOViewAction#-#${carlId};com.carl.xnet.equipment.backend.bean.BoxBean#+#`, '*' )
 
-        } )
+        }
 
-        this.createBtn = $( "#createBtn" )
-        this.createBtn.on( "click", event => {
+        this.createBtn         = document.getElementById( "#createBtn" )
+        this.createBtn.onclick = function ( event ) {
 
             var carlId = event.currentTarget.value.slice( 0, -4 ).toUpperCase()
             parent.postMessage( `CREATE_WO#-#${carlId};com.carl.xnet.equipment.backend.bean.BoxBean#+#`, '*' )
 
-        } )
+        }
 
         //        this.mainContainer = (container) ? container : document.getElementById( 'mainContainer' );
         //        this.mainContainer.height( contentHeight );
@@ -412,11 +421,16 @@ function TApplication ( container, parameters, onReady ) {
         var outlineNode = this.mainContainer.dockFill( documentNode, this.webglViewportContainer )
 
         // Measure Tool
-        this.measureTools = $( '#measureTools' ).find( 'li' )
-        this.measureTools.on( 'click', function ( event ) {
+        this.measureTools = document.getElementById( '#measureTools' )
+                                    .querySelectorAll( 'li' )
+
+        this.measureTools.onclick = function ( event ) {
+
             var selectedTool = $( this ).find( 'a' ).attr( 'data-value' )
             self.startMeasure( selectedTool )
-        } )
+
+        }
+
         this.measureMode         = undefined
         this.measureCounter      = 0
         this.currentMeasureGroup = undefined
@@ -480,48 +494,49 @@ function TApplication ( container, parameters, onReady ) {
             console.error( 'split button does not exist !' );
 
         }
+
         // Init modals
-        this.importFilesModalView = $( '#importFilesModal' )
-        this.importFilesModalView.modal( {
-            keyboard: false,
-            show:     false
-        } )
-
-        var validateImportFilesModal = $( '#validateImportFilesModal' )
-        validateImportFilesModal.on( "click", function () {
-
-            var importInput   = $( "#importInput" )
-            var files         = importInput[ 0 ].files
-            var numberOfFiles = files.length
-            console.log( "numberOfFiles: " + numberOfFiles );
-
-            var filesUrls = []
-            var fileUrl   = ''
-            var fileIndex
-            var fileObject
-
-            for ( fileIndex = 0 ; fileIndex < numberOfFiles ; ++fileIndex ) {
-                fileObject = files[ fileIndex ]
-                fileUrl    = URL.createObjectURL( fileObject ) + '/' + fileObject.name
-
-                filesUrls.push( fileUrl )
-            }
-
-            self.loadObjectFromURL( filesUrls )
-
-        } )
-
-        this.imageShotModalView = $( '#imageShotModal' )
-        this.imageShotModalView.modal( {
-            keyboard: false,
-            show:     false
-        } )
-
-        this.selectedObjectModalView = $( '#selectedObjectModal' )
-        this.selectedObjectModalView.modal( {
-            keyboard: false,
-            show:     false
-        } )
+//        this.importFilesModalView = $( '#importFilesModal' )
+//        this.importFilesModalView.modal( {
+//            keyboard: false,
+//            show:     false
+//        } )
+//
+//        var validateImportFilesModal = $( '#validateImportFilesModal' )
+//        validateImportFilesModal.on( "click", function () {
+//
+//            var importInput   = $( "#importInput" )
+//            var files         = importInput[ 0 ].files
+//            var numberOfFiles = files.length
+//            console.log( "numberOfFiles: " + numberOfFiles );
+//
+//            var filesUrls = []
+//            var fileUrl   = ''
+//            var fileIndex
+//            var fileObject
+//
+//            for ( fileIndex = 0 ; fileIndex < numberOfFiles ; ++fileIndex ) {
+//                fileObject = files[ fileIndex ]
+//                fileUrl    = URL.createObjectURL( fileObject ) + '/' + fileObject.name
+//
+//                filesUrls.push( fileUrl )
+//            }
+//
+//            self.loadObjectFromURL( filesUrls )
+//
+//        } )
+//
+//        this.imageShotModalView = $( '#imageShotModal' )
+//        this.imageShotModalView.modal( {
+//            keyboard: false,
+//            show:     false
+//        } )
+//
+//        this.selectedObjectModalView = $( '#selectedObjectModal' )
+//        this.selectedObjectModalView.modal( {
+//            keyboard: false,
+//            show:     false
+//        } )
     }
 
     function _initWebGLViewport ( parameters ) {
@@ -550,9 +565,6 @@ function TApplication ( container, parameters, onReady ) {
         }
 
         this.webglViewport.scene.add( new AmbientLight( 0x999999, 0.8 ) )
-
-        this.progressBar = $( '#progressBar .progress-bar' )
-        this.progressBar.parent().css( "display", "none" )
 
         if ( parameters.modelEnable ) { _initModelData.call( self, parameters.model ) }
         if ( parameters.pointCloudEnable ) { _initPointCloudData.call( self, parameters.pointCloud ) }
@@ -2326,11 +2338,12 @@ Object.assign( TApplication.prototype, {
         '   <ul class="children"></ul>' +
         '</li>'}`
 
-        var item = $( domElement )
+//        var item = $( domElement )
 
-        $( '#' + cleanParentName ).children( '.children' ).append( item );
+        document.getElementById( cleanParentName ).appendChild( domElement )
+//        $( '#' + cleanParentName ).children( '.children' ).append( item );
 
-        return item;
+        return domElement
 
     },
 
@@ -3023,23 +3036,28 @@ Object.assign( TApplication.prototype, {
      */
     popupImageShotModal () {
 
-        var self = this
-        imageLoader.load( this.previousImageShot.userData.filePath + "HD/" + this.previousImageShot.name, function onLoad ( imageHD ) {
+        const self = this
+        const previousImageShot = self.previousImageShot
+        const url = `${previousImageShot.userData.filePath}HD/${previousImageShot.name}`
+
+        imageLoader.load( url, function onLoad ( imageHD ) {
 
             if ( !imageHD ) {
                 console.error( "Unable to display empty or null hd image !" );
                 return
             }
 
-            var link = document.createElement( 'a' )
+            const link = document.createElement( 'a' )
             link.setAttribute( 'href', self.previousImageShot.userData.filePath + "HD/" + self.previousImageShot.name )
             link.setAttribute( 'target', "_blank" )
 
             link.appendChild( imageHD )
 
-            $( '#imageShotModalContent' )
-                .empty()
-                .append( link )
+            let modalContent = document.getElementById( 'imageShotModalContent' )
+            while (modalContent.lastChild) {
+                modalContent.removeChild(modalContent.lastChild);
+            }
+            modalContent.appendChild( link )
 
             self.imageShotModalView.modal( 'show' )
 
@@ -3057,21 +3075,6 @@ Object.assign( TApplication.prototype, {
 
         var ul = document.createElement( 'ul' )
         processDataObject( userData, ul )
-
-        //        li
-        //        a#detailBtn.btn(data-toggle='button', title='Détails équipement')
-        //        i.fa.fa-pencil
-        //        li
-        //        a#historyBtn.btn(data-toggle='button', title='Historique d\'intervention')
-        //        i.fa.fa-history
-        //        li
-        //        a#createBtn.btn(data-toggle='button', title='Création d\'intervention')
-        //        i.fa.fa-flash
-
-        //        $( '#selectedObjectContent' )
-        //            .empty()
-        //            .append( ul )
-        //            .append( aDetail )
 
         const carlId = userData.id.slice( 0, -4 ).toUpperCase()
 
