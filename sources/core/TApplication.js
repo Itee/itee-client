@@ -11,6 +11,7 @@
 /* eslint-env browser */
 /* global $, H, URL */
 
+import { extend } from './TUtils'
 import { TUniversalLoader } from '../loaders/TUniversalLoader'
 import { TPointsManager } from '../managers/database/TPointsManager'
 import { MeshManager } from '../managers/database/MeshManager'
@@ -254,7 +255,7 @@ function TApplication ( container, parameters, onReady ) {
     }
 
     // Recursive merging parameter
-    $.extend( true, _parameters, parameters )
+    extend( _parameters, parameters )
 
     this.viewer            = ''
     this.previousImageShot = undefined
