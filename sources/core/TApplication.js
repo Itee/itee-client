@@ -323,13 +323,13 @@ function TApplication ( container, parameters, onReady ) {
         //        var contentHeight = $( window ).height() - navBarHeight;
 
         // Init navbar
-        var importBtn     = document.getElementById( "#importBtn" )
+        var importBtn     = document.getElementById( "importBtn" )
         importBtn.onclick = function ( event ) {
             self.popupImportFilesModal.call( self )
         }
 
         this.toggleXRay = false;
-        var xRayBtn     = document.getElementById( "#xRayBtn" )
+        var xRayBtn     = document.getElementById( "xRayBtn" )
         xRayBtn.onclick = function ( event ) {
 
             self.toggleXRay = !self.toggleXRay;
@@ -338,7 +338,7 @@ function TApplication ( container, parameters, onReady ) {
         }
 
         this.toggleSelection = false;
-        var selectBtn        = document.getElementById( "#selectBtn" )
+        var selectBtn        = document.getElementById( "selectBtn" )
         selectBtn.onclick    = function ( event ) {
 
             self.toggleSelection             = !self.toggleSelection;
@@ -349,8 +349,8 @@ function TApplication ( container, parameters, onReady ) {
 
         }
 
-        var cameraModeDropDown = document.getElementById( '#cameraMode' )
-        var cameraModes        = cameraModeDropDown.getElementsByTagName( 'li' );
+        var cameraModeDropDown = document.getElementById( 'cameraMode' )
+        var cameraModes        = cameraModeDropDown.getElementsByTagName( 'li' )
         for ( var i = 0 ; i < cameraModes.length ; i++ ) {
             cameraModes[ i ].addEventListener(
                 'click',
@@ -364,11 +364,13 @@ function TApplication ( container, parameters, onReady ) {
             );
         }
 
-        var switchRenderEffectDropDown = $( '#renderEffectDropDown' ).find( 'li' )
-        switchRenderEffectDropDown.on( 'click', function ( event ) {
+        var switchRenderEffectDropDown = document.getElementById( 'renderEffectDropDown' )
+        var switchRenderEffects        = switchRenderEffectDropDown.getElementsByTagName( 'li' )
+
+        switchRenderEffects.onclick = function ( event ) {
             var renderEffect = $( this ).find( 'a' ).attr( 'data-value' )
             self.setRendersEffect.call( self, renderEffect )
-        } )
+        }
 
         // Docking view
         // Convert a div to a dock manager.  Panels can then be docked on to it
@@ -376,7 +378,7 @@ function TApplication ( container, parameters, onReady ) {
         this.mainContainer.initialize();
         window.addEventListener( 'resize', function () { self.mainContainer.invalidate() }, true );
 
-        this.detailBtn         = document.getElementById( "#detailBtn" )
+        this.detailBtn         = document.getElementById( "detailBtn" )
         this.detailBtn.onclick = function ( event ) {
 
             var carlId = event.currentTarget.value.slice( 0, -4 ).toUpperCase()
@@ -384,7 +386,7 @@ function TApplication ( container, parameters, onReady ) {
 
         }
 
-        this.historyBtn         = document.getElementById( "#historyBtn" )
+        this.historyBtn         = document.getElementById( "historyBtn" )
         this.historyBtn.onclick = function ( event ) {
 
             var carlId = event.currentTarget.value.slice( 0, -4 ).toUpperCase()
@@ -392,7 +394,7 @@ function TApplication ( container, parameters, onReady ) {
 
         }
 
-        this.createBtn         = document.getElementById( "#createBtn" )
+        this.createBtn         = document.getElementById( "createBtn" )
         this.createBtn.onclick = function ( event ) {
 
             var carlId = event.currentTarget.value.slice( 0, -4 ).toUpperCase()
@@ -421,7 +423,7 @@ function TApplication ( container, parameters, onReady ) {
         var outlineNode = this.mainContainer.dockFill( documentNode, this.webglViewportContainer )
 
         // Measure Tool
-        this.measureTools = document.getElementById( '#measureTools' )
+        this.measureTools = document.getElementById( 'measureTools' )
                                     .querySelectorAll( 'li' )
 
         this.measureTools.onclick = function ( event ) {
