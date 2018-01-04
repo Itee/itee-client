@@ -315,13 +315,6 @@ function TApplication ( container, parameters, onReady ) {
 
         parameters = parameters || {}
 
-        // Init docks and panels
-        //        var navBar = document.getElementById( 'mainNavBar' );
-
-        // Compute available screen height without navBar
-        //        var navBarHeight  = (navBar) ? navBar.clientHeight : 0;
-        //        var contentHeight = $( window ).height() - navBarHeight;
-
         // Init navbar
         var importBtn     = document.getElementById( "importBtn" )
         importBtn.onclick = function ( event ) {
@@ -349,27 +342,26 @@ function TApplication ( container, parameters, onReady ) {
 
         }
 
-        var cameraModeDropDown = document.getElementById( 'cameraMode' )
-        var cameraModes        = cameraModeDropDown.getElementsByTagName( 'li' )
-        for ( var i = 0 ; i < cameraModes.length ; i++ ) {
-            cameraModes[ i ].addEventListener(
-                'click',
-                function ( event ) {
+        const cameraModeDropDown = document.getElementById( 'cameraMode' )
+        const cameraModes        = cameraModeDropDown.getElementsByTagName( 'li' )
+        for ( let i = 0, element = undefined ; element = cameraModes[ i ] ; i++ ) {
+            element.onclick = function ( event ) {
 
-                    var cameraMode = $( this ).find( 'a' ).attr( 'data-value' )
-                    self.setCameraMode.call( self, cameraMode )
+                const value = this.getElementsByTagName( 'a' ).getAttribute( 'data-value' )
+                self.setCameraMode.call( self, value )
 
-                },
-                false
-            );
+            }
         }
 
-        var switchRenderEffectDropDown = document.getElementById( 'renderEffectDropDown' )
-        var switchRenderEffects        = switchRenderEffectDropDown.getElementsByTagName( 'li' )
+        const switchRenderEffectDropDown = document.getElementById( 'renderEffectDropDown' )
+        const switchRenderEffects        = switchRenderEffectDropDown.getElementsByTagName( 'li' )
+        for ( let i = 0, element = undefined ; element = switchRenderEffects[ i ] ; i++ ) {
+            element.onclick = function ( event ) {
 
-        switchRenderEffects.onclick = function ( event ) {
-            var renderEffect = $( this ).find( 'a' ).attr( 'data-value' )
-            self.setRendersEffect.call( self, renderEffect )
+                const value = this.getElementsByTagName( 'a' ).getAttribute( 'data-value' )
+                self.setRendersEffect.call( self, value )
+
+            }
         }
 
         // Docking view
@@ -402,9 +394,6 @@ function TApplication ( container, parameters, onReady ) {
 
         }
 
-        //        this.mainContainer = (container) ? container : document.getElementById( 'mainContainer' );
-        //        this.mainContainer.height( contentHeight );
-
         // Convert existing elements on the page into "Panels".
         // They can then be docked on to the dock manager
         // Panels get a titlebar and a close button, and can also be
@@ -423,14 +412,14 @@ function TApplication ( container, parameters, onReady ) {
         var outlineNode = this.mainContainer.dockFill( documentNode, this.webglViewportContainer )
 
         // Measure Tool
-        this.measureTools = document.getElementById( 'measureTools' )
-                                    .querySelectorAll( 'li' )
+        this.measureTools = document.getElementById( 'measureTools' ).querySelectorAll( 'li' )
+        for ( let i = 0, element = undefined ; element = this.measureTools[ i ] ; i++ ) {
+            element.onclick = function ( event ) {
 
-        this.measureTools.onclick = function ( event ) {
+                const value = this.getElementsByTagName( 'a' ).getAttribute( 'data-value' )
+                self.startMeasure( value )
 
-            var selectedTool = $( this ).find( 'a' ).attr( 'data-value' )
-            self.startMeasure( selectedTool )
-
+            }
         }
 
         this.measureMode         = undefined
@@ -460,13 +449,13 @@ function TApplication ( container, parameters, onReady ) {
 
             } );
 
-            self.spliterSliderControl.$sliderElem[ 0 ].style.display = 'none';
+            self.spliterSliderControl.sliderElem.style.display = 'none';
 
             this.splitToolButton.onclick = function ( event ) {
 
                 self.splitToolToggle = !self.splitToolToggle;
 
-                self.spliterSliderControl.$sliderElem[ 0 ].style.display = ( self.splitToolToggle ) ? 'block' : 'none';
+                self.spliterSliderControl.sliderElem.style.display = ( self.splitToolToggle ) ? 'block' : 'none';
                 self.globalPlane.visible                                 = self.splitToolToggle;
 
                 self.webglViewport.renderer.clippingPlanes = ( self.splitToolToggle ) ? [ self.globalPlane ] : [];
@@ -498,47 +487,47 @@ function TApplication ( container, parameters, onReady ) {
         }
 
         // Init modals
-//        this.importFilesModalView = $( '#importFilesModal' )
-//        this.importFilesModalView.modal( {
-//            keyboard: false,
-//            show:     false
-//        } )
-//
-//        var validateImportFilesModal = $( '#validateImportFilesModal' )
-//        validateImportFilesModal.on( "click", function () {
-//
-//            var importInput   = $( "#importInput" )
-//            var files         = importInput[ 0 ].files
-//            var numberOfFiles = files.length
-//            console.log( "numberOfFiles: " + numberOfFiles );
-//
-//            var filesUrls = []
-//            var fileUrl   = ''
-//            var fileIndex
-//            var fileObject
-//
-//            for ( fileIndex = 0 ; fileIndex < numberOfFiles ; ++fileIndex ) {
-//                fileObject = files[ fileIndex ]
-//                fileUrl    = URL.createObjectURL( fileObject ) + '/' + fileObject.name
-//
-//                filesUrls.push( fileUrl )
-//            }
-//
-//            self.loadObjectFromURL( filesUrls )
-//
-//        } )
-//
-//        this.imageShotModalView = $( '#imageShotModal' )
-//        this.imageShotModalView.modal( {
-//            keyboard: false,
-//            show:     false
-//        } )
-//
-//        this.selectedObjectModalView = $( '#selectedObjectModal' )
-//        this.selectedObjectModalView.modal( {
-//            keyboard: false,
-//            show:     false
-//        } )
+        this.importFilesModalView = $( '#importFilesModal' )
+        this.importFilesModalView.modal( {
+            keyboard: false,
+            show:     false
+        } )
+
+        var validateImportFilesModal = document.getElementById( 'validateImportFilesModal' )
+        validateImportFilesModal.onclick = function () {
+
+            var importInput   = document.getElementById( "importInput" )
+            var files         = importInput[ 0 ].files
+            var numberOfFiles = files.length
+            console.log( "numberOfFiles: " + numberOfFiles );
+
+            var filesUrls = []
+            var fileUrl   = ''
+            var fileIndex
+            var fileObject
+
+            for ( fileIndex = 0 ; fileIndex < numberOfFiles ; ++fileIndex ) {
+                fileObject = files[ fileIndex ]
+                fileUrl    = URL.createObjectURL( fileObject ) + '/' + fileObject.name
+
+                filesUrls.push( fileUrl )
+            }
+
+            self.loadObjectFromURL( filesUrls )
+
+        }
+
+        this.imageShotModalView = $( '#imageShotModal' )
+        this.imageShotModalView.modal( {
+            keyboard: false,
+            show:     false
+        } )
+
+        this.selectedObjectModalView = $( '#selectedObjectModal' )
+        this.selectedObjectModalView.modal( {
+            keyboard: false,
+            show:     false
+        } )
     }
 
     function _initWebGLViewport ( parameters ) {
@@ -2340,10 +2329,7 @@ Object.assign( TApplication.prototype, {
         '   <ul class="children"></ul>' +
         '</li>'}`
 
-//        var item = $( domElement )
-
         document.getElementById( cleanParentName ).appendChild( domElement )
-//        $( '#' + cleanParentName ).children( '.children' ).append( item );
 
         return domElement
 
@@ -3038,9 +3024,9 @@ Object.assign( TApplication.prototype, {
      */
     popupImageShotModal () {
 
-        const self = this
+        const self              = this
         const previousImageShot = self.previousImageShot
-        const url = `${previousImageShot.userData.filePath}HD/${previousImageShot.name}`
+        const url               = `${previousImageShot.userData.filePath}HD/${previousImageShot.name}`
 
         imageLoader.load( url, function onLoad ( imageHD ) {
 
@@ -3056,8 +3042,8 @@ Object.assign( TApplication.prototype, {
             link.appendChild( imageHD )
 
             let modalContent = document.getElementById( 'imageShotModalContent' )
-            while (modalContent.lastChild) {
-                modalContent.removeChild(modalContent.lastChild);
+            while ( modalContent.lastChild ) {
+                modalContent.removeChild( modalContent.lastChild );
             }
             modalContent.appendChild( link )
 
