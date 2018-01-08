@@ -688,7 +688,25 @@ Object.assign( TDataBaseManager.prototype, {
             if ( ids.length === 1 ) {
                 this._readOne( ids[0], onLoadCallback, onProgressCallback, onError )
             } else {
-                this._readSome( ids, onLoadCallback, onProgressCallback, onError )
+
+                // Todo: allow to set bunch size
+
+                const _BUNCH_SIZE = 500
+
+                let idBunch = []
+                let id      = undefined
+                for ( let idIndex = 0, numberOfIds = ids.length ; idIndex < numberOfIds ; idIndex++ ) {
+                    id = ids[ idIndex ]
+
+                    idBunch.push( id )
+
+                    if ( idBunch.length === _BUNCH_SIZE || idIndex === numberOfIds - 1 ) {
+                        this._readSome( idBunch, onLoadCallback, onProgressCallback, onError )
+                        idBunch = []
+                    }
+
+                }
+
             }
 
         } else if ( typeof ids === 'string' ) {
