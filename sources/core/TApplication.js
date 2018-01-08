@@ -729,111 +729,102 @@ function TApplication ( container, parameters, onReady ) {
 
         function _initObjectsOf ( objectsIds, scene, visible ) {
 
-            const _BUNCH_SIZE = 500
-
             if ( !objectsIds ) { return }
 
-            let idBunch  = []
-            let objectId = undefined
-            for ( let objectIdIndex = 0, numberOfIds = objectsIds.length ; objectIdIndex < numberOfIds ; objectIdIndex++ ) {
-                objectId = objectsIds[ objectIdIndex ]
+            self.objectsManager.read( objectsIds, ( objects ) => {
 
-                idBunch.push( objectId )
+                // Create geometries and materials list
+                let geometriesIds = []
+                let materialsIds  = []
 
-                if ( idBunch.length === _BUNCH_SIZE || objectIdIndex === numberOfIds - 1 ) {
-                    downloadObjects( idBunch )
-                    idBunch = []
+                let object = undefined
+                for ( let objectIndex = 0, numberOfObjects = objects.length ; objectIndex < numberOfObjects ; objectIndex++ ) {
+                    object         = objects[ objectIndex ]
+                    object.visible = visible
+
+                    if ( object.children.length > 0 ) {
+                        _initObjectsOf( object.children, object, visible )
+                        object.children = []
+                    }
+
+                    geometriesIds.push( object.geometry )
+                    Array.prototype.push.apply( materialsIds, object.material )
                 }
 
-            }
+                geometriesIds = uniq( geometriesIds )
+                materialsIds  = uniq( materialsIds )
 
-            function downloadObjects ( objectsIds ) {
-
-                self.objectsManager.read( objectsIds, ( objects ) => {
-
-                    // Create geometries and materials list
-                    let geometriesIds = []
-                    let materialsIds  = []
+                self.geometriesManager.read( geometriesIds, ( geometries ) => {
 
                     let object = undefined
                     for ( let objectIndex = 0, numberOfObjects = objects.length ; objectIndex < numberOfObjects ; objectIndex++ ) {
-                        object         = objects[ objectIndex ]
-                        object.visible = visible
+                        object          = objects[ objectIndex ]
+                        object.geometry = geometries[ object.geometry ]
 
-                        if ( object.children.length > 0 ) {
-                            _initObjectsOf( object.children, object, visible )
-                            object.children = []
-                        }
-
-                        geometriesIds.push( object.geometry )
-                        Array.prototype.push.apply( materialsIds, object.material )
+                        objectReady( object )
                     }
 
-                    geometriesIds = uniq( geometriesIds )
-                    materialsIds  = uniq( materialsIds )
+                } )
 
-                    self.geometriesManager.read( geometriesIds, ( geometries ) => {
+                self.materialsManager.read( materialsIds, ( materials ) => {
 
-                        let object = undefined
-                        for ( let objectIndex = 0, numberOfObjects = objects.length ; objectIndex < numberOfObjects ; objectIndex++ ) {
-                            object          = objects[ objectIndex ]
-                            object.geometry = geometries[ object.geometry ]
+                    let object         = undefined
+                    let objectMaterial = undefined
+                    for ( let objectIndex = 0, numberOfObjects = objects.length ; objectIndex < numberOfObjects ; objectIndex++ ) {
+                        object = objects[ objectIndex ]
 
-                            objectReady( object )
-                        }
+                        objectMaterial = object.material
+                        if ( Array.isArray( objectMaterial ) ) {
 
-                    } )
+                            // Take care about the multi material order
+                            object.material = []
+                            let materialId  = undefined
+                            for ( let materialIndex = 0, numberOfMaterials = objectMaterial.length ; materialIndex < numberOfMaterials ; materialIndex++ ) {
+                                materialId = objectMaterial[ materialIndex ]
 
-                    self.materialsManager.read( materialsIds, ( materials ) => {
-
-                        let object         = undefined
-                        let objectMaterial = undefined
-                        for ( let objectIndex = 0, numberOfObjects = objects.length ; objectIndex < numberOfObjects ; objectIndex++ ) {
-                            object = objects[ objectIndex ]
-
-                            objectMaterial = object.material
-                            if ( Array.isArray( objectMaterial ) ) {
-
-                                // Take care about the multi material order
-                                object.material = []
-                                let materialId  = undefined
-                                for ( let materialIndex = 0, numberOfMaterials = objectMaterial.length ; materialIndex < numberOfMaterials ; materialIndex++ ) {
-                                    materialId = objectMaterial[ materialIndex ]
-
-                                    object.material.push( materials[ materialId ] )
-                                }
-
-                            } else {
-
-                                object.material = materials[ object.material ]
-
+                                object.material.push( materials[ materialId ] )
                             }
 
-                            objectReady( object )
+                        } else {
+
+                            object.material = materials[ object.material ]
 
                         }
 
-                    } )
-
-                    function objectReady ( object ) {
-
-                        if ( typeof object.geometry !== 'string' && typeof object.material !== 'string' ) {
-                            scene.add( object )
-                            self.webglViewport.addRaycastables( [ object ] )
-                        }
+                        objectReady( object )
 
                     }
 
                 } )
 
-            }
+                function objectReady ( object ) {
 
-            function uniq ( a ) {
-                var seen = {};
-                return a.filter( function ( item ) {
-                    return seen.hasOwnProperty( item ) ? false : (seen[ item ] = true);
-                } );
-            }
+                    if ( typeof object.geometry !== 'string' && typeof object.material !== 'string' ) {
+
+                        if ( scene ) {
+
+                            scene.add( object )
+
+                        } else {
+
+                            self.webglViewport.scene.add( object )
+
+                        }
+
+                        self.webglViewport.addRaycastables( [ object ] )
+
+                    }
+
+                }
+
+                function uniq ( a ) {
+                    var seen = {};
+                    return a.filter( function ( item ) {
+                        return seen.hasOwnProperty( item ) ? false : (seen[ item ] = true);
+                    } );
+                }
+
+            } )
 
         }
 
