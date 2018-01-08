@@ -487,7 +487,7 @@ function TApplication ( container, parameters, onReady ) {
         }
 
         // Init modals
-        this.importFilesModalView = $( '#importFilesModal' )
+        this.importFilesModalView = document.getElementById( 'importFilesModal' )
         this.importFilesModalView.modal( {
             keyboard: false,
             show:     false
@@ -517,13 +517,13 @@ function TApplication ( container, parameters, onReady ) {
 
         }
 
-        this.imageShotModalView = $( '#imageShotModal' )
+        this.imageShotModalView = document.getElementById( 'imageShotModal' )
         this.imageShotModalView.modal( {
             keyboard: false,
             show:     false
         } )
 
-        this.selectedObjectModalView = $( '#selectedObjectModal' )
+        this.selectedObjectModalView = document.getElementById( 'selectedObjectModal' )
         this.selectedObjectModalView.modal( {
             keyboard: false,
             show:     false
