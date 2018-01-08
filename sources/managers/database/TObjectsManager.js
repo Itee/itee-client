@@ -11,9 +11,9 @@
 import { TDataBaseManager } from '../TDataBaseManager'
 import {
     LineSegments,
-    Object3D
+    Object3D,
+    Mesh
 } from 'three'
-import { Mesh } from 'three'
 
 /**
  *
@@ -80,7 +80,7 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
 
         } else if ( objectType === 'LineSegments' ) {
 
-            let segment = new LineSegments()
+            let segment            = new LineSegments()
             segment.uuid           = data.uuid
             segment.name           = data.name
             segment.type           = data.type
@@ -120,7 +120,7 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
             segment.material               = data.material
 
             // Required for carl source
-            segment.userData['id'] = data._id
+            segment.userData[ 'id' ] = data._id
 
             return mesh
 
@@ -166,7 +166,7 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
             mesh.material               = data.material
 
             // Required for carl source
-            mesh.userData['id'] = jsonData._id
+            mesh.userData[ 'id' ] = jsonData._id
 
             return mesh
             //            //            mesh.geometry = self.convertJsonToGeometry( data.geometry )

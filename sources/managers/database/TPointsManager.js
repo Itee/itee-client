@@ -12,11 +12,13 @@
 /* eslint no-unused-vars: warn */
 /* global $ */
 
-import { BufferGeometry } from '../../../node_modules/three/src/core/BufferGeometry'
-import { BufferAttribute } from '../../../node_modules/three/src/core/BufferAttribute'
-import { PointsMaterial } from '../../../node_modules/three/src/materials/PointsMaterial'
-import { Points } from '../../../node_modules/three/src/objects/Points'
-import { Group } from '../../../node_modules/three/src/objects/Group'
+import {
+    BufferAttribute,
+    BufferGeometry,
+    Points,
+    PointsMaterial,
+    Group
+} from 'three'
 
 /**
  *
@@ -26,20 +28,20 @@ import { Group } from '../../../node_modules/three/src/objects/Group'
 
 function TPointsManager ( viewport ) {
 
-    if( ! viewport ) { throw new Error( 'Unable to create point cloud manager for null or undefined viewport !' ) }
+    if ( !viewport ) { throw new Error( 'Unable to create point cloud manager for null or undefined viewport !' ) }
 
-    this._pointCloudsDataMap = new Map()
-    this._cameraDistanceMax  = 10.0
-    this._cameraDistanceMin  = 1.0
-    this._samplingMax        = 100
-    this._samplingMin        = 0.0
-    this._viewport           = viewport
-    this._globalOffset       = {
+    this._pointCloudsDataMap   = new Map()
+    this._cameraDistanceMax    = 10.0
+    this._cameraDistanceMin    = 1.0
+    this._samplingMax          = 100
+    this._samplingMin          = 0.0
+    this._viewport             = viewport
+    this._globalOffset         = {
         x: 0,
         y: 0,
         z: 0
     }
-    this._pointCloudGroup = new Group()
+    this._pointCloudGroup      = new Group()
     this._pointCloudGroup.name = 'PointClouds'
 
     this._viewport.scene.add( this._pointCloudGroup )
@@ -91,7 +93,7 @@ Object.assign( TPointsManager.prototype, {
                 self.createPointCloudDataMap( worldCells )
 
                 onSuccess()
-                
+
             },
             error:    function ( jqXHR, textStatus, errorThrown ) {
                 console.log( 'ERRORS: ' + textStatus )
@@ -138,13 +140,13 @@ Object.assign( TPointsManager.prototype, {
     updatePointClouds: function ( cameraWorldPosition ) {
 
         var cloudIdsToIncreaseData = []
-        var cloudIdsToDecreaseData  = []
+        var cloudIdsToDecreaseData = []
 
-        this._pointCloudsDataMap.forEach(function( pointCloud ) {
+        this._pointCloudsDataMap.forEach( function ( pointCloud ) {
 
             this.updatePointCloudSampling( pointCloud, cameraWorldPosition )
 
-            if( pointCloud.needIncrease ) {
+            if ( pointCloud.needIncrease ) {
 
                 cloudIdsToIncreaseData.push( pointCloud.id )
 
@@ -158,7 +160,7 @@ Object.assign( TPointsManager.prototype, {
 
             }
 
-        }.bind(this))
+        }.bind( this ) )
 
         this.increasePointCloudData( cloudIdsToIncreaseData )
         this.decreasePointCloudData( cloudIdsToDecreaseData )
@@ -182,12 +184,12 @@ Object.assign( TPointsManager.prototype, {
 
         var sampling = this.getSamplingForDistanceToCamera( distanceToCamera )
 
-        if( sampling > pointCloud.sampling ) {
+        if ( sampling > pointCloud.sampling ) {
 
             pointCloud.needIncrease = true
             pointCloud.needDecrease = false
 
-        } else if( sampling < pointCloud.sampling ) {
+        } else if ( sampling < pointCloud.sampling ) {
 
             pointCloud.needIncrease = false
             pointCloud.needDecrease = true
@@ -215,7 +217,7 @@ Object.assign( TPointsManager.prototype, {
         if ( distanceToCamera < this._cameraDistanceMin ) { return this._samplingMax }
         if ( distanceToCamera > this._cameraDistanceMax ) { return this._samplingMin }
 
-//        var result = (-10 * distanceToCamera) + 100
+        //        var result = (-10 * distanceToCamera) + 100
         var result = (100 / Math.pow( distanceToCamera, 2 ))
 
         // Round at 2 digit
@@ -231,9 +233,8 @@ Object.assign( TPointsManager.prototype, {
 
     increasePointCloudData: function ( cloudIds ) {
 
-        if( cloudIds.length === 0 ) { return }
+        if ( cloudIds.length === 0 ) { return }
         console.log( 'numberOfBuffers to increase: ' + cloudIds.length )
-
 
         var self = this
 
@@ -260,7 +261,7 @@ Object.assign( TPointsManager.prototype, {
             var numberOfBuffers = buffer.getUint32( 0 )
             if ( numberOfBuffers === 0 ) { return }
 
-//            console.log( 'numberOfBuffers to extract: ' + numberOfBuffers )
+            //            console.log( 'numberOfBuffers to extract: ' + numberOfBuffers )
 
             const NUMBER_OF_BUFFER_VALUE_BYTES_LENGTH = 4 // UInt32
             var SIZES_OF_BUFFER_ARRAY_BYTES_LENGTH    = numberOfBuffers * 4 // UInt32
@@ -305,28 +306,28 @@ Object.assign( TPointsManager.prototype, {
 
     decreasePointCloudData: function ( cloudIds ) {
 
-        if( cloudIds.length === 0 ) { return }
+        if ( cloudIds.length === 0 ) { return }
         console.log( 'numberOfBuffers to decrease: ' + cloudIds.length )
 
         var self = this
 
-        console.log("Number of children (base): " + self._pointCloudGroup.children.length);
+        console.log( "Number of children (base): " + self._pointCloudGroup.children.length );
         cloudIds.forEach( function ( cloudId ) {
 
             var pointCloud3D = self._pointCloudGroup.getObjectByName( cloudId )
-            if( ! pointCloud3D ) { return }
+            if ( !pointCloud3D ) { return }
 
             // Get sampling delta to apply
-            var pointCloud = self._pointCloudsDataMap.get( cloudId )
-            var sampling = pointCloud.sampling
+            var pointCloud       = self._pointCloudsDataMap.get( cloudId )
+            var sampling         = pointCloud.sampling
             var previousSampling = pointCloud.previousSampling
 
             var positionBufferAttribute = pointCloud3D.geometry.getAttribute( 'position' )
-            var colorBufferAttribute = pointCloud3D.geometry.getAttribute( 'color' )
+            var colorBufferAttribute    = pointCloud3D.geometry.getAttribute( 'color' )
 
             // Apply delta sampling to 3d object geometry
             var numberOfPoints = positionBufferAttribute.count
-            if( numberOfPoints === 0 ) { return } // If already empty return
+            if ( numberOfPoints === 0 ) { return } // If already empty return
 
             var numberOfRestPoints = Math.round( ( numberOfPoints * sampling ) / previousSampling )
 
@@ -411,7 +412,7 @@ Object.assign( TPointsManager.prototype, {
         }
 
         const CUBE_ID_BYTES_LENGTH = 24
-        var cloudPointId                 = ''
+        var cloudPointId           = ''
         for ( var charIndex = 0 ; charIndex < CUBE_ID_BYTES_LENGTH ; ++charIndex ) {
             cloudPointId += String.fromCharCode( dataBuffer[ charIndex ] )
         }
@@ -427,7 +428,7 @@ Object.assign( TPointsManager.prototype, {
         var positions = new Float32Array( numberOfPoint * POINT_POSITION_BYTES_LENGTH )
         var colors    = new Float32Array( numberOfPoint * POINT_COLOR_BYTES_LENGTH )
 
-        var pointCloudData         = this._pointCloudsDataMap.get( cloudPointId )
+        var pointCloudData        = this._pointCloudsDataMap.get( cloudPointId )
         var pointCloudCoordinates = pointCloudData.coordinates
 
         var bufferIndex     = 0
@@ -450,7 +451,7 @@ Object.assign( TPointsManager.prototype, {
         }
 
         // If object already exist update it else create
-        var pointCloud    = this._pointCloudGroup.getObjectByName( cloudPointId )
+        var pointCloud = this._pointCloudGroup.getObjectByName( cloudPointId )
         if ( pointCloud ) {
 
             var positionBufferAttribute = pointCloud.geometry.getAttribute( 'position' )
@@ -464,13 +465,13 @@ Object.assign( TPointsManager.prototype, {
         } else {
 
             var positionBufferAttribute = new BufferAttribute( positions, 3 )
-            var colorBufferAttribute = new BufferAttribute( colors, 3 )
+            var colorBufferAttribute    = new BufferAttribute( colors, 3 )
 
             var geometry = new BufferGeometry()
             geometry.addAttribute( 'position', positionBufferAttribute )
             geometry.addAttribute( 'color', colorBufferAttribute )
 
-            var material        = new PointsMaterial( {
+            var material = new PointsMaterial( {
                 size:         0.005,
                 vertexColors: true
             } )

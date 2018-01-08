@@ -14,9 +14,11 @@
  */
 
 import { TDataBaseManager } from '../TDataBaseManager'
-import { Geometry } from '../../../node_modules/three/src/core/Geometry'
-import { BufferGeometry } from '../../../node_modules/three/src/core/BufferGeometry'
-import { BufferAttribute } from '../../../node_modules/three/src/core/BufferAttribute'
+import {
+    Geometry,
+    BufferAttribute,
+    BufferGeometry
+} from 'three'
 
 /**
  *
@@ -142,7 +144,7 @@ TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.pr
         geometry.computeVertexNormals()
 
         // TCache geometry for future use
-//        this._cache.add( jsonGeometry._id, geometry )
+        //        this._cache.add( jsonGeometry._id, geometry )
 
         return geometry
 
@@ -159,23 +161,22 @@ Object.defineProperties( TGeometriesManager.prototype, {
 
             if ( Array.isArray( jsonData ) ) {
 
-                let data       = undefined
-                let geometry   = undefined
+                let data     = undefined
+                let geometry = undefined
                 for ( let dataIndex = 0, numberOfDatas = jsonData.length ; dataIndex < numberOfDatas ; dataIndex++ ) {
 
                     data     = jsonData[ dataIndex ]
                     geometry = this.convertJsonToGeometry( data, onError )
 
-                    if ( geometry ) { geometries[data._id] = geometry }
+                    if ( geometry ) { geometries[ data._id ] = geometry }
 
                     onProgress( dataIndex / numberOfDatas )
 
                 }
 
-
             } else {
 
-                geometries[jsonData._id] = this.convertJsonToGeometry( jsonData, onError )
+                geometries[ jsonData._id ] = this.convertJsonToGeometry( jsonData, onError )
                 onProgress( 1.0 )
 
             }

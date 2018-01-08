@@ -35,11 +35,11 @@ function onProgress ( progressEvent ) {
 
 function TUniversalLoader () {
 
-//    this.stlLoader = new STLLoader()
-//    this.ascLoader = new ASCLoader()
-//    this.fbxLoader = new FBXLoader2()
-//    this.objLoader = new OBJLoader()
-//    this.mtlLoader = new MTLLoader()
+    //    this.stlLoader = new STLLoader()
+    //    this.ascLoader = new ASCLoader()
+    //    this.fbxLoader = new FBXLoader2()
+    //    this.objLoader = new OBJLoader()
+    //    this.mtlLoader = new MTLLoader()
 
     this.stlLoader = {}
     this.ascLoader = {}

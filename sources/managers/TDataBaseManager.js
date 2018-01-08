@@ -23,7 +23,6 @@ import {
 import { TOrchestrator } from '../core/TOrchestrator'
 import { TCache } from '../core/TCache'
 
-
 function TDataBaseManager () {
 
     let _basePath     = '/'
@@ -425,34 +424,36 @@ Object.defineProperties( TDataBaseManager.prototype, {
     _readSome: {
         value: function _readSome ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-            const self = this
+            const self  = this
             let results = []
 
             let cachedResult = undefined
-            let id = undefined
+            let id           = undefined
             for ( let idIndex = 0, numberOfIds = ids.length ; idIndex < numberOfIds ; idIndex++ ) {
                 id = ids[ idIndex ]
 
                 cachedResult = this._cache.get( id )
-                if ( !cachedResult ) break
+                if ( !cachedResult ) {
+                    break
+                }
 
-                results.push(cachedResult)
+                results.push( cachedResult )
             }
 
-            if(results.length === ids.length ) {
+            if ( results.length === ids.length ) {
 
-                onLoadCallback(results)
+                onLoadCallback( results )
 
             } else {
 
-                function cacheOnLoadResult( results ) {
+                function cacheOnLoadResult ( results ) {
 
                     let result = undefined
                     for ( let resultIndex = 0, numberOfResults = results.length ; resultIndex < numberOfResults ; resultIndex++ ) {
                         result = results[ resultIndex ]
-                        self._cache.add(ids[resultIndex], result)
+                        self._cache.add( ids[ resultIndex ], result )
                     }
-                    onLoadCallback(results)
+                    onLoadCallback( results )
 
                 }
 
@@ -467,7 +468,6 @@ Object.defineProperties( TDataBaseManager.prototype, {
                 )
 
             }
-
 
         }
     },
@@ -486,7 +486,7 @@ Object.defineProperties( TDataBaseManager.prototype, {
     _readOne: {
         value: function _readOne ( id, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-            const self = this
+            const self        = this
             const cachedValue = this._cache.get( id )
 
             if ( cachedValue ) {
@@ -495,10 +495,10 @@ Object.defineProperties( TDataBaseManager.prototype, {
 
             } else {
 
-                function cacheOnLoadResult( result ) {
+                function cacheOnLoadResult ( result ) {
 
-                    self._cache.add(id, result[0])
-                    onLoadCallback(result)
+                    self._cache.add( id, result[ 0 ] )
+                    onLoadCallback( result )
 
                 }
 
@@ -686,7 +686,7 @@ Object.assign( TDataBaseManager.prototype, {
             if ( ids.length === 0 ) { onError( 'TDataBaseManager.read: Array of data cannot be empty !' ) }
 
             if ( ids.length === 1 ) {
-                this._readOne( ids[0], onLoadCallback, onProgressCallback, onError )
+                this._readOne( ids[ 0 ], onLoadCallback, onProgressCallback, onError )
             } else {
 
                 // Todo: allow to set bunch size

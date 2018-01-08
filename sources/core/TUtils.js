@@ -10,7 +10,7 @@
 
 import { isObject } from './TValidator'
 
-function extend( target, source ) {
+function extend ( target, source ) {
 
     let output = Object.assign( {}, target )
 

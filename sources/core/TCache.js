@@ -53,7 +53,7 @@ class TCache {
      *
      * @param key
      */
-    remove( key ) {
+    remove ( key ) {
 
         delete this._cache[ key ]
 
@@ -62,7 +62,7 @@ class TCache {
     /**
      * Clear the cache and reset it to an empty object.
      */
-    clear() {
+    clear () {
 
         this._cache = {}
 

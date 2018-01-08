@@ -4,23 +4,21 @@
  */
 
 import { TOrchestrator } from '../../core/TOrchestrator'
-
-import { Geometry } from '../../../node_modules/three/src/core/Geometry'
-import { LineSegments } from '../../../node_modules/three/src/objects/LineSegments'
-import { LineBasicMaterial } from '../../../node_modules/three/src/materials/LineBasicMaterial'
-import { WireframeGeometry } from '../../../node_modules/three/src/geometries/WireframeGeometry'
-import { BufferGeometry } from '../../../node_modules/three/src/core/BufferGeometry'
-import { BufferAttribute } from '../../../node_modules/three/src/core/BufferAttribute'
-import { MeshPhongMaterial } from '../../../node_modules/three/src/materials/MeshPhongMaterial'
-import { Mesh } from '../../../node_modules/three/src/objects/Mesh'
-import { Group } from '../../../node_modules/three/src/objects/Group'
-import { Object3D } from '../../../node_modules/three/src/core/Object3D'
-import { Vector3 } from '../../../node_modules/three/src/math/Vector3'
-import { Color } from '../../../node_modules/three/src/math/Color'
-import { Face3 } from '../../../node_modules/three/src/core/Face3'
-import { ObjectLoader } from '../../../node_modules/three/src/loaders/ObjectLoader'
-import { TextureLoader } from '../../../node_modules/three/src/loaders/TextureLoader'
-
+import {
+    Geometry,
+    LineBasicMaterial,
+    BufferGeometry,
+    BufferAttribute,
+    MeshPhongMaterial,
+    Mesh,
+    Group,
+    Object3D,
+    Vector3,
+    Color,
+    Face3,
+    ObjectLoader,
+    TextureLoader
+} from 'three'
 import { OrbitControls } from '../../../sources/third_party/three_extended/OrbitControls'
 
 /**
@@ -640,14 +638,14 @@ Object.assign( MeshManager.prototype, {
 
             self.retrieveChildrenFor( self._viewport.scene, childrenIds )
 
-//            const children  = scene.children
-//            let childrenIds = []
-//            if ( children ) {
-//                Array.prototype.push.apply( childrenIds, children )
-//            } else {
-//                console.error( `No children in ${scene.name}` )
-//            }
-//            self.retrieveChildrenFor( self._viewport.scene, childrenIds )
+            //            const children  = scene.children
+            //            let childrenIds = []
+            //            if ( children ) {
+            //                Array.prototype.push.apply( childrenIds, children )
+            //            } else {
+            //                console.error( `No children in ${scene.name}` )
+            //            }
+            //            self.retrieveChildrenFor( self._viewport.scene, childrenIds )
 
             ///////////////////////////////
 
@@ -683,7 +681,7 @@ Object.assign( MeshManager.prototype, {
             if ( idBunch.length < bunchSize ) { continue }
 
             self.requestServer( 'POST', '/objects', JSON.stringify( idBunch ), onLoadChildren, onProgressChildren, onErrorChildren )
-//            self.requestServer( 'POST', '/objects', JSON.stringify( { ids: idBunch } ), onLoadChildren, onProgressChildren, onErrorChildren )
+            //            self.requestServer( 'POST', '/objects', JSON.stringify( { ids: idBunch } ), onLoadChildren, onProgressChildren, onErrorChildren )
 
             idBunch = []
         }
@@ -741,12 +739,12 @@ Object.assign( MeshManager.prototype, {
 
                 if ( child.type === 'Mesh' ) {
 
-//                    var wireframe = new LineSegments(
-//                        new WireframeGeometry( child.geometry ),
-//                        new LineBasicMaterial( { color: 0x000000 } )
-//                    )
-//
-//                    child.add( wireframe )
+                    //                    var wireframe = new LineSegments(
+                    //                        new WireframeGeometry( child.geometry ),
+                    //                        new LineBasicMaterial( { color: 0x000000 } )
+                    //                    )
+                    //
+                    //                    child.add( wireframe )
 
                     self._viewport.addRaycastables( [ child ] )
 
@@ -967,7 +965,7 @@ Object.assign( MeshManager.prototype, {
 
                 if ( Array.isArray( jsonData ) ) {
 
-                    geometry = self.convertJsonToGeometry( jsonData[0], onErrorGeometry )
+                    geometry = self.convertJsonToGeometry( jsonData[ 0 ], onErrorGeometry )
                     onProgressGeometry( 1.0 )
 
                     if ( geometry ) {callback( geometry )}
@@ -1197,7 +1195,6 @@ Object.assign( MeshManager.prototype, {
 
                 var material = self.convertJsonToMaterial( jsonMat )
 
-
                 // Cache material
                 self._materialsCache[ jsonMat._id ] = material
 
@@ -1209,8 +1206,6 @@ Object.assign( MeshManager.prototype, {
                 numberOfLoadedMaterials++
 
             }
-
-
 
             if ( numberOfLoadedMaterials === materialIds.length ) {
 

@@ -456,7 +456,7 @@ function TApplication ( container, parameters, onReady ) {
                 self.splitToolToggle = !self.splitToolToggle;
 
                 self.spliterSliderControl.sliderElem.style.display = ( self.splitToolToggle ) ? 'block' : 'none';
-                self.globalPlane.visible                                 = self.splitToolToggle;
+                self.globalPlane.visible                           = self.splitToolToggle;
 
                 self.webglViewport.renderer.clippingPlanes = ( self.splitToolToggle ) ? [ self.globalPlane ] : [];
                 //OR
@@ -493,7 +493,7 @@ function TApplication ( container, parameters, onReady ) {
             show:     false
         } )
 
-        var validateImportFilesModal = document.getElementById( 'validateImportFilesModal' )
+        var validateImportFilesModal     = document.getElementById( 'validateImportFilesModal' )
         validateImportFilesModal.onclick = function () {
 
             var importInput   = document.getElementById( "importInput" )

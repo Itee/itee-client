@@ -71,7 +71,8 @@ export const ResponseType = Object.freeze( {
  * @property {number} MultiStatus=207 - WebDAV: Multiple Response.
  * @property {number} AlreadyReported=208 - WebDAV: The document was previously sent to this collection.
  * @property {number} ContentDifferent=210 - WebDAV: The copy of the client-side resource differs from that of the server (content or properties).
- * @property {number} IMUsed=226 - The server has completed the request for the resource, and the response is a representation of the result of one or more instance manipulations applied to the current instance.
+ * @property {number} IMUsed=226 - The server has completed the request for the resource, and the response is a representation of the result of one or more instance manipulations applied to the
+ *     current instance.
  * @property {number} MultipleChoices=300 - The requested URI refers to multiple resources.
  * @property {number} MovedPermanently=301 - Document moved permanently.
  * @property {number} Found=302 - Document moved temporarily.
@@ -85,7 +86,8 @@ export const ResponseType = Object.freeze( {
  * @property {number} BadRequest=400 - The syntax of the query is wrong.
  * @property {number} Unauthorized=401 - Authentication is required to access the resource.
  * @property {number} PaymentRequired=402 - Payment required to access the resource.
- * @property {number} Forbidden=403 - The server understood the request, but refuses to execute it. Unlike error 401, authenticating will not make any difference. On servers where authentication is required, this usually means that authentication has been accepted but access rights do not allow the client to access the resource.
+ * @property {number} Forbidden=403 - The server understood the request, but refuses to execute it. Unlike error 401, authenticating will not make any difference. On servers where authentication is
+ *     required, this usually means that authentication has been accepted but access rights do not allow the client to access the resource.
  * @property {number} NotFound=404 - Resource not found.
  * @property {number} MethodNotAllowed=405 - Unauthorized request method.
  * @property {number} NotAcceptable=406 - The requested resource is not available in a format that would respect the "Accept" headers of the request.
@@ -105,7 +107,8 @@ export const ResponseType = Object.freeze( {
  * @property {number} UnprocessableEntity=422 - WebDAV: The entity provided with the request is incomprehensible or incomplete.
  * @property {number} Locked=423 - WebDAV: The operation can not take place because the resource is locked.
  * @property {number} MethodFailure=424 - WebDAV: A method of the transaction failed.
- * @property {number} UnorderedCollection=425 - WebDAV RFC 3648. This code is defined in the WebDAV Advanced Collections Protocol draft , but is absent from the Web Distributed Authoring and Versioning (WebDAV) Ordered Collections Protocol.
+ * @property {number} UnorderedCollection=425 - WebDAV RFC 3648. This code is defined in the WebDAV Advanced Collections Protocol draft , but is absent from the Web Distributed Authoring and
+ *     Versioning (WebDAV) Ordered Collections Protocol.
  * @property {number} UpgradeRequired=426 - RFC 2817 The client should change protocol, for example to TLS / 1.0 .
  * @property {number} PreconditionRequired=428 - RFC 6585 The request must be conditional.
  * @property {number} TooManyRequests=429 - RFC 6585 The client has issued too many requests within a given time.
@@ -148,92 +151,92 @@ export const ResponseType = Object.freeze( {
 export const HttpStatusCode = Object.freeze( {
 
     // 100
-    Continue: 100,
+    Continue:           100,
     SwitchingProtocols: 101,
-    Processing: 102,
+    Processing:         102,
 
     // 200
-    Ok: 200,
-    Created: 201,
-    Accepted: 202,
+    Ok:                          200,
+    Created:                     201,
+    Accepted:                    202,
     NonAuthoritativeInformation: 203,
-    NoContent: 204,
-    ResetContent: 205,
-    PartialContent: 206,
-    MultiStatus: 207,
-    AlreadyReported: 208,
-    ContentDifferent: 210,
-    IMUsed: 226,
+    NoContent:                   204,
+    ResetContent:                205,
+    PartialContent:              206,
+    MultiStatus:                 207,
+    AlreadyReported:             208,
+    ContentDifferent:            210,
+    IMUsed:                      226,
 
     // 300
-    MultipleChoices: 300,
-    MovedPermanently: 301,
-    Found: 302,
-    SeeOther: 303,
-    NotModified: 304,
-    UseProxy: 305,
-    Unused: 306,
+    MultipleChoices:   300,
+    MovedPermanently:  301,
+    Found:             302,
+    SeeOther:          303,
+    NotModified:       304,
+    UseProxy:          305,
+    Unused:            306,
     TemporaryRedirect: 307,
     PermanentRedirect: 308,
-    TooManyRedirects: 310,
+    TooManyRedirects:  310,
 
     // 400
-    BadRequest: 400,
-    Unauthorized: 401,
-    PaymentRequired: 402,
-    Forbidden: 403,
-    NotFound: 404,
-    MethodNotAllowed: 405,
-    NotAcceptable: 406,
-    ProxyAuthenticationRequired: 407,
-    RequestTimeOut: 408,
-    Conflict: 409,
-    Gone: 410,
-    LengthRequired: 411,
-    PreconditionFailed: 412,
-    RequestEntityTooLarge: 413,
-    RequestRangeUnsatisfiable: 416,
-    ExpectationFailed: 417,
-    ImATeapot: 418,
-    BadMapping: 421,
-    UnprocessableEntity: 422,
-    Locked: 423,
-    MethodFailure: 424,
-    UnorderedCollection: 425,
-    UpgradeRequired: 426,
-    PreconditionRequired: 428,
-    TooManyRequests: 429,
-    RequestHeaderFieldsTooLarge: 431,
-    NoResponse: 444,
-    RetryWith: 449,
+    BadRequest:                       400,
+    Unauthorized:                     401,
+    PaymentRequired:                  402,
+    Forbidden:                        403,
+    NotFound:                         404,
+    MethodNotAllowed:                 405,
+    NotAcceptable:                    406,
+    ProxyAuthenticationRequired:      407,
+    RequestTimeOut:                   408,
+    Conflict:                         409,
+    Gone:                             410,
+    LengthRequired:                   411,
+    PreconditionFailed:               412,
+    RequestEntityTooLarge:            413,
+    RequestRangeUnsatisfiable:        416,
+    ExpectationFailed:                417,
+    ImATeapot:                        418,
+    BadMapping:                       421,
+    UnprocessableEntity:              422,
+    Locked:                           423,
+    MethodFailure:                    424,
+    UnorderedCollection:              425,
+    UpgradeRequired:                  426,
+    PreconditionRequired:             428,
+    TooManyRequests:                  429,
+    RequestHeaderFieldsTooLarge:      431,
+    NoResponse:                       444,
+    RetryWith:                        449,
     BlockedByWindowsParentalControls: 450,
-    UnavailableForLegalReasons: 451,
-    UnrecoverableError: 456,
-    SSLCertificateError: 495,
-    SSLCertificateRequired: 496,
-    HTTPRequestSentToHTTPSPort: 497,
-    ClientClosedRequest: 499,
+    UnavailableForLegalReasons:       451,
+    UnrecoverableError:               456,
+    SSLCertificateError:              495,
+    SSLCertificateRequired:           496,
+    HTTPRequestSentToHTTPSPort:       497,
+    ClientClosedRequest:              499,
 
     // 500
-    InternalServerError: 500,
-    NotImplemented: 501,
-    BadGateway: 502,
-    ServiceUnavailable: 503,
-    GatewayTimeOut: 504,
-    HTTPVersionNotSupported: 505,
-    VariantAlsoNegotiates: 506,
-    InsufficientStorage: 507,
-    LoopDetected: 508,
-    BandwidthLimitExceeded: 509,
-    NotExtended: 510,
+    InternalServerError:           500,
+    NotImplemented:                501,
+    BadGateway:                    502,
+    ServiceUnavailable:            503,
+    GatewayTimeOut:                504,
+    HTTPVersionNotSupported:       505,
+    VariantAlsoNegotiates:         506,
+    InsufficientStorage:           507,
+    LoopDetected:                  508,
+    BandwidthLimitExceeded:        509,
+    NotExtended:                   510,
     NetworkAuthenticationRequired: 511,
-    UnknownError: 520,
-    WebServerIsDown: 521,
-    ConnectionTimedOut: 522,
-    OriginIsUnreachable: 523,
-    ATimeoutOccured: 524,
-    SSLHandshakeFailed: 525,
-    InvalidSSLCertificate: 526,
-    RailgunError: 527
+    UnknownError:                  520,
+    WebServerIsDown:               521,
+    ConnectionTimedOut:            522,
+    OriginIsUnreachable:           523,
+    ATimeoutOccured:               524,
+    SSLHandshakeFailed:            525,
+    InvalidSSLCertificate:         526,
+    RailgunError:                  527
 
 } )
