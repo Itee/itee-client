@@ -19,7 +19,7 @@
 /* eslint-env node */
 
 const path        = require( 'path' )
-const buble       = require( 'rollup-plugin-buble' )
+const babel       = require( 'rollup-plugin-babel' )
 const nodeResolve = require( 'rollup-plugin-node-resolve' )
 const commonJs    = require( 'rollup-plugin-commonjs' )
 const replace     = require( 'rollup-plugin-replace' )
@@ -75,10 +75,10 @@ function CreateRollupConfiguration ( format, onProduction, wantSourceMap ) {
             external: [],
             plugins:  [
                 glsl(),
-                buble(),
                 commonJs( {
                     include: 'node_modules/**'
                 } ),
+                babel(require( './babel.conf' )),
                 replace( {
                     'process.env.NODE_ENV': JSON.stringify( (_onProduction) ? 'production' : 'development' )
                 } ),
