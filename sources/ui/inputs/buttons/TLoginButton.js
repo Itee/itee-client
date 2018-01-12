@@ -10,7 +10,6 @@
 
 import React from 'react'
 
-import { TUserMenu } from '../data_displays/TUserMenu'
 import { TDropDownMenu } from '../navigations/TDropDownMenu'
 
 class TLogingButton extends React.Component {
