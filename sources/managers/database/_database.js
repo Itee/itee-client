@@ -6,7 +6,7 @@
  *
  */
 
-export { MeshManager } from './MeshManager' // Todo: Remove when merged in TObjectsManager
+//export { MeshManager } from './MeshManager' // Todo: Remove when merged in TObjectsManager
 
 export { TGeometriesManager } from './TGeometriesManager'
 export { TMaterialsManager } from './TMaterialsManager'
