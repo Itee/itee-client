@@ -102,17 +102,17 @@ function MeshManager ( viewport ) {
 
 Object.assign( MeshManager.prototype, {
 
-    setResolutionMap: function setResolutionMap ( resolutionMap ) {
+    setResolutionMap ( resolutionMap ) {
         this._resolutionMap = resolutionMap
     },
 
-    setDefaultResoltion: function setDefaultResoltion ( resolution ) {
+    setDefaultResoltion ( resolution ) {
 
         this._defaultResolution = resolution
 
     },
 
-    getMeshWithId: function getMeshWithId ( meshId, callback ) {
+    getMeshWithId ( meshId, callback ) {
 
         var self = this
 
@@ -175,7 +175,7 @@ Object.assign( MeshManager.prototype, {
 
     },
 
-    createMeshFromBuffer: function createMeshFromBuffer ( arraybuffer ) {
+    createMeshFromBuffer ( arraybuffer ) {
 
         if ( !arraybuffer ) {
             console.error( 'Unable to create mesh from empty, null or undefined buffer !' );
@@ -321,7 +321,7 @@ Object.assign( MeshManager.prototype, {
 
     },
 
-    createMeshFromJSON: function createMeshFromJSON ( jsonObject ) {
+    createMeshFromJSON ( jsonObject ) {
 
         var meshData = this._meshResolutionMap.get( jsonObject._id )
 
@@ -376,7 +376,7 @@ Object.assign( MeshManager.prototype, {
 
     },
 
-    getMeshesFromIds: function getMeshesFromIds ( meshesIds ) {
+    getMeshesFromIds ( meshesIds ) {
 
         var self = this
 
@@ -476,7 +476,7 @@ Object.assign( MeshManager.prototype, {
 
     },
 
-    getMeshes: function getMeshes ( onSuccess ) {
+    getMeshes ( onSuccess ) {
 
         var self = this
 
@@ -524,7 +524,7 @@ Object.assign( MeshManager.prototype, {
 
     },
 
-    statusOk: function statusOk ( status ) {
+    statusOk ( status ) {
 
         let statusOk = false
 
@@ -547,7 +547,7 @@ Object.assign( MeshManager.prototype, {
 
     },
 
-    getScenes: function getScenes ( onSuccess ) {
+    getScenes ( onSuccess ) {
 
         const self = this
 
@@ -603,7 +603,7 @@ Object.assign( MeshManager.prototype, {
 
     },
 
-    getSceneWithId: function getScenes ( sceneId, onSuccess ) {
+    getSceneWithId ( sceneId, onSuccess ) {
 
         const self = this
 
@@ -668,7 +668,7 @@ Object.assign( MeshManager.prototype, {
 
     },
 
-    retrieveChildrenFor: function retrieveChildrenFor ( object, childrenIds ) {
+    retrieveChildrenFor ( object, childrenIds ) {
 
         const self      = this
         const bunchSize = 25
@@ -758,7 +758,7 @@ Object.assign( MeshManager.prototype, {
 
     },
 
-    retrieveChildrenOneByOneFor: function retrieveChildrenFor ( object, childrenIds ) {
+    retrieveChildrenOneByOneFor ( object, childrenIds ) {
 
         const self = this
 
@@ -819,7 +819,7 @@ Object.assign( MeshManager.prototype, {
 
     },
 
-    convertJsonToObject3D: function convertJsonToObject3D ( jsonData, callback ) {
+    convertJsonToObject3D ( jsonData, callback ) {
 
         // Todo factory
         const self       = this
@@ -936,7 +936,7 @@ Object.assign( MeshManager.prototype, {
 
     },
 
-    retrieveGeometryFor: function retrieveGeometryFor ( mesh, geometryId, callback ) {
+    retrieveGeometryFor ( mesh, geometryId, callback ) {
 
         const self = this
 
@@ -998,7 +998,7 @@ Object.assign( MeshManager.prototype, {
 
     },
 
-    convertJsonToGeometry: function convertJsonToGeometry ( jsonGeometry ) {
+    convertJsonToGeometry ( jsonGeometry ) {
 
         let geometry = null
 
@@ -1103,7 +1103,7 @@ Object.assign( MeshManager.prototype, {
 
     },
 
-    retrieveMaterialFor: function retrieveMaterialFor ( mesh, materialIds, callback ) {
+    retrieveMaterialFor ( mesh, materialIds, callback ) {
 
         const self = this
 
@@ -1229,7 +1229,7 @@ Object.assign( MeshManager.prototype, {
 
     },
 
-    convertJsonToMaterial: function convertJsonToMaterial ( jsonMaterials ) {
+    convertJsonToMaterial ( jsonMaterials ) {
 
         if ( Array.isArray( jsonMaterials ) ) {
 
@@ -1436,7 +1436,7 @@ Object.assign( MeshManager.prototype, {
 
     },
 
-    requestServer: function requestServer ( method, url, data, onLoad, onProgress, onError, responseType ) {
+    requestServer ( method, url, data, onLoad, onProgress, onError, responseType ) {
 
         this._orchestrator.queue( {
             method,
@@ -1459,7 +1459,7 @@ Object.assign( MeshManager.prototype, {
 
     },
 
-    createResolutionMap: function createResolutionMap ( meshes ) {
+    createResolutionMap ( meshes ) {
 
         var self = this
 
@@ -1488,7 +1488,7 @@ Object.assign( MeshManager.prototype, {
 
     },
 
-    updateMeshes: function updateMeshes () {
+    updateMeshes () {
 
         console.log( 'Update meshes call !' );
 
@@ -1551,7 +1551,7 @@ Object.assign( MeshManager.prototype, {
 
     },
 
-    getMeshResolution: function getMeshResolution ( meshCoordinates, cameraWorldPosition ) {
+    getMeshResolution ( meshCoordinates, cameraWorldPosition ) {
 
         if ( !meshCoordinates ) { return '0' }
 
@@ -1577,7 +1577,7 @@ Object.assign( MeshManager.prototype, {
 
     },
 
-    updateMesh: function updateMesh ( meshData ) {
+    updateMesh ( meshData ) {
 
         if ( !meshData ) { return }
 
