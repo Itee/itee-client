@@ -13,8 +13,6 @@
 
 import { extend } from './TUtils'
 import { TUniversalLoader } from '../loaders/TUniversalLoader'
-import { TPointsManager } from '../managers/database/TPointsManager'
-import { MeshManager } from '../managers/database/MeshManager'
 import { dockspawn } from '../third_party/dock-spawn'
 import { TViewport } from './TViewport'
 //import { SplitModifier } from '../../build/tmp/SplitModifier'
@@ -57,10 +55,9 @@ import { WireframeGeometry } from '../../node_modules/three/src/geometries/Wiref
 import { TDataBaseManager as CompaniesManager } from '../managers/TDataBaseManager'
 import { TDataBaseManager as SitesManager } from '../managers/TDataBaseManager'
 import { TDataBaseManager as BuildingsManager } from '../managers/TDataBaseManager'
-import { TObjectsManager } from '../managers/database/TObjectsManager'
-import { TGeometriesManager } from '../managers/database/TGeometriesManager'
-import { TMaterialsManager } from '../managers/database/TMaterialsManager'
-import { TScenesManager } from '../managers/database/TScenesManager'
+import { TScenesManager, TObjectsManager, TGeometriesManager, TMaterialsManager, TPointsManager } from '../managers/databases/_databases'
+import { MeshManager } from '../managers/databases/MeshManager'
+
 //TMP
 
 var imageLoader   = new ImageLoader()
