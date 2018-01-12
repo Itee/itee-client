@@ -10,7 +10,7 @@
 
 import React from 'react'
 
-import { TDropDownMenu } from '../navigations/TDropDownMenu'
+import { TDropDownMenu } from '../../displays/navigations/TDropDownMenu'
 
 class TLogingButton extends React.Component {
 
