@@ -164,12 +164,13 @@ gulp.task( 'lint', () => {
  * @method npm run doc
  * @description Will generate this documentation
  */
-gulp.task( 'doc', () => {
+gulp.task( 'doc', ( done ) => {
 
     const config = require( './configs/jsdoc.conf' )
+    const files = [ './configs/*.js', './sources/**/*.js', './tests/**/*.js' ]
 
-    return gulp.src( [ '' ], { read: false } )
-               .pipe( jsdoc( config ) )
+    gulp.src( files, { read: false } )
+               .pipe( jsdoc( config, done ) )
 
 } )
 
