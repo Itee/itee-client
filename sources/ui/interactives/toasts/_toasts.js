@@ -9,7 +9,6 @@
 export { TErrorToast } from './TErrorToast'
 export { TInfoToast } from './TInfoToast'
 export { TMessageToast } from './TMessageToast'
-export { TMessageToast } from './TMessageToast'
 export { TProgressToast } from './TProgressToast'
 export { TToast } from './TToast'
 export { TWarningToast } from './TWarningToast'
