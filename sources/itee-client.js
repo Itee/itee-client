@@ -15,9 +15,9 @@ export { OrbitControls } from '../sources/third_party/three_extended/OrbitContro
 export { StereoEffect } from '../sources/third_party/three_extended/StereoEffect'
 
 // Export Itee stuff
-export * from './core/_Cores'
-export * from './factories/_Factories'
+export * from './cores/_cores'
+export * from './factories/_factories'
 export * from './loaders/_loaders'
 export * from './managers/_managers'
 export * from './objects3d/_objects3d'
-export * from './ui/_ui'
+export * from './uis/_uis'
