@@ -9,7 +9,7 @@
 
 export * from './TConstants'
 export { extend } from './TUtils'
-export * as TValidator from './TValidator'
+export { isObject } from './TValidator'
 
 export { TApplication } from './TApplication'
 export { TCache } from './TCache'
