@@ -2,58 +2,85 @@
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  *
- * @file Todo
+ * @class TAppBar
+ * @classdesc The status bar is design to be on bottom of the page, and should contain some text display and/or data about the application status.
  *
- * @example Todo
+ * @example
+ *
+ * <TStatusBar>
+ *     application ready
+ * </TStatusBar>
  *
  */
 
 import React from 'react'
 
-let _instanceCounter = 0
-
 class TStatusBar extends React.Component {
-
-    constructor ( props ) {
-
-        super( props )
-        _instanceCounter++
-
-    }
-
-    /**
-     * React lifecycle
-     */
-    componentWillMount () {}
-
-    componentDidMount () {}
-
-    componentWillUnmount () {}
-
-    componentWillReceiveProps ( nextProps ) {}
-
-    shouldComponentUpdate ( nextProps, nextState ) {}
-
-    componentWillUpdate ( nextProps, nextState ) {}
-
-    componentDidUpdate ( prevProps, prevState ) {}
-
-    static componentDidCatch ( error, info ) {
-
-        console.error( error )
-
-    }
 
     render () {
 
-        const { id, className } = this.props
+        const { id, state, position, children } = this.props
 
-        const _id = id || `tStatusBar_${_instanceCounter}`
-        const _style = {}
-        const _class = ( className ) ? `tStatusBar ${className}` : 'tStatusBar'
+        const _id = id || 'tStatusBar'
+
+        let _style = {
+            height:          '40px',
+            display:         'flex',
+            alignItems:      'center'
+        }
+
+        switch ( state ) {
+
+            case 'fixed':
+                _style[ 'position' ] = 'fixed'
+                break
+
+            case 'toggle':
+
+                break
+
+            case 'float':
+                _style[ 'position' ] = 'absolute'
+                break
+
+            default:
+                throw new RangeError( `Invalid state parameter: ${state}`, 'TStatusBar' )
+                break
+
+        }
+
+        switch ( position ) {
+
+            case 'top':
+                _style[ 'top' ]   = '0px'
+                _style[ 'width' ] = '100%'
+                break
+
+            case 'right':
+                _style[ 'right' ]  = '0px'
+                _style[ 'height' ] = '100%'
+                break
+
+            case 'bottom':
+                _style[ 'bottom' ] = '0px'
+                _style[ 'width' ]  = '100%'
+                break
+
+            case 'left':
+                _style[ 'left' ]   = '0px'
+                _style[ 'height' ] = '100%'
+                break
+
+            default:
+                throw new RangeError( `Invalid position parameter: ${position}`, 'TStatusBar' )
+                break
+
+        }
 
         return (
-            <t-status-bar ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-status-bar>
+            <t-status-bar id={_id} style={_style} className={'tStatusBar'}>
+                {children}
+            </t-status-bar>
         )
 
     }
