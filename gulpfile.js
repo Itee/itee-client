@@ -326,7 +326,7 @@ gulp.task( 'build', [ '_extendThree' ], ( done ) => {
             sourceMap:    false
         }
 
-        const argv = processArgv.slice( 4 ) // Ignore nodejs, script paths and gulp params
+        const argv = processArgv.slice( 3 ) // Ignore nodejs, script paths and gulp params
         argv.forEach( argument => {
 
             if ( argument.indexOf( '-f' ) > -1 || argument.indexOf( '--format' ) > -1 ) {
