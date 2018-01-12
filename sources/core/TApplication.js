@@ -3484,6 +3484,9 @@ Object.assign( TApplication.prototype, {
 
     },
 
+    /**
+     * @memberOf TApplication.prototype
+     */
     updateMapViewerDisplay () {
 
         if ( !this.geomapViewer && !this.rlensPanel ) {
