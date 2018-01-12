@@ -19,9 +19,9 @@ import {
     HttpVerb,
     ResponseType,
     HttpStatusCode
-} from '../core/TConstants'
-import { TOrchestrator } from '../core/TOrchestrator'
-import { TCache } from '../core/TCache'
+} from '../cores/TConstants'
+import { TOrchestrator } from '../cores/TOrchestrator'
+import { TCache } from '../cores/TCache'
 
 function TDataBaseManager () {
 
