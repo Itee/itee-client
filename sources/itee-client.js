@@ -8,7 +8,6 @@
 
 // Export Three stuff
 export * from 'three'
-
 // Export extended Three stuff
 export { AnaglyphEffect } from '../sources/third_party/three_extended/AnaglyphEffect'
 export { Detector as WebGLDetector } from '../sources/third_party/three_extended/Detector'
@@ -16,24 +15,9 @@ export { OrbitControls } from '../sources/third_party/three_extended/OrbitContro
 export { StereoEffect } from '../sources/third_party/three_extended/StereoEffect'
 
 // Export Itee stuff
-export {
-    HttpStatusCode,
-    HttpVerb,
-    ResponseType
-} from './core/TConstants'
-export { TApplication } from './core/TApplication'
-export { TCache } from './core/TCache'
-export { TOrchestrator } from './core/TOrchestrator'
-export { TViewport } from './core/TViewport'
-export { TFactory } from './factories/TFactory'
-export { TUniversalLoader } from './loaders/TUniversalLoader'
-export { TOrbitControlsHelper } from './objects3d/TOrbitControlsHelper'
-export { TErrorManager } from './managers/TErrorManager'
-export { TProgressManager } from './managers/TProgressManager'
-export { TDataBaseManager } from './managers/TDataBaseManager'
-export { TScenesManager } from './managers/database/TScenesManager'
-export { TObjectsManager } from './managers/database/TObjectsManager'
-export { TGeometriesManager } from './managers/database/TGeometriesManager'
-export { TMaterialsManager } from './managers/database/TMaterialsManager'
-export { TPointsManager } from './managers/database/TPointsManager'
-
+export * from './core/_Cores'
+export * from './factories/_Factories'
+export * from './loaders/_loaders'
+export * from './managers/_managers'
+export * from './objects3d/_objects3d'
+export * from './ui/_ui'
