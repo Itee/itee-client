@@ -21,13 +21,13 @@ function CreateJsdocConfiguration () {
             "dictionaries":     [ "jsdoc", "closure" ]
         },
         "source":       {
-            "include":        [ "README.md", "sources\\managers\\database\\" ],
-            "includePattern": ".+\\.js(doc|x)?$",
+            "include":        [ "README.md" ],
+            "includePattern": "\.js$",
             "excludePattern": "(node_modules|documentation|builds)"
         },
         "sourceType":   "module",
         "plugins":      [],
-        "recurseDepth": 3,
+        "recurseDepth": 5,
         "opts":         {
             "template":    "node_modules/docdash/",
             "encoding":    "utf8",
