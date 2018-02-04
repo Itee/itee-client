@@ -19,18 +19,31 @@ import { MeshPhongMaterial } from '../../node_modules/three/src/materials/MeshPh
 //
 //import { ASCLoader } from '../../javascript/webgl/ASCLoader'
 
-function onError ( error ) {
-    console.error( error )
+function getFilePath ( fileUrl ) {
+
+    return fileUrl.substring( 0, fileUrl.lastIndexOf( '/' ) )
+
 }
 
-function onProgress ( progressEvent ) {
+function getFileName ( fileUrl ) {
 
-    if ( progressEvent.lengthComputable ) {
+    return fileUrl.substring( fileUrl.lastIndexOf( '/' ) + 1 )
 
-        var percentComplete = progressEvent.loaded / progressEvent.total * 100
-        console.log( Math.round( percentComplete ) + '% downloaded' )
+}
 
-    }
+function getFileExtension ( fileName ) {
+
+    return fileName.slice( (fileName.lastIndexOf( "." ) - 1 >>> 0) + 2 );
+
+}
+
+function computeUrl ( fileUrl ) {
+
+    const filePath = getFilePath( fileUrl )
+    const isBlob   = ( fileUrl.indexOf( 'blob' ) > -1 )
+
+    return (isBlob) ? filePath : fileUrl
+
 }
 
 function TUniversalLoader () {
