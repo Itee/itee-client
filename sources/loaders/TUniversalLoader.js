@@ -46,6 +46,27 @@ function computeUrl ( fileUrl ) {
 
 }
 
+const FileFormat = Object.freeze( {
+    Asc:  'asc',
+    Dbf:  'dbf',
+    Fbx:  'fbx',
+    Mtl:  'mtl',
+    Json: 'json',
+    Obj:  'obj',
+    Shp:  'shp',
+    Stl:  'stl',
+    toString () {
+
+        const formats = Object.values( this )
+        let result    = ''
+        for ( let index = 0, numberOfFormats = formats.length ; index < numberOfFormats ; index++ ) {
+            result += formats[ index ]
+            result += ((index === numberOfFormats - 1) ? ', ' : '.')
+        }
+
+    }
+} )
+
 function TUniversalLoader () {
 
     //    this.stlLoader = new STLLoader()
