@@ -258,6 +258,238 @@ Object.assign( TUniversalLoader.prototype, {
 
         }
 
+    },
+
+    _loadAsc ( file, onLoad, onProgress, onError ) {
+
+        const loader = new ASCLoader( this.manager )
+        loader.load(
+            file.url,
+            onLoad,
+            onProgress,
+            onError
+        )
+
+    },
+
+    _loadDbf ( file, onLoad, onProgress, onError ) {
+
+        const loader = new DBFLoader( this.manager )
+        loader.load(
+            file.url,
+            onLoad,
+            onProgress,
+            onError
+        )
+
+    },
+
+    _loadFbx ( file, onLoad, onProgress, onError ) {
+
+        const loader = new FBXLoader2( this.manager )
+        loader.load(
+            file.url,
+            object => {
+
+                const position = file.position
+                if( position ) {
+                    object.position.set(position.x, position.y, position.z)
+                }
+
+                onLoad(object)
+
+            },
+            onProgress,
+            onError
+        )
+
+    },
+
+    _loadJson ( file, onLoad, onProgress, onError ) {
+
+        const loader = new ObjectLoader( this.manager )
+        loader.load(
+            file.url,
+            onLoad,
+            onProgress,
+            onError
+        )
+
+    },
+
+    _loadObj ( file, onLoad, onProgress, onError ) {
+
+        const loader = new OBJLoader( this.manager )
+        loader.load(
+            file.url,
+            onLoad,
+            onProgress,
+            onError
+        )
+
+    },
+
+    _loadShp ( file, onLoad, onProgress, onError ) {
+
+        const loader = new SHPLoader( this.manager )
+        loader.load(
+            file.url,
+            shapes => {
+
+                const group = new Group()
+
+                for ( let shapeIndex = 0, numberOfShapes = shapes.length ; shapeIndex < numberOfShapes ; shapeIndex++ ) {
+
+                    group.add(
+                        new Mesh(
+                            new ShapeBufferGeometry( shapes[ shapeIndex ] ),
+                            new MeshPhongMaterial( {
+                                color: Math.random() * 0xffffff,
+                                side:  DoubleSide
+                            } )
+                        )
+                    )
+
+                }
+
+                group.rotateX( -90 * DEG_TO_RAD )
+
+                onLoad( group )
+
+            },
+            onProgress,
+            onError
+        )
+
+    },
+
+    _loadStl ( file, onLoad, onProgress, onError ) {
+
+        const loader = new STLLoader( this.manager )
+        loader.load(
+            file.url,
+            geometry => {
+
+                const material = new MeshPhongMaterial()
+                const object = new Mesh( geometry, material )
+
+                const position = file.position
+                if( position ) {
+                    object.position.set(position.x, position.y, position.z)
+                }
+
+                onLoad( object )
+
+            },
+            onProgress,
+            onError
+        )
+
+    },
+
+    _loadObjMtlCouple ( objUrl, mtlUrl, onLoad, onProgress, onError ) {
+
+        const mtlLoader = new MTLLoader( this.manager )
+        const objLoader = new OBJLoader( this.manager )
+
+        const texturePath = params.texturePath || 'resources/models/evan/'
+        if ( texturePath ) {
+            mtlLoader.setTexturePath( texturePath )
+        }
+
+        mtlLoader.load(
+            mtlUrl,
+            materials => {
+
+                materials.preload()
+
+                for ( let materialIndex = 0, numberOfMaterials = materials.materials.length ; materialIndex < numberOfMaterials ; materialIndex++ ) {
+                    const material = materials.materials[ materialIndex ]
+                    material.opacity = 1.0
+                    materials.materials[ materialIndex ] = material
+                }
+
+                objLoader.setMaterials( materials )
+                objLoader.load(
+                    objUrl,
+                    onLoad,
+                    onProgress,
+                    onError
+                )
+
+            },
+            onProgress,
+            onError
+        )
+
+    },
+
+    _loadShpDbfCouple ( shpUrl, dbfUrl, onLoad, onProgress, onError ) {
+
+        let _shapes = undefined
+        let _dbf    = undefined
+
+        const shpLoader = new SHPLoader( this.manager )
+        shpLoader.load(
+            shpUrl,
+            shapes => {
+
+                _shapes = shapes
+                checkEnd()
+
+            },
+            onProgress,
+            onError
+        )
+
+        const dbfLoader = new DBFLoader( this.manager )
+        dbfLoader.load(
+            dbfUrl,
+            dbf => {
+
+                _dbf = dbf
+                checkEnd()
+
+            },
+            onProgress,
+            onError
+        )
+
+        function checkEnd () {
+
+            if ( !_shapes || !_dbf ) {
+                return
+            }
+
+            const group = new Group()
+            group.name  = "Locaux"
+
+            let mesh = undefined
+            for ( let shapeIndex = 0, numberOfShapes = _shapes.length ; shapeIndex < numberOfShapes ; shapeIndex++ ) {
+
+                mesh = new Mesh(
+                    new ShapeBufferGeometry( _shapes[ shapeIndex ] ),
+                    new MeshPhongMaterial( {
+                        color: Math.random() * 0xffffff,
+                        side:  DoubleSide
+                    } )
+                )
+
+                mesh.name = _dbf.datas[ shapeIndex ][ 'CODE' ]
+
+                group.add( mesh )
+
+            }
+
+            group.rotateX( -90 * DEG_TO_RAD )
+            group.rotateZ( 180 * DEG_TO_RAD )
+            group.position.z -= 159.05
+            group.position.x -= 0.79
+
+            onLoad( group )
+
+        }
+
     }
 
 } )
