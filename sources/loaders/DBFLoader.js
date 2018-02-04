@@ -9,9 +9,11 @@
  *
  */
 
-import { DefaultLoadingManager } from '../../../node_modules/three/src/loaders/LoadingManager'
 import { DefaultLogger } from '../Loggers/TLogger'
-import { FileLoader } from '../../../node_modules/three/src/loaders/FileLoader'
+import {
+    DefaultLoadingManager,
+    FileLoader
+} from 'threejs-full-es6'
 import {
     BinaryReader,
     Endianness
