@@ -12,10 +12,18 @@
  *
  */
 
-function isObject ( object ) {
-
-    return (object && typeof object === 'object' && !Array.isArray( object ))
-
+export function isString( value ) {
+    return (value && typeof(value) === 'string')
 }
 
-export { isObject }
+export function isArray( value ) {
+    return (value && Array.isArray(value))
+}
+
+export function isFunction( value ) {
+    return (value && typeof(value) === 'function')
+}
+
+export function isObject( value ) {
+    return (value && typeof value === 'object' && !Array.isArray( value ));
+}
