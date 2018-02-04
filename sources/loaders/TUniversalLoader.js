@@ -26,6 +26,7 @@ import {
     MeshPhongMaterial
 } from 'threejs-full-es6'
 
+// Local loader
 import { FBXLoader2 } from './FBXLoader2'
 import { ASCLoader } from './ASCLoader'
 import { SHPLoader } from './SHPLoader'
@@ -82,12 +83,10 @@ const FileFormat = Object.freeze( {
     }
 } )
 
-
-
 function TUniversalLoader ( manager = DefaultLoadingManager, logger = DefaultLogger ) {
 
     this.manager = manager
-    this.logger = logger
+    this.logger  = logger
 
 }
 
@@ -142,7 +141,7 @@ Object.assign( TUniversalLoader.prototype, {
         const fileName      = getFileName( fileUrl )
         const fileExtension = getFileExtension( fileName )
         const loadUrl       = computeUrl( fileUrl )
-        file.url = loadUrl
+        file.url            = loadUrl
 
         switch ( fileExtension ) {
 
@@ -184,19 +183,19 @@ Object.assign( TUniversalLoader.prototype, {
 
     loadAssociatedFiles ( files, onLoad, onProgress, onError ) {
 
-        const firstFile = files[0]
-        const firstUrl      = firstFile.url
-        const firstFileName = getFileName( firstUrl )
+        const firstFile          = files[ 0 ]
+        const firstUrl           = firstFile.url
+        const firstFileName      = getFileName( firstUrl )
         const firstFileExtension = getFileExtension( firstFileName )
-        const firstLoadUrl  = computeUrl( firstUrl )
-        firstFile.url = firstLoadUrl
+        const firstLoadUrl       = computeUrl( firstUrl )
+        firstFile.url            = firstLoadUrl
 
-        const secondFile = files[1]
-        const secondUrl      = secondFile.url
-        const secondFileName = getFileName( secondUrl )
+        const secondFile          = files[ 1 ]
+        const secondUrl           = secondFile.url
+        const secondFileName      = getFileName( secondUrl )
         const secondFileExtension = getFileExtension( secondFileName )
-        const secondLoadUrl  = computeUrl( secondUrl )
-        secondFile.url = secondLoadUrl
+        const secondLoadUrl       = computeUrl( secondUrl )
+        secondFile.url            = secondLoadUrl
 
         if ( firstFileExtension === FileFormat.Mtl && secondFileExtension === FileFormat.Obj ) {
 
@@ -255,11 +254,11 @@ Object.assign( TUniversalLoader.prototype, {
             object => {
 
                 const position = file.position
-                if( position ) {
-                    object.position.set(position.x, position.y, position.z)
+                if ( position ) {
+                    object.position.set( position.x, position.y, position.z )
                 }
 
-                onLoad(object)
+                onLoad( object )
 
             },
             onProgress,
@@ -334,11 +333,11 @@ Object.assign( TUniversalLoader.prototype, {
             geometry => {
 
                 const material = new MeshPhongMaterial()
-                const object = new Mesh( geometry, material )
+                const object   = new Mesh( geometry, material )
 
                 const position = file.position
-                if( position ) {
-                    object.position.set(position.x, position.y, position.z)
+                if ( position ) {
+                    object.position.set( position.x, position.y, position.z )
                 }
 
                 onLoad( object )
@@ -367,8 +366,8 @@ Object.assign( TUniversalLoader.prototype, {
                 materials.preload()
 
                 for ( let materialIndex = 0, numberOfMaterials = materials.materials.length ; materialIndex < numberOfMaterials ; materialIndex++ ) {
-                    const material = materials.materials[ materialIndex ]
-                    material.opacity = 1.0
+                    const material                       = materials.materials[ materialIndex ]
+                    material.opacity                     = 1.0
                     materials.materials[ materialIndex ] = material
                 }
 
