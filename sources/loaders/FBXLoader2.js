@@ -1,28 +1,30 @@
-import {Group} from '../../node_modules/three/src/objects/Group'
-import {Object3D} from '../../node_modules/three/src/core/Object3D'
-import {Geometry as THREEGeometry} from '../../node_modules/three/src/core/Geometry'
-import {BufferAttribute} from '../../node_modules/three/src/core/BufferAttribute'
-import {BufferGeometry} from '../../node_modules/three/src/core/BufferGeometry'
-import {SkinnedMesh} from '../../node_modules/three/src/objects/SkinnedMesh'
-import {Mesh} from '../../node_modules/three/src/objects/Mesh'
-import {TextureLoader} from '../../node_modules/three/src/loaders/TextureLoader'
-import {MeshPhongMaterial} from '../../node_modules/three/src/materials/MeshPhongMaterial'
-import {MeshStandardMaterial } from '../../node_modules/three/src/materials/MeshStandardMaterial'
-import {Color} from '../../node_modules/three/src/math/Color'
-import {Matrix4} from '../../node_modules/three/src/math/Matrix4'
-import {Euler} from '../../node_modules/three/src/math/Euler'
-import {Quaternion} from '../../node_modules/three/src/math/Quaternion'
-import {Float32BufferAttribute} from '../../node_modules/three/src/core/BufferAttribute'
-import {Vector4} from '../../node_modules/three/src/math/Vector4'
-import {Vector3} from '../../node_modules/three/src/math/Vector3'
-import {Vector2} from '../../node_modules/three/src/math/Vector2'
-import {Loader} from '../../node_modules/three/src/loaders/Loader'
-import {FileLoader} from '../../node_modules/three/src/loaders/FileLoader'
-import {DefaultLoadingManager} from '../../node_modules/three/src/loaders/LoadingManager'
-import {AnimationClip} from '../../node_modules/three/src/animation/AnimationClip.js'
-import {ClampToEdgeWrapping} from '../../node_modules/three/src/constants.js'
-import {RepeatWrapping} from '../../node_modules/three/src/constants.js'
-import {VertexColors} from '../../node_modules/three/src/constants.js'
+import {
+    AnimationClip,
+    BufferAttribute,
+    BufferGeometry,
+    ClampToEdgeWrapping,
+    Color,
+    Euler,
+    FileLoader,
+    Float32BufferAttribute,
+    Geometry as THREEGeometry,
+    Group,
+    Loader,
+    Matrix4,
+    Mesh,
+    MeshPhongMaterial,
+    MeshStandardMaterial,
+    Object3D,
+    Quaternion,
+    RepeatWrapping,
+    SkinnedMesh,
+    TextureLoader,
+    Vector2,
+    Vector3,
+    Vector4,
+    VertexColors
+} from 'threejs-full-es6'
+
 /**
  * @author Kyle-Larson https://github.com/Kyle-Larson
  * @author Takahiro https://github.com/takahirox
