@@ -184,32 +184,35 @@ Object.assign( TUniversalLoader.prototype, {
 
     loadAssociatedFiles ( files, onLoad, onProgress, onError ) {
 
-        const firstUrl      = files[ 0 ].url
+        const firstFile = files[0]
+        const firstUrl      = firstFile.url
         const firstFileName = getFileName( firstUrl )
         const firstFileExtension = getFileExtension( firstFileName )
         const firstLoadUrl  = computeUrl( firstUrl )
+        firstFile.url = firstLoadUrl
 
-        const secondUrl      = files[ 1 ].url
+        const secondFile = files[1]
+        const secondUrl      = secondFile.url
         const secondFileName = getFileName( secondUrl )
         const secondFileExtension = getFileExtension( secondFileName )
         const secondLoadUrl  = computeUrl( secondUrl )
-
+        secondFile.url = secondLoadUrl
 
         if ( firstFileExtension === FileFormat.Mtl && secondFileExtension === FileFormat.Obj ) {
 
-            this._loadObjMtlCouple( secondLoadUrl, firstLoadUrl, onLoad, onProgress, onError )
+            this._loadObjMtlCouple( secondFile, firstFile, onLoad, onProgress, onError )
 
         } else if ( firstFileExtension === FileFormat.Obj && secondFileExtension === FileFormat.Mtl ) {
 
-            this._loadObjMtlCouple( firstLoadUrl, secondLoadUrl, onLoad, onProgress, onError )
+            this._loadObjMtlCouple( firstFile, secondFile, onLoad, onProgress, onError )
 
         } else if ( firstFileExtension === FileFormat.Shp && secondFileExtension === FileFormat.Dbf ) {
 
-            this._loadShpDbfCouple( firstLoadUrl, secondLoadUrl, onLoad, onProgress, onError )
+            this._loadShpDbfCouple( firstFile, secondFile, onLoad, onProgress, onError )
 
         } else if ( firstFileExtension === FileFormat.Dbf && secondFileExtension === FileFormat.Shp ) {
 
-            this._loadShpDbfCouple( secondLoadUrl, firstLoadUrl, onLoad, onProgress, onError )
+            this._loadShpDbfCouple( secondFile, firstFile, onLoad, onProgress, onError )
 
         } else {
 
@@ -347,18 +350,18 @@ Object.assign( TUniversalLoader.prototype, {
 
     },
 
-    _loadObjMtlCouple ( objUrl, mtlUrl, onLoad, onProgress, onError ) {
+    _loadObjMtlCouple ( objFile, mtlFile, onLoad, onProgress, onError ) {
 
         const mtlLoader = new MTLLoader( this.manager )
         const objLoader = new OBJLoader( this.manager )
 
-        const texturePath = params.texturePath || 'resources/models/evan/'
+        const texturePath = mtlFile.texturePath || 'resources/models/evan/'
         if ( texturePath ) {
             mtlLoader.setTexturePath( texturePath )
         }
 
         mtlLoader.load(
-            mtlUrl,
+            mtlFile.url,
             materials => {
 
                 materials.preload()
@@ -371,7 +374,7 @@ Object.assign( TUniversalLoader.prototype, {
 
                 objLoader.setMaterials( materials )
                 objLoader.load(
-                    objUrl,
+                    objFile.url,
                     onLoad,
                     onProgress,
                     onError
@@ -384,14 +387,14 @@ Object.assign( TUniversalLoader.prototype, {
 
     },
 
-    _loadShpDbfCouple ( shpUrl, dbfUrl, onLoad, onProgress, onError ) {
+    _loadShpDbfCouple ( shpFile, dbfFile, onLoad, onProgress, onError ) {
 
         let _shapes = undefined
         let _dbf    = undefined
 
         const shpLoader = new SHPLoader( this.manager )
         shpLoader.load(
-            shpUrl,
+            shpFile.url,
             shapes => {
 
                 _shapes = shapes
@@ -404,7 +407,7 @@ Object.assign( TUniversalLoader.prototype, {
 
         const dbfLoader = new DBFLoader( this.manager )
         dbfLoader.load(
-            dbfUrl,
+            dbfFile.url,
             dbf => {
 
                 _dbf = dbf
