@@ -18,7 +18,7 @@ import {
     Points,
     PointsMaterial,
     Group
-} from 'three'
+} from 'threejs-full-es6'
 
 /**
  *

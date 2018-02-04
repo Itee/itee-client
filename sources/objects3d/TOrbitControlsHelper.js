@@ -14,9 +14,9 @@ import {
     BufferGeometry,
     Float32BufferAttribute,
     LineBasicMaterial,
-    Color
-} from 'three'
-import { OrbitControls } from '../third_party/three_extended/OrbitControls'
+    Color,
+    OrbitControls
+} from 'threejs-full-es6'
 
 function TOrbitControlsHelper ( orbitControls ) {
 

@@ -18,7 +18,7 @@ import {
     Geometry,
     BufferAttribute,
     BufferGeometry
-} from 'three'
+} from 'threejs-full-es6'
 
 /**
  *

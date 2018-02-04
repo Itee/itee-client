@@ -18,7 +18,7 @@ import {
     Face3,
     ObjectLoader,
     TextureLoader
-} from 'three'
+} from 'threejs-full-es6'
 import { OrbitControls } from '../../../sources/third_party/three_extended/OrbitControls'
 
 /**

@@ -17,14 +17,16 @@
  *
  */
 
-import { FileLoader } from '../../../node_modules/three/src/loaders/FileLoader'
-import { DefaultLoadingManager } from '../../../node_modules/three/src/loaders/LoadingManager'
-import { BufferGeometry } from '../../../node_modules/three/src/core/BufferGeometry'
-import { BufferAttribute } from '../../../node_modules/three/src/core/BufferAttribute'
-import { Color } from '../../../node_modules/three/src/math/Color'
-import { PointsMaterial } from '../../../node_modules/three/src/materials/PointsMaterial'
-import { Points } from '../../../node_modules/three/src/objects/Points'
-import { Group } from '../../../node_modules/three/src/objects/Group'
+import {
+    FileLoader,
+    DefaultLoadingManager,
+    BufferGeometry,
+    BufferAttribute,
+    Color,
+    PointsMaterial,
+    Points,
+    Group
+} from 'threejs-full-es6'
 
 /**
  * @author Tristan Valcke / https://github.com/TristanVALCKE

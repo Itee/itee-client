@@ -42,14 +42,12 @@ import {
     Color,
     ArrowHelper,
     MeshPhongMaterial,
-    EventDispatcher
-} from 'three'
+    EventDispatcher,
+    AnaglyphEffect,
+    StereoEffect,
+    OrbitControls
+} from 'threejs-full-es6'
 import Stats from 'stats.js'
-
-// extended three
-import { OrbitControls } from '../third_party/three_extended/OrbitControls'
-import { AnaglyphEffect } from '../third_party/three_extended/AnaglyphEffect'
-import { StereoEffect } from '../third_party/three_extended/StereoEffect'
 
 import { TOrbitControlsHelper } from '../objects3d/TOrbitControlsHelper'
 
