@@ -33,7 +33,8 @@
   "dependencies": {
     "react": "^16.2.0",
     "stats.js": "^0.17.0",
-    "three": "git+https://git@github.com/Itee/three.js.git#0177f65ab5692f2b5807ef063ae3a96a54c6b5cc"
+    "three": "git+https://git@github.com/Itee/three.js.git#0177f65ab5692f2b5807ef063ae3a96a54c6b5cc",
+    "threejs-full-es6": "^4.2.4"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
