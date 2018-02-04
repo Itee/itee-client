@@ -10,14 +10,29 @@
 
 /* eslint-env browser */
 
-import { Mesh } from '../../node_modules/three/src/objects/Mesh'
-import { MeshPhongMaterial } from '../../node_modules/three/src/materials/MeshPhongMaterial'
-//import { STLLoader } from '../../builds/tmp/STLLoader'
-//import { OBJLoader } from '../../builds/tmp/OBJLoader'
-//import { FBXLoader2 } from '../../builds/tmp/FBXLoader2'
-//import { MTLLoader } from '../../builds/tmp/MTLLoader'
-//
-//import { ASCLoader } from '../../javascript/webgl/ASCLoader'
+import {
+    STLLoader,
+    OBJLoader,
+    OBJLoader2,
+    FBXLoader,
+    MTLLoader,
+    ObjectLoader,
+
+    DoubleSide,
+    DefaultLoadingManager,
+    Group,
+    Mesh,
+    ShapeBufferGeometry,
+    MeshPhongMaterial
+} from 'threejs-full-es6'
+
+import { FBXLoader2 } from './FBXLoader2'
+import { ASCLoader } from './ASCLoader'
+import { SHPLoader } from './SHPLoader'
+import { DBFLoader } from './DBFLoader'
+
+import * as Validator from '../cores/TValidator'
+import { DefaultLogger } from '../loggers/TLogger'
 
 function getFilePath ( fileUrl ) {
 
