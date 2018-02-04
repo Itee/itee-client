@@ -10,11 +10,13 @@
  *
  */
 
-import { DefaultLoadingManager } from '../../../node_modules/three/src/loaders/LoadingManager'
 import { DefaultLogger } from '../Loggers/TLogger'
-import { FileLoader } from '../../../node_modules/three/src/loaders/FileLoader'
-import { Vector3 } from '../../../node_modules/three/src/math/Vector3'
-import { Shape } from '../../../node_modules/three/src/extras/core/Shape'
+import {
+    DefaultLoadingManager,
+    FileLoader,
+    Vector3,
+    Shape
+} from 'threejs-full-es6'
 import {
     BinaryReader,
     Endianness
