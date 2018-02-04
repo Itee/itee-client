@@ -17,46 +17,53 @@ import { dockspawn } from '../third_party/dock-spawn'
 import { TViewport } from './TViewport'
 //import { SplitModifier } from '../../build/tmp/SplitModifier'
 
-import * as Constants from '../../node_modules/three/src/constants'
-import { _Math } from '../../node_modules/three/src/math/Math'
-import { AnimationMixer } from '../../node_modules/three/src/animation/AnimationMixer'
-import { AxisHelper } from '../../node_modules/three/src/helpers/AxisHelper'
-import { BoxHelper } from '../../node_modules/three/src/helpers/BoxHelper'
-import { AmbientLight } from '../../node_modules/three/src/lights/AmbientLight'
-import { Color } from '../../node_modules/three/src/math/Color'
-import { Frustum } from '../../node_modules/three/src/math/Frustum'
-import { Geometry } from '../../node_modules/three/src/core/Geometry'
-import { Group } from '../../node_modules/three/src/objects/Group'
-import { ImageLoader } from '../../node_modules/three/src/loaders/ImageLoader'
-import { JSONLoader } from '../../node_modules/three/src/loaders/JSONLoader'
-import { Line } from '../../node_modules/three/src/objects/Line'
-import { LineBasicMaterial } from '../../node_modules/three/src/materials/LineBasicMaterial'
-import { LineCurve } from '../../node_modules/three/src/extras/curves/LineCurve'
-import { LineSegments } from '../../node_modules/three/src/objects/LineSegments'
-import { Matrix4 } from '../../node_modules/three/src/math/Matrix4'
-import { Mesh } from '../../node_modules/three/src/objects/Mesh'
-import { MeshLambertMaterial } from '../../node_modules/three/src/materials/MeshLambertMaterial'
-import { MeshPhongMaterial } from '../../node_modules/three/src/materials/MeshPhongMaterial'
-import { Object3D } from '../../node_modules/three/src/core/Object3D'
-import { Plane } from '../../node_modules/three/src/math/Plane'
-import { Scene } from '../../node_modules/three/src/scenes/Scene'
-import { SkeletonHelper } from '../../node_modules/three/src/helpers/SkeletonHelper'
-import { SkinnedMesh } from '../../node_modules/three/src/objects/SkinnedMesh'
-import { SphereBufferGeometry } from '../../node_modules/three/src/geometries/SphereGeometry'
-import { EdgesGeometry } from '../../node_modules/three/src/geometries/EdgesGeometry'
-import { Sprite } from '../../node_modules/three/src/objects/Sprite'
-import { SpriteMaterial } from '../../node_modules/three/src/materials/SpriteMaterial'
-import { Texture } from '../../node_modules/three/src/textures/Texture'
-import { TextureLoader } from '../../node_modules/three/src/loaders/TextureLoader'
-import { TubeGeometry } from '../../node_modules/three/src/geometries/TubeGeometry'
-import { Vector3 } from '../../node_modules/three/src/math/Vector3'
-import { WireframeGeometry } from '../../node_modules/three/src/geometries/WireframeGeometry'
+import {
+    DoubleSide,
+    FrontSide,
+    BackSide,
+    LinearFilter,
+    UVMapping,
+    AdditiveBlending,
+    AnimationMixer,
+    AxisHelper,
+    BoxHelper,
+    AmbientLight,
+    Frustum,
+    Geometry,
+    Group,
+    ImageLoader,
+    JSONLoader,
+    Line,
+    LineBasicMaterial,
+    LineCurve,
+    LineSegments,
+    Matrix4,
+    Mesh,
+    MeshLambertMaterial,
+    Object3D,
+    Plane,
+    Scene,
+    SkeletonHelper,
+    SkinnedMesh,
+    SphereBufferGeometry,
+    Sprite,
+    SpriteMaterial,
+    Texture,
+    TubeGeometry,
+    Vector3,
+    WireframeGeometry,
+} from 'threejs-full-es6'
 
 import { TDataBaseManager as CompaniesManager } from '../managers/TDataBaseManager'
 import { TDataBaseManager as SitesManager } from '../managers/TDataBaseManager'
 import { TDataBaseManager as BuildingsManager } from '../managers/TDataBaseManager'
-import { TScenesManager, TObjectsManager, TGeometriesManager, TMaterialsManager, TPointsManager } from '../managers/databases/_databases'
-import { MeshManager } from '../managers/databases/MeshManager'
+import {
+    TScenesManager,
+    TObjectsManager,
+    TGeometriesManager,
+    TMaterialsManager,
+    TPointsManager
+} from '../managers/databases/_databases'
 
 //TMP
 
@@ -1026,7 +1033,7 @@ function TApplication ( container, parameters, onReady ) {
 
                 if ( 'material' in object ) {
 
-                    object.material.side    = Constants.DoubleSide
+                    object.material.side    = DoubleSide
                     object.material.opacity = 1
 
                 } else {
@@ -1702,6 +1709,533 @@ Object.assign( TApplication, {
             return TApplication.diacriticsMap[ a ] || a;
         } );
 
+    },
+
+    createParticularEmbranchmentGroup: function ( particularEmbranchments, color, generateSpritId, filters ) {
+
+        if ( !particularEmbranchments ) {
+
+            console.error( "Unable to create particular embranchment group with null or undefined particular embranchment !!!" )
+            return
+
+        }
+
+        color           = color || 0xffffff
+        generateSpritId = generateSpritId || false
+        filters         = filters || null
+
+        var particularEmbranchmentGroup = new Group()
+        var particularEmbranchment      = {}
+        var coordinates                 = []
+        var properties                  = {}
+        var rotation                    = 0
+        var bpId                        = 0
+        var deltaRotX                   = 0
+        var deltaRotY                   = 0
+        var lineStart                   = undefined
+        var lineEnd                     = undefined
+        var path                        = undefined
+        var geometry                    = undefined
+        var material                    = undefined
+        var mesh                        = undefined
+        var sprit                       = undefined
+        for ( var index = 0, numberOfBP = particularEmbranchments.length ; index < numberOfBP ; ++index ) {
+
+            particularEmbranchment = particularEmbranchments[ index ]
+            coordinates            = particularEmbranchment.geometry.coordinates
+            properties             = particularEmbranchment.properties
+            bpId                   = properties.ID_BP
+
+            // Filter required id
+            if ( filters && filters.includes( bpId ) === false ) {
+                continue
+            }
+
+            rotation  = _Math.degToRad( properties.ROTATION )
+            deltaRotX = Math.cos( rotation )
+            deltaRotY = -Math.sin( rotation )
+
+            lineStart = new Vector3(
+                coordinates[ 0 ] - 600200,
+                coordinates[ 1 ] - 131400,
+                coordinates[ 2 ] - 60
+            )
+            lineEnd   = new Vector3(
+                coordinates[ 0 ] - 600200 + deltaRotY,
+                coordinates[ 1 ] - 131400 + deltaRotX,
+                coordinates[ 2 ] - 60
+            )
+
+            path     = new LineCurve( lineStart, lineEnd )
+            geometry = new TubeGeometry( path, 1, 0.05, 8, false )
+
+            var firstPoint = geometry.vertices[ 0 ]
+            var lastPoint  = geometry.vertices[ geometry.vertices.length - 1 ]
+
+            material      = new MeshLambertMaterial( {
+                color: color,
+                side:  DoubleSide
+            } )
+            mesh          = new Mesh( geometry, material )
+            mesh.userData = {
+                id:            bpId,
+                borough:       properties.ARRONDISSE,
+                district:      properties.CIRCONSCRI,
+                sectionId:     properties.ID_TRONCON,
+                streetName:    properties.NOM_VOIE,
+                postCode:      properties.NUM_POSTAL,
+                type:          properties.TYPE_BP,
+                tubeType:      properties.TYPE_CANA,
+                rejectionType: properties.TYPE_REJET,
+                position: {
+                    x: Math.round( properties.X * 100 ) / 100,
+                    y: Math.round( properties.Y * 100 ) / 100,
+                    z: Math.round( properties.Z * 100 ) / 100
+                }
+            }
+
+
+            // TRANSFORME ZUP/YFOR to YUP/-ZFOR
+            // Convert Y forward Z up to Y up - Z forward
+            mesh.geometry.rotateX( -(Math.PI / 2) )
+            var boundingSphereCenter = mesh.geometry.center().negate() // Recenter geometry to mesh
+            mesh.position.copy( boundingSphereCenter ) // Set previous geometry center as mesh position
+
+            // Create ID sprit
+            if ( generateSpritId ) {
+                sprit            = TApplication.createSprite( "BP: " + bpId )
+                sprit.position.x = (firstPoint.x + lastPoint.x) / 2
+                sprit.position.y = ((firstPoint.y + lastPoint.y) / 2) + 0.2
+                sprit.position.z = (firstPoint.z + lastPoint.z) / 2
+
+                mesh.add( sprit )
+            }
+            particularEmbranchmentGroup.add( mesh )
+
+        }
+
+        //	particularEmbranchmentGroup.rotation.x -= Math.PI / 2
+
+        return particularEmbranchmentGroup;
+
+    },
+
+    createNodesGroup: function ( nodes, color, generateSpritId, filters ) {
+
+        if ( !nodes ) {
+
+            console.error( "Unable to create node group with null or undefined nodes !!!" )
+            return
+
+        }
+
+        color           = color || 0xffffff
+        generateSpritId = generateSpritId || false
+        filters         = filters || null
+
+        var nodesGroup  = new Group()
+        var node        = {}
+        var coordinates = []
+        var nodeId      = 0
+        var position    = null
+        var geometry    = null
+        var material    = null
+        var mesh        = null
+        var sprit       = null
+        for ( var index = 0, numberOfBP = nodes.length ; index < numberOfBP ; ++index ) {
+
+            node        = nodes[ index ]
+            coordinates = node.geometry.coordinates
+            nodeId      = node.properties.IDENTIFIAN
+
+            // Filter required id
+            if ( filters && filters.includes( nodeId ) === false ) {
+                continue
+            }
+
+            position = new Vector3(
+                coordinates[ 0 ] - 600200,
+                coordinates[ 1 ] - 131400,
+                coordinates[ 2 ] - 60
+            )
+
+            geometry = new SphereBufferGeometry( 0.1, 16, 16 );
+            geometry.translate( position.x, position.y, position.z )
+
+            material = new MeshLambertMaterial( {
+                color: color,
+                side:  FrontSide
+            } )
+
+            mesh = new Mesh( geometry, material )
+            mesh.userData = node.properties
+            mesh.userData.position = {
+                x: Math.round( coordinates[ 0 ] * 100 ) / 100,
+                y: Math.round( coordinates[ 1 ] * 100 ) / 100,
+                z: Math.round( coordinates[ 2 ] * 100 ) / 100
+            }
+
+            // TRANSFORME ZUP/YFOR to YUP/-ZFOR
+            // Convert Y forward Z up to Y up - Z forward
+            mesh.geometry.rotateX( -(Math.PI / 2) )
+            var boundingSphereCenter = mesh.geometry.center().negate() // Recenter geometry to mesh
+            mesh.position.copy( boundingSphereCenter ) // Set previous geometry center as mesh position
+
+            // Create ID sprit
+            if ( generateSpritId ) {
+
+                if ( !geometry.boundingSphere ) {
+                    geometry.computeBoundingSphere()
+                }
+
+                sprit            = TApplication.createSprite( "N: " + nodeId )
+                sprit.position.x = geometry.boundingSphere.center.x
+                sprit.position.y = geometry.boundingSphere.center.y
+                sprit.position.z = geometry.boundingSphere.center.z
+                //                sprit.scale.x = 0.7
+                //                sprit.scale.y = 0.7
+                //                sprit.scale.z = 0.7
+
+                mesh.add( sprit )
+            }
+            nodesGroup.add( mesh )
+
+        }
+
+        return nodesGroup
+
+    },
+
+    createSectionGroup: function ( sections, color, generateSpritId, filters ) {
+
+        if ( !sections ) {
+
+            console.error( "Unable to create section group with null or undefined sections !!!" )
+            return
+
+        }
+
+        color           = color || 0xffffff
+        generateSpritId = generateSpritId || false
+        filters         = filters || null
+
+        var sectionGroup = new Group()
+        var section      = {}
+        var coordinates  = []
+        var coordinate   = []
+        var sectionId    = 0
+        var firstPoint   = undefined
+        var lastPoint    = undefined
+        var geometry     = undefined
+        var material     = undefined
+        var line         = undefined
+        var sprit        = undefined
+        for ( var index = 0, numberOfSections = sections.length ; index < numberOfSections ; ++index ) {
+
+            section     = sections[ index ]
+            coordinates = section.geometry.coordinates
+            sectionId   = section.properties.ASSET_ID
+
+            // Filter required id
+            if ( filters && filters.includes( sectionId ) === false ) {
+                continue
+            }
+
+            geometry = new Geometry()
+
+            for ( var coordinateIndex = 0, numberOfPoints = coordinates.length ; coordinateIndex < numberOfPoints ; ++coordinateIndex ) {
+
+                coordinate = coordinates[ coordinateIndex ]
+                geometry.vertices.push( new Vector3(
+                    coordinate[ 0 ] - 600200,
+                    coordinate[ 1 ] - 131400,
+                    coordinate[ 2 ] - 60
+                ) )
+
+            }
+
+            material = new LineBasicMaterial( {
+                color: color
+            } )
+
+            line          = new Line( geometry, material )
+            line.name     = sectionId
+            line.userData = {
+                borough:       section.properties.ARRONDISSE,
+                district:      section.properties.CIRCONSCRI,
+                lastVisit:     section.properties.DATE_DERNI,
+                length:        section.properties.LONGUEUR,
+                streetName:    section.properties.NOM_VOIE,
+                regulated:     section.properties.REGULE,
+                type:          section.properties.TYPE,
+                effluentsType: section.properties.TYPE_EFFLU,
+            }
+
+            // TRANSFORME ZUP/YFOR to YUP/-ZFOR
+            // Convert Y forward Z up to Y up - Z forward
+            line.geometry.rotateX( -(Math.PI / 2) )
+            //            var boundingSphereCenter = line.geometry.center().negate() // Recenter geometry to mesh
+            //            line.position.copy( boundingSphereCenter ) // Set previous geometry center as mesh position
+
+            // Create ID sprit
+            if ( generateSpritId ) {
+
+                firstPoint = geometry.vertices[ 0 ]
+                lastPoint  = geometry.vertices[ geometry.vertices.length - 1 ]
+
+                sprit            = TApplication.createSprite( "T: " + sectionId )
+                sprit.position.x = (firstPoint.x + lastPoint.x) / 2
+                sprit.position.y = ((firstPoint.y + lastPoint.y) / 2) + 0.2
+                sprit.position.z = (firstPoint.z + lastPoint.z) / 2
+                sprit.scale.x    = 2.5
+                sprit.scale.y    = 2.5
+                sprit.scale.z    = 2.5
+
+                line.add( sprit )
+
+            }
+
+            sectionGroup.add( line )
+
+        }
+
+        return sectionGroup
+
+    },
+
+    createPathGroup: function ( pathFile, color, generateSpritId, filters ) {
+
+        if ( !pathFile ) {
+
+            console.error( "Unable to create path group with null or undefined paths !!!" )
+            return
+
+        }
+
+        color           = color || 0xffffff
+        generateSpritId = generateSpritId || false
+        filters         = filters || null
+
+        var pathGroup = new Group()
+        var lines         = pathFile.split( '\n' )
+        var numberOfLines = lines.length
+        var line          = undefined
+        var words         = undefined
+        var geometry      = undefined
+        var material      = undefined
+        var path          = undefined
+        var pathId        = undefined
+
+        for ( var i = 0 ; i < numberOfLines ; i++ ) {
+
+            line  = lines[ i ]
+            words = line.split( " " )
+
+            if ( words.length === 1 ) {
+
+                geometry = new Geometry()
+
+                material = new LineBasicMaterial( {
+                    color: color
+                } )
+
+            } else if ( words.length === 2 ) {
+
+                pathId = words[ 1 ].replace( /(\r\n|\n|\r)/gm, "" )
+
+                geometry.rotateX( -(Math.PI / 2) )
+                path      = new Line( geometry, material )
+                path.name = pathId
+
+                // Filter path on id
+                if ( filters && filters.includes( pathId ) === false ) {
+                    continue
+                }
+
+                // Create Sprit if required with id
+                // Create ID sprit
+                if ( generateSpritId ) {
+
+                    var firstPoint = geometry.vertices[ 0 ]
+                    var lastPoint  = geometry.vertices[ geometry.vertices.length - 1 ]
+
+                    var sprit        = TApplication.createSprite( "P: " + pathId )
+                    sprit.position.x = (firstPoint.x + lastPoint.x) / 2
+                    sprit.position.y = ((firstPoint.y + lastPoint.y) / 2) - 0.5
+                    sprit.position.z = (firstPoint.z + lastPoint.z) / 2
+                    sprit.scale.x    = 7
+                    sprit.scale.y    = 7
+                    sprit.scale.z    = 7
+
+                    path.add( sprit )
+
+                }
+
+                pathGroup.add( path )
+
+            } else if ( words.length === 3 ) {
+
+                geometry.vertices.push( new Vector3(
+                    parseFloat( words[ 0 ] ) - 600200,
+                    parseFloat( words[ 1 ] ) - 131400,
+                    parseFloat( words[ 2 ] ) - 60
+                ) )
+
+            } else {
+
+                console.error( "Invalid words: " + words )
+
+            }
+
+        }
+
+        return pathGroup
+
+    },
+
+    createSprite: function ( message, parameters ) {
+
+        var spriteSideLength = (parameters && parameters.spriteSideLength) ? parameters.spriteSideLength : 300;
+        var fontFace         = (parameters && parameters.fontFace) ? parameters.fontFace : "Arial";
+        var fontSize         = (parameters && parameters.fontSize) ? parameters.fontSize : "32";
+        var textColor        = (parameters && parameters.textColor) ? parameters.textColor : "white";
+
+        var spriteCenter = spriteSideLength / 2;
+
+        var canvas    = document.createElement( 'canvas' );
+        canvas.width  = spriteSideLength;
+        canvas.height = spriteSideLength;
+
+        // get size data (height depends only on font size)
+        var context = canvas.getContext( '2d' );
+
+        context.font  = "Bold " + fontSize + "px " + fontFace;
+        var textWidth = Math.round( context.measureText( message ).width );
+
+        context.fillStyle = textColor;
+        context.fillText( message, spriteCenter - (textWidth / 2), spriteCenter + ( Number.parseInt( fontSize ) / 2) );
+
+        // canvas contents will be used for a texture
+        var texture         = new Texture( canvas )
+        texture.minFilter   = LinearFilter
+        texture.mapping     = UVMapping
+        texture.needsUpdate = true;
+
+        var spriteMaterial = new SpriteMaterial( {
+            map: texture
+        } );
+
+        return new Sprite( spriteMaterial );
+
+    },
+
+    createFlowParticlesGroup: function ( splinePaths ) {
+
+        if ( !splinePaths ) {
+
+            console.error( "Unable to create flow particles group with null or undefined spline paths !!!" )
+            return
+
+        }
+
+        var flowsGroup               = new Group()
+        var numberOfParticlesForPath = undefined
+        var path                     = undefined
+        var pathPoints               = undefined
+        var particule                = undefined
+
+        var flowParticles = undefined
+        var point         = undefined
+
+        var flowParticulTexture         = new Texture( particleTexture )
+        flowParticulTexture.minFilter   = LinearFilter
+        flowParticulTexture.needsUpdate = true;
+
+        var flowMaterial = new SpriteMaterial( {
+            map:      flowParticulTexture,
+            color:    new Color( 0x4286f4 ),
+            blending: AdditiveBlending
+        } );
+
+        for ( var pathIndex = 0, numberOfPaths = splinePaths.length ; pathIndex < numberOfPaths ; pathIndex++ ) {
+
+            path                     = splinePaths[ pathIndex ]
+            flowParticles            = new Group()
+            numberOfParticlesForPath = Math.ceil( path.getLength() )
+            pathPoints               = path.getSpacedPoints( numberOfParticlesForPath )
+
+            for ( var i = 0 ; i < numberOfParticlesForPath ; i++ ) {
+
+                point = pathPoints[ i ]
+
+                particule            = new Sprite( flowMaterial )
+                particule.position.x = point.x
+                particule.position.y = point.y
+                particule.position.z = point.z
+                particule.scale.x    = 0.5
+                particule.scale.y    = 0.5
+                particule.scale.z    = 0.5
+
+                flowParticles.add( particule )
+
+            }
+
+            createInterval( flowParticles, path, 100 )
+
+            flowsGroup.add( flowParticles )
+
+        }
+
+        return flowsGroup
+
+    },
+
+    computeSplinePath: function ( meshGroup, debug ) {
+
+        if ( !meshGroup ) {
+            console.error( "Unable to compute spline path with null or undefined linear meshes !!!" )
+            return
+        }
+
+        debug = debug || false
+
+        var splinePaths = []
+        var splinePath  = undefined
+        var mesh        = undefined
+
+        for ( var sectionIndex = 0, numberOfSection = meshGroup.children.length ; sectionIndex < numberOfSection ; sectionIndex++ ) {
+
+            mesh = meshGroup.children[ sectionIndex ];
+
+            splinePath         = new CatmullRomCurve3( mesh.geometry.vertices )
+            splinePath.type    = "catmullrom"
+            splinePath.tension = 0.05
+            splinePath.name    = mesh.name
+
+            if ( debug ) {
+
+                var splineMaterial = new LineBasicMaterial( {
+                    color: 0xff00f0
+                } );
+
+                var splinePoints   = splinePath.getPoints( 500 )
+                var splineGeometry = new Geometry()
+                for ( var i = 0 ; i < splinePoints.length ; i++ ) {
+                    splineGeometry.vertices.push( splinePoints[ i ] )
+                }
+
+                var spline = new Line( splineGeometry, splineMaterial )
+
+                meshGroup.add( spline )
+
+            }
+
+            splinePaths.push( splinePath )
+
+        }
+
+        return splinePaths
+
     }
 
 } )
@@ -1814,7 +2348,7 @@ Object.assign( TApplication.prototype, {
 
             if ( object.type === 'Mesh' ) {
 
-                object.material.side = ( xRayActive ) ? Constants.BackSide : Constants.FrontSide;
+                object.material.side = ( xRayActive ) ? BackSide : FrontSide;
 
             } else if ( object.type === 'Group' ) {
 
@@ -2203,7 +2737,7 @@ Object.assign( TApplication.prototype, {
 
             var material = new MeshLambertMaterial( {
                 color: 0x4286f4,
-                side:  Constants.FrontSide
+                side:  FrontSide
             } )
 
             var temporaryMeasurePoint  = new Mesh( geometry, material )
@@ -2336,7 +2870,7 @@ Object.assign( TApplication.prototype, {
 
             var material = new MeshLambertMaterial( {
                 color: 0x4286f4,
-                side:  Constants.FrontSide
+                side:  FrontSide
             } )
 
             var point = new Mesh( geometry, material )
