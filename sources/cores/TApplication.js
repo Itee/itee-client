@@ -317,259 +317,346 @@ function TApplication ( container, parameters, onReady ) {
 
     function _initGUI ( parameters ) {
 
-        parameters = parameters || {}
-
-        // Init navbar
-        var importBtn     = document.getElementById( "importBtn" )
-        importBtn.onclick = function ( event ) {
-            self.popupImportFilesModal.call( self )
+        const _parameters = parameters || {
+            toolbar:  null,
+            content:  null,
+            viewport: {
+                type: 'webgl',
+                options: {
+                    effect: ['anaglyph', 'etc']
+                }
+            },
+            tools:    null,
+            modals:   null
         }
 
-        this.toggleXRay = false;
-        var xRayBtn     = document.getElementById( "xRayBtn" )
-        xRayBtn.onclick = function ( event ) {
-
-            self.toggleXRay = !self.toggleXRay;
-            self.changeMaterialSide.call( self, self.webglViewport.scene.children, self.toggleXRay )
-
-        }
-
-        this.toggleSelection = false;
-        var selectBtn        = document.getElementById( "selectBtn" )
-        selectBtn.onclick    = function ( event ) {
-
-            self.toggleSelection             = !self.toggleSelection;
-            self.webglViewport.isRaycastable = self.toggleSelection;
-
-            //            var cursor = ( self.toggleSelection ) ? 'pointer' : 'default';
-            //            $('html').css('cursor', 'wait');
-
-        }
-
-        const cameraModeDropDown = document.getElementById( 'cameraMode' )
-        const cameraModes        = cameraModeDropDown.getElementsByTagName( 'li' )
-        for ( let i = 0, element = undefined ; element = cameraModes[ i ] ; i++ ) {
-            element.onclick = function ( event ) {
-
-                const value = this.getElementsByTagName( 'a' ).getAttribute( 'data-value' )
-                self.setCameraMode.call( self, value )
-
-            }
-        }
-
-        const switchRenderEffectDropDown = document.getElementById( 'renderEffectDropDown' )
-        const switchRenderEffects        = switchRenderEffectDropDown.getElementsByTagName( 'li' )
-        for ( let i = 0, element = undefined ; element = switchRenderEffects[ i ] ; i++ ) {
-            element.onclick = function ( event ) {
-
-                const value = this.getElementsByTagName( 'a' ).getAttribute( 'data-value' )
-                self.setRendersEffect.call( self, value )
-
-            }
-        }
-
-        // Docking view
-        // Convert a div to a dock manager.  Panels can then be docked on to it
-        this.mainContainer = new dockspawn.DockManager( container );
-        this.mainContainer.initialize();
-        window.addEventListener( 'resize', function () { self.mainContainer.invalidate() }, true );
-
-        this.detailBtn         = document.getElementById( "detailBtn" )
-        this.detailBtn.onclick = function ( event ) {
-
-            var carlId = event.currentTarget.value.slice( 0, -4 ).toUpperCase()
-            parent.postMessage( `GISDetailAction#-#${carlId};com.carl.xnet.equipment.backend.bean.BoxBean#+#`, '*' )
-
-        }
-
-        this.historyBtn         = document.getElementById( "historyBtn" )
-        this.historyBtn.onclick = function ( event ) {
-
-            var carlId = event.currentTarget.value.slice( 0, -4 ).toUpperCase()
-            parent.postMessage( `WOViewAction#-#${carlId};com.carl.xnet.equipment.backend.bean.BoxBean#+#`, '*' )
-
-        }
-
-        this.createBtn         = document.getElementById( "createBtn" )
-        this.createBtn.onclick = function ( event ) {
-
-            var carlId = event.currentTarget.value.slice( 0, -4 ).toUpperCase()
-            parent.postMessage( `CREATE_WO#-#${carlId};com.carl.xnet.equipment.backend.bean.BoxBean#+#`, '*' )
-
-        }
-
-        // Convert existing elements on the page into "Panels".
-        // They can then be docked on to the dock manager
-        // Panels get a titlebar and a close button, and can also be
-        // converted to a floating dialog box which can be dragged / resized
-        var treeViewContainer = document.getElementById( "treeViewContainer" )
-        if ( !parameters.carlEnable ) {
-            this.treeView = new dockspawn.PanelContainer( treeViewContainer, this.mainContainer, 'Projet' )
-        } else {
-            treeViewContainer.style.display = 'none'
-        }
-        this.webglViewportContainer = new dockspawn.PanelContainer( document.getElementById( "webglViewportContainer" ), this.mainContainer, 'Maquette' )
-
-        // Dock the panels on the dock manager
-        var documentNode = this.mainContainer.context.model.documentManagerNode;
-        if ( !parameters.carlEnable ) { var solutionNode = this.mainContainer.dockLeft( documentNode, this.treeView, 0.20 ) }
-        var outlineNode = this.mainContainer.dockFill( documentNode, this.webglViewportContainer )
-
-        // Measure Tool
-        this.measureTools = document.getElementById( 'measureTools' ).querySelectorAll( 'li' )
-        for ( let i = 0, element = undefined ; element = this.measureTools[ i ] ; i++ ) {
-            element.onclick = function ( event ) {
-
-                const value = this.getElementsByTagName( 'a' ).getAttribute( 'data-value' )
-                self.startMeasure( value )
-
-            }
-        }
-
-        this.measureMode         = undefined
-        this.measureCounter      = 0
-        this.currentMeasureGroup = undefined
-
-        // Split Tool
-        //        this.globalPlane = new SplitModifier( 100 );
-        this.globalPlane     = new Plane( new Vector3( 0, -1, 0 ), 0.8 )
-        this.splitToolButton = document.getElementById( 'splitBtn' )
-        if ( this.splitToolButton !== null && this.splitToolButton !== undefined ) {
-
-            this.splitToolToggle      = false;
-            this.spliterSliderControl = new Slider( "#spliterSliderControl", {
-                reversed:         true,
-                min:              -50,
-                max:              85,
-                value:            0,
-                orientation:      'vertical',
-                tooltip_position: 'left',
-                precision:        2
-            } );
-            this.spliterSliderControl.on( "slide", function ( sliderValue ) {
-
-                //                self.globalPlane.position.y = sliderValue / 10;
-                self.globalPlane.constant = sliderValue;
-
-            } );
-
-            self.spliterSliderControl.sliderElem.style.display = 'none';
-
-            this.splitToolButton.onclick = function ( event ) {
-
-                self.splitToolToggle = !self.splitToolToggle;
-
-                self.spliterSliderControl.sliderElem.style.display = ( self.splitToolToggle ) ? 'block' : 'none';
-                self.globalPlane.visible                           = self.splitToolToggle;
-
-                self.webglViewport.renderer.clippingPlanes = ( self.splitToolToggle ) ? [ self.globalPlane ] : [];
-                //OR
-                //                if( self.splitToolToggle ) {
-                //
-                //                    var group = self.webglViewport.scene.getObjectByName( 'MeshesGroup' )
-                //                    if ( ! group ) return;
-                //
-                //                    self.webglViewport.scene.remove( group );
-                //
-                //                    var splittedGroup = self.globalPlane.add( group )
-                //                    self.webglViewport.scene.add( splittedGroup )
-                //
-                //                } else {
-                //
-                //
-                //
-                //                }
-
-                event.preventDefault();
-
-            }
-
-        } else {
-
-            console.error( 'split button does not exist !' );
-
-        }
+        _initToolBar.call( self, _parameters )
+        _initContent.call( self, _parameters )
+        _initWebGLViewport.call( self, _parameters )
+        _initTools.call( self, _parameters )
+        _initModals.call( self, _parameters )
 
         // Init modals
-        this.importFilesModalView = document.getElementById( 'importFilesModal' )
-        this.importFilesModalView.modal( {
-            keyboard: false,
-            show:     false
-        } )
+        function _initToolBar ( parameters ) {
 
-        var validateImportFilesModal     = document.getElementById( 'validateImportFilesModal' )
-        validateImportFilesModal.onclick = function () {
+            $( '#importBtn' ).on( "click", event => {
 
-            var importInput   = document.getElementById( "importInput" )
-            var files         = importInput[ 0 ].files
-            var numberOfFiles = files.length
-            console.log( "numberOfFiles: " + numberOfFiles );
+                self.popupImportFilesModal.call( self )
 
-            var filesUrls = []
-            var fileUrl   = ''
-            var fileIndex
-            var fileObject
+            } )
 
-            for ( fileIndex = 0 ; fileIndex < numberOfFiles ; ++fileIndex ) {
-                fileObject = files[ fileIndex ]
-                fileUrl    = URL.createObjectURL( fileObject ) + '/' + fileObject.name
+            this.toggleXRay = false;
+            $( "#xRayBtn" ).on( "click", event => {
 
-                filesUrls.push( fileUrl )
-            }
+                self.toggleXRay = !self.toggleXRay;
+                self.changeMaterialSide.call( self, self.webglViewport.scene.children, self.toggleXRay )
 
-            self.loadObjectFromURL( filesUrls )
+            } )
 
-        }
+            $( "#selectBtn" ).on( "click", event => {
 
-        this.imageShotModalView = document.getElementById( 'imageShotModal' )
-        this.imageShotModalView.modal( {
-            keyboard: false,
-            show:     false
-        } )
+                self.webglViewport.isRaycastable = !self.webglViewport.isRaycastable;
 
-        this.selectedObjectModalView = document.getElementById( 'selectedObjectModal' )
-        this.selectedObjectModalView.modal( {
-            keyboard: false,
-            show:     false
-        } )
-    }
+            } )
 
-    function _initWebGLViewport ( parameters ) {
+            $( '#cameraMode' ).find( 'li' ).on( 'click', event => {
 
-        parameters = parameters || {}
+                var cameraMode = $( this ).find( 'a' ).attr( 'data-value' )
+                self.setCameraMode.call( self, cameraMode )
 
-        this.webglViewportContainer = document.getElementById( 'webglViewportContainer' )
-        this.webglViewport          = new TViewport( this.webglViewportContainer )
-        //        this.webglViewport.toggleAutorun()
+            } )
 
-        var camera = parameters.camera
-        if ( camera ) {
+            $( '#renderEffectDropDown' ).find( 'li' ).on( 'click', event => {
 
-            var cameraPosition = camera.position
-            if ( cameraPosition ) {
-                this.webglViewport.camera.position.set( cameraPosition.x, cameraPosition.y, cameraPosition.z )
-            }
+                var renderEffect = $( this ).find( 'a' ).attr( 'data-value' )
+                self.setRendersEffect.call( self, renderEffect )
 
-            var cameraTarget = camera.target
-            if ( cameraTarget ) {
-                var target = new Vector3( cameraTarget.x, cameraTarget.y, cameraTarget.z )
-                this.webglViewport.camera.lookAt( target )
-                this.webglViewport.cameraControl.target = target
-            }
+            } )
+
+            this.detailBtn = $( "#detailBtn" )
+            this.detailBtn.on( "click", event => {
+
+                const carlId = event.currentTarget.value.slice( 0, -4 ).toUpperCase()
+                getBoxDetail( carlId )
+                //                parent.postMessage( `GISDetailAction#-#${carlId};com.carl.xnet.equipment.backend.bean.BoxBean#+#`, '*' )
+
+            } )
+
+            this.createBtn = $( "#createBtn" )
+            this.createBtn.on( "click", event => {
+
+                const carlId = event.currentTarget.value.slice( 0, -4 ).toUpperCase()
+                parent.postMessage( `CREATE_WO#-#${carlId};com.carl.xnet.equipment.backend.bean.BoxBean#+#`, '*' )
+
+            } )
 
         }
 
-        this.webglViewport.scene.add( new AmbientLight( 0x999999, 0.8 ) )
+        function _initContent ( parameters ) {
 
-        if ( parameters.modelEnable ) { _initModelData.call( self, parameters.model ) }
-        if ( parameters.pointCloudEnable ) { _initPointCloudData.call( self, parameters.pointCloud ) }
-        if ( parameters.avatarEnable ) { _initAvatarData.call( self, parameters.avatarParams ) }
+            // Docking view
+            // Convert a div to a dock manager.  Panels can then be docked on to it
+            this.mainContainer = new dockspawn.DockManager( container );
+            this.mainContainer.initialize();
+            window.addEventListener( 'resize', () => {
+
+                // Important: need to reset the mainContainer size else DockManager will get false dimension
+                self.mainContainer.element.style.width  = '100%'
+                self.mainContainer.element.style.height = '100%'
+                self.mainContainer.invalidate()
+
+            }, true );
+
+            // Convert existing elements on the page into "Panels".
+            // They can then be docked on to the dock manager
+            // Panels get a titlebar and a close button, and can also be
+            // converted to a floating dialog box which can be dragged / resized
+            this.treeView                   = new dockspawn.PanelContainer( document.getElementById( "treeViewContainer" ), this.mainContainer, 'Projet' )
+            this.webglViewportDockContainer = new dockspawn.PanelContainer( document.getElementById( "webglViewportContainer" ), this.mainContainer, 'Maquette' )
+
+            // Dock the panels on the dock manager
+            var documentNode = this.mainContainer.context.model.documentManagerNode
+            var solutionNode = this.mainContainer.dockLeft( documentNode, this.treeView, 0.20 )
+            var outlineNode  = this.mainContainer.dockFill( documentNode, this.webglViewportDockContainer )
+
+        }
+
+        function _initWebGLViewport ( parameters ) {
+
+            parameters = parameters || {}
+
+            this.webglViewportContainer = document.getElementById( 'webglViewportContainer' )
+            this.webglViewport          = new TWebGLViewport( this.webglViewportContainer )
+            this.webglViewportContainer.addEventListener( 'panelResize', this.webglViewport.updateSizes.bind( this.webglViewport ) )
+            //        this.webglViewport.toggleAutorun()
+
+            var camera = parameters.camera
+            if ( camera ) {
+
+                var cameraPosition = camera.position
+                if ( cameraPosition ) {
+                    this.webglViewport.camera.position.set( cameraPosition.x, cameraPosition.y, cameraPosition.z )
+                }
+
+                var cameraTarget = camera.target
+                if ( cameraTarget ) {
+                    var target = new Vector3( cameraTarget.x, cameraTarget.y, cameraTarget.z )
+                    this.webglViewport.camera.lookAt( target )
+                    this.webglViewport.cameraControl.target = target
+                }
+
+            }
+
+            this.webglViewport.scene.add( new AmbientLight( 0x999999, 0.8 ) )
+
+            this.progressBar = $( '#progressBar .progress-bar' )
+            this.progressBar.parent().css( "display", "none" )
+
+        }
+
+        function _initTools ( parameters ) {
+
+            // Measure Tool
+            this.measureTools = $( '#measureTools' ).find( 'li' )
+            this.measureTools.on( 'click', function ( event ) {
+                var selectedTool = $( this ).find( 'a' ).attr( 'data-value' )
+                self.startMeasure( selectedTool )
+
+                self.webglViewport.isRaycastable = (selectedTool !== "clear")
+            } )
+            this.measureMode         = undefined
+            this.measureCounter      = 0
+            this.currentMeasureGroup = undefined
+
+            // Split Tool
+            //        this.globalPlane = new SplitModifier( 100 );
+
+            //            this.splitToolButton = document.getElementById( 'splitBtn' )
+            //            if ( this.splitToolButton !== null && this.splitToolButton !== undefined ) {
+            //
+            //                this.globalPlane = new TSplitModifier( 400, 400, 1, 1 )
+            //
+            //                this.splitToolToggle      = false;
+            //                this.spliterSliderControl = new Slider( "#spliterSliderControl", {
+            //                    reversed:         true,
+            //                    min:              -50,
+            //                    max:              85,
+            //                    value:            0,
+            //                    orientation:      'vertical',
+            //                    tooltip_position: 'left',
+            //                    precision:        2
+            //                } );
+            //                this.spliterSliderControl.on( "slide", function ( sliderValue ) {
+            //
+            //                    self.globalPlane.position.y = sliderValue;
+            //
+            //                } );
+            //
+            //                self.spliterSliderControl.$sliderElem[ 0 ].style.display = 'none';
+            //
+            //                this.splitToolButton.onclick = function ( event ) {
+            //
+            //                    this.splitter      = new TSplitModifier( 400 )
+            //                    this.splitter.name = "TheSplitter"
+            //
+            //                    this.splitterControl = new TransformControls( this.webglViewport.camera, this.webglViewport.webGLRenderer.domElement );
+            //                    this.splitterControl.addEventListener( 'objectChange', this.splitter.update.bind( this.splitter ) );
+            //                    this.splitterControl.addEventListener( 'change', this.webglViewport.update.bind( this.webglViewport ) );
+            //
+            //                    this.splitterControl.attach( this.splitter );
+            //                    this.webglViewport.scene.add( this.splitterControl );
+            //
+            //                    let splittedChildren = []
+            //                    let nonMeshChildren  = []
+            //                    const baseChildren   = this.webglViewport.scene.children
+            //                    for ( let i = 0, numChild = baseChildren.length ; i < numChild ; i++ ) {
+            //                        let child = baseChildren[ i ]
+            //
+            //                        var objectType = child.type
+            //                        if ( objectType !== 'Group' && objectType !== 'Mesh' ) {
+            //                            nonMeshChildren.push( child )
+            //                            continue
+            //                        }
+            //
+            //                        splittedChildren.push( this.splitter.add( child ) )
+            //
+            //                    }
+            //
+            //                    this.webglViewport.scene.children = []
+            //                    this.webglViewport.scene.add( nonMeshChildren )
+            //                    this.webglViewport.scene.add( splittedChildren )
+            //                    this.webglViewport.scene.add( this.splitter )
+            //
+            //                }.bind( this )
+            //
+            //            } else {
+            //
+            //                console.error( 'split button does not exist !' );
+            //
+            //            }
+
+            // OR
+
+            this.globalPlane     = new Plane( new Vector3( 0, -1, 0 ), 0.8 )
+            this.splitToolButton = document.getElementById( 'splitBtn' )
+            if ( this.splitToolButton !== null && this.splitToolButton !== undefined ) {
+
+                this.splitToolToggle      = false;
+                this.spliterSliderControl = new Slider( "#spliterSliderControl", {
+                    reversed:         true,
+                    min:              -50,
+                    max:              85,
+                    value:            0,
+                    orientation:      'vertical',
+                    tooltip_position: 'left',
+                    precision:        2
+                } );
+                this.spliterSliderControl.on( "slide", function ( sliderValue ) {
+
+                    //                self.globalPlane.position.y = sliderValue / 10;
+                    self.globalPlane.constant = sliderValue;
+
+                } );
+
+                self.spliterSliderControl.$sliderElem[ 0 ].style.display = 'none';
+
+                this.splitToolButton.onclick = function ( event ) {
+
+                    self.splitToolToggle = !self.splitToolToggle;
+
+                    self.spliterSliderControl.$sliderElem[ 0 ].style.display = ( self.splitToolToggle ) ? 'block' : 'none';
+                    self.globalPlane.visible                                 = self.splitToolToggle;
+
+                    self.webglViewport.renderer.clippingPlanes = ( self.splitToolToggle ) ? [ self.globalPlane ] : [];
+                    //OR
+                    //                if( self.splitToolToggle ) {
+                    //
+                    //                    var group = self.webglViewport.scene.getObjectByName( 'MeshesGroup' )
+                    //                    if ( ! group ) return;
+                    //
+                    //                    self.webglViewport.scene.remove( group );
+                    //
+                    //                    var splittedGroup = self.globalPlane.add( group )
+                    //                    self.webglViewport.scene.add( splittedGroup )
+                    //
+                    //                } else {
+                    //
+                    //
+                    //
+                    //                }
+
+                    event.preventDefault();
+
+                }
+
+            } else {
+
+                console.error( 'split button does not exist !' );
+
+            }
+
+        }
+
+        function _initModals ( parameters ) {
+
+            this.importFilesModalView = $( '#importFilesModal' )
+            this.importFilesModalView.modal( {
+                keyboard: false,
+                show:     false
+            } )
+
+            this.validateImportFilesModal = $( '#validateImportFilesModal' )
+            this.validateImportFilesModal.on( "click", () => {
+
+                const importInput   = $( "#importInput" )
+                const files         = importInput[ 0 ].files
+                const numberOfFiles = files.length
+                console.log( "numberOfFiles: " + numberOfFiles );
+
+                const filesUrls = []
+                let fileUrl     = ''
+                let fileIndex   = undefined
+                let fileObject  = undefined
+
+                for ( fileIndex = 0 ; fileIndex < numberOfFiles ; ++fileIndex ) {
+                    fileObject = files[ fileIndex ]
+                    fileUrl    = URL.createObjectURL( fileObject ) + '/' + fileObject.name
+
+                    filesUrls.push( { url: fileUrl } )
+                }
+
+                self.loadObjectFromURL( filesUrls )
+
+            } )
+
+            this.imageShotModalView = $( '#imageShotModal' )
+            this.imageShotModalView.modal( {
+                keyboard: false,
+                show:     false
+            } )
+
+            this.selectedObjectModalView = $( '#selectedObjectModal' )
+            this.selectedObjectModalView.modal( {
+                keyboard: false,
+                show:     false
+            } )
+
+        }
 
     }
 
-    var _modelReady = false
+    let _modelReady = false
 
     function _initModelData ( parameters ) {
+
+        const _parameters = parameters || {
+            companiesIds:       null,
+            sitesIds:           null,
+            buildingsIds:       null,
+            scenesIds:          null,
+            objectsIds:         null,
+            lookAtObjectWithId: null,
+        }
 
         self.companiesManager  = new CompaniesManager()
         self.sitesManager      = new SitesManager()
@@ -579,27 +666,132 @@ function TApplication ( container, parameters, onReady ) {
         self.geometriesManager = new TGeometriesManager()
         self.materialsManager  = new TMaterialsManager()
 
-        const companiesIds = parameters.companiesIds
-        if ( companiesIds ) { _initCompanies( companiesIds ) }
+        _initCompanies( _parameters.companiesIds )
+        _initSitesOf( _parameters.sitesIds )
+        _initBuildingsOf( _parameters.buildingsIds, null, true )
+        _initScenesOf( _parameters.scenesIds, null, true )
+        _initObjectsOf( _parameters.objectsIds, null, true )
 
-        const sitesIds = parameters.sitesIds
-        if ( sitesIds ) { _initSitesOf( sitesIds ) }
+        const lookAtObjectWithId = _parameters.lookAtObjectWithId
+        if ( lookAtObjectWithId ) {
 
-        const buildingsIds = parameters.buildingsIds
-        if ( buildingsIds ) {
-            // Update carl batiment button value
-            self.detailBtn.val( buildingsIds )
-            self.historyBtn.val( buildingsIds )
-            self.createBtn.val( buildingsIds )
+            self.objectsManager.read( lookAtObjectWithId, ( objects ) => {
 
-            _initBuildingsOf( buildingsIds, null, true )
+                // Create geometries and materials list
+                let geometriesIds = []
+                let materialsIds  = []
+
+                let object = undefined
+                for ( let objectIndex = 0, numberOfObjects = objects.length ; objectIndex < numberOfObjects ; objectIndex++ ) {
+                    object         = objects[ objectIndex ]
+                    object.visible = true
+
+                    if ( object.children.length > 0 ) {
+                        _initObjectsOf( object.children, object, visible )
+                        object.children = []
+                    }
+
+                    geometriesIds.push( object.geometry )
+                    Array.prototype.push.apply( materialsIds, object.material )
+                }
+
+                geometriesIds = uniq( geometriesIds )
+                materialsIds  = uniq( materialsIds )
+
+                self.geometriesManager.read( geometriesIds, ( geometries ) => {
+
+                    let object = undefined
+                    for ( let objectIndex = 0, numberOfObjects = objects.length ; objectIndex < numberOfObjects ; objectIndex++ ) {
+                        object          = objects[ objectIndex ]
+                        object.geometry = geometries[ object.geometry ]
+
+                        objectReady( object )
+                    }
+
+                } )
+
+                self.materialsManager.read( materialsIds, ( materials ) => {
+
+                    let object         = undefined
+                    let objectMaterial = undefined
+                    for ( let objectIndex = 0, numberOfObjects = objects.length ; objectIndex < numberOfObjects ; objectIndex++ ) {
+                        object = objects[ objectIndex ]
+
+                        objectMaterial = object.material
+                        if ( Array.isArray( objectMaterial ) ) {
+
+                            // Take care about the multi material order
+                            object.material = []
+                            let materialId  = undefined
+                            for ( let materialIndex = 0, numberOfMaterials = objectMaterial.length ; materialIndex < numberOfMaterials ; materialIndex++ ) {
+                                materialId = objectMaterial[ materialIndex ]
+
+                                object.material.push( materials[ materialId ] )
+                            }
+
+                        } else {
+
+                            object.material = materials[ object.material ]
+
+                        }
+
+                        objectReady( object )
+
+                    }
+
+                } )
+
+                function objectReady ( object ) {
+
+                    if ( typeof object.geometry !== 'string' && typeof object.material[ 0 ] !== 'string' ) {
+
+                        // Care trick here: parent will be override under scene.add so keep parent id before
+                        const parentId = object.parent
+
+                        // Update carl batiment button value
+                        // Care parent will not be the scene for ever !!!
+                        self.detailBtn.val( parentId )
+                        self.createBtn.val( parentId )
+
+                        object.parent = null
+
+                        self.webglViewport.scene.add( object )
+                        if ( object.type === 'Mesh' ) {
+                            self.webglViewport.addRaycastables( [ object ] )
+                        }
+
+                        // Object have no position from revit export so comput bounding sphere an get center !
+                        const objectPosition = object.position
+                        object.geometry.computeBoundingSphere()
+
+                        const boundingSphereRadius = object.geometry.boundingSphere.radius
+
+                        self.webglViewport.camera.position.x = objectPosition.x + boundingSphereRadius
+                        self.webglViewport.camera.position.y = objectPosition.y + boundingSphereRadius
+                        self.webglViewport.camera.position.z = objectPosition.z + boundingSphereRadius
+                        self.webglViewport.camera.updateProjectionMatrix()
+
+                        self.webglViewport.orbitControl.target.x = objectPosition.x
+                        self.webglViewport.orbitControl.target.y = objectPosition.y
+                        self.webglViewport.orbitControl.target.z = objectPosition.z
+                        self.webglViewport.orbitControl.update()
+
+                        _initScenesOf( parentId, null, true )
+
+                    }
+
+                }
+
+                function uniq ( a ) {
+                    var seen = {};
+                    return a.filter( function ( item ) {
+                        return seen.hasOwnProperty( item ) ? false : (seen[ item ] = true);
+                    } );
+                }
+
+            } )
+
         }
-
-        const scenesIds = parameters.scenesIds
-        if ( scenesIds ) { _initScenesOf( scenesIds, null, true ) }
-
-        const objectsIds = parameters.objectsIds
-        if ( objectsIds ) { _initObjectsOf( objectsIds, null, true ) }
 
         function _initCompanies ( companiesIds ) {
 
@@ -634,6 +826,7 @@ function TApplication ( container, parameters, onReady ) {
 
                     // These are the main group for the webgl view
                     self.webglViewport.scene.add( siteGroup )
+                    self.webglViewport.addRaycastables( [ siteGroup ] )
 
                     // Create new base tree item
                     var objectTreeViewItem = self.insertTreeViewItem( siteGroup._id, siteGroup.name, null, siteGroup.visible )
@@ -661,6 +854,12 @@ function TApplication ( container, parameters, onReady ) {
                 for ( let buildingIndex = 0, numberOfBuildings = buildings.length ; buildingIndex < numberOfBuildings ; buildingIndex++ ) {
                     building = buildings[ buildingIndex ]
 
+                    if ( buildingIndex === 0 ) {
+                        // Update carl batiment button value
+                        self.detailBtn.val( buildingsIds )
+                        self.createBtn.val( buildingsIds )
+                    }
+
                     var buildingGroup      = new Group()
                     buildingGroup[ '_id' ] = building._id
                     buildingGroup.name     = building.name
@@ -675,12 +874,13 @@ function TApplication ( container, parameters, onReady ) {
                     } else {
 
                         self.webglViewport.scene.add( buildingGroup )
+                        self.webglViewport.addRaycastables( [ buildingGroup ] )
 
                     }
 
                     // Create new base tree item
                     var objectTreeViewItem = self.insertTreeViewItem( buildingGroup._id, buildingGroup.name, parentId, buildingGroup.visible )
-                    objectTreeViewItem.find( `#${buildingGroup._id}VisibilityCheckbox` ).on( 'change', toggleObjectVisibility( buildingGroup ) )
+                    objectTreeViewItem.find( `#${buildingGroup._id}VisibilityCheckbox` ).on( 'change', _toggleObjectVisibility( buildingGroup ) )
 
                     _initScenesOf( building.scenes, buildingGroup, buildingGroup.visible )
 
@@ -700,12 +900,12 @@ function TApplication ( container, parameters, onReady ) {
                 for ( let sceneIndex = 0, numberOfScenes = scenes.length ; sceneIndex < numberOfScenes ; sceneIndex++ ) {
                     scene = scenes[ sceneIndex ]
 
-                    var sceneGroup      = new Group()
+                    const sceneGroup    = new Group()
                     sceneGroup[ '_id' ] = scene._id
                     sceneGroup.name     = scene.name
                     sceneGroup.visible  = (visible && scene.layers === 1 )
 
-                    var parentId = undefined
+                    let parentId = undefined
                     if ( building ) {
 
                         building.add( sceneGroup )
@@ -714,16 +914,25 @@ function TApplication ( container, parameters, onReady ) {
                     } else {
 
                         self.webglViewport.scene.add( sceneGroup )
+                        self.webglViewport.addRaycastables( [ sceneGroup ] )
 
                     }
 
                     // Create new base tree item
-                    var objectTreeViewItem = self.insertTreeViewItem( sceneGroup._id, sceneGroup.name, parentId, sceneGroup.visible )
-                    objectTreeViewItem.find( `#${sceneGroup._id}VisibilityCheckbox` ).on( 'change', toggleObjectVisibility( sceneGroup ) )
+                    const objectTreeViewItem = self.insertTreeViewItem( sceneGroup._id, sceneGroup.name, parentId, sceneGroup.visible )
+                    objectTreeViewItem.find( `#${sceneGroup._id}VisibilityCheckbox` ).on( 'change', _toggleObjectVisibility( sceneGroup ) )
 
-                    _initObjectsOf( scene.children, sceneGroup, true )
-                    // set children visible by default due to non recursive visible settings
-                    //                    _initObjectsOf( scene.children, sceneGroup, sceneIsVisible )
+                    if ( scene.layers === 1 ) {
+
+                        _initObjectsOf( scene.children, sceneGroup, true )
+                        // set children visible by default due to non recursive visible settings
+                        //                    _initObjectsOf( scene.children, sceneGroup, sceneIsVisible )
+
+                    } else {
+
+                        sceneGroup[ 'childrenIds' ] = scene.children
+
+                    }
 
                 }
 
@@ -803,7 +1012,11 @@ function TApplication ( container, parameters, onReady ) {
 
                 function objectReady ( object ) {
 
-                    if ( typeof object.geometry !== 'string' && typeof object.material !== 'string' ) {
+                    if ( typeof object.geometry !== 'string' && typeof object.material[ 0 ] !== 'string' ) {
+                        // Fix undefined parent to null to avoid three error
+                        if ( object.parent === undefined || typeof object.parent === 'string' ) {
+                            object.parent = null
+                        }
 
                         if ( scene ) {
 
@@ -812,10 +1025,9 @@ function TApplication ( container, parameters, onReady ) {
                         } else {
 
                             self.webglViewport.scene.add( object )
+                            self.webglViewport.addRaycastables( [ object ] )
 
                         }
-
-                        self.webglViewport.addRaycastables( [ object ] )
 
                     }
 
@@ -832,11 +1044,24 @@ function TApplication ( container, parameters, onReady ) {
 
         }
 
-        function toggleObjectVisibility ( building ) {
+        function _toggleObjectVisibility ( object ) {
+
+            const _object = object
 
             return function ( event ) {
 
-                building.visible = this.checked
+                _object.visible = this.checked
+
+                // if scene layers === 0
+                if ( _object.visible === true &&
+                    _object.type === 'Group' &&
+                    _object.childrenIds ) {
+
+                    const childrenIds = _object.childrenIds
+                    delete _object.childrenIds
+                    _initObjectsOf( childrenIds, _object, true )
+
+                }
 
             }
 
@@ -844,7 +1069,7 @@ function TApplication ( container, parameters, onReady ) {
 
     }
 
-    var _pointCloudReady = false
+    let _pointCloudReady = false
 
     function _initPointCloudData ( parameters ) {
 
@@ -852,7 +1077,7 @@ function TApplication ( container, parameters, onReady ) {
 
         if ( parameters.fromDatabase ) {
 
-            self.pointCloudManager = new TPointsManager( this.webglViewport )
+            self.pointCloudManager = new PointCloudManager( this.webglViewport )
             self.pointCloudManager.setGlobalOffset( LAMBERT_NORD_OFFSET )
             if ( parameters.samplingMin ) { self.pointCloudManager.setMinimumSamplingLimit( parameters.samplingMin ) }
 
@@ -863,45 +1088,15 @@ function TApplication ( container, parameters, onReady ) {
 
         }
 
-        var additionalFiles = parameters.files
-        if ( additionalFiles && additionalFiles.length > 0 ) {
-
-            self.universalLoader.load(
-                additionalFiles,
-                function ( clouds ) {
-
-                    //convert obj [y forward / z up] as [-z forward / y up]
-                    for ( var i = 0, numberOfChildren = clouds.children.length ; i < numberOfChildren ; ++i ) {
-                        clouds.children[ i ].rotation.x -= Math.PI / 2;
-                    }
-                    this.webglViewport.scene.add( clouds )
-
-                }.bind( this ),
-                false,
-                parameters.sampling
-            );
-
-        }
-
     }
 
-    var _avatarReady = false
+    let _avatarReady = false
 
     function _initAvatarData ( parameters ) {
 
         parameters = parameters || {}
 
-        //        self.universalLoader.load( [
-        //            'resources/models/fbx/ethan/ascii/Ethan.fbx'
-        //            //            'resources/models/fbx/Xsi/Xsi.fbx'
-        //        ], function ( ethan ) {
-        //            //convert obj [y forward / z up] as [-z forward / y up]
-        //            //            shots.rotation.x -= Math.PI / 2;
-        //            this.webglViewport.scene.add( ethan )
-        //
-        //        }.bind( this ), false )
-
-        var jsonLoader = new JSONLoader()
+        const jsonLoader = new JSONLoader()
         //        jsonLoader.load( 'resources/models/json/oko/Oko_textured.json', function ( geometry, materials ) {
         //        jsonLoader.load( 'resources/models/json/oko/Oko_join.json', function ( geometry, materials ) {
         jsonLoader.load( 'resources/models/json/John/John.json', function ( geometry, materials ) {
@@ -1033,7 +1228,7 @@ function TApplication ( container, parameters, onReady ) {
 
                 if ( 'material' in object ) {
 
-                    object.material.side    = DoubleSide
+                    object.material.side    = Constants.DoubleSide
                     object.material.opacity = 1
 
                 } else {
@@ -1175,6 +1370,14 @@ function TApplication ( container, parameters, onReady ) {
 
     }
 
+    function _initRemoteFiles ( files ) {
+
+        if ( !files ) { return }
+
+        self.universalLoader.load( files, self.addObjectToModel.bind( self ) )
+
+    }
+
     function _initListener () {
 
         window.addEventListener( 'message', function ( event ) {
@@ -1276,16 +1479,6 @@ function TApplication ( container, parameters, onReady ) {
 
     }
 
-    (function _init () {
-
-        _initGUI.call( self, _parameters.gui )
-
-        if ( _parameters.webGLEnable ) { _initWebGLViewport.call( self, _parameters.webGL ) }
-
-        _initListener.call( self )
-
-    })();
-
     function _checkReady () {
 
         if ( parameters.webGL.modelEnable ) {
@@ -1306,6 +1499,25 @@ function TApplication ( container, parameters, onReady ) {
         onReady()
 
     }
+
+    (() => {
+
+        _initGUI.call( self, _parameters.gui )
+
+        // Todo: initData.call( self, parameters.datas )
+        // model: {
+        //      database: {...ids},
+        //      files: [...urls]
+        // }
+
+        _initModelData.call( self, parameters.model )
+        _initPointCloudData.call( self, parameters.pointCloud )
+        _initAvatarData.call( self, parameters.avatarParams )
+        _initRemoteFiles.call( self, parameters.files )
+
+        _initListener.call( self )
+
+    })();
 
 }
 
@@ -2295,19 +2507,66 @@ Object.assign( TApplication.prototype, {
     },
 
     // Public methods
+    addObjectToModel ( object ) {
+
+        if ( !object ) {
+            console.error( 'TApplication: Unable to add null or undefined object !!!' )
+            return
+        }
+
+        this.insertTreeViewItem2( object )
+        this.webglViewport.scene.add( object )
+        this.webglViewport.raycastables.push( object )
+
+    },
 
     // TreeView
+
+    insertTreeViewItem2 ( object, isCheckedByDefault = true, recursive = true ) {
+
+        const itemId   = object.uuid
+        const itemName = (object.name === "") ? itemId : object.name
+        const parentId = (object.parent === null) ? 'treeViewContainer' : object.parent.uuid
+        const checked  = (isCheckedByDefault) ? 'checked="checked"' : ''
+
+        const domElement = `<li id="${itemId}">
+                                <input type="checkbox" id="${itemId}ExpandCheckbox" />
+                                    <label>
+                                        <input type="checkbox" id="${itemId}VisibilityCheckbox" ${checked} />
+                                        <span></span>
+                                    </label>   
+                                    <label for="${itemId}ExpandCheckbox">${itemName}</label>   
+                                    <ul class="children"></ul>
+                            </li>`
+
+        const item = $( domElement )
+        item.find( `#${itemId}VisibilityCheckbox` ).on( 'click', function toggleVisibility () {
+
+            object.visible = this.checked
+
+        } )
+
+        $( '#' + parentId ).children( '.children' ).append( item );
+
+        if ( recursive ) {
+
+            const children = object.children
+            for ( let childIndex = 0, numberOfChildren = children.length ; childIndex < numberOfChildren ; childIndex++ ) {
+                this.insertTreeViewItem2( children[ childIndex ] )
+            }
+
+        }
+
+    },
+
     /**
      * @memberOf TApplication.prototype
      */
-    insertTreeViewItem ( itemId, itemName, parentId, isCheckedByDefault ) {
+    insertTreeViewItem ( itemId, itemName, parentId, isCheckedByDefault, recursive = true ) {
 
-        var concatedName   = itemName.replace( /\s/g, '' );
-        var undottedName   = concatedName.replace( /\./g, '' );
-        var unslashedName  = undottedName.replace( /\//g, '' );
-        var unsquaredName  = unslashedName.replace( /[\[\]@]+/g, '' );
-        var selectableName = unsquaredName.replace( /[<{(')}>]/g, '' );
-        var cleanName      = TApplication.removeDiacritics( selectableName );
+        if ( itemName === "" ) {
+            itemName = itemId
+        }
 
         parentId                 = parentId || 'treeViewContainer'
         var concatedParentName   = parentId.replace( /\s/g, '' );
@@ -2329,9 +2588,11 @@ Object.assign( TApplication.prototype, {
         '   <ul class="children"></ul>' +
         '</li>'}`
 
-        document.getElementById( cleanParentName ).appendChild( domElement )
+        var item = $( domElement )
 
-        return domElement
+        $( '#' + cleanParentName ).children( '.children' ).append( item );
+
+        return item;
 
     },
 
@@ -2423,35 +2684,7 @@ Object.assign( TApplication.prototype, {
      */
     loadObjectFromURL ( filesUrls ) {
 
-        this.universalLoader.load( filesUrls, function ( objects ) {
-
-            //convert obj [y forward / z up] as [-z forward / y up]
-            // objects.rotation.x -= Math.PI / 2;
-
-            // Set double side (or maybe not...)
-            var numberOfChildren = objects.children.length;
-            var i;
-            for ( i = 0 ; i < numberOfChildren ; ++i ) {
-                objects.children[ i ].rotation.x -= Math.PI / 2;
-                objects.children[ i ].material.side = 2;
-            }
-
-            //    console.log(objects);
-
-            this.webglViewport.scene.add( objects )
-
-        }.bind( this ), true )
-
-    },
-
-    /**
-     * @memberOf TApplication.prototype
-     */
-    updateViewportSizes () {
-
-        if ( this.webglViewport ) {
-            this.webglViewport.updateSizes()
-        }
+        this.universalLoader.load( filesUrls, this.addObjectToModel.bind( this ) )
 
     },
 
