@@ -7,12 +7,7 @@
  */
 
 // Export Three stuff
-export * from 'three'
-// Export extended Three stuff
-export { AnaglyphEffect } from '../sources/third_party/three_extended/AnaglyphEffect'
-export { Detector as WebGLDetector } from '../sources/third_party/three_extended/Detector'
-export { OrbitControls } from '../sources/third_party/three_extended/OrbitControls'
-export { StereoEffect } from '../sources/third_party/three_extended/StereoEffect'
+export * from 'threejs-full-es6'
 
 // Export Itee stuff
 export * from './cores/_cores'
