@@ -13,7 +13,7 @@ import {
     LineSegments,
     Object3D,
     Mesh
-} from 'three'
+} from 'threejs-full-es6'
 
 /**
  *
