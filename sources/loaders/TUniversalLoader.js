@@ -78,183 +78,128 @@ function TUniversalLoader ( manager = DefaultLoadingManager, logger = DefaultLog
 
 Object.assign( TUniversalLoader.prototype, {
 
-    load: function ( urls, onLoad, fromBlob, params ) {
+    load ( files, onLoad, onProgress, onError ) {
 
-        console.log( "TUniversalLoader.load" )
-        if ( !urls ) {
-            console.error( "Unable to load null or undefined urls !" );
+        if ( !files ) {
+            console.error( "Unable to load null or undefined files !" )
             return
         }
 
-        var _fromBlob       = (typeof (fromBlob) === 'boolean') ? fromBlob : false
-        var urlsConstructor = urls.constructor;
+        if ( Validator.isObject( files ) ) {
 
-        if ( urlsConstructor === String ) {
+            this.loadSingleFile( files, onLoad, onProgress, onError )
 
-            this.loadSingleFile( urls, onLoad, _fromBlob, params )
+        } else if ( Validator.isFunction( files ) ) {
 
-        } else if ( urlsConstructor === Array ) {
+            this.load( files(), onLoad, onProgress, onError )
 
-            if ( (urls.length === 2) && (urls[ 0 ].constructor === String) ) {
-                this.loadAssociatedFiles( urls, onLoad, _fromBlob, params )
+        } else if ( Validator.isArray( files ) ) {
+
+            // Todo: need to rework logic here and use wrapper object instead of array of object to avoid
+            // Todo: array of 2 differents files.
+            if ( (files.length === 2) && (Validator.isObject( files[ 0 ] ) && Validator.isObject( files[ 1 ] )) ) {
+
+                this.loadAssociatedFiles( files, onLoad, onProgress, onError )
+
             } else {
 
-                var url              = undefined
-                var childConstructor = undefined
-                for ( var i = 0, numberOfUrls = urls.length ; i < numberOfUrls ; i++ ) {
-
-                    url              = urls[ i ]
-                    childConstructor = url.constructor
-
-                    if ( childConstructor === Array ) {
-
-                        this.loadAssociatedFiles( url, onLoad, _fromBlob, params )
-
-                    } else if ( childConstructor === String ) {
-
-                        this.loadSingleFile( url, onLoad, _fromBlob, params )
-
-                    } else {
-
-                        console.error( 'Invalid child url' )
-
-                    }
-
+                for ( let fileIndex = 0, numberOfFiles = files.length ; fileIndex < numberOfFiles ; fileIndex++ ) {
+                    this.load( files[ fileIndex ], onLoad, onProgress, onError )
                 }
 
             }
 
-        } else if ( urlsConstructor === Function ) {
+        } else if ( Validator.isString( files ) ) {
 
-            var _urls = urls()
-            this.load( _urls, onLoad, fromBlob, params )
+            this.loadSingleFile( { url: files }, onLoad, onProgress, onError )
 
         } else {
 
-            console.error( 'Invalid url' )
+            console.error( 'TUniversalLoader: Invalid files parameter !!!' )
 
         }
 
     },
 
-    loadSingleFile: function ( url, onLoad, fromBlob, params ) {
+    loadSingleFile ( file, onLoad, onProgress, onError ) {
 
-        var filePath = url.substring( 0, url.lastIndexOf( '/' ) )
-        var fileName = url.substring( url.lastIndexOf( '/' ) + 1 )
-        var loadUrl  = (fromBlob) ? filePath : url
+        const fileUrl       = file.url
+        const fileName      = getFileName( fileUrl )
+        const fileExtension = getFileExtension( fileName )
+        const loadUrl       = computeUrl( fileUrl )
+        file.url = loadUrl
 
-        if ( fileName.match( /\.stl$/i ) ) {
+        switch ( fileExtension ) {
 
-            this.stlLoader.load(
-                loadUrl,
-                function ( geometry ) {
+            case FileFormat.Asc:
+                this._loadAsc( file, onLoad, onProgress, onError )
+                break
 
-                    var material = new MeshPhongMaterial()
-                    var object3d = new Mesh( geometry, material )
-                    onLoad( object3d )
+            case FileFormat.Dbf:
+                this._loadDbf( file, onLoad, onProgress, onError )
+                break
 
-                },
-                onProgress,
-                onError
-            )
+            case FileFormat.Fbx:
+                this._loadFbx( file, onLoad, onProgress, onError )
+                break
 
-        } else if ( fileName.match( /\.rzml/i ) ) {
+            case FileFormat.Json:
+                this._loadJson( file, onLoad, onProgress, onError )
+                break
 
-            this.rzmlLoader.load(
-                loadUrl,
-                onLoad,
-                onProgress,
-                onError
-            )
+            case FileFormat.Obj:
+                this._loadObj( file, onLoad, onProgress, onError )
+                break
 
-        } else if ( fileName.match( /\.asc$/i ) ) {
+            case FileFormat.Shp:
+                this._loadShp( file, onLoad, onProgress, onError )
+                break
 
-            this.ascLoader.load(
-                loadUrl,
-                onLoad,
-                onProgress,
-                onError,
-                params
-            )
+            case FileFormat.Stl:
+                this._loadStl( file, onLoad, onProgress, onError )
+                break
 
-        } else if ( fileName.match( /\.fbx$/i ) ) {
-
-            this.fbxLoader.load(
-                loadUrl,
-                onLoad,
-                onProgress,
-                onError
-            )
-
-        } else if ( fileName.match( /\.obj$/i ) ) {
-
-            this.objLoader.load(
-                loadUrl,
-                onLoad,
-                onProgress,
-                onError
-            )
-
-        } else {
-
-            console.error( 'Unknown file type:' + fileName )
+            default:
+                throw new RangeError( `Invalid file extension: ${fileExtension}. Supported formats are: ${FileFormat.toString()}`, 'TUniversalLoader' )
+                break
 
         }
 
     },
 
-    // Todo: need to break texture resolution dependency and conert as params
-    loadAssociatedFiles: function ( urls, onLoad, fromBlob, textureResolution ) {
+    loadAssociatedFiles ( files, onLoad, onProgress, onError ) {
 
-        var TEXTURE_RESOLUTION = (textureResolution) ? textureResolution : "256"
+        const firstUrl      = files[ 0 ].url
+        const firstFileName = getFileName( firstUrl )
+        const firstFileExtension = getFileExtension( firstFileName )
+        const firstLoadUrl  = computeUrl( firstUrl )
 
-        var firstUrl      = urls[ 0 ]
-        var firstFilePath = firstUrl.substring( 0, firstUrl.lastIndexOf( '/' ) )
-        var firstFileName = firstUrl.substring( firstUrl.lastIndexOf( '/' ) + 1 )
-        var firstLoadUrl  = (fromBlob) ? firstFilePath : firstUrl
+        const secondUrl      = files[ 1 ].url
+        const secondFileName = getFileName( secondUrl )
+        const secondFileExtension = getFileExtension( secondFileName )
+        const secondLoadUrl  = computeUrl( secondUrl )
 
-        var secondUrl      = urls[ 1 ]
-        var secondFilePath = secondUrl.substring( 0, secondUrl.lastIndexOf( '/' ) )
-        var secondFileName = secondUrl.substring( secondUrl.lastIndexOf( '/' ) + 1 )
-        var secondLoadUrl  = (fromBlob) ? secondFilePath : secondUrl
 
-        if ( firstFileName.match( /\.mtl$/i ) && secondFileName.match( /\.obj$/i ) ) {
+        if ( firstFileExtension === FileFormat.Mtl && secondFileExtension === FileFormat.Obj ) {
 
-            var mtlLoader = new MTLLoader()
-            var objLoader = new OBJLoader()
-            mtlLoader.setTexturePath( firstFilePath + '/textures/' + TEXTURE_RESOLUTION + '/' )
-            mtlLoader.load( firstLoadUrl, function ( materials ) {
-                materials.preload()
+            this._loadObjMtlCouple( secondLoadUrl, firstLoadUrl, onLoad, onProgress, onError )
 
-                objLoader.setMaterials( materials )
-                objLoader.load( secondLoadUrl, function ( object3d ) {
-                    onLoad( object3d )
-                } )
-            }.bind( this ) )
+        } else if ( firstFileExtension === FileFormat.Obj && secondFileExtension === FileFormat.Mtl ) {
 
-        } else if ( firstFileName.match( /\.obj$/i ) && secondFileName.match( /\.mtl$/i ) ) {
+            this._loadObjMtlCouple( firstLoadUrl, secondLoadUrl, onLoad, onProgress, onError )
 
-            var mtlLoader = new MTLLoader()
-            var objLoader = new OBJLoader()
-            mtlLoader.setTexturePath( secondFilePath + '/textures/' + TEXTURE_RESOLUTION + '/' )
-            mtlLoader.load( secondLoadUrl, function ( materials ) {
+        } else if ( firstFileExtension === FileFormat.Shp && secondFileExtension === FileFormat.Dbf ) {
 
-                materials.preload()
+            this._loadShpDbfCouple( firstLoadUrl, secondLoadUrl, onLoad, onProgress, onError )
 
-                objLoader.setMaterials( materials )
-                objLoader.load( firstLoadUrl, function ( object3d ) {
+        } else if ( firstFileExtension === FileFormat.Dbf && secondFileExtension === FileFormat.Shp ) {
 
-                    onLoad( object3d )
-
-                } )
-
-            }.bind( this ) )
+            this._loadShpDbfCouple( secondLoadUrl, firstLoadUrl, onLoad, onProgress, onError )
 
         } else {
 
-            this.loadSingleFile( urls[ 0 ], onLoad, fromBlob, params )
-            this.loadSingleFile( urls[ 1 ], onLoad, fromBlob, params )
-            console.error( 'Unknown file type' )
+            this.loadSingleFile( files[ 0 ], onLoad, onProgress, onError )
+            this.loadSingleFile( files[ 1 ], onLoad, onProgress, onError )
 
         }
 
