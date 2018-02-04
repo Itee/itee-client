@@ -14,7 +14,7 @@ import {
     Color,
     MeshPhongMaterial,
     LineBasicMaterial
-} from 'three'
+} from 'threejs-full-es6'
 
 /**
  *
