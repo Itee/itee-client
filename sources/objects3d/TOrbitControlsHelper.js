@@ -8,14 +8,15 @@
  *
  */
 
-import { OrbitControls } from '../third_party/three_extended/OrbitControls'
-
-import { VertexColors } from '../../node_modules/three/src/constants'
-import { LineSegments } from '../../node_modules/three/src/objects/LineSegments'
-import { BufferGeometry } from '../../node_modules/three/src/core/BufferGeometry'
-import { Float32BufferAttribute } from '../../node_modules/three/src/core/BufferAttribute'
-import { LineBasicMaterial } from '../../node_modules/three/src/materials/LineBasicMaterial'
-import { Color } from '../../node_modules/three/src/math/Color'
+import {
+    VertexColors,
+    LineSegments,
+    BufferGeometry,
+    Float32BufferAttribute,
+    LineBasicMaterial,
+    Color,
+    OrbitControls
+} from 'threejs-full-es6'
 
 function TOrbitControlsHelper ( orbitControls ) {
 

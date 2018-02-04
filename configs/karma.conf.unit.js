@@ -15,7 +15,7 @@
  *
  * @param {object} config - The karma configuration object to extend
  */
-function CreateKarmaUnitTestingConfiguration( config ) {
+function CreateKarmaUnitTestingConfiguration ( config ) {
 
     config.set( {
 

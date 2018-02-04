@@ -20,14 +20,16 @@ function CreateBabelConfiguration () {
     return {
         "presets": [
             [
-                "es2015",
+                "env",
                 {
                     "modules": false
                 }
             ]
         ],
         "plugins": [
-            "external-helpers"
+            "external-helpers",
+            "transform-class-properties",
+            "transform-react-jsx"
         ]
     }
 
