@@ -6,4 +6,15 @@
  *
  */
 
+export { ASCLoader } from './ASCLoader';
+export { BinaryReader } from './BinaryReader';
+export {
+    DBFLoader,
+    DataType
+} from './DBFLoader';
+export {
+    SHPLoader,
+    ShapeType
+} from './SHPLoader';
+export { FBXLoader2 } from './FBXLoader2';
 export { TUniversalLoader } from './TUniversalLoader'
