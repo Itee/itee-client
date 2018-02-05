@@ -45,7 +45,6 @@ class TStatusBar extends React.Component {
 
             default:
                 throw new RangeError( `Invalid state parameter: ${state}`, 'TStatusBar' )
-                break
 
         }
 
@@ -73,7 +72,6 @@ class TStatusBar extends React.Component {
 
             default:
                 throw new RangeError( `Invalid position parameter: ${position}`, 'TStatusBar' )
-                break
 
         }
 

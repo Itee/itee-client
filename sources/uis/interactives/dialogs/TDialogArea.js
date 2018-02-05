@@ -18,18 +18,6 @@ class TDialogArea extends React.Component {
 
     }
 
-    componentDidMount () {
-
-        console.log( this.constructor.name + ' componentDidMount' )
-
-    }
-
-    componentWillUnmount () {
-
-        console.log( this.constructor.name + ' componentWillUnmount' )
-
-    }
-
     render () {
 
         const props = this.props

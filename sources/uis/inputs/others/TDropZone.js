@@ -30,13 +30,13 @@ class TDropZone extends React.Component {
 
     componentWillUnmount () {}
 
-    componentWillReceiveProps ( nextProps ) {}
+    componentWillReceiveProps ( /*nextProps*/ ) {}
 
-    shouldComponentUpdate ( nextProps, nextState ) {}
+    shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
 
-    componentWillUpdate ( nextProps, nextState ) {}
+    componentWillUpdate ( /*nextProps, nextState*/ ) {}
 
-    componentDidUpdate ( prevProps, prevState ) {}
+    componentDidUpdate ( /*prevProps, prevState*/ ) {}
 
     render () {
 

@@ -12,12 +12,6 @@ import React from 'react'
 
 class TButton extends React.Component {
 
-    componentDidMount () {
-
-        console.log( 'TButton componentDidMount' )
-
-    }
-
     render () {
         const { label, icon, onClickHandler } = this.props
 
