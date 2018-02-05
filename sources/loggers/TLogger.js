@@ -8,19 +8,19 @@
  *
  */
 
-function TLogger() {}
+function TLogger () {}
 
 Object.assign( TLogger.prototype, {
 
-    log( message ) {
+    log ( message ) {
         console.log( message )
     },
 
-    warn( warning ) {
+    warn ( warning ) {
         console.warn( warning )
     },
 
-    error( error ) {
+    error ( error ) {
         console.error( error )
     }
 
@@ -28,4 +28,7 @@ Object.assign( TLogger.prototype, {
 
 const DefaultLogger = new TLogger()
 
-export { TLogger, DefaultLogger }
+export {
+    TLogger,
+    DefaultLogger
+}

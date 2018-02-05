@@ -27,11 +27,11 @@ class TToolBar extends React.Component {
 
         const { id, className } = this.props
 
-        const _id = id || `tToolBar_${_instanceCounter}`
+        const _id    = id || `tToolBar_${_instanceCounter}`
         const _class = ( className ) ? `tToolBar ${className}` : 'tToolBar'
         const _style = {
-            display:         'flex',
-            alignItems:      'center'
+            display:    'flex',
+            alignItems: 'center'
         }
 
         return (
@@ -43,7 +43,7 @@ class TToolBar extends React.Component {
 }
 
 TToolBar.propType = {
-    id: PropTypes.string,
+    id:        PropTypes.string,
     className: PropTypes.string
 }
 

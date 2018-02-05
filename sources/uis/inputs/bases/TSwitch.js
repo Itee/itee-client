@@ -38,17 +38,11 @@ class TSwitch extends React.Component {
 
     componentDidUpdate ( prevProps, prevState ) {}
 
-    static componentDidCatch ( error, info ) {
-
-        console.error( error )
-
-    }
-
     render () {
 
         const { id, className } = this.props
 
-        const _id = id || `tSwitch_${_instanceCounter}`
+        const _id    = id || `tSwitch_${_instanceCounter}`
         const _style = {}
         const _class = ( className ) ? `tSwitch ${className}` : 'tSwitch'
 

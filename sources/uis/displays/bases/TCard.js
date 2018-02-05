@@ -38,17 +38,11 @@ class TCard extends React.Component {
 
     componentDidUpdate ( prevProps, prevState ) {}
 
-    static componentDidCatch ( error, info ) {
-
-        console.error( error )
-
-    }
-
     render () {
 
         const { id, className } = this.props
 
-        const _id = id || `tCard_${_instanceCounter}`
+        const _id    = id || `tCard_${_instanceCounter}`
         const _style = {}
         const _class = ( className ) ? `tCard ${className}` : 'tCard'
 

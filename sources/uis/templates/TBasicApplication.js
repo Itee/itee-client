@@ -29,16 +29,11 @@ class TBasicApplication extends React.Component {
 
     }
 
-
     /**
      * Component lifecycle
      */
 
-    static componentDidCatch ( error, info ) {
 
-        console.error( error )
-
-    }
 
     componentWillMount () {}
 
@@ -53,7 +48,6 @@ class TBasicApplication extends React.Component {
     componentWillUpdate ( nextProps, nextState ) {}
 
     componentDidUpdate ( prevProps, prevState ) {}
-
 
     /**
      * Component Handlers
@@ -118,7 +112,7 @@ class TBasicApplication extends React.Component {
 
         const { id, className } = this.props
 
-        const _id = id || `tBasicApplicationId`
+        const _id    = id || `tBasicApplicationId`
         const _style = {
             display:  'flex',
             flexFlow: 'column',

@@ -38,17 +38,11 @@ class TFlag extends React.Component {
 
     componentDidUpdate ( prevProps, prevState ) {}
 
-    static componentDidCatch ( error, info ) {
-
-        console.error( error )
-
-    }
-
     render () {
 
         const { id, className } = this.props
 
-        const _id = id || `tFlag_${_instanceCounter}`
+        const _id    = id || `tFlag_${_instanceCounter}`
         const _style = {}
         const _class = ( className ) ? `tFlag ${className}` : 'tFlag'
 
