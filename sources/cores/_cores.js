@@ -6,7 +6,6 @@
  *
  */
 
-
 export * from './TConstants'
 export { extend } from './TUtils'
 export { isObject } from './TValidator'

@@ -321,9 +321,9 @@ function TApplication ( container, parameters, onReady ) {
             toolbar:  null,
             content:  null,
             viewport: {
-                type: 'webgl',
+                type:    'webgl',
                 options: {
-                    effect: ['anaglyph', 'etc']
+                    effect: [ 'anaglyph', 'etc' ]
                 }
             },
             tools:    null,
@@ -1999,13 +1999,12 @@ Object.assign( TApplication, {
                 type:          properties.TYPE_BP,
                 tubeType:      properties.TYPE_CANA,
                 rejectionType: properties.TYPE_REJET,
-                position: {
+                position:      {
                     x: Math.round( properties.X * 100 ) / 100,
                     y: Math.round( properties.Y * 100 ) / 100,
                     z: Math.round( properties.Z * 100 ) / 100
                 }
             }
-
 
             // TRANSFORME ZUP/YFOR to YUP/-ZFOR
             // Convert Y forward Z up to Y up - Z forward
@@ -2079,8 +2078,8 @@ Object.assign( TApplication, {
                 side:  FrontSide
             } )
 
-            mesh = new Mesh( geometry, material )
-            mesh.userData = node.properties
+            mesh                   = new Mesh( geometry, material )
+            mesh.userData          = node.properties
             mesh.userData.position = {
                 x: Math.round( coordinates[ 0 ] * 100 ) / 100,
                 y: Math.round( coordinates[ 1 ] * 100 ) / 100,
@@ -2228,7 +2227,7 @@ Object.assign( TApplication, {
         generateSpritId = generateSpritId || false
         filters         = filters || null
 
-        var pathGroup = new Group()
+        var pathGroup     = new Group()
         var lines         = pathFile.split( '\n' )
         var numberOfLines = lines.length
         var line          = undefined

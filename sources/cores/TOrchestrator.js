@@ -46,7 +46,7 @@ Object.assign( TOrchestrator.prototype, {
 
             self._processQueue.push( requestSkull )
 
-            request = new XMLHttpRequest()
+            request              = new XMLHttpRequest()
             request.responseType = requestSkull.responseType
 
             request.onload = (function closureEndRequest () {

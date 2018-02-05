@@ -29,7 +29,7 @@ class TToolButton extends React.Component {
 
         const linkStyle = {
             padding: '10px 15px',
-            color: 'white'
+            color:   'white'
         }
 
         return (

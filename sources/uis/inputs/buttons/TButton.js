@@ -14,14 +14,14 @@ class TButton extends React.Component {
 
     componentDidMount () {
 
-        console.log('TButton componentDidMount')
+        console.log( 'TButton componentDidMount' )
 
     }
 
     render () {
         const { label, icon, onClickHandler } = this.props
 
-        if (label && icon) {
+        if ( label && icon ) {
 
             return (
                 <button
@@ -32,7 +32,7 @@ class TButton extends React.Component {
                 </button>
             )
 
-        } else if (label && !icon) {
+        } else if ( label && !icon ) {
 
             return (
                 <button
@@ -42,7 +42,7 @@ class TButton extends React.Component {
                 </button>
             )
 
-        } else if (!label && icon) {
+        } else if ( !label && icon ) {
 
             return (
                 <button

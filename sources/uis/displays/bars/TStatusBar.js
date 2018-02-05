@@ -24,9 +24,9 @@ class TStatusBar extends React.Component {
         const _id = id || 'tStatusBar'
 
         let _style = {
-            height:          '40px',
-            display:         'flex',
-            alignItems:      'center'
+            height:     '40px',
+            display:    'flex',
+            alignItems: 'center'
         }
 
         switch ( state ) {

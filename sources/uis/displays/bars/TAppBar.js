@@ -3,7 +3,8 @@
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  *
  * @class TAppBar
- * @classdesc This is the top application bar that contain 3 sub part, one left, one center and one right. The purpose of this bar container is to display an brand to left, the main menu to center and login button to the right.
+ * @classdesc This is the top application bar that contain 3 sub part, one left, one center and one right. The purpose of this bar container is to display an brand to left, the main menu to center
+ *     and login button to the right.
  *
  * @example
  *
@@ -26,14 +27,14 @@ class TAppBar extends React.Component {
         const _id = id || `tAppBarId`
 
         const _style = {
-            display:         'flex',
-            justifyContent:   'space-between'
+            display:        'flex',
+            justifyContent: 'space-between'
         }
 
         const _subStyle = {
-            display:         'flex',
-            alignContent:    'center',
-            alignItems:      'center'
+            display:      'flex',
+            alignContent: 'center',
+            alignItems:   'center'
         }
 
         return (

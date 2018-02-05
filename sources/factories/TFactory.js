@@ -7,7 +7,7 @@
  * @example Todo...
  *
  */
- 
+
 function TFactory () {
 
 }
