@@ -426,7 +426,7 @@ function TApplication ( container, parameters, onReady ) {
             parameters = parameters || {}
 
             this.webglViewportContainer = document.getElementById( 'webglViewportContainer' )
-            this.webglViewport          = new TWebGLViewport( this.webglViewportContainer )
+            this.webglViewport          = new TViewport( this.webglViewportContainer )
             this.webglViewportContainer.addEventListener( 'panelResize', this.webglViewport.updateSizes.bind( this.webglViewport ) )
             //        this.webglViewport.toggleAutorun()
 
