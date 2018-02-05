@@ -19,7 +19,7 @@
   ],
   "repository": "https://github.com/Itee/itee-client.git",
   "license": "BSD-3-Clause",
-  "main": "itee-client.js",
+  "main": "itee-client.es.js",
   "scripts": {
     "help": "gulp help",
     "clean": "gulp clean",
