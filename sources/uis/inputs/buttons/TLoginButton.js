@@ -24,22 +24,20 @@ class TLogingButton extends React.Component {
 
         const { isLogged, label, round, logInHandler, logOutHandler } = this.props
 
-        console.log( 'TLogingButton.render' )
-
         if ( isLogged ) {
 
-            const logginStyle = {
-                padding:         '10px',
-                color:           'white',
-                backgroundColor: '#0088ff',
-                textDecoration:  'none',
-                borderRadius:    '50%'
-            }
-
-            const iconStyle = {
-                fontSize:    '3.2em',
-                marginRight: '11px'
-            }
+//            const logginStyle = {
+//                padding:         '10px',
+//                color:           'white',
+//                backgroundColor: '#0088ff',
+//                textDecoration:  'none',
+//                borderRadius:    '50%'
+//            }
+//
+//            const iconStyle = {
+//                fontSize:    '3.2em',
+//                marginRight: '11px'
+//            }
 
             return (
                 <TDropDownMenu icon={"fa fa-user-circle-o"} align={'right'}>
