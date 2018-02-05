@@ -21,6 +21,7 @@
   "license": "BSD-3-Clause",
   "main": "itee-client.es.js",
   "scripts": {
+    "default": "gulp",
     "help": "gulp help",
     "clean": "gulp clean",
     "lint": "gulp lint",
@@ -47,11 +48,10 @@
     "chai": "^4.1.2",
     "del": "^3.0.0",
     "docdash": "^0.4.0",
-    "gulp": "^3.9.1",
+    "eslint-plugin-react": "^7.6.1",
+    "gulp": "^4.0.0",
     "gulp-eslint": "^4.0.2",
-    "gulp-inject-string": "^1.1.1",
     "gulp-jsdoc3": "^1.0.1",
-    "gulp-replace": "^0.6.1",
     "gulp-util": "^3.0.8",
     "karma": "^2.0.0",
     "karma-benchmark": "^0.7.1",
@@ -73,7 +73,6 @@
     "rollup-plugin-node-resolve": "^3.0.2",
     "rollup-plugin-replace": "^2.0.0",
     "rollup-plugin-strip": "^1.1.1",
-    "rollup-plugin-uglify-es": "0.0.1",
-    "run-sequence": "^2.2.1"
+    "rollup-plugin-uglify-es": "0.0.1"
   }
 }
