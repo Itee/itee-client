@@ -34,10 +34,7 @@ const gulp        = require( 'gulp' )
 const util        = require( 'gulp-util' )
 const jsdoc       = require( 'gulp-jsdoc3' )
 const eslint      = require( 'gulp-eslint' )
-const inject      = require( 'gulp-inject-string' )
-const replace     = require( 'gulp-replace' )
 const del         = require( 'del' )
-const runSequence = require( 'run-sequence' )
 const rollup      = require( 'rollup' )
 
 const log     = util.log
@@ -53,7 +50,6 @@ const magenta = colors.magenta
  * @method npm run help ( default )
  * @description Will display the help in console
  */
-gulp.task( 'default', [ 'help' ] )
 gulp.task( 'help', ( done ) => {
 
     log( '====================================================' )
@@ -118,7 +114,7 @@ gulp.task( 'lint', () => {
                    fix:               true,
                    quiet:             false,
                    envs:              [],
-                   configFile:        './configs/eslint.conf.json',
+                   configFile:        './configs/eslint.conf.js',
                    parser:            'babel-eslint',
                    parserOptions:     {
                        ecmaFeatures: {
@@ -167,24 +163,10 @@ gulp.task( 'lint', () => {
 gulp.task( 'doc', ( done ) => {
 
     const config = require( './configs/jsdoc.conf' )
-    const files = [ './configs/*.js', './sources/**/*.js', './tests/**/*.js' ]
+    const files  = [ './configs/*.js', './sources/**/*.js', './tests/**/*.js' ]
 
     gulp.src( files, { read: false } )
-               .pipe( jsdoc( config, done ) )
-
-} )
-
-/**
- * @method npm run test
- * @description Will run unit tests and benchmarks using karma
- */
-gulp.task( 'test', ( done ) => {
-
-    runSequence(
-        'unit',
-        'bench',
-        done
-    )
+        .pipe( jsdoc( config, done ) )
 
 } )
 
@@ -192,17 +174,23 @@ gulp.task( 'test', ( done ) => {
  * @method npm run unit
  * @description Will run unit tests using karma
  */
-gulp.task( 'unit', () => {
-
+gulp.task( 'unit', ( done ) => {
+    done()
 } )
 
 /**
  * @method npm run bench
  * @description Will run benchmarks using karma
  */
-gulp.task( 'bench', () => {
-
+gulp.task( 'bench', ( done ) => {
+    done()
 } )
+
+/**
+ * @method npm run test
+ * @description Will run unit tests and benchmarks using karma
+ */
+gulp.task( 'test', gulp.parallel( 'unit', 'bench' ) )
 
 /**
  * @method npm run build
@@ -323,18 +311,8 @@ gulp.task( 'build', ( done ) => {
  * @method npm run release
  * @description Will perform a complet release of the library.
  */
-gulp.task( 'release', ( done ) => {
+gulp.task( 'release', gulp.series( 'clean', gulp.parallel( 'lint', 'doc', 'test' ), 'build' ) )
 
-    runSequence(
-        'clean',
-        '_extendThree',
-        [
-            'lint',
-            'doc',
-            'test'
-        ],
-        'build',
-        done
-    )
+//---------
 
-} )
+gulp.task( 'default', gulp.series( 'help' ) )
