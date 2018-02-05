@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>sources/uis/displays/bases/TToolTip.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ASCLoader.html">ASCLoader</a></li><li><a href="BoundingBox.html">BoundingBox</a></li><li><a href="DBFLoader.html">DBFLoader</a></li><li><a href="MeshManager.html">MeshManager</a></li><li><a href="SHPLoader.html">SHPLoader</a></li><li><a href="TAppBar.html">TAppBar</a></li><li><a href="TApplication.html">TApplication</a><ul class='methods'><li data-type='method'><a href="TApplication.html#.removeDiacritics">removeDiacritics</a></li><li data-type='method'><a href="TApplication.html#askUserForPosition">askUserForPosition</a></li><li data-type='method'><a href="TApplication.html#changeMaterialSide">changeMaterialSide</a></li><li data-type='method'><a href="TApplication.html#endMeasure">endMeasure</a></li><li data-type='method'><a href="TApplication.html#initRequest">initRequest</a></li><li data-type='method'><a href="TApplication.html#insertTreeViewItem">insertTreeViewItem</a></li><li data-type='method'><a href="TApplication.html#loadObjectFromURL">loadObjectFromURL</a></li><li data-type='method'><a href="TApplication.html#popupImageShotModal">popupImageShotModal</a></li><li data-type='method'><a href="TApplication.html#popupImportFilesModal">popupImportFilesModal</a></li><li data-type='method'><a href="TApplication.html#popupSelectedObjectModal">popupSelectedObjectModal</a></li><li data-type='method'><a href="TApplication.html#removeMeasure">removeMeasure</a></li><li data-type='method'><a href="TApplication.html#removeTemporaryMeasure">removeTemporaryMeasure</a></li><li data-type='method'><a href="TApplication.html#resetDataPanel">resetDataPanel</a></li><li data-type='method'><a href="TApplication.html#setCameraMode">setCameraMode</a></li><li data-type='method'><a href="TApplication.html#setLayerGroupVisibility">setLayerGroupVisibility</a></li><li data-type='method'><a href="TApplication.html#setMapViewer">setMapViewer</a></li><li data-type='method'><a href="TApplication.html#setRendersEffect">setRendersEffect</a></li><li data-type='method'><a href="TApplication.html#startMeasure">startMeasure</a></li><li data-type='method'><a href="TApplication.html#updateAvatar">updateAvatar</a></li><li data-type='method'><a href="TApplication.html#updateDataPanel">updateDataPanel</a></li><li data-type='method'><a href="TApplication.html#updateImageShot">updateImageShot</a></li><li data-type='method'><a href="TApplication.html#updateMapViewer">updateMapViewer</a></li><li data-type='method'><a href="TApplication.html#updateMapViewerDisplay">updateMapViewerDisplay</a></li><li data-type='method'><a href="TApplication.html#updateMapViewerOrientation">updateMapViewerOrientation</a></li><li data-type='method'><a href="TApplication.html#updateMapViewerPosition">updateMapViewerPosition</a></li><li data-type='method'><a href="TApplication.html#updateMeasure">updateMeasure</a></li><li data-type='method'><a href="TApplication.html#updateMeshResolution">updateMeshResolution</a></li><li data-type='method'><a href="TApplication.html#updatePointCloudDensity">updatePointCloudDensity</a></li><li data-type='method'><a href="TApplication.html#updateTemporaryMeasure">updateTemporaryMeasure</a></li></ul></li><li><a href="TCache.html">TCache</a><ul class='methods'><li data-type='method'><a href="TCache.html#add">add</a></li><li data-type='method'><a href="TCache.html#clear">clear</a></li><li data-type='method'><a href="TCache.html#get">get</a></li><li data-type='method'><a href="TCache.html#remove">remove</a></li></ul></li><li><a href="TDataBaseManager.html">TDataBaseManager</a><ul class='methods'><li data-type='method'><a href="TDataBaseManager.html#._statusOk">_statusOk</a></li><li data-type='method'><a href="TDataBaseManager.html#.requestServer">requestServer</a></li><li data-type='method'><a href="TDataBaseManager.html#_create">_create</a></li><li data-type='method'><a href="TDataBaseManager.html#_deleteOne">_deleteOne</a></li><li data-type='method'><a href="TDataBaseManager.html#_deleteSome">_deleteSome</a></li><li data-type='method'><a href="TDataBaseManager.html#_onArrayBuffer">_onArrayBuffer</a></li><li data-type='method'><a href="TDataBaseManager.html#_onBlob">_onBlob</a></li><li data-type='method'><a href="TDataBaseManager.html#_onError">_onError</a></li><li data-type='method'><a href="TDataBaseManager.html#_onJson">_onJson</a></li><li data-type='method'><a href="TDataBaseManager.html#_onLoad">_onLoad</a></li><li data-type='method'><a href="TDataBaseManager.html#_onProgress">_onProgress</a></li><li data-type='method'><a href="TDataBaseManager.html#_onText">_onText</a></li><li data-type='method'><a href="TDataBaseManager.html#_readOne">_readOne</a></li><li data-type='method'><a href="TDataBaseManager.html#_readSome">_readSome</a></li><li data-type='method'><a href="TDataBaseManager.html#_updateOne">_updateOne</a></li><li data-type='method'><a href="TDataBaseManager.html#_updateSome">_updateSome</a></li><li data-type='method'><a href="TDataBaseManager.html#create">create</a></li><li data-type='method'><a href="TDataBaseManager.html#delete">delete</a></li><li data-type='method'><a href="TDataBaseManager.html#read">read</a></li><li data-type='method'><a href="TDataBaseManager.html#update">update</a></li></ul></li><li><a href="TDateTime.html">TDateTime</a><ul class='methods'><li data-type='method'><a href="TDateTime.html#componentWillMount">componentWillMount</a></li><li data-type='method'><a href="TDateTime.html#render">render</a></li><li data-type='method'><a href="TDateTime.html#tick">tick</a></li></ul></li><li><a href="TErrorCatcher.html">TErrorCatcher</a><ul class='methods'><li data-type='method'><a href="TErrorCatcher.html#componentDidCatch">componentDidCatch</a></li><li data-type='method'><a href="TErrorCatcher.html#render">render</a></li></ul></li><li><a href="TErrorManager.html">TErrorManager</a></li><li><a href="TFactory.html">TFactory</a></li><li><a href="TGeometriesManager.html">TGeometriesManager</a><ul class='methods'><li data-type='method'><a href="TGeometriesManager.html#convertJsonToGeometry">convertJsonToGeometry</a></li></ul></li><li><a href="TMaterialsManager.html">TMaterialsManager</a></li><li><a href="TObjectsManager.html">TObjectsManager</a></li><li><a href="TOrbitControlsHelper.html">TOrbitControlsHelper</a></li><li><a href="TOrchestrator.html">TOrchestrator</a><ul class='methods'><li data-type='method'><a href="TOrchestrator.html#processQueue">processQueue</a></li><li data-type='method'><a href="TOrchestrator.html#queue">queue</a></li></ul></li><li><a href="TPointsManager.html">TPointsManager</a></li><li><a href="TProgressManager.html">TProgressManager</a></li><li><a href="TScenesManager.html">TScenesManager</a></li><li><a href="TToolBar.html">TToolBar</a></li><li><a href="TUniversalLoader.html">TUniversalLoader</a></li><li><a href="TViewport.html">TViewport</a></li></ul><h3>Modules</h3><ul><li><a href="module-config_babelConfiguration.html">config/babelConfiguration</a><ul class='methods'><li data-type='method'><a href="module-config_babelConfiguration.html#~CreateBabelConfiguration">CreateBabelConfiguration</a></li></ul></li><li><a href="module-config_eslintConfiguration.html">config/eslintConfiguration</a><ul class='methods'><li data-type='method'><a href="module-config_eslintConfiguration.html#~CreateEslintConfiguration">CreateEslintConfiguration</a></li></ul></li><li><a href="module-config_jsdocConfiguration.html">config/jsdocConfiguration</a><ul class='methods'><li data-type='method'><a href="module-config_jsdocConfiguration.html#~CreateJsdocConfiguration">CreateJsdocConfiguration</a></li></ul></li><li><a href="module-config_karmaBenchConfiguration.html">config/karmaBenchConfiguration</a><ul class='methods'><li data-type='method'><a href="module-config_karmaBenchConfiguration.html#~CreateKarmaBenchmarkConfiguration">CreateKarmaBenchmarkConfiguration</a></li></ul></li><li><a href="module-config_karmaUnitConfiguration.html">config/karmaUnitConfiguration</a><ul class='methods'><li data-type='method'><a href="module-config_karmaUnitConfiguration.html#~CreateKarmaUnitTestingConfiguration">CreateKarmaUnitTestingConfiguration</a></li></ul></li><li><a href="module-config_rollupConfiguration.html">config/rollupConfiguration</a><ul class='methods'><li data-type='method'><a href="module-config_rollupConfiguration.html#~CreateRollupConfiguration">CreateRollupConfiguration</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#addPointsFromBuffer">addPointsFromBuffer</a></li><li><a href="global.html#DEG2RAD">DEG2RAD</a></li><li><a href="global.html#endianness">endianness</a></li><li><a href="global.html#getInt8">getInt8</a></li><li><a href="global.html#getPointClouds">getPointClouds</a></li><li><a href="global.html#getSamplingForDistanceToCamera">getSamplingForDistanceToCamera</a></li><li><a href="global.html#HttpStatusCode">HttpStatusCode</a></li><li><a href="global.html#HttpVerb">HttpVerb</a></li><li><a href="global.html#ResponseType">ResponseType</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">sources/uis/displays/bases/TToolTip.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ *
+ * @file Todo
+ *
+ * @example Todo
+ *
+ */
+
+import React from 'react'
+
+let _instanceCounter = 0
+
+class TToolTip extends React.Component {
+
+    constructor ( props ) {
+
+        super( props )
+        _instanceCounter++
+
+    }
+
+    /**
+     * React lifecycle
+     */
+    componentWillMount () {}
+
+    componentDidMount () {}
+
+    componentWillUnmount () {}
+
+    componentWillReceiveProps ( /*nextProps*/ ) {}
+
+    shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
+
+    componentWillUpdate ( /*nextProps, nextState*/ ) {}
+
+    componentDidUpdate ( /*prevProps, prevState*/ ) {}
+
+    render () {
+
+        const { id, className } = this.props
+
+        const _id    = id || `tToolTip_${_instanceCounter}`
+        const _style = {}
+        const _class = ( className ) ? `tToolTip ${className}` : 'tToolTip'
+
+        return (
+            &lt;t-tool-tip ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}>&lt;/t-tool-tip>
+        )
+
+    }
+
+}
+
+export { TToolTip }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

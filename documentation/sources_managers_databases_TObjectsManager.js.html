@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>sources/managers/databases/TObjectsManager.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ASCLoader.html">ASCLoader</a></li><li><a href="BoundingBox.html">BoundingBox</a></li><li><a href="DBFLoader.html">DBFLoader</a></li><li><a href="MeshManager.html">MeshManager</a></li><li><a href="SHPLoader.html">SHPLoader</a></li><li><a href="TAppBar.html">TAppBar</a></li><li><a href="TApplication.html">TApplication</a><ul class='methods'><li data-type='method'><a href="TApplication.html#.removeDiacritics">removeDiacritics</a></li><li data-type='method'><a href="TApplication.html#askUserForPosition">askUserForPosition</a></li><li data-type='method'><a href="TApplication.html#changeMaterialSide">changeMaterialSide</a></li><li data-type='method'><a href="TApplication.html#endMeasure">endMeasure</a></li><li data-type='method'><a href="TApplication.html#initRequest">initRequest</a></li><li data-type='method'><a href="TApplication.html#insertTreeViewItem">insertTreeViewItem</a></li><li data-type='method'><a href="TApplication.html#loadObjectFromURL">loadObjectFromURL</a></li><li data-type='method'><a href="TApplication.html#popupImageShotModal">popupImageShotModal</a></li><li data-type='method'><a href="TApplication.html#popupImportFilesModal">popupImportFilesModal</a></li><li data-type='method'><a href="TApplication.html#popupSelectedObjectModal">popupSelectedObjectModal</a></li><li data-type='method'><a href="TApplication.html#removeMeasure">removeMeasure</a></li><li data-type='method'><a href="TApplication.html#removeTemporaryMeasure">removeTemporaryMeasure</a></li><li data-type='method'><a href="TApplication.html#resetDataPanel">resetDataPanel</a></li><li data-type='method'><a href="TApplication.html#setCameraMode">setCameraMode</a></li><li data-type='method'><a href="TApplication.html#setLayerGroupVisibility">setLayerGroupVisibility</a></li><li data-type='method'><a href="TApplication.html#setMapViewer">setMapViewer</a></li><li data-type='method'><a href="TApplication.html#setRendersEffect">setRendersEffect</a></li><li data-type='method'><a href="TApplication.html#startMeasure">startMeasure</a></li><li data-type='method'><a href="TApplication.html#updateAvatar">updateAvatar</a></li><li data-type='method'><a href="TApplication.html#updateDataPanel">updateDataPanel</a></li><li data-type='method'><a href="TApplication.html#updateImageShot">updateImageShot</a></li><li data-type='method'><a href="TApplication.html#updateMapViewer">updateMapViewer</a></li><li data-type='method'><a href="TApplication.html#updateMapViewerDisplay">updateMapViewerDisplay</a></li><li data-type='method'><a href="TApplication.html#updateMapViewerOrientation">updateMapViewerOrientation</a></li><li data-type='method'><a href="TApplication.html#updateMapViewerPosition">updateMapViewerPosition</a></li><li data-type='method'><a href="TApplication.html#updateMeasure">updateMeasure</a></li><li data-type='method'><a href="TApplication.html#updateMeshResolution">updateMeshResolution</a></li><li data-type='method'><a href="TApplication.html#updatePointCloudDensity">updatePointCloudDensity</a></li><li data-type='method'><a href="TApplication.html#updateTemporaryMeasure">updateTemporaryMeasure</a></li></ul></li><li><a href="TCache.html">TCache</a><ul class='methods'><li data-type='method'><a href="TCache.html#add">add</a></li><li data-type='method'><a href="TCache.html#clear">clear</a></li><li data-type='method'><a href="TCache.html#get">get</a></li><li data-type='method'><a href="TCache.html#remove">remove</a></li></ul></li><li><a href="TDataBaseManager.html">TDataBaseManager</a><ul class='methods'><li data-type='method'><a href="TDataBaseManager.html#._statusOk">_statusOk</a></li><li data-type='method'><a href="TDataBaseManager.html#.requestServer">requestServer</a></li><li data-type='method'><a href="TDataBaseManager.html#_create">_create</a></li><li data-type='method'><a href="TDataBaseManager.html#_deleteOne">_deleteOne</a></li><li data-type='method'><a href="TDataBaseManager.html#_deleteSome">_deleteSome</a></li><li data-type='method'><a href="TDataBaseManager.html#_onArrayBuffer">_onArrayBuffer</a></li><li data-type='method'><a href="TDataBaseManager.html#_onBlob">_onBlob</a></li><li data-type='method'><a href="TDataBaseManager.html#_onError">_onError</a></li><li data-type='method'><a href="TDataBaseManager.html#_onJson">_onJson</a></li><li data-type='method'><a href="TDataBaseManager.html#_onLoad">_onLoad</a></li><li data-type='method'><a href="TDataBaseManager.html#_onProgress">_onProgress</a></li><li data-type='method'><a href="TDataBaseManager.html#_onText">_onText</a></li><li data-type='method'><a href="TDataBaseManager.html#_readOne">_readOne</a></li><li data-type='method'><a href="TDataBaseManager.html#_readSome">_readSome</a></li><li data-type='method'><a href="TDataBaseManager.html#_updateOne">_updateOne</a></li><li data-type='method'><a href="TDataBaseManager.html#_updateSome">_updateSome</a></li><li data-type='method'><a href="TDataBaseManager.html#create">create</a></li><li data-type='method'><a href="TDataBaseManager.html#delete">delete</a></li><li data-type='method'><a href="TDataBaseManager.html#read">read</a></li><li data-type='method'><a href="TDataBaseManager.html#update">update</a></li></ul></li><li><a href="TDateTime.html">TDateTime</a><ul class='methods'><li data-type='method'><a href="TDateTime.html#componentWillMount">componentWillMount</a></li><li data-type='method'><a href="TDateTime.html#render">render</a></li><li data-type='method'><a href="TDateTime.html#tick">tick</a></li></ul></li><li><a href="TErrorCatcher.html">TErrorCatcher</a><ul class='methods'><li data-type='method'><a href="TErrorCatcher.html#componentDidCatch">componentDidCatch</a></li><li data-type='method'><a href="TErrorCatcher.html#render">render</a></li></ul></li><li><a href="TErrorManager.html">TErrorManager</a></li><li><a href="TFactory.html">TFactory</a></li><li><a href="TGeometriesManager.html">TGeometriesManager</a><ul class='methods'><li data-type='method'><a href="TGeometriesManager.html#convertJsonToGeometry">convertJsonToGeometry</a></li></ul></li><li><a href="TMaterialsManager.html">TMaterialsManager</a></li><li><a href="TObjectsManager.html">TObjectsManager</a></li><li><a href="TOrbitControlsHelper.html">TOrbitControlsHelper</a></li><li><a href="TOrchestrator.html">TOrchestrator</a><ul class='methods'><li data-type='method'><a href="TOrchestrator.html#processQueue">processQueue</a></li><li data-type='method'><a href="TOrchestrator.html#queue">queue</a></li></ul></li><li><a href="TPointsManager.html">TPointsManager</a></li><li><a href="TProgressManager.html">TProgressManager</a></li><li><a href="TScenesManager.html">TScenesManager</a></li><li><a href="TToolBar.html">TToolBar</a></li><li><a href="TUniversalLoader.html">TUniversalLoader</a></li><li><a href="TViewport.html">TViewport</a></li></ul><h3>Modules</h3><ul><li><a href="module-config_babelConfiguration.html">config/babelConfiguration</a><ul class='methods'><li data-type='method'><a href="module-config_babelConfiguration.html#~CreateBabelConfiguration">CreateBabelConfiguration</a></li></ul></li><li><a href="module-config_eslintConfiguration.html">config/eslintConfiguration</a><ul class='methods'><li data-type='method'><a href="module-config_eslintConfiguration.html#~CreateEslintConfiguration">CreateEslintConfiguration</a></li></ul></li><li><a href="module-config_jsdocConfiguration.html">config/jsdocConfiguration</a><ul class='methods'><li data-type='method'><a href="module-config_jsdocConfiguration.html#~CreateJsdocConfiguration">CreateJsdocConfiguration</a></li></ul></li><li><a href="module-config_karmaBenchConfiguration.html">config/karmaBenchConfiguration</a><ul class='methods'><li data-type='method'><a href="module-config_karmaBenchConfiguration.html#~CreateKarmaBenchmarkConfiguration">CreateKarmaBenchmarkConfiguration</a></li></ul></li><li><a href="module-config_karmaUnitConfiguration.html">config/karmaUnitConfiguration</a><ul class='methods'><li data-type='method'><a href="module-config_karmaUnitConfiguration.html#~CreateKarmaUnitTestingConfiguration">CreateKarmaUnitTestingConfiguration</a></li></ul></li><li><a href="module-config_rollupConfiguration.html">config/rollupConfiguration</a><ul class='methods'><li data-type='method'><a href="module-config_rollupConfiguration.html#~CreateRollupConfiguration">CreateRollupConfiguration</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#addPointsFromBuffer">addPointsFromBuffer</a></li><li><a href="global.html#DEG2RAD">DEG2RAD</a></li><li><a href="global.html#endianness">endianness</a></li><li><a href="global.html#getInt8">getInt8</a></li><li><a href="global.html#getPointClouds">getPointClouds</a></li><li><a href="global.html#getSamplingForDistanceToCamera">getSamplingForDistanceToCamera</a></li><li><a href="global.html#HttpStatusCode">HttpStatusCode</a></li><li><a href="global.html#HttpVerb">HttpVerb</a></li><li><a href="global.html#ResponseType">ResponseType</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">sources/managers/databases/TObjectsManager.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ *
+ * @class TScenesManager
+ * @classdesc Todo...
+ * @example Todo...
+ *
+ */
+
+import { TDataBaseManager } from '../TDataBaseManager'
+import {
+    LineSegments,
+    Object3D,
+    Mesh
+} from 'threejs-full-es6'
+
+/**
+ *
+ * @constructor
+ */
+function TObjectsManager () {
+
+    TDataBaseManager.call( this )
+    this.basePath = '/objects'
+
+}
+
+TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.prototype ), {
+
+    constructor: TObjectsManager,
+
+    convertJsonToObject3D ( jsonData, onError ) {
+
+        // Todo factory
+        const self       = this
+        const data       = jsonData
+        const objectType = data.type
+
+        if ( objectType === 'Object3D' ) {
+
+            var object3d            = new Object3D()
+            object3d.uuid           = data.uuid
+            object3d.name           = data.name
+            object3d.type           = data.type
+            object3d.parent         = data.parent
+            object3d.children       = []
+            object3d.up.x           = data.up.x
+            object3d.up.y           = data.up.y
+            object3d.up.z           = data.up.z
+            object3d.position.x     = data.position.x
+            object3d.position.y     = data.position.y
+            object3d.position.z     = data.position.z
+            object3d.rotation.x     = data.rotation.x
+            object3d.rotation.y     = data.rotation.y
+            object3d.rotation.z     = data.rotation.z
+            object3d.rotation.order = data.rotation.order
+            object3d.quaternion.x   = data.quaternion.x
+            object3d.quaternion.y   = data.quaternion.y
+            object3d.quaternion.z   = data.quaternion.z
+            object3d.quaternion.w   = data.quaternion.w
+            object3d.scale.x        = data.scale.x
+            object3d.scale.y        = data.scale.y
+            object3d.scale.z        = data.scale.z
+            object3d.modelViewMatrix.fromArray( data.modelViewMatrix )
+            object3d.normalMatrix.fromArray( data.normalMatrix )
+            object3d.matrix.fromArray( data.matrix )
+            object3d.matrixWorld.fromArray( data.matrixWorld )
+            object3d.matrixAutoUpdate       = data.matrixAutoUpdate
+            object3d.matrixWorldNeedsUpdate = data.matrixWorldNeedsUpdate
+            object3d.layers.mask            = data.layers
+            object3d.visible                = data.visible
+            object3d.castShadow             = data.castShadow
+            object3d.receiveShadow          = data.receiveShadow
+            object3d.frustumCulled          = data.frustumCulled
+            object3d.renderOrder            = data.renderOrder
+            object3d.userData               = data.userData
+
+            return object3d
+
+        } else if ( objectType === 'LineSegments' ) {
+
+            let segment            = new LineSegments()
+            segment.uuid           = data.uuid
+            segment.name           = data.name
+            segment.type           = data.type
+            segment.parent         = null//data.parent
+            segment.children       = data.children
+            segment.up.x           = data.up.x
+            segment.up.y           = data.up.y
+            segment.up.z           = data.up.z
+            segment.position.x     = data.position.x
+            segment.position.y     = data.position.y
+            segment.position.z     = data.position.z
+            segment.rotation.x     = data.rotation.x
+            segment.rotation.y     = data.rotation.y
+            segment.rotation.z     = data.rotation.z
+            segment.rotation.order = data.rotation.order
+            segment.quaternion.x   = data.quaternion.x
+            segment.quaternion.y   = data.quaternion.y
+            segment.quaternion.z   = data.quaternion.z
+            segment.quaternion.w   = data.quaternion.w
+            segment.scale.x        = data.scale.x
+            segment.scale.y        = data.scale.y
+            segment.scale.z        = data.scale.z
+            segment.modelViewMatrix.fromArray( data.modelViewMatrix )
+            segment.normalMatrix.fromArray( data.normalMatrix )
+            segment.matrix.fromArray( data.matrix )
+            segment.matrixWorld.fromArray( data.matrixWorld )
+            segment.matrixAutoUpdate       = data.matrixAutoUpdate
+            segment.matrixWorldNeedsUpdate = data.matrixWorldNeedsUpdate
+            segment.layers.mask            = data.layers
+            segment.visible                = data.visible
+            segment.castShadow             = data.castShadow
+            segment.receiveShadow          = data.receiveShadow
+            segment.frustumCulled          = data.frustumCulled
+            segment.renderOrder            = data.renderOrder
+            segment.userData               = data.userData || {}
+            segment.geometry               = data.geometry
+            segment.material               = data.material
+
+            // Required for carl source
+            segment.userData[ 'id' ] = data._id
+
+            return mesh
+
+        } else if ( objectType === 'Mesh' ) {
+
+            var mesh            = new Mesh()
+            mesh.uuid           = data.uuid
+            mesh.name           = data.name
+            mesh.type           = data.type
+            mesh.parent         = null//data.parent
+            mesh.children       = data.children
+            mesh.up.x           = data.up.x
+            mesh.up.y           = data.up.y
+            mesh.up.z           = data.up.z
+            mesh.position.x     = data.position.x
+            mesh.position.y     = data.position.y
+            mesh.position.z     = data.position.z
+            mesh.rotation.x     = data.rotation.x
+            mesh.rotation.y     = data.rotation.y
+            mesh.rotation.z     = data.rotation.z
+            mesh.rotation.order = data.rotation.order
+            mesh.quaternion.x   = data.quaternion.x
+            mesh.quaternion.y   = data.quaternion.y
+            mesh.quaternion.z   = data.quaternion.z
+            mesh.quaternion.w   = data.quaternion.w
+            mesh.scale.x        = data.scale.x
+            mesh.scale.y        = data.scale.y
+            mesh.scale.z        = data.scale.z
+            mesh.modelViewMatrix.fromArray( data.modelViewMatrix )
+            mesh.normalMatrix.fromArray( data.normalMatrix )
+            mesh.matrix.fromArray( data.matrix )
+            mesh.matrixWorld.fromArray( data.matrixWorld )
+            mesh.matrixAutoUpdate       = data.matrixAutoUpdate
+            mesh.matrixWorldNeedsUpdate = data.matrixWorldNeedsUpdate
+            mesh.layers.mask            = data.layers
+            mesh.visible                = data.visible
+            mesh.castShadow             = data.castShadow
+            mesh.receiveShadow          = data.receiveShadow
+            mesh.frustumCulled          = data.frustumCulled
+            mesh.renderOrder            = data.renderOrder
+            mesh.userData               = data.userData || {}
+            mesh.geometry               = data.geometry
+            mesh.material               = data.material
+
+            // Required for carl source
+            mesh.userData[ 'id' ] = jsonData._id
+
+            return mesh
+            //            //            mesh.geometry = self.convertJsonToGeometry( data.geometry )
+            //            //            mesh.material = self.convertJsonToMaterial( data.material )
+            //
+            //            var haveGeometry = false
+            //            self.retrieveGeometryFor( mesh, data.geometry, function ( geometry ) {
+            //
+            //                mesh.geometry = geometry
+            //                haveGeometry  = true
+            //
+            //                if ( !haveGeometry || !haveMaterial ) { return }
+            //
+            //                callback( mesh )
+            //
+            //            } )
+            //
+            //            var haveMaterial = false
+            //            self.retrieveMaterialFor( mesh, data.material, function ( materials ) {
+            //
+            //                mesh.material = materials
+            //                haveMaterial  = true
+            //
+            //                if ( !haveGeometry || !haveMaterial ) { return }
+            //
+            //                callback( mesh )
+            //
+            //            } )
+
+        } else {
+
+            onError( "Non managed object type: " + objectType )
+        }
+
+    }
+
+} )
+
+Object.defineProperties( TObjectsManager.prototype, {
+
+    _onJson: {
+        value: function _onJson ( jsonData, onSuccess, onProgress, onError ) {
+
+            if ( Array.isArray( jsonData ) ) {
+
+                let objects = []
+                let object  = undefined
+                let data    = undefined
+                for ( let dataIndex = 0, numberOfDatas = jsonData.length ; dataIndex &lt; numberOfDatas ; dataIndex++ ) {
+
+                    data   = jsonData[ dataIndex ]
+                    object = this.convertJsonToObject3D( data, onError )
+
+                    if ( object ) { objects.push( object ) }
+
+                    onProgress( dataIndex / numberOfDatas )
+
+                }
+
+                onSuccess( objects )
+
+            } else {
+
+                let object = this.convertJsonToObject3D( jsonData, onError )
+                onProgress( 1.0 )
+
+                onSuccess( object )
+
+            }
+
+        }
+    }
+
+} )
+
+export { TObjectsManager }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

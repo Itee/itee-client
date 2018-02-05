@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>sources/loaders/TUniversalLoader.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ASCLoader.html">ASCLoader</a></li><li><a href="BoundingBox.html">BoundingBox</a></li><li><a href="DBFLoader.html">DBFLoader</a></li><li><a href="MeshManager.html">MeshManager</a></li><li><a href="SHPLoader.html">SHPLoader</a></li><li><a href="TAppBar.html">TAppBar</a></li><li><a href="TApplication.html">TApplication</a><ul class='methods'><li data-type='method'><a href="TApplication.html#.removeDiacritics">removeDiacritics</a></li><li data-type='method'><a href="TApplication.html#askUserForPosition">askUserForPosition</a></li><li data-type='method'><a href="TApplication.html#changeMaterialSide">changeMaterialSide</a></li><li data-type='method'><a href="TApplication.html#endMeasure">endMeasure</a></li><li data-type='method'><a href="TApplication.html#initRequest">initRequest</a></li><li data-type='method'><a href="TApplication.html#insertTreeViewItem">insertTreeViewItem</a></li><li data-type='method'><a href="TApplication.html#loadObjectFromURL">loadObjectFromURL</a></li><li data-type='method'><a href="TApplication.html#popupImageShotModal">popupImageShotModal</a></li><li data-type='method'><a href="TApplication.html#popupImportFilesModal">popupImportFilesModal</a></li><li data-type='method'><a href="TApplication.html#popupSelectedObjectModal">popupSelectedObjectModal</a></li><li data-type='method'><a href="TApplication.html#removeMeasure">removeMeasure</a></li><li data-type='method'><a href="TApplication.html#removeTemporaryMeasure">removeTemporaryMeasure</a></li><li data-type='method'><a href="TApplication.html#resetDataPanel">resetDataPanel</a></li><li data-type='method'><a href="TApplication.html#setCameraMode">setCameraMode</a></li><li data-type='method'><a href="TApplication.html#setLayerGroupVisibility">setLayerGroupVisibility</a></li><li data-type='method'><a href="TApplication.html#setMapViewer">setMapViewer</a></li><li data-type='method'><a href="TApplication.html#setRendersEffect">setRendersEffect</a></li><li data-type='method'><a href="TApplication.html#startMeasure">startMeasure</a></li><li data-type='method'><a href="TApplication.html#updateAvatar">updateAvatar</a></li><li data-type='method'><a href="TApplication.html#updateDataPanel">updateDataPanel</a></li><li data-type='method'><a href="TApplication.html#updateImageShot">updateImageShot</a></li><li data-type='method'><a href="TApplication.html#updateMapViewer">updateMapViewer</a></li><li data-type='method'><a href="TApplication.html#updateMapViewerDisplay">updateMapViewerDisplay</a></li><li data-type='method'><a href="TApplication.html#updateMapViewerOrientation">updateMapViewerOrientation</a></li><li data-type='method'><a href="TApplication.html#updateMapViewerPosition">updateMapViewerPosition</a></li><li data-type='method'><a href="TApplication.html#updateMeasure">updateMeasure</a></li><li data-type='method'><a href="TApplication.html#updateMeshResolution">updateMeshResolution</a></li><li data-type='method'><a href="TApplication.html#updatePointCloudDensity">updatePointCloudDensity</a></li><li data-type='method'><a href="TApplication.html#updateTemporaryMeasure">updateTemporaryMeasure</a></li></ul></li><li><a href="TCache.html">TCache</a><ul class='methods'><li data-type='method'><a href="TCache.html#add">add</a></li><li data-type='method'><a href="TCache.html#clear">clear</a></li><li data-type='method'><a href="TCache.html#get">get</a></li><li data-type='method'><a href="TCache.html#remove">remove</a></li></ul></li><li><a href="TDataBaseManager.html">TDataBaseManager</a><ul class='methods'><li data-type='method'><a href="TDataBaseManager.html#._statusOk">_statusOk</a></li><li data-type='method'><a href="TDataBaseManager.html#.requestServer">requestServer</a></li><li data-type='method'><a href="TDataBaseManager.html#_create">_create</a></li><li data-type='method'><a href="TDataBaseManager.html#_deleteOne">_deleteOne</a></li><li data-type='method'><a href="TDataBaseManager.html#_deleteSome">_deleteSome</a></li><li data-type='method'><a href="TDataBaseManager.html#_onArrayBuffer">_onArrayBuffer</a></li><li data-type='method'><a href="TDataBaseManager.html#_onBlob">_onBlob</a></li><li data-type='method'><a href="TDataBaseManager.html#_onError">_onError</a></li><li data-type='method'><a href="TDataBaseManager.html#_onJson">_onJson</a></li><li data-type='method'><a href="TDataBaseManager.html#_onLoad">_onLoad</a></li><li data-type='method'><a href="TDataBaseManager.html#_onProgress">_onProgress</a></li><li data-type='method'><a href="TDataBaseManager.html#_onText">_onText</a></li><li data-type='method'><a href="TDataBaseManager.html#_readOne">_readOne</a></li><li data-type='method'><a href="TDataBaseManager.html#_readSome">_readSome</a></li><li data-type='method'><a href="TDataBaseManager.html#_updateOne">_updateOne</a></li><li data-type='method'><a href="TDataBaseManager.html#_updateSome">_updateSome</a></li><li data-type='method'><a href="TDataBaseManager.html#create">create</a></li><li data-type='method'><a href="TDataBaseManager.html#delete">delete</a></li><li data-type='method'><a href="TDataBaseManager.html#read">read</a></li><li data-type='method'><a href="TDataBaseManager.html#update">update</a></li></ul></li><li><a href="TDateTime.html">TDateTime</a><ul class='methods'><li data-type='method'><a href="TDateTime.html#componentWillMount">componentWillMount</a></li><li data-type='method'><a href="TDateTime.html#render">render</a></li><li data-type='method'><a href="TDateTime.html#tick">tick</a></li></ul></li><li><a href="TErrorCatcher.html">TErrorCatcher</a><ul class='methods'><li data-type='method'><a href="TErrorCatcher.html#componentDidCatch">componentDidCatch</a></li><li data-type='method'><a href="TErrorCatcher.html#render">render</a></li></ul></li><li><a href="TErrorManager.html">TErrorManager</a></li><li><a href="TFactory.html">TFactory</a></li><li><a href="TGeometriesManager.html">TGeometriesManager</a><ul class='methods'><li data-type='method'><a href="TGeometriesManager.html#convertJsonToGeometry">convertJsonToGeometry</a></li></ul></li><li><a href="TMaterialsManager.html">TMaterialsManager</a></li><li><a href="TObjectsManager.html">TObjectsManager</a></li><li><a href="TOrbitControlsHelper.html">TOrbitControlsHelper</a></li><li><a href="TOrchestrator.html">TOrchestrator</a><ul class='methods'><li data-type='method'><a href="TOrchestrator.html#processQueue">processQueue</a></li><li data-type='method'><a href="TOrchestrator.html#queue">queue</a></li></ul></li><li><a href="TPointsManager.html">TPointsManager</a></li><li><a href="TProgressManager.html">TProgressManager</a></li><li><a href="TScenesManager.html">TScenesManager</a></li><li><a href="TToolBar.html">TToolBar</a></li><li><a href="TUniversalLoader.html">TUniversalLoader</a></li><li><a href="TViewport.html">TViewport</a></li></ul><h3>Modules</h3><ul><li><a href="module-config_babelConfiguration.html">config/babelConfiguration</a><ul class='methods'><li data-type='method'><a href="module-config_babelConfiguration.html#~CreateBabelConfiguration">CreateBabelConfiguration</a></li></ul></li><li><a href="module-config_eslintConfiguration.html">config/eslintConfiguration</a><ul class='methods'><li data-type='method'><a href="module-config_eslintConfiguration.html#~CreateEslintConfiguration">CreateEslintConfiguration</a></li></ul></li><li><a href="module-config_jsdocConfiguration.html">config/jsdocConfiguration</a><ul class='methods'><li data-type='method'><a href="module-config_jsdocConfiguration.html#~CreateJsdocConfiguration">CreateJsdocConfiguration</a></li></ul></li><li><a href="module-config_karmaBenchConfiguration.html">config/karmaBenchConfiguration</a><ul class='methods'><li data-type='method'><a href="module-config_karmaBenchConfiguration.html#~CreateKarmaBenchmarkConfiguration">CreateKarmaBenchmarkConfiguration</a></li></ul></li><li><a href="module-config_karmaUnitConfiguration.html">config/karmaUnitConfiguration</a><ul class='methods'><li data-type='method'><a href="module-config_karmaUnitConfiguration.html#~CreateKarmaUnitTestingConfiguration">CreateKarmaUnitTestingConfiguration</a></li></ul></li><li><a href="module-config_rollupConfiguration.html">config/rollupConfiguration</a><ul class='methods'><li data-type='method'><a href="module-config_rollupConfiguration.html#~CreateRollupConfiguration">CreateRollupConfiguration</a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#addPointsFromBuffer">addPointsFromBuffer</a></li><li><a href="global.html#DEG2RAD">DEG2RAD</a></li><li><a href="global.html#endianness">endianness</a></li><li><a href="global.html#getInt8">getInt8</a></li><li><a href="global.html#getPointClouds">getPointClouds</a></li><li><a href="global.html#getSamplingForDistanceToCamera">getSamplingForDistanceToCamera</a></li><li><a href="global.html#HttpStatusCode">HttpStatusCode</a></li><li><a href="global.html#HttpVerb">HttpVerb</a></li><li><a href="global.html#ResponseType">ResponseType</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">sources/loaders/TUniversalLoader.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ *
+ * @class TUniversalLoader
+ * @classdesc The TUniversalLoader allow to automatically select correct THREE loader for given files. (based on https://github.com/jeromeetienne/threex.universalloader)
+ * @example Todo...
+ *
+ */
+
+/* eslint-env browser */
+
+import {
+    STLLoader,
+    OBJLoader,
+    OBJLoader2,
+    FBXLoader,
+    MTLLoader,
+    ObjectLoader,
+
+    DoubleSide,
+    DefaultLoadingManager,
+    Group,
+    Mesh,
+    ShapeBufferGeometry,
+    MeshPhongMaterial
+} from 'threejs-full-es6'
+
+// Local loader
+import { FBXLoader2 } from './FBXLoader2'
+import { ASCLoader } from './ASCLoader'
+import { SHPLoader } from './SHPLoader'
+import { DBFLoader } from './DBFLoader'
+
+import * as Validator from '../cores/TValidator'
+import { DefaultLogger } from '../loggers/TLogger'
+
+function getFilePath ( fileUrl ) {
+
+    return fileUrl.substring( 0, fileUrl.lastIndexOf( '/' ) )
+
+}
+
+function getFileName ( fileUrl ) {
+
+    return fileUrl.substring( fileUrl.lastIndexOf( '/' ) + 1 )
+
+}
+
+function getFileExtension ( fileName ) {
+
+    return fileName.slice( (fileName.lastIndexOf( "." ) - 1 >>> 0) + 2 );
+
+}
+
+function computeUrl ( fileUrl ) {
+
+    const filePath = getFilePath( fileUrl )
+    const isBlob   = ( fileUrl.indexOf( 'blob' ) > -1 )
+
+    return (isBlob) ? filePath : fileUrl
+
+}
+
+const FileFormat = Object.freeze( {
+    Asc:  'asc',
+    Dbf:  'dbf',
+    Fbx:  'fbx',
+    Mtl:  'mtl',
+    Json: 'json',
+    Obj:  'obj',
+    Shp:  'shp',
+    Stl:  'stl',
+    toString () {
+
+        const formats = Object.values( this )
+        let result    = ''
+        for ( let index = 0, numberOfFormats = formats.length ; index &lt; numberOfFormats ; index++ ) {
+            result += formats[ index ]
+            result += ((index === numberOfFormats - 1) ? ', ' : '.')
+        }
+
+    }
+} )
+
+function TUniversalLoader ( manager = DefaultLoadingManager, logger = DefaultLogger ) {
+
+    this.manager = manager
+    this.logger  = logger
+
+}
+
+Object.assign( TUniversalLoader.prototype, {
+
+    load ( files, onLoad, onProgress, onError ) {
+
+        if ( !files ) {
+            console.error( "Unable to load null or undefined files !" )
+            return
+        }
+
+        if ( Validator.isObject( files ) ) {
+
+            this.loadSingleFile( files, onLoad, onProgress, onError )
+
+        } else if ( Validator.isFunction( files ) ) {
+
+            this.load( files(), onLoad, onProgress, onError )
+
+        } else if ( Validator.isArray( files ) ) {
+
+            // Todo: need to rework logic here and use wrapper object instead of array of object to avoid
+            // Todo: array of 2 differents files.
+            if ( (files.length === 2) &amp;&amp; (Validator.isObject( files[ 0 ] ) &amp;&amp; Validator.isObject( files[ 1 ] )) ) {
+
+                this.loadAssociatedFiles( files, onLoad, onProgress, onError )
+
+            } else {
+
+                for ( let fileIndex = 0, numberOfFiles = files.length ; fileIndex &lt; numberOfFiles ; fileIndex++ ) {
+                    this.load( files[ fileIndex ], onLoad, onProgress, onError )
+                }
+
+            }
+
+        } else if ( Validator.isString( files ) ) {
+
+            this.loadSingleFile( { url: files }, onLoad, onProgress, onError )
+
+        } else {
+
+            console.error( 'TUniversalLoader: Invalid files parameter !!!' )
+
+        }
+
+    },
+
+    loadSingleFile ( file, onLoad, onProgress, onError ) {
+
+        const fileUrl       = file.url
+        const fileName      = getFileName( fileUrl )
+        const fileExtension = getFileExtension( fileName )
+        const loadUrl       = computeUrl( fileUrl )
+        file.url            = loadUrl
+
+        switch ( fileExtension ) {
+
+            case FileFormat.Asc:
+                this._loadAsc( file, onLoad, onProgress, onError )
+                break
+
+            case FileFormat.Dbf:
+                this._loadDbf( file, onLoad, onProgress, onError )
+                break
+
+            case FileFormat.Fbx:
+                this._loadFbx( file, onLoad, onProgress, onError )
+                break
+
+            case FileFormat.Json:
+                this._loadJson( file, onLoad, onProgress, onError )
+                break
+
+            case FileFormat.Obj:
+                this._loadObj( file, onLoad, onProgress, onError )
+                break
+
+            case FileFormat.Shp:
+                this._loadShp( file, onLoad, onProgress, onError )
+                break
+
+            case FileFormat.Stl:
+                this._loadStl( file, onLoad, onProgress, onError )
+                break
+
+            default:
+                throw new RangeError( `Invalid file extension: ${fileExtension}. Supported formats are: ${FileFormat.toString()}`, 'TUniversalLoader' )
+                break
+
+        }
+
+    },
+
+    loadAssociatedFiles ( files, onLoad, onProgress, onError ) {
+
+        const firstFile          = files[ 0 ]
+        const firstUrl           = firstFile.url
+        const firstFileName      = getFileName( firstUrl )
+        const firstFileExtension = getFileExtension( firstFileName )
+        const firstLoadUrl       = computeUrl( firstUrl )
+        firstFile.url            = firstLoadUrl
+
+        const secondFile          = files[ 1 ]
+        const secondUrl           = secondFile.url
+        const secondFileName      = getFileName( secondUrl )
+        const secondFileExtension = getFileExtension( secondFileName )
+        const secondLoadUrl       = computeUrl( secondUrl )
+        secondFile.url            = secondLoadUrl
+
+        if ( firstFileExtension === FileFormat.Mtl &amp;&amp; secondFileExtension === FileFormat.Obj ) {
+
+            this._loadObjMtlCouple( secondFile, firstFile, onLoad, onProgress, onError )
+
+        } else if ( firstFileExtension === FileFormat.Obj &amp;&amp; secondFileExtension === FileFormat.Mtl ) {
+
+            this._loadObjMtlCouple( firstFile, secondFile, onLoad, onProgress, onError )
+
+        } else if ( firstFileExtension === FileFormat.Shp &amp;&amp; secondFileExtension === FileFormat.Dbf ) {
+
+            this._loadShpDbfCouple( firstFile, secondFile, onLoad, onProgress, onError )
+
+        } else if ( firstFileExtension === FileFormat.Dbf &amp;&amp; secondFileExtension === FileFormat.Shp ) {
+
+            this._loadShpDbfCouple( secondFile, firstFile, onLoad, onProgress, onError )
+
+        } else {
+
+            this.loadSingleFile( files[ 0 ], onLoad, onProgress, onError )
+            this.loadSingleFile( files[ 1 ], onLoad, onProgress, onError )
+
+        }
+
+    },
+
+    _loadAsc ( file, onLoad, onProgress, onError ) {
+
+        const loader = new ASCLoader( this.manager )
+        loader.load(
+            file.url,
+            onLoad,
+            onProgress,
+            onError
+        )
+
+    },
+
+    _loadDbf ( file, onLoad, onProgress, onError ) {
+
+        const loader = new DBFLoader( this.manager )
+        loader.load(
+            file.url,
+            onLoad,
+            onProgress,
+            onError
+        )
+
+    },
+
+    _loadFbx ( file, onLoad, onProgress, onError ) {
+
+        const loader = new FBXLoader2( this.manager )
+        loader.load(
+            file.url,
+            object => {
+
+                const position = file.position
+                if ( position ) {
+                    object.position.set( position.x, position.y, position.z )
+                }
+
+                onLoad( object )
+
+            },
+            onProgress,
+            onError
+        )
+
+    },
+
+    _loadJson ( file, onLoad, onProgress, onError ) {
+
+        const loader = new ObjectLoader( this.manager )
+        loader.load(
+            file.url,
+            onLoad,
+            onProgress,
+            onError
+        )
+
+    },
+
+    _loadObj ( file, onLoad, onProgress, onError ) {
+
+        const loader = new OBJLoader( this.manager )
+        loader.load(
+            file.url,
+            onLoad,
+            onProgress,
+            onError
+        )
+
+    },
+
+    _loadShp ( file, onLoad, onProgress, onError ) {
+
+        const loader = new SHPLoader( this.manager )
+        loader.load(
+            file.url,
+            shapes => {
+
+                const group = new Group()
+
+                for ( let shapeIndex = 0, numberOfShapes = shapes.length ; shapeIndex &lt; numberOfShapes ; shapeIndex++ ) {
+
+                    group.add(
+                        new Mesh(
+                            new ShapeBufferGeometry( shapes[ shapeIndex ] ),
+                            new MeshPhongMaterial( {
+                                color: Math.random() * 0xffffff,
+                                side:  DoubleSide
+                            } )
+                        )
+                    )
+
+                }
+
+                group.rotateX( -90 * DEG_TO_RAD )
+
+                onLoad( group )
+
+            },
+            onProgress,
+            onError
+        )
+
+    },
+
+    _loadStl ( file, onLoad, onProgress, onError ) {
+
+        const loader = new STLLoader( this.manager )
+        loader.load(
+            file.url,
+            geometry => {
+
+                const material = new MeshPhongMaterial()
+                const object   = new Mesh( geometry, material )
+
+                const position = file.position
+                if ( position ) {
+                    object.position.set( position.x, position.y, position.z )
+                }
+
+                onLoad( object )
+
+            },
+            onProgress,
+            onError
+        )
+
+    },
+
+    _loadObjMtlCouple ( objFile, mtlFile, onLoad, onProgress, onError ) {
+
+        const mtlLoader = new MTLLoader( this.manager )
+        const objLoader = new OBJLoader( this.manager )
+
+        const texturePath = mtlFile.texturePath || 'resources/models/evan/'
+        if ( texturePath ) {
+            mtlLoader.setTexturePath( texturePath )
+        }
+
+        mtlLoader.load(
+            mtlFile.url,
+            materials => {
+
+                materials.preload()
+
+                for ( let materialIndex = 0, numberOfMaterials = materials.materials.length ; materialIndex &lt; numberOfMaterials ; materialIndex++ ) {
+                    const material                       = materials.materials[ materialIndex ]
+                    material.opacity                     = 1.0
+                    materials.materials[ materialIndex ] = material
+                }
+
+                objLoader.setMaterials( materials )
+                objLoader.load(
+                    objFile.url,
+                    onLoad,
+                    onProgress,
+                    onError
+                )
+
+            },
+            onProgress,
+            onError
+        )
+
+    },
+
+    _loadShpDbfCouple ( shpFile, dbfFile, onLoad, onProgress, onError ) {
+
+        let _shapes = undefined
+        let _dbf    = undefined
+
+        const shpLoader = new SHPLoader( this.manager )
+        shpLoader.load(
+            shpFile.url,
+            shapes => {
+
+                _shapes = shapes
+                checkEnd()
+
+            },
+            onProgress,
+            onError
+        )
+
+        const dbfLoader = new DBFLoader( this.manager )
+        dbfLoader.load(
+            dbfFile.url,
+            dbf => {
+
+                _dbf = dbf
+                checkEnd()
+
+            },
+            onProgress,
+            onError
+        )
+
+        function checkEnd () {
+
+            if ( !_shapes || !_dbf ) {
+                return
+            }
+
+            const group = new Group()
+            group.name  = "Locaux"
+
+            let mesh = undefined
+            for ( let shapeIndex = 0, numberOfShapes = _shapes.length ; shapeIndex &lt; numberOfShapes ; shapeIndex++ ) {
+
+                mesh = new Mesh(
+                    new ShapeBufferGeometry( _shapes[ shapeIndex ] ),
+                    new MeshPhongMaterial( {
+                        color: Math.random() * 0xffffff,
+                        side:  DoubleSide
+                    } )
+                )
+
+                mesh.name = _dbf.datas[ shapeIndex ][ 'CODE' ]
+
+                group.add( mesh )
+
+            }
+
+            group.rotateX( -90 * DEG_TO_RAD )
+            group.rotateZ( 180 * DEG_TO_RAD )
+            group.position.z -= 159.05
+            group.position.x -= 0.79
+
+            onLoad( group )
+
+        }
+
+    }
+
+} )
+
+export { TUniversalLoader }
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>
