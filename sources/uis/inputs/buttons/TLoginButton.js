@@ -48,7 +48,7 @@ class TLogingButton extends React.Component {
                     <a href="#">Link 1</a>
                     <a onClick={logOutHandler}>Déconnexion</a>
                 </TDropDownMenu>
-//                <TUserMenu logOutHandler={logOutHandler} />
+                //                <TUserMenu logOutHandler={logOutHandler} />
             )
 
         } else {

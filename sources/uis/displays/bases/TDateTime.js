@@ -40,11 +40,7 @@ class TDateTime extends React.Component {
     /**
      * Component Life Cycle
      */
-    static componentDidCatch ( error, info ) {
 
-        console.error( error )
-
-    }
 
     componentWillMount () {}
 
@@ -71,11 +67,9 @@ class TDateTime extends React.Component {
 
     componentDidUpdate ( prevProps, prevState ) {}
 
-
     /**
      * Component Handlers
      */
-
 
     /**
      * Component Methods
@@ -96,7 +90,7 @@ class TDateTime extends React.Component {
 
         const { id, className } = this.props
 
-        const _id = id || `tDateTime_${_instanceCounter}`
+        const _id    = id || `tDateTime_${_instanceCounter}`
         const _class = ( className ) ? `tDateTime ${className}` : 'tDateTime'
 
         const _style = {}
@@ -113,7 +107,7 @@ class TDateTime extends React.Component {
  * Class props type checking
  */
 TDateTime.propType = {
-    id: PropTypes.string,
+    id:        PropTypes.string,
     className: PropTypes.string
 }
 

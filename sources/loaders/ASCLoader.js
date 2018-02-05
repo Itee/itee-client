@@ -1,6 +1,3 @@
-
-
-
 /*
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -53,7 +50,6 @@ import {
  *
  */
 
-
 /**
  * Bounding box
  * @constructor
@@ -71,7 +67,7 @@ BoundingBox.prototype = {
 
     constructor: BoundingBox,
 
-    computePoint: function( point ) {
+    computePoint: function ( point ) {
 
         if ( point.x < this.xMin ) {
             this.xMin = point.x;
@@ -99,15 +95,15 @@ BoundingBox.prototype = {
 
     },
 
-    computePoints: function( points ) {
+    computePoints: function ( points ) {
 
         for ( var i = 0, numPts = points.length ; i < numPts ; ++i ) {
-            this.computePoint(points[ i ]);
+            this.computePoint( points[ i ] );
         }
 
     },
 
-    getCenter: function() {
+    getCenter: function () {
 
         return {
             x: (this.xMin + this.xMax) / 2,
@@ -119,13 +115,12 @@ BoundingBox.prototype = {
 
 };
 
-
 /**
  *
  * @param manager
  * @constructor
  */
-var ASCLoader = function( manager ) {
+var ASCLoader = function ( manager ) {
 
     this.manager = ( manager !== undefined ) ? manager : DefaultLoadingManager;
 
@@ -140,7 +135,6 @@ var ASCLoader = function( manager ) {
         z: 60
     };
 
-
     this._positions   = null;
     this._bufferIndex = 0;
 
@@ -150,30 +144,29 @@ var ASCLoader = function( manager ) {
     this.wrongPoints = 0;
 };
 
-
 ASCLoader.prototype = {
 
     constructor: ASCLoader,
 
-    load: function( url, onLoad, onProgress, onError, sampling ) {
+    load: function ( url, onLoad, onProgress, onError, sampling ) {
 
-        console.time("ASCLoader");
+        console.time( "ASCLoader" );
 
         var scope = this;
 
-        var loader = new FileLoader(scope.manager);
-        loader.setResponseType('blob');
-        loader.load(url, function( blob ) {
+        var loader = new FileLoader( scope.manager );
+        loader.setResponseType( 'blob' );
+        loader.load( url, function ( blob ) {
 
             var groupToFeed = new Group();
-            scope._parse(blob, groupToFeed, onLoad, onProgress, onError, sampling);
-            onLoad(groupToFeed);
+            scope._parse( blob, groupToFeed, onLoad, onProgress, onError, sampling );
+            onLoad( groupToFeed );
 
-        }, onProgress, onError);
+        }, onProgress, onError );
 
     },
 
-    setOffset: function( offset ) {
+    setOffset: function ( offset ) {
 
         //TODO: check is correct
 
@@ -182,7 +175,7 @@ ASCLoader.prototype = {
 
     },
 
-    _parse: function( blob, groupToFeed, onLoad, onProgress, onError, sampling ) {
+    _parse: function ( blob, groupToFeed, onLoad, onProgress, onError, sampling ) {
 
         var self = this;
 
@@ -194,32 +187,32 @@ ASCLoader.prototype = {
         // var CHUNK_SIZE = 16777216;
         var offset     = 0;
 
-        reader.onabort = function(abortEvent){
+        reader.onabort = function ( abortEvent ) {
 
             // console.log("abortEvent:");
             // console.log(abortEvent);
 
         };
 
-        reader.onerror = function(errorEvent){
+        reader.onerror = function ( errorEvent ) {
 
             // console.log("errorEvent:");
             // console.log(errorEvent);
 
-            if(onError) {
-                onError(errorEvent);
+            if ( onError ) {
+                onError( errorEvent );
             }
 
         };
 
-        reader.onloadstart = function(loadStartEvent){
+        reader.onloadstart = function ( loadStartEvent ) {
 
             // console.log("loadStartEvent:");
             // console.log(loadStartEvent);
 
         };
 
-        reader.onprogress = function(progressEvent){
+        reader.onprogress = function ( progressEvent ) {
 
             // console.log("progressEvent:");
             // console.log(progressEvent);
@@ -230,19 +223,19 @@ ASCLoader.prototype = {
             //     self._parseLine(lines[lineIndex])
             // }
 
-            if(onProgress) {
-                onProgress(progressEvent);
+            if ( onProgress ) {
+                onProgress( progressEvent );
             }
 
         };
 
-        reader.onload = function(loadEvent){
+        reader.onload = function ( loadEvent ) {
 
             // console.log("loadEvent:");
             // console.log(loadEvent);
 
             // By lines
-            var lines         = this.result.split('\n');
+            var lines         = this.result.split( '\n' );
             var numberOfLines = lines.length;
 
             // /!\ Rollback offset for last line that is uncompleted in most time
@@ -250,9 +243,11 @@ ASCLoader.prototype = {
 
             // console.time("Parse Lines A");
             var modSampling = Math.round( 100 / _sampling )
-            for (var lineIndex = 0; lineIndex < numberOfLines - 1; lineIndex++) {
-                if(lineIndex % modSampling === 0) // Just to make cloud lighter under debug !!!!
-                    self._parseLine(lines[ lineIndex ])
+            for ( var lineIndex = 0 ; lineIndex < numberOfLines - 1 ; lineIndex++ ) {
+                if ( lineIndex % modSampling === 0 ) // Just to make cloud lighter under debug !!!!
+                {
+                    self._parseLine( lines[ lineIndex ] )
+                }
             }
             // console.timeEnd("Parse Lines A");
 
@@ -279,12 +274,12 @@ ASCLoader.prototype = {
 
         };
 
-        reader.onloadend = function(loadEndEvent){
+        reader.onloadend = function ( loadEndEvent ) {
 
             // console.log("loadEndEvent");
             // console.log(loadEndEvent);
 
-            if(self._points.length > 1000000 || offset + CHUNK_SIZE >= blob.size ) {
+            if ( self._points.length > 1000000 || offset + CHUNK_SIZE >= blob.size ) {
 
                 // Compute bounding box in view to get his center for auto offseting the cloud point.
                 // if ( self._autoOffset ) {
@@ -298,7 +293,7 @@ ASCLoader.prototype = {
                 // console.timeEnd("Offset Points");
 
                 // console.time("Create WorldCell");
-                self._createSubCloudPoint(groupToFeed);
+                self._createSubCloudPoint( groupToFeed );
                 // console.timeEnd("Create WorldCell");
 
             }
@@ -311,11 +306,11 @@ ASCLoader.prototype = {
         // reader.readAsText(blob);
         seek();
 
-        function seek() {
-            if (offset >= blob.size) {
+        function seek () {
+            if ( offset >= blob.size ) {
 
                 // console.timeEnd("Parse");
-                console.timeEnd("ASCLoader");
+                console.timeEnd( "ASCLoader" );
 
                 // // Compute bounding box in view to get his center for auto offseting the cloud point.
                 // if ( self._autoOffset ) {
@@ -336,35 +331,35 @@ ASCLoader.prototype = {
 
                 return;
             }
-            var slice = blob.slice(offset, offset + CHUNK_SIZE, "text/plain");
-            reader.readAsText(slice);
+            var slice = blob.slice( offset, offset + CHUNK_SIZE, "text/plain" );
+            reader.readAsText( slice );
         }
 
     },
 
-    _parseLine: function( line ) {
+    _parseLine: function ( line ) {
 
-        var values        = line.split(" "),
+        var values        = line.split( " " ),
             numberOfWords = values.length;
 
         if ( numberOfWords === 3 ) {
 
-            this._points.push({
-                x: parseFloat(values[ 0 ]),
-                y: parseFloat(values[ 1 ]),
-                z: parseFloat(values[ 2 ])
-            });
+            this._points.push( {
+                x: parseFloat( values[ 0 ] ),
+                y: parseFloat( values[ 1 ] ),
+                z: parseFloat( values[ 2 ] )
+            } );
 
         } else if ( numberOfWords === 4 ) {
 
             this._pointsHaveIntensity = true;
 
-            this._points.push({
-                x: parseFloat(values[ 0 ]),
-                y: parseFloat(values[ 1 ]),
-                z: parseFloat(values[ 2 ]),
-                i: parseFloat(values[ 3 ])
-            });
+            this._points.push( {
+                x: parseFloat( values[ 0 ] ),
+                y: parseFloat( values[ 1 ] ),
+                z: parseFloat( values[ 2 ] ),
+                i: parseFloat( values[ 3 ] )
+            } );
 
         } else if ( numberOfWords === 6 ) {
 
@@ -373,14 +368,14 @@ ASCLoader.prototype = {
 
             this._pointsHaveColor = true;
 
-            this._points.push({
-                x: parseFloat(values[ 0 ]),
-                y: parseFloat(values[ 1 ]),
-                z: parseFloat(values[ 2 ]),
-                r: parseFloat(values[ 3 ]),
-                g: parseFloat(values[ 4 ]),
-                b: parseFloat(values[ 5 ])
-            });
+            this._points.push( {
+                x: parseFloat( values[ 0 ] ),
+                y: parseFloat( values[ 1 ] ),
+                z: parseFloat( values[ 2 ] ),
+                r: parseFloat( values[ 3 ] ),
+                g: parseFloat( values[ 4 ] ),
+                b: parseFloat( values[ 5 ] )
+            } );
 
         } else if ( numberOfWords === 7 ) {
 
@@ -388,21 +383,21 @@ ASCLoader.prototype = {
             //Todo: for the moment consider it is color !
 
             this._pointsHaveIntensity = true;
-            this._pointsHaveColor = true;
+            this._pointsHaveColor     = true;
 
-            this._points.push({
-                x: parseFloat(values[ 0 ]),
-                y: parseFloat(values[ 1 ]),
-                z: parseFloat(values[ 2 ]),
-                i: parseFloat(values[ 3 ]),
-                r: parseFloat(values[ 4 ]),
-                g: parseFloat(values[ 5 ]),
-                b: parseFloat(values[ 6 ])
-            });
+            this._points.push( {
+                x: parseFloat( values[ 0 ] ),
+                y: parseFloat( values[ 1 ] ),
+                z: parseFloat( values[ 2 ] ),
+                i: parseFloat( values[ 3 ] ),
+                r: parseFloat( values[ 4 ] ),
+                g: parseFloat( values[ 5 ] ),
+                b: parseFloat( values[ 6 ] )
+            } );
 
         } else if ( numberOfWords === 9 ) {
 
-            this._pointsHaveColor = true;
+            this._pointsHaveColor   = true;
             this._pointsHaveNormals = true;
 
             this._points.push( {
@@ -420,8 +415,8 @@ ASCLoader.prototype = {
         } else if ( numberOfWords === 10 ) {
 
             this._pointsHaveIntensity = true;
-            this._pointsHaveColor   = true;
-            this._pointsHaveNormals = true;
+            this._pointsHaveColor     = true;
+            this._pointsHaveNormals   = true;
 
             this._points.push( {
                 x:  parseFloat( values[ 0 ] ),
@@ -437,162 +432,161 @@ ASCLoader.prototype = {
             } );
 
         } else {
-            console.error("Invalid data line: " + line);
+            console.error( "Invalid data line: " + line );
         }
 
     },
 
-    _parseLines: function( lines ) {
+    _parseLines: function ( lines ) {
 
-        var firstLine = lines[ 0 ].split(" ");
+        var firstLine = lines[ 0 ].split( " " );
         var pointType = firstLine.length;
 
         if ( pointType === 3 ) {
 
-            this._parseLinesAsXYZ(lines);
+            this._parseLinesAsXYZ( lines );
 
         } else if ( pointType === 4 ) {
 
-            this._parseLinesAsXYZI(lines);
+            this._parseLinesAsXYZI( lines );
 
         } else if ( pointType === 6 ) {
 
             //Todo: allow to ask user if 4, 5 and 6 index are normals
             //Todo: for the moment consider it is color !
-            this._parseLinesAsXYZRGB(lines);
-
+            this._parseLinesAsXYZRGB( lines );
 
         } else if ( pointType === 7 ) {
 
             //Todo: allow to ask user if 4, 5 and 6 index are normals see _parseLinesAsXYZInXnYnZ
             //Todo: for the moment consider it is color !
-            this._parseLinesAsXYZIRGB(lines);
+            this._parseLinesAsXYZIRGB( lines );
 
         } else if ( pointType === 9 ) {
 
-            this._parseLinesAsXYZRGBnXnYnZ(lines);
+            this._parseLinesAsXYZRGBnXnYnZ( lines );
 
         } else if ( pointType === 10 ) {
 
-            this._parseLinesAsXYZIRGBnXnYnZ(lines);
+            this._parseLinesAsXYZIRGBnXnYnZ( lines );
 
         } else {
-            console.error("Invalid data line: " + line);
+            console.error( "Invalid data line: " + line );
         }
 
     },
 
-    _parseLinesAsXYZ: function (lines) {
+    _parseLinesAsXYZ: function ( lines ) {
 
         var words = [];
 
-        for (var lineIndex = 0, numberOfLines = lines.length; lineIndex < numberOfLines; lineIndex++) {
+        for ( var lineIndex = 0, numberOfLines = lines.length ; lineIndex < numberOfLines ; lineIndex++ ) {
 
-            words = lines[ lineIndex ].split(" ");
+            words = lines[ lineIndex ].split( " " );
 
-            this._points.push({
-                x: parseFloat(words[ 0 ]),
-                y: parseFloat(words[ 1 ]),
-                z: parseFloat(words[ 2 ])
-            });
+            this._points.push( {
+                x: parseFloat( words[ 0 ] ),
+                y: parseFloat( words[ 1 ] ),
+                z: parseFloat( words[ 2 ] )
+            } );
         }
 
     },
 
-    _parseLinesAsXYZI: function (lines) {
+    _parseLinesAsXYZI: function ( lines ) {
 
         this._pointsHaveIntensity = true;
-        var words = [];
+        var words                 = [];
 
-        for (var lineIndex = 0, numberOfLines = lines.length; lineIndex < numberOfLines; lineIndex++) {
+        for ( var lineIndex = 0, numberOfLines = lines.length ; lineIndex < numberOfLines ; lineIndex++ ) {
 
-            words = lines[ lineIndex ].split(" ");
+            words = lines[ lineIndex ].split( " " );
 
-            this._points.push({
-                x: parseFloat(words[ 0 ]),
-                y: parseFloat(words[ 1 ]),
-                z: parseFloat(words[ 2 ]),
-                i: parseFloat(words[ 3 ])
-            });
+            this._points.push( {
+                x: parseFloat( words[ 0 ] ),
+                y: parseFloat( words[ 1 ] ),
+                z: parseFloat( words[ 2 ] ),
+                i: parseFloat( words[ 3 ] )
+            } );
 
         }
 
     },
 
-    _parseLinesAsXYZRGB: function (lines) {
+    _parseLinesAsXYZRGB: function ( lines ) {
 
         this._pointsHaveColor = true;
-        var words = [];
+        var words             = [];
 
-        for (var lineIndex = 0, numberOfLines = lines.length; lineIndex < numberOfLines; lineIndex++) {
+        for ( var lineIndex = 0, numberOfLines = lines.length ; lineIndex < numberOfLines ; lineIndex++ ) {
 
-            words = lines[ lineIndex ].split(" ");
+            words = lines[ lineIndex ].split( " " );
 
-            this._points.push({
-                x: parseFloat(words[ 0 ]),
-                y: parseFloat(words[ 1 ]),
-                z: parseFloat(words[ 2 ]),
-                r: parseFloat(words[ 3 ]),
-                g: parseFloat(words[ 4 ]),
-                b: parseFloat(words[ 5 ])
-            });
+            this._points.push( {
+                x: parseFloat( words[ 0 ] ),
+                y: parseFloat( words[ 1 ] ),
+                z: parseFloat( words[ 2 ] ),
+                r: parseFloat( words[ 3 ] ),
+                g: parseFloat( words[ 4 ] ),
+                b: parseFloat( words[ 5 ] )
+            } );
 
         }
 
     },
 
-    _parseLinesAsXYZnXnYnZ: function (lines) {
+    _parseLinesAsXYZnXnYnZ: function ( lines ) {
 
         var words = [];
-        for (var lineIndex = 0, numberOfLines = lines.length; lineIndex < numberOfLines; lineIndex++) {
+        for ( var lineIndex = 0, numberOfLines = lines.length ; lineIndex < numberOfLines ; lineIndex++ ) {
 
-            words = lines[ lineIndex ].split(" ");
+            words = lines[ lineIndex ].split( " " );
         }
 
     },
 
-    _parseLinesAsXYZIRGB: function (lines) {
+    _parseLinesAsXYZIRGB: function ( lines ) {
 
         this._pointsHaveIntensity = true;
-        this._pointsHaveColor = true;
-        var words = [];
+        this._pointsHaveColor     = true;
+        var words                 = [];
 
-        for (var lineIndex = 0, numberOfLines = lines.length; lineIndex < numberOfLines; lineIndex++) {
+        for ( var lineIndex = 0, numberOfLines = lines.length ; lineIndex < numberOfLines ; lineIndex++ ) {
 
-            words = lines[ lineIndex ].split(" ");
+            words = lines[ lineIndex ].split( " " );
 
-            this._points.push({
-                x: parseFloat(words[ 0 ]),
-                y: parseFloat(words[ 1 ]),
-                z: parseFloat(words[ 2 ]),
-                i: parseFloat(words[ 3 ]),
-                r: parseFloat(words[ 4 ]),
-                g: parseFloat(words[ 5 ]),
-                b: parseFloat(words[ 6 ])
-            });
+            this._points.push( {
+                x: parseFloat( words[ 0 ] ),
+                y: parseFloat( words[ 1 ] ),
+                z: parseFloat( words[ 2 ] ),
+                i: parseFloat( words[ 3 ] ),
+                r: parseFloat( words[ 4 ] ),
+                g: parseFloat( words[ 5 ] ),
+                b: parseFloat( words[ 6 ] )
+            } );
         }
 
     },
 
-    _parseLinesAsXYZInXnYnZ: function (lines) {
+    _parseLinesAsXYZInXnYnZ: function ( lines ) {
 
         var words = [];
-        for (var lineIndex = 0, numberOfLines = lines.length; lineIndex < numberOfLines; lineIndex++) {
+        for ( var lineIndex = 0, numberOfLines = lines.length ; lineIndex < numberOfLines ; lineIndex++ ) {
 
-            words = lines[ lineIndex ].split(" ");
+            words = lines[ lineIndex ].split( " " );
         }
 
     },
 
-    _parseLinesAsXYZRGBnXnYnZ: function (lines) {
+    _parseLinesAsXYZRGBnXnYnZ: function ( lines ) {
 
-        this._pointsHaveColor = true;
+        this._pointsHaveColor   = true;
         this._pointsHaveNormals = true;
-        var words = [];
+        var words               = [];
 
-        for (var lineIndex = 0, numberOfLines = lines.length; lineIndex < numberOfLines; lineIndex++) {
+        for ( var lineIndex = 0, numberOfLines = lines.length ; lineIndex < numberOfLines ; lineIndex++ ) {
 
-            words = lines[ lineIndex ].split(" ");
+            words = lines[ lineIndex ].split( " " );
 
             this._points.push( {
                 x:  parseFloat( words[ 0 ] ),
@@ -610,81 +604,74 @@ ASCLoader.prototype = {
 
     },
 
-    _parseLinesAsXYZIRGBnXnYnZ: function (lines) {
+    _parseLinesAsXYZIRGBnXnYnZ: function ( lines ) {
 
         this._pointsHaveIntensity = true;
         this._pointsHaveColor     = true;
         this._pointsHaveNormals   = true;
-        var words = [];
+        var words                 = [];
 
-        for (var lineIndex = 0, numberOfLines = lines.length; lineIndex < numberOfLines; lineIndex++) {
+        for ( var lineIndex = 0, numberOfLines = lines.length ; lineIndex < numberOfLines ; lineIndex++ ) {
 
-            words = lines[ lineIndex ].split(" ");
+            words = lines[ lineIndex ].split( " " );
 
-            this._points.push({
-                x:  parseFloat(words[ 0 ]),
-                y:  parseFloat(words[ 1 ]),
-                z:  parseFloat(words[ 2 ]),
-                i:  parseFloat(words[ 3 ]),
-                r:  parseFloat(words[ 4 ]),
-                g:  parseFloat(words[ 5 ]),
-                b:  parseFloat(words[ 6 ]),
-                nx: parseFloat(words[ 7 ]),
-                ny: parseFloat(words[ 8 ]),
-                nz: parseFloat(words[ 9 ])
-            });
+            this._points.push( {
+                x:  parseFloat( words[ 0 ] ),
+                y:  parseFloat( words[ 1 ] ),
+                z:  parseFloat( words[ 2 ] ),
+                i:  parseFloat( words[ 3 ] ),
+                r:  parseFloat( words[ 4 ] ),
+                g:  parseFloat( words[ 5 ] ),
+                b:  parseFloat( words[ 6 ] ),
+                nx: parseFloat( words[ 7 ] ),
+                ny: parseFloat( words[ 8 ] ),
+                nz: parseFloat( words[ 9 ] )
+            } );
 
         }
     },
 
+    _parseLineB: function ( line ) {
 
-
-
-    _parseLineB: function (line) {
-
-        var values        = line.split(" ");
+        var values        = line.split( " " );
         var numberOfWords = values.length;
         var bufferIndex   = this._bufferIndex;
 
-        if (numberOfWords === 3) {
+        if ( numberOfWords === 3 ) {
 
             // positions
-            this._positions[ bufferIndex ]     = parseFloat(values[ 0 ]);
-            this._positions[ bufferIndex + 1 ] = parseFloat(values[ 1 ]);
-            this._positions[ bufferIndex + 2 ] = parseFloat(values[ 2 ]);
+            this._positions[ bufferIndex ]     = parseFloat( values[ 0 ] );
+            this._positions[ bufferIndex + 1 ] = parseFloat( values[ 1 ] );
+            this._positions[ bufferIndex + 2 ] = parseFloat( values[ 2 ] );
 
             this._bufferIndex += 3;
         }
 
     },
 
-    _parseLineC: function (line) {
+    _parseLineC: function ( line ) {
 
-        var values        = line.split(" ");
+        var values        = line.split( " " );
         var numberOfWords = values.length;
         var bufferIndex   = this._bufferIndexC;
 
-        if (numberOfWords === 3) {
+        if ( numberOfWords === 3 ) {
 
             // positions
-            this._positionsC[ bufferIndex ]     = Number.parseFloat(values[ 0 ]);
-            this._positionsC[ bufferIndex + 1 ] = Number.parseFloat(values[ 1 ]);
-            this._positionsC[ bufferIndex + 2 ] = Number.parseFloat(values[ 2 ]);
+            this._positionsC[ bufferIndex ]     = Number.parseFloat( values[ 0 ] );
+            this._positionsC[ bufferIndex + 1 ] = Number.parseFloat( values[ 1 ] );
+            this._positionsC[ bufferIndex + 2 ] = Number.parseFloat( values[ 2 ] );
 
             this._bufferIndexC += 3;
         }
 
     },
 
+    _offsetPoints: function () {
 
-
-
-
-    _offsetPoints: function() {
-
-        var offset = (this._autoOffset) ? this._boundingBox.getCenter() : this._offset;
+        var offset         = (this._autoOffset) ? this._boundingBox.getCenter() : this._offset;
         var numberOfPoints = this._points.length;
-        var point = null;
+        var point          = null;
         for ( var i = 0 ; i < numberOfPoints ; ++i ) {
 
             point = this._points[ i ];
@@ -696,18 +683,18 @@ ASCLoader.prototype = {
 
     },
 
-    _createCloudPoint: function(groupToFeed) {
+    _createCloudPoint: function ( groupToFeed ) {
 
-        const SPLIT_LIMIT = 1000000;
+        const SPLIT_LIMIT        = 1000000;
         // var group = new Group();
-        var numberOfPoints = this._points.length;
-        var numberOfSplit = Math.ceil(numberOfPoints/SPLIT_LIMIT);
+        var numberOfPoints       = this._points.length;
+        var numberOfSplit        = Math.ceil( numberOfPoints / SPLIT_LIMIT );
         var numberOfPointInSplit = 0;
-        var cloud = null;
+        var cloud                = null;
 
-        for( var splitIndex = 0 ; splitIndex < numberOfSplit ; ++splitIndex ) {
+        for ( var splitIndex = 0 ; splitIndex < numberOfSplit ; ++splitIndex ) {
 
-            var splice = this._points.splice(0, SPLIT_LIMIT);
+            var splice           = this._points.splice( 0, SPLIT_LIMIT );
             numberOfPointInSplit = splice.length;
 
             var geometry    = new BufferGeometry();
@@ -728,7 +715,7 @@ ASCLoader.prototype = {
                 positions[ bufferIndex + 2 ] = point.z;
 
                 // colors
-                if(this._pointsHaveColor) {
+                if ( this._pointsHaveColor ) {
                     colors[ bufferIndex ]     = point.r / 255;
                     colors[ bufferIndex + 1 ] = point.g / 255;
                     colors[ bufferIndex + 2 ] = point.b / 255;
@@ -742,16 +729,16 @@ ASCLoader.prototype = {
 
             }
 
-            geometry.addAttribute('position', new BufferAttribute(positions, 3));
-            geometry.addAttribute('color', new BufferAttribute(colors, 3));
+            geometry.addAttribute( 'position', new BufferAttribute( positions, 3 ) );
+            geometry.addAttribute( 'color', new BufferAttribute( colors, 3 ) );
 
-            var material = new PointsMaterial({
+            var material = new PointsMaterial( {
                 size:         0.01,
                 vertexColors: true
-            });
+            } );
 
-            cloud = new Points(geometry, material);
-            groupToFeed.children.push(cloud);
+            cloud = new Points( geometry, material );
+            groupToFeed.children.push( cloud );
             // group.children.push(cloud);
         }
 
@@ -759,13 +746,13 @@ ASCLoader.prototype = {
 
     },
 
-    _createSubCloudPoint: function (group) {
+    _createSubCloudPoint: function ( group ) {
 
         var numberOfPoints = this._points.length;
 
         var geometry    = new BufferGeometry(),
-            positions   = new Float32Array(numberOfPoints * 3),
-            colors      = new Float32Array(numberOfPoints * 3),
+            positions   = new Float32Array( numberOfPoints * 3 ),
+            colors      = new Float32Array( numberOfPoints * 3 ),
             color       = new Color(),
             bufferIndex = 0,
             point       = undefined;
@@ -781,7 +768,7 @@ ASCLoader.prototype = {
             positions[ bufferIndex + 2 ] = point.z;
 
             // colors
-            if(this._pointsHaveColor) {
+            if ( this._pointsHaveColor ) {
                 colors[ bufferIndex ]     = point.r / 255;
                 colors[ bufferIndex + 1 ] = point.g / 255;
                 colors[ bufferIndex + 2 ] = point.b / 255;
@@ -795,19 +782,19 @@ ASCLoader.prototype = {
 
         }
 
-        geometry.addAttribute('position', new BufferAttribute(positions, 3));
-        geometry.addAttribute('color', new BufferAttribute(colors, 3));
+        geometry.addAttribute( 'position', new BufferAttribute( positions, 3 ) );
+        geometry.addAttribute( 'color', new BufferAttribute( colors, 3 ) );
 
-        var material = new PointsMaterial({
+        var material = new PointsMaterial( {
             size:         0.005,
             vertexColors: true
-        });
+        } );
 
-        var cloud = new Points(geometry, material);
+        var cloud = new Points( geometry, material );
         //Todo: Apply import coordinates syteme here !
         cloud.rotation.x -= Math.PI / 2;
 
-        group.children.push(cloud);
+        group.children.push( cloud );
 
         // Clear current processed points
         this._points = [];
@@ -815,6 +802,5 @@ ASCLoader.prototype = {
     }
 
 };
-
 
 export { ASCLoader }
