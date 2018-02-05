@@ -14,20 +14,7 @@ class TButtonGroup extends React.Component {
 
     constructor ( props ) {
 
-        console.log( 'TButtonGroup constructor' )
         super( props )
-
-    }
-
-    componentDidMount () {
-
-        console.log( 'TButtonGroup componentDidMount' )
-
-    }
-
-    componentWillUnmount () {
-
-        console.log( 'TButtonGroup componentWillUnmount' )
 
     }
 
