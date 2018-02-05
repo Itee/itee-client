@@ -47,16 +47,9 @@ import {
  *    PreRotation support.
  */
 
-
-
-    // Helper methods
+// Helper methods
 var DEG2RAD = Math.PI / 180;
 
-/**
- * Converts number from degrees into radians.
- * @param {number} value
- * @returns {number}
- */
 function degreeToRadian ( value ) {
 
     if ( value === null || value === undefined ) {
@@ -70,13 +63,6 @@ function degreeToRadian ( value ) {
 
 }
 
-/**
- * Parses comma separated list of float numbers and returns them in an array.
- * @example
- * // Returns [ 5.6, 9.4, 2.5, 1.4 ]
- * parseFloatArray( "5.6,9.4,2.5,1.4" )
- * @returns {number[]}
- */
 function parseFloatArray ( floatString ) {
 
     if ( !floatString ) {
@@ -94,13 +80,6 @@ function parseFloatArray ( floatString ) {
 
 }
 
-/**
- * Parses comma separated list of int numbers and returns them in an array.
- * @example
- * // Returns [ 5, 8, 2, 3 ]
- * parseFloatArray( "5,8,2,3" )
- * @returns {number[]}
- */
 function parseIntArray ( intString ) {
 
     if ( !intString ) {
@@ -118,11 +97,6 @@ function parseIntArray ( intString ) {
 
 }
 
-/**
- * Parses Vector3 property from FBXTree.  Property is given as .value.x, .value.y, etc.
- * @param {FBXVector3} property - Property to parse as Vector3.
- * @returns {Vector3}
- */
 function parseVector3 ( property ) {
 
     if ( !property ) {
@@ -136,11 +110,6 @@ function parseVector3 ( property ) {
 
 }
 
-/**
- * Parses Color property from FBXTree.  Property is given as .value.x, .value.y, etc.
- * @param {FBXVector3} property - Property to parse as Color.
- * @returns {Color}
- */
 function parseColor ( property ) {
 
     if ( !property ) {
@@ -167,13 +136,6 @@ function parseMatrixArray ( floatString ) {
 
 }
 
-/**
- * Converts ArrayBuffer to String.
- * @param {ArrayBuffer} buffer
- * @param {number} from
- * @param {number} to
- * @returns {String}
- */
 function convertArrayBufferToString ( buffer, from, to ) {
 
     if ( !buffer ) {
@@ -210,12 +172,6 @@ function convertArrayBufferToString ( buffer, from, to ) {
 
 }
 
-/**
- * Search the index that match func
- * @param array {array} - The data to looking for
- * @param func {function} - The match function
- * @returns {number} - return the index that match func, -1 otherwise
- */
 function findIndex ( array, func ) {
 
     for ( var i = 0, l = array.length ; i < l ; i++ ) {
@@ -230,11 +186,6 @@ function findIndex ( array, func ) {
 
 }
 
-/**
- * Add all properties from b to a
- * @param a {object|array} - The object to extend
- * @param b {object|array} - The data to append
- */
 function append ( a, b ) {
 
     for ( var i = 0, j = a.length, l = b.length ; i < l ; i++, j++ ) {
@@ -245,14 +196,6 @@ function append ( a, b ) {
 
 }
 
-/**
- *
- * @param a {array} - The array to fill with the slice of b
- * @param b {buffer} - The buffer to slice
- * @param from {number} - The start offset
- * @param to {number} - The end offset
- * @returns {*}
- */
 function slice ( a, b, from, to ) {
 
     for ( var i = from, j = 0 ; i < to ; i++, j++ ) {
@@ -265,44 +208,21 @@ function slice ( a, b, from, to ) {
 
 }
 
-/**
- * Generates a loader for loading FBX files from URL and parsing into
- * a Group.
- * @param {LoadingManager} manager - Loading Manager for loader to use.
- */
 var FBXLoader2 = function ( manager, logger ) {};
 
 // Public static methods
 Object.assign( FBXLoader2, {
 
-    /**
-     * The expected signature string in binary fbx files
-     */
     BINARY_SIGNATURE: 'Kaydara FBX Binary  ',
 
-    /**
-     *  Constant of FBX ticks per second.
-     */
     TICKS_PER_SECOND: 46186158000,
 
-    /**
-     * Search in first byte of the file if the binary signature 'Kaydara FBX Binary  ' exist
-     *
-     * @param text - The file where looking for
-     * @returns {string} - 'binary' or 'ascii'
-     */
     getFbxFormat: function ( FBXBuffer ) {
 
         return ( convertArrayBufferToString( FBXBuffer.slice( 0, 20 ) ) === FBXLoader2.BINARY_SIGNATURE ) ? 'binary' : 'ascii';
 
     },
 
-    /**
-     * Converts FBX ticks into real time seconds.
-     *
-     * @param {number} time - FBX tick timestamp to convert.
-     * @returns {number} - FBX tick in real world time.
-     */
     convertFbxTimeToSeconds: function ( time ) {
 
         if ( time == undefined ) {
@@ -319,13 +239,6 @@ Object.assign( FBXLoader2, {
 
     },
 
-    /**
-     * This methods allow the fallback for version 6 of FBX files, because
-     * some properties are under 'properties' instead of 'subNodes' for version 7
-     *
-     * @param propertyName {string} - The name of the property your looking for
-     * @param object {object} - The object where find the property
-     */
     getFbxPropertyData: function ( propertyName, object ) {
 
         if ( !propertyName ) {
@@ -354,12 +267,6 @@ Object.assign( FBXLoader2, {
 
     },
 
-    /**
-     * Need to use case insensitive property accessing about file name !
-     * Some exporter use Filename and others FileName !!! Damn !
-     * @param nodeProperties {node.properties} - The node properties where looking for
-     * @returns {string|null}
-     */
     getFileName: function ( nodeProperties ) {
 
         if ( !nodeProperties ) {
@@ -385,11 +292,7 @@ Object.assign( FBXLoader2, {
 Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     // Private static methods
-    /**
-     * Parses map of relationships between objects.
-     * @param {{Connections: { properties: { connections: [number, number, string][]}}}} FBXTree
-     * @returns {Map<number, {parents: {ID: number, relationship: string}[], children: {ID: number, relationship: string}[]}>}
-     */
+
     function parseConnections ( FBXTree, version ) {
 
         var connections = FBXTree.Connections;
@@ -416,9 +319,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         }
 
-        /**
-         * @type {Map<number, { parents: {ID: number, relationship: string}[], children: {ID: number, relationship: string}[]}>}
-         */
         var connectionMap = new Map();
         var connection    = undefined;
         var connectionId  = undefined;
@@ -468,11 +368,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * Parses map of images referenced in FBXTree.
-     * @param {{Objects: {subNodes: {Texture: Object.<string, FBXTextureNode>}}}} FBXTree
-     * @returns {Map<number, string(image blob/data URL)>}
-     */
     function parseImages ( FBXTree, version ) {
 
         var objects = FBXTree.Objects;
@@ -499,9 +394,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         }
 
-        /**
-         * @type {Map<number, string(image blob/data URL)>}
-         */
         var imageMap            = new Map();
         var videoNode           = undefined;
         var videoNodeProperties = undefined;
@@ -553,10 +445,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * @param {videoNodeProperties} videoNodeProperties - Node to get texture image information from.
-     * @returns {string} - image blob/data URL
-     */
     function parseImage ( videoNodeProperties ) {
 
         var content  = videoNodeProperties.Content;
@@ -614,14 +502,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * Parses map of textures referenced in FBXTree.
-     * @param {{Objects: {subNodes: {Texture: Object.<string, FBXTextureNode>}}}} FBXTree
-     * @param {TextureLoader} loader
-     * @param {Map<number, string(image blob/data URL)>} imageMap
-     * @param {Map<number, {parents: {ID: number, relationship: string}[], children: {ID: number, relationship: string}[]}>} connections
-     * @returns {Map<number, Texture>}
-     */
     function parseTextures ( FBXTree, loader, imageMap, connections, version ) {
 
         if ( !loader ) {
@@ -662,9 +542,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         }
 
-        /**
-         * @type {Map<number, Texture>}
-         */
         var textureMap   = new Map();
         var textureNodes = subNodes.Texture;
         var textureNode  = undefined;
@@ -699,13 +576,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * @param {textureNode} textureNode - Node to get texture information from.
-     * @param {TextureLoader} loader
-     * @param {Map<number, string(image blob/data URL)>} imageMap
-     * @param {Map<number, {parents: {ID: number, relationship: string}[], children: {ID: number, relationship: string}[]}>} connections
-     * @returns {Texture}
-     */
     function parseTexture ( textureNode, loader, imageMap, connections ) {
 
         if ( !textureNode ) {
@@ -764,9 +634,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         }
 
-        /**
-         * @type {Texture}
-         */
         var texture    = loader.load( fileName );
         texture.name   = name;
         texture.FBX_ID = FBX_ID;
@@ -789,13 +656,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * Parses map of Material information.
-     * @param {{Objects: {subNodes: {Material: Object.<number, FBXMaterialNode>}}}} FBXTree
-     * @param {Map<number, Texture>} textureMap
-     * @param {Map<number, {parents: {ID: number, relationship: string}[], children: {ID: number, relationship: string}[]}>} connections
-     * @returns {Map<number, Material>}
-     */
     function parseMaterials ( FBXTree, textureMap, connections, version ) {
 
         if ( !textureMap ) {
@@ -852,13 +712,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * Takes information from Material node and returns a generated Material
-     * @param {FBXMaterialNode} materialNode
-     * @param {Map<number, Texture>} textureMap
-     * @param {Map<number, {parents: {ID: number, relationship: string}[], children: {ID: number, relationship: string}[]}>} connections
-     * @returns {Material}
-     */
     function parseMaterial ( materialNode, textureMap, connections, version ) {
 
         if ( !materialNode ) {
@@ -943,19 +796,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * @typedef {{Diffuse: FBXVector3, Specular: FBXVector3, Shininess: FBXValue, Emissive: FBXVector3, EmissiveFactor: FBXValue, Opacity: FBXValue}} FBXMaterialProperties
-     */
-
-    /**
-     * @typedef {{color: Color=, specular: Color=, shininess: number=, emissive: Color=, emissiveIntensity: number=, opacity: number=, transparent: boolean=, map: Texture=}} THREEMaterialParameterPack
-     */
-    /**
-     * @param {FBXMaterialProperties} properties
-     * @param {Map<number, Texture>} textureMap
-     * @param {{ID: number, relationship: string}[]} childrenRelationships
-     * @returns {THREEMaterialParameterPack}
-     */
     function parseParameters ( properties, textureMap, childrenRelationships ) {
 
         var parameters = {};
@@ -1047,13 +887,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * Generates map of Skeleton-like objects for use later when generating and binding skeletons.
-     * @param {{Objects: {subNodes: {Deformer: Object.<number, FBXSubDeformerNode>}}}} FBXTree
-     * @param {Map<number, {parents: {ID: number, relationship: string}[], children: {ID: number, relationship: string}[]}>} connections
-     * @returns {Map<number, {map: Map<number, {FBX_ID: number, indices: number[], weights: number[], transform: number[], transformLink: number[], linkMode: string}>, array: {FBX_ID: number,
-     *     indices: number[], weights: number[], transform: number[], transformLink: number[], linkMode: string}[], skeleton: Skeleton|null}>}
-     */
     function parseDeformers ( FBXTree, connections, version ) {
 
         if ( !connections ) {
@@ -1113,13 +946,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * Generates a "Skeleton Representation" of FBX nodes based on an FBX Skin Deformer's connections and an object containing SubDeformer nodes.
-     * @param {{parents: {ID: number, relationship: string}[], children: {ID: number, relationship: string}[]}} connections
-     * @param {Object.<number, FBXSubDeformerNode>} deformerNodes
-     * @returns {{map: Map<number, {FBX_ID: number, indices: number[], weights: number[], transform: number[], transformLink: number[], linkMode: string}>, array: {FBX_ID: number, indices: number[],
-     *     weights: number[], transform: number[], transformLink: number[], linkMode: string}[], skeleton: Skeleton|null}}
-     */
     function parseSkeleton ( connections, deformerNodes ) {
 
         if ( !connections ) {
@@ -1174,14 +1000,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * Generates Buffer geometries from geometry information in FBXTree, and generates map of BufferGeometries
-     * @param {{Objects: {subNodes: {Geometry: Object.<number, FBXGeometryNode}}}} FBXTree
-     * @param {Map<number, {parents: {ID: number, relationship: string}[], children: {ID: number, relationship: string}[]}>} connections
-     * @param {Map<number, {map: Map<number, {FBX_ID: number, indices: number[], weights: number[], transform: number[], transformLink: number[], linkMode: string}>, array: {FBX_ID: number, indices:
-     *     number[], weights: number[], transform: number[], transformLink: number[], linkMode: string}[], skeleton: Skeleton|null}>} deformers
-     * @returns {Map<number, BufferGeometry>}
-     */
     function parseGeometries ( FBXTree, connections, deformers, version ) {
 
         if ( !connections ) {
@@ -1251,14 +1069,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * Generates BufferGeometry from FBXGeometryNode.
-     * @param {FBXGeometryNode} geometryNode
-     * @param {{parents: {ID: number, relationship: string}[], children: {ID: number, relationship: string}[]}} relationships
-     * @param {Map<number, {map: Map<number, {FBX_ID: number, indices: number[], weights: number[], transform: number[], transformLink: number[], linkMode: string}>, array: {FBX_ID: number, indices:
-     *     number[], weights: number[], transform: number[], transformLink: number[], linkMode: string}[]}>} deformers
-     * @returns {BufferGeometry}
-     */
     function parseGeometry ( geometryNode, relationships, deformers, version ) {
 
         switch ( geometryNode.attrType ) {
@@ -1275,15 +1085,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * Specialty function for parsing Mesh based Geometry Nodes.
-     * @param {FBXGeometryNode} geometryNode
-     * @param {{parents: {ID: number, relationship: string}[], children: {ID: number, relationship: string}[]}} relationships - Object representing relationships between specific geometry node and
-     *     other nodes.
-     * @param {Map<number, {map: Map<number, {FBX_ID: number, indices: number[], weights: number[], transform: number[], transformLink: number[], linkMode: string}>, array: {FBX_ID: number, indices:
-     *     number[], weights: number[], transform: number[], transformLink: number[], linkMode: string}[]}>} deformers - Map object of deformers and subDeformers by ID.
-     * @returns {BufferGeometry}
-     */
     function parseMeshGeometry ( geometryNode, relationships, deformers, version ) {
 
         var deformer              = undefined;
@@ -1307,11 +1108,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * @param {{map: Map<number, {FBX_ID: number, indices: number[], weights: number[], transform: number[], transformLink: number[], linkMode: string}>, array: {FBX_ID: number, indices: number[],
-     *     weights: number[], transform: number[], transformLink: number[], linkMode: string}[]}} deformer - Skeleton representation for geometry instance.
-     * @returns {BufferGeometry}
-     */
     function genGeometry ( geometryNode, deformer, version ) {
 
         var geometry = new Geometry();
@@ -1541,9 +1337,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         }
 
-        /**
-         * @type {{vertexBuffer: number[], normalBuffer: number[], uvBuffer: number[], skinIndexBuffer: number[], skinWeightBuffer: number[], materialIndexBuffer: number[]}}
-         */
         var bufferInfo = geometry.flattenToBuffers();
 
         var geo  = new BufferGeometry();
@@ -1599,11 +1392,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * Parses normal information for geometry.
-     * @param {FBXGeometryNode} geometryNode
-     * @returns {{dataSize: number, buffer: number[], indices: number[], mappingType: string, referenceType: string}}
-     */
     function getNormals ( NormalNode ) {
 
         if ( !NormalNode ) {
@@ -1642,11 +1430,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * Parses UV information for geometry.
-     * @param {FBXGeometryNode} geometryNode
-     * @returns {{dataSize: number, buffer: number[], indices: number[], mappingType: string, referenceType: string}}
-     */
     function getUVs ( UVNode ) {
 
         if ( !UVNode ) {
@@ -1676,11 +1459,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * Parses Vertex Color information for geometry.
-     * @param {FBXGeometryNode} geometryNode
-     * @returns {{dataSize: number, buffer: number[], indices: number[], mappingType: string, referenceType: string}}
-     */
     function getColors ( ColorNode ) {
 
         if ( !ColorNode ) {
@@ -1710,11 +1488,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * Parses material application information for geometry.
-     * @param {FBXGeometryNode}
-     * @returns {{dataSize: number, buffer: number[], indices: number[], mappingType: string, referenceType: string}}
-     */
     function getMaterials ( MaterialNode ) {
 
         if ( !MaterialNode ) {
@@ -1762,29 +1535,12 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * Function uses the infoObject and given indices to return value array of object.
-     * @param {number} polygonVertexIndex - Index of vertex in draw order (which index of the index buffer refers to this vertex).
-     * @param {number} polygonIndex - Index of polygon in geometry.
-     * @param {number} vertexIndex - Index of vertex inside vertex buffer (used because some data refers to old index buffer that we don't use anymore).
-     * @param {{datasize: number, buffer: number[], indices: number[], mappingType: string, referenceType: string}} infoObject - Object containing data and how to access data.
-     * @returns {number[]}
-     */
-
     var dataArray = [];
 
     var GetData = {
 
         ByPolygonVertex: {
 
-            /**
-             * Function uses the infoObject and given indices to return value array of object.
-             * @param {number} polygonVertexIndex - Index of vertex in draw order (which index of the index buffer refers to this vertex).
-             * @param {number} polygonIndex - Index of polygon in geometry.
-             * @param {number} vertexIndex - Index of vertex inside vertex buffer (used because some data refers to old index buffer that we don't use anymore).
-             * @param {{datasize: number, buffer: number[], indices: number[], mappingType: string, referenceType: string}} infoObject - Object containing data and how to access data.
-             * @returns {number[]}
-             */
             Direct: function ( polygonVertexIndex, polygonIndex, vertexIndex, infoObject ) {
 
                 var dataSize = infoObject.dataSize;
@@ -1796,14 +1552,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
             },
 
-            /**
-             * Function uses the infoObject and given indices to return value array of object.
-             * @param {number} polygonVertexIndex - Index of vertex in draw order (which index of the index buffer refers to this vertex).
-             * @param {number} polygonIndex - Index of polygon in geometry.
-             * @param {number} vertexIndex - Index of vertex inside vertex buffer (used because some data refers to old index buffer that we don't use anymore).
-             * @param {{datasize: number, buffer: number[], indices: number[], mappingType: string, referenceType: string}} infoObject - Object containing data and how to access data.
-             * @returns {number[]}
-             */
             IndexToDirect: function ( polygonVertexIndex, polygonIndex, vertexIndex, infoObject ) {
 
                 var dataSize = infoObject.dataSize;
@@ -1820,14 +1568,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         ByPolygon: {
 
-            /**
-             * Function uses the infoObject and given indices to return value array of object.
-             * @param {number} polygonVertexIndex - Index of vertex in draw order (which index of the index buffer refers to this vertex).
-             * @param {number} polygonIndex - Index of polygon in geometry.
-             * @param {number} vertexIndex - Index of vertex inside vertex buffer (used because some data refers to old index buffer that we don't use anymore).
-             * @param {{datasize: number, buffer: number[], indices: number[], mappingType: string, referenceType: string}} infoObject - Object containing data and how to access data.
-             * @returns {number[]}
-             */
             Direct: function ( polygonVertexIndex, polygonIndex, vertexIndex, infoObject ) {
 
                 var dataSize = infoObject.dataSize;
@@ -1839,14 +1579,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
             },
 
-            /**
-             * Function uses the infoObject and given indices to return value array of object.
-             * @param {number} polygonVertexIndex - Index of vertex in draw order (which index of the index buffer refers to this vertex).
-             * @param {number} polygonIndex - Index of polygon in geometry.
-             * @param {number} vertexIndex - Index of vertex inside vertex buffer (used because some data refers to old index buffer that we don't use anymore).
-             * @param {{datasize: number, buffer: number[], indices: number[], mappingType: string, referenceType: string}} infoObject - Object containing data and how to access data.
-             * @returns {number[]}
-             */
             IndexToDirect: function ( polygonVertexIndex, polygonIndex, vertexIndex, infoObject ) {
 
                 var dataSize = infoObject.dataSize;
@@ -1878,14 +1610,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         AllSame: {
 
-            /**
-             * Function uses the infoObject and given indices to return value array of object.
-             * @param {number} polygonVertexIndex - Index of vertex in draw order (which index of the index buffer refers to this vertex).
-             * @param {number} polygonIndex - Index of polygon in geometry.
-             * @param {number} vertexIndex - Index of vertex inside vertex buffer (used because some data refers to old index buffer that we don't use anymore).
-             * @param {{datasize: number, buffer: number[], indices: number[], mappingType: string, referenceType: string}} infoObject - Object containing data and how to access data.
-             * @returns {number[]}
-             */
             IndexToDirect: function ( polygonVertexIndex, polygonIndex, vertexIndex, infoObject ) {
 
                 var dataSize = infoObject.dataSize;
@@ -1907,12 +1631,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * Specialty function for parsing NurbsCurve based Geometry Nodes.
-     * @param {FBXGeometryNode} geometryNode
-     * @param {{parents: {ID: number, relationship: string}[], children: {ID: number, relationship: string}[]}} relationships
-     * @returns {BufferGeometry}
-     */
     function parseNurbsGeometry ( geometryNode ) {
 
         if ( !geometryNode ) {
@@ -1987,16 +1705,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * Finally generates Scene graph and Scene graph Objects.
-     * @param {{Objects: {subNodes: {Model: Object.<number, FBXModelNode>}}}} FBXTree
-     * @param {Map<number, {parents: {ID: number, relationship: string}[], children: {ID: number, relationship: string}[]}>} connections
-     * @param {Map<number, {map: Map<number, {FBX_ID: number, indices: number[], weights: number[], transform: number[], transformLink: number[], linkMode: string}>, array: {FBX_ID: number, indices:
-     *     number[], weights: number[], transform: number[], transformLink: number[], linkMode: string}[], skeleton: Skeleton|null}>} deformers
-     * @param {Map<number, BufferGeometry>} geometryMap
-     * @param {Map<number, Material>} materialMap
-     * @returns {Group}
-     */
     function parseScene ( FBXTree, connections, deformers, geometryMap, materialMap, version ) {
 
         if ( !connections ) {
@@ -2026,14 +1734,8 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         var ModelNode = FBXTree.Objects.subNodes.Model;
 
-        /**
-         * @type {Array.<Object3D>}
-         */
         var modelArray = [];
 
-        /**
-         * @type {Map.<number, Object3D>}
-         */
         var modelMap = new Map();
 
         for ( var nodeID in ModelNode ) {
@@ -2083,19 +1785,11 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
                 switch ( node.attrType ) {
 
                     case 'Mesh':
-                        /**
-                         * @type {?BufferGeometry}
-                         */
+
                         var geometry = null;
 
-                        /**
-                         * @type {MultiMaterial|Material}
-                         */
                         var material = null;
 
-                        /**
-                         * @type {Array.<Material>}
-                         */
                         var materials = [];
 
                         for ( var childrenIndex = 0, childrenLength = connection.children.length ; childrenIndex < childrenLength ; ++childrenIndex ) {
@@ -2331,9 +2025,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
                 var subDeformer      = subDeformers[ key ];
                 var subDeformerIndex = subDeformer.index;
 
-                /**
-                 * @type {Bone}
-                 */
                 var bone = deformer.bones[ subDeformerIndex ];
                 if ( !worldMatrices.has( bone.FBX_ID ) ) {
 
@@ -2436,11 +2127,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * Parses animation information from FBXTree and generates an AnimationInfoObject.
-     * @param {{Objects: {subNodes: {AnimationCurveNode: any, AnimationCurve: any, AnimationLayer: any, AnimationStack: any}}}} FBXTree
-     * @param {Map<number, {parents: {ID: number, relationship: string}[], children: {ID: number, relationship: string}[]}>} connections
-     */
     function parseAnimations ( FBXTree, connections, sceneGraph, version ) {
 
         var objects = FBXTree.Objects;
@@ -2478,374 +2164,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var rawLayers = FBXTree.Objects.subNodes.AnimationLayer;
         var rawStacks = FBXTree.Objects.subNodes.AnimationStack;
 
-        /**
-         * @type {{
-				 curves: Map<number, {
-				 T: {
-					id: number;
-					attr: string;
-					internalID: number;
-					attrX: boolean;
-					attrY: boolean;
-					attrZ: boolean;
-					containerBoneID: number;
-					containerID: number;
-					curves: {
-						x: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-						y: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-						z: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-					};
-				},
-				 R: {
-					id: number;
-					attr: string;
-					internalID: number;
-					attrX: boolean;
-					attrY: boolean;
-					attrZ: boolean;
-					containerBoneID: number;
-					containerID: number;
-					curves: {
-						x: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-						y: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-						z: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-					};
-				},
-				 S: {
-					id: number;
-					attr: string;
-					internalID: number;
-					attrX: boolean;
-					attrY: boolean;
-					attrZ: boolean;
-					containerBoneID: number;
-					containerID: number;
-					curves: {
-						x: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-						y: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-						z: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-					};
-				}
-			 }>,
-			 layers: Map<number, {
-				T: {
-					id: number;
-					attr: string;
-					internalID: number;
-					attrX: boolean;
-					attrY: boolean;
-					attrZ: boolean;
-					containerBoneID: number;
-					containerID: number;
-					curves: {
-						x: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-						y: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-						z: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-					},
-				},
-				R: {
-					id: number;
-					attr: string;
-					internalID: number;
-					attrX: boolean;
-					attrY: boolean;
-					attrZ: boolean;
-					containerBoneID: number;
-					containerID: number;
-					curves: {
-						x: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-						y: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-						z: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-					},
-				},
-				S: {
-					id: number;
-					attr: string;
-					internalID: number;
-					attrX: boolean;
-					attrY: boolean;
-					attrZ: boolean;
-					containerBoneID: number;
-					containerID: number;
-					curves: {
-						x: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-						y: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-						z: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-					},
-				}
-				}[]>,
-			 stacks: Map<number, {
-				 name: string,
-				 layers: {
-					T: {
-						id: number;
-						attr: string;
-						internalID: number;
-						attrX: boolean;
-						attrY: boolean;
-						attrZ: boolean;
-						containerBoneID: number;
-						containerID: number;
-						curves: {
-							x: {
-								version: any;
-								id: number;
-								internalID: number;
-								times: number[];
-								values: number[];
-								attrFlag: number[];
-								attrData: number[];
-							};
-							y: {
-								version: any;
-								id: number;
-								internalID: number;
-								times: number[];
-								values: number[];
-								attrFlag: number[];
-								attrData: number[];
-							};
-							z: {
-								version: any;
-								id: number;
-								internalID: number;
-								times: number[];
-								values: number[];
-								attrFlag: number[];
-								attrData: number[];
-							};
-						};
-					};
-					R: {
-						id: number;
-						attr: string;
-						internalID: number;
-						attrX: boolean;
-						attrY: boolean;
-						attrZ: boolean;
-						containerBoneID: number;
-						containerID: number;
-						curves: {
-							x: {
-								version: any;
-								id: number;
-								internalID: number;
-								times: number[];
-								values: number[];
-								attrFlag: number[];
-								attrData: number[];
-							};
-							y: {
-								version: any;
-								id: number;
-								internalID: number;
-								times: number[];
-								values: number[];
-								attrFlag: number[];
-								attrData: number[];
-							};
-							z: {
-								version: any;
-								id: number;
-								internalID: number;
-								times: number[];
-								values: number[];
-								attrFlag: number[];
-								attrData: number[];
-							};
-						};
-					};
-					S: {
-						id: number;
-						attr: string;
-						internalID: number;
-						attrX: boolean;
-						attrY: boolean;
-						attrZ: boolean;
-						containerBoneID: number;
-						containerID: number;
-						curves: {
-							x: {
-								version: any;
-								id: number;
-								internalID: number;
-								times: number[];
-								values: number[];
-								attrFlag: number[];
-								attrData: number[];
-							};
-							y: {
-								version: any;
-								id: number;
-								internalID: number;
-								times: number[];
-								values: number[];
-								attrFlag: number[];
-								attrData: number[];
-							};
-							z: {
-								version: any;
-								id: number;
-								internalID: number;
-								times: number[];
-								values: number[];
-								attrFlag: number[];
-								attrData: number[];
-							};
-						};
-					};
-				}[][],
-			 length: number,
-			 frames: number }>,
-			 length: number,
-			 fps: number,
-			 frames: number
-		 }}
-         */
         var animations = {
             curves: new Map(),
             layers: {},
@@ -2855,18 +2173,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
             frames: 0
         };
 
-        /**
-         * @type {Array.<{
-				id: number;
-				attr: string;
-				internalID: number;
-				attrX: boolean;
-				attrY: boolean;
-				attrZ: boolean;
-				containerBoneID: number;
-				containerID: number;
-			}>}
-         */
         var animationCurveNodes = [];
         for ( var nodeID in rawNodes ) {
 
@@ -2879,47 +2185,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         }
 
-        /**
-         * @type {Map.<number, {
-				id: number,
-				attr: string,
-				internalID: number,
-				attrX: boolean,
-				attrY: boolean,
-				attrZ: boolean,
-				containerBoneID: number,
-				containerID: number,
-				curves: {
-					x: {
-						version: any,
-						id: number,
-						internalID: number,
-						times: number[],
-						values: number[],
-						attrFlag: number[],
-						attrData: number[],
-					},
-					y: {
-						version: any,
-						id: number,
-						internalID: number,
-						times: number[],
-						values: number[],
-						attrFlag: number[],
-						attrData: number[],
-					},
-					z: {
-						version: any,
-						id: number,
-						internalID: number,
-						times: number[],
-						values: number[],
-						attrFlag: number[],
-						attrData: number[],
-					}
-				}
-			}>}
-         */
         var tmpMap = new Map();
         for ( var animationCurveNodeIndex = 0, numberOfAnimationCurves = animationCurveNodes.length ; animationCurveNodeIndex < numberOfAnimationCurves ; ++animationCurveNodeIndex ) {
 
@@ -2931,17 +2196,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         }
 
-        /**
-         * @type {{
-				version: any,
-				id: number,
-				internalID: number,
-				times: number[],
-				values: number[],
-				attrFlag: number[],
-				attrData: number[],
-			}[]}
-         */
         var animationCurves = [];
         for ( nodeID in rawCurves ) {
 
@@ -3065,127 +2319,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         for ( var nodeID in rawLayers ) {
 
-            /**
-             * @type {{
-				T: {
-					id: number;
-					attr: string;
-					internalID: number;
-					attrX: boolean;
-					attrY: boolean;
-					attrZ: boolean;
-					containerBoneID: number;
-					containerID: number;
-					curves: {
-						x: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-						y: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-						z: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-					},
-				},
-				R: {
-					id: number;
-					attr: string;
-					internalID: number;
-					attrX: boolean;
-					attrY: boolean;
-					attrZ: boolean;
-					containerBoneID: number;
-					containerID: number;
-					curves: {
-						x: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-						y: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-						z: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-					},
-				},
-				S: {
-					id: number;
-					attr: string;
-					internalID: number;
-					attrX: boolean;
-					attrY: boolean;
-					attrZ: boolean;
-					containerBoneID: number;
-					containerID: number;
-					curves: {
-						x: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-						y: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-						z: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-					},
-				}
-				}[]}
-             */
             var layer    = [];
             var rawLayer = rawLayers[ nodeID ];
             var id       = ( version > 7000 ) ? parseInt( nodeID ) : rawLayer.id; //TODO: check id for version 6
@@ -3326,55 +2459,26 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * @param {Object} FBXTree
-     * @param {{id: number, attrName: string, properties: Object<string, any>}} animationCurveNode
-     * @param {Map<number, {parents: {ID: number, relationship: string}[], children: {ID: number, relationship: string}[]}>} connections
-     * @param {{skeleton: {bones: {FBX_ID: number}[]}}} sceneGraph
-     */
     function parseAnimationNode ( FBXTree, animationCurveNode, connections, sceneGraph ) {
 
         var rawModels = FBXTree.Objects.subNodes.Model;
 
         var animationNode = {
-            /**
-             * @type {number}
-             */
+
             id: animationCurveNode.id,
 
-            /**
-             * @type {string}
-             */
             attr: animationCurveNode.attrName,
 
-            /**
-             * @type {number}
-             */
             internalID: animationCurveNode.id,
 
-            /**
-             * @type {boolean}
-             */
             attrX: false,
 
-            /**
-             * @type {boolean}
-             */
             attrY: false,
 
-            /**
-             * @type {boolean}
-             */
             attrZ: false,
 
-            /**
-             * @type {number}
-             */
             containerBoneID: -1,
 
-            /**
-             * @type {number}
-             */
             containerID: -1,
 
             curves: {
@@ -3383,9 +2487,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
                 z: null
             },
 
-            /**
-             * @type {number[]}
-             */
             preRotations: null
         };
 
@@ -3443,10 +2544,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * @param {{id: number, subNodes: {KeyTime: {properties: {a: string}}, KeyValueFloat: {properties: {a: string}}, KeyAttrFlags: {properties: {a: string}}, KeyAttrDataFloat: {properties: {a:
-     *     string}}}}} animationCurve
-     */
     function parseAnimationCurve ( animationCurve, version ) {
 
         return {
@@ -3461,129 +2558,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * Sets the maxTimeStamp and minTimeStamp variables if it has timeStamps that are either larger or smaller
-     * than the max or min respectively.
-     * @param {{
-				T: {
-						id: number,
-						attr: string,
-						internalID: number,
-						attrX: boolean,
-						attrY: boolean,
-						attrZ: boolean,
-						containerBoneID: number,
-						containerID: number,
-						curves: {
-								x: {
-										version: any,
-										id: number,
-										internalID: number,
-										times: number[],
-										values: number[],
-										attrFlag: number[],
-										attrData: number[],
-								},
-								y: {
-										version: any,
-										id: number,
-										internalID: number,
-										times: number[],
-										values: number[],
-										attrFlag: number[],
-										attrData: number[],
-								},
-								z: {
-										version: any,
-										id: number,
-										internalID: number,
-										times: number[],
-										values: number[],
-										attrFlag: number[],
-										attrData: number[],
-								},
-						},
-				},
-				R: {
-						id: number,
-						attr: string,
-						internalID: number,
-						attrX: boolean,
-						attrY: boolean,
-						attrZ: boolean,
-						containerBoneID: number,
-						containerID: number,
-						curves: {
-								x: {
-										version: any,
-										id: number,
-										internalID: number,
-										times: number[],
-										values: number[],
-										attrFlag: number[],
-										attrData: number[],
-								},
-								y: {
-										version: any,
-										id: number,
-										internalID: number,
-										times: number[],
-										values: number[],
-										attrFlag: number[],
-										attrData: number[],
-								},
-								z: {
-										version: any,
-										id: number,
-										internalID: number,
-										times: number[],
-										values: number[],
-										attrFlag: number[],
-										attrData: number[],
-								},
-						},
-				},
-				S: {
-						id: number,
-						attr: string,
-						internalID: number,
-						attrX: boolean,
-						attrY: boolean,
-						attrZ: boolean,
-						containerBoneID: number,
-						containerID: number,
-						curves: {
-								x: {
-										version: any,
-										id: number,
-										internalID: number,
-										times: number[],
-										values: number[],
-										attrFlag: number[],
-										attrData: number[],
-								},
-								y: {
-										version: any,
-										id: number,
-										internalID: number,
-										times: number[],
-										values: number[],
-										attrFlag: number[],
-										attrData: number[],
-								},
-								z: {
-										version: any,
-										id: number,
-										internalID: number,
-										times: number[],
-										values: number[],
-										attrFlag: number[],
-										attrData: number[],
-								},
-						},
-				},
-		}} layer
-     */
     function getCurveNodeMaxMinTimeStamps ( layer, timestamps ) {
 
         if ( layer.R ) {
@@ -3604,39 +2578,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * Sets the maxTimeStamp and minTimeStamp if one of the curve's time stamps
-     * exceeds the maximum or minimum.
-     * @param {{
-				x: {
-						version: any,
-						id: number,
-						internalID: number,
-						times: number[],
-						values: number[],
-						attrFlag: number[],
-						attrData: number[],
-				},
-				y: {
-						version: any,
-						id: number,
-						internalID: number,
-						times: number[],
-						values: number[],
-						attrFlag: number[],
-						attrData: number[],
-				},
-				z: {
-						version: any,
-						id: number,
-						internalID: number,
-						times: number[],
-						values: number[],
-						attrFlag: number[],
-						attrData: number[],
-				}
-		}} curve
-     */
     function getCurveMaxMinTimeStamp ( curve, timestamps ) {
 
         if ( curve.x ) {
@@ -3657,10 +2598,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * Sets the maxTimeStamp and minTimeStamp if one of its timestamps exceeds the maximum or minimum.
-     * @param {{times: number[]}} axis
-     */
     function getCurveAxisMaxMinTimeStamps ( axis, timestamps ) {
 
         timestamps.max = axis.times[ axis.times.length - 1 ] > timestamps.max ? axis.times[ axis.times.length - 1 ] : timestamps.max;
@@ -3668,376 +2605,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
     }
 
-    /**
-     * @param {{
-		curves: Map<number, {
-			T: {
-				id: number;
-				attr: string;
-				internalID: number;
-				attrX: boolean;
-				attrY: boolean;
-				attrZ: boolean;
-				containerBoneID: number;
-				containerID: number;
-				curves: {
-					x: {
-						version: any;
-						id: number;
-						internalID: number;
-						times: number[];
-						values: number[];
-						attrFlag: number[];
-						attrData: number[];
-					};
-					y: {
-						version: any;
-						id: number;
-						internalID: number;
-						times: number[];
-						values: number[];
-						attrFlag: number[];
-						attrData: number[];
-					};
-					z: {
-						version: any;
-						id: number;
-						internalID: number;
-						times: number[];
-						values: number[];
-						attrFlag: number[];
-						attrData: number[];
-					};
-				};
-			};
-			R: {
-				id: number;
-				attr: string;
-				internalID: number;
-				attrX: boolean;
-				attrY: boolean;
-				attrZ: boolean;
-				containerBoneID: number;
-				containerID: number;
-				curves: {
-					x: {
-						version: any;
-						id: number;
-						internalID: number;
-						times: number[];
-						values: number[];
-						attrFlag: number[];
-						attrData: number[];
-					};
-					y: {
-						version: any;
-						id: number;
-						internalID: number;
-						times: number[];
-						values: number[];
-						attrFlag: number[];
-						attrData: number[];
-					};
-					z: {
-						version: any;
-						id: number;
-						internalID: number;
-						times: number[];
-						values: number[];
-						attrFlag: number[];
-						attrData: number[];
-					};
-				};
-			};
-			S: {
-				id: number;
-				attr: string;
-				internalID: number;
-				attrX: boolean;
-				attrY: boolean;
-				attrZ: boolean;
-				containerBoneID: number;
-				containerID: number;
-				curves: {
-					x: {
-						version: any;
-						id: number;
-						internalID: number;
-						times: number[];
-						values: number[];
-						attrFlag: number[];
-						attrData: number[];
-					};
-					y: {
-						version: any;
-						id: number;
-						internalID: number;
-						times: number[];
-						values: number[];
-						attrFlag: number[];
-						attrData: number[];
-					};
-					z: {
-						version: any;
-						id: number;
-						internalID: number;
-						times: number[];
-						values: number[];
-						attrFlag: number[];
-						attrData: number[];
-					};
-				};
-			};
-		}>;
-		layers: Map<number, {
-			T: {
-				id: number;
-				attr: string;
-				internalID: number;
-				attrX: boolean;
-				attrY: boolean;
-				attrZ: boolean;
-				containerBoneID: number;
-				containerID: number;
-				curves: {
-					x: {
-						version: any;
-						id: number;
-						internalID: number;
-						times: number[];
-						values: number[];
-						attrFlag: number[];
-						attrData: number[];
-					};
-					y: {
-						version: any;
-						id: number;
-						internalID: number;
-						times: number[];
-						values: number[];
-						attrFlag: number[];
-						attrData: number[];
-					};
-					z: {
-						version: any;
-						id: number;
-						internalID: number;
-						times: number[];
-						values: number[];
-						attrFlag: number[];
-						attrData: number[];
-					};
-				};
-			};
-			R: {
-				id: number;
-				attr: string;
-				internalID: number;
-				attrX: boolean;
-				attrY: boolean;
-				attrZ: boolean;
-				containerBoneID: number;
-				containerID: number;
-				curves: {
-					x: {
-						version: any;
-						id: number;
-						internalID: number;
-						times: number[];
-						values: number[];
-						attrFlag: number[];
-						attrData: number[];
-					};
-					y: {
-						version: any;
-						id: number;
-						internalID: number;
-						times: number[];
-						values: number[];
-						attrFlag: number[];
-						attrData: number[];
-					};
-					z: {
-						version: any;
-						id: number;
-						internalID: number;
-						times: number[];
-						values: number[];
-						attrFlag: number[];
-						attrData: number[];
-					};
-				};
-			};
-			S: {
-				id: number;
-				attr: string;
-				internalID: number;
-				attrX: boolean;
-				attrY: boolean;
-				attrZ: boolean;
-				containerBoneID: number;
-				containerID: number;
-				curves: {
-					x: {
-						version: any;
-						id: number;
-						internalID: number;
-						times: number[];
-						values: number[];
-						attrFlag: number[];
-						attrData: number[];
-					};
-					y: {
-						version: any;
-						id: number;
-						internalID: number;
-						times: number[];
-						values: number[];
-						attrFlag: number[];
-						attrData: number[];
-					};
-					z: {
-						version: any;
-						id: number;
-						internalID: number;
-						times: number[];
-						values: number[];
-						attrFlag: number[];
-						attrData: number[];
-					};
-				};
-			};
-		}[]>;
-		stacks: Map<number, {
-			name: string;
-			layers: {
-				T: {
-					id: number;
-					attr: string;
-					internalID: number;
-					attrX: boolean;
-					attrY: boolean;
-					attrZ: boolean;
-					containerBoneID: number;
-					containerID: number;
-					curves: {
-						x: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-						y: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-						z: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-					};
-				};
-				R: {
-					id: number;
-					attr: string;
-					internalID: number;
-					attrX: boolean;
-					attrY: boolean;
-					attrZ: boolean;
-					containerBoneID: number;
-					containerID: number;
-					curves: {
-						x: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-						y: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-						z: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-					};
-				};
-				S: {
-					id: number;
-					attr: string;
-					internalID: number;
-					attrX: boolean;
-					attrY: boolean;
-					attrZ: boolean;
-					containerBoneID: number;
-					containerID: number;
-					curves: {
-						x: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-						y: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-						z: {
-							version: any;
-							id: number;
-							internalID: number;
-							times: number[];
-							values: number[];
-							attrFlag: number[];
-							attrData: number[];
-						};
-					};
-				};
-			}[][];
-			length: number;
-			frames: number;
-		}>;
-		length: number;
-		fps: number;
-		frames: number;
-	}} animations,
-     * @param {{skeleton: { bones: Bone[]}}} group
-     */
     function addAnimations ( group, animations ) {
 
         if ( !group ) {
@@ -4095,23 +2662,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
             var stack = stacks[ key ];
 
-            /**
-             * @type {{
-			 * name: string,
-			 * fps: number,
-			 * length: number,
-			 * hierarchy: Array.<{
-			 * 	parent: number,
-			 * 	name: string,
-			 * 	keys: Array.<{
-			 * 		time: number,
-			 * 		pos: Array.<number>,
-			 * 		rot: Array.<number>,
-			 * 		scl: Array.<number>
-			 * 	}>
-			 * }>
-			 * }}
-             */
             var animationData = {
                 name:      stack.name,
                 fps:       30,
@@ -4171,9 +2721,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
     var euler      = new Euler();
     var quaternion = new Quaternion();
 
-    /**
-     * @param {Bone} bone
-     */
     function generateKey ( animations, animationNode, bone, frame ) {
 
         var key = {
@@ -4266,15 +2813,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         constructor: FBXLoader2,
 
-        /**
-         * Loads an ASCII/Binary FBX file from URL and parses into a Group.
-         * Group will have an animations property of AnimationClips
-         * of the different animations exported with the FBX.
-         * @param {string} url - URL of the FBX file.
-         * @param {function(Group):void} onLoad - Callback for when FBX file is loaded and parsed.
-         * @param {function(ProgressEvent):void} onProgress - Callback fired periodically when file is being retrieved from server.
-         * @param {function(Event):void} onError - Callback fired when error occurs (Currently only with retrieving file, not with parsing errors).
-         */
         load: function ( url, onLoad, onProgress, onError ) {
 
             if ( url === null || url === undefined ) {
@@ -4319,14 +2857,6 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         },
 
-        /**
-         * Parses an ASCII/Binary FBX file and returns a Group.
-         * Group will have an animations property of AnimationClips
-         * of the different animations within the FBX file.
-         * @param {ArrayBuffer} FBXBuffer - Contents of FBX file to parse.
-         * @param {string} resourceDirectory - Directory to load external assets (e.g. textures ) from.
-         * @returns {Group}
-         */
         parse: function ( FBXBuffer, resourceDirectory ) {
 
             if ( FBXBuffer === null || FBXBuffer === undefined ) {
@@ -4379,46 +2909,18 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
 })() );
 
-/**
- * An instance of a Vertex with data for drawing vertices to the screen.
- * @constructor
- */
 function Vertex () {
 
-    /**
-     * Position of the vertex.
-     * @type {Vector3}
-     */
     this.position = new Vector3();
 
-    /**
-     * Normal of the vertex
-     * @type {Vector3}
-     */
     this.normal = new Vector3();
 
-    /**
-     * UV coordinates of the vertex.
-     * @type {Vector2}
-     */
     this.uv = new Vector2();
 
-    /**
-     * Color of the vertex
-     * @type {Vector3}
-     */
     this.color = new Vector3();
 
-    /**
-     * Indices of the bones vertex is influenced by.
-     * @type {Vector4}
-     */
     this.skinIndices = new Vector4( 0, 0, 0, 0 );
 
-    /**
-     * Weights that each bone influences the vertex.
-     * @type {Vector4}
-     */
     this.skinWeights = new Vector4( 0, 0, 0, 0 );
 
 }
@@ -4441,17 +2943,8 @@ Object.assign( Vertex.prototype, {
 
 } );
 
-/**
- * An instance of a Triange with data for drawing triangle to the screen.
- *
- * @constructor
- */
 function Triangle () {
 
-    /**
-     * Array of triangle's Vertexes
-     * @type {Vertex[]}
-     */
     this.vertices = [];
 
 }
@@ -4474,23 +2967,10 @@ Object.assign( Triangle.prototype, {
 
 } );
 
-/**
- * An instance of a Face with data for drawing faces to the screen.
- *
- * @constructor
- */
 function Face () {
 
-    /**
-     * Array of face's Triangles
-     * @type {Triangle[]}
-     */
     this.triangles = [];
 
-    /**
-     * The material index for this face
-     * @type {number}
-     */
     this.materialIndex = 0;
 
 }
@@ -4530,40 +3010,16 @@ Object.assign( Face.prototype, {
 
 } );
 
-/**
- * @constructor
- */
 function Geometry () {
 
-    /**
-     * The faces of the geometry
-     * @type {Face[]}
-     */
     this.faces = [];
 
-    /**
-     * The skeleton associated with the geometry
-     * @type {{}|Skeleton}
-     */
     this.skeleton = null;
 
 }
 
 Object.assign( Geometry.prototype, {
 
-    /**
-     * Iterate over all Vertexes of all Triangles of all Faces of the geometry, and
-     * store data into arrays, and finnaly return them as objects
-     *
-     * @returns {
-		 *     vertexBuffer: number[],
-		 *     normalBuffer: number[],
-		 *     uvBuffer: number[],
-		 *     skinIndexBuffer: number[],
-		 *     skinWeightBuffer: number[],
-		 *     materialIndexBuffer: number[]
-		 * }
-     */
     flattenToBuffers: function () {
 
         var vertexBuffer     = [];
@@ -4667,13 +3123,6 @@ Object.assign( TextParser, {
 
 Object.assign( TextParser.prototype, {
 
-    /**
-     * Search in file the node FBXVersion and convert it as Integer.
-     * Example: For version 7.3 it will return 7300
-     *
-     * @param text - The file where looking for
-     * @returns {Number} - The version in thousand
-     */
     getFbxVersion: function ( text ) {
 
         var match = text.match( /FBXVersion: (\d+)/ );
@@ -5164,13 +3613,6 @@ function BinaryParser () {
 
 Object.assign( BinaryParser.prototype, {
 
-    /**
-     * Search in file the binary and convert it as UInteger32.
-     * Example: For version 7.3 it will return 7300
-     *
-     * @param reader - The buffer reader
-     * @returns {Number} - The version in thousand
-     */
     getFbxVersion: function ( reader ) {
 
         var version = reader.getUint32();
@@ -5182,11 +3624,6 @@ Object.assign( BinaryParser.prototype, {
 
     },
 
-    /**
-     * Parses binary data and builds FBXTree as much compatible as possible with the one built by TextParser.
-     * @param {ArrayBuffer} buffer
-     * @returns {FBXTree}
-     */
     parse: function ( buffer ) {
 
         var reader = new BinaryReader( buffer );
@@ -5211,11 +3648,6 @@ Object.assign( BinaryParser.prototype, {
 
     },
 
-    /**
-     * Checks if reader has reached the end of content.
-     * @param {BinaryReader} reader
-     * @returns {boolean}
-     */
     endOfContent: function ( reader ) {
 
         // footer size: 160bytes + 16-byte alignment padding
@@ -5238,13 +3670,6 @@ Object.assign( BinaryParser.prototype, {
 
     },
 
-    /**
-     * Parses Node as much compatible as possible with the one parsed by TextParser
-     * TODO: could be optimized more?
-     * @param {BinaryReader} reader
-     * @param {number} version
-     * @returns {Object} - Returns an Object as node, or null if NULL-record.
-     */
     parseNode: function ( reader, version ) {
 
         // The first three data sizes depends on version.
