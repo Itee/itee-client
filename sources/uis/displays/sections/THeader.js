@@ -40,14 +40,18 @@ class THeader extends React.Component {
 
     render () {
 
-        const { id, className } = this.props
+        const { id, className, children } = this.props
 
         const _id    = id || `tHeader_${_instanceCounter}`
-        const _style = {}
+        const _style = {
+            flex: '0 1 auto'
+        }
         const _class = ( className ) ? `tHeader ${className}` : 'tHeader'
 
         return (
-            <t-header ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-header>
+            <t-header id={_id} style={_style} className={_class}>
+                {children}
+            </t-header>
         )
 
     }
