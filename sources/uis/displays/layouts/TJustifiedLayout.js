@@ -40,14 +40,20 @@ class TJustifiedLayout extends React.Component {
 
     render () {
 
-        const { id, className } = this.props
+        const { id, className, children } = this.props
 
         const _id    = id || `tJustifiedLayout_${_instanceCounter}`
-        const _style = {}
+        const _style = {
+            display:        'flex',
+            alignItems:     'center',
+            justifyContent: 'space-between'
+        }
         const _class = ( className ) ? `tJustifiedLayout ${className}` : 'tJustifiedLayout'
 
         return (
-            <t-justified-layout ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-justified-layout>
+            <t-justified-layout id={_id} style={_style} className={_class}>
+                {children}
+            </t-justified-layout>
         )
 
     }
