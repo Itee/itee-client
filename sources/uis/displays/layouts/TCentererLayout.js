@@ -40,14 +40,20 @@ class TCentererLayout extends React.Component {
 
     render () {
 
-        const { id, className } = this.props
+        const { id, className, children } = this.props
 
         const _id    = id || `tCentererLayout_${_instanceCounter}`
-        const _style = {}
-        const _class = ( className ) ? `tCentererLayout ${className}` : 'tCentererLayout'
+        const _style = {
+            display:        'flex',
+            alignItems:     'center',
+            justifyContent: 'center'
+        }
+        const _class = `tCentererLayout ${className}` // container justified-container
 
         return (
-            <t-centerer-layout ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-centerer-layout>
+            <t-centerer-layout id={_id} style={_style} className={_class}>
+                {children}
+            </t-centerer-layout>
         )
 
     }
