@@ -40,15 +40,23 @@ class TMenu extends React.Component {
 
     render () {
 
-        const { id, className } = this.props
+        const { id, className, value, onChangeHandler, children } = this.props
 
         const _id    = id || `tMenu_${_instanceCounter}`
-        const _style = {}
+        const _style = {
+            listStyleType: 'none',
+            margin:        0,
+            padding:       0
+        }
         const _class = ( className ) ? `tMenu ${className}` : 'tMenu'
 
         return (
-            <t-menu ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-menu>
+            <ul style={_style}>{children}</ul>
         )
+
+//        return (
+//            <t-menu ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-menu>
+//        )
 
     }
 
