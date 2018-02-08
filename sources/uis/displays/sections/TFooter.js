@@ -40,14 +40,19 @@ class TFooter extends React.Component {
 
     render () {
 
-        const { id, className } = this.props
+        const { id, className, height, children } = this.props
 
         const _id    = id || `tFooter_${_instanceCounter}`
-        const _style = {}
+        const _style = {
+            flex:      `0 1 ${height}px`,
+            minHeight: `${height}px`
+        }
         const _class = ( className ) ? `tFooter ${className}` : 'tFooter'
 
         return (
-            <t-footer ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-footer>
+            <t-footer id={_id} style={_style} className={_class}>
+                {children}
+                </t-footer>
         )
 
     }
