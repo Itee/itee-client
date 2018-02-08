@@ -40,14 +40,19 @@ class TContent extends React.Component {
 
     render () {
 
-        const { id, className } = this.props
+        const { id, className, children } = this.props
 
         const _id    = id || `tContent_${_instanceCounter}`
-        const _style = {}
+        const _style = {
+            flex:    '1 1 auto',
+            display: 'flex'
+        }
         const _class = ( className ) ? `tContent ${className}` : 'tContent'
 
         return (
-            <t-content ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-content>
+            <t-content id={_id} style={_style} className={_class}>
+                {children}
+            </t-content>
         )
 
     }

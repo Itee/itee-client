@@ -40,14 +40,19 @@ class THorizontalLayout extends React.Component {
 
     render () {
 
-        const { id, className } = this.props
+        const { id, className, children } = this.props
 
         const _id    = id || `tHorizontalLayout_${_instanceCounter}`
-        const _style = {}
+        const _style = {
+            display:       'flex',
+            flexDirection: 'row'
+        }
         const _class = ( className ) ? `tHorizontalLayout ${className}` : 'tHorizontalLayout'
 
         return (
-            <t-horizontal-layout ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-horizontal-layout>
+            <t-horizontal-layout id={_id} style={_style} className={_class}>
+                {children}
+            </t-horizontal-layout>
         )
 
     }

@@ -40,15 +40,29 @@ class TTreeItem extends React.Component {
 
     render () {
 
-        const { id, className } = this.props
+        const { id, className, name, isChecked, children } = this.props
 
         const _id    = id || `tTreeItem_${_instanceCounter}`
         const _style = {}
         const _class = ( className ) ? `tTreeItem ${className}` : 'tTreeItem'
 
         return (
-            <t-tree-item ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-tree-item>
+            <li id={id} className={'tTreeItem'}>
+                <input type={"checkbox"} id={`${id}ExpandCheckbox`} />
+                <label>
+                    <input type={"checkbox"} id={`${id}VisibilityCheckbox`} checked={isChecked} />
+                    <span></span>
+                </label>
+                <label htmlFor={`${id}ExpandCheckbox`}>{name}</label>
+                <ul className={"children"}>
+                    {children}
+                </ul>
+            </li>
         )
+
+//        return (
+//            <t-tree-item ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-tree-item>
+//        )
 
     }
 

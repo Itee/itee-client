@@ -10,6 +10,12 @@
 
 import React from 'react'
 
+import { THeader } from '../../displays/sections/THeader'
+import { TContent } from '../../displays/sections/TContent'
+import { TFooter } from '../../displays/sections/TFooter'
+
+import { TCentererLayout } from '../../displays/layouts/TCentererLayout'
+
 let _instanceCounter = 0
 
 class TLoginDialog extends React.Component {
@@ -18,6 +24,15 @@ class TLoginDialog extends React.Component {
 
         super( props )
         _instanceCounter++
+
+        this.state = { value: '' };
+        this.handleChange = this.handleChange.bind( this )
+
+    }
+
+    handleChange ( event ) {
+
+        this.setState( { value: event.target.value } )
 
     }
 
@@ -40,15 +55,58 @@ class TLoginDialog extends React.Component {
 
     render () {
 
-        const { id, className } = this.props
+        const { id, className, isVisible, submitHandler, closeHandler } = this.props
 
         const _id    = id || `tLoginDialog_${_instanceCounter}`
-        const _style = {}
+        const _style = {
+            display:       (isVisible) ? 'flex' : 'none',
+            alignItems:    'center',
+            flexDirection: 'column'
+        }
         const _class = ( className ) ? `tLoginDialog ${className}` : 'tLoginDialog'
 
         return (
-            <t-login-dialog ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-login-dialog>
+            <form className={'dialog login-dialog'} style={_STYLE} onSubmit={submitHandler}>
+                {/*<form className={'dialog login-dialog'} style={_STYLE} onSubmit={this.handleSubmit}>*/}
+
+                <THeader>
+                    <TCentererLayout>
+                        <span>Connection</span>
+                    </TCentererLayout>
+                </THeader>
+
+                <TContent>
+                    <vertical-layout style={{
+                        display:       'flex',
+                        flexDirection: 'column'
+                    }}>
+                        <i className={'fa fa-user-circle-o'}></i>
+
+                        <label>Username</label>
+                        <input type={'text'} placeholder={"Enter Username"} name={"userName"} required />
+
+                        <label>Password</label>
+                        <input type={"password"} placeholder={"Enter Password"} name={"password"} required />
+                        <span className={"psw"}><a href={"#"}>Forgot password ?</a></span>
+                    </vertical-layout>
+                </TContent>
+
+                <TFooter>
+                    <div style={{
+                        display: 'flex',
+                        height:  '100%'
+                    }}>
+                        <button type={"button"} onClick={closeHandler} className={'cancel-btn btn-danger'}>Cancel</button>
+                        <button type={"submit"} value={"Submit"}>Login</button>
+                    </div>
+                </TFooter>
+
+            </form>
         )
+
+//        return (
+//            <t-login-dialog ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-login-dialog>
+//        )
 
     }
 

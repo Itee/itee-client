@@ -40,14 +40,18 @@ class TLayout extends React.Component {
 
     render () {
 
-        const { id, className } = this.props
+        const { id, className, children } = this.props
 
         const _id    = id || `tLayout_${_instanceCounter}`
-        const _style = {}
+        const _style = {
+            display: 'flex'
+        }
         const _class = ( className ) ? `tLayout ${className}` : 'tLayout'
 
         return (
-            <t-layout ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-layout>
+            <t-layout id={_id} style={_style} className={_class}>
+                {children}
+            </t-layout>
         )
 
     }

@@ -19,16 +19,73 @@ class TViewport3D extends React.Component {
         super( props )
         _instanceCounter++
 
+        this._frameId  = undefined
+        this._renderer = new WebGLRenderer( { antialias: true } )
+        this._scene    = new Scene()
+        this._camera   = new PerspectiveCamera()
+        this._cube     = undefined
+
+        // Handler
+        this._resize = this._resize.bind( this )
+
     }
 
     /**
      * React lifecycle
      */
-    componentWillMount () {}
+    componentWillMount () {
 
-    componentDidMount () {}
+        window.addEventListener( 'resize', this._resize, false )
 
-    componentWillUnmount () {}
+    }
+
+    componentDidMount () {
+
+        this._resize()
+
+        // Set renderer
+        this._renderer.setClearColor( 0x777777 )
+        this._renderer.autoClear = true
+
+        // Add renderer canvas
+        this._container.appendChild( this._renderer.domElement )
+
+        // Set camera position
+        this._camera.fov        = 50
+        this._camera.near       = 0.01
+        this._camera.far        = 10000
+        this._camera.position.x = 0.0
+        this._camera.position.y = 5.0
+        this._camera.position.z = 7.0
+        this._camera.setRotationFromAxisAngle( new Vector3( 1.0, 0.0, 0.0 ), -0.610865 )
+        this._camera.updateProjectionMatrix()
+
+        // Add light
+        this._scene.add( new AmbientLight( 0xC8C8C8 ) )
+
+        // Create the scene
+        const geometry = new BoxBufferGeometry( 1, 1, 1 )
+        const material = new MeshPhongMaterial( '0x0096FF' )
+        this._cube     = new Mesh( geometry, material )
+        this._scene.add( this._cube )
+
+        const gridHelper = new GridHelper( 100, 100 )
+        this._scene.add( gridHelper )
+
+        // Add listener
+
+        // Start rendering
+        this._startLoop()
+
+    }
+
+    componentWillUnmount () {
+
+        this._stopLoop()
+
+        window.removeEventListener( 'resize', this._resize, false )
+
+    }
 
     componentWillReceiveProps ( /*nextProps*/ ) {}
 
@@ -43,12 +100,60 @@ class TViewport3D extends React.Component {
         const { id, className } = this.props
 
         const _id    = id || `tViewport3D_${_instanceCounter}`
-        const _style = {}
+        const _style = {
+            width:    '100%',
+            height:   '100%',
+            overflow: 'hidden'
+        }
         const _class = ( className ) ? `tViewport3D ${className}` : 'tViewport3D'
 
         return (
-            <t-viewport-3-d ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-viewport-3-d>
+            <t-viewport-3d id={_id} style={_style} className={_class}></t-viewport-3d>
         )
+
+    }
+
+    /**
+     * Component methods
+     */
+    _startLoop () {
+
+        if ( this._frameId ) {
+            return
+        }
+
+        this._frameId = window.requestAnimationFrame( this._loop.bind( this ) )
+
+    }
+
+    _loop () {
+
+        this._frameId = window.requestAnimationFrame( this._loop.bind( this ) )
+
+        // Perform loop work here
+        const SPEED = 0.01
+        this._cube.rotation.x -= SPEED * 2
+        this._cube.rotation.y -= SPEED
+        this._cube.rotation.z -= SPEED * 3
+
+        this._renderer.render( this._scene, this._camera )
+
+    }
+
+    _stopLoop () {
+
+        window.cancelAnimationFrame( this._frameId )
+
+    }
+
+    _resize () {
+
+        const containerWidth  = this._container.clientWidth
+        const containerHeight = this._container.clientHeight || 1 // In case height === 0 set to 1
+
+        this._renderer.setSize( containerWidth, containerHeight )
+        this._camera.aspect = ( containerWidth / containerHeight )
+        this._camera.updateProjectionMatrix()
 
     }
 
