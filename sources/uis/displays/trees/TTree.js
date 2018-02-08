@@ -40,15 +40,30 @@ class TTree extends React.Component {
 
     render () {
 
-        const { id, className } = this.props
+        const { id, className, header } = this.props
 
         const _id    = id || `tTree_${_instanceCounter}`
-        const _style = {}
+        const _style = {
+            overflowY: 'auto',
+            padding:   '5px',
+            height:    '100%'
+        }
         const _class = ( className ) ? `tTree ${className}` : 'tTree'
 
         return (
-            <t-tree ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-tree>
+            <div id={_id} className={_class} style={_style}>
+                <div className={'tTreeHeader'}>
+                    {header}
+                </div>
+                <div className={'tTreeContent'}>
+                    {children}
+                </div>
+            </div>
         )
+
+//        return (
+//            <t-tree ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-tree>
+//        )
 
     }
 
