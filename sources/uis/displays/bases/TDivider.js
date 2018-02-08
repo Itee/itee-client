@@ -40,15 +40,44 @@ class TDivider extends React.Component {
 
     render () {
 
-        const { id, className } = this.props
+        const { id, className, orientation } = this.props
 
         const _id    = id || `tDivider_${_instanceCounter}`
-        const _style = {}
+        const _style = TDivider._computeStyle( orientation )
         const _class = ( className ) ? `tDivider ${className}` : 'tDivider'
 
         return (
-            <t-divider ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-divider>
+            <t-divider id={_id} style={_style} className={_class} role={'separator'}></t-divider>
         )
+
+    }
+
+    // Private stuff
+    static _computeStyle( orientation ){
+
+        let style = undefined
+
+        if ( !orientation || orientation === 'vertical' ) {
+
+            style = {
+                height:          '30px',
+                width:           '1px',
+                backgroundColor: '#9d9d9d',
+                margin:          '5px 0px'
+            }
+
+        } else {
+
+            style = {
+                height:          '1px',
+                width:           '30px',
+                backgroundColor: '#9d9d9d',
+                margin:          '5px 0px'
+            }
+
+        }
+
+        return style
 
     }
 
