@@ -517,6 +517,22 @@ Object.defineProperties( TDataBaseManager.prototype, {
         }
     },
 
+    _searchWhere: {
+        value: function _readOne ( query, onLoadCallback, onProgressCallback, onErrorCallback ) {
+
+            Manager.requestServer(
+                HttpVerb.Read,
+                this.basePath,
+                query,
+                this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
+                this._onProgress.bind( this, onProgressCallback ),
+                this._onError.bind( this, onErrorCallback ),
+                this.responseType
+            )
+
+        }
+    },
+
     //Todo: where are update datas ?
     /**
      * @private
@@ -712,6 +728,11 @@ Object.assign( TDataBaseManager.prototype, {
         } else if ( typeof ids === 'string' ) {
 
             this._readOne( ids, onLoadCallback, onProgressCallback, onError )
+
+        } else if ( typeof ids === 'object' ) {
+
+            const query = ids
+            this._searchWhere( query, onLoadCallback, onProgressCallback, onError )
 
         } else {
 
