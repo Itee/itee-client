@@ -8,24 +8,50 @@
  *
  */
 
+// RANDOM
+/**
+ * Returns a random number between min (inclusive) and max (exclusive)
+ */
+export function getRandomArbitrary( min = 0, max = 1 ) {
+    return Math.random() * (max - min) + min
+}
+
+/**
+ * Returns a random integer between min (inclusive) and max (inclusive)
+ * Using Math.round() will give you a non-uniform distribution!
+ */
+export function getRandomInt( min = 0, max = 1 ) {
+    return (Math.floor(Math.random() * (max - min + 1)) + min)
+}
+
+// TRIGO
 const PI         = Math.PI
 const DEG_TO_RAD = (PI / 180)
 const RAD_TO_DEG = (180 / PI)
 
-export function degreeToRadian ( degree ) {
-    return degree * DEG_TO_RAD
+export function degreesToRadians ( degrees ) {
+    return degrees * DEG_TO_RAD
 }
 
-export function radianToDegree ( radian ) {
-    return radian * RAD_TO_DEG
+export function degreesFromRadians( radians ) {
+    return radians * RAD_TO_DEG
 }
 
+export function radiansToDegrees ( radians ) {
+    return radians * RAD_TO_DEG
+}
+
+export function radiansFromDegrees( degrees ) {
+    return degrees * DEG_TO_RAD
+}
+
+// PROJECTION 2D/3D
 export function getYaw ( vector ) {
-    return -Math.atan2( vector.x, vector.z );
+    return -Math.atan2( vector.x, vector.z )
 }
 
 export function getPitch ( vector ) {
-    return Math.asin( vector.y );
+    return Math.asin( vector.y )
 }
 
 export function convertWebGLRotationToTopogicalYawPitch ( vectorDir ) {
@@ -36,10 +62,6 @@ export function convertWebGLRotationToTopogicalYawPitch ( vectorDir ) {
 
     function getPitch ( vector ) {
         return Math.asin( vector.z )
-    }
-
-    function radiansToDegrees ( radians ) {
-        return radians * RAD_TO_DEG
     }
 
     const topoVectorDir = convertWebglVectorToTopologicVector( vectorDir )
