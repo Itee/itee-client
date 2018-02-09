@@ -32,7 +32,7 @@ import { ASCLoader } from './ASCLoader'
 import { SHPLoader } from './SHPLoader'
 import { DBFLoader } from './DBFLoader'
 
-import * as Validator from '../cores/TValidator'
+import * as Validator from '../validators/TValidator'
 import { DefaultLogger } from '../loggers/TLogger'
 
 function getFilePath ( fileUrl ) {

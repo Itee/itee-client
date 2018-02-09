@@ -11,7 +11,7 @@
 /* eslint-env browser */
 /* global $, H, URL */
 
-import { extend } from './TUtils'
+import { extend } from '../utils/TUtils'
 import { TUniversalLoader } from '../loaders/TUniversalLoader'
 import { dockspawn } from '../third_party/dock-spawn'
 import { TViewport } from './TViewport'
