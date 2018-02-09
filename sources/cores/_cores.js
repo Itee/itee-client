@@ -7,8 +7,8 @@
  */
 
 export * from './TConstants'
-export { extend } from './TUtils'
-export { isObject } from './TValidator'
+export { extend } from '../utils/TUtils'
+export { isObject } from '../validators/TValidator'
 
 export { TApplication } from './TApplication'
 export { TCache } from './TCache'

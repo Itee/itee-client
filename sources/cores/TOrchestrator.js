@@ -47,7 +47,6 @@ Object.assign( TOrchestrator.prototype, {
             self._processQueue.push( requestSkull )
 
             request              = new XMLHttpRequest()
-            request.responseType = requestSkull.responseType
 
             request.onload = (function closureEndRequest () {
 
@@ -74,8 +73,9 @@ Object.assign( TOrchestrator.prototype, {
             request.onprogress = requestSkull.onProgress
             request.onerror    = requestSkull.onError
 
-            request.open( requestSkull.method, requestSkull.url )
+            request.open( requestSkull.method, requestSkull.url, true )
             request.setRequestHeader( "Content-Type", "application/json" )
+            request.responseType = requestSkull.responseType
 
             var dataToSend = (requestSkull.data && requestSkull.responseType === 'json') ? JSON.stringify( requestSkull.data ) : requestSkull.data
             request.send( dataToSend )

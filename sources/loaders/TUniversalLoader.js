@@ -32,7 +32,7 @@ import { ASCLoader } from './ASCLoader'
 import { SHPLoader } from './SHPLoader'
 import { DBFLoader } from './DBFLoader'
 
-import * as Validator from '../cores/TValidator'
+import * as Validator from '../validators/TValidator'
 import { DefaultLogger } from '../loggers/TLogger'
 
 function getFilePath ( fileUrl ) {
@@ -432,12 +432,15 @@ Object.assign( TUniversalLoader.prototype, {
                 mesh = new Mesh(
                     new ShapeBufferGeometry( _shapes[ shapeIndex ] ),
                     new MeshPhongMaterial( {
-                        color: Math.random() * 0xffffff,
+                        color: 0xb0f2b6,
+//                        color: Math.random() * 0xffffff,
                         side:  DoubleSide
                     } )
                 )
 
-                mesh.name = _dbf.datas[ shapeIndex ][ 'CODE' ]
+                const shapeName = _dbf.datas[ shapeIndex ][ 'CODE' ]
+                mesh.name = shapeName
+                mesh.userData['Code'] = shapeName
 
                 group.add( mesh )
 
@@ -445,8 +448,9 @@ Object.assign( TUniversalLoader.prototype, {
 
             group.rotateX( -90 * DEG_TO_RAD )
             group.rotateZ( 180 * DEG_TO_RAD )
-            group.position.z -= 159.05
-            group.position.x -= 0.79
+            group.position.z -= 159.5
+            group.position.x -= 0.6
+            group.position.y = 14
 
             onLoad( group )
 

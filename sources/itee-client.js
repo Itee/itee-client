@@ -6,7 +6,10 @@
  *
  */
 
-// Export Three stuff
+// Import browser fix
+import './third_party/polyfills.js'
+
+// Export es6 Three stuff
 export * from 'threejs-full-es6'
 
 // Export Itee stuff

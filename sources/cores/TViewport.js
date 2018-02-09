@@ -120,8 +120,8 @@ function TViewport ( container ) {
         camera:   {
             fov:      50,
             aspect:   (this.containerWidth / this.containerHeight),
-            near:     0.01,
-            far:      10000,
+            near:     0.1,
+            far:      2000,
             position: {
                 x: 5.0,
                 y: 2.0,
@@ -384,16 +384,10 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
         var intersections = undefined
         if ( this.measuring ) {
 
-            var meshesGroup = this.scene.getObjectByName( 'MeshesGroup' )
-            var meshes      = ( meshesGroup ) ? meshesGroup.children : []
+            let visibleRaycastable = []
+            recursiveSearchForRaycastable( this.raycastables, visibleRaycastable )
 
-            //			var pointcloudGroup = this.scene.getObjectByName( 'PointClouds' )
-            //			var pointcloud      = ( pointcloudGroup ) ? pointcloudGroup.children : []
-            //
-            //			var objectToIntersect = meshes.concat( pointcloud )
-
-            intersections = this.raycaster.intersectObjects( meshes, true )
-            //			intersections = this.raycaster.intersectObjects( objectToIntersect, true )
+            intersections = this.raycaster.intersectObjects( visibleRaycastable, true )
             if ( intersections.length > 0 ) {
 
                 this.intersection = intersections[ 0 ] // Keep only closest intersected object
@@ -407,7 +401,10 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
         } else {
 
-            intersections = this.raycaster.intersectObjects( this.raycastables )
+            let visibleRaycastable = []
+            recursiveSearchForRaycastable( this.raycastables, visibleRaycastable )
+
+            intersections = this.raycaster.intersectObjects( visibleRaycastable, true )
             if ( intersections.length > 0 ) {
 
                 if ( !this.intersection ) {
@@ -434,6 +431,28 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
                 this.intersection.object.material = this.backupIntersectedMaterial
                 this.intersection                 = null
                 document.body.style.cursor        = 'auto'
+
+            }
+
+        }
+
+        // Allow to raycast only visible meshes in the object tree
+        function recursiveSearchForRaycastable ( objects, visibleRaycastable ) {
+
+            for ( let raycastableIndex = 0, numberOfRaycastable = objects.length ; raycastableIndex < numberOfRaycastable ; raycastableIndex++ ) {
+                let raycastable = objects[ raycastableIndex ]
+
+                if ( !raycastable.visible ) { continue }
+
+                if ( raycastable.isMesh ) {
+
+                    visibleRaycastable.push( raycastable )
+
+                } else if ( raycastable.children.length > 0 ) {
+
+                    recursiveSearchForRaycastable( raycastable.children, visibleRaycastable )
+
+                }
 
             }
 

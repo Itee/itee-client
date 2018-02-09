@@ -11,7 +11,7 @@
 /* eslint-env browser */
 /* global $, H, URL */
 
-import { extend } from './TUtils'
+import { extend } from '../utils/TUtils'
 import { TUniversalLoader } from '../loaders/TUniversalLoader'
 import { dockspawn } from '../third_party/dock-spawn'
 import { TViewport } from './TViewport'
@@ -65,132 +65,7 @@ import {
     TPointsManager
 } from '../managers/databases/_databases'
 
-//TMP
 
-var imageLoader   = new ImageLoader()
-var RAD_TO_DEG_PI = 180 / Math.PI
-
-// Usefull for shot updates
-var frustum                    = new Frustum();
-var cameraViewProjectionMatrix = new Matrix4();
-
-var OFFSET_CORRECTOR = {
-    x: 0.48,
-    y: 0.31
-}
-
-var LAMBERT_NORD_OFFSET = {
-    x: 600200,
-    y: 131400,
-    z: 60
-}
-// Camera position =>
-// x: -0.0007484443485736847
-// y: 10.24522892416233
-// z: -0.000806964111538799
-// 651543.533,6864982.935
-var LAMBERT_NINETY_THREE_OFFSET = {
-    x: 651543.533,
-    y: 6864982.935
-}
-
-function convertWebglVectorToTopologicVector ( vector ) {
-
-    return new Vector3( vector.x, -vector.z, vector.y )
-
-}
-
-function convertWebGLCoordinatesToLambert93Coordinates ( coordinates ) {
-
-    return new Vector3(
-        coordinates.x + LAMBERT_NINETY_THREE_OFFSET.x + OFFSET_CORRECTOR.x,
-        -coordinates.z + LAMBERT_NINETY_THREE_OFFSET.y + OFFSET_CORRECTOR.y,
-        coordinates.y
-    )
-
-}
-
-function convertLambert93CoordinatesToWebGLCoordinates ( coordinates ) {
-
-    return new Vector3(
-        coordinates.x - LAMBERT_NINETY_THREE_OFFSET.x - OFFSET_CORRECTOR.x,
-        0,
-        -(coordinates.y - LAMBERT_NINETY_THREE_OFFSET.y - OFFSET_CORRECTOR.y)
-    )
-
-}
-
-//
-function convertWebGLRotationToTopologicalYawPitch ( vectorDir ) {
-
-    function getYaw ( vector ) {
-        return Math.atan2( vector.y, vector.x )
-    }
-
-    function getPitch ( vector ) {
-        return Math.asin( vector.z )
-    }
-
-    function radiansToDegrees ( radians ) {
-        return radians * RAD_TO_DEG_PI
-    }
-
-    var topoVectorDir = convertWebglVectorToTopologicVector( vectorDir )
-
-    return {
-        yaw:   -( radiansToDegrees( getYaw( topoVectorDir ) ) - 90 ),
-        pitch: radiansToDegrees( getPitch( topoVectorDir ) )
-    }
-
-}
-
-function createInterval ( particles, path, interval ) {
-
-    var globalOffset = 0;
-
-    setInterval( function () {
-
-        var moveOffset             = 0.1
-        var DELTA_BETWEEN_PARTICLE = 1 // meter
-
-        if ( globalOffset >= DELTA_BETWEEN_PARTICLE ) {
-            globalOffset = 0
-        }
-        else if ( globalOffset + moveOffset > DELTA_BETWEEN_PARTICLE ) { // Avoid final gap jump before new "loop"
-            globalOffset = DELTA_BETWEEN_PARTICLE
-        }
-        else {
-            globalOffset += moveOffset
-        }
-
-        var pathLength       = path.getLength()
-        var localOffset      = globalOffset
-        var normalizedOffset = undefined
-        var particle         = undefined
-        var newPosition      = undefined
-
-        for ( var i = 0, numberOfParticles = particles.children.length ; i < numberOfParticles ; i++ ) {
-
-            particle         = particles.children[ i ]
-            normalizedOffset = localOffset / pathLength
-
-            // End of path ( last particle could go to void, but got an error with getPointAt)
-            if ( normalizedOffset > 1 ) {
-                normalizedOffset = 0
-            }
-
-            newPosition = path.getPointAt( normalizedOffset )
-            newPosition.y += 0.1
-
-            particle.position.copy( newPosition )
-
-            localOffset += DELTA_BETWEEN_PARTICLE
-
-        }
-
-    }, interval );
-
-}
 
 /**
  *
@@ -260,6 +135,13 @@ function TApplication ( container, parameters, onReady ) {
 
     // Recursive merging parameter
     extend( _parameters, parameters )
+
+    this.imageLoader = new ImageLoader()
+
+    // Usefull for shot updates
+    this.frustum                    = new Frustum();
+    this.cameraViewProjectionMatrix = new Matrix4();
+
 
     this.viewer            = ''
     this.previousImageShot = undefined
@@ -1076,6 +958,12 @@ function TApplication ( container, parameters, onReady ) {
         parameters = parameters || {}
 
         if ( parameters.fromDatabase ) {
+
+            var LAMBERT_NORD_OFFSET = {
+                x: 600200,
+                y: 131400,
+                z: 60
+            }
 
             self.pointCloudManager = new PointCloudManager( this.webglViewport )
             self.pointCloudManager.setGlobalOffset( LAMBERT_NORD_OFFSET )
@@ -2520,7 +2408,6 @@ Object.assign( TApplication.prototype, {
     },
 
     // TreeView
-
     insertTreeViewItem2 ( object, isCheckedByDefault = true, recursive = true ) {
 
         const itemId   = object.uuid
@@ -3176,8 +3063,8 @@ Object.assign( TApplication.prototype, {
         // every time the camera or objects change position (or every frame)
         camera.updateMatrixWorld() // make sure the camera matrix is updated
         camera.matrixWorldInverse.getInverse( camera.matrixWorld )
-        cameraViewProjectionMatrix.multiplyMatrices( camera.projectionMatrix, camera.matrixWorldInverse )
-        frustum.setFromMatrix( cameraViewProjectionMatrix )
+        this.cameraViewProjectionMatrix.multiplyMatrices( camera.projectionMatrix, camera.matrixWorldInverse )
+        this.frustum.setFromMatrix( this.cameraViewProjectionMatrix )
 
         var MAXIMUM_DISTANCE_TO = 4 //m use SQUARED distance for perf
         var cameraPosition      = camera.getWorldPosition()
@@ -3194,7 +3081,7 @@ Object.assign( TApplication.prototype, {
         for ( var shotIndex = 0, numberOfShots = shots.length ; shotIndex < numberOfShots ; shotIndex++ ) {
 
             shot = shots[ shotIndex ]
-            if ( !frustum.intersectsObject( shot ) ) {
+            if ( !this.frustum.intersectsObject( shot ) ) {
                 continue
             }
 
@@ -3229,7 +3116,7 @@ Object.assign( TApplication.prototype, {
             //			shot.material.needUpdate = true
 
             this.thumbnailPanel.innerHTML = ""
-            var thumbnails                = imageLoader.load( bestShot.userData.filePath + "LD/" + bestShot.name )
+            var thumbnails                = this.imageLoader.load( bestShot.userData.filePath + "LD/" + bestShot.name )
 
             var link = document.createElement( 'a' )
             link.appendChild( thumbnails )
@@ -3260,7 +3147,7 @@ Object.assign( TApplication.prototype, {
         const previousImageShot = self.previousImageShot
         const url               = `${previousImageShot.userData.filePath}HD/${previousImageShot.name}`
 
-        imageLoader.load( url, function onLoad ( imageHD ) {
+        this.imageLoader.load( url, function onLoad ( imageHD ) {
 
             if ( !imageHD ) {
                 console.error( "Unable to display empty or null hd image !" );
