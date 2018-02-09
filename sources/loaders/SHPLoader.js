@@ -280,7 +280,8 @@ Object.assign( SHPLoader.prototype, {
                 case ShapeType.PolygonM:
                     while ( this._reader.getOffset() < endOfRecord ) {
 
-                        recordContent = this._parsePolygon();
+                        recordContent = this._parsePolyLine();
+//                        recordContent = this._parsePolygon();
                         if ( recordContent ) {
                             datas.push( recordContent );
                         }
@@ -531,7 +532,7 @@ Object.assign( SHPLoader.prototype, {
 
             if ( data.shapeType === ShapeType.Polygon || data.shapeType === ShapeType.PolygonZ || data.shapeType === ShapeType.PolygonM ) {
 
-                if ( Array.isArray( data.points ) ) {
+                if ( data.points && Array.isArray( data.points[0] ) ) {
 
                     __createObjectsFromArrays( data.points )
 
