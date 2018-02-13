@@ -52,15 +52,13 @@ class TDropDownMenu extends React.Component {
         const { id, className, icon, label, align, children } = this.props
 
         const _id    = id || `tDropDownMenu_${_instanceCounter}`
-        const _style = {}
-        const _class = ( className ) ? `tDropDownMenu ${className}` : 'tDropDownMenu'
-
-        const dropdownStyle = {
+        const _style = {
             float:         'left',
             listStyleType: 'none'
         }
+        const _class = ( className ) ? `tDropDownMenu ${className}` : 'tDropDownMenu'
 
-        const labelStyle = {
+        const _labelStyle = {
             display:        'block',
             color:          'white',
             fontSize:       '1.6em',
@@ -69,22 +67,22 @@ class TDropDownMenu extends React.Component {
             textDecoration: 'none'
         }
 
-        let contentStyle = {
+        let _contentStyle = {
             listStyleType: 'none',
             position:      'absolute',
             minWidth:      '100%'
         }
 
         if ( this.state.isHover ) {
-            contentStyle[ 'display' ] = 'block'
+            _contentStyle[ 'display' ] = 'block'
         } else {
-            contentStyle[ 'display' ] = 'none'
+            _contentStyle[ 'display' ] = 'none'
         }
 
         if ( align === 'left' ) {
-            contentStyle[ 'left' ] = 0
+            _contentStyle[ 'left' ] = 0
         } else if ( align === 'right' ) {
-            contentStyle[ 'right' ] = 0
+            _contentStyle[ 'right' ] = 0
         } else {
             // Todo: center
         }
@@ -92,12 +90,12 @@ class TDropDownMenu extends React.Component {
         if ( icon && label ) {
 
             return (
-                <li className={"dropdown"} style={dropdownStyle} onMouseEnter={this.onMouseEnterHandler} onMouseLeave={this.onMouseLeaveHandler}>
-                    <a className={"dropdown-label"} style={labelStyle}>
+                <li id={_id} className={_class} style={_style} onMouseEnter={this.onMouseEnterHandler} onMouseLeave={this.onMouseLeaveHandler}>
+                    <a className={"dropdown-label"} style={_labelStyle}>
                         <i className={icon}></i>
                         {label}
                     </a>
-                    <div className={"dropdown-content"} style={contentStyle}>
+                    <div className={"dropdown-content"} style={_contentStyle}>
                         {children}
                     </div>
                 </li>
@@ -105,7 +103,7 @@ class TDropDownMenu extends React.Component {
 
         } else if ( icon && !label ) {
 
-            const iconStyle = {
+            const _iconStyle = {
                 fontSize:     '46px',
                 marginRight:  '11px',
                 marginBottom: '6px',
@@ -114,11 +112,11 @@ class TDropDownMenu extends React.Component {
             }
 
             return (
-                <li className={"dropdown"} style={dropdownStyle} onMouseEnter={this.onMouseEnterHandler} onMouseLeave={this.onMouseLeaveHandler}>
+                <li id={_id} className={_class} style={_style} onMouseEnter={this.onMouseEnterHandler} onMouseLeave={this.onMouseLeaveHandler}>
                     <a className={"dropdown-label"}>
-                        <i className={icon} style={iconStyle}></i>
+                        <i className={icon} style={_iconStyle}></i>
                     </a>
-                    <div className={"dropdown-content"} style={contentStyle}>
+                    <div className={"dropdown-content"} style={_contentStyle}>
                         {children}
                     </div>
                 </li>
@@ -127,11 +125,11 @@ class TDropDownMenu extends React.Component {
         } else if ( !icon && label ) {
 
             return (
-                <li className={"dropdown"} style={dropdownStyle} onMouseEnter={this.onMouseEnterHandler} onMouseLeave={this.onMouseLeaveHandler}>
-                    <a className={"dropdown-label"} style={labelStyle}>
+                <li id={_id} className={_class} style={_style} onMouseEnter={this.onMouseEnterHandler} onMouseLeave={this.onMouseLeaveHandler}>
+                    <a className={"dropdown-label"} style={_labelStyle}>
                         {label}
                     </a>
-                    <div className={"dropdown-content"} style={contentStyle}>
+                    <div className={"dropdown-content"} style={_contentStyle}>
                         {children}
                     </div>
                 </li>
@@ -140,9 +138,9 @@ class TDropDownMenu extends React.Component {
         } else {
 
             return (
-                <li className={"dropdown"} style={dropdownStyle} onMouseEnter={this.onMouseEnterHandler} onMouseLeave={this.onMouseLeaveHandler}>
-                    <a className={"dropdown-label"} style={labelStyle}></a>
-                    <div className={"dropdown-content"} style={contentStyle}>
+                <li id={_id} className={_class} style={_style} onMouseEnter={this.onMouseEnterHandler} onMouseLeave={this.onMouseLeaveHandler}>
+                    <a className={"dropdown-label"} style={_labelStyle}></a>
+                    <div className={"dropdown-content"} style={_contentStyle}>
                         {children}
                     </div>
                 </li>
