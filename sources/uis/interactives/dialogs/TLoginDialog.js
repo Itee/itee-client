@@ -66,9 +66,7 @@ class TLoginDialog extends React.Component {
         const _class = ( className ) ? `tLoginDialog ${className}` : 'tLoginDialog'
 
         return (
-            <form className={'dialog login-dialog'} style={_STYLE} onSubmit={submitHandler}>
-                {/*<form className={'dialog login-dialog'} style={_STYLE} onSubmit={this.handleSubmit}>*/}
-
+            <form id={_id} className={_class} style={_style} onSubmit={submitHandler}>
                 <THeader>
                     <TCentererLayout>
                         <span>Connection</span>
