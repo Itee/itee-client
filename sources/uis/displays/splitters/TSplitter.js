@@ -95,87 +95,73 @@ class TSplitter extends React.Component {
 
         const { id, className, first, second } = this.props
 
-        const _id    = id || `tSplitter_${_instanceCounter}`
-        const _style = {}
-        const _class = ( className ) ? `tSplitter ${className}` : 'tSplitter'
+        const _id           = id || `tSplitter_${_instanceCounter}`
+        const _class        = ( className ) ? `tSplitter ${className}` : 'tSplitter'
+        let _style          = {}
+        let _firstStyle     = {}
+        let _secondStyle    = {}
+        let _separatorStyle = {}
 
         const leftWidth  = this.state.position
         const rightWidth = 100 - leftWidth
 
         if ( this.state.isVertical ) {
 
-            const splitterStyle = {
+            _style = {
                 display: 'flex',
                 width:   '100%'
             }
 
-            const leftStyle = {
+            _firstStyle = {
                 width: leftWidth + '%'
             }
 
-            const rightStyle = {
+            _secondStyle = {
                 width: rightWidth + '%'
             }
 
-            const separatorStyle = {
+            _separatorStyle = {
                 minWidth: '1px',
                 cursor:   'col-resize'
             }
 
-            return (
-                <div id={'tSplitterId'} className={'tSplitter'} style={splitterStyle} onMouseMove={this.onMouseMoveHandler} onMouseUp={this.onMouseUpHandler} onMouseLeave={this.onMouseUpHandler}>
-                    <div id={'tLeftSplit'} className={'tSplit tLeftSplit'} style={leftStyle}>
-                        {first}
-                    </div>
-                    <div className={'tSplitterSeparator'} style={separatorStyle} onMouseDown={this.onMouseDownHandler}></div>
-                    <div id={'tRightSplit'} className={'tSplit tRightSplit'} style={rightStyle}>
-                        {second}
-                    </div>
-                </div>
-            )
-
         } else {
 
-            const splitterStyle = {
+            _style = {
                 display:  'flex',
                 flexFlow: 'column',
                 width:    '100%'
             }
 
-            const leftStyle = {
+            _firstStyle = {
                 height: leftWidth + '%',
                 width:  '100%'
             }
 
-            const rightStyle = {
+            _secondStyle = {
                 height: rightWidth + '%',
                 width:  '100%'
             }
 
-            const separatorStyle = {
+            _separatorStyle = {
                 minHeight: '1px',
                 cursor:    'row-resize',
                 width:     '100%'
             }
 
-            return (
-                <div id={'tSplitterId'} className={'tSplitter'} style={splitterStyle} onMouseMove={this.onMouseMoveHandler} onMouseUp={this.onMouseUpHandler} onMouseLeave={this.onMouseUpHandler}>
-                    <div id={'tLeftSplit'} className={'tSplit tLeftSplit'} style={leftStyle}>
-                        {first}
-                    </div>
-                    <div className={'tSplitterSeparator'} style={separatorStyle} onMouseDown={this.onMouseDownHandler}></div>
-                    <div id={'tRightSplit'} className={'tSplit tRightSplit'} style={rightStyle}>
-                        {second}
-                    </div>
-                </div>
-            )
-
         }
 
-
-//        return (
-//            <t-splitter ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-splitter>
-//        )
+        return (
+            <t-splitter id={_id} className={_class} style={_style} onMouseMove={this.onMouseMoveHandler} onMouseUp={this.onMouseUpHandler} onMouseLeave={this.onMouseUpHandler}>
+                <div id={`tLeftSplit_${_instanceCounter}`} className={'tSplit tLeftSplit'} style={_firstStyle}>
+                    {first}
+                </div>
+                <div id={`tSplitterSeparator_${_instanceCounter}`} className={'tSplitterSeparator'} style={_separatorStyle} onMouseDown={this.onMouseDownHandler}></div>
+                <div id={`tRightSplit_${_instanceCounter}`} className={'tSplit tRightSplit'} style={_secondStyle}>
+                    {second}
+                </div>
+            </t-splitter>
+        )
 
     }
 
