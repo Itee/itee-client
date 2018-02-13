@@ -30,13 +30,20 @@
 
 /* eslint-env node */
 
-const gulp        = require( 'gulp' )
-const util        = require( 'gulp-util' )
-const jsdoc       = require( 'gulp-jsdoc3' )
-const eslint      = require( 'gulp-eslint' )
-const del         = require( 'del' )
-const rollup      = require( 'rollup' )
+const gulp     = require( 'gulp' )
+const util     = require( 'gulp-util' )
+const jsdoc    = require( 'gulp-jsdoc3' )
+const eslint   = require( 'gulp-eslint' )
+const gulpif   = require( 'gulp-if' )
+const less     = require( 'gulp-less' )
+const scss     = require( 'gulp-scss' )
+const cleanCss = require( 'gulp-clean-css' )
+const rename   = require( 'gulp-rename' )
+const concat   = require( 'gulp-concat' )
+const del      = require( 'del' )
+const rollup   = require( 'rollup' )
 
+const env     = util.env
 const log     = util.log
 const colors  = util.colors
 const red     = colors.red
@@ -107,8 +114,15 @@ gulp.task( 'clean', () => {
 gulp.task( 'lint', () => {
 
     // Todo: split between source and test with differents env
+    const filesToLint = [
+        'gulpfile.js',
+        'configs/**/*.js',
+        'scripts/**/*.js',
+        'sources/**/*',
+        'tests/**/*.js'
+    ]
 
-    return gulp.src( [ 'gulpfile.js', 'configs/**/*.js', 'scripts/**/*.js', 'sources/**/*', 'tests/**/*.js' ] )
+    return gulp.src( filesToLint )
                .pipe( eslint( {
                    allowInlineConfig: true,
                    globals:           [],
@@ -134,27 +148,6 @@ gulp.task( 'lint', () => {
                .pipe( eslint.format( 'stylish' ) )
                .pipe( eslint.failAfterError() )
 
-    // OR
-
-    //    return gulp.src([ 'gulpfile.js', 'configs/**/*.js', 'scripts/**/*.js', 'sources/**/*.js', 'tests/**/*.js' ])
-    //               .pipe(standard({
-    //                   fix:     true,   // automatically fix problems
-    //                   globals: [],  // custom global variables to declare
-    //                   plugins: [],  // custom eslint plugins
-    //                   envs:    [],     // custom eslint environment
-    //                   parser:  'babel-eslint'    // custom js parser (e.g. babel-eslint)
-    //               }))
-    //               .pipe(standard.reporter('default', {
-    //                   breakOnError:   true,
-    //                   breakOnWarning: true,
-    //                   quiet:          true,
-    //                   showRuleNames:  true,
-    //                   showFilePath:   true
-    //               }))
-    //               .pipe(gulp.dest((file) => {
-    //                   return file.base
-    //               }))
-
 } )
 
 /**
@@ -164,7 +157,13 @@ gulp.task( 'lint', () => {
 gulp.task( 'doc', ( done ) => {
 
     const config = require( './configs/jsdoc.conf' )
-    const files  = [ './configs/*.js', './sources/**/*.js', './tests/**/*.js' ]
+    const files  = [
+        'README.md',
+        'gulpfile.js',
+        './configs/*.js',
+        './sources/**/*.js',
+        './tests/**/*.js'
+    ]
 
     gulp.src( files, { read: false } )
         .pipe( jsdoc( config, done ) )
@@ -193,11 +192,61 @@ gulp.task( 'bench', ( done ) => {
  */
 gulp.task( 'test', gulp.parallel( 'unit', 'bench' ) )
 
+///
+/// BUILDS
+///
+
+const styleFiles = [
+    './node_modules/font-awesome/less/font-awesome.less',
+    './node_modules/bootstrap/scss/bootstrap.scss',
+    './node_modules/bootstrap-slider/dist/css/bootstrap-slider.css',
+    './styles/**/*'
+]
+
+/**
+ *
+ * @description Build less files from assets, and concat them into one file
+ */
+gulp.task( 'build-style-dev', () => {
+
+    return gulp.src( styleFiles )
+               .pipe( gulpif( /[.]less$/, less() ) )
+               .pipe( gulpif( /[.]scss/, scss() ) )
+               .pipe( concat( 'itee-client.style.css' ) )
+               .pipe( gulp.dest( './builds/' ) )
+
+} )
+
+gulp.task( 'build-style-prod', () => {
+
+    return gulp.src( styleFiles )
+               .pipe( gulpif( /[.]less$/, less() ) )
+               .pipe( gulpif( /[.]scss/, scss() ) )
+               .pipe( concat( 'itee-client.style.min.css' ) )
+               .pipe( cleanCss( { compatibility: 'ie8' } ) )
+               .pipe( gulp.dest( './builds/' ) )
+
+} )
+
+gulp.task( 'build-style', gulp.parallel( 'build-style-dev', 'build-style-prod' ) )
+
+/**
+ * Add watcher to assets less/css files and run build-style on file change
+ */
+gulp.task( 'watch-style', gulp.series( 'build-style', (done) => {
+
+    log( 'Add watcher to style files !' )
+
+    gulp.watch( styleFiles, [ 'build-style' ] )
+    done()
+
+}) )
+
 /**
  * @method npm run build
  * @description Will build itee client module using optional arguments, running clean and _extendThree tasks before. See help to further informations.
  */
-gulp.task( 'build', ( done ) => {
+gulp.task( 'build-script', ( done ) => {
 
     const options = processArguments( process.argv )
     const configs = createBuildsConfigs( options )
@@ -309,10 +358,30 @@ gulp.task( 'build', ( done ) => {
 } )
 
 /**
+ * Add watcher to assets javascript files and run build-js on file change
+ */
+gulp.task( 'watch-script', gulp.series( 'build-script' , (done) => {
+
+    log( 'Add watcher to javascript files !' )
+
+    gulp.watch( './assets/javascript/**/*.js', [ 'build-script' ] )
+    done()
+
+} ) )
+
+/**
+ * Build css and javascript files
+ */
+gulp.task( 'build-auto', gulp.series( 'clean', 'lint', gulp.parallel( 'watch-style', 'watch-script' ) ) )
+gulp.task( 'build-dev', gulp.series( 'clean', gulp.parallel( 'lint', 'doc', 'test' ), gulp.parallel( 'build-style-dev', 'build-script' ) ) )
+gulp.task( 'build-prod', gulp.series( 'clean', gulp.parallel( 'lint', 'doc', 'test' ), gulp.parallel( 'build-style-prod', 'build-script' ) ) )
+gulp.task( 'build', gulp.series( 'clean', gulp.parallel( 'lint', 'doc', 'test' ), gulp.parallel( 'build-style', 'build-script' ) ) )
+
+/**
  * @method npm run release
  * @description Will perform a complet release of the library.
  */
-gulp.task( 'release', gulp.series( 'clean', gulp.parallel( 'lint', 'doc', 'test' ), 'build' ) )
+gulp.task( 'release', gulp.series( 'clean', gulp.parallel( 'lint', 'doc', 'test' ), gulp.parallel( 'build-style', 'build-script' ) ) )
 
 //---------
 
