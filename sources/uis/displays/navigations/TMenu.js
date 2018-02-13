@@ -53,12 +53,9 @@ class TMenu extends React.Component {
         const _class = ( className ) ? `tMenu ${className}` : 'tMenu'
 
         return (
-            <ul style={_style}>{children}</ul>
+            <ul id={_id} style={_style} className={_class}>{children}</ul>
+//            <t-menu id={_id} style={_style} className={_class}>{children}</t-menu>
         )
-
-        //        return (
-        //            <t-menu ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-menu>
-        //        )
 
     }
 
