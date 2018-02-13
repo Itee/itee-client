@@ -247,10 +247,9 @@
 
     };
 
-    /***** ES CE QUE CEST VRAIMENT UTILES ?? ***/
     /**
      * It will create all tag attribute objects with appropriate template, looping over local descriptor attributesList.
-     * @type {tag attribute descriptor}
+     * @type {*}
      * @return attribute object in function of inputs params
      */
     NODIX.HtmlFactory.ATTRIBUTES.generateAttributesClass = function( descriptorAttributesList ) {

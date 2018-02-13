@@ -182,7 +182,7 @@
     /**
      * Created all new required attributes who need to be initialized by user's given options or default values,
      * and affect them to current instance by setter defined previously.
-     * @type {string[]} a list of the optionals <a> attributes
+     * @param {string[]} - a list of the optionals <a> attributes
      */
     NODIX.HtmlFactory.TAGS.createRequiredAttributes = function( tag, options ) {
         //className = attribute.charAt(0).toUpperCase() + attribute.slice(1);
@@ -204,7 +204,7 @@
     //        this[attribute] = new NODIX.HtmlFactory.TAGS.A.ATTRIBUTES[className](options[attribute]);
     //    }
     //}
-     * @type {string[]} a list of the optionals <a> attributes
+     * @param {string[]} - a list of the optionals <a> attributes
      */
     NODIX.HtmlFactory.TAGS.createOptionalAttributes = function( attributesList ) {
 
