@@ -40,7 +40,7 @@ class TTree extends React.Component {
 
     render () {
 
-        const { id, className, header } = this.props
+        const { id, className, header, children } = this.props
 
         const _id    = id || `tTree_${_instanceCounter}`
         const _style = {
