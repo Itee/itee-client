@@ -16,26 +16,26 @@
 
 /* eslint-env browser */
 
-const KEYS    = {
-    8:   "backspace",
-    9:   "tab",
-    13:  "enter",
-    16:  "shift",
-    17:  "ctrl",
-    18:  "alt",
-    27:  "esc",
-    32:  "space",
-    33:  "pageup",
-    34:  "pagedown",
-    35:  "end",
-    36:  "home",
+const KEYS = {
+    8:  "backspace",
+    9:  "tab",
+    13: "enter",
+    16: "shift",
+    17: "ctrl",
+    18: "alt",
+    27: "esc",
+    32: "space",
+    33: "pageup",
+    34: "pagedown",
+    35: "end",
+    36: "home",
 
     LEFT_ARROW:   37,
     UP_ARROW:     38,
     RIGHT_ARROW:  39,
     BOTTOM_ARROW: 40,
-    45:  "insert",
-    46:  "delete",
+    45:           "insert",
+    46:           "delete",
     A:            65,
     B:            66,
     C:            67,
@@ -62,49 +62,47 @@ const KEYS    = {
     X:            88,
     Y:            89,
     Z:            90,
-    186: ";",
-    187: "=",
-    188: ",",
-    189: "-",
-    190: ".",
-    191: "/",
-    219: "[",
-    220: "\\",
-    221: "]",
-    222: "'"
+    186:          ";",
+    187:          "=",
+    188:          ",",
+    189:          "-",
+    190:          ".",
+    191:          "/",
+    219:          "[",
+    220:          "\\",
+    221:          "]",
+    222:          "'"
 }
 
-    // initialization
-KeyboardState = function() {
+// initialization
+KeyboardState = function () {
     // bind keyEvents
-    document.addEventListener("keydown", KeyboardState.onKeyDown, false);
-    document.addEventListener("keyup", KeyboardState.onKeyUp, false);
+    document.addEventListener( "keydown", KeyboardState.onKeyDown, false );
+    document.addEventListener( "keyup", KeyboardState.onKeyUp, false );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
 KeyboardState.k =
-{
-
-}
+    {}
 
 KeyboardState.status = {};
 
-KeyboardState.keyName = function( keyCode ) {
+KeyboardState.keyName = function ( keyCode ) {
     return ( KeyboardState.k[ keyCode ] != null ) ?
         KeyboardState.k[ keyCode ] :
-        String.fromCharCode(keyCode);
+        String.fromCharCode( keyCode );
 }
 
-KeyboardState.onKeyUp = function( event ) {
-    var key = KeyboardState.keyName(event.keyCode);
+KeyboardState.onKeyUp = function ( event ) {
+    var key = KeyboardState.keyName( event.keyCode );
     if ( KeyboardState.status[ key ] ) {
         KeyboardState.status[ key ].pressed = false;
     }
 }
 
-KeyboardState.onKeyDown = function( event ) {
-    var key = KeyboardState.keyName(event.keyCode);
+KeyboardState.onKeyDown = function ( event ) {
+    var key = KeyboardState.keyName( event.keyCode );
     if ( !KeyboardState.status[ key ] ) {
         KeyboardState.status[ key ] = {
             down:              false,
@@ -115,7 +113,7 @@ KeyboardState.onKeyDown = function( event ) {
     }
 }
 
-KeyboardState.prototype.update = function() {
+KeyboardState.prototype.update = function () {
     for ( var key in KeyboardState.status ) {
         // insure that every keypress has "down" status exactly once
         if ( !KeyboardState.status[ key ].updatedPreviously ) {
@@ -141,24 +139,24 @@ KeyboardState.prototype.update = function() {
     }
 }
 
-KeyboardState.prototype.down = function( keyName ) {
+KeyboardState.prototype.down = function ( keyName ) {
     return (KeyboardState.status[ keyName ] && KeyboardState.status[ keyName ].down);
 }
 
-KeyboardState.prototype.pressed = function( keyName ) {
+KeyboardState.prototype.pressed = function ( keyName ) {
     return (KeyboardState.status[ keyName ] && KeyboardState.status[ keyName ].pressed);
 }
 
-KeyboardState.prototype.up = function( keyName ) {
+KeyboardState.prototype.up = function ( keyName ) {
     return (KeyboardState.status[ keyName ] && KeyboardState.status[ keyName ].up);
 }
 
-KeyboardState.prototype.debug = function() {
+KeyboardState.prototype.debug = function () {
     var list = "Keys active: ";
     for ( var arg in KeyboardState.status ) {
         list += " " + arg
     }
-    console.log(list);
+    console.log( list );
 }
 
 ///////////////////////////////////////////////////////////////////////////////

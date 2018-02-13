@@ -65,8 +65,6 @@ import {
     TPointsManager
 } from '../managers/databases/_databases'
 
-
-
 /**
  *
  * @param container
@@ -141,7 +139,6 @@ function TApplication ( container, parameters, onReady ) {
     // Usefull for shot updates
     this.frustum                    = new Frustum();
     this.cameraViewProjectionMatrix = new Matrix4();
-
 
     this.viewer            = ''
     this.previousImageShot = undefined
@@ -271,8 +268,8 @@ function TApplication ( container, parameters, onReady ) {
             this.detailBtn.on( "click", event => {
 
                 const carlId = event.currentTarget.value
-//                const carlId = event.currentTarget.value.slice( 0, -4 ).toUpperCase()
-//                getBoxDetail( carlId )
+                //                const carlId = event.currentTarget.value.slice( 0, -4 ).toUpperCase()
+                //                getBoxDetail( carlId )
                 parent.postMessage( `GISDetailAction#-#${carlId};com.carl.xnet.equipment.backend.bean.BoxBean#+#`, '*' )
 
             } )
@@ -281,7 +278,7 @@ function TApplication ( container, parameters, onReady ) {
             this.createBtn.on( "click", event => {
 
                 const carlId = event.currentTarget.value
-//                const carlId = event.currentTarget.value.slice( 0, -4 ).toUpperCase()
+                //                const carlId = event.currentTarget.value.slice( 0, -4 ).toUpperCase()
                 parent.postMessage( `CREATE_WO#-#${carlId};com.carl.xnet.equipment.backend.bean.BoxBean#+#`, '*' )
 
             } )
@@ -1014,7 +1011,7 @@ function TApplication ( container, parameters, onReady ) {
 
         _initModelData.call( self, _parameters.model )
         _initPointCloudData.call( self, _parameters.pointCloud )
-//        _initAvatarData.call( self, _parameters.avatar )
+        //        _initAvatarData.call( self, _parameters.avatar )
         _initRemoteFiles.call( self, _parameters.files )
         _initURLQuery.call( self, _parameters.urlQuery )
 
@@ -2003,7 +2000,7 @@ Object.assign( TApplication.prototype, {
 
             // Create new base tree item
             const objectTreeViewItem = this.insertTreeViewItem( siteGroup._id, siteGroup.name, null, siteGroup.visible )
-            objectTreeViewItem.find( `#${siteGroup._id}VisibilityCheckbox` ).on( 'change', this._toggleObjectVisibility(siteGroup) )
+            objectTreeViewItem.find( `#${siteGroup._id}VisibilityCheckbox` ).on( 'change', this._toggleObjectVisibility( siteGroup ) )
 
             this._initBuildingsOf( site.buildings, siteGroup, siteGroup.visible )
 
@@ -2037,9 +2034,9 @@ Object.assign( TApplication.prototype, {
             buildingGroup.visible  = (visible && buildingIndex === 0 )
 
             const scenesIds = building.scenes
-            if( childrenToRemove ) {
-                const index = scenesIds.indexOf(childrenToRemove)
-                scenesIds.splice(index, 1)
+            if ( childrenToRemove ) {
+                const index = scenesIds.indexOf( childrenToRemove )
+                scenesIds.splice( index, 1 )
             }
 
             let parentId = undefined
@@ -2090,7 +2087,7 @@ Object.assign( TApplication.prototype, {
                 building.add( sceneGroup )
                 parentId = building._id
 
-            } else if ( scene.parent ){
+            } else if ( scene.parent ) {
 
                 this._processBuildings( undefined, true, null, scene.parent, sceneGroup._id )
 
@@ -2175,12 +2172,12 @@ Object.assign( TApplication.prototype, {
         geometriesIds = uniq( geometriesIds )
         materialsIds  = uniq( materialsIds )
 
-        this.geometriesManager.read( geometriesIds, this._processGeometries.bind(this, objects, isReady.bind(this)) )
-        this.materialsManager.read( materialsIds, this._processMaterials.bind(this, objects, isReady.bind(this)) )
+        this.geometriesManager.read( geometriesIds, this._processGeometries.bind( this, objects, isReady.bind( this ) ) )
+        this.materialsManager.read( materialsIds, this._processMaterials.bind( this, objects, isReady.bind( this ) ) )
 
     },
 
-    _processGeometries( objects, isReady, geometries ) {
+    _processGeometries ( objects, isReady, geometries ) {
 
         let object = undefined
         for ( let objectIndex = 0, numberOfObjects = objects.length ; objectIndex < numberOfObjects ; objectIndex++ ) {
@@ -2192,7 +2189,7 @@ Object.assign( TApplication.prototype, {
 
     },
 
-    _processMaterials( objects, isReady, materials ) {
+    _processMaterials ( objects, isReady, materials ) {
 
         let object         = undefined
         let objectMaterial = undefined
@@ -2226,7 +2223,7 @@ Object.assign( TApplication.prototype, {
     _toggleObjectVisibility ( object ) {
 
         const _object = object
-        const self = this
+        const self    = this
 
         return function toggleVisibilityEventHandler ( event ) {
 

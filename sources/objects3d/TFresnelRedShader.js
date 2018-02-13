@@ -68,7 +68,7 @@ THREE.FresnelRedShader = {
 
                       "}"
 
-                  ].join("\n"),
+                  ].join( "\n" ),
 
     fragmentShader: [
 
@@ -87,6 +87,6 @@ THREE.FresnelRedShader = {
 
                         "}"
 
-                    ].join("\n")
+                    ].join( "\n" )
 
 };

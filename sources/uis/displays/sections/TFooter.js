@@ -54,7 +54,7 @@ class TFooter extends React.Component {
         return (
             <t-footer id={_id} style={_style} className={_class}>
                 {children}
-                </t-footer>
+            </t-footer>
         )
 
     }

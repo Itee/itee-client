@@ -27,7 +27,7 @@ class TLoginDialog extends React.Component {
         super( props )
         _instanceCounter++
 
-        this.state = { value: '' };
+        this.state        = { value: '' };
         this.handleChange = this.handleChange.bind( this )
 
     }
@@ -104,9 +104,9 @@ class TLoginDialog extends React.Component {
             </form>
         )
 
-//        return (
-//            <t-login-dialog ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-login-dialog>
-//        )
+        //        return (
+        //            <t-login-dialog ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-login-dialog>
+        //        )
 
     }
 

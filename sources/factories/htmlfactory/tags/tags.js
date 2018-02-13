@@ -4,13 +4,13 @@
 
 /* eslint-env browser */
 
-    ////////////////////////////////////////////////////// NODIX FACTORY TAGS NAMESPACE ///////////////////////////////////////////////////////////
-(function() {
+////////////////////////////////////////////////////// NODIX FACTORY TAGS NAMESPACE ///////////////////////////////////////////////////////////
+(function () {
     'use strict';
 
     // Pre-required
     if ( typeof NODIX.HtmlFactory === 'undefined' ) {
-        throw new Error('NODIX.HtmlFactory need to be define before NODIX.HtmlFactory.TAGS, sorry for the disagreement...');
+        throw new Error( 'NODIX.HtmlFactory need to be define before NODIX.HtmlFactory.TAGS, sorry for the disagreement...' );
     }
 
     NODIX.HtmlFactory.TAGS = NODIX.HtmlFactory.TAGS || {};
@@ -25,7 +25,7 @@
         {
             name:             'body',
             browserSupported: [ '' ],
-            creationRule:     function() {
+            creationRule:     function () {
                 return true; // can be inside other a tag or button
             },
             errorMessage:     null, //useless because creationRule true
@@ -40,7 +40,7 @@
         {
             name:             'a',
             browserSupported: [ '' ],
-            creationRule:     function() {
+            creationRule:     function () {
                 return true; // can be inside other a tag or button
             },
             errorMessage:     null, //useless because creationRule true
@@ -53,16 +53,15 @@
         }
     ];
 
-    NODIX.HtmlFactory.TAGS.getTemplateTagClassForDescriptor = function( descriptorTag ) {
+    NODIX.HtmlFactory.TAGS.getTemplateTagClassForDescriptor = function ( descriptorTag ) {
 
         //Required property for create a tag from initialization descriptor
-        if ( NODIX.fn.isEmpty(descriptorTag.name) ) { throw new Error("Invalid name, can't be null or undefined, expected a function for validate setter input.") }
+        if ( NODIX.fn.isEmpty( descriptorTag.name ) ) { throw new Error( "Invalid name, can't be null or undefined, expected a function for validate setter input." ) }
         ;
-        if ( !(descriptorTag.closingType in NODIX.HtmlFactory.TAGS.CLOSING_TYPE) ) { throw new Error("Invalid closingType, can't be null or undefined, expected a function for validate setter input.") }
+        if ( !(descriptorTag.closingType in NODIX.HtmlFactory.TAGS.CLOSING_TYPE) ) { throw new Error( "Invalid closingType, can't be null or undefined, expected a function for validate setter input." ) }
         ;
 
-
-        return function( attributesList, children ) {
+        return function ( attributesList, children ) {
 
             //Required properties in descriptor
             /**
@@ -76,65 +75,65 @@
                 //Optional properties in descriptor
                 _browserSupported = descriptorTag.supportedBrowser || [ '' ],
                 //Optional given properties
-                _attributesList   = NODIX.HtmlFactory.TAGS.createOptionalAttributes(attributesList), //todo set as array
-                _children         = NODIX.HtmlFactory.TAGS.createTag(children) || [];
+                _attributesList   = NODIX.HtmlFactory.TAGS.createOptionalAttributes( attributesList ), //todo set as array
+                _children         = NODIX.HtmlFactory.TAGS.createTag( children ) || [];
 
-            Object.defineProperties(this, {
+            Object.defineProperties( this, {
                 _name:           {
                     enumerable: true,
-                    get:        function() {
+                    get:        function () {
                         return _name;
                     },
-                    set:        function( name ) {
-                        if ( NODIX.fn.isNotEmptyString(name) ) {
+                    set:        function ( name ) {
+                        if ( NODIX.fn.isNotEmptyString( name ) ) {
                             _name = name;
                         } else {
-                            throw new Error("Invalid argument, expected a string.");
+                            throw new Error( "Invalid argument, expected a string." );
                         }
                     }
                 },
                 _closingType:    {
                     enumerable: true,
-                    get:        function() {
+                    get:        function () {
                         return _closingType;
                     },
-                    set:        function( newClosingType ) {
+                    set:        function ( newClosingType ) {
                         if ( newClosingType in NODIX.HtmlFactory.TAGS.CLOSING_TYPE ) {
                             _closingType = newClosingType;
                         } else {
-                            throw new Error("Invalid argument, expected a NODIX.HtmlFactory.TAGS.CLOSING_TYPE.");
+                            throw new Error( "Invalid argument, expected a NODIX.HtmlFactory.TAGS.CLOSING_TYPE." );
                         }
                     }
                 },
                 _attributesList: {
                     enumerable: true,
-                    get:        function() {
+                    get:        function () {
                         return _attributesList;
                     },
-                    set:        function( newAttribute ) {
+                    set:        function ( newAttribute ) {
                         if ( true ) {
                             //if (NODIX.fn.isNotEmptyString(newChild)) {
-                            _attributesList.push(newAttribute);
+                            _attributesList.push( newAttribute );
                         } else {
-                            throw new Error("Invalid argument, expected a NODIX.HtmlFactory.TAGS.XXX");
+                            throw new Error( "Invalid argument, expected a NODIX.HtmlFactory.TAGS.XXX" );
                         }
                     }
                 },
                 _children:       {
                     enumerable: true,
-                    get:        function() {
+                    get:        function () {
                         return _children;
                     },
-                    set:        function( newChild ) {
+                    set:        function ( newChild ) {
                         if ( true ) {
                             //if (NODIX.fn.isNotEmptyString(newChild)) {
-                            _children.push(newChild);
+                            _children.push( newChild );
                         } else {
-                            throw new Error("Invalid argument, expected a NODIX.HtmlFactory.TAGS.CLOSING_TYPE.");
+                            throw new Error( "Invalid argument, expected a NODIX.HtmlFactory.TAGS.CLOSING_TYPE." );
                         }
                     }
                 }
-            });
+            } );
 
             //NODIX.HtmlFactory.TAGS.createRequiredAttributes(this, attributesList);
 
@@ -146,38 +145,38 @@
      * Will create all tags class from given tags descriptors array
      * @param descriptorTagList
      */
-    NODIX.HtmlFactory.TAGS.generateTagsClass = function( descriptorTagList ) {
+    NODIX.HtmlFactory.TAGS.generateTagsClass = function ( descriptorTagList ) {
 
         var descriptorTag = null,
             className     = null;
 
-        if ( NODIX.fn.isArrayOfNotEmptyObject(descriptorTagList) ) {
+        if ( NODIX.fn.isArrayOfNotEmptyObject( descriptorTagList ) ) {
 
             for ( var index = 0, listLength = descriptorTagList.length ; index < listLength ; index = index + 1 ) {
 
                 //todo validate params in attribute before to set them !!!
                 descriptorTag = descriptorTagList[ index ];
-                className     = NODIX.fn.classNameify(descriptorTag.name);
+                className     = NODIX.fn.classNameify( descriptorTag.name );
 
-                if ( NODIX.fn.isNotEmpty(NODIX.HtmlFactory.TAGS[ className ]) ) { continue; } //throw new Error("NODIX.HtmlFactory.TAGS."+className+" still exist ! Don't recreate it ! If you want to be able to override it please contact us...");
+                if ( NODIX.fn.isNotEmpty( NODIX.HtmlFactory.TAGS[ className ] ) ) { continue; } //throw new Error("NODIX.HtmlFactory.TAGS."+className+" still exist ! Don't recreate it ! If you want
+                                                                                                // to be able to override it please contact us...");
 
-                NODIX.HtmlFactory.TAGS[ className ] = NODIX.HtmlFactory.TAGS.getTemplateTagClassForDescriptor(descriptorTag);
+                NODIX.HtmlFactory.TAGS[ className ] = NODIX.HtmlFactory.TAGS.getTemplateTagClassForDescriptor( descriptorTag );
 
             }
 
-        } else if ( NODIX.fn.isNotEmptyObject(descriptorTagList) ) {
+        } else if ( NODIX.fn.isNotEmptyObject( descriptorTagList ) ) {
 
-            className = NODIX.fn.classNameify(descriptorTag.name);
+            className = NODIX.fn.classNameify( descriptorTag.name );
 
-            if ( NODIX.fn.isEmpty(NODIX.HtmlFactory.TAGS[ className ]) ) {
-                NODIX.HtmlFactory.TAGS[ className ] = NODIX.HtmlFactory.TAGS.getTemplateTagClassForDescriptor(descriptorTag);
+            if ( NODIX.fn.isEmpty( NODIX.HtmlFactory.TAGS[ className ] ) ) {
+                NODIX.HtmlFactory.TAGS[ className ] = NODIX.HtmlFactory.TAGS.getTemplateTagClassForDescriptor( descriptorTag );
             }
             //else throw new Error("NODIX.HtmlFactory.TAGS."+className+" still exist ! Don't recreate it ! If you want to be able to override it please contact us...");
 
         } else {
-            throw new Error("Invalid descriptorTagList, can't be null or undefined, expected an array of tag descriptor or a single tag descriptor object!")
+            throw new Error( "Invalid descriptorTagList, can't be null or undefined, expected an array of tag descriptor or a single tag descriptor object!" )
         }
-
 
     };
 
@@ -186,7 +185,7 @@
      * and affect them to current instance by setter defined previously.
      * @param {string[]} - a list of the optionals <a> attributes
      */
-    NODIX.HtmlFactory.TAGS.createRequiredAttributes = function( tag, options ) {
+    NODIX.HtmlFactory.TAGS.createRequiredAttributes = function ( tag, options ) {
         //className = attribute.charAt(0).toUpperCase() + attribute.slice(1);
         //this[attribute] = (options[attribute] ? new NODIX.HtmlFactory.TAGS.A.ATTRIBUTES[className](options[attribute]) : new NODIX.HtmlFactory.TAGS.A.ATTRIBUTES[className]() );
     };
@@ -208,7 +207,7 @@
     //}
      * @param {string[]} - a list of the optionals <a> attributes
      */
-    NODIX.HtmlFactory.TAGS.createOptionalAttributes = function( attributesList ) {
+    NODIX.HtmlFactory.TAGS.createOptionalAttributes = function ( attributesList ) {
 
         var className       = '',
             classDescriptor = {};
@@ -216,26 +215,26 @@
         // Iterate over all user's given options
         var resultArray = [];
         for ( var attribute in attributesList ) {
-            if ( attributesList.hasOwnProperty(attribute) ) {
+            if ( attributesList.hasOwnProperty( attribute ) ) {
 
                 // Try to find the attribute descriptor for current property
-                classDescriptor = NODIX.HtmlFactory.ATTRIBUTES.getDescriptor(attribute);
-                if ( NODIX.fn.isEmpty(classDescriptor) ) {
-                    throw new Error("Unable to find class descriptor for attribute name: " + attribute);
+                classDescriptor = NODIX.HtmlFactory.ATTRIBUTES.getDescriptor( attribute );
+                if ( NODIX.fn.isEmpty( classDescriptor ) ) {
+                    throw new Error( "Unable to find class descriptor for attribute name: " + attribute );
                 }
 
                 // If we can create this attribute
                 if ( !classDescriptor.creationRule() ) {
-                    throw new Error(classDescriptor.errorMessage);
+                    throw new Error( classDescriptor.errorMessage );
                 }
 
                 //Create the ClassNamed
-                className = NODIX.fn.classNameify(attribute);
-                if ( NODIX.fn.isEmpty(NODIX.HtmlFactory.ATTRIBUTES[ className ]) ) {
-                    throw new Error("NODIX.HtmlFactory.ATTRIBUTES." + className + " is empty, the class was not created before trying to use it !");
+                className = NODIX.fn.classNameify( attribute );
+                if ( NODIX.fn.isEmpty( NODIX.HtmlFactory.ATTRIBUTES[ className ] ) ) {
+                    throw new Error( "NODIX.HtmlFactory.ATTRIBUTES." + className + " is empty, the class was not created before trying to use it !" );
                 }
 
-                resultArray.push(new NODIX.HtmlFactory.ATTRIBUTES[ className ](attributesList[ attribute ]));
+                resultArray.push( new NODIX.HtmlFactory.ATTRIBUTES[ className ]( attributesList[ attribute ] ) );
 
             }
         }
@@ -243,20 +242,20 @@
 
     };
 
-    NODIX.HtmlFactory.TAGS.createTag = function( childList ) {
+    NODIX.HtmlFactory.TAGS.createTag = function ( childList ) {
 
-        if ( NODIX.fn.isNotArray(childList) ) { throw new Error("Invalid argument, can't be null or undefined, expected a array.") }
+        if ( NODIX.fn.isNotArray( childList ) ) { throw new Error( "Invalid argument, can't be null or undefined, expected a array." ) }
 
         var instanceChildArray = [];
         for ( var childIndex = 0, childListLength = childList.length ; childIndex < childListLength ; childIndex++ ) {
             var currentChild = childList[ childIndex ];
 
-            if ( NODIX.fn.isNotEmptyString(currentChild) ) {
-                instanceChildArray.push(currentChild);
+            if ( NODIX.fn.isNotEmptyString( currentChild ) ) {
+                instanceChildArray.push( currentChild );
             } else {
 
-                var tagClassName = NODIX.fn.classNameify(currentChild.tagName);
-                instanceChildArray.push(new NODIX.HtmlFactory.TAGS[ tagClassName ](currentChild.attributes, currentChild.children));
+                var tagClassName = NODIX.fn.classNameify( currentChild.tagName );
+                instanceChildArray.push( new NODIX.HtmlFactory.TAGS[ tagClassName ]( currentChild.attributes, currentChild.children ) );
 
             }
 
@@ -265,39 +264,38 @@
 
     };
 
-    NODIX.HtmlFactory.TAGS.getArrayTagResult = function( tagArray ) {
+    NODIX.HtmlFactory.TAGS.getArrayTagResult = function ( tagArray ) {
         var result = "";
         for ( var index = 0, tagNumber = tagArray.length ; index < tagNumber ; index = index + 1 ) {
-            result += NODIX.HtmlFactory.TAGS.getTagResult(tagArray[ index ]);
+            result += NODIX.HtmlFactory.TAGS.getTagResult( tagArray[ index ] );
         }
         return result;
     };
 
-    NODIX.HtmlFactory.TAGS.getTagResult = function( tag ) {
+    NODIX.HtmlFactory.TAGS.getTagResult = function ( tag ) {
 
         var result = "";
 
-        if ( NODIX.fn.isEmptyObject(tag) ) { throw new Error("Invalid argument tag: " + tag + ", expected a tag object !"); }
-        if ( NODIX.fn.isEmptyString(tag._name) ) { throw new Error("Invalid tag name: " + tag._name + ", can't be null, empty or undefined !"); }
+        if ( NODIX.fn.isEmptyObject( tag ) ) { throw new Error( "Invalid argument tag: " + tag + ", expected a tag object !" ); }
+        if ( NODIX.fn.isEmptyString( tag._name ) ) { throw new Error( "Invalid tag name: " + tag._name + ", can't be null, empty or undefined !" ); }
 
-        if ( NODIX.fn.isNotEmptyString(tag) ) {
+        if ( NODIX.fn.isNotEmptyString( tag ) ) {
 
             result += tag;
 
-        } else if ( NODIX.fn.isNotEmptyArray(tag) ) {
+        } else if ( NODIX.fn.isNotEmptyArray( tag ) ) {
 
-            result += NODIX.HtmlFactory.TAGS.getArrayTagResult(tag);
+            result += NODIX.HtmlFactory.TAGS.getArrayTagResult( tag );
 
-        } else if ( NODIX.fn.isNotEmptyObject(tag) ) {
-
+        } else if ( NODIX.fn.isNotEmptyObject( tag ) ) {
 
             var tagName       = tag._name,
                 tagAttributes = tag._attributesList;
 
             result += "<" + tagName;
 
-            if ( NODIX.fn.isNotEmptyArray(tagAttributes) ) {
-                result += NODIX.HtmlFactory.TAGS.getAttributesResult(tagAttributes);
+            if ( NODIX.fn.isNotEmptyArray( tagAttributes ) ) {
+                result += NODIX.HtmlFactory.TAGS.getAttributesResult( tagAttributes );
             }
 
             switch ( tag._closingType ) {
@@ -311,28 +309,28 @@
 
                 case "closingTag":
                     result += ">";
-                    result += NODIX.HtmlFactory.TAGS.getTagResult(tag._children);
+                    result += NODIX.HtmlFactory.TAGS.getTagResult( tag._children );
                     result += "</" + tagName + ">";
                     break;
 
                 default:
-                    throw new Error("Invalid closing type for tag <" + tagName + ">");
+                    throw new Error( "Invalid closing type for tag <" + tagName + ">" );
             }
 
         } else {
-            throw new Error("Can't get result of child tag, unknown type of child, expected string, array of strings or tag object !")
+            throw new Error( "Can't get result of child tag, unknown type of child, expected string, array of strings or tag object !" )
         }
 
         return result;
 
     };
 
-    NODIX.HtmlFactory.TAGS.getAttributesResult = function( tagAttributesList ) {
+    NODIX.HtmlFactory.TAGS.getAttributesResult = function ( tagAttributesList ) {
 
-        if ( NODIX.fn.isNotArray(tagAttributesList) ) { // it could be a single tag attribute
-            if ( NODIX.fn.isEmptyObject(tagAttributesList) ) { throw new Error("Invalid argument tag attribute list, can't be an empty object, expected a tag attributes object or array of it !") }
+        if ( NODIX.fn.isNotArray( tagAttributesList ) ) { // it could be a single tag attribute
+            if ( NODIX.fn.isEmptyObject( tagAttributesList ) ) { throw new Error( "Invalid argument tag attribute list, can't be an empty object, expected a tag attributes object or array of it !" ) }
         } else {
-            if ( NODIX.fn.isArrayOfEmptyObject(tagAttributesList) ) { throw new Error("Invalid argument tag attribute list, can't be an array of invalid object, expected a tag attributes object or array of it !"); }
+            if ( NODIX.fn.isArrayOfEmptyObject( tagAttributesList ) ) { throw new Error( "Invalid argument tag attribute list, can't be an array of invalid object, expected a tag attributes object or array of it !" ); }
         }
 
         var result    = "",
@@ -341,14 +339,14 @@
         for ( var index = 0, listLength = tagAttributesList.length ; index < listLength ; index = index + 1 ) {
 
             attribute = tagAttributesList[ index ];
-            if ( NODIX.fn.isEmptyObject(attribute) ) { throw new Error("Can't get tag attribute object: " + attribute + " expected an attribute object, but get undefined !") }
+            if ( NODIX.fn.isEmptyObject( attribute ) ) { throw new Error( "Can't get tag attribute object: " + attribute + " expected an attribute object, but get undefined !" ) }
 
-            if ( NODIX.fn.isNotEmpty(attribute._value) ) {
+            if ( NODIX.fn.isNotEmpty( attribute._value ) ) {
                 result += " " + attribute._name + "='" + attribute._value + "'";
             } else if ( attribute._valueIsOptional ) {
                 result += " " + attribute._name;
             } else {
-                throw new Error("Can't create tag attribute: " + attribute._name + " expected an attribute value, but get undefined !")
+                throw new Error( "Can't create tag attribute: " + attribute._name + " expected an attribute value, but get undefined !" )
             }
 
         }

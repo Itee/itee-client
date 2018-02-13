@@ -8,9 +8,9 @@
 
 import { isNumber } from "TNumberValidator"
 
-export const ABSOLUTE_ZERO_KELVIN           = 0.00000000045
-export const ABSOLUTE_ZERO_CELSIUS          = -273.14999999955
-export const ABSOLUTE_ZERO_FAHRENHEIT       = -459.67
+export const ABSOLUTE_ZERO_KELVIN     = 0.00000000045
+export const ABSOLUTE_ZERO_CELSIUS    = -273.14999999955
+export const ABSOLUTE_ZERO_FAHRENHEIT = -459.67
 
 export function isKelvin ( data ) {
     return (isNumber( data ) && data >= ABSOLUTE_ZERO_KELVIN)

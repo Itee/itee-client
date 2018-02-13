@@ -15,21 +15,21 @@
  */
 export function serializeObject () {
 
-//    var object = {}
-//    var a = this.serializeArray()
-//
-//    $.each( a, function () {
-//        if ( object[ this.name ] !== undefined ) {
-//            if ( !object[ this.name ].push ) {
-//                object[ this.name ] = [ object[ this.name ] ]
-//            }
-//            object[ this.name ].push( this.value || '' )
-//        } else {
-//            object[ this.name ] = this.value || ''
-//        }
-//    } )
-//
-//    return object
+    //    var object = {}
+    //    var a = this.serializeArray()
+    //
+    //    $.each( a, function () {
+    //        if ( object[ this.name ] !== undefined ) {
+    //            if ( !object[ this.name ].push ) {
+    //                object[ this.name ] = [ object[ this.name ] ]
+    //            }
+    //            object[ this.name ].push( this.value || '' )
+    //        } else {
+    //            object[ this.name ] = this.value || ''
+    //        }
+    //    } )
+    //
+    //    return object
 
 }
 

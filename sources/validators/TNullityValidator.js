@@ -22,7 +22,7 @@
  * @param data
  * @returns {boolean|*} true if data is null, false otherwise.
  */
-export function isNull( data ) {
+export function isNull ( data ) {
     return (data === null)
 }
 
@@ -31,6 +31,6 @@ export function isNull( data ) {
  * @param data
  * @returns {boolean|*} true if data is not null, false otherwise.
  */
-export function isNotNull( data ) {
-    return !isNull(data)
+export function isNotNull ( data ) {
+    return !isNull( data )
 }

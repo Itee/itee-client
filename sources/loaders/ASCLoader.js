@@ -53,7 +53,7 @@ BoundingBox.prototype = {
 
     constructor: BoundingBox,
 
-    computePoint( point ) {
+    computePoint ( point ) {
 
         if ( point.x < this.xMin ) {
             this.xMin = point.x;
@@ -136,7 +136,7 @@ ASCLoader.prototype = {
 
     load ( url, onLoad, onProgress, onError, sampling ) {
 
-//        console.time("ASCLoader")
+        //        console.time("ASCLoader")
 
         const loader = new FileLoader( this.manager )
         loader.setResponseType( 'blob' )
@@ -146,7 +146,7 @@ ASCLoader.prototype = {
             this._parse( blob, groupToFeed, onLoad, onProgress, onError, sampling )
             onLoad( groupToFeed )
 
-        }.bind(this), onProgress, onError )
+        }.bind( this ), onProgress, onError )
 
     },
 
@@ -167,7 +167,7 @@ ASCLoader.prototype = {
 
         const reader     = new FileReader()
         const CHUNK_SIZE = 134217728
-        let offset     = 0
+        let offset       = 0
 
         reader.onabort = function ( abortEvent ) {
 
@@ -292,7 +292,7 @@ ASCLoader.prototype = {
             if ( offset >= blob.size ) {
 
                 // console.timeEnd("Parse")
-//                console.timeEnd( "ASCLoader" )
+                //                console.timeEnd( "ASCLoader" )
 
                 // // Compute bounding box in view to get his center for auto offseting the cloud point.
                 // if ( self._autoOffset ) {
@@ -657,7 +657,7 @@ ASCLoader.prototype = {
 
         const offset         = (this._autoOffset) ? this._boundingBox.getCenter() : this._offset
         const numberOfPoints = this._points.length;
-        let point          = null;
+        let point            = null;
         for ( let i = 0 ; i < numberOfPoints ; ++i ) {
 
             point = this._points[ i ]
@@ -681,13 +681,13 @@ ASCLoader.prototype = {
 
         for ( let splitIndex = 0 ; splitIndex < numberOfSplit ; ++splitIndex ) {
 
-            splice           = this._points.splice( 0, SPLIT_LIMIT )
+            splice               = this._points.splice( 0, SPLIT_LIMIT )
             numberOfPointInSplit = splice.length
 
-            const geometry    = new BufferGeometry()
-            const positions   = new Float32Array( numberOfPointInSplit * 3 )
-            const colors      = new Float32Array( numberOfPointInSplit * 3 )
-            const color       = new Color()
+            const geometry  = new BufferGeometry()
+            const positions = new Float32Array( numberOfPointInSplit * 3 )
+            const colors    = new Float32Array( numberOfPointInSplit * 3 )
+            const color     = new Color()
             let bufferIndex = 0
             let point       = undefined
 

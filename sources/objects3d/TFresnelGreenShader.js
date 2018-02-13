@@ -68,7 +68,7 @@ THREE.FresnelGreenShader = {
 
                       "}"
 
-                  ].join("\n"),
+                  ].join( "\n" ),
 
     fragmentShader: [
 
@@ -88,6 +88,6 @@ THREE.FresnelGreenShader = {
 
                         "}"
 
-                    ].join("\n")
+                    ].join( "\n" )
 
 };

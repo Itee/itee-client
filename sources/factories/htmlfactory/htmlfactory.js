@@ -4,15 +4,15 @@
 
 /* eslint-env browser */
 
-    //todo singleton pattern or module ?
-    ////////////////////////////////////////////////////// NODIX FACTORY ////////////////////////////////////////////////////
+//todo singleton pattern or module ?
+////////////////////////////////////////////////////// NODIX FACTORY ////////////////////////////////////////////////////
 
-(function() {
+(function () {
     'use strict';
 
     // Pre-required
     if ( typeof NODIX === 'undefined' && NODIX.debug ) {
-        throw new Error('NODIX need to be define before NODIX.HtmlFactory, sorry for the disagreement...');
+        throw new Error( 'NODIX need to be define before NODIX.HtmlFactory, sorry for the disagreement...' );
     }
 
     /**
@@ -23,19 +23,19 @@
      *
      * @constructor
      */
-    NODIX.HtmlFactory = function( options ) {
+    NODIX.HtmlFactory = function ( options ) {
 
         // todo INNER validate options !
         // use static options ! It can be access anywhere under HtmlFactory AND can be set on the fly with user options inputs
         if ( options ) {
-            NODIX.HtmlFactory.options = NODIX.fn.extendObject(NODIX.HtmlFactory.options, options);
+            NODIX.HtmlFactory.options = NODIX.fn.extendObject( NODIX.HtmlFactory.options, options );
         }
 
         //todo: allow user to add descriptor
         // Generate all attributes class from descriptor
-        NODIX.HtmlFactory.ATTRIBUTES.generateAttributesClass(NODIX.HtmlFactory.ATTRIBUTES.DESCRIPTOR);
+        NODIX.HtmlFactory.ATTRIBUTES.generateAttributesClass( NODIX.HtmlFactory.ATTRIBUTES.DESCRIPTOR );
         // Generate all tags class from descriptor
-        NODIX.HtmlFactory.TAGS.generateTagsClass(NODIX.HtmlFactory.TAGS.DESCRIPTOR);
+        NODIX.HtmlFactory.TAGS.generateTagsClass( NODIX.HtmlFactory.TAGS.DESCRIPTOR );
 
     };
 
@@ -65,19 +65,19 @@
      * @param tagsStructure could be an single Tag object or an array of that.
      * @returns {string} HTML
      */
-    NODIX.HtmlFactory.prototype.renderTags = function( tagsStructure ) {
+    NODIX.HtmlFactory.prototype.renderTags = function ( tagsStructure ) {
 
-        function renderTag( tagStructure ) {
+        function renderTag ( tagStructure ) {
 
-            tagClassName = NODIX.fn.classNameify(tagStructure.tagName);
-            tag          = new NODIX.HtmlFactory.TAGS[ tagClassName ](tagStructure.attributes, tagStructure.children);
-            return NODIX.HtmlFactory.TAGS.getTagResult(tag);
+            tagClassName = NODIX.fn.classNameify( tagStructure.tagName );
+            tag          = new NODIX.HtmlFactory.TAGS[ tagClassName ]( tagStructure.attributes, tagStructure.children );
+            return NODIX.HtmlFactory.TAGS.getTagResult( tag );
 
         }
 
         var result = "";
         //todo: Test about speed of init using this technique or the other
-        if ( NODIX.fn.isTagStructure(tagsStructure) ) {
+        if ( NODIX.fn.isTagStructure( tagsStructure ) ) {
 
             var tagStructure = null,
                 tag          = null,
@@ -89,12 +89,12 @@
                 //dev
                 tagStructure = tagsStructure[ index ];
 
-                tagClassName = NODIX.fn.classNameify(tagStructure.tagName);
-                tag          = new NODIX.HtmlFactory.TAGS[ tagClassName ](tagStructure.attributes, tagStructure.children);
-                result += NODIX.HtmlFactory.TAGS.getTagResult(tag);
+                tagClassName = NODIX.fn.classNameify( tagStructure.tagName );
+                tag          = new NODIX.HtmlFactory.TAGS[ tagClassName ]( tagStructure.attributes, tagStructure.children );
+                result += NODIX.HtmlFactory.TAGS.getTagResult( tag );
             }
 
-        } else if ( NODIX.fn.isArrayOfTagStructure(tagsStructure) ) {
+        } else if ( NODIX.fn.isArrayOfTagStructure( tagsStructure ) ) {
 
             tagClassName = NODIX.fn.classNameify( tagsStructure.tagName );
             tag          = new NODIX.HtmlFactory.TAGS[ tagClassName ]( tagsStructure.attributes, tagsStructure.children );
@@ -110,11 +110,10 @@
                 "}\n" +
                 " ...or... an array of that !";
 
-            throw new Error(errorMessage);
+            throw new Error( errorMessage );
         }
 
         return result;
-
 
     };
 

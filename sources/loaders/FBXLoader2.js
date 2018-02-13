@@ -49,7 +49,7 @@ import {
  *    PreRotation support.
  */
 
-// Helper methods
+    // Helper methods
 var DEG2RAD = Math.PI / 180;
 
 function degreeToRadian ( value ) {

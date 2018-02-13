@@ -433,14 +433,14 @@ Object.assign( TUniversalLoader.prototype, {
                     new ShapeBufferGeometry( _shapes[ shapeIndex ] ),
                     new MeshPhongMaterial( {
                         color: 0xb0f2b6,
-//                        color: Math.random() * 0xffffff,
+                        //                        color: Math.random() * 0xffffff,
                         side:  DoubleSide
                     } )
                 )
 
-                const shapeName = _dbf.datas[ shapeIndex ][ 'CODE' ]
-                mesh.name = shapeName
-                mesh.userData['Code'] = shapeName
+                const shapeName         = _dbf.datas[ shapeIndex ][ 'CODE' ]
+                mesh.name               = shapeName
+                mesh.userData[ 'Code' ] = shapeName
 
                 group.add( mesh )
 

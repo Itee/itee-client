@@ -55,7 +55,7 @@ class TDivider extends React.Component {
     }
 
     // Private stuff
-    static _computeStyle( orientation ){
+    static _computeStyle ( orientation ) {
 
         let style = undefined
 
