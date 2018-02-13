@@ -69,7 +69,6 @@ class TNavbar extends React.Component {
 
             default:
                 throw new RangeError( `Invalid switch parameter: ${state}`, 'TNavbar', 40 )
-                break
 
         }
 
@@ -97,7 +96,6 @@ class TNavbar extends React.Component {
 
             default:
                 throw new RangeError( `Invalid switch parameter: ${position}`, 'TNavbar', 70 )
-                break
 
         }
 
