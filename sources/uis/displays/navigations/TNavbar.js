@@ -56,7 +56,7 @@ class TNavbar extends React.Component {
         switch ( state ) {
 
             case 'fixed':
-                style[ 'position' ] = 'fixed'
+                _style[ 'position' ] = 'fixed'
                 break
 
             case 'toggle':
@@ -64,7 +64,7 @@ class TNavbar extends React.Component {
                 break
 
             case 'float':
-                style[ 'position' ] = 'absolute'
+                _style[ 'position' ] = 'absolute'
                 break
 
             default:
@@ -76,23 +76,23 @@ class TNavbar extends React.Component {
         switch ( position ) {
 
             case 'top':
-                style[ 'top' ]   = '0px'
-                style[ 'width' ] = '100%'
+                _style[ 'top' ]   = '0px'
+                _style[ 'width' ] = '100%'
                 break
 
             case 'right':
-                style[ 'right' ]  = '0px'
-                style[ 'height' ] = '100%'
+                _style[ 'right' ]  = '0px'
+                _style[ 'height' ] = '100%'
                 break
 
             case 'bottom':
-                style[ 'bottom' ] = '0px'
-                style[ 'width' ]  = '100%'
+                _style[ 'bottom' ] = '0px'
+                _style[ 'width' ]  = '100%'
                 break
 
             case 'left':
-                style[ 'left' ]   = '0px'
-                style[ 'height' ] = '100%'
+                _style[ 'left' ]   = '0px'
+                _style[ 'height' ] = '100%'
                 break
 
             default:
@@ -102,15 +102,10 @@ class TNavbar extends React.Component {
         }
 
         return (
-            <nav className={'tNavbar'} style={style}>
-                {properties.children}
-            </nav>
-        );
-
-//
-//        return (
-//            <t-navbar ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-navbar>
-//        )
+            <t-navbar id={_id} className={_class} style={_style}>
+                {children}
+            </t-navbar>
+        )
 
     }
 
