@@ -11,6 +11,17 @@
 /* eslint-env browser */
 
 import React from 'react'
+import {
+    WebGLRenderer,
+    Scene,
+    PerspectiveCamera,
+    Vector3,
+    AmbientLight,
+    BoxBufferGeometry,
+    MeshPhongMaterial,
+    Mesh,
+    GridHelper
+} from 'threejs-full-es6'
 
 let _instanceCounter = 0
 
