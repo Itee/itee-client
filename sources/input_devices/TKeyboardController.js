@@ -14,17 +14,7 @@
  *  See KeyboardState.k object data below for names of keys whose state can be polled
  */
 
-    // initialization
-KeyboardState = function() {
-    // bind keyEvents
-    document.addEventListener("keydown", KeyboardState.onKeyDown, false);
-    document.addEventListener("keyup", KeyboardState.onKeyUp, false);
-}
-
-///////////////////////////////////////////////////////////////////////////////
-
-KeyboardState.k =
-{
+const KEYS    = {
     8:   "backspace",
     9:   "tab",
     13:  "enter",
@@ -37,12 +27,39 @@ KeyboardState.k =
     34:  "pagedown",
     35:  "end",
     36:  "home",
-    37:  "left",
-    38:  "up",
-    39:  "right",
-    40:  "down",
+
+    LEFT_ARROW:   37,
+    UP_ARROW:     38,
+    RIGHT_ARROW:  39,
+    BOTTOM_ARROW: 40,
     45:  "insert",
     46:  "delete",
+    A:            65,
+    B:            66,
+    C:            67,
+    D:            68,
+    E:            69,
+    F:            70,
+    G:            71,
+    H:            72,
+    I:            73,
+    J:            74,
+    K:            75,
+    L:            76,
+    M:            77,
+    N:            78,
+    O:            79,
+    P:            80,
+    Q:            81,
+    R:            82,
+    S:            83,
+    T:            84,
+    U:            85,
+    V:            86,
+    W:            87,
+    X:            88,
+    Y:            89,
+    Z:            90,
     186: ";",
     187: "=",
     188: ",",
@@ -53,6 +70,20 @@ KeyboardState.k =
     220: "\\",
     221: "]",
     222: "'"
+}
+
+    // initialization
+KeyboardState = function() {
+    // bind keyEvents
+    document.addEventListener("keydown", KeyboardState.onKeyDown, false);
+    document.addEventListener("keyup", KeyboardState.onKeyUp, false);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+
+KeyboardState.k =
+{
+
 }
 
 KeyboardState.status = {};

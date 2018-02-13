@@ -203,9 +203,21 @@ function TApplication ( container, parameters, onReady ) {
             toolbar:  null,
             content:  null,
             viewport: {
-                type:    'webgl',
-                options: {
-                    effect: [ 'anaglyph', 'etc' ]
+                type:       'webgl',
+                parameters: {
+                    effect: [ 'anaglyph', 'etc' ],
+                    camera: {
+                        position: {
+                            x: 1.0,
+                            y: 2.0,
+                            z: 3.0
+                        },
+                        target:   {
+                            x: 0.0,
+                            y: 0.0,
+                            z: 0.0
+                        }
+                    }
                 }
             },
             tools:    null,
@@ -214,7 +226,7 @@ function TApplication ( container, parameters, onReady ) {
 
         _initToolBar.call( self, _parameters )
         _initContent.call( self, _parameters )
-        _initWebGLViewport.call( self, _parameters )
+        _initWebGLViewport.call( self, _parameters.viewport )
         _initTools.call( self, _parameters )
         _initModals.call( self, _parameters )
 
@@ -258,16 +270,18 @@ function TApplication ( container, parameters, onReady ) {
             this.detailBtn = $( "#detailBtn" )
             this.detailBtn.on( "click", event => {
 
-                const carlId = event.currentTarget.value.slice( 0, -4 ).toUpperCase()
-                getBoxDetail( carlId )
-                //                parent.postMessage( `GISDetailAction#-#${carlId};com.carl.xnet.equipment.backend.bean.BoxBean#+#`, '*' )
+                const carlId = event.currentTarget.value
+//                const carlId = event.currentTarget.value.slice( 0, -4 ).toUpperCase()
+//                getBoxDetail( carlId )
+                parent.postMessage( `GISDetailAction#-#${carlId};com.carl.xnet.equipment.backend.bean.BoxBean#+#`, '*' )
 
             } )
 
             this.createBtn = $( "#createBtn" )
             this.createBtn.on( "click", event => {
 
-                const carlId = event.currentTarget.value.slice( 0, -4 ).toUpperCase()
+                const carlId = event.currentTarget.value
+//                const carlId = event.currentTarget.value.slice( 0, -4 ).toUpperCase()
                 parent.postMessage( `CREATE_WO#-#${carlId};com.carl.xnet.equipment.backend.bean.BoxBean#+#`, '*' )
 
             } )
@@ -305,24 +319,24 @@ function TApplication ( container, parameters, onReady ) {
 
         function _initWebGLViewport ( parameters ) {
 
-            parameters = parameters || {}
+            const _parameters = parameters.parameters || {}
 
             this.webglViewportContainer = document.getElementById( 'webglViewportContainer' )
             this.webglViewport          = new TWebGLViewport( this.webglViewportContainer )
             this.webglViewportContainer.addEventListener( 'panelResize', this.webglViewport.updateSizes.bind( this.webglViewport ) )
             //        this.webglViewport.toggleAutorun()
 
-            var camera = parameters.camera
-            if ( camera ) {
+            const cameraParams = _parameters.camera
+            if ( cameraParams ) {
 
-                var cameraPosition = camera.position
+                const cameraPosition = cameraParams.position
                 if ( cameraPosition ) {
                     this.webglViewport.camera.position.set( cameraPosition.x, cameraPosition.y, cameraPosition.z )
                 }
 
-                var cameraTarget = camera.target
+                const cameraTarget = cameraParams.target
                 if ( cameraTarget ) {
-                    var target = new Vector3( cameraTarget.x, cameraTarget.y, cameraTarget.z )
+                    const target = new Vector3( cameraTarget.x, cameraTarget.y, cameraTarget.z )
                     this.webglViewport.camera.lookAt( target )
                     this.webglViewport.cameraControl.target = target
                 }
@@ -532,12 +546,13 @@ function TApplication ( container, parameters, onReady ) {
     function _initModelData ( parameters ) {
 
         const _parameters = parameters || {
-            companiesIds:       null,
-            sitesIds:           null,
-            buildingsIds:       null,
-            scenesIds:          null,
-            objectsIds:         null,
-            lookAtObjectWithId: null,
+            companiesIds:         null,
+            sitesIds:             null,
+            buildingsIds:         null,
+            scenesIds:            null,
+            objectsIds:           null,
+            lookAtObjectWithId:   null,
+            lookAtObjectWithName: null,
         }
 
         self.companiesManager  = new CompaniesManager()
@@ -548,410 +563,15 @@ function TApplication ( container, parameters, onReady ) {
         self.geometriesManager = new TGeometriesManager()
         self.materialsManager  = new TMaterialsManager()
 
-        _initCompanies( _parameters.companiesIds )
-        _initSitesOf( _parameters.sitesIds )
-        _initBuildingsOf( _parameters.buildingsIds, null, true )
-        _initScenesOf( _parameters.scenesIds, null, true )
-        _initObjectsOf( _parameters.objectsIds, null, true )
-
-        const lookAtObjectWithId = _parameters.lookAtObjectWithId
-        if ( lookAtObjectWithId ) {
-
-            self.objectsManager.read( lookAtObjectWithId, ( objects ) => {
-
-                // Create geometries and materials list
-                let geometriesIds = []
-                let materialsIds  = []
-
-                let object = undefined
-                for ( let objectIndex = 0, numberOfObjects = objects.length ; objectIndex < numberOfObjects ; objectIndex++ ) {
-                    object         = objects[ objectIndex ]
-                    object.visible = true
-
-                    if ( object.children.length > 0 ) {
-                        _initObjectsOf( object.children, object, visible )
-                        object.children = []
-                    }
-
-                    geometriesIds.push( object.geometry )
-                    Array.prototype.push.apply( materialsIds, object.material )
-                }
-
-                geometriesIds = uniq( geometriesIds )
-                materialsIds  = uniq( materialsIds )
-
-                self.geometriesManager.read( geometriesIds, ( geometries ) => {
-
-                    let object = undefined
-                    for ( let objectIndex = 0, numberOfObjects = objects.length ; objectIndex < numberOfObjects ; objectIndex++ ) {
-                        object          = objects[ objectIndex ]
-                        object.geometry = geometries[ object.geometry ]
-
-                        objectReady( object )
-                    }
-
-                } )
-
-                self.materialsManager.read( materialsIds, ( materials ) => {
-
-                    let object         = undefined
-                    let objectMaterial = undefined
-                    for ( let objectIndex = 0, numberOfObjects = objects.length ; objectIndex < numberOfObjects ; objectIndex++ ) {
-                        object = objects[ objectIndex ]
-
-                        objectMaterial = object.material
-                        if ( Array.isArray( objectMaterial ) ) {
-
-                            // Take care about the multi material order
-                            object.material = []
-                            let materialId  = undefined
-                            for ( let materialIndex = 0, numberOfMaterials = objectMaterial.length ; materialIndex < numberOfMaterials ; materialIndex++ ) {
-                                materialId = objectMaterial[ materialIndex ]
-
-                                object.material.push( materials[ materialId ] )
-                            }
-
-                        } else {
-
-                            object.material = materials[ object.material ]
-
-                        }
-
-                        objectReady( object )
-
-                    }
-
-                } )
-
-                function objectReady ( object ) {
-
-                    if ( typeof object.geometry !== 'string' && typeof object.material[ 0 ] !== 'string' ) {
-
-                        // Care trick here: parent will be override under scene.add so keep parent id before
-                        const parentId = object.parent
-
-                        // Update carl batiment button value
-                        // Care parent will not be the scene for ever !!!
-                        self.detailBtn.val( parentId )
-                        self.createBtn.val( parentId )
-
-                        object.parent = null
-
-                        self.webglViewport.scene.add( object )
-                        if ( object.type === 'Mesh' ) {
-                            self.webglViewport.addRaycastables( [ object ] )
-                        }
-
-                        // Object have no position from revit export so comput bounding sphere an get center !
-                        const objectPosition = object.position
-                        object.geometry.computeBoundingSphere()
-
-                        const boundingSphereRadius = object.geometry.boundingSphere.radius
-
-                        self.webglViewport.camera.position.x = objectPosition.x + boundingSphereRadius
-                        self.webglViewport.camera.position.y = objectPosition.y + boundingSphereRadius
-                        self.webglViewport.camera.position.z = objectPosition.z + boundingSphereRadius
-                        self.webglViewport.camera.updateProjectionMatrix()
-
-                        self.webglViewport.orbitControl.target.x = objectPosition.x
-                        self.webglViewport.orbitControl.target.y = objectPosition.y
-                        self.webglViewport.orbitControl.target.z = objectPosition.z
-                        self.webglViewport.orbitControl.update()
-
-                        _initScenesOf( parentId, null, true )
-
-                    }
-
-                }
-
-                function uniq ( a ) {
-                    var seen = {};
-                    return a.filter( function ( item ) {
-                        return seen.hasOwnProperty( item ) ? false : (seen[ item ] = true);
-                    } );
-                }
-
-            } )
-
-        }
-
-        function _initCompanies ( companiesIds ) {
-
-            if ( !companiesIds ) { return }
-
-            self.companiesManager.read( companiesIds, ( companies ) => {
-
-                var company = undefined
-                for ( var companyIndex = 0, numberOfCompanies = companies.length ; companyIndex < numberOfCompanies ; companyIndex++ ) {
-                    company = companies[ companyIndex ]
-                    _initSitesOf( company.sites )
-                }
-
-            } )
-
-        }
-
-        function _initSitesOf ( sitesIds ) {
-
-            if ( !sitesIds ) { return }
-
-            self.sitesManager.read( sitesIds, ( sites ) => {
-
-                var site = undefined
-                for ( var siteIndex = 0, numberOfSites = sites.length ; siteIndex < numberOfSites ; siteIndex++ ) {
-                    site = sites[ siteIndex ]
-
-                    var siteGroup      = new Group()
-                    siteGroup[ '_id' ] = site._id
-                    siteGroup.name     = site.name
-                    siteGroup.visible  = (siteIndex === 0)
-
-                    // These are the main group for the webgl view
-                    self.webglViewport.scene.add( siteGroup )
-                    self.webglViewport.addRaycastables( [ siteGroup ] )
-
-                    // Create new base tree item
-                    var objectTreeViewItem = self.insertTreeViewItem( siteGroup._id, siteGroup.name, null, siteGroup.visible )
-                    objectTreeViewItem.find( '#' + siteGroup._id + 'VisibilityCheckbox' ).on( 'change', function ( event ) {
-
-                        siteGroup.visible = this.checked
-
-                    } )
-
-                    _initBuildingsOf( site.buildings, siteGroup, siteGroup.visible )
-
-                }
-
-            } )
-
-        }
-
-        function _initBuildingsOf ( buildingsIds, site, visible ) {
-
-            if ( !buildingsIds ) { return }
-
-            self.buildingsManager.read( buildingsIds, ( buildings ) => {
-
-                let building = undefined
-                for ( let buildingIndex = 0, numberOfBuildings = buildings.length ; buildingIndex < numberOfBuildings ; buildingIndex++ ) {
-                    building = buildings[ buildingIndex ]
-
-                    if ( buildingIndex === 0 ) {
-                        // Update carl batiment button value
-                        self.detailBtn.val( buildingsIds )
-                        self.createBtn.val( buildingsIds )
-                    }
-
-                    var buildingGroup      = new Group()
-                    buildingGroup[ '_id' ] = building._id
-                    buildingGroup.name     = building.name
-                    buildingGroup.visible  = (visible && buildingIndex === 0 )
-
-                    var parentId = undefined
-                    if ( site ) {
-
-                        site.add( buildingGroup )
-                        parentId = site._id
-
-                    } else {
-
-                        self.webglViewport.scene.add( buildingGroup )
-                        self.webglViewport.addRaycastables( [ buildingGroup ] )
-
-                    }
-
-                    // Create new base tree item
-                    var objectTreeViewItem = self.insertTreeViewItem( buildingGroup._id, buildingGroup.name, parentId, buildingGroup.visible )
-                    objectTreeViewItem.find( `#${buildingGroup._id}VisibilityCheckbox` ).on( 'change', _toggleObjectVisibility( buildingGroup ) )
-
-                    _initScenesOf( building.scenes, buildingGroup, buildingGroup.visible )
-
-                }
-
-            } )
-
-        }
-
-        function _initScenesOf ( scenesIds, building, visible ) {
-
-            if ( !scenesIds ) { return }
-
-            self.scenesManager.read( scenesIds, ( scenes ) => {
-
-                let scene = undefined
-                for ( let sceneIndex = 0, numberOfScenes = scenes.length ; sceneIndex < numberOfScenes ; sceneIndex++ ) {
-                    scene = scenes[ sceneIndex ]
-
-                    const sceneGroup    = new Group()
-                    sceneGroup[ '_id' ] = scene._id
-                    sceneGroup.name     = scene.name
-                    sceneGroup.visible  = (visible && scene.layers === 1 )
-
-                    let parentId = undefined
-                    if ( building ) {
-
-                        building.add( sceneGroup )
-                        parentId = building._id
-
-                    } else {
-
-                        self.webglViewport.scene.add( sceneGroup )
-                        self.webglViewport.addRaycastables( [ sceneGroup ] )
-
-                    }
-
-                    // Create new base tree item
-                    const objectTreeViewItem = self.insertTreeViewItem( sceneGroup._id, sceneGroup.name, parentId, sceneGroup.visible )
-                    objectTreeViewItem.find( `#${sceneGroup._id}VisibilityCheckbox` ).on( 'change', _toggleObjectVisibility( sceneGroup ) )
-
-                    if ( scene.layers === 1 ) {
-
-                        _initObjectsOf( scene.children, sceneGroup, true )
-                        // set children visible by default due to non recursive visible settings
-                        //                    _initObjectsOf( scene.children, sceneGroup, sceneIsVisible )
-
-                    } else {
-
-                        sceneGroup[ 'childrenIds' ] = scene.children
-
-                    }
-
-                }
-
-            } )
-
-        }
-
-        function _initObjectsOf ( objectsIds, scene, visible ) {
-
-            if ( !objectsIds ) { return }
-
-            self.objectsManager.read( objectsIds, ( objects ) => {
-
-                // Create geometries and materials list
-                let geometriesIds = []
-                let materialsIds  = []
-
-                let object = undefined
-                for ( let objectIndex = 0, numberOfObjects = objects.length ; objectIndex < numberOfObjects ; objectIndex++ ) {
-                    object         = objects[ objectIndex ]
-                    object.visible = visible
-
-                    if ( object.children.length > 0 ) {
-                        _initObjectsOf( object.children, object, visible )
-                        object.children = []
-                    }
-
-                    geometriesIds.push( object.geometry )
-                    Array.prototype.push.apply( materialsIds, object.material )
-                }
-
-                geometriesIds = uniq( geometriesIds )
-                materialsIds  = uniq( materialsIds )
-
-                self.geometriesManager.read( geometriesIds, ( geometries ) => {
-
-                    let object = undefined
-                    for ( let objectIndex = 0, numberOfObjects = objects.length ; objectIndex < numberOfObjects ; objectIndex++ ) {
-                        object          = objects[ objectIndex ]
-                        object.geometry = geometries[ object.geometry ]
-
-                        objectReady( object )
-                    }
-
-                } )
-
-                self.materialsManager.read( materialsIds, ( materials ) => {
-
-                    let object         = undefined
-                    let objectMaterial = undefined
-                    for ( let objectIndex = 0, numberOfObjects = objects.length ; objectIndex < numberOfObjects ; objectIndex++ ) {
-                        object = objects[ objectIndex ]
-
-                        objectMaterial = object.material
-                        if ( Array.isArray( objectMaterial ) ) {
-
-                            // Take care about the multi material order
-                            object.material = []
-                            let materialId  = undefined
-                            for ( let materialIndex = 0, numberOfMaterials = objectMaterial.length ; materialIndex < numberOfMaterials ; materialIndex++ ) {
-                                materialId = objectMaterial[ materialIndex ]
-
-                                object.material.push( materials[ materialId ] )
-                            }
-
-                        } else {
-
-                            object.material = materials[ object.material ]
-
-                        }
-
-                        objectReady( object )
-
-                    }
-
-                } )
-
-                function objectReady ( object ) {
-
-                    if ( typeof object.geometry !== 'string' && typeof object.material[ 0 ] !== 'string' ) {
-                        // Fix undefined parent to null to avoid three error
-                        if ( object.parent === undefined || typeof object.parent === 'string' ) {
-                            object.parent = null
-                        }
-
-                        if ( scene ) {
-
-                            scene.add( object )
-
-                        } else {
-
-                            self.webglViewport.scene.add( object )
-                            self.webglViewport.addRaycastables( [ object ] )
-
-                        }
-
-                    }
-
-                }
-
-                function uniq ( a ) {
-                    var seen = {};
-                    return a.filter( function ( item ) {
-                        return seen.hasOwnProperty( item ) ? false : (seen[ item ] = true);
-                    } );
-                }
-
-            } )
-
-        }
-
-        function _toggleObjectVisibility ( object ) {
-
-            const _object = object
-
-            return function ( event ) {
-
-                _object.visible = this.checked
-
-                // if scene layers === 0
-                if ( _object.visible === true &&
-                    _object.type === 'Group' &&
-                    _object.childrenIds ) {
-
-                    const childrenIds = _object.childrenIds
-                    delete _object.childrenIds
-                    _initObjectsOf( childrenIds, _object, true )
-
-                }
-
-            }
-
-        }
+        this._initCompanies( _parameters.companiesIds )
+        this._initSitesOf( _parameters.sitesIds )
+        this._initBuildingsOf( _parameters.buildingsIds, null, true )
+        this._initScenesOf( _parameters.scenesIds, null, true )
+        this._initObjectsOf( _parameters.objectsIds, null, true )
 
     }
 
-    let _pointCloudReady = false
+    var _pointCloudReady = false
 
     function _initPointCloudData ( parameters ) {
 
@@ -1390,18 +1010,13 @@ function TApplication ( container, parameters, onReady ) {
 
     (() => {
 
-        _initGUI.call( self, _parameters.gui )
+        _initGUI.call( self, _parameters.view )
 
-        // Todo: initData.call( self, parameters.datas )
-        // model: {
-        //      database: {...ids},
-        //      files: [...urls]
-        // }
-
-        _initModelData.call( self, parameters.model )
-        _initPointCloudData.call( self, parameters.pointCloud )
-        _initAvatarData.call( self, parameters.avatarParams )
-        _initRemoteFiles.call( self, parameters.files )
+        _initModelData.call( self, _parameters.model )
+        _initPointCloudData.call( self, _parameters.pointCloud )
+//        _initAvatarData.call( self, _parameters.avatar )
+        _initRemoteFiles.call( self, _parameters.files )
+        _initURLQuery.call( self, _parameters.urlQuery )
 
         _initListener.call( self )
 
@@ -1811,7 +1426,8 @@ Object.assign( TApplication, {
 
     },
 
-    createParticularEmbranchmentGroup: function ( particularEmbranchments, color, generateSpritId, filters ) {
+    // 3d helper
+    createParticularEmbranchmentGroup ( particularEmbranchments, color, generateSpritId, filters ) {
 
         if ( !particularEmbranchments ) {
 
@@ -1919,7 +1535,7 @@ Object.assign( TApplication, {
 
     },
 
-    createNodesGroup: function ( nodes, color, generateSpritId, filters ) {
+    createNodesGroup ( nodes, color, generateSpritId, filters ) {
 
         if ( !nodes ) {
 
@@ -2005,7 +1621,7 @@ Object.assign( TApplication, {
 
     },
 
-    createSectionGroup: function ( sections, color, generateSpritId, filters ) {
+    createSectionGroup ( sections, color, generateSpritId, filters ) {
 
         if ( !sections ) {
 
@@ -2102,7 +1718,7 @@ Object.assign( TApplication, {
 
     },
 
-    createPathGroup: function ( pathFile, color, generateSpritId, filters ) {
+    createPathGroup ( pathFile, color, generateSpritId, filters ) {
 
         if ( !pathFile ) {
 
@@ -2192,7 +1808,7 @@ Object.assign( TApplication, {
 
     },
 
-    createSprite: function ( message, parameters ) {
+    createSprite ( message, parameters ) {
 
         var spriteSideLength = (parameters && parameters.spriteSideLength) ? parameters.spriteSideLength : 300;
         var fontFace         = (parameters && parameters.fontFace) ? parameters.fontFace : "Arial";
@@ -2228,7 +1844,7 @@ Object.assign( TApplication, {
 
     },
 
-    createFlowParticlesGroup: function ( splinePaths ) {
+    createFlowParticlesGroup ( splinePaths ) {
 
         if ( !splinePaths ) {
 
@@ -2289,7 +1905,7 @@ Object.assign( TApplication, {
 
     },
 
-    computeSplinePath: function ( meshGroup, debug ) {
+    computeSplinePath ( meshGroup, debug ) {
 
         if ( !meshGroup ) {
             console.error( "Unable to compute spline path with null or undefined linear meshes !!!" )
@@ -2344,9 +1960,293 @@ Object.assign( TApplication, {
  */
 Object.assign( TApplication.prototype, {
 
-    /**
-     * @memberOf TApplication.prototype
-     */
+    _initCompanies ( companiesIds ) {
+
+        if ( !companiesIds ) { return }
+
+        this.companiesManager.read( companiesIds, this._processCompanies.bind( this ) )
+
+    },
+
+    _processCompanies ( companies ) {
+
+        var company = undefined
+        for ( var companyIndex = 0, numberOfCompanies = companies.length ; companyIndex < numberOfCompanies ; companyIndex++ ) {
+            company = companies[ companyIndex ]
+            this._initSitesOf( company.sites )
+        }
+
+    },
+
+    _initSitesOf ( sitesIds ) {
+
+        if ( !sitesIds ) { return }
+
+        this.sitesManager.read( sitesIds, this._processSites.bind( this ) )
+
+    },
+
+    _processSites ( sites ) {
+
+        var site = undefined
+        for ( var siteIndex = 0, numberOfSites = sites.length ; siteIndex < numberOfSites ; siteIndex++ ) {
+            site = sites[ siteIndex ]
+
+            var siteGroup      = new Group()
+            siteGroup[ '_id' ] = site._id
+            siteGroup.name     = site.name
+            siteGroup.visible  = (siteIndex === 0)
+
+            // These are the main group for the webgl view
+            this.webglViewport.scene.add( siteGroup )
+            this.webglViewport.addRaycastables( [ siteGroup ] )
+
+            // Create new base tree item
+            const objectTreeViewItem = this.insertTreeViewItem( siteGroup._id, siteGroup.name, null, siteGroup.visible )
+            objectTreeViewItem.find( `#${siteGroup._id}VisibilityCheckbox` ).on( 'change', this._toggleObjectVisibility(siteGroup) )
+
+            this._initBuildingsOf( site.buildings, siteGroup, siteGroup.visible )
+
+        }
+
+    },
+
+    _initBuildingsOf ( buildingsIds, site, visible ) {
+
+        if ( !buildingsIds ) { return }
+
+        this.buildingsManager.read( buildingsIds, this._processBuildings.bind( this, site, visible, null ) )
+
+    },
+
+    _processBuildings ( site, visible, isReady, buildings, childrenToRemove ) {
+
+        let building = undefined
+        for ( let buildingIndex = 0, numberOfBuildings = buildings.length ; buildingIndex < numberOfBuildings ; buildingIndex++ ) {
+            building = buildings[ buildingIndex ]
+
+            if ( buildingIndex === 0 ) {
+                // Update carl batiment button value
+                this.detailBtn.val( building.gmaoId )
+                this.createBtn.val( building.gmaoId )
+            }
+
+            const buildingGroup    = new Group()
+            buildingGroup[ '_id' ] = building._id
+            buildingGroup.name     = building.name
+            buildingGroup.visible  = (visible && buildingIndex === 0 )
+
+            const scenesIds = building.scenes
+            if( childrenToRemove ) {
+                const index = scenesIds.indexOf(childrenToRemove)
+                scenesIds.splice(index, 1)
+            }
+
+            let parentId = undefined
+            if ( site ) {
+
+                site.add( buildingGroup )
+                parentId = site._id
+
+            } else {
+
+                this.webglViewport.scene.add( buildingGroup )
+                this.webglViewport.addRaycastables( [ buildingGroup ] )
+
+            }
+
+            // Create new base tree item
+            const objectTreeViewItem = this.insertTreeViewItem( buildingGroup._id, buildingGroup.name, parentId, buildingGroup.visible )
+            objectTreeViewItem.find( `#${buildingGroup._id}VisibilityCheckbox` ).on( 'change', this._toggleObjectVisibility( buildingGroup ) )
+
+            this._initScenesOf( scenesIds, buildingGroup, buildingGroup.visible )
+
+        }
+
+    },
+
+    _initScenesOf ( scenesIds, building, visible ) {
+
+        if ( !scenesIds ) { return }
+
+        this.scenesManager.read( scenesIds, this._processScenes.bind( this, building, visible ) )
+
+    },
+
+    _processScenes ( building, visible, scenes ) {
+
+        let scene = undefined
+        for ( let sceneIndex = 0, numberOfScenes = scenes.length ; sceneIndex < numberOfScenes ; sceneIndex++ ) {
+            scene = scenes[ sceneIndex ]
+
+            const sceneGroup    = new Group()
+            sceneGroup[ '_id' ] = scene._id
+            sceneGroup.name     = scene.name
+            sceneGroup.visible  = (visible && scene.layers === 1 )
+
+            let parentId = undefined
+            if ( building ) {
+
+                building.add( sceneGroup )
+                parentId = building._id
+
+            } else if ( scene.parent ){
+
+                this._processBuildings( undefined, true, null, scene.parent, sceneGroup._id )
+
+            } else {
+
+                this.webglViewport.scene.add( sceneGroup )
+                this.webglViewport.addRaycastables( [ sceneGroup ] )
+
+            }
+
+            // Create new base tree item
+            const objectTreeViewItem = this.insertTreeViewItem( sceneGroup._id, sceneGroup.name, parentId, sceneGroup.visible )
+            objectTreeViewItem.find( `#${sceneGroup._id}VisibilityCheckbox` ).on( 'change', this._toggleObjectVisibility( sceneGroup ) )
+
+            if ( scene.layers === 1 ) {
+
+                this._initObjectsOf( scene.children, sceneGroup, true )
+                // set children visible by default due to non recursive visible settings
+                //                    _initObjectsOf( scene.children, sceneGroup, sceneIsVisible )
+
+            } else {
+
+                sceneGroup[ 'childrenIds' ] = scene.children
+
+            }
+
+        }
+
+    },
+
+    _initObjectsOf ( objectsIds, scene, visible ) {
+
+        if ( !objectsIds ) { return }
+
+        this.objectsManager.read( objectsIds, this._processObjects.bind( this, scene, visible, isReady ) )
+
+        function isReady ( object ) {
+
+            if ( typeof object.geometry !== 'string' && typeof object.material[ 0 ] !== 'string' ) {
+                // Fix undefined parent to null to avoid three error
+                if ( object.parent === undefined || typeof object.parent === 'string' ) {
+                    object.parent = null
+                }
+
+                if ( scene ) {
+
+                    scene.add( object )
+
+                } else {
+
+                    this.webglViewport.scene.add( object )
+                    this.webglViewport.addRaycastables( [ object ] )
+
+                }
+
+            }
+
+        }
+
+    },
+
+    _processObjects ( scene, visible, isReady, objects ) {
+
+        // Create geometries and materials list
+        let geometriesIds = []
+        let materialsIds  = []
+
+        let object = undefined
+        for ( let objectIndex = 0, numberOfObjects = objects.length ; objectIndex < numberOfObjects ; objectIndex++ ) {
+            object         = objects[ objectIndex ]
+            object.visible = visible
+
+            if ( object.children.length > 0 ) {
+                this._initObjectsOf( object.children, object, visible )
+                object.children = []
+            }
+
+            geometriesIds.push( object.geometry )
+            Array.prototype.push.apply( materialsIds, object.material )
+        }
+
+        geometriesIds = uniq( geometriesIds )
+        materialsIds  = uniq( materialsIds )
+
+        this.geometriesManager.read( geometriesIds, this._processGeometries.bind(this, objects, isReady.bind(this)) )
+        this.materialsManager.read( materialsIds, this._processMaterials.bind(this, objects, isReady.bind(this)) )
+
+    },
+
+    _processGeometries( objects, isReady, geometries ) {
+
+        let object = undefined
+        for ( let objectIndex = 0, numberOfObjects = objects.length ; objectIndex < numberOfObjects ; objectIndex++ ) {
+            object          = objects[ objectIndex ]
+            object.geometry = geometries[ object.geometry ]
+
+            isReady( object )
+        }
+
+    },
+
+    _processMaterials( objects, isReady, materials ) {
+
+        let object         = undefined
+        let objectMaterial = undefined
+        for ( let objectIndex = 0, numberOfObjects = objects.length ; objectIndex < numberOfObjects ; objectIndex++ ) {
+            object = objects[ objectIndex ]
+
+            objectMaterial = object.material
+            if ( Array.isArray( objectMaterial ) ) {
+
+                // Take care about the multi material order
+                object.material = []
+                let materialId  = undefined
+                for ( let materialIndex = 0, numberOfMaterials = objectMaterial.length ; materialIndex < numberOfMaterials ; materialIndex++ ) {
+                    materialId = objectMaterial[ materialIndex ]
+
+                    object.material.push( materials[ materialId ] )
+                }
+
+            } else {
+
+                object.material = materials[ object.material ]
+
+            }
+
+            isReady( object )
+
+        }
+
+    },
+
+    _toggleObjectVisibility ( object ) {
+
+        const _object = object
+        const self = this
+
+        return function toggleVisibilityEventHandler ( event ) {
+
+            _object.visible = this.checked
+
+            // if scene layers === 0
+            if ( _object.visible === true &&
+                _object.type === 'Group' &&
+                _object.childrenIds ) {
+
+                const childrenIds = _object.childrenIds
+                delete _object.childrenIds
+                self._initObjectsOf( childrenIds, _object, true )
+
+            }
+
+        }
+
+    },
+
     initRequest () {
 
         var request = new XMLHttpRequest();
@@ -3183,7 +3083,19 @@ Object.assign( TApplication.prototype, {
         var ul = document.createElement( 'ul' )
         processDataObject( userData, ul )
 
-        const carlId = userData.id.slice( 0, -4 ).toUpperCase()
+        //        $( '#selectedObjectContent' )
+        //            .empty()
+        //            .append( ul )
+        //            .append( aDetail )
+
+        let carlId = undefined
+        if ( userData.gmaoId ) {
+            carlId = userData.gmaoId.toUpperCase()
+        } else if ( userData.id ) {
+            carlId = userData.id.slice( 0, -4 ).toUpperCase()
+        } else {
+            carlId = selectedObject.name
+        }
 
         var modalHeader       = document.getElementById( 'selectedObjectHeader' )
         modalHeader.innerHTML = ""
@@ -3263,15 +3175,6 @@ Object.assign( TApplication.prototype, {
 
             }
             buttonsContainer.appendChild( editButton )
-
-            var historyButton     = createButton( carlId, 'history', 'Historique d\'intervention' )
-            historyButton.onclick = ( event ) => {
-
-                var carlId = event.currentTarget.value
-                parent.postMessage( `WOViewAction#-#${carlId};com.carl.xnet.equipment.backend.bean.MaterialBean#+#`, '*' )
-
-            }
-            buttonsContainer.appendChild( historyButton )
 
             var createInterButton     = createButton( carlId, 'flash', 'Création d\'intervention' )
             createInterButton.onclick = ( event ) => {
