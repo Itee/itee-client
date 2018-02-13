@@ -45,14 +45,13 @@ class TMenuItem extends React.Component {
         const { id, className, icon, label, target, tooltip, clickHandler } = this.props
 
         const _id    = id || `tMenuItem_${_instanceCounter}`
-        const _style = {}
         const _class = ( className ) ? `tMenuItem ${className}` : 'tMenuItem'
 
-        const menuItemStyle = {
+        const _style = {
             float: 'left'
         }
 
-        const linkStyle = {
+        const _linkStyle = {
             display:        'block',
             color:          'white',
             fontSize:       '1.6em',
@@ -64,8 +63,8 @@ class TMenuItem extends React.Component {
         if ( icon ) {
 
             return (
-                <li className={'tMenuItem'} style={menuItemStyle}>
-                    <a id={id} style={linkStyle} href={target} title={tooltip} onClick={clickHandler}>
+                <li id={_id} className={_class} style={_style}>
+                    <a style={_linkStyle} href={target} title={tooltip} onClick={clickHandler}>
                         <i className={icon}></i>
                         {label}
                     </a>
@@ -75,8 +74,8 @@ class TMenuItem extends React.Component {
         } else {
 
             return (
-                <li className={'tMenuItem'} style={menuItemStyle}>
-                    <a id={id} style={linkStyle} href={target} title={tooltip} onClick={clickHandler}>{label}</a>
+                <li id={_id} className={_class} style={_style}>
+                    <a style={_linkStyle} href={target} title={tooltip} onClick={clickHandler}>{label}</a>
                 </li>
             )
 
