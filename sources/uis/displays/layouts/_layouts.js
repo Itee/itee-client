@@ -6,6 +6,8 @@
  *
  */
 
+/* eslint-env browser */
+
 export { TCentererLayout } from './TCentererLayout'
 export { TGridLayout } from './TGridLayout'
 export { THorizontalLayout } from './THorizontalLayout'

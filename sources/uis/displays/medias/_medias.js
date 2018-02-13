@@ -6,6 +6,8 @@
  *
  */
 
+/* eslint-env browser */
+
 export { TAudio } from './TAudio'
 export { TCarousel } from './TCarousel'
 export { TImage } from './TImage'

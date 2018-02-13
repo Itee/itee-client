@@ -1,9 +1,10 @@
 /**
  * Created by Tristan on 08/09/2015.
  *
-
  * NODIX.fn contain all static functions as a library
  */
+
+/* eslint-env browser */
 
 import { isNumber } from "TNumberValidator"
 

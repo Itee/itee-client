@@ -9,7 +9,6 @@
  */
 
 /* eslint-env browser */
-/* eslint no-unused-vars: warn */
 /* global $ */
 
 import {

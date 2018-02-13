@@ -8,6 +8,8 @@
  *
  */
 
+/* eslint-env browser */
+
 import React from 'react'
 
 import { TDropDownMenu } from '../../displays/navigations/TDropDownMenu'

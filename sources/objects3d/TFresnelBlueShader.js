@@ -4,6 +4,8 @@
  * Based on Nvidia Cg tutorial
  */
 
+/* eslint-env browser */
+
 THREE.FresnelBlueShader = {
 
     uniforms: {

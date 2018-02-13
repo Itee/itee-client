@@ -8,7 +8,9 @@
  *
  */
 
-import { isObject } from '../validators/TValidator'
+/* eslint-env browser */
+
+import { isObject } from '../validators/TObjectValidator'
 
 export function extend ( target, source ) {
 

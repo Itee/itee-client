@@ -6,6 +6,8 @@
  *
  */
 
+/* eslint-env browser */
+
 export { ASCLoader } from './ASCLoader';
 export { BinaryReader } from './BinaryReader';
 export {

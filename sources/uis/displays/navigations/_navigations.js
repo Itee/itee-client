@@ -6,6 +6,8 @@
  *
  */
 
+/* eslint-env browser */
+
 export { TAffix } from './TAffix'
 export { TAnchor } from './TAnchor'
 export { TBackToTop } from './TBackToTop'

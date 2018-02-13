@@ -8,6 +8,8 @@
  *
  */
 
+/* eslint-env browser */
+
 /**
  * Set the first char to upper case like a classname
  * @param word

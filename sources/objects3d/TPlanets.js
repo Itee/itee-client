@@ -4,7 +4,7 @@
 *
 * */
 
-
+/* eslint-env browser */
 
 var THREEx = THREEx || {}
 

@@ -3,6 +3,8 @@
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  */
 
+/* eslint-env browser */
+
 import { TOrchestrator } from '../../cores/TOrchestrator'
 import {
     Geometry,

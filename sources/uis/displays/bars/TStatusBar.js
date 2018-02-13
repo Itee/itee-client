@@ -13,6 +13,8 @@
  *
  */
 
+/* eslint-env browser */
+
 import React from 'react'
 
 class TStatusBar extends React.Component {

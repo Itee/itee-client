@@ -7,6 +7,9 @@
  * @example Todo
  *
  */
+
+/* eslint-env browser */
+
 const FileFormat = Object.freeze( {
     Asc:  'asc',
     Dbf:  'dbf',

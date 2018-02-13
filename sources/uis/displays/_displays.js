@@ -6,6 +6,8 @@
  *
  */
 
+/* eslint-env browser */
+
 export * from './bars/_bars'
 export * from './bases/_bases'
 export * from './collections/_collections'

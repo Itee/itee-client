@@ -10,6 +10,8 @@
  *
  */
 
+/* eslint-env browser */
+
 import { DefaultLogger } from '../Loggers/TLogger'
 import {
     DefaultLoadingManager,

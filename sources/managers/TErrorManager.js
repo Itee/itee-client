@@ -8,6 +8,7 @@
  *
  */
 
+/* eslint-env browser */
 
 function TErrorManager () {
 

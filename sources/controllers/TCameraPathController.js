@@ -2,6 +2,8 @@
  * Created by Tristan on 31/01/2017.
  */
 
+/* eslint-env browser */
+
 import {
     MOUSE,
     Quaternion,

@@ -1,3 +1,5 @@
+/* eslint-env browser */
+
 // This THREEx helper makes it easy to handle the fullscreen API
 // * it hides the prefix for each browser
 // * it hides the little discrepencies of the various vendor API

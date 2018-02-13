@@ -2,6 +2,8 @@
  * Created by Tristan on 13/04/2015.
  */
 
+/* eslint-env browser */
+
     // Create a closure with required dependency a.k.a jQuery
 (function( $ ) {
     'use strict';

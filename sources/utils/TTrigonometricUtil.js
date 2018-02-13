@@ -1,3 +1,5 @@
+/* eslint-env browser */
+
 /**
  * TRIGONOMETRIC CIRCLE CONCEPT WITH INTEGRATED TIMER
  *

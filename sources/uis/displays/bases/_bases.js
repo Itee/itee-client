@@ -6,6 +6,8 @@
  *
  */
 
+/* eslint-env browser */
+
 export { TAvatar } from './TAvatar'
 export { TBadge } from './TBadge'
 export { TCalendar } from './TCalendar'

@@ -1,3 +1,5 @@
+/* eslint-env browser */
+
 var dockspawn = { version: "0.0.2" };
 
 /**

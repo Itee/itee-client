@@ -6,6 +6,8 @@
  *
  */
 
+/* eslint-env browser */
+
 export * from './TConstants'
 export { extend } from '../utils/TUtils'
 export { isObject } from '../validators/TValidator'

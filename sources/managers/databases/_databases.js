@@ -6,6 +6,8 @@
  *
  */
 
+/* eslint-env browser */
+
 //export { MeshManager } from './MeshManager' // Todo: Remove when merged in TObjectsManager
 
 export { TGeometriesManager } from './TGeometriesManager'

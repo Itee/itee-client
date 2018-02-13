@@ -15,6 +15,8 @@
  *
  */
 
+/* eslint-env browser */
+
 import {
     HttpVerb,
     ResponseType,

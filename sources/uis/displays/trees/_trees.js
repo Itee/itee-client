@@ -6,5 +6,7 @@
  *
  */
 
+/* eslint-env browser */
+
 export { TTree } from './TTree'
 export { TTreeItem } from './TTreeItem'

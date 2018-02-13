@@ -11,6 +11,8 @@
  *
  */
 
+/* eslint-env browser */
+
 import { TDataBaseManager } from '../TDataBaseManager'
 
 /**

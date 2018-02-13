@@ -6,6 +6,8 @@
  *
  */
 
+/* eslint-env browser */
+
 export { TButton } from './TButton'
 export { TButtonGroup } from './TButtonGroup'
 export { TLogingButton } from './TLoginButton'

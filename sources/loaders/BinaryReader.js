@@ -8,6 +8,7 @@
  *
  */
 
+/* eslint-env browser */
 
 const Endianness = Object.freeze( {
     Little: true,

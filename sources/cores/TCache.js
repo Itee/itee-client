@@ -11,6 +11,8 @@
  * console.log( cache.get('foo') ) // 'bar'
  */
 
+/* eslint-env browser */
+
 /**
  * @class Super class cache!
  */

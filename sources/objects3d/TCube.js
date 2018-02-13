@@ -2,6 +2,8 @@
  * Created by Tristan on 19/09/2015.
  */
 
+/* eslint-env browser */
+
 (function( $ ) {
     'use strict';
 

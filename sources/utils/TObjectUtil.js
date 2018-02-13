@@ -8,6 +8,8 @@
  *
  */
 
+/* eslint-env browser */
+
 /**
  * Remove old inheritance stuff due to es6 class !
  */

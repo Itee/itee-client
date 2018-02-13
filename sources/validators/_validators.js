@@ -8,3 +8,4 @@
  *
  */
 
+/* eslint-env browser */

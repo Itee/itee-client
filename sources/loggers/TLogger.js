@@ -8,6 +8,8 @@
  *
  */
 
+/* eslint-env browser */
+
 function TLogger () {}
 
 Object.assign( TLogger.prototype, {

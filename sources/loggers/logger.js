@@ -2,6 +2,8 @@
  * Created by tvalcke on 17/06/2015.
  */
 
+/* eslint-env browser */
+
 import jQuery from "jquery";
 import Toaster from "toastr";
 import {DEBUG_LEVEL} from "../../constants";

@@ -8,6 +8,8 @@
  *
  */
 
+/* eslint-env browser */
+
 import { isNotEmpty } from '../validators/TEmptinessValidator'
 import { isNumber } from '../validators/TNumberValidator'
 import { isNotTemperature } from '../validators/TTemperatureValidator'

@@ -2,6 +2,8 @@
  * Created by Tristan on 17/08/2015.
  */
 
+/* eslint-env browser */
+
 import { isNotNull } from 'TNullityValidator'
 import {
     isEmpty,

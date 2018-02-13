@@ -6,6 +6,8 @@
  *
  */
 
+/* eslint-env browser */
+
 export { TContent } from './TContent'
 export { TFooter } from './TFooter'
 export { THeader } from './THeader'

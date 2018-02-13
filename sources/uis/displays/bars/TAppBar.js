@@ -16,6 +16,8 @@
  *
  */
 
+/* eslint-env browser */
+
 import React from 'react'
 
 class TAppBar extends React.Component {

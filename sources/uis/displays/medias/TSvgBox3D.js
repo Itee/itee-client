@@ -1,3 +1,5 @@
+/* eslint-env browser */
+
 /**
  * Created by Tristan on 20/08/2015.
  */

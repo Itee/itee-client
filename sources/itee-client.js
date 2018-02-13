@@ -6,6 +6,8 @@
  *
  */
 
+/* eslint-env browser */
+
 // Import browser fix
 import './third_party/polyfills.js'
 

@@ -6,6 +6,8 @@
  *
  */
 
+/* eslint-env browser */
+
 export * from './displays/_displays'
 export * from './inputs/_inputs'
 export * from './interactives/_interactives'

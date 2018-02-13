@@ -6,6 +6,8 @@
  *
  */
 
+/* eslint-env browser */
+
 export { TErrorPop } from './TErrorPop'
 export { TInfoPop } from './TInfoPop'
 export { TMessagePop } from './TMessagePop'

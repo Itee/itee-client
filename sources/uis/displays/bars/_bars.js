@@ -6,6 +6,8 @@
  *
  */
 
+/* eslint-env browser */
+
 export { TAppBar } from './TAppBar'
 export { TStatusBar } from './TStatusBar'
 export { TTitleBar } from './TTitleBar'

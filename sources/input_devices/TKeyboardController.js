@@ -14,6 +14,8 @@
  *  See KeyboardState.k object data below for names of keys whose state can be polled
  */
 
+/* eslint-env browser */
+
 const KEYS    = {
     8:   "backspace",
     9:   "tab",

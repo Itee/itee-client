@@ -8,6 +8,8 @@
  *
  */
 
+/* eslint-env browser */
+
 import {
     VertexColors,
     LineSegments,
