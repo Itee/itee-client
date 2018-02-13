@@ -12,7 +12,7 @@
 /**
  * Returns a random number between min (inclusive) and max (exclusive)
  */
-export function getRandomArbitrary( min = 0, max = 1 ) {
+export function getRandomArbitrary ( min = 0, max = 1 ) {
     return Math.random() * (max - min) + min
 }
 
@@ -20,20 +20,23 @@ export function getRandomArbitrary( min = 0, max = 1 ) {
  * Returns a random integer between min (inclusive) and max (inclusive)
  * Using Math.round() will give you a non-uniform distribution!
  */
-export function getRandomInt( min = 0, max = 1 ) {
-    return (Math.floor(Math.random() * (max - min + 1)) + min)
+export function getRandomInt ( min = 0, max = 1 ) {
+    return (Math.floor( Math.random() * (max - min + 1) ) + min)
 }
 
 // TRIGO
-const PI         = Math.PI
-const DEG_TO_RAD = (PI / 180)
-const RAD_TO_DEG = (180 / PI)
+export const PI   = Math.PI
+export const PI_2 = Math.PI / 2
+export const PI_4 = Math.PI / 4
+
+export const DEG_TO_RAD = (PI / 180)
+export const RAD_TO_DEG = (180 / PI)
 
 export function degreesToRadians ( degrees ) {
     return degrees * DEG_TO_RAD
 }
 
-export function degreesFromRadians( radians ) {
+export function degreesFromRadians ( radians ) {
     return radians * RAD_TO_DEG
 }
 
@@ -41,7 +44,7 @@ export function radiansToDegrees ( radians ) {
     return radians * RAD_TO_DEG
 }
 
-export function radiansFromDegrees( degrees ) {
+export function radiansFromDegrees ( degrees ) {
     return degrees * DEG_TO_RAD
 }
 
