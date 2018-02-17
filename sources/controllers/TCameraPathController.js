@@ -10,7 +10,7 @@ import {
     Vector3,
     EventDispatcher
 } from 'threejs-full-es6'
-
+import { TLogger } from '../loggers/TLogger'
 import { PI_2 } from '../maths/TMath'
 
 var STATE   = {
@@ -25,7 +25,7 @@ var yVector = new Vector3( 0, 1, 0 )
 function TCameraPathController ( camera, domElement ) {
 
     if ( !camera ) {
-        console.error( "Unable to create TCameraPathController with null or undefined camera !" )
+        TLogger.error( "Unable to create TCameraPathController with null or undefined camera !" )
         return
     }
 
@@ -99,7 +99,7 @@ function TCameraPathController ( camera, domElement ) {
         self.currentPathPosition += self.cameraJump
         if ( self.currentPathPosition > 1 ) {
 
-            console.log( 'reachEnd' )
+            TLogger.log( 'reachEnd' )
             var indexOfNextPath           = self.pathsMap.get( self.currentPathIndex ).indexOfNextPath
             var indexOfNextPathOfNextPath = self.pathsMap.get( indexOfNextPath ).indexOfNextPath
 
@@ -126,7 +126,7 @@ function TCameraPathController ( camera, domElement ) {
         self.currentPathPosition -= self.cameraJump
         if ( self.currentPathPosition < 0 ) {
 
-            console.log( 'reachStart' )
+            TLogger.log( 'reachStart' )
             var indexOfPreviousPath               = self.pathsMap.get( self.currentPathIndex ).indexOfPreviousPath
             var indexOfPreviousPathOfPreviousPath = self.pathsMap.get( indexOfPreviousPath ).indexOfPreviousPath
 
@@ -150,7 +150,7 @@ function TCameraPathController ( camera, domElement ) {
 
     function rotate ( event ) {
 
-        //console.log( 'handleMouseMoveRotate' )
+        //TLogger.log( 'handleMouseMoveRotate' )
 
         var movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0
         var movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0
@@ -208,7 +208,7 @@ function TCameraPathController ( camera, domElement ) {
 
         } else {
 
-            console.warn( "The key event is not implemented for key code: " + event.keyCode )
+            TLogger.warn( "The key event is not implemented for key code: " + event.keyCode )
 
         }
 
@@ -443,7 +443,7 @@ Object.assign( TCameraPathController.prototype, EventDispatcher.prototype, {
 
         }
 
-        //        console.log( this.pathsMap )
+        //        TLogger.log( this.pathsMap )
 
         this.setPath( pathToFollow )
 
