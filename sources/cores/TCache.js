@@ -8,7 +8,7 @@
  * @example
  * var cache = new TCache()
  * cache.add( 'foo', 'bar' )
- * console.log( cache.get('foo') ) // 'bar'
+ * TLogger.log( cache.get('foo') ) // 'bar'
  */
 
 /* eslint-env browser */
