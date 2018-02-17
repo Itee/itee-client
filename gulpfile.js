@@ -38,12 +38,10 @@ const gulpif   = require( 'gulp-if' )
 const less     = require( 'gulp-less' )
 const scss     = require( 'gulp-scss' )
 const cleanCss = require( 'gulp-clean-css' )
-const rename   = require( 'gulp-rename' )
 const concat   = require( 'gulp-concat' )
 const del      = require( 'del' )
 const rollup   = require( 'rollup' )
 
-const env     = util.env
 const log     = util.log
 const colors  = util.colors
 const red     = colors.red
@@ -116,7 +114,6 @@ gulp.task( 'lint', () => {
     // Todo: split between source and test with differents env
     const filesToLint = [
         'gulpfile.js',
-        'configs/**/*.js',
         'scripts/**/*.js',
         'sources/**/*',
         'tests/**/*.js'
