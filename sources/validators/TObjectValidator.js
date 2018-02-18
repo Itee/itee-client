@@ -10,12 +10,12 @@
 
 /* eslint-env browser */
 
-import { isNotNull } from 'TNullityValidator'
+import { isNotNull } from './TNullityValidator'
 import {
     isEmpty,
     isNotEmpty
-} from "TEmptinessValidator"
-import { isNotArray } from "TArrayValidator"
+} from './TEmptinessValidator'
+import { isNotArray } from  './TArrayValidator'
 
 //     ___  _     _           _
 //    / _ \| |__ (_) ___  ___| |_ ___
