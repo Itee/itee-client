@@ -13,23 +13,23 @@
 const Endianness = Object.freeze( {
     Little: true,
     Big:    false
-} );
+} )
 
 const Byte = Object.freeze( {
     One:    1,
     Two:    2,
     Four:   4,
     Height: 8
-} );
+} )
 
 function BinaryReader ( buffer, offset, length, endianness ) {
 
-    this._buffer     = buffer || new ArrayBuffer( 0 );
-    this._offset     = offset || 0;
-    this._length     = length || (buffer) ? buffer.byteLength : 0;
-    this._endianness = !!endianness || Endianness.Little;
+    this._buffer     = buffer || new ArrayBuffer( 0 )
+    this._offset     = offset || 0
+    this._length     = length || (buffer) ? buffer.byteLength : 0
+    this._endianness = !!endianness || Endianness.Little
 
-    this._updateDataView();
+    this._updateDataView()
 
 }
 
@@ -37,9 +37,9 @@ Object.assign( BinaryReader.prototype, {
 
     _getAndUpdateOffsetBy ( increment ) {
 
-        const currentOffset = this._offset;
-        this._offset += increment;
-        return currentOffset;
+        const currentOffset = this._offset
+        this._offset += increment
+        return currentOffset
 
     },
 
@@ -56,42 +56,42 @@ Object.assign( BinaryReader.prototype, {
     },
 
     getOffset () {
-        return this._offset;
+        return this._offset
     },
 
     skipOffsetTo ( offset ) {
 
-        this._offset = offset;
+        this._offset = offset
 
-        return this;
+        return this
 
     },
 
     skipOffsetOf ( nBytes ) {
 
-        this._offset += nBytes;
+        this._offset += nBytes
 
-        return this;
+        return this
 
     },
 
     setBuffer ( buffer, offset, length ) {
 
-        this._buffer = buffer;
-        this._offset = offset || 0;
-        this._length = length || buffer.byteLength;
+        this._buffer = buffer
+        this._offset = offset || 0
+        this._length = length || buffer.byteLength
 
-        this._updateDataView();
+        this._updateDataView()
 
-        return this;
+        return this
 
     },
 
     setEndianess ( endianess ) {
 
-        this._endianness = endianess;
+        this._endianness = endianess
 
-        return this;
+        return this
 
     },
 
@@ -101,55 +101,55 @@ Object.assign( BinaryReader.prototype, {
      */
     getInt8 () {
 
-        return this._dataView.getInt8( this._getAndUpdateOffsetBy( Byte.One ) );
+        return this._dataView.getInt8( this._getAndUpdateOffsetBy( Byte.One ) )
 
     },
 
     getUInt8 () {
 
-        return this._dataView.getUint8( this._getAndUpdateOffsetBy( Byte.One ) );
+        return this._dataView.getUint8( this._getAndUpdateOffsetBy( Byte.One ) )
 
     },
 
     getInt16 () {
 
-        return this._dataView.getInt16( this._getAndUpdateOffsetBy( Byte.Two ), this._endianness );
+        return this._dataView.getInt16( this._getAndUpdateOffsetBy( Byte.Two ), this._endianness )
 
     },
 
     getUInt16 () {
 
-        return this._dataView.getUint16( this._getAndUpdateOffsetBy( Byte.Two ), this._endianness );
+        return this._dataView.getUint16( this._getAndUpdateOffsetBy( Byte.Two ), this._endianness )
 
     },
 
     getInt32 () {
 
-        return this._dataView.getInt32( this._getAndUpdateOffsetBy( Byte.Four ), this._endianness );
+        return this._dataView.getInt32( this._getAndUpdateOffsetBy( Byte.Four ), this._endianness )
 
     },
 
     getUInt32 () {
 
-        return this._dataView.getUint32( this._getAndUpdateOffsetBy( Byte.Four ), this._endianness );
+        return this._dataView.getUint32( this._getAndUpdateOffsetBy( Byte.Four ), this._endianness )
 
     },
 
     getFloat () {
 
-        return this._dataView.getFloat32( this._getAndUpdateOffsetBy( Byte.Four ), this._endianness );
+        return this._dataView.getFloat32( this._getAndUpdateOffsetBy( Byte.Four ), this._endianness )
 
     },
 
     getDouble () {
 
-        return this._dataView.getFloat64( this._getAndUpdateOffsetBy( Byte.Height ), this._endianness );
+        return this._dataView.getFloat64( this._getAndUpdateOffsetBy( Byte.Height ), this._endianness )
 
     },
 
     getChar () {
 
-        return String.fromCharCode( this._dataView.getInt8( this._getAndUpdateOffsetBy( Byte.One ) ) );
+        return String.fromCharCode( this._dataView.getInt8( this._getAndUpdateOffsetBy( Byte.One ) ) )
 
     },
 
@@ -159,13 +159,13 @@ Object.assign( BinaryReader.prototype, {
         let charCode = undefined
 
         for ( let i = 0 ; i < length ; i++ ) {
-            charCode = this.getUInt8();
+            charCode = this.getUInt8()
 
             if ( charCode === 0 ) {
                 continue
             }
 
-            string += String.fromCharCode( charCode );
+            string += String.fromCharCode( charCode )
         }
 
         if ( trim ) {
@@ -176,7 +176,7 @@ Object.assign( BinaryReader.prototype, {
 
     }
 
-} );
+} )
 
 export {
     BinaryReader,
