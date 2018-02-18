@@ -108,7 +108,7 @@ Object.assign( DBFLoader.prototype, {
 
         const version = this.reader.getInt8();
         if ( !this._isValidVersion( version ) ) {
-            console.error( `DBFLoader: Invalid version number: ${version}` );
+            TLogger.error( `DBFLoader: Invalid version number: ${version}` );
             return null;
         }
 
@@ -168,7 +168,7 @@ Object.assign( DBFLoader.prototype, {
 
         // Check terminator
         if ( this.reader.getUInt8() !== DBFLoader.Terminator ) {
-            console.error( 'DBFLoader: Invalid terminator after field descriptors !!!' );
+            TLogger.error( 'DBFLoader: Invalid terminator after field descriptors !!!' );
         }
 
         return header;
