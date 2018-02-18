@@ -95,43 +95,9 @@ function TApplication ( container, parameters, onReady ) {
 
     const self      = this;
     let _parameters = {
-        gui: {
-            orientation: 'vertical',
-            limit:       100,
-            position:    '50%' // if there is no percentage it interpret it as pixels
-        },
-
-        webGLEnable: true,
-        webGL:       {
-
-            camera: null,
-
-            modelEnable: true,
-            model:       {
-                files:             [],
-                textureResolution: '',
-                allowGround:       true
-            },
-
-            tigerEnable: false,
-            tiger:       {},
-
-            caimanEnable: false,
-            caiman:       {},
-
-            cloudPointEnable: false,
-            cloudPoint:       {},
-
-            pathEnable: false,
-            path:       {},
-
-            shotsEnable: false,
-            shots:       {},
-
-            avatarEnable: false,
-            avatarParams: {}
-
-        }
+        view:       undefined,
+        model:      undefined,
+        urlQuery:   undefined
     }
 
     // Recursive merging parameter
