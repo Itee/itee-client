@@ -77,7 +77,7 @@ const KEYS = {
 }
 
 // initialization
-KeyboardState = function () {
+function KeyboardState() {
     // bind keyEvents
     document.addEventListener( "keydown", KeyboardState.onKeyDown, false );
     document.addEventListener( "keyup", KeyboardState.onKeyUp, false );
