@@ -19,6 +19,8 @@ import {
     Group
 } from 'threejs-full-es6'
 
+import { TLogger } from '../../loggers/TLogger'
+
 /**
  *
  * @param viewport
@@ -51,19 +53,19 @@ Object.assign( TPointsManager, {} );
 
 Object.assign( TPointsManager.prototype, {
 
-    setGlobalOffset: function ( globalOffset ) {
+    setGlobalOffset ( globalOffset ) {
 
         this._globalOffset = globalOffset
 
     },
 
-    setMinimumSamplingLimit: function ( sampling ) {
+    setMinimumSamplingLimit ( sampling ) {
 
         this._samplingMin = sampling
 
     },
 
-    setMaximumSamplingLimit: function ( sampling ) {
+    setMaximumSamplingLimit ( sampling ) {
 
         this._samplingMax = sampling
 
@@ -72,7 +74,7 @@ Object.assign( TPointsManager.prototype, {
     /**
      *
      */
-    getPointClouds: function ( onSuccess ) {
+    getPointClouds ( onSuccess ) {
 
         var self = this
 
@@ -81,10 +83,10 @@ Object.assign( TPointsManager.prototype, {
             url:      '/worldcells/',
             dataType: 'json',
             cache:    false,
-            success:  function ( worldCells ) {
+            success:  worldCells => {
 
                 if ( !worldCells || worldCells.length === 0 ) {
-                    console.warn( 'Unable to find world cells !' )
+                    TLogger.warn( 'Unable to find world cells !' )
                     return
                 }
 
@@ -95,13 +97,13 @@ Object.assign( TPointsManager.prototype, {
 
             },
             error:    function ( jqXHR, textStatus, errorThrown ) {
-                console.log( 'ERRORS: ' + textStatus )
+                TLogger.log( 'ERRORS: ' + textStatus + ' ' + errorThrown )
             }
         } )
 
     },
 
-    createPointCloudDataMap: function ( worldCells ) {
+    createPointCloudDataMap ( worldCells ) {
 
         var cell = undefined
         for ( var cellIndex = 0, numberOfCells = worldCells.length ; cellIndex < numberOfCells ; cellIndex++ ) {
@@ -136,7 +138,7 @@ Object.assign( TPointsManager.prototype, {
 
     },
 
-    updatePointClouds: function ( cameraWorldPosition ) {
+    updatePointClouds ( cameraWorldPosition ) {
 
         var cloudIdsToIncreaseData = []
         var cloudIdsToDecreaseData = []
@@ -166,7 +168,7 @@ Object.assign( TPointsManager.prototype, {
 
     },
 
-    updatePointCloudSampling: function ( pointCloud, cameraWorldPosition ) {
+    updatePointCloudSampling ( pointCloud, cameraWorldPosition ) {
 
         var pointCloudWorldCoordinates = {
             x: pointCloud.coordinates.x - this._globalOffset.x,
@@ -210,7 +212,7 @@ Object.assign( TPointsManager.prototype, {
      * @param distanceToCamera
      * @returns {number}
      */
-    getSamplingForDistanceToCamera: function ( distanceToCamera ) {
+    getSamplingForDistanceToCamera ( distanceToCamera ) {
 
         // If camera is out limits set default value
         if ( distanceToCamera < this._cameraDistanceMin ) { return this._samplingMax }
@@ -230,10 +232,10 @@ Object.assign( TPointsManager.prototype, {
 
     },
 
-    increasePointCloudData: function ( cloudIds ) {
+    increasePointCloudData ( cloudIds ) {
 
         if ( cloudIds.length === 0 ) { return }
-        console.log( 'numberOfBuffers to increase: ' + cloudIds.length )
+        TLogger.log( 'numberOfBuffers to increase: ' + cloudIds.length )
 
         var self = this
 
@@ -260,7 +262,7 @@ Object.assign( TPointsManager.prototype, {
             var numberOfBuffers = buffer.getUint32( 0 )
             if ( numberOfBuffers === 0 ) { return }
 
-            //            console.log( 'numberOfBuffers to extract: ' + numberOfBuffers )
+            //            TLogger.log( 'numberOfBuffers to extract: ' + numberOfBuffers )
 
             const NUMBER_OF_BUFFER_VALUE_BYTES_LENGTH = 4 // UInt32
             var SIZES_OF_BUFFER_ARRAY_BYTES_LENGTH    = numberOfBuffers * 4 // UInt32
@@ -303,14 +305,14 @@ Object.assign( TPointsManager.prototype, {
 
     },
 
-    decreasePointCloudData: function ( cloudIds ) {
+    decreasePointCloudData ( cloudIds ) {
 
         if ( cloudIds.length === 0 ) { return }
-        console.log( 'numberOfBuffers to decrease: ' + cloudIds.length )
+        TLogger.log( 'numberOfBuffers to decrease: ' + cloudIds.length )
 
         var self = this
 
-        console.log( "Number of children (base): " + self._pointCloudGroup.children.length );
+        TLogger.log( "Number of children (base): " + self._pointCloudGroup.children.length );
         cloudIds.forEach( function ( cloudId ) {
 
             var pointCloud3D = self._pointCloudGroup.getObjectByName( cloudId )
@@ -342,7 +344,7 @@ Object.assign( TPointsManager.prototype, {
 
     },
 
-    createSamplingTable: function ( cloudIds ) {
+    createSamplingTable ( cloudIds ) {
 
         var samplingTable = new Map()
         var sampling      = undefined
@@ -357,7 +359,7 @@ Object.assign( TPointsManager.prototype, {
         return samplingTable
     },
 
-    requestDataBuffer: function ( url, dataToSend, cloud ) {
+    requestDataBuffer ( url, dataToSend, cloud ) {
 
         var self = this
 
@@ -374,7 +376,7 @@ Object.assign( TPointsManager.prototype, {
             var numberOfBuffers = buffer.getUint32( 0 )
             if ( numberOfBuffers === 0 ) { return }
 
-            console.log( 'numberOfBuffers to extract: ' + numberOfBuffers )
+            TLogger.log( 'numberOfBuffers to extract: ' + numberOfBuffers )
 
             const NUMBER_OF_BUFFER_VALUE_BYTES_LENGTH = 4 // UInt32
             var SIZES_OF_BUFFER_ARRAY_BYTES_LENGTH    = numberOfBuffers * 4 // UInt32
@@ -403,16 +405,16 @@ Object.assign( TPointsManager.prototype, {
      * @param boundingBox
      * @param dataBuffer
      */
-    addPointsFromBuffer: function ( dataBuffer ) {
+    addPointsFromBuffer ( dataBuffer ) {
 
         if ( !dataBuffer ) {
-            console.error( 'No cube data to add on gpu !' )
+            TLogger.error( 'No cube data to add on gpu !' )
             return
         }
 
         const CUBE_ID_BYTES_LENGTH = 24
-        var cloudPointId           = ''
-        for ( var charIndex = 0 ; charIndex < CUBE_ID_BYTES_LENGTH ; ++charIndex ) {
+        let cloudPointId           = ''
+        for ( let charIndex = 0 ; charIndex < CUBE_ID_BYTES_LENGTH ; ++charIndex ) {
             cloudPointId += String.fromCharCode( dataBuffer[ charIndex ] )
         }
 
@@ -421,18 +423,18 @@ Object.assign( TPointsManager.prototype, {
         const POINT_POSITION_BYTES_LENGTH = 3
         const POINT_COLOR_BYTES_LENGTH    = 3
         const POINT_DATA_BYTES_LENGTH     = POINT_POSITION_BYTES_LENGTH + POINT_COLOR_BYTES_LENGTH
-        var bufferSize                    = dataBuffer.length
-        var numberOfPoint                 = (bufferSize - HEADER_SIZE) / POINT_DATA_BYTES_LENGTH
+        let bufferSize                    = dataBuffer.length
+        let numberOfPoint                 = (bufferSize - HEADER_SIZE) / POINT_DATA_BYTES_LENGTH
 
-        var positions = new Float32Array( numberOfPoint * POINT_POSITION_BYTES_LENGTH )
-        var colors    = new Float32Array( numberOfPoint * POINT_COLOR_BYTES_LENGTH )
+        let positions = new Float32Array( numberOfPoint * POINT_POSITION_BYTES_LENGTH )
+        let colors    = new Float32Array( numberOfPoint * POINT_COLOR_BYTES_LENGTH )
 
-        var pointCloudData        = this._pointCloudsDataMap.get( cloudPointId )
-        var pointCloudCoordinates = pointCloudData.coordinates
+        let pointCloudData        = this._pointCloudsDataMap.get( cloudPointId )
+        let pointCloudCoordinates = pointCloudData.coordinates
 
-        var bufferIndex     = 0
-        var bufferDataIndex = HEADER_SIZE
-        for ( var i = 0 ; i < numberOfPoint ; i++ ) {
+        let bufferIndex     = 0
+        let bufferDataIndex = HEADER_SIZE
+        for ( let i = 0 ; i < numberOfPoint ; i++ ) {
 
             // positions
             positions[ bufferIndex ]     = (dataBuffer[ bufferDataIndex ] / 1000) + pointCloudCoordinates.x - this._globalOffset.x
@@ -450,21 +452,24 @@ Object.assign( TPointsManager.prototype, {
         }
 
         // If object already exist update it else create
-        var pointCloud = this._pointCloudGroup.getObjectByName( cloudPointId )
+        var pointCloud              = this._pointCloudGroup.getObjectByName( cloudPointId )
+        var positionBufferAttribute = undefined
+        var colorBufferAttribute    = undefined
+
         if ( pointCloud ) {
 
-            var positionBufferAttribute = pointCloud.geometry.getAttribute( 'position' )
+            positionBufferAttribute = pointCloud.geometry.getAttribute( 'position' )
             positionBufferAttribute.setArray( positions )
             positionBufferAttribute.needsUpdate = true
 
-            var colorBufferAttribute = pointCloud.geometry.getAttribute( 'color' )
+            colorBufferAttribute = pointCloud.geometry.getAttribute( 'color' )
             colorBufferAttribute.setArray( colors )
             colorBufferAttribute.needsUpdate = true
 
         } else {
 
-            var positionBufferAttribute = new BufferAttribute( positions, 3 )
-            var colorBufferAttribute    = new BufferAttribute( colors, 3 )
+            positionBufferAttribute = new BufferAttribute( positions, 3 )
+            colorBufferAttribute    = new BufferAttribute( colors, 3 )
 
             var geometry = new BufferGeometry()
             geometry.addAttribute( 'position', positionBufferAttribute )
