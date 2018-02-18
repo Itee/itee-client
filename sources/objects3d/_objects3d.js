@@ -8,4 +8,9 @@
 
 /* eslint-env browser */
 
+export { TCube } from './TCube'
+export { TFresnelBlueShader } from './TFresnelBlueShader'
+export { TFresnelGreenShader } from './TFresnelGreenShader'
+export { TFresnelRedShader } from './TFresnelRedShader'
 export { TOrbitControlsHelper } from './TOrbitControlsHelper'
+export { TPlanets } from './TPlanets'

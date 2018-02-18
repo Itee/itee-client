@@ -9,3 +9,14 @@
  */
 
 /* eslint-env browser */
+export * from './TArrayValidator'
+export * from './TBooleanValidator'
+export * from './TEmptinessValidator'
+export * from './TFunctionValidator'
+export * from './TNullityValidator'
+export * from './TNumberValidator'
+export * from './TObjectValidator'
+export * from './TStringValidator'
+export * from './TSymbolValidator'
+export * from './TTemperatureValidator'
+export * from './TUndefineValidator'

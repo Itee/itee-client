@@ -19,4 +19,5 @@ export {
     ShapeType
 } from './SHPLoader';
 export { FBXLoader2 } from './FBXLoader2';
+export { RZMLLoader } from './RZMLLoader';
 export { TUniversalLoader } from './TUniversalLoader'

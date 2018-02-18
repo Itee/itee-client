@@ -7,12 +7,9 @@
  */
 
 /* eslint-env browser */
-
-export * from './TConstants'
-export { extend } from '../utils/TUtils'
-export { isObject } from '../validators/TValidator'
-
 export { TApplication } from './TApplication'
 export { TCache } from './TCache'
+export * from './TConstants'
+export { TFile, FileFormat } from './TFile'
 export { TOrchestrator } from './TOrchestrator'
 export { TViewport } from './TViewport'
