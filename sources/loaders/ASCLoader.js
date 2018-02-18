@@ -136,7 +136,7 @@ ASCLoader.prototype = {
 
     load ( url, onLoad, onProgress, onError, sampling ) {
 
-        //        console.time("ASCLoader")
+        //        TLogger.time("ASCLoader")
 
         const loader = new FileLoader( this.manager )
         loader.setResponseType( 'blob' )
@@ -171,15 +171,15 @@ ASCLoader.prototype = {
 
         reader.onabort = function ( abortEvent ) {
 
-            // console.log("abortEvent:");
-            // console.log(abortEvent);
+            // TLogger.log("abortEvent:");
+            // TLogger.log(abortEvent);
 
         };
 
         reader.onerror = function ( errorEvent ) {
 
-            // console.log("errorEvent:");
-            // console.log(errorEvent);
+            // TLogger.log("errorEvent:");
+            // TLogger.log(errorEvent);
 
             if ( onError ) {
                 onError( errorEvent );
@@ -189,15 +189,15 @@ ASCLoader.prototype = {
 
         reader.onloadstart = function ( loadStartEvent ) {
 
-            // console.log("loadStartEvent:");
-            // console.log(loadStartEvent);
+            // TLogger.log("loadStartEvent:");
+            // TLogger.log(loadStartEvent);
 
         };
 
         reader.onprogress = function ( progressEvent ) {
 
-            // console.log("progressEvent:");
-            // console.log(progressEvent);
+            // TLogger.log("progressEvent:");
+            // TLogger.log(progressEvent);
 
             // // By lines
             // var lines = this.result.split('\n');
@@ -213,8 +213,8 @@ ASCLoader.prototype = {
 
         reader.onload = function ( loadEvent ) {
 
-            // console.log("loadEvent:");
-            // console.log(loadEvent);
+            // TLogger.log("loadEvent:");
+            // TLogger.log(loadEvent);
 
             // By lines
             const lines         = this.result.split( '\n' );
@@ -223,7 +223,7 @@ ASCLoader.prototype = {
             // /!\ Rollback offset for last line that is uncompleted in most time
             offset -= lines[ numberOfLines - 1 ].length;
 
-            // console.time("Parse Lines A");
+            // TLogger.time("Parse Lines A");
             const modSampling = Math.round( 100 / _sampling )
             for ( let lineIndex = 0 ; lineIndex < numberOfLines - 1 ; lineIndex++ ) {
                 if ( lineIndex % modSampling === 0 ) // Just to make cloud lighter under debug !!!!
@@ -231,52 +231,52 @@ ASCLoader.prototype = {
                     self._parseLine( lines[ lineIndex ] )
                 }
             }
-            // console.timeEnd("Parse Lines A");
+            // TLogger.timeEnd("Parse Lines A");
 
-            // console.time("Parse Lines B");
+            // TLogger.time("Parse Lines B");
             // self._parseLines(lines);
-            // console.timeEnd("Parse Lines B");
+            // TLogger.timeEnd("Parse Lines B");
 
             ////Todo: use ArrayBuffer instead !!!
-            // console.time("Parse Lines B");
+            // TLogger.time("Parse Lines B");
             // self._bufferIndex = 0;
             // self._positions = new Float32Array( numberOfLines * 3 );
             // for (var lineIndex = 0; lineIndex < numberOfLines - 1; lineIndex++) {
             //     self._parseLineB(lines[ lineIndex ])
             // }
-            // console.timeEnd("Parse Lines B");
+            // TLogger.timeEnd("Parse Lines B");
             //
-            // console.time("Parse Lines C");
+            // TLogger.time("Parse Lines C");
             // self._bufferIndexC = 0;
             // self._positionsC = new Float32Array( numberOfLines * 3 );
             // for (var lineIndex = 0; lineIndex < numberOfLines - 1; lineIndex++) {
             //     self._parseLineB(lines[ lineIndex ])
             // }
-            // console.timeEnd("Parse Lines C");
+            // TLogger.timeEnd("Parse Lines C");
 
         };
 
         reader.onloadend = function ( loadEndEvent ) {
 
-            // console.log("loadEndEvent");
-            // console.log(loadEndEvent);
+            // TLogger.log("loadEndEvent");
+            // TLogger.log(loadEndEvent);
 
             if ( self._points.length > 1000000 || offset + CHUNK_SIZE >= blob.size ) {
 
                 // Compute bounding box in view to get his center for auto offseting the cloud point.
                 // if ( self._autoOffset ) {
-                //     console.time("Compute Points");
+                //     TLogger.time("Compute Points");
                 //     self._boundingBox.computePoints(self._points);
-                //     console.timeEnd("Compute Points");
+                //     TLogger.timeEnd("Compute Points");
                 // }
 
-                // console.time("Offset Points");
+                // TLogger.time("Offset Points");
                 self._offsetPoints();
-                // console.timeEnd("Offset Points");
+                // TLogger.timeEnd("Offset Points");
 
-                // console.time("Create WorldCell");
+                // TLogger.time("Create WorldCell");
                 self._createSubCloudPoint( groupToFeed );
-                // console.timeEnd("Create WorldCell");
+                // TLogger.timeEnd("Create WorldCell");
 
             }
 
@@ -291,24 +291,24 @@ ASCLoader.prototype = {
         function seek () {
             if ( offset >= blob.size ) {
 
-                // console.timeEnd("Parse")
-                //                console.timeEnd( "ASCLoader" )
+                // TLogger.timeEnd("Parse")
+                //                TLogger.timeEnd( "ASCLoader" )
 
                 // // Compute bounding box in view to get his center for auto offseting the cloud point.
                 // if ( self._autoOffset ) {
-                //     console.time("Compute Points");
+                //     TLogger.time("Compute Points");
                 //     self._boundingBox.computePoints(self._points);
-                //     console.timeEnd("Compute Points");
+                //     TLogger.timeEnd("Compute Points");
                 // }
                 //
-                // console.time("Offset Points");
+                // TLogger.time("Offset Points");
                 // self._offsetPoints();
-                // console.timeEnd("Offset Points");
+                // TLogger.timeEnd("Offset Points");
                 //
-                // console.time("Create WorldCell");
+                // TLogger.time("Create WorldCell");
                 // self._createCloudPoint(groupToFeed);
                 // // var cloudPoints = self._createCloudPoint();
-                // console.timeEnd("Create WorldCell");
+                // TLogger.timeEnd("Create WorldCell");
                 // // onLoad(cloudPoints);
 
                 return;
@@ -415,7 +415,7 @@ ASCLoader.prototype = {
             } )
 
         } else {
-            console.error( "Invalid data line: " + line )
+            TLogger.error( "Invalid data line: " + line )
         }
 
     },
@@ -454,7 +454,7 @@ ASCLoader.prototype = {
             this._parseLinesAsXYZIRGBnXnYnZ( lines )
 
         } else {
-            console.error( "Invalid data line: " + line )
+            TLogger.error( "Invalid data line: " + line )
         }
 
     },
