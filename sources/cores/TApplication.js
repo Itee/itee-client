@@ -11,14 +11,11 @@
 /* eslint-env browser */
 /* global $, H, URL */
 
-import { extend } from '../utils/TUtils'
+import { extend, createInterval } from '../utils/TObjectUtil'
 import { TUniversalLoader } from '../loaders/TUniversalLoader'
 import { dockspawn } from '../third_party/dock-spawn'
 import { TViewport } from './TViewport'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
-import { createInterval } from '../utils/TUtils'
-//import { SplitModifier } from '../../build/tmp/SplitModifier'
-
 import {
     DoubleSide,
     FrontSide,
@@ -27,7 +24,7 @@ import {
     UVMapping,
     AdditiveBlending,
     AnimationMixer,
-    AxisHelper,
+    AxesHelper,
     BoxHelper,
     AmbientLight,
     Frustum,
@@ -69,6 +66,7 @@ import {
     TPointsManager
 } from '../managers/databases/_databases'
 import { degreesToRadians } from '../maths/TMath'
+//import { SplitModifier } from '../../build/tmp/SplitModifier'
 
 /**
  *
@@ -736,7 +734,7 @@ function TApplication ( container, parameters, onReady ) {
 
                 var center = object.geometry.boundingBox.getCenter()
 
-                var axisHelper = new AxisHelper( 5 )
+                var axisHelper = new AxesHelper( 5 )
                 axisHelper.position.copy( center )
 
                 self.webglViewport.scene.add( axisHelper )
