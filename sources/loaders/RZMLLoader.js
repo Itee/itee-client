@@ -28,6 +28,7 @@ import {
 } from '../../node_modules/three/src/constants'
 import { Mesh } from '../../node_modules/three/src/objects/Mesh'
 import { Group } from '../../node_modules/three/src/objects/Group'
+import { DefaultLogger as TLogger } from '../loggers/TLogger'
 
 var RZMLLoader = function ( manager ) {
 
@@ -44,7 +45,7 @@ RZMLLoader.prototype = {
 
     load: function ( url, onLoad, onProgress, onError ) {
 
-        TLogger.time( "RZMLLoader" );
+        TLogger.time( "RZMLLoader" )
 
         var filePath = url.replace( /[^\/]*$/, '' )
 
