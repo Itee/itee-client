@@ -10,6 +10,8 @@
 
 /* eslint-env browser */
 
+import { Vector3 } from 'threejs-full-es6'
+
 // RANDOM
 /**
  * Returns a random number between min (inclusive) and max (exclusive)
