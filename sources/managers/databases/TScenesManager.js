@@ -28,12 +28,18 @@ function TScenesManager () {
 
 Object.assign( TScenesManager.prototype, TDataBaseManager.prototype, {
 
+    /**
+     *
+     */
     constructor: TScenesManager
 
 } )
 
 Object.defineProperties( TScenesManager.prototype, {
 
+    /**
+     *
+     */
     _onJson: {
         value: function _onJson ( jsonData, onSuccess ) {
 

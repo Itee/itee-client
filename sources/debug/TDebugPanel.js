@@ -10,8 +10,15 @@
  */
 
 /* eslint-env browser */
+
 /* globals $ */
 
+/**
+ *
+ * @param container
+ * @param settings
+ * @constructor
+ */
 function TDebugPanel ( container, settings ) {
 
     var _ = this;
@@ -30,7 +37,7 @@ function TDebugPanel ( container, settings ) {
     // Create the dashboard getting a jQuery object from static html template
     // that will contain widgets. Add event on view and link method.
     // Finally append it to the given container
-    _.view        = $( TDebugPanel.DEFAULT_TEMPLATE );
+    _.view        = $( TDebugPanel.getTemplate );
     _.debug_panel = _.view.find( '#container-debug' );
 
     _.options = $.extend( {}, _.defaultSettings, settings );
@@ -40,69 +47,81 @@ function TDebugPanel ( container, settings ) {
 }
 
 Object.assign( TDebugPanel, {
-    DEFAULT_TEMPLATE: '            <div id="container-debug" class="flying-container" style="display: none;">' +
-                      '                <div class="row">' +
-                      '                    <div class="col-md-12">' +
-                      '                        <style scoped="true">' +
-                      '                            table {' +
-                      '                                font-size: 14px;' +
-                      '                                margin: 10px;' +
-                      '                            }' +
-                      '                            table.debug tr th {' +
-                      '                                text-align: center;' +
-                      '                                padding: 5px;' +
-                      '                                border: 1px solid black;' +
-                      '                            }' +
-                      '                            table.debug tr td {' +
-                      '                                padding: 5px;' +
-                      '                                border: 1px solid black;' +
-                      '                            }' +
-                      '                        </style>' +
-                      '                        <table class="debug">' +
-                      '                            <thead>' +
-                      '                            <tr>' +
-                      '                                <th></th>' +
-                      '                                <th>$( document )</th>' +
-                      '                                <th>$( window )</th>' +
-                      '                                <th>$( navbar )</th>' +
-                      '                                <th>$("#main-container")</th>' +
-                      '                                <th>$("#inner-container")</th>' +
-                      '                            </tr>' +
-                      '                            </thead>' +
-                      '                            <tbody>' +
-                      '                            <tr>' +
-                      '                                <td>height * width</td>' +
-                      '                                <td><span id="document_height">0</span> * <span id="document_width">0</span></td>' +
-                      '                                <td><span id="window_height">0</span> * <span id="window_width">0</span></td>' +
-                      '                                <td><span id="navbar_height">0</span> * <span id="navbar_width">0</span></td>' +
-                      '                                <td><span id="mainContainer_height">0</span> * <span id="mainContainer_width">0</span></td>' +
-                      '                                <td><span id="innerContainer_height">0</span> * <span id="innerContainer_width">0</span></td>' +
-                      '                            </tr>' +
-                      '                            <tr>' +
-                      '                                <td>innerHeight * innerWidth</td>' +
-                      '                                <td><span id="document_innerHeight">0</span> * <span id="document_innerWidth">0</span></td>' +
-                      '                                <td><span id="window_innerHeight">0</span> * <span id="window_innerWidth">0</span></td>' +
-                      '                                <td><span id="navbar_innerHeight">0</span> * <span id="navbar_innerWidth">0</span></td>' +
-                      '                                <td><span id="mainContainer_innerHeight">0</span> * <span id="mainContainer_innerWidth">0</span></td>' +
-                      '                                <td><span id="innerContainer_innerHeight">0</span> * <span id="innerContainer_innerWidth">0</span></td>' +
-                      '                            </tr>' +
-                      '                            <tr>' +
-                      '                                <td>outerHeight * outerWidth</td>' +
-                      '                                <td><span id="document_outerHeight">0</span> * <span id="document_outerWidth">0</span></td>' +
-                      '                                <td><span id="window_outerHeight">0</span> * <span id="window_outerWidth">0</span></td>' +
-                      '                                <td><span id="navbar_outerHeight">0</span> * <span id="navbar_outerWidth">0</span></td>' +
-                      '                                <td><span id="mainContainer_outerHeight">0</span> * <span id="mainContainer_outerWidth">0</span></td>' +
-                      '                                <td><span id="innerContainer_outerHeight">0</span> * <span id="innerContainer_outerWidth">0</span></td>' +
-                      '                            </tr>' +
-                      '                            </tbody>' +
-                      '                        </table>' +
-                      '                    </div>' +
-                      '                </div>' +
-                      '            </div>'
+
+    /**
+     *
+     * @return {string}
+     */
+    getTemplate () {
+        return '' +
+            '<div id="container-debug" class="flying-container" style="display: none;">' +
+            '   <div class="row">' +
+            '       <div class="col-md-12">' +
+            '           <style scoped="true">' +
+            '               table {' +
+            '                   font-size: 14px;' +
+            '                   margin: 10px;' +
+            '               }' +
+            '               table.debug tr th {' +
+            '                   text-align: center;' +
+            '                   padding: 5px;' +
+            '                   border: 1px solid black;' +
+            '               }' +
+            '               table.debug tr td {' +
+            '                   padding: 5px;' +
+            '                   border: 1px solid black;' +
+            '               }' +
+            '           </style>' +
+            '           <table class="debug">' +
+            '               <thead>' +
+            '                   <tr>' +
+            '                       <th>$( document )</th>' +
+            '                       <th>$( window )</th>' +
+            '                       <th>$( navbar )</th>' +
+            '                       <th>$("#main-container")</th>' +
+            '                       <th>$("#inner-container")</th>' +
+            '                   </tr>' +
+            '               </thead>' +
+            '               <tbody>' +
+            '                   <tr>' +
+            '                       <td>height * width</td>' +
+            '                       <td><span id="document_height">0</span> * <span id="document_width">0</span></td>' +
+            '                       <td><span id="window_height">0</span> * <span id="window_width">0</span></td>' +
+            '                       <td><span id="navbar_height">0</span> * <span id="navbar_width">0</span></td>' +
+            '                       <td><span id="mainContainer_height">0</span> * <span id="mainContainer_width">0</span></td>' +
+            '                       <td><span id="innerContainer_height">0</span> * <span id="innerContainer_width">0</span></td>' +
+            '                   </tr>' +
+            '                   <tr>' +
+            '                       <td>innerHeight * innerWidth</td>' +
+            '                       <td><span id="document_innerHeight">0</span> * <span id="document_innerWidth">0</span></td>' +
+            '                       <td><span id="window_innerHeight">0</span> * <span id="window_innerWidth">0</span></td>' +
+            '                       <td><span id="navbar_innerHeight">0</span> * <span id="navbar_innerWidth">0</span></td>' +
+            '                       <td><span id="mainContainer_innerHeight">0</span> * <span id="mainContainer_innerWidth">0</span></td>' +
+            '                       <td><span id="innerContainer_innerHeight">0</span> * <span id="innerContainer_innerWidth">0</span></td>' +
+            '                   </tr>' +
+            '                   <tr>' +
+            '                       <td>outerHeight * outerWidth</td>' +
+            '                       <td><span id="document_outerHeight">0</span> * <span id="document_outerWidth">0</span></td>' +
+            '                       <td><span id="window_outerHeight">0</span> * <span id="window_outerWidth">0</span></td>' +
+            '                       <td><span id="navbar_outerHeight">0</span> * <span id="navbar_outerWidth">0</span></td>' +
+            '                       <td><span id="mainContainer_outerHeight">0</span> * <span id="mainContainer_outerWidth">0</span></td>' +
+            '                       <td><span id="innerContainer_outerHeight">0</span> * <span id="innerContainer_outerWidth">0</span></td>' +
+            '                   </tr>' +
+            '               </tbody>' +
+            '           </table>' +
+            '       </div>' +
+            '   </div>' +
+            '</div>'
+
+    }
+
 } )
 
 Object.assign( TDebugPanel.prototype, {
 
+    /**
+     *
+     */
     init () {
         var navbarFixedTop_outerHeight    = $( ".navbar-fixed-top" ).outerHeight( true );
         var breadcrumb_outerHeight        = $( ".sub-navbar-fixed-top" ).outerHeight( true );
@@ -114,6 +133,9 @@ Object.assign( TDebugPanel.prototype, {
         var navbarTotalHeight = navbarTopTotalHeight + navbarFixedBottom_outerHeight;
     },
 
+    /**
+     *
+     */
     initEvents () {
         var _ = this;
         $( window ).resize( function () {
@@ -121,6 +143,10 @@ Object.assign( TDebugPanel.prototype, {
         } );
     },
 
+    /**
+     *
+     * @param document
+     */
     updateDocumentSize ( document ) {
         $( "#document_width" ).html( document.width() );
         $( "#document_height" ).html( document.height() );
@@ -130,6 +156,10 @@ Object.assign( TDebugPanel.prototype, {
         $( "#document_outerWidth" ).html( document.outerWidth() );
     },
 
+    /**
+     *
+     * @param _window
+     */
     updateWindowSize ( _window ) {
         $( "#window_width" ).html( _window.width() );
         $( "#window_height" ).html( _window.height() );
@@ -139,6 +169,10 @@ Object.assign( TDebugPanel.prototype, {
         $( "#window_outerWidth" ).html( _window.outerWidth() );
     },
 
+    /**
+     *
+     * @param navbar
+     */
     updateNavbarSize ( navbar ) {
         $( "#navbar_width" ).html( navbar.width() );
         $( "#navbar_height" ).html( navbar.height() );
@@ -148,6 +182,10 @@ Object.assign( TDebugPanel.prototype, {
         $( "#navbar_outerWidth" ).html( navbar.outerWidth() );
     },
 
+    /**
+     *
+     * @param mainContainer
+     */
     updateMainContainerSize ( mainContainer ) {
         $( "#mainContainer_width" ).html( mainContainer.width() );
         $( "#mainContainer_height" ).html( mainContainer.height() );
@@ -157,6 +195,10 @@ Object.assign( TDebugPanel.prototype, {
         $( "#mainContainer_outerWidth" ).html( mainContainer.outerWidth() );
     },
 
+    /**
+     *
+     * @param innerContainer
+     */
     updateInnerContainerSize ( innerContainer ) {
         $( "#innerContainer_width" ).html( innerContainer.width() );
         $( "#innerContainer_height" ).html( innerContainer.height() );
@@ -166,6 +208,10 @@ Object.assign( TDebugPanel.prototype, {
         $( "#innerContainer_outerWidth" ).html( innerContainer.outerWidth() );
     },
 
+    /**
+     *
+     * @param _document
+     */
     updateDebugSize ( _document ) {
 
         var _ = this;

@@ -1,7 +1,12 @@
 /**
- * @author Lee Stemkoski
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  *
- * Usage:
+ * based on Lee Stemkoski work
+ *
+ * @class TFactory
+ * @classdesc Todo...
+ * @example Todo...
  * (1) create a global variable:
  *      var keyboard = new TKeyboardState();
  * (2) during main loop:
@@ -12,14 +17,6 @@
  *       keyboard.up("A")      -- true for one update cycle after key is released
  *
  *  See TKeyboardState.k object data below for names of keys whose state can be polled
- */
-/**
- * @author [Tristan Valcke]{@link https://github.com/Itee}
- * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
- *
- * @class TFactory
- * @classdesc Todo...
- * @example Todo...
  *
  */
 
@@ -28,6 +25,10 @@
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { Keys } from '../cores/TConstants'
 
+/**
+ *
+ * @constructor
+ */
 function TKeyboardState () {
     // bind keyEvents
     document.addEventListener( "keydown", TKeyboardState.onKeyDown, false );
@@ -36,16 +37,31 @@ function TKeyboardState () {
 
 Object.assign( TKeyboardState, {
 
+    /**
+     *
+     */
     k: Keys,
 
+    /**
+     *
+     */
     status: {},
 
+    /**
+     *
+     * @param keyCode
+     * @return {string}
+     */
     keyName ( keyCode ) {
         return ( TKeyboardState.k[ keyCode ] !== null ) ?
             TKeyboardState.k[ keyCode ] :
             String.fromCharCode( keyCode );
     },
 
+    /**
+     *
+     * @param event
+     */
     onKeyUp ( event ) {
         var key = TKeyboardState.keyName( event.keyCode );
         if ( TKeyboardState.status[ key ] ) {
@@ -53,6 +69,10 @@ Object.assign( TKeyboardState, {
         }
     },
 
+    /**
+     *
+     * @param event
+     */
     onKeyDown ( event ) {
         var key = TKeyboardState.keyName( event.keyCode );
         if ( !TKeyboardState.status[ key ] ) {
@@ -69,6 +89,9 @@ Object.assign( TKeyboardState, {
 
 Object.assign( TKeyboardState.prototype, {
 
+    /**
+     *
+     */
     update () {
         for ( var key in TKeyboardState.status ) {
             // insure that every keypress has "down" status exactly once
@@ -95,18 +118,36 @@ Object.assign( TKeyboardState.prototype, {
         }
     },
 
+    /**
+     *
+     * @param keyName
+     * @return {*}
+     */
     down ( keyName ) {
         return (TKeyboardState.status[ keyName ] && TKeyboardState.status[ keyName ].down);
     },
 
+    /**
+     *
+     * @param keyName
+     * @return {*|pressed|boolean}
+     */
     pressed ( keyName ) {
         return (TKeyboardState.status[ keyName ] && TKeyboardState.status[ keyName ].pressed);
     },
 
+    /**
+     *
+     * @param keyName
+     * @return {*}
+     */
     up ( keyName ) {
         return (TKeyboardState.status[ keyName ] && TKeyboardState.status[ keyName ].up);
     },
 
+    /**
+     *
+     */
     debug () {
         var list = "Keys active: ";
         for ( var arg in TKeyboardState.status ) {

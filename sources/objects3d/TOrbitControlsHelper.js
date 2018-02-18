@@ -20,6 +20,11 @@ import {
     OrbitControls
 } from 'threejs-full-es6'
 
+/**
+ *
+ * @param orbitControls
+ * @constructor
+ */
 function TOrbitControlsHelper ( orbitControls ) {
 
     if ( !orbitControls ) { throw new Error( 'Unable to create TOrbitControlsHelper for null or undefined controller !' ) }
@@ -120,8 +125,14 @@ function TOrbitControlsHelper ( orbitControls ) {
 
 Object.assign( TOrbitControlsHelper.prototype, LineSegments.prototype, {
 
+    /**
+     *
+     */
     constructor: TOrbitControlsHelper,
 
+    /**
+     *
+     */
     updateHelperPosition () {
 
         const target = this.control.target
@@ -132,6 +143,9 @@ Object.assign( TOrbitControlsHelper.prototype, LineSegments.prototype, {
 
     },
 
+    /**
+     *
+     */
     startOpacityAnimation () {
 
         // In case fade off is running, kill it an restore opacity to 1
@@ -146,6 +160,9 @@ Object.assign( TOrbitControlsHelper.prototype, LineSegments.prototype, {
 
     },
 
+    /**
+     *
+     */
     endOpacityAnimation () {
 
         // Manage transparency interval

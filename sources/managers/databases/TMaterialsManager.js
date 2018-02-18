@@ -33,8 +33,16 @@ function TMaterialsManager () {
 
 Object.assign( TMaterialsManager.prototype, TDataBaseManager.prototype, {
 
+    /**
+     *
+     */
     constructor: TMaterialsManager,
 
+    /**
+     *
+     * @param jsonMaterial
+     * @return {undefined}
+     */
     convertJsonToMaterial ( jsonMaterial ) {
 
         const materialType = jsonMaterial.type
@@ -136,6 +144,9 @@ Object.assign( TMaterialsManager.prototype, TDataBaseManager.prototype, {
 
 Object.defineProperties( TMaterialsManager.prototype, {
 
+    /**
+     *
+     */
     _onJson: {
         value: function _onJson ( jsonData, onSuccess, onProgress, onError ) {
 

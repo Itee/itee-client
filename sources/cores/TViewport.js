@@ -233,6 +233,10 @@ function TViewport ( container ) {
 // Static methods
 Object.assign( TViewport, {
 
+    /**
+     *
+     * @return {string}
+     */
     getTemplate () {
         return '' +
             '<div class="webglViewport">' +
@@ -262,6 +266,9 @@ Object.assign( TViewport, {
 // Public methods
 Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
+    /**
+     *
+     */
     toggleAutorun () {
 
         // Toggle running state
@@ -273,11 +280,18 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
     },
 
+    /**
+     *
+     */
     toggleCamera () {
 
         this.toggleCam = !this.toggleCam
     },
 
+    /**
+     *
+     * @param forceUpdate
+     */
     update ( forceUpdate ) {
 
         if ( this.stats ) {
@@ -321,6 +335,9 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
     },
 
+    /**
+     *
+     */
     updateSizes () {
 
         this.containerWidth  = this.container.clientWidth
@@ -333,6 +350,10 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
         this.camera.updateProjectionMatrix();
     },
 
+    /**
+     *
+     * @param objects
+     */
     addRaycastables ( objects ) {
 
         for ( let intersectableIndex = 0, numberOfIntersectables = objects.length ; intersectableIndex < numberOfIntersectables ; intersectableIndex++ ) {
@@ -343,6 +364,10 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
     },
 
+    /**
+     *
+     * @param event
+     */
     updateRaycasting ( event ) {
 
         if ( !this.isRaycastable ) {
@@ -460,6 +485,10 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
     },
 
+    /**
+     *
+     * @param clickEvent
+     */
     selectObject ( clickEvent ) {
 
         if ( this.measuring ) {
@@ -548,6 +577,10 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
     },
 
+    /**
+     *
+     * @param position
+     */
     setCameraPosition ( position ) {
 
         const cameraControllerType = this.cameraControlType
@@ -575,6 +608,10 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
     },
 
+    /**
+     *
+     * @param cameraEffect
+     */
     setCameraEffect ( cameraEffect ) {
 
         var trimmedEffectName = cameraEffect.trim( ' ' );
@@ -608,6 +645,10 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
     },
 
+    /**
+     *
+     * @param cameraControlType
+     */
     setCameraControls ( cameraControlType ) {
 
         var currentCameraPosition = this.camera.position
@@ -669,6 +710,11 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
     },
 
+    /**
+     *
+     * @param groupName
+     * @param visibility
+     */
     setGroupVisibility ( groupName, visibility ) {
 
         var group = this.scene.getObjectByName( groupName )
@@ -681,6 +727,9 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
     },
 
+    /**
+     *
+     */
     decimateVisibleMeshes () {
 
         //todo: recursive search against currently visible group and cache hide mesh for repopulate later !!!
@@ -708,6 +757,9 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
     },
 
+    /**
+     *
+     */
     populateVisibleMeshes () {
 
         const groups = this.scene.children.filter( child => child.type === 'Group' )

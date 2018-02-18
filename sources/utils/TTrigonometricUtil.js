@@ -23,6 +23,9 @@ import { degreesToRadians } from '../maths/TMath'
  * Provide position on any given referential (starting position)
  * this position is updated every tick on a trigonometric circle of rayon (radius)
  * and give new position in px about this point in current referential.
+ *
+ * @param settings
+ * @constructor
  */
 function TTrigonometricCircle ( settings ) {
 
@@ -34,6 +37,9 @@ function TTrigonometricCircle ( settings ) {
 
 Object.assign( TTrigonometricCircle, {
 
+    /**
+     *
+     */
     DEFAULT_SETTINGS: {
         angle:       0,
         radius:      10,
@@ -44,6 +50,10 @@ Object.assign( TTrigonometricCircle, {
 
 Object.assign( TTrigonometricCircle.prototype, {
 
+    /**
+     *
+     * @param increment
+     */
     increment ( increment ) {
         var _   = this;
         _.angle = (increment ? _.angle + increment : _.angle + 1);
@@ -52,16 +62,27 @@ Object.assign( TTrigonometricCircle.prototype, {
         }
     },
 
+    /**
+     *
+     */
     getRadius () {
         var _ = this;
         return _.radius;
     },
 
+    /**
+     *
+     * @return {number}
+     */
     getCosinus () {
         var _ = this;
         return Math.cos( degreesToRadians( _.angle ) ) * _.radius;
     },
 
+    /**
+     *
+     * @return {number}
+     */
     getSinus () {
         var _ = this;
         return Math.sin( degreesToRadians( _.angle ) ) * _.radius;
@@ -71,6 +92,11 @@ Object.assign( TTrigonometricCircle.prototype, {
 
 /////////
 
+/**
+ *
+ * @param settings
+ * @constructor
+ */
 function TTrigonometricCone ( settings ) {
 
     var _ = this;
@@ -80,6 +106,9 @@ function TTrigonometricCone ( settings ) {
 
 Object.assign( TTrigonometricCone, {
 
+    /**
+     *
+     */
     DEFAULT_SETTINGS: {
         angle:       0,
         height:      10,
@@ -91,6 +120,10 @@ Object.assign( TTrigonometricCone, {
 
 Object.assign( TTrigonometricCone.prototype, {
 
+    /**
+     *
+     * @param increment
+     */
     increment ( increment ) {
         var _         = this;
         _.model.angle = (increment ? _.model.angle + increment : _.model.angle + 1);
@@ -99,26 +132,47 @@ Object.assign( TTrigonometricCone.prototype, {
         }
     },
 
+    /**
+     *
+     */
     getRadius () {
         var _ = this;
         return _.model.radius;
     },
 
+    /**
+     *
+     * @return {number}
+     */
     getCosinus () {
         var _ = this;
         return Math.cos( degreesToRadians( _.model.angle ) ) * _.model.radius;
     },
 
+    /**
+     *
+     * @return {number}
+     */
     getSinus () {
         var _ = this;
         return Math.sin( degreesToRadians( _.model.angle ) ) * _.model.radius;
     },
 
+    /**
+     *
+     * @param height
+     * @return {number}
+     */
     getCosinusForHeight ( height ) {
         var _ = this;
         return Math.cos( degreesToRadians( _.model.angle ) ) * ((_.model.radius / _.model.height) * Math.abs( height ) );
     },
 
+    /**
+     *
+     * @param height
+     * @return {number}
+     */
     getSinusForHeight ( height ) {
         var _ = this;
         return Math.sin( degreesToRadians( _.model.angle ) ) * ((_.model.radius / _.model.height) * Math.abs( height ));

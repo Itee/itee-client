@@ -10,6 +10,10 @@
 
 /* eslint-env browser */
 
+/**
+ *
+ * @constructor
+ */
 function TProgressManager () {
 
 }

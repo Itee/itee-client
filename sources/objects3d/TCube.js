@@ -1,5 +1,11 @@
 /**
- * Created by Tristan on 19/09/2015.
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ *
+ * @class Todo...
+ * @classdesc Todo...
+ * @example Todo...
+ *
  */
 
 /* eslint-env browser */
@@ -13,6 +19,12 @@ import {
 
 import { extend } from '../utils/TUtils'
 
+/**
+ *
+ * @param givenSettings
+ * @return {TCube}
+ * @constructor
+ */
 function TCube ( givenSettings ) {
 
     var _ = this;
@@ -46,6 +58,9 @@ function TCube ( givenSettings ) {
 
 Object.assign( TCube, {
 
+    /**
+     *
+     */
     DEFAULT_SETTINGS: {
         width:          1.0,
         height:         1.0,
@@ -64,6 +79,12 @@ Object.assign( TCube, {
 
 Object.assign( TCube.prototype, {
 
+    /**
+     *
+     * @param x
+     * @param y
+     * @param z
+     */
     setPosition ( x, y, z ) {
 
         var _ = this;
@@ -71,11 +92,17 @@ Object.assign( TCube.prototype, {
 
     },
 
+    /**
+     *
+     */
     update () {
         var _ = this;
         _.autoRotate();
     },
 
+    /**
+     *
+     */
     autoRotate () {
 
         var _ = this;

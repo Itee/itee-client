@@ -37,6 +37,9 @@ function TGeometriesManager () {
 
 Object.assign( TGeometriesManager.prototype, TDataBaseManager.prototype, {
 
+    /**
+     *
+     */
     constructor: TGeometriesManager,
 
     /**
@@ -158,6 +161,9 @@ Object.assign( TGeometriesManager.prototype, TDataBaseManager.prototype, {
 
 Object.defineProperties( TGeometriesManager.prototype, {
 
+    /**
+     *
+     */
     _onJson: {
         value: function _onJson ( jsonData, onSuccess, onProgress, onError ) {
 

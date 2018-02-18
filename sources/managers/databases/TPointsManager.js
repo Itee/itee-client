@@ -26,7 +26,6 @@ import { DefaultLogger as TLogger } from '../../loggers/TLogger'
  * @param viewport
  * @constructor
  */
-
 function TPointsManager ( viewport ) {
 
     if ( !viewport ) { throw new Error( 'Unable to create point cloud manager for null or undefined viewport !' ) }
@@ -53,18 +52,30 @@ Object.assign( TPointsManager, {} );
 
 Object.assign( TPointsManager.prototype, {
 
+    /**
+     *
+     * @param globalOffset
+     */
     setGlobalOffset ( globalOffset ) {
 
         this._globalOffset = globalOffset
 
     },
 
+    /**
+     *
+     * @param sampling
+     */
     setMinimumSamplingLimit ( sampling ) {
 
         this._samplingMin = sampling
 
     },
 
+    /**
+     *
+     * @param sampling
+     */
     setMaximumSamplingLimit ( sampling ) {
 
         this._samplingMax = sampling
@@ -73,6 +84,7 @@ Object.assign( TPointsManager.prototype, {
 
     /**
      *
+     * @param onSuccess
      */
     getPointClouds ( onSuccess ) {
 
@@ -103,6 +115,10 @@ Object.assign( TPointsManager.prototype, {
 
     },
 
+    /**
+     *
+     * @param worldCells
+     */
     createPointCloudDataMap ( worldCells ) {
 
         var cell = undefined
@@ -138,6 +154,10 @@ Object.assign( TPointsManager.prototype, {
 
     },
 
+    /**
+     *
+     * @param cameraWorldPosition
+     */
     updatePointClouds ( cameraWorldPosition ) {
 
         var cloudIdsToIncreaseData = []
@@ -168,6 +188,11 @@ Object.assign( TPointsManager.prototype, {
 
     },
 
+    /**
+     *
+     * @param pointCloud
+     * @param cameraWorldPosition
+     */
     updatePointCloudSampling ( pointCloud, cameraWorldPosition ) {
 
         var pointCloudWorldCoordinates = {
@@ -232,6 +257,10 @@ Object.assign( TPointsManager.prototype, {
 
     },
 
+    /**
+     *
+     * @param cloudIds
+     */
     increasePointCloudData ( cloudIds ) {
 
         if ( cloudIds.length === 0 ) { return }
@@ -305,6 +334,10 @@ Object.assign( TPointsManager.prototype, {
 
     },
 
+    /**
+     *
+     * @param cloudIds
+     */
     decreasePointCloudData ( cloudIds ) {
 
         if ( cloudIds.length === 0 ) { return }
@@ -344,6 +377,11 @@ Object.assign( TPointsManager.prototype, {
 
     },
 
+    /**
+     *
+     * @param cloudIds
+     * @return {Map}
+     */
     createSamplingTable ( cloudIds ) {
 
         var samplingTable = new Map()
@@ -359,6 +397,12 @@ Object.assign( TPointsManager.prototype, {
         return samplingTable
     },
 
+    /**
+     *
+     * @param url
+     * @param dataToSend
+     * @param cloud
+     */
     requestDataBuffer ( url, dataToSend, cloud ) {
 
         var self = this
@@ -402,7 +446,6 @@ Object.assign( TPointsManager.prototype, {
 
     /**
      *
-     * @param boundingBox
      * @param dataBuffer
      */
     addPointsFromBuffer ( dataBuffer ) {

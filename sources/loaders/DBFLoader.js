@@ -1,11 +1,15 @@
 /**
- * @author TristanVALCKE / https://github.com/TristanVALCKE
- *
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  *
  * From:
  * https://www.clicketyclick.dk/databases/xbase/format/db2_dbf.html#DBII_DBF_STRUCT
  * http://web.archive.org/web/20150323061445/http://ulisse.elettra.trieste.it/services/doc/dbase/DBFstruct.htm
  * http://www.dbase.com/Knowledgebase/INT/db7_file_fmt.htm
+ *
+ * @class Todo...
+ * @classdesc Todo...
+ * @example Todo...
  *
  */
 
@@ -23,6 +27,10 @@ import {
 
 ///////////
 
+/**
+ *
+ * @type {Object}
+ */
 const DBFVersion = Object.freeze( {
     FoxPro:               0x30,
     FoxPro_Autoincrement: 0x31,
@@ -44,6 +52,10 @@ const DBFVersion = Object.freeze( {
     HiPerSix_memo: 0xE5
 } )
 
+/**
+ *
+ * @type {Object}
+ */
 const DataType = Object.freeze( {
     Binary:        'B',
     Character:     'C',
@@ -61,13 +73,10 @@ const DataType = Object.freeze( {
 
 /**
  *
- * Loader
- *
  * @param manager
  * @param logger
  * @constructor
  */
-
 function DBFLoader ( manager, logger ) {
 
     this.manager = ( manager === undefined ) ? DefaultLoadingManager : manager;
@@ -78,14 +87,32 @@ function DBFLoader ( manager, logger ) {
 
 Object.assign( DBFLoader, {
 
+    /**
+     *
+     */
     Terminator:    0x0D,
+
+    /**
+     *
+     */
     DeletedRecord: 0x1A,
+
+    /**
+     *
+     */
     YearOffset:    1900
 
 } );
 
 Object.assign( DBFLoader.prototype, {
 
+    /**
+     *
+     * @param url
+     * @param onLoad
+     * @param onProgress
+     * @param onError
+     */
     load ( url, onLoad, onProgress, onError ) {
 
         const scope = this;
@@ -100,6 +127,11 @@ Object.assign( DBFLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param arrayBuffer
+     * @return {*}
+     */
     parse ( arrayBuffer ) {
 
         this.reader
@@ -122,6 +154,12 @@ Object.assign( DBFLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param version
+     * @return {boolean}
+     * @private
+     */
     _isValidVersion ( version ) {
 
         const availablesVersionValues = Object.values( DBFVersion );
@@ -129,6 +167,12 @@ Object.assign( DBFLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param version
+     * @return {{}}
+     * @private
+     */
     _parseHeader ( version ) {
 
         let header = {}
@@ -175,6 +219,11 @@ Object.assign( DBFLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @return {{numberOfRecords, year: *, month: (*|number), day: (*|number), lengthOfEachRecords, fields: Array}}
+     * @private
+     */
     _parseHeaderV2 () {
 
         const numberOfRecords     = this.reader.getInt16();
@@ -219,6 +268,11 @@ Object.assign( DBFLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @return {{year: *, month: (*|number), day: (*|number), numberOfRecords, numberOfByteInHeader, numberOfByteInRecord, fields: Array}}
+     * @private
+     */
     _parseHeaderV2_5 () {
 
         const year  = this.reader.getInt8() + DBFLoader.YearOffset;
@@ -278,6 +332,11 @@ Object.assign( DBFLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @return {{year: *, month: (*|number), day: (*|number), numberOfRecords, numberOfByteInHeader, numberOfByteInRecord, incompleteTransactionFlag: (*|number), encryptionFlag: (*|number), MDXFlag: (*|number), languageDriverId: (*|number), fields: Array}}
+     * @private
+     */
     _parseHeaderV3 () {
 
         const year  = this.reader.getInt8() + DBFLoader.YearOffset;
@@ -344,6 +403,11 @@ Object.assign( DBFLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @return {{year: *, month: (*|number), day: (*|number), numberOfRecords, numberOfByteInHeader, numberOfByteInRecord, incompleteTransactionFlag: (*|number), encryptionFlag: (*|number), MDXFlag: (*|number), languageDriverId: (*|number), languageDriverName, fields: Array}}
+     * @private
+     */
     _parseHeaderV4 () {
 
         const year  = this.reader.getInt8() + DBFLoader.YearOffset;
@@ -412,6 +476,13 @@ Object.assign( DBFLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param version
+     * @param header
+     * @return {Array}
+     * @private
+     */
     _parseDatas ( version, header ) {
 
         const numberOfRecords = header.numberOfRecords
@@ -516,6 +587,11 @@ Object.assign( DBFLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @return {{numberOfStandardProperties, startOfStandardPropertiesDescriptor, numberOfCustomProperties, startOfCustomPropertiesDescriptor, numberOfReferentialIntegrityProperties, startOfReferentialIntegrityDescriptor, startOfData, sizeOfPropertiesStructure, standardProperties: Array, customProperties: Array, referentialIntegrityProperties: Array}}
+     * @private
+     */
     _parseFieldProperties () {
 
         const numberOfStandardProperties             = this.reader.getInt16();
@@ -558,6 +634,11 @@ Object.assign( DBFLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @return {{generationalNumber, tableFieldOffset, propertyDescribed: (*|number), type: (*|number), isConstraint: (*|number), offsetFromStart, widthOfDatabaseField}}
+     * @private
+     */
     _getStandardProperties () {
 
         const generationalNumber = this.reader.getInt16();
@@ -581,6 +662,11 @@ Object.assign( DBFLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @return {{generationalNumber, tableFieldOffset, type: (*|number), offsetFromStartOfName, lengthOfName, offsetFromStartOfData, lengthOfData}}
+     * @private
+     */
     _getCustomProperties () {
 
         const generationalNumber = this.reader.getInt16();
@@ -604,6 +690,11 @@ Object.assign( DBFLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @return {{databaseState: (*|number), sequentialNumberRule, offsetOfTheRIRuleName, sizeOfTheRIRuleName, offsetOfNameOfForeignTable, sizeOfNameOfForeignTable, stateBehaviour: (*|number), numberOfFieldsInLinkingKey, offsetOfLocalTableTagName, sizeOfTheLocalTableTagName, offsetOfForeignTableTagName, sizeOfTheForeignTableTagName}}
+     * @private
+     */
     _getReferentialIntegrityProperties () {
 
         const databaseState                = this.reader.getInt8();

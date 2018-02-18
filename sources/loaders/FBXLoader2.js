@@ -61,6 +61,11 @@ import { DEG_TO_RAD, degreesToRadians } from '../maths/TMath'
 
 
 // Helper methods
+/**
+ *
+ * @param floatString
+ * @return {null}
+ */
 function parseFloatArray ( floatString ) {
 
     if ( !floatString ) {
@@ -78,6 +83,11 @@ function parseFloatArray ( floatString ) {
 
 }
 
+/**
+ *
+ * @param intString
+ * @return {null}
+ */
 function parseIntArray ( intString ) {
 
     if ( !intString ) {
@@ -95,6 +105,11 @@ function parseIntArray ( intString ) {
 
 }
 
+/**
+ *
+ * @param property
+ * @return {null}
+ */
 function parseVector3 ( property ) {
 
     if ( !property ) {
@@ -108,6 +123,11 @@ function parseVector3 ( property ) {
 
 }
 
+/**
+ *
+ * @param property
+ * @return {null}
+ */
 function parseColor ( property ) {
 
     if ( !property ) {
@@ -121,6 +141,11 @@ function parseColor ( property ) {
 
 }
 
+/**
+ *
+ * @param floatString
+ * @return {null}
+ */
 function parseMatrixArray ( floatString ) {
 
     if ( !floatString ) {
@@ -134,6 +159,13 @@ function parseMatrixArray ( floatString ) {
 
 }
 
+/**
+ *
+ * @param buffer
+ * @param from
+ * @param to
+ * @return {*}
+ */
 function convertArrayBufferToString ( buffer, from, to ) {
 
     if ( !buffer ) {
@@ -170,6 +202,12 @@ function convertArrayBufferToString ( buffer, from, to ) {
 
 }
 
+/**
+ *
+ * @param array
+ * @param func
+ * @return {number}
+ */
 function findIndex ( array, func ) {
 
     for ( var i = 0, l = array.length ; i < l ; i++ ) {
@@ -184,6 +222,11 @@ function findIndex ( array, func ) {
 
 }
 
+/**
+ *
+ * @param a
+ * @param b
+ */
 function append ( a, b ) {
 
     for ( var i = 0, j = a.length, l = b.length ; i < l ; i++, j++ ) {
@@ -194,6 +237,14 @@ function append ( a, b ) {
 
 }
 
+/**
+ *
+ * @param a
+ * @param b
+ * @param from
+ * @param to
+ * @return {*}
+ */
 function slice ( a, b, from, to ) {
 
     for ( var i = from, j = 0 ; i < to ; i++, j++ ) {
@@ -206,7 +257,13 @@ function slice ( a, b, from, to ) {
 
 }
 
-function FBXLoader2( manager, logger ) {};
+/**
+ *
+ * @param manager
+ * @param logger
+ * @constructor
+ */
+function FBXLoader2( manager, logger ) {}
 
 // Public static methods
 Object.assign( FBXLoader2, {

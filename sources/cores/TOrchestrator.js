@@ -91,9 +91,9 @@ Object.assign( TOrchestrator.prototype, {
     },
 
     /**
-     * @public
-     * @memberOf TOrchestrator.prototype
      *
+     * @public
+     * @function
      * @param newRequest
      */
     queue: function queue ( newRequest ) {
@@ -172,6 +172,10 @@ Object.assign( TOrchestrator.prototype, {
 
 } )
 
+/**
+ *
+ * @type {TOrchestrator}
+ */
 let singletonInstance = new TOrchestrator()
 
 export { singletonInstance as TOrchestrator }

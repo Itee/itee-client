@@ -1,3 +1,13 @@
+/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ *
+ * @class Todo...
+ * @classdesc Todo...
+ * @example Todo...
+ *
+ */
+
 /* eslint-env browser */
 
 /**
@@ -21,6 +31,11 @@ import {
 } from 'threejs-full-es6'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 
+/**
+ *
+ * @param manager
+ * @constructor
+ */
 function RZMLLoader ( manager ) {
 
     this.manager = ( manager !== undefined ) ? manager : DefaultLoadingManager;
@@ -32,8 +47,18 @@ function RZMLLoader ( manager ) {
 
 Object.assign( RZMLLoader.prototype, {
 
+    /**
+     *
+     */
     constructor: RZMLLoader,
 
+    /**
+     *
+     * @param url
+     * @param onLoad
+     * @param onProgress
+     * @param onError
+     */
     load ( url, onLoad, onProgress, onError ) {
 
         TLogger.time( "RZMLLoader" )
@@ -52,6 +77,13 @@ Object.assign( RZMLLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param text
+     * @param filePath
+     * @return {*}
+     * @private
+     */
     _parse ( text, filePath ) {
 
         var document = null;
@@ -102,6 +134,12 @@ Object.assign( RZMLLoader.prototype, {
         return this._createImagesPacks( filePath );
     },
 
+    /**
+     *
+     * @param filePath
+     * @return {Group}
+     * @private
+     */
     _createImagesPacks ( filePath ) {
 
         var imagesShots = this.imagesShotData

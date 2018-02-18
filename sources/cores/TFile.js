@@ -12,6 +12,12 @@
 
 import { FileFormat } from '../cores/TConstants'
 
+/**
+ *
+ * @param path
+ * @return {*}
+ * @constructor
+ */
 function TFile ( path = '' ) {
 
     let _basePath  = undefined
@@ -20,6 +26,7 @@ function TFile ( path = '' ) {
     let _size      = undefined
 
     Object.defineProperties( this, {
+
         path:      {
             enumerable: true,
             get () {
@@ -29,9 +36,13 @@ function TFile ( path = '' ) {
                 path = newPath
             }
         },
+
         basePath:  {},
+
         name:      {},
+
         extension: {},
+
     } );
 
 }

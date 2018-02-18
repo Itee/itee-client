@@ -69,6 +69,14 @@ function ASCLoader( manager ) {
 
 Object.assign( ASCLoader.prototype, {
 
+    /**
+     *
+     * @param url
+     * @param onLoad
+     * @param onProgress
+     * @param onError
+     * @param sampling
+     */
     load ( url, onLoad, onProgress, onError, sampling ) {
 
         //        TLogger.time("ASCLoader")
@@ -85,6 +93,10 @@ Object.assign( ASCLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param offset
+     */
     setOffset ( offset ) {
 
         //TODO: check is correct
@@ -94,6 +106,16 @@ Object.assign( ASCLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param blob
+     * @param groupToFeed
+     * @param onLoad
+     * @param onProgress
+     * @param onError
+     * @param sampling
+     * @private
+     */
     _parse ( blob, groupToFeed, onLoad, onProgress, onError, sampling ) {
 
         const self = this
@@ -255,6 +277,11 @@ Object.assign( ASCLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param line
+     * @private
+     */
     _parseLine ( line ) {
 
         const values        = line.split( " " )
@@ -355,6 +382,11 @@ Object.assign( ASCLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param lines
+     * @private
+     */
     _parseLines ( lines ) {
 
         const firstLine = lines[ 0 ].split( " " )
@@ -394,6 +426,11 @@ Object.assign( ASCLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param lines
+     * @private
+     */
     _parseLinesAsXYZ ( lines ) {
 
         let words = []
@@ -411,6 +448,11 @@ Object.assign( ASCLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param lines
+     * @private
+     */
     _parseLinesAsXYZI ( lines ) {
 
         this._pointsHaveIntensity = true
@@ -431,6 +473,11 @@ Object.assign( ASCLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param lines
+     * @private
+     */
     _parseLinesAsXYZRGB ( lines ) {
 
         this._pointsHaveColor = true
@@ -453,6 +500,11 @@ Object.assign( ASCLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param lines
+     * @private
+     */
     _parseLinesAsXYZnXnYnZ ( lines ) {
 
         let words = [];
@@ -464,6 +516,11 @@ Object.assign( ASCLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param lines
+     * @private
+     */
     _parseLinesAsXYZIRGB ( lines ) {
 
         this._pointsHaveIntensity = true
@@ -487,6 +544,11 @@ Object.assign( ASCLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param lines
+     * @private
+     */
     _parseLinesAsXYZInXnYnZ ( lines ) {
 
         let words = [];
@@ -497,6 +559,11 @@ Object.assign( ASCLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param lines
+     * @private
+     */
     _parseLinesAsXYZRGBnXnYnZ ( lines ) {
 
         this._pointsHaveColor   = true
@@ -523,6 +590,11 @@ Object.assign( ASCLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param lines
+     * @private
+     */
     _parseLinesAsXYZIRGBnXnYnZ ( lines ) {
 
         this._pointsHaveIntensity = true
@@ -550,6 +622,11 @@ Object.assign( ASCLoader.prototype, {
         }
     },
 
+    /**
+     *
+     * @param line
+     * @private
+     */
     _parseLineB ( line ) {
 
         const values        = line.split( " " )
@@ -569,6 +646,11 @@ Object.assign( ASCLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param line
+     * @private
+     */
     _parseLineC: function ( line ) {
 
         const values        = line.split( " " )
@@ -588,6 +670,10 @@ Object.assign( ASCLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @private
+     */
     _offsetPoints () {
 
         const offset         = (this._autoOffset) ? this._boundingBox.getCenter() : this._offset
@@ -604,6 +690,11 @@ Object.assign( ASCLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param groupToFeed
+     * @private
+     */
     _createCloudPoint ( groupToFeed ) {
 
         const SPLIT_LIMIT        = 1000000
@@ -668,6 +759,11 @@ Object.assign( ASCLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param group
+     * @private
+     */
     _createSubCloudPoint ( group ) {
 
         const numberOfPoints = this._points.length;

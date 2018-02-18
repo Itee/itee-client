@@ -1,5 +1,11 @@
 /**
- * Created by Tristan on 31/01/2017.
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ *
+ * @file Todo
+ *
+ * @example Todo
+ *
  */
 
 /* eslint-env browser */
@@ -23,6 +29,12 @@ const STATE   = {
 const xVector = new Vector3( 1, 0, 0 )
 const yVector = new Vector3( 0, 1, 0 )
 
+/**
+ *
+ * @param camera
+ * @param domElement
+ * @constructor
+ */
 function TCameraPathController ( camera, domElement ) {
 
     if ( !camera ) {
@@ -355,6 +367,10 @@ function TCameraPathController ( camera, domElement ) {
 
 Object.assign( TCameraPathController.prototype, EventDispatcher.prototype, {
 
+    /**
+     *
+     * @param path
+     */
     setPath( path ) {
 
         this.currentPath = path
@@ -362,6 +378,11 @@ Object.assign( TCameraPathController.prototype, EventDispatcher.prototype, {
 
     },
 
+    /**
+     *
+     * @param paths
+     * @param nameOfFirstPathToFollow
+     */
     setPaths( paths, nameOfFirstPathToFollow ) {
 
         this.paths            = paths
@@ -448,6 +469,10 @@ Object.assign( TCameraPathController.prototype, EventDispatcher.prototype, {
 
     },
 
+    /**
+     *
+     * @param quat
+     */
     setMouseQuat( quat ) {
 
     this.orientation.y = Math.asin( quat.y ) * 2
@@ -455,12 +480,19 @@ Object.assign( TCameraPathController.prototype, EventDispatcher.prototype, {
 
 },
 
+    /**
+     *
+     */
     getCurrentPathPosition() {
 
         return this.currentPath.getPointAt( this.currentPathPosition )
 
     },
 
+    /**
+     *
+     * @return {undefined}
+     */
     getNextPathPosition() {
 
         var nextPosition = undefined
@@ -475,6 +507,10 @@ Object.assign( TCameraPathController.prototype, EventDispatcher.prototype, {
 
     },
 
+    /**
+     *
+     * @return {number}
+     */
     getDistanceFromStart() {
 
         //Linear distance
@@ -489,6 +525,9 @@ Object.assign( TCameraPathController.prototype, EventDispatcher.prototype, {
 
     },
 
+    /**
+     *
+     */
     lookAtPath() {
 
         // Set lookup point at the camera height
@@ -502,6 +541,10 @@ Object.assign( TCameraPathController.prototype, EventDispatcher.prototype, {
 
     },
 
+    /**
+     *
+     * @param position
+     */
     goTo( position ) {
 
         //Todo: Should use 2D instead of 3D !

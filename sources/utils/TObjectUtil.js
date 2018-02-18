@@ -11,6 +11,12 @@
 /* eslint-env browser */
 import { isObject } from '../validators/TObjectValidator'
 
+/**
+ *
+ * @param target
+ * @param source
+ * @return {*}
+ */
 export function extend ( target, source ) {
 
     let output = Object.assign( {}, target )
@@ -70,7 +76,12 @@ export function serializeObject () {
 
 }
 
-// todo think about all possibility of this statement !!!
+/**
+ *
+ * @param ChildClass
+ * @param ParentClassOrObject
+ * @return {*}
+ */
 export function extendObject ( ChildClass, ParentClassOrObject ) {
 
     if ( ChildClass.constructor === Function && ParentClassOrObject.constructor === Function ) {
@@ -131,6 +142,12 @@ export function extendObject ( ChildClass, ParentClassOrObject ) {
 
 }
 
+/**
+ *
+ * @param particles
+ * @param path
+ * @param interval
+ */
 export function createInterval ( particles, path, interval ) {
 
     var globalOffset = 0;

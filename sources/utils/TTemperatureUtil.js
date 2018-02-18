@@ -18,6 +18,12 @@ export const FAHRENHEIT_CELSIUS_COEFFICIENT = 1.8
 export const FAHRENHEIT_CELSIUS_CONSTANTE   = 32.0
 export const KELVIN_CELSIUS_CONSTANTE       = 273.14999999955
 
+/**
+ *
+ * @param celsius
+ * @param precisionPointAt
+ * @return {string}
+ */
 export function celsiusToKelvin ( celsius, precisionPointAt ) {
 
     //Check if required parameter is valid
@@ -31,6 +37,12 @@ export function celsiusToKelvin ( celsius, precisionPointAt ) {
 
 }
 
+/**
+ *
+ * @param celsius
+ * @param precisionPointAt
+ * @return {string}
+ */
 export function celsiusToFahrenheit ( celsius, precisionPointAt ) {
 
     //Check if required parameter is valid
@@ -44,6 +56,12 @@ export function celsiusToFahrenheit ( celsius, precisionPointAt ) {
 
 }
 
+/**
+ *
+ * @param fahrenheit
+ * @param precisionPointAt
+ * @return {string}
+ */
 export function fahrenheitToCelsius ( fahrenheit, precisionPointAt ) {
 
     //Check if required parameter is valid
@@ -57,6 +75,12 @@ export function fahrenheitToCelsius ( fahrenheit, precisionPointAt ) {
 
 }
 
+/**
+ *
+ * @param fahrenheit
+ * @param precisionPointAt
+ * @return {string}
+ */
 export function fahrenheitToKelvin ( fahrenheit, precisionPointAt ) {
 
     //Check if required parameter is valid
@@ -70,6 +94,12 @@ export function fahrenheitToKelvin ( fahrenheit, precisionPointAt ) {
 
 }
 
+/**
+ *
+ * @param kelvin
+ * @param precisionPointAt
+ * @return {string}
+ */
 export function kelvinToCelsius ( kelvin, precisionPointAt ) {
 
     //Check if required parameter is valid
@@ -83,6 +113,12 @@ export function kelvinToCelsius ( kelvin, precisionPointAt ) {
 
 }
 
+/**
+ *
+ * @param kelvin
+ * @param precisionPointAt
+ * @return {string}
+ */
 export function kelvinToFahrenheit ( kelvin, precisionPointAt ) {
 
     //Check if required parameter is valid

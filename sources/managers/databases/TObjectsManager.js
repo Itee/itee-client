@@ -2,7 +2,7 @@
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  *
- * @class TScenesManager
+ * @class ClassName
  * @classdesc Todo...
  * @example Todo...
  *
@@ -30,8 +30,17 @@ function TObjectsManager () {
 
 Object.assign( TObjectsManager.prototype, TDataBaseManager.prototype, {
 
+    /**
+     *
+     */
     constructor: TObjectsManager,
 
+    /**
+     *
+     * @param jsonData
+     * @param onError
+     * @return {*}
+     */
     convertJsonToObject3D ( jsonData, onError ) {
 
         // Todo factory
@@ -208,6 +217,9 @@ Object.assign( TObjectsManager.prototype, TDataBaseManager.prototype, {
 
 Object.defineProperties( TObjectsManager.prototype, {
 
+    /**
+     *
+     */
     _onJson: {
         value: function _onJson ( jsonData, onSuccess, onProgress, onError ) {
 

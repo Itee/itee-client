@@ -26,6 +26,11 @@ import { TOrchestrator } from '../cores/TOrchestrator'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { TCache } from '../cores/TCache'
 
+/**
+ *
+ * @return {*}
+ * @constructor
+ */
 function TDataBaseManager () {
 
     let _basePath     = '/'

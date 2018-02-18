@@ -1500,6 +1500,14 @@ Object.assign( TApplication, {
     },
 
     // 3d helper
+    /**
+     *
+     * @param particularEmbranchments
+     * @param color
+     * @param generateSpritId
+     * @param filters
+     * @return {Group}
+     */
     createParticularEmbranchmentGroup ( particularEmbranchments, color, generateSpritId, filters ) {
 
         if ( !particularEmbranchments ) {
@@ -1608,6 +1616,14 @@ Object.assign( TApplication, {
 
     },
 
+    /**
+     *
+     * @param nodes
+     * @param color
+     * @param generateSpritId
+     * @param filters
+     * @return {Group}
+     */
     createNodesGroup ( nodes, color, generateSpritId, filters ) {
 
         if ( !nodes ) {
@@ -1694,6 +1710,14 @@ Object.assign( TApplication, {
 
     },
 
+    /**
+     *
+     * @param sections
+     * @param color
+     * @param generateSpritId
+     * @param filters
+     * @return {Group}
+     */
     createSectionGroup ( sections, color, generateSpritId, filters ) {
 
         if ( !sections ) {
@@ -1791,6 +1815,14 @@ Object.assign( TApplication, {
 
     },
 
+    /**
+     *
+     * @param pathFile
+     * @param color
+     * @param generateSpritId
+     * @param filters
+     * @return {Group}
+     */
     createPathGroup ( pathFile, color, generateSpritId, filters ) {
 
         if ( !pathFile ) {
@@ -1881,6 +1913,12 @@ Object.assign( TApplication, {
 
     },
 
+    /**
+     *
+     * @param message
+     * @param parameters
+     * @return {Sprite}
+     */
     createSprite ( message, parameters ) {
 
         var spriteSideLength = (parameters && parameters.spriteSideLength) ? parameters.spriteSideLength : 300;
@@ -1917,6 +1955,11 @@ Object.assign( TApplication, {
 
     },
 
+    /**
+     *
+     * @param splinePaths
+     * @return {Group}
+     */
     createFlowParticlesGroup ( splinePaths ) {
 
         if ( !splinePaths ) {
@@ -1978,6 +2021,12 @@ Object.assign( TApplication, {
 
     },
 
+    /**
+     *
+     * @param meshGroup
+     * @param debug
+     * @return {Array}
+     */
     computeSplinePath ( meshGroup, debug ) {
 
         if ( !meshGroup ) {

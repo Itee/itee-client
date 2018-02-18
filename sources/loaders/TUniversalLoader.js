@@ -34,24 +34,44 @@ import { degreesToRadians } from '../maths/TMath'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { FileFormat } from '../cores/TConstants'
 
+// Helpers
+/**
+ *
+ * @param fileUrl
+ * @return {string|*}
+ */
 function getFilePath ( fileUrl ) {
 
     return fileUrl.substring( 0, fileUrl.lastIndexOf( '/' ) )
 
 }
 
+/**
+ *
+ * @param fileUrl
+ * @return {string|*}
+ */
 function getFileName ( fileUrl ) {
 
     return fileUrl.substring( fileUrl.lastIndexOf( '/' ) + 1 )
 
 }
 
+/**
+ *
+ * @param fileName
+ */
 function getFileExtension ( fileName ) {
 
     return fileName.slice( (fileName.lastIndexOf( "." ) - 1 >>> 0) + 2 );
 
 }
 
+/**
+ *
+ * @param fileUrl
+ * @return {string|*}
+ */
 function computeUrl ( fileUrl ) {
 
     const filePath = getFilePath( fileUrl )
@@ -61,6 +81,12 @@ function computeUrl ( fileUrl ) {
 
 }
 
+/**
+ *
+ * @param manager
+ * @param logger
+ * @constructor
+ */
 function TUniversalLoader ( manager = DefaultLoadingManager, logger = TLogger ) {
 
     this.manager = manager
@@ -70,6 +96,13 @@ function TUniversalLoader ( manager = DefaultLoadingManager, logger = TLogger ) 
 
 Object.assign( TUniversalLoader.prototype, {
 
+    /**
+     *
+     * @param files
+     * @param onLoad
+     * @param onProgress
+     * @param onError
+     */
     load ( files, onLoad, onProgress, onError ) {
 
         if ( !files ) {
@@ -113,6 +146,13 @@ Object.assign( TUniversalLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param file
+     * @param onLoad
+     * @param onProgress
+     * @param onError
+     */
     loadSingleFile ( file, onLoad, onProgress, onError ) {
 
         const fileUrl       = file.url
@@ -158,6 +198,13 @@ Object.assign( TUniversalLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param files
+     * @param onLoad
+     * @param onProgress
+     * @param onError
+     */
     loadAssociatedFiles ( files, onLoad, onProgress, onError ) {
 
         const firstFile          = files[ 0 ]
@@ -197,6 +244,14 @@ Object.assign( TUniversalLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param file
+     * @param onLoad
+     * @param onProgress
+     * @param onError
+     * @private
+     */
     _loadAsc ( file, onLoad, onProgress, onError ) {
 
         const loader = new ASCLoader( this.manager )
@@ -209,6 +264,14 @@ Object.assign( TUniversalLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param file
+     * @param onLoad
+     * @param onProgress
+     * @param onError
+     * @private
+     */
     _loadDbf ( file, onLoad, onProgress, onError ) {
 
         const loader = new DBFLoader( this.manager )
@@ -221,6 +284,14 @@ Object.assign( TUniversalLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param file
+     * @param onLoad
+     * @param onProgress
+     * @param onError
+     * @private
+     */
     _loadFbx ( file, onLoad, onProgress, onError ) {
 
         const loader = new FBXLoader2( this.manager )
@@ -242,6 +313,14 @@ Object.assign( TUniversalLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param file
+     * @param onLoad
+     * @param onProgress
+     * @param onError
+     * @private
+     */
     _loadJson ( file, onLoad, onProgress, onError ) {
 
         const loader = new ObjectLoader( this.manager )
@@ -254,6 +333,14 @@ Object.assign( TUniversalLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param file
+     * @param onLoad
+     * @param onProgress
+     * @param onError
+     * @private
+     */
     _loadObj ( file, onLoad, onProgress, onError ) {
 
         const loader = new OBJLoader( this.manager )
@@ -266,6 +353,14 @@ Object.assign( TUniversalLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param file
+     * @param onLoad
+     * @param onProgress
+     * @param onError
+     * @private
+     */
     _loadShp ( file, onLoad, onProgress, onError ) {
 
         const loader = new SHPLoader( this.manager )
@@ -300,6 +395,14 @@ Object.assign( TUniversalLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param file
+     * @param onLoad
+     * @param onProgress
+     * @param onError
+     * @private
+     */
     _loadStl ( file, onLoad, onProgress, onError ) {
 
         const loader = new STLLoader( this.manager )
@@ -324,6 +427,15 @@ Object.assign( TUniversalLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param objFile
+     * @param mtlFile
+     * @param onLoad
+     * @param onProgress
+     * @param onError
+     * @private
+     */
     _loadObjMtlCouple ( objFile, mtlFile, onLoad, onProgress, onError ) {
 
         const mtlLoader = new MTLLoader( this.manager )
@@ -361,6 +473,15 @@ Object.assign( TUniversalLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param shpFile
+     * @param dbfFile
+     * @param onLoad
+     * @param onProgress
+     * @param onError
+     * @private
+     */
     _loadShpDbfCouple ( shpFile, dbfFile, onLoad, onProgress, onError ) {
 
         let _shapes = undefined

@@ -1,8 +1,12 @@
-/**  planets.js x.x.x - xx/xx/xxxx - Mr. X
+/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  *
- *    This script allow planet of solar system
+ * @class Todo...
+ * @classdesc Todo...
+ * @example Todo...
  *
- * */
+ */
 
 /* eslint-env browser */
 
@@ -104,6 +108,10 @@ Object.assign( TPlanets, {
 
 },
 
+    /**
+     *
+     * @return {Mesh}
+     */
     createSun () {
     var geometry = new SphereGeometry( 6.963420, 32, 32 ) // 696 342
     var texture  = TextureLoader.load( TPlanets.baseURL + 'images/sunmap.jpg' )  //bluesunmap.png')
@@ -116,6 +124,10 @@ Object.assign( TPlanets, {
     return mesh
 },
 
+    /**
+     *
+     * @return {Mesh}
+     */
     createMercury () {
     var geometry = new SphereGeometry( 0.024397, 32, 32 )     // 2 439,7
     var material = new MeshPhongMaterial( {
@@ -127,6 +139,10 @@ Object.assign( TPlanets, {
     return mesh
 },
 
+    /**
+     *
+     * @return {Mesh}
+     */
     createVenus() {
     var geometry = new SphereGeometry( 0.060518, 32, 32 )     // 6 051,8
     var material = new MeshPhongMaterial( {
@@ -138,6 +154,10 @@ Object.assign( TPlanets, {
     return mesh
 },
 
+    /**
+     *
+     * @return {Mesh}
+     */
     createEarth () {
 
     //
@@ -193,6 +213,10 @@ Object.assign( TPlanets, {
 
 },
 
+    /**
+     *
+     * @return {Mesh}
+     */
     createEarthCloud () {
     // create destination canvas
     var canvasResult    = document.createElement( 'canvas' )
@@ -252,6 +276,10 @@ Object.assign( TPlanets, {
     return mesh
 },
 
+    /**
+     *
+     * @return {Mesh}
+     */
     createMoon () {
     var geometry = new SphereGeometry( 0.017374, 32, 32 )
     var material = new MeshPhongMaterial( {
@@ -263,6 +291,10 @@ Object.assign( TPlanets, {
     return mesh
 },
 
+    /**
+     *
+     * @return {Mesh}
+     */
     createMars () {
     var geometry = new SphereGeometry( 0.033762, 32, 32 )
     var material = new MeshPhongMaterial( {
@@ -274,6 +306,10 @@ Object.assign( TPlanets, {
     return mesh
 },
 
+    /**
+     *
+     * @return {Mesh}
+     */
     createJupiter() {
     var geometry = new SphereGeometry( 0.71492, 32, 32 )
     var texture  = TextureLoader.load( TPlanets.baseURL + 'images/jupiter2_4k.jpg' )
@@ -286,6 +322,10 @@ Object.assign( TPlanets, {
     return mesh
 },
 
+    /**
+     *
+     * @return {Mesh}
+     */
     createSaturn () {
     var geometry = new SphereGeometry( 0.60268, 32, 32 )
     var texture  = TextureLoader.load( TPlanets.baseURL + 'images/saturnmap.jpg' )
@@ -298,6 +338,10 @@ Object.assign( TPlanets, {
     return mesh
 },
 
+    /**
+     *
+     * @return {Mesh}
+     */
     createSaturnRing () {
     // create destination canvas
     var canvasResult    = document.createElement( 'canvas' )
@@ -358,6 +402,10 @@ Object.assign( TPlanets, {
     return mesh
 },
 
+    /**
+     *
+     * @return {Mesh}
+     */
     createUranus () {
     var geometry = new SphereGeometry( 0.25559, 32, 32 )
     var texture  = TextureLoader.load( TPlanets.baseURL + 'images/uranusmap.jpg' )
@@ -370,6 +418,10 @@ Object.assign( TPlanets, {
     return mesh
 },
 
+    /**
+     *
+     * @return {Mesh}
+     */
     createUranusRing () {
     // create destination canvas
     var canvasResult    = document.createElement( 'canvas' )
@@ -430,6 +482,10 @@ Object.assign( TPlanets, {
     return mesh
 },
 
+    /**
+     *
+     * @return {Mesh}
+     */
     createNeptune () {
     var geometry = new SphereGeometry( 0.24764, 32, 32 )     // 24 764
     var texture  = TextureLoader.load( TPlanets.baseURL + 'images/neptunemap.jpg' )
@@ -442,6 +498,10 @@ Object.assign( TPlanets, {
     return mesh
 },
 
+    /**
+     *
+     * @return {Mesh}
+     */
     createPluto () {
     var geometry = new SphereGeometry( 0.01153, 32, 32 )
     var material = new MeshPhongMaterial( {
@@ -457,6 +517,9 @@ Object.assign( TPlanets, {
 
 Object.assign( TPlanets.prototype, Geometry.prototype, {
 
+    /**
+     *
+     */
     constructor: TPlanets
 
 } )

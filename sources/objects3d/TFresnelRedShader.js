@@ -1,11 +1,21 @@
 /**
- * @author alteredq / http://alteredqualia.com/
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ *
+ * @class Todo...
+ * @classdesc Todo...
+ * @example Todo...
+ *
  *
  * Based on Nvidia Cg tutorial
  */
 
 /* eslint-env browser */
 
+/**
+ *
+ * @type {{uniforms: {mRefractionRatio: {type: string, value: number}, mFresnelBias: {type: string, value: number}, mFresnelPower: {type: string, value: number}, mFresnelScale: {type: string, value: number}, tCube: {type: string, value: null}, alpha: {type: string, value: number}}, vertexShader: string, fragmentShader: string}}
+ */
 const TFresnelRedShader = {
 
     uniforms: {

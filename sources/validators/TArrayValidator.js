@@ -1,5 +1,11 @@
 /**
- * Created by Tristan on 17/08/2015.
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ *
+ * @class Todo...
+ * @classdesc Todo...
+ * @example Todo...
+ *
  */
 
 /* eslint-env browser */
@@ -324,6 +330,11 @@ export function isNotArrayOfEmptyString ( data ) {
 //                         |___/
 //Todo: ARRAY OF ARRAY
 
+/**
+ *
+ * @param data
+ * @return {boolean}
+ */
 export function isArrayOfArray ( data ) {
 
     if ( isEmptyArray( data ) ) {
@@ -340,6 +351,11 @@ export function isArrayOfArray ( data ) {
 
 }
 
+/**
+ *
+ * @param data
+ * @return {boolean}
+ */
 export function isNotArrayOfArray ( data ) {
 
     if ( isEmptyArray( data ) ) {
@@ -362,6 +378,11 @@ export function isNotArrayOfArray ( data ) {
 //   | (_) | |_) | |  __/ (__| |_\__ \
 //    \___/|_.__// |\___|\___|\__|___/
 //             |__/
+/**
+ *
+ * @param data
+ * @return {boolean}
+ */
 export function isArrayOfObject ( data ) {
 
     if ( isEmptyArray( data ) ) {
@@ -378,6 +399,11 @@ export function isArrayOfObject ( data ) {
 
 }
 
+/**
+ *
+ * @param data
+ * @return {boolean}
+ */
 export function isNotArrayOfObject ( data ) {
 
     if ( isEmptyArray( data ) ) {

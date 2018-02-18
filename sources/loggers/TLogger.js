@@ -2,9 +2,9 @@
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  *
- * @file Todo
- *
- * @example Todo
+ * @class Todo...
+ * @classdesc Todo...
+ * @example Todo...
  *
  */
 
@@ -17,6 +17,10 @@ import {
     isArrayOfObject
 } from '../validators/_validators'
 
+/**
+ *
+ * @type {Object}
+ */
 const LogOutput = Object.freeze( {
     Console:  1,
     Html:     2,
@@ -26,6 +30,10 @@ const LogOutput = Object.freeze( {
     All: 255
 } )
 
+/**
+ *
+ * @type {Object}
+ */
 const LogLevel = Object.freeze( {
     Info:    0,
     Warning: 1,
@@ -37,6 +45,11 @@ const LogLevel = Object.freeze( {
  *  @level String who represent the gravity level of message between "error | warn (for warning) | other (will display like info message)"
  *  @message String message to display
  */
+/**
+ *
+ * @param outputs
+ * @constructor
+ */
 function TLogger ( outputs ) {
 
     this.outputs      = outputs || LogOutput.All
@@ -47,6 +60,12 @@ function TLogger ( outputs ) {
 
 Object.assign( TLogger.prototype, {
 
+    /**
+     *
+     * @param level
+     * @return {string}
+     * @private
+     */
     _levelToString ( level ) {
 
         let levelString = ''
@@ -75,10 +94,23 @@ Object.assign( TLogger.prototype, {
 
     },
 
+    /**
+     *
+     * @param objError
+     * @return {string}
+     * @private
+     */
     _formatObjectError ( objError ) {
         return '<b>' + objError.title.toUpperCase() + '</b><br>' + objError.message
     },
 
+    /**
+     *
+     * @param level
+     * @param datas
+     * @return {*}
+     * @private
+     */
     _formatTrace ( level, datas ) {
 
         const levelString = _levelToString( level )
@@ -116,6 +148,10 @@ Object.assign( TLogger.prototype, {
     },
 
     // Todo: Use listener models
+    /**
+     *
+     * @param message
+     */
     dispatch ( message ) {
 
         const level        = message.level
@@ -249,6 +285,10 @@ Object.assign( TLogger.prototype, {
 
     },
 
+    /**
+     *
+     * @param info
+     */
     log ( info ) {
         this.dispatch( {
             level:   LogLevel.Info,
@@ -256,6 +296,10 @@ Object.assign( TLogger.prototype, {
         } )
     },
 
+    /**
+     *
+     * @param warning
+     */
     warn ( warning ) {
         this.dispatch( {
             level:   LogLevel.Warning,
@@ -263,6 +307,10 @@ Object.assign( TLogger.prototype, {
         } )
     },
 
+    /**
+     *
+     * @param error
+     */
     error ( error ) {
         this.dispatch( {
             level:   LogLevel.Error,
