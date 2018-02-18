@@ -884,6 +884,111 @@ function TApplication ( container, parameters, onReady ) {
 
     }
 
+    function _initURLQuery ( parameters ) {
+
+        const _parameters = parameters || {
+            schema: '',
+            action: '',
+            query:  JSON.stringify( {} )
+        }
+
+        let manager   = undefined
+        let processor = undefined
+        switch ( _parameters.schema ) {
+
+            case 'building':
+                manager   = this.buildingsManager
+                processor = this._processBuildings
+                break
+
+            case 'object':
+                manager   = this.objectsManager
+                processor = this._processObjects
+                break
+
+            default:
+                return
+//                throw new RangeError( `Invalid switch parameter: ${_parameters.schema}` )
+//                break
+
+        }
+
+        let action = undefined
+        switch ( _parameters.action ) {
+
+            case 'lookAt':
+                action = manager.read
+                break
+
+            default:
+                return
+//                throw new RangeError( `Invalid switch parameter: ${_parameters.action}` )
+//                break
+
+        }
+
+//        const query = URL.decode( _parameters.query )
+        const jsonQuery = JSON.parse( _parameters.query )
+
+        let dbQuery = undefined
+        if ( jsonQuery.ids ) {
+
+            dbQuery = jsonQuery.ids
+
+        } else if ( jsonQuery.where ) {
+
+            dbQuery = jsonQuery.where
+
+        }
+
+        // Todo: protected against multiple identical parents
+        action.call( manager, dbQuery, processor.bind( this, null, true, isReady ) )
+
+        function isReady ( object ) {
+
+            if ( typeof object.geometry !== 'string' && typeof object.material[ 0 ] !== 'string' ) {
+
+                // Care trick here: parent will be override under scene.add so keep parent id before
+                const parentId = object.parent
+
+                // Update carl batiment button value
+                // Care parent will not be the scene for ever !!!
+                self.detailBtn.style.display='none'
+                self.createBtn.style.display='none'
+//                self.detailBtn.val( parentId )
+//                self.createBtn.val( parentId )
+
+                object.parent = null
+
+                self.webglViewport.scene.add( object )
+                if ( object.type === 'Mesh' ) {
+                    self.webglViewport.addRaycastables( [ object ] )
+                }
+
+                // Object have no position from revit export so comput bounding sphere an get center !
+                const objectPosition = object.position
+                object.geometry.computeBoundingSphere()
+
+                const boundingSphereRadius = object.geometry.boundingSphere.radius * 2
+
+                self.webglViewport.camera.position.x = objectPosition.x + boundingSphereRadius
+                self.webglViewport.camera.position.y = objectPosition.y + boundingSphereRadius
+                self.webglViewport.camera.position.z = objectPosition.z + boundingSphereRadius
+                self.webglViewport.camera.updateProjectionMatrix()
+
+                self.webglViewport.orbitControl.target.x = objectPosition.x
+                self.webglViewport.orbitControl.target.y = objectPosition.y
+                self.webglViewport.orbitControl.target.z = objectPosition.z
+                self.webglViewport.orbitControl.update()
+
+                self._initScenesOf( parentId, null, true )
+
+            }
+
+        }
+
+    }
+
     function _initListener () {
 
         window.addEventListener( 'message', function ( event ) {
