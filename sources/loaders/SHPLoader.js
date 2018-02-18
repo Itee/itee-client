@@ -12,7 +12,7 @@
 
 /* eslint-env browser */
 
-import { DefaultLogger } from '../Loggers/TLogger'
+import { DefaultLogger as TLogger } from '../Loggers/TLogger'
 import {
     DefaultLoadingManager,
     FileLoader,
@@ -106,7 +106,7 @@ function segmentContains ( p0, p1, p2 ) {
  * @constructor
  */
 
-function SHPLoader ( manager = DefaultLoadingManager, logger = DefaultLogger ) {
+function SHPLoader ( manager = DefaultLoadingManager, logger = TLogger ) {
 
     this.manager = manager;
     this.logger  = logger;
