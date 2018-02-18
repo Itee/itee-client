@@ -75,12 +75,7 @@ function TCameraPathController ( camera, domElement ) {
         y: new Quaternion()
     }
 
-    this.setMouseQuat = function ( quat ) {
 
-        this.orientation.y = Math.asin( quat.y ) * 2
-        this.orientation.x = 0
-
-    }
 
     this.mouseButtons = {
         ORBIT: MOUSE.LEFT,
@@ -450,6 +445,13 @@ Object.assign( TCameraPathController.prototype, EventDispatcher.prototype, {
     },
 
     getCurrentPathPosition: function () {
+    setMouseQuat( quat ) {
+
+    this.orientation.y = Math.asin( quat.y ) * 2
+    this.orientation.x = 0
+
+},
+
 
         return this.currentPath.getPointAt( this.currentPathPosition )
 
