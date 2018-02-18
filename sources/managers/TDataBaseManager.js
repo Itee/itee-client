@@ -23,6 +23,7 @@ import {
     HttpStatusCode
 } from '../cores/TConstants'
 import { TOrchestrator } from '../cores/TOrchestrator'
+import { TLogger } from '../loggers/TLogger'
 import { TCache } from '../cores/TCache'
 
 function TDataBaseManager () {
@@ -118,11 +119,11 @@ Object.defineProperties( TDataBaseManager, {
 
             if ( status === HttpStatusCode.NoContent ) {
 
-                console.warn( 'Unable to retrieve data...' )
+                TLogger.warn( 'Unable to retrieve data...' )
 
             } else if ( status !== HttpStatusCode.Ok ) {
 
-                console.error( 'An error occurs when retrieve data from database !!!' )
+                TLogger.error( 'An error occurs when retrieve data from database !!!' )
 
             } else {
 
@@ -199,7 +200,7 @@ Object.defineProperties( TDataBaseManager.prototype, {
             if ( !TDataBaseManager._statusOk( status ) ) { return }
 
             if ( !response ) {
-                console.error( 'TDataBaseManager.onLoad: No data receive !' )
+                TLogger.error( 'TDataBaseManager.onLoad: No data receive !' )
                 return
             }
 
@@ -273,7 +274,7 @@ Object.defineProperties( TDataBaseManager.prototype, {
 
             } else {
 
-                //console.log( progressEvent )
+                //TLogger.log( progressEvent )
 
             }
 
@@ -302,7 +303,7 @@ Object.defineProperties( TDataBaseManager.prototype, {
 
             } else {
 
-                console.error( errorEvent )
+                TLogger.error( errorEvent )
 
             }
 
@@ -522,7 +523,7 @@ Object.defineProperties( TDataBaseManager.prototype, {
     _searchWhere: {
         value: function _readOne ( query, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-            Manager.requestServer(
+            TDataBaseManager.requestServer(
                 HttpVerb.Read,
                 this.basePath,
                 query,
@@ -663,7 +664,7 @@ Object.assign( TDataBaseManager.prototype, {
     create ( data, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         let dataArray = []
-        const onError = onErrorCallback || function ( error ) { console.error( error ) }
+        const onError = onErrorCallback || function ( error ) { TLogger.error( error ) }
 
         if ( !data ) { onError( 'TDataBaseManager.create: Data cannot be null or undefined !' ) }
 
@@ -695,7 +696,7 @@ Object.assign( TDataBaseManager.prototype, {
      */
     read ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        const onError = onErrorCallback || function ( error ) { console.error( error ) }
+        const onError = onErrorCallback || function ( error ) { TLogger.error( error ) }
 
         if ( !ids ) { onError( 'TDataBaseManager.read: Ids cannot be null or undefined !' ) }
 
@@ -757,7 +758,7 @@ Object.assign( TDataBaseManager.prototype, {
      */
     update ( ids, data, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        const onError = onErrorCallback || function ( error ) { console.error( error ) }
+        const onError = onErrorCallback || function ( error ) { TLogger.error( error ) }
 
         if ( !ids ) { onError( 'TDataBaseManager.update: Ids cannot be null or undefined !' ) }
         if ( !data ) { onError( 'TDataBaseManager.update: Data cannot be null or undefined !' ) }
@@ -790,7 +791,7 @@ Object.assign( TDataBaseManager.prototype, {
      */
     delete ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        const onError = onErrorCallback || function ( error ) { console.error( error ) }
+        const onError = onErrorCallback || function ( error ) { TLogger.error( error ) }
 
         if ( !ids ) { onError( 'TDataBaseManager.delete: Ids data cannot be null or undefined !' ) }
 
