@@ -11,12 +11,14 @@
 
 /* eslint-env browser */
 
-import { TDataBaseManager } from '../TDataBaseManager'
 import {
     Color,
     MeshPhongMaterial,
     LineBasicMaterial
 } from 'threejs-full-es6'
+import { TLogger } from '../../loggers/TLogger'
+import { TDataBaseManager } from '../TDataBaseManager'
+
 
 /**
  *
@@ -121,7 +123,7 @@ TMaterialsManager.prototype = Object.assign( Object.create( TDataBaseManager.pro
                 break;
 
             default:
-                console.error( 'Unknown material type !' );
+                TLogger.error( 'Unknown material type !' );
                 break;
 
         }
