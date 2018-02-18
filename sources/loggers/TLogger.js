@@ -113,7 +113,7 @@ Object.assign( TLogger.prototype, {
      */
     _formatTrace ( level, datas ) {
 
-        const levelString = _levelToString( level )
+        const levelString = this._levelToString( level )
         const tmpLevel    = `${levelString}_${this.counterTrace}`
 
         if ( isString( datas ) ) {
@@ -155,7 +155,7 @@ Object.assign( TLogger.prototype, {
     dispatch ( message ) {
 
         const level        = message.level
-        let formattedMessage = _formatTrace( level )
+        let formattedMessage = this._formatTrace( level )
 
         // Root message in function of gravity
         switch ( level ) {
