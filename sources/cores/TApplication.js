@@ -602,12 +602,14 @@ function TApplication ( container, parameters, onReady ) {
 
     function _initAvatarData ( parameters ) {
 
-        parameters = parameters || {}
+        const _parameters = parameters || {
+            url: ''
+        }
 
         const jsonLoader = new JSONLoader()
         //        jsonLoader.load( 'resources/models/json/oko/Oko_textured.json', function ( geometry, materials ) {
         //        jsonLoader.load( 'resources/models/json/oko/Oko_join.json', function ( geometry, materials ) {
-        jsonLoader.load( 'resources/models/json/John/John.json', function ( geometry, materials ) {
+        jsonLoader.load( _parameters.url, function ( geometry, materials ) {
             //        jsonLoader.load( 'resources/models/json/Ethan/Ethan_idle.json', function ( geometry, materials ) {
             //        jsonLoader.load( 'resources/models/json/Ethan/Ethan_idle_centered.json', function ( geometry, materials ) {
 
@@ -1119,7 +1121,7 @@ function TApplication ( container, parameters, onReady ) {
 
         _initModelData.call( self, _parameters.model )
         _initPointCloudData.call( self, _parameters.pointCloud )
-        //        _initAvatarData.call( self, _parameters.avatar )
+        _initAvatarData.call( self, _parameters.avatar )
         _initRemoteFiles.call( self, _parameters.files )
         _initURLQuery.call( self, _parameters.urlQuery )
 
