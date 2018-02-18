@@ -1,5 +1,7 @@
 /* eslint-env browser */
 
+import { DefaultLogger as TLogger } from '../loggers/TLogger'
+
 var dockspawn = { version: "0.0.2" };
 
 /**
