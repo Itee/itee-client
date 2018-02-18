@@ -35,7 +35,6 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
     convertJsonToObject3D ( jsonData, onError ) {
 
         // Todo factory
-        const self       = this
         const data       = jsonData
         const objectType = data.type
 
