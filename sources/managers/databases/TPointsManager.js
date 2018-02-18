@@ -19,7 +19,7 @@ import {
     Group
 } from 'threejs-full-es6'
 
-import { TLogger } from '../../loggers/TLogger'
+import { DefaultLogger as TLogger } from '../../loggers/TLogger'
 
 /**
  *

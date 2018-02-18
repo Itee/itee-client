@@ -48,7 +48,7 @@ import {
     OrbitControls
 } from 'threejs-full-es6'
 import Stats from 'stats.js'
-import { TLogger } from '../loggers/TLogger'
+import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { TOrbitControlsHelper } from '../objects3d/TOrbitControlsHelper'
 
 /**

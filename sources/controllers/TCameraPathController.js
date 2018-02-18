@@ -10,7 +10,7 @@ import {
     Vector3,
     EventDispatcher
 } from 'threejs-full-es6'
-import { TLogger } from '../loggers/TLogger'
+import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { PI_2 } from '../maths/TMath'
 
 var STATE   = {

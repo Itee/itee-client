@@ -23,7 +23,7 @@ import {
     HttpStatusCode
 } from '../cores/TConstants'
 import { TOrchestrator } from '../cores/TOrchestrator'
-import { TLogger } from '../loggers/TLogger'
+import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { TCache } from '../cores/TCache'
 
 function TDataBaseManager () {

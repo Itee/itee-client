@@ -15,7 +15,7 @@ import { extend } from '../utils/TUtils'
 import { TUniversalLoader } from '../loaders/TUniversalLoader'
 import { dockspawn } from '../third_party/dock-spawn'
 import { TViewport } from './TViewport'
-import { TLogger } from '../loggers/TLogger'
+import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { createInterval } from '../utils/TUtils'
 //import { SplitModifier } from '../../build/tmp/SplitModifier'
 

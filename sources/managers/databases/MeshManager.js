@@ -5,7 +5,7 @@
 
 /* eslint-env browser */
 
-import { TLogger } from '../../loggers/TLogger'
+import { DefaultLogger as TLogger } from '../../loggers/TLogger'
 import { TOrchestrator } from '../../cores/TOrchestrator'
 import {
     Geometry,

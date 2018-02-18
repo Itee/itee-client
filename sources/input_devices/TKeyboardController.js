@@ -16,7 +16,7 @@
 
 /* eslint-env browser */
 
-import { TLogger } from '../loggers/TLogger'
+import { DefaultLogger as TLogger } from '../loggers/TLogger'
 
 const KEYS = {
     8:  "backspace",
