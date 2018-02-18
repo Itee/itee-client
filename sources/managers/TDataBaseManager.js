@@ -734,8 +734,7 @@ Object.assign( TDataBaseManager.prototype, {
 
         } else if ( typeof ids === 'object' ) {
 
-            const query = ids
-            this._searchWhere( query, onLoadCallback, onProgressCallback, onError )
+            this._searchWhere( ids, onLoadCallback, onProgressCallback, onError )
 
         } else {
 
