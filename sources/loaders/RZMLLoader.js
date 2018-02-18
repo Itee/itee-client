@@ -44,7 +44,7 @@ RZMLLoader.prototype = {
 
     load: function ( url, onLoad, onProgress, onError ) {
 
-        console.time( "RZMLLoader" );
+        TLogger.time( "RZMLLoader" );
 
         var filePath = url.replace( /[^\/]*$/, '' )
 
@@ -105,7 +105,7 @@ RZMLLoader.prototype = {
             } );
         }
 
-        console.timeEnd( "RZMLLoader" );
+        TLogger.timeEnd( "RZMLLoader" );
 
         return this._createImagesPacks( filePath );
     },
