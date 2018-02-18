@@ -35,7 +35,7 @@ function TGeometriesManager () {
 
 }
 
-TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.prototype ), {
+Object.assign( TGeometriesManager.prototype, TDataBaseManager.prototype, {
 
     constructor: TGeometriesManager,
 
