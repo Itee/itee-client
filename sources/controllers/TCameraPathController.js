@@ -10,6 +10,7 @@ import {
     Vector3,
     EventDispatcher
 } from 'threejs-full-es6'
+import { Keys } from '../cores/TConstants'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { PI_2 } from '../maths/TMath'
 
@@ -65,8 +66,8 @@ function TCameraPathController ( camera, domElement ) {
     this.verticalOffset = 1.5
 
     this.keysCodes = {
-        forwardKeys:  [ KEYS.Z, KEYS.UP_ARROW ],
-        backwardKeys: [ KEYS.S, KEYS.BOTTOM_ARROW ]
+        forwardKeys:  [ Keys.Z, Keys.UP_ARROW ],
+        backwardKeys: [ Keys.S, Keys.BOTTOM_ARROW ]
     }
 
     // Mouse
@@ -291,7 +292,7 @@ function TCameraPathController ( camera, domElement ) {
 
         clearTimeout( self.timeoutId )
 
-        event.keyCode = KEYS.UP_ARROW
+        event.keyCode = Keys.UP_ARROW
         onKeyDown( event )
 
         self.timeoutId = setTimeout( onKeyUp.bind( self ), 750 )
@@ -302,7 +303,7 @@ function TCameraPathController ( camera, domElement ) {
 
         clearTimeout( self.timeoutId )
 
-        event.keyCode = KEYS.BOTTOM_ARROW
+        event.keyCode = Keys.BOTTOM_ARROW
         onKeyDown( event )
 
         self.timeoutId = setTimeout( onKeyUp.bind( self ), 750 )

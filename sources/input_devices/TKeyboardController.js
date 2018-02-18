@@ -17,65 +17,7 @@
 /* eslint-env browser */
 
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
-
-const KEYS = {
-    8:  "backspace",
-    9:  "tab",
-    13: "enter",
-    16: "shift",
-    17: "ctrl",
-    18: "alt",
-    27: "esc",
-    32: "space",
-    33: "pageup",
-    34: "pagedown",
-    35: "end",
-    36: "home",
-
-    LEFT_ARROW:   37,
-    UP_ARROW:     38,
-    RIGHT_ARROW:  39,
-    BOTTOM_ARROW: 40,
-    45:           "insert",
-    46:           "delete",
-    A:            65,
-    B:            66,
-    C:            67,
-    D:            68,
-    E:            69,
-    F:            70,
-    G:            71,
-    H:            72,
-    I:            73,
-    J:            74,
-    K:            75,
-    L:            76,
-    M:            77,
-    N:            78,
-    O:            79,
-    P:            80,
-    Q:            81,
-    R:            82,
-    S:            83,
-    T:            84,
-    U:            85,
-    V:            86,
-    W:            87,
-    X:            88,
-    Y:            89,
-    Z:            90,
-    186:          ";",
-    187:          "=",
-    188:          ",",
-    189:          "-",
-    190:          ".",
-    191:          "/",
-    219:          "[",
-    220:          "\\",
-    221:          "]",
-    222:          "'"
-}
-
+import { Keys } from '../cores/TConstants'
 // initialization
 function TKeyboardState() {
     // bind keyEvents
@@ -85,7 +27,7 @@ function TKeyboardState() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-TKeyboardState.k = KEYS
+TKeyboardState.k = Keys
 
 TKeyboardState.status = {};
 
