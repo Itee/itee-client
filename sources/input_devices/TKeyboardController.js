@@ -32,7 +32,7 @@ TKeyboardState.k = Keys
 TKeyboardState.status = {};
 
 TKeyboardState.keyName = function ( keyCode ) {
-    return ( TKeyboardState.k[ keyCode ] != null ) ?
+    return ( TKeyboardState.k[ keyCode ] !== null ) ?
         TKeyboardState.k[ keyCode ] :
         String.fromCharCode( keyCode );
 }

@@ -235,7 +235,7 @@ Object.assign( FBXLoader2, {
 
     convertFbxTimeToSeconds: function ( time ) {
 
-        if ( time == undefined ) {
+        if ( time === undefined ) {
             throw new Error( 'FBXLoader2: Unable to convert FBX time with null or undefined time !' );
         }
         if ( isNaN( parseFloat( time ) ) ) {
@@ -4415,7 +4415,7 @@ Object.assign( FBXTree.prototype, {
         var results = [];
         for ( var i = 0 ; i < conns.length ; ++i ) {
 
-            if ( conns[ i ][ 0 ] == id ) {
+            if ( conns[ i ][ 0 ] === id ) {
 
                 // 0 means scene root
                 var res = conns[ i ][ 1 ] === 0 ? -1 : conns[ i ][ 1 ];
@@ -4462,7 +4462,7 @@ Object.assign( FBXTree.prototype, {
         var res = [];
         for ( var i = 0 ; i < conns.length ; ++i ) {
 
-            if ( conns[ i ][ 1 ] == id ) {
+            if ( conns[ i ][ 1 ] === id ) {
 
                 // 0 means scene root
                 res.push( conns[ i ][ 0 ] === 0 ? -1 : conns[ i ][ 0 ] );
@@ -4509,7 +4509,7 @@ Object.assign( FBXTree.prototype, {
 
         for ( var i = 0 ; i < conns.length ; ++i ) {
 
-            if ( conns[ i ][ 0 ] == id && conns[ i ][ 1 ] == to ) {
+            if ( conns[ i ][ 0 ] === id && conns[ i ][ 1 ] === to ) {
 
                 // 0 means scene root
                 this.__cache_search_connection_type[ key ] = conns[ i ][ 2 ];

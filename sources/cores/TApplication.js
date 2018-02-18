@@ -2698,7 +2698,7 @@ Object.assign( TApplication.prototype, {
         this.dataPanel.appendChild( paragraph )
 
         paragraph                = document.createElement( 'p' )
-        var regulatedStringState = (sectionData.regulated == 0) ? 'Non' : 'Oui'
+        var regulatedStringState = (sectionData.regulated === 0) ? 'Non' : 'Oui'
         paragraph.textContent    = "Regulé: " + regulatedStringState
         this.dataPanel.appendChild( paragraph )
 
