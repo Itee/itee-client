@@ -437,7 +437,7 @@ Object.defineProperties( TDataBaseManager.prototype, {
 
                 cachedResult = this._cache.get( id )
                 if ( !cachedResult ) {
-                    break
+                    continue
                 }
 
                 results.push( cachedResult )
