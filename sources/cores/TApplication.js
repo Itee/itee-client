@@ -2406,52 +2406,6 @@ Object.assign( TApplication.prototype, {
 
     },
 
-    initRequest () {
-
-        var request = new XMLHttpRequest();
-
-        request.onreadystatechange = function onReadyStateChange () {
-
-            if ( request.readyState === 4 ) {
-
-                if ( request.status === 200 ) {
-
-                    var response = JSON.parse( request.response );
-                    TLogger.log( response );
-
-                } else {
-
-                    var response = JSON.parse( request.response );
-                    TLogger.error( response );
-
-                }
-
-            }
-
-        };
-
-        request.onprogress = function onProgress ( progressEvent ) {
-
-            TLogger.log( progressEvent );
-
-        };
-
-        request.onload = function onLoad ( loadEvent ) {
-
-            TLogger.log( loadEvent );
-
-        };
-
-        request.onerror = function onError ( error ) {
-
-            TLogger.error( error );
-
-        };
-
-        request.open( 'GET', 'turlututu' );
-
-    },
-
     // Public methods
     addObjectToModel ( object ) {
 
