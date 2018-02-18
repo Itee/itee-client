@@ -31,7 +31,7 @@ function TMaterialsManager () {
 
 }
 
-TMaterialsManager.prototype = Object.assign( Object.create( TDataBaseManager.prototype ), {
+Object.assign( TMaterialsManager.prototype, TDataBaseManager.prototype, {
 
     constructor: TMaterialsManager,
 
