@@ -33,6 +33,7 @@ import { SHPLoader } from './SHPLoader'
 import { DBFLoader } from './DBFLoader'
 
 import * as Validator from '../validators/TValidator'
+import { degreesToRadians } from '../maths/TMath'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 
 function getFilePath ( fileUrl ) {
@@ -314,7 +315,7 @@ Object.assign( TUniversalLoader.prototype, {
 
                 }
 
-                group.rotateX( -90 * DEG_TO_RAD )
+                group.rotateX( degreesToRadians( -90 ) )
 
                 onLoad( group )
 
@@ -446,8 +447,8 @@ Object.assign( TUniversalLoader.prototype, {
 
             }
 
-            group.rotateX( -90 * DEG_TO_RAD )
-            group.rotateZ( 180 * DEG_TO_RAD )
+            group.rotateX( degreesToRadians(-90) )
+            group.rotateZ( degreesToRadians(180) )
             group.position.z -= 159.5
             group.position.x -= 0.6
             group.position.y = 14
