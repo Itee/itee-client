@@ -3,6 +3,7 @@
  */
 
 /* eslint-env browser */
+/* globals $ */
 
 function TDebugPanel ( container, settings ) {
 
