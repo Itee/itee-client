@@ -45,9 +45,8 @@ function TFile ( path = '' ) {
             get () {
                 return _basePath + _name;
             },
-            set ( path ) {
-
-                valeurB = nouvelleValeur;
+            set ( newPath ) {
+                path = newPath
             }
         },
         basePath:  {},
