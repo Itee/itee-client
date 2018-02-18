@@ -33,7 +33,7 @@ import { SHPLoader } from './SHPLoader'
 import { DBFLoader } from './DBFLoader'
 
 import * as Validator from '../validators/TValidator'
-import { DefaultLogger } from '../loggers/TLogger'
+import { DefaultLogger as TLogger } from '../loggers/TLogger'
 
 function getFilePath ( fileUrl ) {
 
@@ -95,7 +95,7 @@ Object.assign( TUniversalLoader.prototype, {
     load ( files, onLoad, onProgress, onError ) {
 
         if ( !files ) {
-            console.error( "Unable to load null or undefined files !" )
+            TLogger.error( "Unable to load null or undefined files !" )
             return
         }
 
@@ -129,7 +129,7 @@ Object.assign( TUniversalLoader.prototype, {
 
         } else {
 
-            console.error( 'TUniversalLoader: Invalid files parameter !!!' )
+            TLogger.error( 'TUniversalLoader: Invalid files parameter !!!' )
 
         }
 
