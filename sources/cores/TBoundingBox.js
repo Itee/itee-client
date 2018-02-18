@@ -8,6 +8,10 @@
  *
  */
 
+/**
+ *
+ * @constructor
+ */
 function TBoundingBox() {
     this.xMin = Number.MAX_VALUE;
     this.xMax = Number.MIN_VALUE;
@@ -17,8 +21,12 @@ function TBoundingBox() {
     this.zMax = Number.MIN_VALUE;
 }
 
-Object.assign( TBoundingBox, {
+Object.assign( TBoundingBox.prototype, {
 
+    /**
+     *
+     * @param point
+     */
     computePoint ( point ) {
 
         if ( point.x < this.xMin ) {
@@ -47,6 +55,10 @@ Object.assign( TBoundingBox, {
 
     },
 
+    /**
+     *
+     * @param points
+     */
     computePoints ( points ) {
 
         for ( let i = 0, numPts = points.length ; i < numPts ; ++i ) {
@@ -55,6 +67,10 @@ Object.assign( TBoundingBox, {
 
     },
 
+    /**
+     * 
+     * @return {{x: number, y: number, z: number}}
+     */
     getCenter () {
 
         return {
