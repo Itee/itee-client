@@ -84,7 +84,7 @@ const FileFormat = Object.freeze( {
     }
 } )
 
-function TUniversalLoader ( manager = DefaultLoadingManager, logger = DefaultLogger ) {
+function TUniversalLoader ( manager = DefaultLoadingManager, logger = TLogger ) {
 
     this.manager = manager
     this.logger  = logger
