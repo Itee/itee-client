@@ -42,7 +42,7 @@ class TMenu extends React.Component {
 
     render () {
 
-        const { id, className, value, onChangeHandler, children } = this.props
+        const { id, className, children } = this.props
 
         const _id    = id || `tMenu_${_instanceCounter}`
         const _style = {
