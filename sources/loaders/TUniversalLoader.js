@@ -141,8 +141,7 @@ Object.assign( TUniversalLoader.prototype, {
         const fileUrl       = file.url
         const fileName      = getFileName( fileUrl )
         const fileExtension = getFileExtension( fileName )
-        const loadUrl       = computeUrl( fileUrl )
-        file.url            = loadUrl
+        file.url            = computeUrl( fileUrl )
 
         switch ( fileExtension ) {
 
@@ -188,15 +187,13 @@ Object.assign( TUniversalLoader.prototype, {
         const firstUrl           = firstFile.url
         const firstFileName      = getFileName( firstUrl )
         const firstFileExtension = getFileExtension( firstFileName )
-        const firstLoadUrl       = computeUrl( firstUrl )
-        firstFile.url            = firstLoadUrl
+        firstFile.url            = computeUrl( firstUrl )
 
         const secondFile          = files[ 1 ]
         const secondUrl           = secondFile.url
         const secondFileName      = getFileName( secondUrl )
         const secondFileExtension = getFileExtension( secondFileName )
-        const secondLoadUrl       = computeUrl( secondUrl )
-        secondFile.url            = secondLoadUrl
+        secondFile.url            = computeUrl( secondUrl )
 
         if ( firstFileExtension === FileFormat.Mtl && secondFileExtension === FileFormat.Obj ) {
 
