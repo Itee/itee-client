@@ -11,7 +11,7 @@
 
 /* eslint-env browser */
 
-import { DefaultLogger } from '../Loggers/TLogger'
+import { DefaultLogger as TLogger } from '../Loggers/TLogger'
 import {
     DefaultLoadingManager,
     FileLoader
@@ -71,7 +71,7 @@ const DataType = Object.freeze( {
 function DBFLoader ( manager, logger ) {
 
     this.manager = ( manager === undefined ) ? DefaultLoadingManager : manager;
-    this.logger  = ( logger === undefined ) ? DefaultLogger : logger;
+    this.logger  = ( logger === undefined ) ? TLogger : logger;
     this.reader  = new BinaryReader();
 
 }
