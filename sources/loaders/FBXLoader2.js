@@ -1,3 +1,26 @@
+/**
+ * @author Kyle-Larson https://github.com/Kyle-Larson
+ * @author Takahiro https://github.com/takahirox
+ * @author Itee https://github.com/Itee
+ *
+ * Loader loads FBX file and generates Group representing FBX scene.
+ * Requires FBX file to be >= 7.0 and in ASCII or to be any version in Binary format.
+ *
+ * Supports:
+ *    Mesh Generation (Positional Data)
+ *    Normal Data (Per Vertex Drawing Instance)
+ *  UV Data (Per Vertex Drawing Instance)
+ *  Skinning
+ *  Animation
+ *    - Separated Animations based on stacks.
+ *    - Skeletal & Non-Skeletal Animations
+ *  NURBS (Open, Closed and Periodic forms)
+ *
+ * Needs Support:
+ *    Indexed Buffers
+ *    PreRotation support.
+ */
+
 /* eslint-env browser */
 /* globals TextDecoder, Zlib */
 
@@ -34,45 +57,10 @@ import {
     Skeleton
 } from 'threejs-full-es6'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
+import { DEG_TO_RAD, degreesToRadians } from '../maths/TMath'
 
-/**
- * @author Kyle-Larson https://github.com/Kyle-Larson
- * @author Takahiro https://github.com/takahirox
- *
- * Loader loads FBX file and generates Group representing FBX scene.
- * Requires FBX file to be >= 7.0 and in ASCII or to be any version in Binary format.
- *
- * Supports:
- *    Mesh Generation (Positional Data)
- *    Normal Data (Per Vertex Drawing Instance)
- *  UV Data (Per Vertex Drawing Instance)
- *  Skinning
- *  Animation
- *    - Separated Animations based on stacks.
- *    - Skeletal & Non-Skeletal Animations
- *  NURBS (Open, Closed and Periodic forms)
- *
- * Needs Support:
- *    Indexed Buffers
- *    PreRotation support.
- */
 
-    // Helper methods
-var DEG2RAD = Math.PI / 180;
-
-function degreeToRadian ( value ) {
-
-    if ( value === null || value === undefined ) {
-
-        TLogger.error( 'FBXLoader2: Unable to convert degree to radian with null or undefined value !' );
-        return null;
-
-    }
-
-    return value * DEG2RAD;
-
-}
-
+// Helper methods
 function parseFloatArray ( floatString ) {
 
     if ( !floatString ) {
@@ -1927,7 +1915,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
             if ( 'Lcl_Rotation' in node.properties ) {
 
-                var rotation = parseFloatArray( node.properties.Lcl_Rotation.value ).map( degreeToRadian );
+                var rotation = parseFloatArray( node.properties.Lcl_Rotation.value ).map( degreesToRadians );
                 rotation.push( 'ZYX' );
                 model.rotation.fromArray( rotation );
 
@@ -1941,7 +1929,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
             if ( 'PreRotation' in node.properties ) {
 
-                var preRotations    = new Euler().setFromVector3( parseVector3( node.properties.PreRotation ).multiplyScalar( DEG2RAD ), 'ZYX' );
+                var preRotations    = new Euler().setFromVector3( parseVector3( node.properties.PreRotation ).multiplyScalar( DEG_TO_RAD ), 'ZYX' );
                 preRotations        = new Quaternion().setFromEuler( preRotations );
                 var currentRotation = new Quaternion().setFromEuler( model.rotation );
                 preRotations.multiply( currentRotation );
@@ -2300,9 +2288,9 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
                 }
 
-                curves.x.values = curves.x.values.map( degreeToRadian );
-                curves.y.values = curves.y.values.map( degreeToRadian );
-                curves.z.values = curves.z.values.map( degreeToRadian );
+                curves.x.values = curves.x.values.map( degreesToRadians );
+                curves.y.values = curves.y.values.map( degreesToRadians );
+                curves.z.values = curves.z.values.map( degreesToRadians );
 
                 if ( curveNode.preRotations !== null ) {
 
@@ -2541,7 +2529,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
                 var model                     = rawModels[ animationNode.containerID.toString() ];
                 if ( 'PreRotation' in model.properties ) {
 
-                    animationNode.preRotations = parseVector3( model.properties.PreRotation ).multiplyScalar( DEG2RAD );
+                    animationNode.preRotations = parseVector3( model.properties.PreRotation ).multiplyScalar( DEG_TO_RAD );
 
                 }
                 break;
