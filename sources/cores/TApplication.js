@@ -2034,6 +2034,11 @@ Object.assign( TApplication, {
  */
 Object.assign( TApplication.prototype, {
 
+    /**
+     *
+     * @param companiesIds
+     * @private
+     */
     _initCompanies ( companiesIds ) {
 
         if ( !companiesIds ) { return }
@@ -2042,6 +2047,11 @@ Object.assign( TApplication.prototype, {
 
     },
 
+    /**
+     *
+     * @param companies
+     * @private
+     */
     _processCompanies ( companies ) {
 
         var company = undefined
@@ -2052,6 +2062,11 @@ Object.assign( TApplication.prototype, {
 
     },
 
+    /**
+     *
+     * @param sitesIds
+     * @private
+     */
     _initSitesOf ( sitesIds ) {
 
         if ( !sitesIds ) { return }
@@ -2060,6 +2075,11 @@ Object.assign( TApplication.prototype, {
 
     },
 
+    /**
+     *
+     * @param sites
+     * @private
+     */
     _processSites ( sites ) {
 
         var site = undefined
@@ -2085,6 +2105,13 @@ Object.assign( TApplication.prototype, {
 
     },
 
+    /**
+     *
+     * @param buildingsIds
+     * @param site
+     * @param visible
+     * @private
+     */
     _initBuildingsOf ( buildingsIds, site, visible ) {
 
         if ( !buildingsIds ) { return }
@@ -2093,6 +2120,15 @@ Object.assign( TApplication.prototype, {
 
     },
 
+    /**
+     *
+     * @param site
+     * @param visible
+     * @param isReady
+     * @param buildings
+     * @param childrenToRemove
+     * @private
+     */
     _processBuildings ( site, visible, isReady, buildings, childrenToRemove ) {
 
         let building = undefined
@@ -2139,6 +2175,13 @@ Object.assign( TApplication.prototype, {
 
     },
 
+    /**
+     *
+     * @param scenesIds
+     * @param building
+     * @param visible
+     * @private
+     */
     _initScenesOf ( scenesIds, building, visible ) {
 
         if ( !scenesIds ) { return }
@@ -2147,6 +2190,13 @@ Object.assign( TApplication.prototype, {
 
     },
 
+    /**
+     *
+     * @param building
+     * @param visible
+     * @param scenes
+     * @private
+     */
     _processScenes ( building, visible, scenes ) {
 
         let scene = undefined
@@ -2195,6 +2245,13 @@ Object.assign( TApplication.prototype, {
 
     },
 
+    /**
+     *
+     * @param objectsIds
+     * @param scene
+     * @param visible
+     * @private
+     */
     _initObjectsOf ( objectsIds, scene, visible ) {
 
         if ( !objectsIds ) { return }
@@ -2226,6 +2283,14 @@ Object.assign( TApplication.prototype, {
 
     },
 
+    /**
+     *
+     * @param scene
+     * @param visible
+     * @param isReady
+     * @param objects
+     * @private
+     */
     _processObjects ( scene, visible, isReady, objects ) {
 
         // Create geometries and materials list
@@ -2254,6 +2319,13 @@ Object.assign( TApplication.prototype, {
 
     },
 
+    /**
+     *
+     * @param objects
+     * @param isReady
+     * @param geometries
+     * @private
+     */
     _processGeometries ( objects, isReady, geometries ) {
 
         let object = undefined
@@ -2266,6 +2338,13 @@ Object.assign( TApplication.prototype, {
 
     },
 
+    /**
+     *
+     * @param objects
+     * @param isReady
+     * @param materials
+     * @private
+     */
     _processMaterials ( objects, isReady, materials ) {
 
         let object         = undefined
@@ -2297,6 +2376,12 @@ Object.assign( TApplication.prototype, {
 
     },
 
+    /**
+     *
+     * @param object
+     * @return {toggleVisibilityEventHandler}
+     * @private
+     */
     _toggleObjectVisibility ( object ) {
 
         const _object = object
@@ -2382,6 +2467,12 @@ Object.assign( TApplication.prototype, {
     },
 
     // TreeView
+    /**
+     *
+     * @param object
+     * @param isCheckedByDefault
+     * @param recursive
+     */
     insertTreeViewItem2 ( object, isCheckedByDefault = true, recursive = true ) {
 
         const itemId   = object.uuid
@@ -2420,7 +2511,13 @@ Object.assign( TApplication.prototype, {
     },
 
     /**
-     * @memberOf TApplication.prototype
+     *
+     * @param itemId
+     * @param itemName
+     * @param parentId
+     * @param isCheckedByDefault
+     * @param recursive
+     * @return {jQuery|HTMLElement}
      */
     insertTreeViewItem ( itemId, itemName, parentId, isCheckedByDefault, recursive = true ) {
 
@@ -2457,7 +2554,9 @@ Object.assign( TApplication.prototype, {
     },
 
     /**
-     * @memberOf TApplication.prototype
+     *
+     * @param objects
+     * @param xRayActive
      */
     changeMaterialSide ( objects, xRayActive ) {
 
@@ -2483,7 +2582,9 @@ Object.assign( TApplication.prototype, {
 
     // Layers
     /**
-     * @memberOf TApplication.prototype
+     *
+     * @param groupName
+     * @param visibility
      */
     setLayerGroupVisibility ( groupName, visibility ) {
 
@@ -2540,7 +2641,8 @@ Object.assign( TApplication.prototype, {
     },
 
     /**
-     * @memberOf TApplication.prototype
+     *
+     * @param filesUrls
      */
     loadObjectFromURL ( filesUrls ) {
 
@@ -2549,11 +2651,11 @@ Object.assign( TApplication.prototype, {
     },
 
     /**
-     * @memberOf TApplication.prototype
+     *
      */
     updateDataPanel () {
 
-        // Todo make it efficient !!!
+
 
         // Get curve distance from start of path to current camera position
         var distanceFromStart = this.webglViewport.pathControl.getDistanceFromStart()
@@ -2643,7 +2745,7 @@ Object.assign( TApplication.prototype, {
     },
 
     /**
-     * @memberOf TApplication.prototype
+     *
      */
     resetDataPanel () {
 
@@ -2652,7 +2754,8 @@ Object.assign( TApplication.prototype, {
     },
 
     /**
-     * @memberOf TApplication.prototype
+     *
+     * @param measureMode
      */
     startMeasure ( measureMode ) {
 
@@ -2703,7 +2806,8 @@ Object.assign( TApplication.prototype, {
     },
 
     /**
-     * @memberOf TApplication.prototype
+     *
+     * @param event
      */
     updateTemporaryMeasure ( event ) {
 
@@ -2849,7 +2953,7 @@ Object.assign( TApplication.prototype, {
     },
 
     /**
-     * @memberOf TApplication.prototype
+     *
      */
     removeTemporaryMeasure () {
 
@@ -2860,7 +2964,8 @@ Object.assign( TApplication.prototype, {
     },
 
     /**
-     * @memberOf TApplication.prototype
+     *
+     * @param event
      */
     updateMeasure ( event ) {
 
@@ -2976,7 +3081,7 @@ Object.assign( TApplication.prototype, {
     },
 
     /**
-     * @memberOf TApplication.prototype
+     *
      */
     endMeasure () {
 
@@ -2993,7 +3098,7 @@ Object.assign( TApplication.prototype, {
     },
 
     /**
-     * @memberOf TApplication.prototype
+     *
      */
     removeMeasure () {
 
@@ -3020,7 +3125,7 @@ Object.assign( TApplication.prototype, {
     },
 
     /**
-     * @memberOf TApplication.prototype
+     *
      */
     updateImageShot () {
 
@@ -3104,7 +3209,7 @@ Object.assign( TApplication.prototype, {
     },
 
     /**
-     * @memberOf TApplication.prototype
+     *
      */
     popupImportFilesModal () {
 
@@ -3113,7 +3218,7 @@ Object.assign( TApplication.prototype, {
     },
 
     /**
-     * @memberOf TApplication.prototype
+     *
      */
     popupImageShotModal () {
 
@@ -3147,7 +3252,7 @@ Object.assign( TApplication.prototype, {
     },
 
     /**
-     * @memberOf TApplication.prototype
+     *
      */
     popupSelectedObjectModal () {
 
@@ -3284,7 +3389,7 @@ Object.assign( TApplication.prototype, {
     },
 
     /**
-     * @memberOf TApplication.prototype
+     *
      */
     updatePointCloudDensity ( /*delay*/ ) {
 
@@ -3301,7 +3406,7 @@ Object.assign( TApplication.prototype, {
     },
 
     /**
-     * @memberOf TApplication.prototype
+     *
      */
     updateMeshResolution ( /*delay*/ ) {
 
@@ -3316,7 +3421,7 @@ Object.assign( TApplication.prototype, {
     },
 
     /**
-     * @memberOf TApplication.prototype
+     *
      */
     updateAvatar () {
 
@@ -3376,7 +3481,8 @@ Object.assign( TApplication.prototype, {
     },
 
     /**
-     * @memberOf TApplication.prototype
+     *
+     * @param mode
      */
     setCameraMode ( mode ) {
 
@@ -3398,7 +3504,8 @@ Object.assign( TApplication.prototype, {
     },
 
     /**
-     * @memberOf TApplication.prototype
+     *
+     * @param effect
      */
     setRendersEffect ( effect ) {
 
@@ -3407,7 +3514,7 @@ Object.assign( TApplication.prototype, {
     },
 
     /**
-     * @memberOf TApplication.prototype
+     *
      */
     askUserForPosition () {
 
@@ -3442,7 +3549,8 @@ Object.assign( TApplication.prototype, {
     },
 
     /**
-     * @memberOf TApplication.prototype
+     *
+     * @param viewer
      */
     setMapViewer ( viewer ) {
 
@@ -3453,8 +3561,6 @@ Object.assign( TApplication.prototype, {
 
     /**
      * Update camera viewers
-     *
-     * @memberOf TApplication.prototype
      */
     updateMapViewer () {
 
@@ -3466,8 +3572,6 @@ Object.assign( TApplication.prototype, {
 
     /**
      * Update camera position
-     *
-     * @memberOf TApplication.prototype
      */
     updateMapViewerPosition () {
 
@@ -3529,7 +3633,6 @@ Object.assign( TApplication.prototype, {
 
     /**
      * Update camera orientation
-     * @memberOf TApplication.prototype
      */
     updateMapViewerOrientation () {
 
@@ -3590,7 +3693,7 @@ Object.assign( TApplication.prototype, {
     },
 
     /**
-     * @memberOf TApplication.prototype
+     *
      */
     updateMapViewerDisplay () {
 
