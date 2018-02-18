@@ -10,27 +10,7 @@
 
 /* eslint-env browser */
 
-const FileFormat = Object.freeze( {
-    Asc:  'asc',
-    Dbf:  'dbf',
-    Fbx:  'fbx',
-    Mtl:  'mtl',
-    Json: 'json',
-    Obj:  'obj',
-    Shp:  'shp',
-    Stl:  'stl',
-
-    toString () {
-
-        const formats = Object.values( this )
-        let result    = ''
-        for ( let index = 0, numberOfFormats = formats.length ; index < numberOfFormats ; index++ ) {
-            result += formats[ index ]
-            result += ((index === numberOfFormats - 1) ? ', ' : '.')
-        }
-
-    }
-} )
+import { FileFormat } from '../cores/TConstants'
 
 function TFile ( path = '' ) {
 
@@ -56,4 +36,4 @@ function TFile ( path = '' ) {
 
 }
 
-export { FileFormat, TFile }
+export { TFile }

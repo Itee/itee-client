@@ -243,6 +243,10 @@ export const HttpStatusCode = Object.freeze( {
 
 } )
 
+/**
+ *
+ * @type {Enum} Keys
+ */
 export const Keys = Object.freeze({
     8:  "backspace",
     9:  "tab",
@@ -300,3 +304,29 @@ export const Keys = Object.freeze({
     221:          "]",
     222:          "'"
 })
+
+/**
+ *
+ * @type {Enum} FileFormat
+ */
+export const FileFormat = Object.freeze( {
+    Asc:  'asc',
+    Dbf:  'dbf',
+    Fbx:  'fbx',
+    Mtl:  'mtl',
+    Json: 'json',
+    Obj:  'obj',
+    Shp:  'shp',
+    Stl:  'stl',
+
+    toString () {
+
+        const formats = Object.values( this )
+        let result    = ''
+        for ( let index = 0, numberOfFormats = formats.length ; index < numberOfFormats ; index++ ) {
+            result += formats[ index ]
+            result += ((index === numberOfFormats - 1) ? ', ' : '.')
+        }
+
+    }
+} )

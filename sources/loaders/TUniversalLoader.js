@@ -25,16 +25,14 @@ import {
     ShapeBufferGeometry,
     MeshPhongMaterial
 } from 'threejs-full-es6'
-
-// Local loader
 import { FBXLoader2 } from './FBXLoader2'
 import { ASCLoader } from './ASCLoader'
 import { SHPLoader } from './SHPLoader'
 import { DBFLoader } from './DBFLoader'
-
 import * as TValidator from '../validators/_validators'
 import { degreesToRadians } from '../maths/TMath'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
+import { FileFormat } from '../cores/TConstants'
 
 function getFilePath ( fileUrl ) {
 
@@ -62,27 +60,6 @@ function computeUrl ( fileUrl ) {
     return (isBlob) ? filePath : fileUrl
 
 }
-
-const FileFormat = Object.freeze( {
-    Asc:  'asc',
-    Dbf:  'dbf',
-    Fbx:  'fbx',
-    Mtl:  'mtl',
-    Json: 'json',
-    Obj:  'obj',
-    Shp:  'shp',
-    Stl:  'stl',
-    toString () {
-
-        const formats = Object.values( this )
-        let result    = ''
-        for ( let index = 0, numberOfFormats = formats.length ; index < numberOfFormats ; index++ ) {
-            result += formats[ index ]
-            result += ((index === numberOfFormats - 1) ? ', ' : '.')
-        }
-
-    }
-} )
 
 function TUniversalLoader ( manager = DefaultLoadingManager, logger = TLogger ) {
 
