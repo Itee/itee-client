@@ -287,6 +287,28 @@ function TCameraPathController ( camera, domElement ) {
 
     }
 
+    function onForward ( event ) {
+
+        clearTimeout( self.timeoutId )
+
+        event.keyCode = KEYS.UP_ARROW
+        onKeyDown( event )
+
+        self.timeoutId = setTimeout( onKeyUp.bind( self ), 750 )
+
+    }
+
+    function onBackward ( event ) {
+
+        clearTimeout( self.timeoutId )
+
+        event.keyCode = KEYS.BOTTOM_ARROW
+        onKeyDown( event )
+
+        self.timeoutId = setTimeout( onKeyUp.bind( self ), 750 )
+
+    }
+
     // Public function that access private methods
     this.update = function () {
 
@@ -325,27 +347,8 @@ function TCameraPathController ( camera, domElement ) {
     window.addEventListener( 'keydown', onKeyDown, false )
     window.addEventListener( 'keyup', onKeyUp, false )
 
-    this.forwardControl.addEventListener( 'click', function ( event ) {
-
-        clearTimeout( self.timeoutId )
-
-        event.keyCode = KEYS.UP_ARROW
-        onKeyDown( event )
-
-        self.timeoutId = setTimeout( onKeyUp.bind( self ), 750 )
-
-    }, false )
-
-    this.backwardControl.addEventListener( 'click', function ( event ) {
-
-        clearTimeout( self.timeoutId )
-
-        event.keyCode = KEYS.BOTTOM_ARROW
-        onKeyDown( event )
-
-        self.timeoutId = setTimeout( onKeyUp.bind( self ), 750 )
-
-    }, false )
+    this.forwardControl.addEventListener( 'click', onForward, false )
+    this.backwardControl.addEventListener( 'click', onBackward, false )
 
 }
 
