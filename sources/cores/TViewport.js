@@ -48,7 +48,7 @@ import {
     OrbitControls
 } from 'threejs-full-es6'
 import Stats from 'stats.js'
-
+import { TLogger } from '../loggers/TLogger'
 import { TOrbitControlsHelper } from '../objects3d/TOrbitControlsHelper'
 
 /**
@@ -309,7 +309,7 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
             //            } else if ( this.cameraEffect === 'vr' ) {
             //                this.stereoEffectRenderer.render( this.scene, this.camera )
             //            } else {
-            //                console.error( 'Unknown camera effect: ' + this.cameraEffect )
+            //                TLogger.error( 'Unknown camera effect: ' + this.cameraEffect )
             //                this.webGLRenderer.render( this.scene, this.camera )
             //            }
 
@@ -481,7 +481,7 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
             } else {
 
-                console.warn( 'Unable to get hit position for undefined intersection objects !!!' )
+                TLogger.warn( 'Unable to get hit position for undefined intersection objects !!!' )
 
             }
 
@@ -566,7 +566,7 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
         } else {
 
-            console.error( "Unable to change camera position, unknown camera controller type !" );
+            TLogger.error( "Unable to change camera position, unknown camera controller type !" );
 
         }
 
@@ -634,7 +634,7 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
             this.cameraControl.update()
 
-        } else if ( mode === "avatar" ) {
+        } else if ( cameraControlType === "avatar" ) {
 
             // Set target to previous camera position
             this.cameraControl.object.position.x = this.cameraControl.target.x
@@ -660,7 +660,7 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
         } else {
 
-            console.error( "Invalid camera controller: " + cameraControlType );
+            TLogger.error( `Invalid camera controller: ${cameraControlType}` )
 
         }
 
