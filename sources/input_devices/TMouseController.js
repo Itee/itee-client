@@ -14,4 +14,8 @@ function TMouseController () {
 
 }
 
+Object.assign( TMouseController, {} )
+
+Object.assign( TMouseController.prototype, {} )
+
 export { TMouseController }
