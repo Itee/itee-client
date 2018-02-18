@@ -17,7 +17,7 @@ import {
     Mesh
 } from 'threejs-full-es6'
 
-import { extend } from '../utils/TUtils'
+import { extend } from '../utils/TObjectUtil'
 
 /**
  *
