@@ -15,9 +15,16 @@ import './third_party/polyfills.js'
 export * from 'threejs-full-es6'
 
 // Export Itee stuff
+export * from './controllers/_controllers'
 export * from './cores/_cores'
+export * from './debug/_debugs'
 export * from './factories/_factories'
+export * from './input_devices/_inputDevices'
 export * from './loaders/_loaders'
 export * from './managers/_managers'
+export * from './maths/_maths'
 export * from './objects3d/_objects3d'
 export * from './uis/_uis'
+export * from './utils/_utils'
+export * from './validators/_validators'
+
