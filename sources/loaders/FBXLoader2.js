@@ -206,7 +206,7 @@ function slice ( a, b, from, to ) {
 
 }
 
-var FBXLoader2 = function ( manager, logger ) {};
+function FBXLoader2( manager, logger ) {};
 
 // Public static methods
 Object.assign( FBXLoader2, {
