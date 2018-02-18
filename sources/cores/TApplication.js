@@ -2407,6 +2407,11 @@ Object.assign( TApplication.prototype, {
     },
 
     // Public methods
+
+    /**
+     *
+     * @param object
+     */
     addObjectToModel ( object ) {
 
         if ( !object ) {
