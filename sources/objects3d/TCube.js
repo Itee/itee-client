@@ -44,39 +44,47 @@ function TCube ( givenSettings ) {
 
 }
 
-TCube.DEFAULT_SETTINGS = {
-    width:          1.0,
-    height:         1.0,
-    depth:          1.0,
-    widthSegments:  1.0,
-    heightSegments: 1.0,
-    depthSegments:  1.0,
-    position:       {
-        x: 0.0,
-        y: 0.0,
-        z: 0.0
+Object.assign( TCube, {
+
+    DEFAULT_SETTINGS: {
+        width:          1.0,
+        height:         1.0,
+        depth:          1.0,
+        widthSegments:  1.0,
+        heightSegments: 1.0,
+        depthSegments:  1.0,
+        position:       {
+            x: 0.0,
+            y: 0.0,
+            z: 0.0
+        }
     }
-}
+    
+} )
 
-TCube.prototype.setPosition = function ( x, y, z ) {
+Object.assign( TCube.prototype, {
 
-    var _ = this;
-    _.view.position.set( x, y, z );
+    setPosition ( x, y, z ) {
 
-};
+        var _ = this;
+        _.view.position.set( x, y, z );
 
-TCube.prototype.update = function () {
-    var _ = this;
-    _.autoRotate();
-};
+    },
 
-TCube.prototype.autoRotate = function () {
+    update () {
+        var _ = this;
+        _.autoRotate();
+    },
 
-    var _ = this;
+    autoRotate () {
 
-    _.view.rotation.x += 0.005;
-    _.view.rotation.y += 0.005;
-};
+        var _ = this;
+
+        _.view.rotation.x += 0.005;
+        _.view.rotation.y += 0.005;
+    }
+
+} )
 
 export { TCube }
 
