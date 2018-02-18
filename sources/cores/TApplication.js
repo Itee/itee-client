@@ -15,6 +15,7 @@ import { extend } from '../utils/TUtils'
 import { TUniversalLoader } from '../loaders/TUniversalLoader'
 import { dockspawn } from '../third_party/dock-spawn'
 import { TViewport } from './TViewport'
+import { TLogger } from '../loggers/TLogger'
 //import { SplitModifier } from '../../build/tmp/SplitModifier'
 
 import {
@@ -75,20 +76,20 @@ import {
 function TApplication ( container, parameters, onReady ) {
 
     if ( !container ) {
-        console.error( "Undefined or null container:" + container );
+        TLogger.error( "Undefined or null container:" + container );
         return
     }
     if ( !parameters ) {
-        console.error( "Undefined or null parameters:" + parameters );
+        TLogger.error( "Undefined or null parameters:" + parameters );
         return
     }
     if ( !onReady ) {
-        console.error( "Undefined or null onReady:" + onReady );
+        TLogger.error( "Undefined or null onReady:" + onReady );
         return
     }
 
-    console.time( "TApplication" )
-    console.log( "Starting TApplication..." )
+    TLogger.time( "TApplication" )
+    TLogger.log( "Starting TApplication..." )
 
     const self      = this;
     let _parameters = {
@@ -424,7 +425,7 @@ function TApplication ( container, parameters, onReady ) {
             //
             //            } else {
             //
-            //                console.error( 'split button does not exist !' );
+            //                TLogger.error( 'split button does not exist !' );
             //
             //            }
 
@@ -484,7 +485,7 @@ function TApplication ( container, parameters, onReady ) {
 
             } else {
 
-                console.error( 'split button does not exist !' );
+                TLogger.error( 'split button does not exist !' );
 
             }
 
@@ -504,7 +505,7 @@ function TApplication ( container, parameters, onReady ) {
                 const importInput   = $( "#importInput" )
                 const files         = importInput[ 0 ].files
                 const numberOfFiles = files.length
-                console.log( "numberOfFiles: " + numberOfFiles );
+                TLogger.log( "numberOfFiles: " + numberOfFiles );
 
                 const filesUrls = []
                 let fileUrl     = ''
@@ -658,7 +659,7 @@ function TApplication ( container, parameters, onReady ) {
 
             if ( !object ) {
 
-                console.error( 'Something when wrong... Object is null or undefined !' )
+                TLogger.error( 'Something when wrong... Object is null or undefined !' )
                 return
 
             } else if ( object instanceof Group || object instanceof Scene ) {
@@ -691,7 +692,7 @@ function TApplication ( container, parameters, onReady ) {
 
             } else {
 
-                console.warn( 'Unknown object type !!!' )
+                TLogger.warn( 'Unknown object type !!!' )
 
             }
 
@@ -738,7 +739,7 @@ function TApplication ( container, parameters, onReady ) {
 
                 } else {
 
-                    console.warn( 'No material found !' )
+                    TLogger.warn( 'No material found !' )
 
                 }
 
@@ -803,11 +804,11 @@ function TApplication ( container, parameters, onReady ) {
                     //
                     //							scene.add( helper )
 
-                    console.warn( 'Unable to process skeleton from geometry !' )
+                    TLogger.warn( 'Unable to process skeleton from geometry !' )
 
                 } else {
 
-                    console.warn( 'No skeleton founds !' )
+                    TLogger.warn( 'No skeleton founds !' )
 
                 }
 
@@ -845,7 +846,7 @@ function TApplication ( container, parameters, onReady ) {
 
                 } else {
 
-                    console.warn( 'No animations founds !' )
+                    TLogger.warn( 'No animations founds !' )
 
                     //							var url = 'models/bvh/01/01_01.bvh'
                     //
@@ -887,14 +888,14 @@ function TApplication ( container, parameters, onReady ) {
 
         window.addEventListener( 'message', function ( event ) {
 
-            console.log( event.data );
+            TLogger.log( event.data );
 
             // IMPORTANT: Check the origin of the data!
             if ( ~event.origin.indexOf( 'http://yoursite.com' ) ) {
                 // The data has been sent from your site
 
                 // The data sent with postMessage is stored in event.data
-                console.log( event.data );
+                TLogger.log( event.data );
             } else {
                 // The data hasn't been sent from your site!
                 // Be careful! Do not use it.
@@ -998,7 +999,7 @@ function TApplication ( container, parameters, onReady ) {
 
         }
 
-        console.timeEnd( "TApplication" )
+        TLogger.timeEnd( "TApplication" )
         //        self.webglViewport.toggleAutorun()
 
         onReady()
@@ -1428,7 +1429,7 @@ Object.assign( TApplication, {
 
         if ( !particularEmbranchments ) {
 
-            console.error( "Unable to create particular embranchment group with null or undefined particular embranchment !!!" )
+            TLogger.error( "Unable to create particular embranchment group with null or undefined particular embranchment !!!" )
             return
 
         }
@@ -1536,7 +1537,7 @@ Object.assign( TApplication, {
 
         if ( !nodes ) {
 
-            console.error( "Unable to create node group with null or undefined nodes !!!" )
+            TLogger.error( "Unable to create node group with null or undefined nodes !!!" )
             return
 
         }
@@ -1622,7 +1623,7 @@ Object.assign( TApplication, {
 
         if ( !sections ) {
 
-            console.error( "Unable to create section group with null or undefined sections !!!" )
+            TLogger.error( "Unable to create section group with null or undefined sections !!!" )
             return
 
         }
@@ -1719,7 +1720,7 @@ Object.assign( TApplication, {
 
         if ( !pathFile ) {
 
-            console.error( "Unable to create path group with null or undefined paths !!!" )
+            TLogger.error( "Unable to create path group with null or undefined paths !!!" )
             return
 
         }
@@ -1795,7 +1796,7 @@ Object.assign( TApplication, {
 
             } else {
 
-                console.error( "Invalid words: " + words )
+                TLogger.error( "Invalid words: " + words )
 
             }
 
@@ -1845,7 +1846,7 @@ Object.assign( TApplication, {
 
         if ( !splinePaths ) {
 
-            console.error( "Unable to create flow particles group with null or undefined spline paths !!!" )
+            TLogger.error( "Unable to create flow particles group with null or undefined spline paths !!!" )
             return
 
         }
@@ -1905,7 +1906,7 @@ Object.assign( TApplication, {
     computeSplinePath ( meshGroup, debug ) {
 
         if ( !meshGroup ) {
-            console.error( "Unable to compute spline path with null or undefined linear meshes !!!" )
+            TLogger.error( "Unable to compute spline path with null or undefined linear meshes !!!" )
             return
         }
 
@@ -2255,12 +2256,12 @@ Object.assign( TApplication.prototype, {
                 if ( request.status === 200 ) {
 
                     var response = JSON.parse( request.response );
-                    console.log( response );
+                    TLogger.log( response );
 
                 } else {
 
                     var response = JSON.parse( request.response );
-                    console.error( response );
+                    TLogger.error( response );
 
                 }
 
@@ -2270,19 +2271,19 @@ Object.assign( TApplication.prototype, {
 
         request.onprogress = function onProgress ( progressEvent ) {
 
-            console.log( progressEvent );
+            TLogger.log( progressEvent );
 
         };
 
         request.onload = function onLoad ( loadEvent ) {
 
-            console.log( loadEvent );
+            TLogger.log( loadEvent );
 
         };
 
         request.onerror = function onError ( error ) {
 
-            console.error( error );
+            TLogger.error( error );
 
         };
 
@@ -2294,7 +2295,7 @@ Object.assign( TApplication.prototype, {
     addObjectToModel ( object ) {
 
         if ( !object ) {
-            console.error( 'TApplication: Unable to add null or undefined object !!!' )
+            TLogger.error( 'TApplication: Unable to add null or undefined object !!!' )
             return
         }
 
@@ -2484,7 +2485,7 @@ Object.assign( TApplication.prototype, {
         // Get closest section and get his data to display
         var sections = this.webglViewport.scene.getObjectByName( 'CaimanSections' )
         if ( !sections ) {
-            console.error( "Unable to update data panel with null sections !" )
+            TLogger.error( "Unable to update data panel with null sections !" )
             return
         }
 
@@ -2951,7 +2952,7 @@ Object.assign( TApplication.prototype, {
 
         var shotGroup = this.webglViewport.scene.getObjectByName( 'shotGroup' )
         if ( !shotGroup ) {
-            console.error( "Unable to update images shot with null shots !" )
+            TLogger.error( "Unable to update images shot with null shots !" )
             return
         }
 
@@ -3047,7 +3048,7 @@ Object.assign( TApplication.prototype, {
         this.imageLoader.load( url, function onLoad ( imageHD ) {
 
             if ( !imageHD ) {
-                console.error( "Unable to display empty or null hd image !" );
+                TLogger.error( "Unable to display empty or null hd image !" );
                 return
             }
 
@@ -3340,13 +3341,13 @@ Object.assign( TApplication.prototype, {
             //Do something with the geometry
             var geometry = event.geometry
             if ( !geometry ) {
-                console.warn( "Unable to find geometry in tiger event !" )
+                TLogger.warn( "Unable to find geometry in tiger event !" )
                 return
             }
 
             var coordinates = geometry.coordinate
             if ( !coordinates ) {
-                console.warn( "Unable to find coordinates in tiger geometry !" )
+                TLogger.warn( "Unable to find coordinates in tiger geometry !" )
                 return
             }
 
@@ -3396,7 +3397,7 @@ Object.assign( TApplication.prototype, {
 
         var cameraPosition = this.webglViewport.camera.position
         if ( !cameraPosition ) {
-            console.warn( "Unable to find coordinates of webgl camera !" )
+            TLogger.warn( "Unable to find coordinates of webgl camera !" )
             return
         }
 
@@ -3436,7 +3437,7 @@ Object.assign( TApplication.prototype, {
                     }.bind( this ) )
                     .catch( function ( e ) {
 
-                        console.error( e )
+                        TLogger.error( e )
 
                     } )
 
@@ -3444,7 +3445,7 @@ Object.assign( TApplication.prototype, {
 
         } else {
 
-            console.error( "Unable to set rotation, unknown viewer: " + this.viewer );
+            TLogger.error( "Unable to set rotation, unknown viewer: " + this.viewer );
 
         }
 
@@ -3458,7 +3459,7 @@ Object.assign( TApplication.prototype, {
 
         var cameraWorldDirection = this.webglViewport.camera.getWorldDirection()
         if ( !cameraWorldDirection ) {
-            console.error( 'Invalid direction vector !!!' )
+            TLogger.error( 'Invalid direction vector !!!' )
             return
         }
 
@@ -3506,7 +3507,7 @@ Object.assign( TApplication.prototype, {
 
         } else {
 
-            console.error( "Unable to set rotation, unknown viewer: " + this.viewer )
+            TLogger.error( "Unable to set rotation, unknown viewer: " + this.viewer )
 
         }
 
@@ -3549,7 +3550,7 @@ Object.assign( TApplication.prototype, {
             this.rlensPanel.style.display  = 'none'
             this.geomapPanel.style.display = 'none'
 
-            console.error( 'Invalid map viewer options !!! Available options are: 2d or 3d.' );
+            TLogger.error( 'Invalid map viewer options !!! Available options are: 2d or 3d.' );
 
         }
 
