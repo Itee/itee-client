@@ -289,7 +289,7 @@ function TApplication ( container, parameters, onReady ) {
             const _parameters = parameters.parameters || {}
 
             this.webglViewportContainer = document.getElementById( 'webglViewportContainer' )
-            this.webglViewport          = new TWebGLViewport( this.webglViewportContainer )
+            this.webglViewport          = new TViewport( this.webglViewportContainer )
             this.webglViewportContainer.addEventListener( 'panelResize', this.webglViewport.updateSizes.bind( this.webglViewport ) )
             //        this.webglViewport.toggleAutorun()
 
@@ -552,7 +552,7 @@ function TApplication ( container, parameters, onReady ) {
                 z: 60
             }
 
-            self.pointCloudManager = new TPointManager( this.webglViewport )
+            self.pointCloudManager = new TPointsManager( this.webglViewport )
             self.pointCloudManager.setGlobalOffset( LAMBERT_NORD_OFFSET )
             if ( parameters.samplingMin ) { self.pointCloudManager.setMinimumSamplingLimit( parameters.samplingMin ) }
 
