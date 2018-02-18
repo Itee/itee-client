@@ -15,7 +15,6 @@ import {
     isEmpty,
     isNotEmpty
 } from './TEmptinessValidator'
-import { isNotArray } from  './TArrayValidator'
 
 //     ___  _     _           _
 //    / _ \| |__ (_) ___  ___| |_ ___
@@ -30,7 +29,7 @@ import { isNotArray } from  './TArrayValidator'
  * @returns {boolean} true if data is object, false otherwise
  */
 export function isObject ( data ) {
-    return ( isNotNull( data ) && (typeof data === 'object') && isNotArray( data ) )
+    return ( isNotNull( data ) && (typeof data === 'object') && !Array.isArray( data ) )
 }
 
 /**
