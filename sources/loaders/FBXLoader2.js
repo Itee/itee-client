@@ -56,7 +56,7 @@ function degreeToRadian ( value ) {
 
     if ( value === null || value === undefined ) {
 
-        console.error( 'FBXLoader2: Unable to convert degree to radian with null or undefined value !' );
+        TLogger.error( 'FBXLoader2: Unable to convert degree to radian with null or undefined value !' );
         return null;
 
     }
@@ -69,7 +69,7 @@ function parseFloatArray ( floatString ) {
 
     if ( !floatString ) {
 
-        console.error( 'FBXLoader2: Unable to parse float array with null or undefined value !' );
+        TLogger.error( 'FBXLoader2: Unable to parse float array with null or undefined value !' );
         return null;
 
     }
@@ -86,7 +86,7 @@ function parseIntArray ( intString ) {
 
     if ( !intString ) {
 
-        console.error( 'FBXLoader2: Unable to parse int array with null or undefined value !' );
+        TLogger.error( 'FBXLoader2: Unable to parse int array with null or undefined value !' );
         return null;
 
     }
@@ -103,7 +103,7 @@ function parseVector3 ( property ) {
 
     if ( !property ) {
 
-        console.error( 'FBXLoader2: Unable to parse Vector3 with null or undefined value !' );
+        TLogger.error( 'FBXLoader2: Unable to parse Vector3 with null or undefined value !' );
         return null;
 
     }
@@ -116,7 +116,7 @@ function parseColor ( property ) {
 
     if ( !property ) {
 
-        console.error( 'FBXLoader2: Unable to parse Vector3 with null or undefined value !' );
+        TLogger.error( 'FBXLoader2: Unable to parse Vector3 with null or undefined value !' );
         return null;
 
     }
@@ -129,7 +129,7 @@ function parseMatrixArray ( floatString ) {
 
     if ( !floatString ) {
 
-        console.error( 'FBXLoader2: Unable to parse Matrix4 with null or undefined value !' );
+        TLogger.error( 'FBXLoader2: Unable to parse Matrix4 with null or undefined value !' );
         return null;
 
     }
@@ -142,7 +142,7 @@ function convertArrayBufferToString ( buffer, from, to ) {
 
     if ( !buffer ) {
 
-        console.error( 'FBXLoader2: Unable to comvert null or undefined buffer !' );
+        TLogger.error( 'FBXLoader2: Unable to comvert null or undefined buffer !' );
         return null;
 
     }
@@ -300,7 +300,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var connections = FBXTree.Connections;
         if ( !connections ) {
 
-            console.error( 'FBXLoader2: Unable to parse connections, fbx tree does not contain Connections !' );
+            TLogger.error( 'FBXLoader2: Unable to parse connections, fbx tree does not contain Connections !' );
             return null;
 
         }
@@ -308,7 +308,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var connectionsProperties = connections.properties;
         if ( !connectionsProperties ) {
 
-            console.error( 'FBXLoader2: Unable to parse connections, connections does not contain properties !' );
+            TLogger.error( 'FBXLoader2: Unable to parse connections, connections does not contain properties !' );
             return null;
 
         }
@@ -316,7 +316,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var connectionArray = connectionsProperties.connections;
         if ( !connectionArray ) {
 
-            console.error( 'FBXLoader2: Unable to parse connections, connections properties does not contain connections !' );
+            TLogger.error( 'FBXLoader2: Unable to parse connections, connections properties does not contain connections !' );
             return null;
 
         }
@@ -375,7 +375,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var objects = FBXTree.Objects;
         if ( !objects ) {
 
-            console.error( 'FBXLoader2: Unable to parse images, fbx tree does not contain Objects !' );
+            TLogger.error( 'FBXLoader2: Unable to parse images, fbx tree does not contain Objects !' );
             return null;
 
         }
@@ -383,7 +383,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var subNodes = objects.subNodes;
         if ( !subNodes ) {
 
-            console.error( 'FBXLoader2: Unable to parse images, fbx tree\'s Objects does not contain subNodes !' );
+            TLogger.error( 'FBXLoader2: Unable to parse images, fbx tree\'s Objects does not contain subNodes !' );
             return null;
 
         }
@@ -391,7 +391,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var videoNodes = subNodes.Video;
         if ( !videoNodes ) {
 
-            console.error( 'FBXLoader2: Unable to parse images, fbx tree\'s Objects subNodes does not contain Video !' );
+            TLogger.error( 'FBXLoader2: Unable to parse images, fbx tree\'s Objects subNodes does not contain Video !' );
             return null;
 
         }
@@ -411,7 +411,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
             videoNodeProperties = videoNode.properties;
             if ( !videoNodeProperties ) {
 
-                console.error( 'FBXLoader2: Unable to get video node properties for video node: ' + nodeID + ' !' );
+                TLogger.error( 'FBXLoader2: Unable to get video node properties for video node: ' + nodeID + ' !' );
                 continue;
 
             }
@@ -426,7 +426,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
                 videoContent = videoNodeProperties.Content;
                 if ( !videoContent ) {
 
-                    console.error( 'FBXLoader2: Unable to get video node content for video node: ' + nodeID + ' !' );
+                    TLogger.error( 'FBXLoader2: Unable to get video node content for video node: ' + nodeID + ' !' );
                     continue;
 
                 }
@@ -453,7 +453,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var fileName = videoNodeProperties.RelativeFilename || FBXLoader2.getFileName( videoNodeProperties );
         if ( !fileName ) {
 
-            console.error( 'FBXLoader2: Unable to get image file name !' );
+            TLogger.error( 'FBXLoader2: Unable to get image file name !' );
             return null;
 
         }
@@ -486,7 +486,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
             default:
 
-                console.warn( 'FBXLoader: No support image type ' + extension );
+                TLogger.warn( 'FBXLoader: No support image type ' + extension );
                 return;
 
         }
@@ -508,7 +508,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         if ( !loader ) {
 
-            console.error( 'FBXLoader2: Unable to parse textures, loader is null or undefined !' );
+            TLogger.error( 'FBXLoader2: Unable to parse textures, loader is null or undefined !' );
             return null;
 
         }
@@ -516,14 +516,14 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         if ( !imageMap ) {
 
             // ImageMap is optional, and only in version > 7000 ?
-            console.warn( 'FBXLoader2: Unable to parse textures, imageMap is null or undefined !' );
+            TLogger.warn( 'FBXLoader2: Unable to parse textures, imageMap is null or undefined !' );
             //				return null;
 
         }
 
         if ( !connections ) {
 
-            console.error( 'FBXLoader2: Unable to parse textures, connections is null or undefined !' );
+            TLogger.error( 'FBXLoader2: Unable to parse textures, connections is null or undefined !' );
             return null;
 
         }
@@ -531,7 +531,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var objects = FBXTree.Objects;
         if ( !objects ) {
 
-            console.error( 'FBXLoader2: Unable to parse textures, fbx tree does not contain Objects !' );
+            TLogger.error( 'FBXLoader2: Unable to parse textures, fbx tree does not contain Objects !' );
             return null;
 
         }
@@ -539,7 +539,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var subNodes = objects.subNodes;
         if ( !subNodes ) {
 
-            console.error( 'FBXLoader2: Unable to parse textures, fbx tree\'s Objects does not contain subNodes !' );
+            TLogger.error( 'FBXLoader2: Unable to parse textures, fbx tree\'s Objects does not contain subNodes !' );
             return null;
 
         }
@@ -582,7 +582,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         if ( !textureNode ) {
 
-            console.error( 'FBXLoader2: Unable to parse texture for null or undefined texture node !' );
+            TLogger.error( 'FBXLoader2: Unable to parse texture for null or undefined texture node !' );
             return null;
 
         }
@@ -662,14 +662,14 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         if ( !textureMap ) {
 
-            console.error( 'FBXLoader2: Unable to parse materials for null or undefined texture map !' );
+            TLogger.error( 'FBXLoader2: Unable to parse materials for null or undefined texture map !' );
             return null;
 
         }
 
         if ( !connections ) {
 
-            console.error( 'FBXLoader2: Unable to parse materials for null or undefined connections !' );
+            TLogger.error( 'FBXLoader2: Unable to parse materials for null or undefined connections !' );
             return null;
 
         }
@@ -677,7 +677,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var objects = FBXTree.Objects;
         if ( !objects ) {
 
-            console.error( 'FBXLoader2: Unable to parse materials, fbx tree does not contain Objects !' );
+            TLogger.error( 'FBXLoader2: Unable to parse materials, fbx tree does not contain Objects !' );
             return null;
 
         }
@@ -685,7 +685,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var subNodes = objects.subNodes;
         if ( !subNodes ) {
 
-            console.error( 'FBXLoader2: Unable to parse materials, fbx tree\'s Objects does not contain subNodes !' );
+            TLogger.error( 'FBXLoader2: Unable to parse materials, fbx tree\'s Objects does not contain subNodes !' );
             return null;
 
         }
@@ -718,7 +718,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         if ( !materialNode ) {
 
-            console.error( 'FBXLoader2: Unable to parse material for null or undefined material node !' );
+            TLogger.error( 'FBXLoader2: Unable to parse material for null or undefined material node !' );
             return null;
 
         }
@@ -726,7 +726,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var materialNodeProperties = materialNode.properties;
         if ( !materialNodeProperties ) {
 
-            console.error( 'FBXLoader2: Unable to parse material with null or undefined properties !' );
+            TLogger.error( 'FBXLoader2: Unable to parse material with null or undefined properties !' );
             return null;
 
         }
@@ -785,7 +785,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
                 break;
 
             default:
-                console.warn( 'FBXLoader2: No implementation given for material type %s in FBXLoader.js. Defaulting to standard material.', type );
+                TLogger.warn( 'FBXLoader2: No implementation given for material type %s in FBXLoader.js. Defaulting to standard material.', type );
                 material = new MeshStandardMaterial( { color: 0x3300ff } );
                 break;
 
@@ -878,7 +878,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
                 case 'EmissiveColor':
                 case ' "EmissiveColor':
                 default:
-                    console.warn( 'FBXLoader2: Unknown texture application of type %s, skipping texture.', type );
+                    TLogger.warn( 'FBXLoader2: Unknown texture application of type %s, skipping texture.', type );
                     break;
 
             }
@@ -893,7 +893,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         if ( !connections ) {
 
-            console.error( 'FBXLoader2: Unable to parse deformers for null or undefined connections !' );
+            TLogger.error( 'FBXLoader2: Unable to parse deformers for null or undefined connections !' );
             return null;
 
         }
@@ -901,7 +901,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var objects = FBXTree.Objects;
         if ( !objects ) {
 
-            console.error( 'FBXLoader2: Unable to parse deformers, fbx tree does not contain Objects !' );
+            TLogger.error( 'FBXLoader2: Unable to parse deformers, fbx tree does not contain Objects !' );
             return null;
 
         }
@@ -909,7 +909,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var subNodes = objects.subNodes;
         if ( !subNodes ) {
 
-            console.error( 'FBXLoader2: Unable to parse deformers, fbx tree\'s Objects does not contain subNodes !' );
+            TLogger.error( 'FBXLoader2: Unable to parse deformers, fbx tree\'s Objects does not contain subNodes !' );
             return null;
 
         }
@@ -952,7 +952,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         if ( !connections ) {
 
-            console.error( "FBXLoader2: Unable to parse skeleton for null or undefined connections !" );
+            TLogger.error( "FBXLoader2: Unable to parse skeleton for null or undefined connections !" );
             return null;
 
         }
@@ -1006,14 +1006,14 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         if ( !connections ) {
 
-            console.error( "FBXLoader2: Unable to parse geometries for null or undefined connections !" );
+            TLogger.error( "FBXLoader2: Unable to parse geometries for null or undefined connections !" );
             return null;
 
         }
 
         if ( !deformers ) {
 
-            console.error( "FBXLoader2: Unable to parse geometries for null or undefined deformers !" );
+            TLogger.error( "FBXLoader2: Unable to parse geometries for null or undefined deformers !" );
             return null;
 
         }
@@ -1021,7 +1021,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var objects = FBXTree.Objects;
         if ( !objects ) {
 
-            console.error( "FBXLoader2: Unable to parse geometries, fbx tree does not contain Objects !" );
+            TLogger.error( "FBXLoader2: Unable to parse geometries, fbx tree does not contain Objects !" );
             return null;
 
         }
@@ -1029,7 +1029,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var subNodes = objects.subNodes;
         if ( !subNodes ) {
 
-            console.error( "FBXLoader2: Unable to parse geometries, fbx tree's Objects does not contain subNodes !" );
+            TLogger.error( "FBXLoader2: Unable to parse geometries, fbx tree's Objects does not contain subNodes !" );
             return null;
 
         }
@@ -1037,7 +1037,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var geometryNodes = ( version < 7000 ) ? subNodes.Model : subNodes.Geometry;
         if ( !geometryNodes ) {
 
-            console.error( "FBXLoader2: Unable to parse geometries, fbx tree's Objects sub-nodes does not contain geometry !" );
+            TLogger.error( "FBXLoader2: Unable to parse geometries, fbx tree's Objects sub-nodes does not contain geometry !" );
             return null;
 
         }
@@ -1242,7 +1242,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
                         if ( !displayedWeightsWarning ) {
 
-                            console.warn( 'FBXLoader2: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.' );
+                            TLogger.warn( 'FBXLoader2: Vertex has more than 4 skinning weights assigned to vertex. Deleting additional weights.' );
                             displayedWeightsWarning = true;
 
                         }
@@ -1398,7 +1398,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         if ( !NormalNode ) {
 
-            console.error( "Unable to get normals with null or undefined NormalNode !" );
+            TLogger.error( "Unable to get normals with null or undefined NormalNode !" );
             return null;
 
         }
@@ -1436,7 +1436,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         if ( !UVNode ) {
 
-            console.error( "Unable to get UVs with null or undefined UVNode !" );
+            TLogger.error( "Unable to get UVs with null or undefined UVNode !" );
             return null;
 
         }
@@ -1465,7 +1465,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         if ( !ColorNode ) {
 
-            console.error( "Unable to get colors with null or undefined ColorNode !" );
+            TLogger.error( "Unable to get colors with null or undefined ColorNode !" );
             return null;
 
         }
@@ -1494,7 +1494,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         if ( !MaterialNode ) {
 
-            console.error( "Unable to get materials with null or undefined MaterialNode !" );
+            TLogger.error( "Unable to get materials with null or undefined MaterialNode !" );
             return null;
 
         }
@@ -1637,14 +1637,14 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         if ( !geometryNode ) {
 
-            console.error( "Unable to parse Nurbs Geometry with null or undefined geometryNode !" );
+            TLogger.error( "Unable to parse Nurbs Geometry with null or undefined geometryNode !" );
             return null;
 
         }
 
         if ( NURBSCurve === undefined ) {
 
-            console.error( 'FBXLoader2: The loader relies on NURBSCurve for any nurbs present in the model. Nurbs will show up as empty geometry.' );
+            TLogger.error( 'FBXLoader2: The loader relies on NURBSCurve for any nurbs present in the model. Nurbs will show up as empty geometry.' );
             return new BufferGeometry();
 
         }
@@ -1653,7 +1653,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         if ( isNaN( order ) ) {
 
-            console.error( 'FBXLoader2: Invalid Order %s given for geometry ID: %s', geometryNode.properties.Order, geometryNode.id );
+            TLogger.error( 'FBXLoader2: Invalid Order %s given for geometry ID: %s', geometryNode.properties.Order, geometryNode.id );
             return new BufferGeometry();
 
         }
@@ -1711,7 +1711,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         if ( !connections ) {
 
-            console.error( "FBXLoader2: Unable to parse scene for null or undefined connections !" );
+            TLogger.error( "FBXLoader2: Unable to parse scene for null or undefined connections !" );
             return null;
 
         }
@@ -1719,7 +1719,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var objects = FBXTree.Objects;
         if ( !objects ) {
 
-            console.error( "FBXLoader2: Unable to parse scene, fbx tree does not contain Objects !" );
+            TLogger.error( "FBXLoader2: Unable to parse scene, fbx tree does not contain Objects !" );
             return null;
 
         }
@@ -1727,7 +1727,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var subNodes = objects.subNodes;
         if ( !subNodes ) {
 
-            console.error( "FBXLoader2: Unable to parse scene, fbx tree's Objects does not contain subNodes !" );
+            TLogger.error( "FBXLoader2: Unable to parse scene, fbx tree's Objects does not contain subNodes !" );
             return null;
 
         }
@@ -2076,7 +2076,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
                     } else {
 
-                        console.error( 'FBXLoader2: Unable to bind skeleton with world matrix, the mesh is not an instance of SkinnedMesh !' );
+                        TLogger.error( 'FBXLoader2: Unable to bind skeleton with world matrix, the mesh is not an instance of SkinnedMesh !' );
 
                     }
 
@@ -2102,7 +2102,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
                         } else {
 
-                            console.error( 'FBXLoader2: Unable to bind skeleton with world matrix, the mesh is not an instance of SkinnedMesh !' );
+                            TLogger.error( 'FBXLoader2: Unable to bind skeleton with world matrix, the mesh is not an instance of SkinnedMesh !' );
 
                         }
 
@@ -2134,7 +2134,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var objects = FBXTree.Objects;
         if ( !objects ) {
 
-            console.error( "Unable to parse animation, fbx tree does not contain Objects !" );
+            TLogger.error( "Unable to parse animation, fbx tree does not contain Objects !" );
             return null;
 
         }
@@ -2142,21 +2142,21 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var subNodes = objects.subNodes;
         if ( !subNodes ) {
 
-            console.error( "Unable to parse animation, fbx tree's Objects does not contain subNodes !" );
+            TLogger.error( "Unable to parse animation, fbx tree's Objects does not contain subNodes !" );
             return null;
 
         }
 
         if ( !connections ) {
 
-            console.error( "Unable to parse animation for null or undefined connections !" );
+            TLogger.error( "Unable to parse animation for null or undefined connections !" );
             return null;
 
         }
 
         if ( !sceneGraph ) {
 
-            console.error( "Unable to parse animation for null or undefined scene !" );
+            TLogger.error( "Unable to parse animation for null or undefined scene !" );
             return null;
 
         }
@@ -2408,7 +2408,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         if ( !FBXTree ) {
 
-            console.error( "Unable to parse animation for null or undefined fbx tree !" );
+            TLogger.error( "Unable to parse animation for null or undefined fbx tree !" );
             return null;
 
         }
@@ -2416,21 +2416,21 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var takes = FBXTree.Takes;
         if ( !takes ) {
 
-            console.error( "Unable to parse animation, fbx tree does not contain Takes !" );
+            TLogger.error( "Unable to parse animation, fbx tree does not contain Takes !" );
             return null;
 
         }
 
         if ( !connections ) {
 
-            console.error( "Unable to parse animation for null or undefined connections !" );
+            TLogger.error( "Unable to parse animation for null or undefined connections !" );
             return null;
 
         }
 
         if ( !sceneGraph ) {
 
-            console.error( "Unable to parse animation for null or undefined scene !" );
+            TLogger.error( "Unable to parse animation for null or undefined scene !" );
             return null;
 
         }
@@ -2611,7 +2611,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
         if ( !group ) {
 
-            console.error( "Unable to add animation for null or undefined group !" );
+            TLogger.error( "Unable to add animation for null or undefined group !" );
             return null;
 
         }
@@ -2619,7 +2619,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var skeleton = group.skeleton;
         if ( !group ) {
 
-            console.error( "Unable to add animation for null or undefined group skeleton !" );
+            TLogger.error( "Unable to add animation for null or undefined group skeleton !" );
             return null;
 
         }
@@ -2627,14 +2627,14 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var bones = skeleton.bones;
         if ( !bones ) {
 
-            console.error( "Unable to add animation for null or undefined group skeleton bones !" );
+            TLogger.error( "Unable to add animation for null or undefined group skeleton bones !" );
             return null;
 
         }
 
         if ( !animations ) {
 
-            console.error( "Unable to add animation for null or undefined animations !" );
+            TLogger.error( "Unable to add animation for null or undefined animations !" );
             return null;
 
         }
@@ -2642,7 +2642,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         var stacks = animations.stacks;
         if ( !stacks ) {
 
-            console.error( "Unable to add animation for null or undefined animations stacks !" );
+            TLogger.error( "Unable to add animation for null or undefined animations stacks !" );
             return null;
 
         }
@@ -2764,8 +2764,8 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
         } catch ( error ) {
 
             // Curve is not fully plotted.
-            console.log( 'FBXLoader2: ', bone );
-            console.log( 'FBXLoader2: ', error );
+            TLogger.log( 'FBXLoader2: ', bone );
+            TLogger.log( 'FBXLoader2: ', error );
 
         }
 
@@ -3190,7 +3190,7 @@ Object.assign( TextParser.prototype, {
         this.currentIndent   = 0;
         this.version         = this.getFbxVersion( text );
 
-        console.log( 'FBXLoader2: FBX ascii version: ' + this.version );
+        TLogger.log( 'FBXLoader2: FBX ascii version: ' + this.version );
 
         var split = text.split( '\n' );
         var line  = undefined;
@@ -3221,7 +3221,7 @@ Object.assign( TextParser.prototype, {
 
                 if ( match.length !== 3 ) {
 
-                    console.error( "Invalid matching for begin of node: " + line );
+                    TLogger.error( "Invalid matching for begin of node: " + line );
                     continue;
 
                 }
@@ -3250,7 +3250,7 @@ Object.assign( TextParser.prototype, {
                 var match = line.match( propExp );
                 if ( match.length !== 3 ) {
 
-                    console.error( "Invalid matching for node property: " + line );
+                    TLogger.error( "Invalid matching for node property: " + line );
                     continue;
 
                 }
@@ -3327,7 +3327,7 @@ Object.assign( TextParser.prototype, {
 
                 var tmp = currentNode.subNodes[ nodeName ];
 
-                // console.log( "duped entry found\nkey: " + nodeName + "\nvalue: " + propValue );
+                // TLogger.log( "duped entry found\nkey: " + nodeName + "\nvalue: " + propValue );
                 if ( TextParser.isFlattenNode( currentNode.subNodes[ nodeName ] ) ) {
 
                     if ( attrs.id === '' ) {
@@ -3500,7 +3500,7 @@ Object.assign( TextParser.prototype, {
         // already exists in properties, then append this
         if ( propName in currentNode.properties ) {
 
-            // console.log( "duped entry found\nkey: " + propName + "\nvalue: " + propValue );
+            // TLogger.log( "duped entry found\nkey: " + propName + "\nvalue: " + propValue );
             if ( Array.isArray( currentNode.properties[ propName ] ) ) {
 
                 currentNode.properties[ propName ].push( propValue );
@@ -3513,7 +3513,7 @@ Object.assign( TextParser.prototype, {
 
         } else {
 
-            // console.log( propName + ":  " + propValue );
+            // TLogger.log( propName + ":  " + propValue );
             if ( Array.isArray( currentNode.properties[ propName ] ) ) {
 
                 currentNode.properties[ propName ].push( propValue );
@@ -3633,7 +3633,7 @@ Object.assign( BinaryParser.prototype, {
 
         this.version = this.getFbxVersion( reader );
 
-        console.log( 'FBXLoader2: FBX binary version: ' + this.version );
+        TLogger.log( 'FBXLoader2: FBX binary version: ' + this.version );
 
         var allNodes = new FBXTree();
 
