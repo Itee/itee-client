@@ -583,7 +583,7 @@ function TApplication ( container, parameters, onReady ) {
                 z: 60
             }
 
-            self.pointCloudManager = new PointCloudManager( this.webglViewport )
+            self.pointCloudManager = new TPointManager( this.webglViewport )
             self.pointCloudManager.setGlobalOffset( LAMBERT_NORD_OFFSET )
             if ( parameters.samplingMin ) { self.pointCloudManager.setMinimumSamplingLimit( parameters.samplingMin ) }
 
