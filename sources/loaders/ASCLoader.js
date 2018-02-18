@@ -10,6 +10,7 @@ import {
     Points,
     Group
 } from 'threejs-full-es6'
+import { DefaultLogger as TLogger } from '../loggers/TLogger'
 
 /**
  * @author Tristan Valcke / https://github.com/TristanVALCKE
