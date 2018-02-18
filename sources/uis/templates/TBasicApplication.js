@@ -11,27 +11,15 @@
 /* eslint-env browser */
 
 import React from 'react'
-import {
-    THeader,
-    TAppBar,
-    TBrand,
-    TMenu,
-    TMenuItem,
-    TDropDownMenu,
-    TLogingButton,
-    TContent,
-    TButtonGroup,
-    TToolButton,
-    TSplitter,
-    TTree,
-    TTreeItem,
-    TViewport3D,
-    TFooter,
-    TStatusBar,
-    TDateTime,
-    TDialogArea,
-    TLoginDialog
-} from '../_uis'
+import { THeader, TContent, TFooter } from '../displays/sections/_sections'
+import { TAppBar, TStatusBar } from '../displays/bars/_bars'
+import { TDateTime } from '../displays/bases/_bases'
+import { TBrand, TMenu, TMenuItem, TDropDownMenu } from '../displays/navigations/_navigations'
+import { TLogingButton, TButtonGroup, TToolButton } from '../inputs/buttons/_buttons'
+import { TSplitter } from '../displays/splitters/_splitters'
+import { TTree, TTreeItem } from '../displays/trees/_trees'
+import { TViewport3D } from '../displays/medias/_medias'
+import { TDialogArea, TLoginDialog } from '../interactives/dialogs/_dialogs'
 
 class TBasicApplication extends React.Component {
 
