@@ -1196,7 +1196,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
             if ( vertexIndex < 0 ) {
 
-                vertexIndex                       = vertexIndex ^ -1;
+                vertexIndex ^= -1;
                 indexBuffer[ polygonVertexIndex ] = vertexIndex;
                 endOfFace                         = true;
 
