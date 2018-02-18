@@ -35,7 +35,7 @@ TScenesManager.prototype = Object.assign( Object.create( TDataBaseManager.protot
 Object.defineProperties( TScenesManager.prototype, {
 
     _onJson: {
-        value: function _onJson ( jsonData, onSuccess, onProgress, onError ) {
+        value: function _onJson ( jsonData, onSuccess ) {
 
             onSuccess( jsonData )
 
