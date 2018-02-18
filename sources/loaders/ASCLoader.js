@@ -1,24 +1,10 @@
-/* eslint-env browser */
-
-import {
-    FileLoader,
-    DefaultLoadingManager,
-    BufferGeometry,
-    BufferAttribute,
-    Color,
-    PointsMaterial,
-    Points,
-    Group
-} from 'threejs-full-es6'
-import { DefaultLogger as TLogger } from '../loggers/TLogger'
-
 /**
- * @author Tristan Valcke / https://github.com/TristanVALCKE
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  *
- * Description: A loader for ASC cloud point files.
+ * @file A loader for ASC cloud point files.
  *
- *
- * Usage:
+ * @example
  *    var loader = new ASCLoader();
  *    loader.load('/path/to/file.asc', function (geometry) {
  *
@@ -37,70 +23,20 @@ import { DefaultLogger as TLogger } from '../loggers/TLogger'
  *
  */
 
-/**
- * Bounding box
- * @constructor
- */
-const BoundingBox = function () {
-    this.xMin = Number.MAX_VALUE;
-    this.xMax = Number.MIN_VALUE;
-    this.yMin = Number.MAX_VALUE;
-    this.yMax = Number.MIN_VALUE;
-    this.zMin = Number.MAX_VALUE;
-    this.zMax = Number.MIN_VALUE;
-}
+/* eslint-env browser */
 
-BoundingBox.prototype = {
-
-    constructor: BoundingBox,
-
-    computePoint ( point ) {
-
-        if ( point.x < this.xMin ) {
-            this.xMin = point.x;
-        }
-
-        if ( point.x > this.xMax ) {
-            this.xMax = point.x;
-        }
-
-        if ( point.y < this.yMin ) {
-            this.yMin = point.y;
-        }
-
-        if ( point.y > this.yMax ) {
-            this.yMax = point.y;
-        }
-
-        if ( point.z < this.zMin ) {
-            this.zMin = point.z;
-        }
-
-        if ( point.z > this.zMax ) {
-            this.zMax = point.z;
-        }
-
-    },
-
-    computePoints ( points ) {
-
-        for ( let i = 0, numPts = points.length ; i < numPts ; ++i ) {
-            this.computePoint( points[ i ] );
-        }
-
-    },
-
-    getCenter () {
-
-        return {
-            x: (this.xMin + this.xMax) / 2,
-            y: (this.yMin + this.yMax) / 2,
-            z: (this.zMin + this.zMax) / 2
-        }
-
-    }
-
-};
+import {
+    FileLoader,
+    DefaultLoadingManager,
+    BufferGeometry,
+    BufferAttribute,
+    Color,
+    PointsMaterial,
+    Points,
+    Group
+} from 'threejs-full-es6'
+import { DefaultLogger as TLogger } from '../loggers/TLogger'
+import { TBoundingBox } from '../cores/TBoundingBox'
 
 /**
  *
@@ -111,7 +47,7 @@ var ASCLoader = function ( manager ) {
 
     this.manager = ( manager ) ? manager : DefaultLoadingManager;
 
-    this._boundingBox    = new BoundingBox();
+    this._boundingBox    = new TBoundingBox();
     this._points         = [];
     this._numberOfPoints = 0;
     this._coloredPoints  = false;
