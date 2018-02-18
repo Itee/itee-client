@@ -43,7 +43,7 @@ import { TBoundingBox } from '../cores/TBoundingBox'
  * @param manager
  * @constructor
  */
-var ASCLoader = function ( manager ) {
+function ASCLoader( manager ) {
 
     this.manager = ( manager ) ? manager : DefaultLoadingManager;
 
@@ -65,11 +65,9 @@ var ASCLoader = function ( manager ) {
     this._bufferIndexC = 0;
 
     this.wrongPoints = 0;
-};
+}
 
-ASCLoader.prototype = {
-
-    constructor: ASCLoader,
+Object.assign( ASCLoader.prototype, {
 
     load ( url, onLoad, onProgress, onError, sampling ) {
 
@@ -724,6 +722,6 @@ ASCLoader.prototype = {
 
     }
 
-}
+} )
 
 export { ASCLoader }
