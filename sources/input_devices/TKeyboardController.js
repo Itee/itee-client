@@ -85,8 +85,7 @@ function KeyboardState() {
 
 ///////////////////////////////////////////////////////////////////////////////
 
-KeyboardState.k =
-    {}
+KeyboardState.k = KEYS
 
 KeyboardState.status = {};
 
