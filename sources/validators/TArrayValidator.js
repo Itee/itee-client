@@ -13,27 +13,27 @@
 import {
     isNotNull,
     isNull
-} from "TNullityValidator"
+} from "./TNullityValidator"
 import {
     isDefined,
     isUndefined
-} from "TUndefineValidator"
+} from "./TUndefineValidator"
 import {
     isEmpty,
     isNotEmpty
-} from "TEmptinessValidator"
+} from "./TEmptinessValidator"
 import {
     isString,
     isNotString,
     isEmptyString,
     isNotEmptyString
-} from "TStringValidator"
+} from "./TStringValidator"
 import {
     isObject,
     isNotObject,
     isEmptyObject,
     isNotEmptyObject
-} from "TObjectValidator"
+} from "./TObjectValidator"
 
 //       _
 //      / \   _ __ _ __ __ _ _   _ ___
