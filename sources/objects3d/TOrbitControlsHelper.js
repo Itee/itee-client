@@ -118,7 +118,7 @@ function TOrbitControlsHelper ( orbitControls ) {
 
 }
 
-TOrbitControlsHelper.prototype = Object.assign( Object.create( LineSegments.prototype ), {
+Object.assign( TOrbitControlsHelper.prototype, LineSegments.prototype, {
 
     constructor: TOrbitControlsHelper,
 
