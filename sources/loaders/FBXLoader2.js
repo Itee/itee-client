@@ -1,4 +1,5 @@
 /* eslint-env browser */
+/* globals TextDecoder, Zlib */
 
 import {
     AnimationClip,
@@ -15,7 +16,9 @@ import {
     Matrix4,
     Mesh,
     MeshPhongMaterial,
+    MeshLambertMaterial,
     MeshStandardMaterial,
+    LineBasicMaterial,
     Object3D,
     Quaternion,
     RepeatWrapping,
@@ -24,8 +27,13 @@ import {
     Vector2,
     Vector3,
     Vector4,
-    VertexColors
+    VertexColors,
+    NURBSCurve,
+    Bone,
+    Line,
+    Skeleton
 } from 'threejs-full-es6'
+import { DefaultLogger as TLogger } from '../loggers/TLogger'
 
 /**
  * @author Kyle-Larson https://github.com/Kyle-Larson
