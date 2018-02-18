@@ -26,7 +26,7 @@ function TScenesManager () {
 
 }
 
-TScenesManager.prototype = Object.assign( Object.create( TDataBaseManager.prototype ), {
+Object.assign( TScenesManager.prototype, TDataBaseManager.prototype, {
 
     constructor: TScenesManager
 
