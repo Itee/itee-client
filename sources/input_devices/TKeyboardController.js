@@ -3,7 +3,7 @@
  *
  * Usage:
  * (1) create a global variable:
- *      var keyboard = new KeyboardState();
+ *      var keyboard = new TKeyboardState();
  * (2) during main loop:
  *       keyboard.update();
  * (3) check state of keys:
@@ -11,7 +11,7 @@
  *       keyboard.pressed("A") -- true as long as key is being pressed
  *       keyboard.up("A")      -- true for one update cycle after key is released
  *
- *  See KeyboardState.k object data below for names of keys whose state can be polled
+ *  See TKeyboardState.k object data below for names of keys whose state can be polled
  */
 
 /* eslint-env browser */
@@ -77,35 +77,35 @@ const KEYS = {
 }
 
 // initialization
-function KeyboardState() {
+function TKeyboardState() {
     // bind keyEvents
-    document.addEventListener( "keydown", KeyboardState.onKeyDown, false );
-    document.addEventListener( "keyup", KeyboardState.onKeyUp, false );
+    document.addEventListener( "keydown", TKeyboardState.onKeyDown, false );
+    document.addEventListener( "keyup", TKeyboardState.onKeyUp, false );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
 
-KeyboardState.k = KEYS
+TKeyboardState.k = KEYS
 
-KeyboardState.status = {};
+TKeyboardState.status = {};
 
-KeyboardState.keyName = function ( keyCode ) {
-    return ( KeyboardState.k[ keyCode ] != null ) ?
-        KeyboardState.k[ keyCode ] :
+TKeyboardState.keyName = function ( keyCode ) {
+    return ( TKeyboardState.k[ keyCode ] != null ) ?
+        TKeyboardState.k[ keyCode ] :
         String.fromCharCode( keyCode );
 }
 
-KeyboardState.onKeyUp = function ( event ) {
-    var key = KeyboardState.keyName( event.keyCode );
-    if ( KeyboardState.status[ key ] ) {
-        KeyboardState.status[ key ].pressed = false;
+TKeyboardState.onKeyUp = function ( event ) {
+    var key = TKeyboardState.keyName( event.keyCode );
+    if ( TKeyboardState.status[ key ] ) {
+        TKeyboardState.status[ key ].pressed = false;
     }
 }
 
-KeyboardState.onKeyDown = function ( event ) {
-    var key = KeyboardState.keyName( event.keyCode );
-    if ( !KeyboardState.status[ key ] ) {
-        KeyboardState.status[ key ] = {
+TKeyboardState.onKeyDown = function ( event ) {
+    var key = TKeyboardState.keyName( event.keyCode );
+    if ( !TKeyboardState.status[ key ] ) {
+        TKeyboardState.status[ key ] = {
             down:              false,
             pressed:           false,
             up:                false,
@@ -114,50 +114,50 @@ KeyboardState.onKeyDown = function ( event ) {
     }
 }
 
-KeyboardState.prototype.update = function () {
-    for ( var key in KeyboardState.status ) {
+TKeyboardState.prototype.update = function () {
+    for ( var key in TKeyboardState.status ) {
         // insure that every keypress has "down" status exactly once
-        if ( !KeyboardState.status[ key ].updatedPreviously ) {
-            KeyboardState.status[ key ].down              = true;
-            KeyboardState.status[ key ].pressed           = true;
-            KeyboardState.status[ key ].updatedPreviously = true;
+        if ( !TKeyboardState.status[ key ].updatedPreviously ) {
+            TKeyboardState.status[ key ].down              = true;
+            TKeyboardState.status[ key ].pressed           = true;
+            TKeyboardState.status[ key ].updatedPreviously = true;
         }
         else // updated previously
         {
-            KeyboardState.status[ key ].down = false;
+            TKeyboardState.status[ key ].down = false;
         }
 
         // key has been flagged as "up" since last update
-        if ( KeyboardState.status[ key ].up ) {
-            delete KeyboardState.status[ key ];
+        if ( TKeyboardState.status[ key ].up ) {
+            delete TKeyboardState.status[ key ];
             continue; // move on to next key
         }
 
-        if ( !KeyboardState.status[ key ].pressed ) // key released
+        if ( !TKeyboardState.status[ key ].pressed ) // key released
         {
-            KeyboardState.status[ key ].up = true;
+            TKeyboardState.status[ key ].up = true;
         }
     }
 }
 
-KeyboardState.prototype.down = function ( keyName ) {
-    return (KeyboardState.status[ keyName ] && KeyboardState.status[ keyName ].down);
+TKeyboardState.prototype.down = function ( keyName ) {
+    return (TKeyboardState.status[ keyName ] && TKeyboardState.status[ keyName ].down);
 }
 
-KeyboardState.prototype.pressed = function ( keyName ) {
-    return (KeyboardState.status[ keyName ] && KeyboardState.status[ keyName ].pressed);
+TKeyboardState.prototype.pressed = function ( keyName ) {
+    return (TKeyboardState.status[ keyName ] && TKeyboardState.status[ keyName ].pressed);
 }
 
-KeyboardState.prototype.up = function ( keyName ) {
-    return (KeyboardState.status[ keyName ] && KeyboardState.status[ keyName ].up);
+TKeyboardState.prototype.up = function ( keyName ) {
+    return (TKeyboardState.status[ keyName ] && TKeyboardState.status[ keyName ].up);
 }
 
-KeyboardState.prototype.debug = function () {
+TKeyboardState.prototype.debug = function () {
     var list = "Keys active: ";
-    for ( var arg in KeyboardState.status ) {
+    for ( var arg in TKeyboardState.status ) {
         list += " " + arg
     }
     TLogger.log( list );
 }
 
-///////////////////////////////////////////////////////////////////////////////
+export { TKeyboardState }

@@ -9,3 +9,9 @@
  */
 
 /* eslint-env browser */
+
+function TMouseController () {
+
+}
+
+export { TMouseController }

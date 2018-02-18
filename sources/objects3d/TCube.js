@@ -13,11 +13,11 @@ import {
 
 import { extend } from '../utils/TUtils'
 
-function Cube ( givenSettings ) {
+function TCube ( givenSettings ) {
 
     var _ = this;
 
-    _.settings = extend( Cube.DEFAULT_SETTINGS, givenSettings );
+    _.settings = extend( TCube.DEFAULT_SETTINGS, givenSettings );
 
     _.geometry = new BoxGeometry( _.settings.width, _.settings.height, _.settings.depth, _.settings.widthSegments, _.settings.heightSegments, _.settings.depthSegments );
 
@@ -44,7 +44,7 @@ function Cube ( givenSettings ) {
 
 }
 
-Cube.DEFAULT_SETTINGS = {
+TCube.DEFAULT_SETTINGS = {
     width:          1.0,
     height:         1.0,
     depth:          1.0,
@@ -58,19 +58,19 @@ Cube.DEFAULT_SETTINGS = {
     }
 }
 
-Cube.prototype.setPosition = function ( x, y, z ) {
+TCube.prototype.setPosition = function ( x, y, z ) {
 
     var _ = this;
     _.view.position.set( x, y, z );
 
 };
 
-Cube.prototype.update = function () {
+TCube.prototype.update = function () {
     var _ = this;
     _.autoRotate();
 };
 
-Cube.prototype.autoRotate = function () {
+TCube.prototype.autoRotate = function () {
 
     var _ = this;
 
@@ -78,5 +78,5 @@ Cube.prototype.autoRotate = function () {
     _.view.rotation.y += 0.005;
 };
 
-export { Cube }
+export { TCube }
 

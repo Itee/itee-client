@@ -57,4 +57,4 @@ function TFile ( path = '' ) {
 
 }
 
-
+export { FileFormat, TFile }

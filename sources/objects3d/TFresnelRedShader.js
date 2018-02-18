@@ -6,7 +6,7 @@
 
 /* eslint-env browser */
 
-THREE.FresnelRedShader = {
+const TFresnelRedShader = {
 
     uniforms: {
 
@@ -89,4 +89,6 @@ THREE.FresnelRedShader = {
 
                     ].join( "\n" )
 
-};
+}
+
+export { TFresnelRedShader }

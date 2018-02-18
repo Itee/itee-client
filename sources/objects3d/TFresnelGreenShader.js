@@ -6,7 +6,7 @@
 
 /* eslint-env browser */
 
-THREE.FresnelGreenShader = {
+const TFresnelGreenShader = {
 
     uniforms: {
 
@@ -90,4 +90,6 @@ THREE.FresnelGreenShader = {
 
                     ].join( "\n" )
 
-};
+}
+
+export { TFresnelGreenShader }
