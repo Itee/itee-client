@@ -557,7 +557,7 @@ Object.assign( SHPLoader.prototype, {
                 let array = arrays[ arrayIndex ]
 
                 if ( !array ) {
-                    console.log( 'no array, oups !' )
+                    TLogger.log( 'no array, oups !' )
                     continue
                 }
 
