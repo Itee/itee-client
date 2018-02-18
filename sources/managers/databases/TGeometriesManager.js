@@ -19,7 +19,9 @@ import { TDataBaseManager } from '../TDataBaseManager'
 import {
     Geometry,
     BufferAttribute,
-    BufferGeometry
+    BufferGeometry,
+    Vector3,
+    Face3
 } from 'threejs-full-es6'
 
 /**
