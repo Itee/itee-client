@@ -13,14 +13,14 @@ import {
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { PI_2 } from '../maths/TMath'
 
-var STATE   = {
+const STATE   = {
     NONE:   -1,
     ROTATE: 0,
     ZOOM:   1,
     PAN:    2
 }
-var xVector = new Vector3( 1, 0, 0 )
-var yVector = new Vector3( 0, 1, 0 )
+const xVector = new Vector3( 1, 0, 0 )
+const yVector = new Vector3( 0, 1, 0 )
 
 function TCameraPathController ( camera, domElement ) {
 
@@ -29,9 +29,9 @@ function TCameraPathController ( camera, domElement ) {
         return
     }
 
-    var self = this
+    const self = this
 
-    var currentState = STATE.NONE
+    let currentState = STATE.NONE
 
     this.camera     = camera
     this.cameraJump = 0.0
@@ -70,7 +70,7 @@ function TCameraPathController ( camera, domElement ) {
     }
 
     // Mouse
-    var mouseQuat = {
+    let mouseQuat = {
         x: new Quaternion(),
         y: new Quaternion()
     }
