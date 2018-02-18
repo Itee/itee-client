@@ -68,6 +68,7 @@ import {
     TMaterialsManager,
     TPointsManager
 } from '../managers/databases/_databases'
+import { degreesToRadians } from '../maths/TMath'
 
 /**
  *
@@ -705,7 +706,7 @@ function TApplication ( container, parameters, onReady ) {
 
                 if ( 'material' in object ) {
 
-                    object.material.side    = Constants.DoubleSide
+                    object.material.side    = DoubleSide
                     object.material.opacity = 1
 
                 } else {
@@ -1541,7 +1542,7 @@ Object.assign( TApplication, {
                 continue
             }
 
-            rotation  = _Math.degToRad( properties.ROTATION )
+            rotation  = degreesToRadians( properties.ROTATION )
             deltaRotX = Math.cos( rotation )
             deltaRotY = -Math.sin( rotation )
 
