@@ -16,6 +16,8 @@
 
 /* eslint-env browser */
 
+import { TLogger } from '../loggers/TLogger'
+
 const KEYS = {
     8:  "backspace",
     9:  "tab",
@@ -156,7 +158,7 @@ KeyboardState.prototype.debug = function () {
     for ( var arg in KeyboardState.status ) {
         list += " " + arg
     }
-    console.log( list );
+    TLogger.log( list );
 }
 
 ///////////////////////////////////////////////////////////////////////////////
