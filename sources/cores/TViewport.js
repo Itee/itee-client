@@ -477,6 +477,9 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
                 } else {
 
+                    this.intersection = null
+                    this.dispatchEvent( { type: 'measureEnd' } )
+
                 }
 
             } else {
