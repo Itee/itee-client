@@ -53,6 +53,8 @@ import {
     TubeGeometry,
     Vector3,
     WireframeGeometry,
+    CatmullRomCurve3,
+    Color
 } from 'threejs-full-es6'
 
 import { TDataBaseManager as CompaniesManager } from '../managers/TDataBaseManager'
