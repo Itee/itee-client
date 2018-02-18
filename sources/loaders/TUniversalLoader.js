@@ -32,7 +32,7 @@ import { ASCLoader } from './ASCLoader'
 import { SHPLoader } from './SHPLoader'
 import { DBFLoader } from './DBFLoader'
 
-import * as Validator from '../validators/TValidator'
+import * as TValidator from '../validators/_validators'
 import { degreesToRadians } from '../maths/TMath'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 
@@ -100,19 +100,19 @@ Object.assign( TUniversalLoader.prototype, {
             return
         }
 
-        if ( Validator.isObject( files ) ) {
+        if ( TValidator.isObject( files ) ) {
 
             this.loadSingleFile( files, onLoad, onProgress, onError )
 
-        } else if ( Validator.isFunction( files ) ) {
+        } else if ( TValidator.isFunction( files ) ) {
 
             this.load( files(), onLoad, onProgress, onError )
 
-        } else if ( Validator.isArray( files ) ) {
+        } else if ( TValidator.isArray( files ) ) {
 
             // Todo: need to rework logic here and use wrapper object instead of array of object to avoid
             // Todo: array of 2 differents files.
-            if ( (files.length === 2) && (Validator.isObject( files[ 0 ] ) && Validator.isObject( files[ 1 ] )) ) {
+            if ( (files.length === 2) && (TValidator.isObject( files[ 0 ] ) && TValidator.isObject( files[ 1 ] )) ) {
 
                 this.loadAssociatedFiles( files, onLoad, onProgress, onError )
 
@@ -124,7 +124,7 @@ Object.assign( TUniversalLoader.prototype, {
 
             }
 
-        } else if ( Validator.isString( files ) ) {
+        } else if ( TValidator.isString( files ) ) {
 
             this.loadSingleFile( { url: files }, onLoad, onProgress, onError )
 
