@@ -1454,7 +1454,7 @@ dockspawn.DockNode.prototype.debug_DumpTree = function ( indent ) {
     }
 
     var parentType = this.parent === undefined ? "null" : this.parent.container.containerType;
-    console.log( ">>" + message + " [" + parentType + "]" );
+    TLogger.log( ">>" + message + " [" + parentType + "]" );
 
     this.children.forEach( function ( childNode ) { childNode.debug_DumpTree( indent + 1 ) } );
 };
@@ -1870,7 +1870,7 @@ dockspawn.SplitterPanel.prototype.destroy = function () {
 
 dockspawn.SplitterPanel.prototype._insertContainerIntoPanel = function ( container ) {
     if ( !container ) {
-        console.log( 'undefined' );
+        TLogger.log( 'undefined' );
     }
 
     removeNode( container.containerElement );
