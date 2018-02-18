@@ -8,29 +8,20 @@
  *
  */
 
-import { _Math } from '../../node_modules/three/src/math/Math'
-import { FileLoader } from '../../node_modules/three/src/loaders/FileLoader'
-import { DefaultLoadingManager } from '../../node_modules/three/src/loaders/LoadingManager'
 import {
+    _Math,
+    FileLoader,
+    DefaultLoadingManager,
     PlaneGeometry,
-    PlaneBufferGeometry
-} from '../../node_modules/three/src/geometries/PlaneGeometry'
-import { Geometry } from '../../node_modules/three/src/core/Geometry'
-import { Vector3 } from '../../node_modules/three/src/math/Vector3'
-import { FaceNormalsHelper } from '../../node_modules/three/src/helpers/FaceNormalsHelper'
-import { TextureLoader } from '../../node_modules/three/src/loaders/TextureLoader'
-import { MeshBasicMaterial } from '../../node_modules/three/src/materials/MeshBasicMaterial'
-import {
-    FrontSide,
+    TextureLoader,
+    MeshBasicMaterial,
     DoubleSide,
-    LinearFilter,
-    ClampToEdgeWrapping
-} from '../../node_modules/three/src/constants'
-import { Mesh } from '../../node_modules/three/src/objects/Mesh'
-import { Group } from '../../node_modules/three/src/objects/Group'
+    Mesh,
+    Group
+} from 'threejs-full-es6'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 
-var RZMLLoader = function ( manager ) {
+function RZMLLoader ( manager ) {
 
     this.manager = ( manager !== undefined ) ? manager : DefaultLoadingManager;
 
@@ -39,11 +30,11 @@ var RZMLLoader = function ( manager ) {
 
 }
 
-RZMLLoader.prototype = {
+Object.assign( RZMLLoader.prototype, {
 
     constructor: RZMLLoader,
 
-    load: function ( url, onLoad, onProgress, onError ) {
+    load ( url, onLoad, onProgress, onError ) {
 
         TLogger.time( "RZMLLoader" )
 
@@ -61,7 +52,7 @@ RZMLLoader.prototype = {
 
     },
 
-    _parse: function ( text, filePath ) {
+    _parse ( text, filePath ) {
 
         var document = null;
 
@@ -111,7 +102,7 @@ RZMLLoader.prototype = {
         return this._createImagesPacks( filePath );
     },
 
-    _createImagesPacks: function ( filePath ) {
+    _createImagesPacks ( filePath ) {
 
         var imagesShots = this.imagesShotData
         var planesGroup = new Group()
@@ -150,6 +141,7 @@ RZMLLoader.prototype = {
         return planesGroup
 
     }
-}
+
+} )
 
 export { RZMLLoader }
