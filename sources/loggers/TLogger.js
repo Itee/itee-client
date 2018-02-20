@@ -27,7 +27,7 @@ const LogOutput = Object.freeze( {
     Toast:    4,
     File:     8,
     Database: 16,
-    All: 255
+    All:      255
 } )
 
 /**
