@@ -29,6 +29,8 @@ class TSplitter extends React.Component {
             position:              (props.initPosition) ? props.initPosition : 50
         }
 
+        this._domElement = undefined
+
         this.onMouseDownHandler = this.onMouseDownHandler.bind( this )
         this.onMouseMoveHandler = this.onMouseMoveHandler.bind( this )
         this.onMouseUpHandler   = this.onMouseUpHandler.bind( this )
@@ -53,7 +55,7 @@ class TSplitter extends React.Component {
             return
         }
 
-        const splitterElement = document.getElementById( 'tSplitterId' )
+        const splitterElement = this._domElement
 
         let position = 0
         if ( this.state.isVertical ) {
@@ -154,7 +156,7 @@ class TSplitter extends React.Component {
         }
 
         return (
-            <t-splitter id={_id} className={_class} style={_style} onMouseMove={this.onMouseMoveHandler} onMouseUp={this.onMouseUpHandler} onMouseLeave={this.onMouseUpHandler}>
+            <t-splitter ref={( splitter ) => { this._domElement = splitter }} id={_id} className={_class} style={_style} onMouseMove={this.onMouseMoveHandler} onMouseUp={this.onMouseUpHandler} onMouseLeave={this.onMouseUpHandler}>
                 <div id={`tLeftSplit_${_instanceCounter}`} className={'tSplit tLeftSplit'} style={_firstStyle}>
                     {first}
                 </div>
