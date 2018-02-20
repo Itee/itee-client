@@ -49,7 +49,7 @@ class TProgressToast extends React.Component {
         const _class = ( className ) ? `tProgressToast ${className}` : 'tProgressToast'
 
         return (
-            <t-progress-toast ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-progress-toast>
+            <t-progress-toast ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-progress-toast>
         )
 
     }

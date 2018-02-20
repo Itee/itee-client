@@ -49,7 +49,7 @@ class TParagraphe extends React.Component {
         const _class = ( className ) ? `tParagraphe ${className}` : 'tParagraphe'
 
         return (
-            <t-paragraphe ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-paragraphe>
+            <t-paragraphe ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-paragraphe>
         )
 
     }

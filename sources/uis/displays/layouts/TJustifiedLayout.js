@@ -53,7 +53,7 @@ class TJustifiedLayout extends React.Component {
         const _class = ( className ) ? `tJustifiedLayout ${className}` : 'tJustifiedLayout'
 
         return (
-            <t-justified-layout id={_id} style={_style} className={_class}>
+            <t-justified-layout id={_id} style={_style} class={_class}>
                 {children}
             </t-justified-layout>
         )

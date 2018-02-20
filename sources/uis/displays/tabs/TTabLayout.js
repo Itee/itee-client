@@ -49,7 +49,7 @@ class TTabLayout extends React.Component {
         const _class = ( className ) ? `tTabLayout ${className}` : 'tTabLayout'
 
         return (
-            <t-tab-layout ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-tab-layout>
+            <t-tab-layout ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-tab-layout>
         )
 
     }

@@ -49,7 +49,7 @@ class TImage extends React.Component {
         const _class = ( className ) ? `tImage ${className}` : 'tImage'
 
         return (
-            <t-image ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-image>
+            <t-image ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-image>
         )
 
     }

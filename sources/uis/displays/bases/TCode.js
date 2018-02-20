@@ -49,7 +49,7 @@ class TCode extends React.Component {
         const _class = ( className ) ? `tCode ${className}` : 'tCode'
 
         return (
-            <t-code ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-code>
+            <t-code ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-code>
         )
 
     }

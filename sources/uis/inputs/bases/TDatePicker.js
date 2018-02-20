@@ -49,7 +49,7 @@ class TDatePicker extends React.Component {
         const _class = ( className ) ? `tDatePicker ${className}` : 'tDatePicker'
 
         return (
-            <t-date-picker ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-date-picker>
+            <t-date-picker ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-date-picker>
         )
 
     }

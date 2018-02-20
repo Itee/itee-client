@@ -49,7 +49,7 @@ class TTitleBar extends React.Component {
         const _class = ( className ) ? `tTitleBar ${className}` : 'tTitleBar'
 
         return (
-            <t-title-bar ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-title-bar>
+            <t-title-bar ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-title-bar>
         )
 
     }

@@ -78,7 +78,7 @@ class TStatusBar extends React.Component {
         }
 
         return (
-            <t-status-bar id={_id} style={_style} className={'tStatusBar'}>
+            <t-status-bar id={_id} style={_style} class={'tStatusBar'}>
                 {children}
             </t-status-bar>
         )

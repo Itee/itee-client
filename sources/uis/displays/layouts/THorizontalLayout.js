@@ -52,7 +52,7 @@ class THorizontalLayout extends React.Component {
         const _class = ( className ) ? `tHorizontalLayout ${className}` : 'tHorizontalLayout'
 
         return (
-            <t-horizontal-layout id={_id} style={_style} className={_class}>
+            <t-horizontal-layout id={_id} style={_style} class={_class}>
                 {children}
             </t-horizontal-layout>
         )

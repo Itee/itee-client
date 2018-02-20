@@ -49,7 +49,7 @@ class TBreadcrumb extends React.Component {
         const _class = ( className ) ? `tBreadcrumb ${className}` : 'tBreadcrumb'
 
         return (
-            <t-breadcrumb ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-breadcrumb>
+            <t-breadcrumb ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-breadcrumb>
         )
 
     }

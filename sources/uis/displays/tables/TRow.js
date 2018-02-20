@@ -49,7 +49,7 @@ class TRow extends React.Component {
         const _class = ( className ) ? `tRow ${className}` : 'tRow'
 
         return (
-            <t-row ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-row>
+            <t-row ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-row>
         )
 
     }

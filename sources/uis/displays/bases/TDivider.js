@@ -49,7 +49,7 @@ class TDivider extends React.Component {
         const _class = ( className ) ? `tDivider ${className}` : 'tDivider'
 
         return (
-            <t-divider id={_id} style={_style} className={_class} role={'separator'}></t-divider>
+            <t-divider id={_id} style={_style} class={_class} role={'separator'}></t-divider>
         )
 
     }

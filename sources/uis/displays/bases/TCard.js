@@ -49,7 +49,7 @@ class TCard extends React.Component {
         const _class = ( className ) ? `tCard ${className}` : 'tCard'
 
         return (
-            <t-card ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-card>
+            <t-card ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-card>
         )
 
     }

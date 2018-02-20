@@ -37,7 +37,7 @@ class TToolBar extends React.Component {
         }
 
         return (
-            <t-tool-bar id={_id} style={_style} className={_class}></t-tool-bar>
+            <t-tool-bar id={_id} style={_style} class={_class}></t-tool-bar>
         )
 
     }

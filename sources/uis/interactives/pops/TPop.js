@@ -49,7 +49,7 @@ class TPop extends React.Component {
         const _class = ( className ) ? `tPop ${className}` : 'tPop'
 
         return (
-            <t-pop ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-pop>
+            <t-pop ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-pop>
         )
 
     }

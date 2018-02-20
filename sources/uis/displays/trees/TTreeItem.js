@@ -63,7 +63,7 @@ class TTreeItem extends React.Component {
         )
 
         //        return (
-        //            <t-tree-item ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-tree-item>
+        //            <t-tree-item ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-tree-item>
         //        )
 
     }

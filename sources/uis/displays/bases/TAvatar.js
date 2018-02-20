@@ -49,7 +49,7 @@ class TAvatar extends React.Component {
         const _class = ( className ) ? `tAvatar ${className}` : 'tAvatar'
 
         return (
-            <t-avatar ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-avatar>
+            <t-avatar ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-avatar>
         )
 
     }

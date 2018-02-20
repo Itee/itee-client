@@ -52,7 +52,7 @@ class TContent extends React.Component {
         const _class = ( className ) ? `tContent ${className}` : 'tContent'
 
         return (
-            <t-content id={_id} style={_style} className={_class}>
+            <t-content id={_id} style={_style} class={_class}>
                 {children}
             </t-content>
         )

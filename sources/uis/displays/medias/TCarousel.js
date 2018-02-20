@@ -49,7 +49,7 @@ class TCarousel extends React.Component {
         const _class = ( className ) ? `tCarousel ${className}` : 'tCarousel'
 
         return (
-            <t-carousel ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-carousel>
+            <t-carousel ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-carousel>
         )
 
     }

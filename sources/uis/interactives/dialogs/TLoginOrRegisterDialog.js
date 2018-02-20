@@ -49,7 +49,7 @@ class TLoginOrRegisterDialog extends React.Component {
         const _class = ( className ) ? `tLoginOrRegisterDialog ${className}` : 'tLoginOrRegisterDialog'
 
         return (
-            <t-login-or-register-dialog ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-login-or-register-dialog>
+            <t-login-or-register-dialog ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-login-or-register-dialog>
         )
 
     }

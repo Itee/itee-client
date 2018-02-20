@@ -51,7 +51,7 @@ class THeader extends React.Component {
         const _class = ( className ) ? `tHeader ${className}` : 'tHeader'
 
         return (
-            <t-header id={_id} style={_style} className={_class}>
+            <t-header id={_id} style={_style} class={_class}>
                 {children}
             </t-header>
         )

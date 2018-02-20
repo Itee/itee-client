@@ -49,7 +49,7 @@ class TPassword extends React.Component {
         const _class = ( className ) ? `tPassword ${className}` : 'tPassword'
 
         return (
-            <t-password ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-password>
+            <t-password ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-password>
         )
 
     }

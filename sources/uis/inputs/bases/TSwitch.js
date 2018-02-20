@@ -49,7 +49,7 @@ class TSwitch extends React.Component {
         const _class = ( className ) ? `tSwitch ${className}` : 'tSwitch'
 
         return (
-            <t-switch ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-switch>
+            <t-switch ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-switch>
         )
 
     }

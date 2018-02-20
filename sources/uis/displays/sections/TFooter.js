@@ -52,7 +52,7 @@ class TFooter extends React.Component {
         const _class = ( className ) ? `tFooter ${className}` : 'tFooter'
 
         return (
-            <t-footer id={_id} style={_style} className={_class}>
+            <t-footer id={_id} style={_style} class={_class}>
                 {children}
             </t-footer>
         )

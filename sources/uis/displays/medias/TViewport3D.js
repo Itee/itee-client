@@ -122,7 +122,7 @@ class TViewport3D extends React.Component {
         const _class = ( className ) ? `tViewport3D ${className}` : 'tViewport3D'
 
         return (
-            <t-viewport-3d ref={( viewport ) => { this._container = viewport }} id={_id} style={_style} className={_class}></t-viewport-3d>
+            <t-viewport-3d ref={( viewport ) => { this._container = viewport }} id={_id} style={_style} class={_class}></t-viewport-3d>
         )
 
     }

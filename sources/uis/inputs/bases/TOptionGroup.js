@@ -49,7 +49,7 @@ class TOptionGroup extends React.Component {
         const _class = ( className ) ? `tOptionGroup ${className}` : 'tOptionGroup'
 
         return (
-            <t-option-group ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-option-group>
+            <t-option-group ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-option-group>
         )
 
     }

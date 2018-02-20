@@ -49,7 +49,7 @@ class TFlag extends React.Component {
         const _class = ( className ) ? `tFlag ${className}` : 'tFlag'
 
         return (
-            <t-flag ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-flag>
+            <t-flag ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-flag>
         )
 
     }

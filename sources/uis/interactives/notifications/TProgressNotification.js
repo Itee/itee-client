@@ -49,7 +49,7 @@ class TProgressNotification extends React.Component {
         const _class = ( className ) ? `tProgressNotification ${className}` : 'tProgressNotification'
 
         return (
-            <t-progress-notification ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-progress-notification>
+            <t-progress-notification ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-progress-notification>
         )
 
     }

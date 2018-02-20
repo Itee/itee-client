@@ -49,7 +49,7 @@ class TForm extends React.Component {
         const _class = ( className ) ? `tForm ${className}` : 'tForm'
 
         return (
-            <t-form ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-form>
+            <t-form ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-form>
         )
 
     }

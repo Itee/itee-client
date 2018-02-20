@@ -132,7 +132,7 @@ class TBasicApplication extends React.Component {
         const _class = className || 'tBasicApplication'
 
         return (
-            <t-basic-application id={_id} style={_style} className={_class}>
+            <t-basic-application id={_id} style={_style} class={_class}>
                 <THeader>
                     <TAppBar
                         left={

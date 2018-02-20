@@ -49,7 +49,7 @@ class TAffix extends React.Component {
         const _class = ( className ) ? `tAffix ${className}` : 'tAffix'
 
         return (
-            <t-affix ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-affix>
+            <t-affix ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-affix>
         )
 
     }

@@ -49,7 +49,7 @@ class TPagination extends React.Component {
         const _class = ( className ) ? `tPagination ${className}` : 'tPagination'
 
         return (
-            <t-pagination ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-pagination>
+            <t-pagination ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-pagination>
         )
 
     }

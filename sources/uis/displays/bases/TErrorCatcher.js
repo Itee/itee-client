@@ -71,7 +71,7 @@ class TErrorCatcher extends React.Component {
 
         if ( this.state.error ) {
             return (
-                <t-error-catcher ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}>
+                <t-error-catcher ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}>
                     <h1>Error: {this.state.error.toString()}</h1>
                     <div>Info: {this.state.info.toString()} </div>
                 </t-error-catcher>

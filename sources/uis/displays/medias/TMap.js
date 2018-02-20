@@ -49,7 +49,7 @@ class TMap extends React.Component {
         const _class = ( className ) ? `tMap ${className}` : 'tMap'
 
         return (
-            <t-map ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-map>
+            <t-map ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-map>
         )
 
     }

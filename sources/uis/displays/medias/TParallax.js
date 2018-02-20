@@ -49,7 +49,7 @@ class TParallax extends React.Component {
         const _class = ( className ) ? `tParallax ${className}` : 'tParallax'
 
         return (
-            <t-parallax ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-parallax>
+            <t-parallax ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-parallax>
         )
 
     }

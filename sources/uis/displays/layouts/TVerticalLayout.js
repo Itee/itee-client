@@ -49,7 +49,7 @@ class TVerticalLayout extends React.Component {
         const _class = ( className ) ? `tVerticalLayout ${className}` : 'tVerticalLayout'
 
         return (
-            <t-vertical-layout ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-vertical-layout>
+            <t-vertical-layout ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-vertical-layout>
         )
 
     }

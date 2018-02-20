@@ -49,7 +49,7 @@ class TWarningDialog extends React.Component {
         const _class = ( className ) ? `tWarningDialog ${className}` : 'tWarningDialog'
 
         return (
-            <t-warning-dialog ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-warning-dialog>
+            <t-warning-dialog ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-warning-dialog>
         )
 
     }

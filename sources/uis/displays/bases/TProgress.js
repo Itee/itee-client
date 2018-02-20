@@ -49,7 +49,7 @@ class TProgress extends React.Component {
         const _class = ( className ) ? `tProgress ${className}` : 'tProgress'
 
         return (
-            <t-progress ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-progress>
+            <t-progress ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-progress>
         )
 
     }

@@ -102,7 +102,7 @@ class TNavbar extends React.Component {
         }
 
         return (
-            <t-navbar id={_id} className={_class} style={_style}>
+            <t-navbar id={_id} class={_class} style={_style}>
                 {children}
             </t-navbar>
         )

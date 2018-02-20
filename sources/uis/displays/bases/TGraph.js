@@ -49,7 +49,7 @@ class TGraph extends React.Component {
         const _class = ( className ) ? `tGraph ${className}` : 'tGraph'
 
         return (
-            <t-graph ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-graph>
+            <t-graph ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-graph>
         )
 
     }

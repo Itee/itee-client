@@ -49,7 +49,7 @@ class TTable extends React.Component {
         const _class = ( className ) ? `tTable ${className}` : 'tTable'
 
         return (
-            <t-table ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-table>
+            <t-table ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-table>
         )
 
     }

@@ -49,7 +49,7 @@ class TGridLayout extends React.Component {
         const _class = ( className ) ? `tGridLayout ${className}` : 'tGridLayout'
 
         return (
-            <t-grid-layout ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-grid-layout>
+            <t-grid-layout ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-grid-layout>
         )
 
     }

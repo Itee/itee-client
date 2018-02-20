@@ -49,7 +49,7 @@ class TErrorToast extends React.Component {
         const _class = ( className ) ? `tErrorToast ${className}` : 'tErrorToast'
 
         return (
-            <t-error-toast ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-error-toast>
+            <t-error-toast ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-error-toast>
         )
 
     }

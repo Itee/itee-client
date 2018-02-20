@@ -49,7 +49,7 @@ class TDialog extends React.Component {
         const _class = ( className ) ? `tDialog ${className}` : 'tDialog'
 
         return (
-            <t-dialog ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-dialog>
+            <t-dialog ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-dialog>
         )
 
     }

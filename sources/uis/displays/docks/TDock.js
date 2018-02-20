@@ -49,7 +49,7 @@ class TDock extends React.Component {
         const _class = ( className ) ? `tDock ${className}` : 'tDock'
 
         return (
-            <t-dock ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-dock>
+            <t-dock ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-dock>
         )
 
     }

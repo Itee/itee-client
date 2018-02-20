@@ -49,7 +49,7 @@ class TStepper extends React.Component {
         const _class = ( className ) ? `tStepper ${className}` : 'tStepper'
 
         return (
-            <t-stepper ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-stepper>
+            <t-stepper ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-stepper>
         )
 
     }

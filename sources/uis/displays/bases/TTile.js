@@ -49,7 +49,7 @@ class TTile extends React.Component {
         const _class = ( className ) ? `tTile ${className}` : 'tTile'
 
         return (
-            <t-tile ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-tile>
+            <t-tile ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-tile>
         )
 
     }

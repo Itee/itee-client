@@ -49,7 +49,7 @@ class TTab extends React.Component {
         const _class = ( className ) ? `tTab ${className}` : 'tTab'
 
         return (
-            <t-tab ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-tab>
+            <t-tab ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-tab>
         )
 
     }

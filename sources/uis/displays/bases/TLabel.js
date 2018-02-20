@@ -49,7 +49,7 @@ class TLabel extends React.Component {
         const _class = ( className ) ? `tLabel ${className}` : 'tLabel'
 
         return (
-            <t-label ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-label>
+            <t-label ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-label>
         )
 
     }

@@ -49,7 +49,7 @@ class TLink extends React.Component {
         const _class = ( className ) ? `tLink ${className}` : 'tLink'
 
         return (
-            <t-link ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-link>
+            <t-link ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-link>
         )
 
     }

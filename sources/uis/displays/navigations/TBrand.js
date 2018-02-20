@@ -54,7 +54,7 @@ class TBrand extends React.Component {
         const _class = ( className ) ? `tBrand ${className}` : 'tBrand'
 
         return (
-            <t-brand id={_id} style={_style} className={_class}>
+            <t-brand id={_id} style={_style} class={_class}>
                 <i style={{ marginRight: '3px' }} className={icon}></i>
                 {label}
             </t-brand>

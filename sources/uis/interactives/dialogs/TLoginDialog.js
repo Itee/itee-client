@@ -105,7 +105,7 @@ class TLoginDialog extends React.Component {
         )
 
         //        return (
-        //            <t-login-dialog ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-login-dialog>
+        //            <t-login-dialog ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-login-dialog>
         //        )
 
     }

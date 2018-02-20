@@ -49,7 +49,7 @@ class TInfinitScroll extends React.Component {
         const _class = ( className ) ? `tInfinitScroll ${className}` : 'tInfinitScroll'
 
         return (
-            <t-infinit-scroll ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-infinit-scroll>
+            <t-infinit-scroll ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-infinit-scroll>
         )
 
     }

@@ -49,7 +49,7 @@ class TAnchor extends React.Component {
         const _class = ( className ) ? `tAnchor ${className}` : 'tAnchor'
 
         return (
-            <t-anchor ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-anchor>
+            <t-anchor ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-anchor>
         )
 
     }

@@ -51,7 +51,7 @@ class TLayout extends React.Component {
         const _class = ( className ) ? `tLayout ${className}` : 'tLayout'
 
         return (
-            <t-layout id={_id} style={_style} className={_class}>
+            <t-layout id={_id} style={_style} class={_class}>
                 {children}
             </t-layout>
         )

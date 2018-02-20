@@ -98,7 +98,7 @@ class TDateTime extends React.Component {
         const _style = {}
 
         return (
-            <t-date-time id={_id} style={_style} className={_class} />
+            <t-date-time id={_id} style={_style} class={_class} />
         )
 
     }

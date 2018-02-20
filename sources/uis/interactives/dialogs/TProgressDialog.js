@@ -49,7 +49,7 @@ class TProgressDialog extends React.Component {
         const _class = ( className ) ? `tProgressDialog ${className}` : 'tProgressDialog'
 
         return (
-            <t-progress-dialog ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-progress-dialog>
+            <t-progress-dialog ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-progress-dialog>
         )
 
     }

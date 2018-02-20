@@ -49,7 +49,7 @@ class TBackToTop extends React.Component {
         const _class = ( className ) ? `tBackToTop ${className}` : 'tBackToTop'
 
         return (
-            <t-back-to-top ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-back-to-top>
+            <t-back-to-top ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-back-to-top>
         )
 
     }

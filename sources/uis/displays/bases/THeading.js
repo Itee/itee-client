@@ -49,7 +49,7 @@ class THeading extends React.Component {
         const _class = ( className ) ? `tHeading ${className}` : 'tHeading'
 
         return (
-            <t-heading ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-heading>
+            <t-heading ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-heading>
         )
 
     }

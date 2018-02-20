@@ -53,7 +53,7 @@ class TCentererLayout extends React.Component {
         const _class = `tCentererLayout ${className}` // container justified-container
 
         return (
-            <t-centerer-layout id={_id} style={_style} className={_class}>
+            <t-centerer-layout id={_id} style={_style} class={_class}>
                 {children}
             </t-centerer-layout>
         )

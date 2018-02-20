@@ -49,7 +49,7 @@ class TDropZone extends React.Component {
         const _class = ( className ) ? `tDropZone ${className}` : 'tDropZone'
 
         return (
-            <t-drop-zone ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-drop-zone>
+            <t-drop-zone ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-drop-zone>
         )
 
     }

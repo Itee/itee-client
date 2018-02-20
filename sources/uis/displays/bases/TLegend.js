@@ -49,7 +49,7 @@ class TLegend extends React.Component {
         const _class = ( className ) ? `tLegend ${className}` : 'tLegend'
 
         return (
-            <t-legend ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-legend>
+            <t-legend ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-legend>
         )
 
     }

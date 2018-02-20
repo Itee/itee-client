@@ -49,7 +49,7 @@ class TSpin extends React.Component {
         const _class = ( className ) ? `tSpin ${className}` : 'tSpin'
 
         return (
-            <t-spin ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-spin>
+            <t-spin ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-spin>
         )
 
     }

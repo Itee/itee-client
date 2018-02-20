@@ -49,7 +49,7 @@ class TWarningPop extends React.Component {
         const _class = ( className ) ? `tWarningPop ${className}` : 'tWarningPop'
 
         return (
-            <t-warning-pop ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-warning-pop>
+            <t-warning-pop ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-warning-pop>
         )
 
     }

@@ -40,14 +40,14 @@ class TAppBar extends React.Component {
         }
 
         return (
-            <t-app-bar id={_id} style={_style} className={'tAppBar'}>
-                <t-app-bar-left style={_subStyle} className={'tAppBarPart tAppBarLeft'}>
+            <t-app-bar id={_id} style={_style} class={'tAppBar'}>
+                <t-app-bar-left style={_subStyle} class={'tAppBarPart tAppBarLeft'}>
                     {left}
                 </t-app-bar-left>
-                <t-app-bar-center style={_subStyle} className={'tAppBarPart tAppBarLCenter'}>
+                <t-app-bar-center style={_subStyle} class={'tAppBarPart tAppBarLCenter'}>
                     {center}
                 </t-app-bar-center>
-                <t-app-bar-right style={_subStyle} className={'tAppBarPart tAppBarLRight'}>
+                <t-app-bar-right style={_subStyle} class={'tAppBarPart tAppBarLRight'}>
                     {right}
                 </t-app-bar-right>
             </t-app-bar>

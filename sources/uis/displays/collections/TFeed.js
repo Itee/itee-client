@@ -49,7 +49,7 @@ class TFeed extends React.Component {
         const _class = ( className ) ? `tFeed ${className}` : 'tFeed'
 
         return (
-            <t-feed ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-feed>
+            <t-feed ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-feed>
         )
 
     }

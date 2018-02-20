@@ -49,7 +49,7 @@ class TTag extends React.Component {
         const _class = ( className ) ? `tTag ${className}` : 'tTag'
 
         return (
-            <t-tag ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-tag>
+            <t-tag ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-tag>
         )
 
     }

@@ -54,7 +54,7 @@ class TMenu extends React.Component {
 
         return (
             <ul id={_id} style={_style} className={_class}>{children}</ul>
-//            <t-menu id={_id} style={_style} className={_class}>{children}</t-menu>
+//            <t-menu id={_id} style={_style} class={_class}>{children}</t-menu>
         )
 
     }

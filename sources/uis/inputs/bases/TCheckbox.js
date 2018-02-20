@@ -49,7 +49,7 @@ class TCheckbox extends React.Component {
         const _class = ( className ) ? `tCheckbox ${className}` : 'tCheckbox'
 
         return (
-            <t-checkbox ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-checkbox>
+            <t-checkbox ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-checkbox>
         )
 
     }

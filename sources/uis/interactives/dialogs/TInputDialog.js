@@ -49,7 +49,7 @@ class TInputDialog extends React.Component {
         const _class = ( className ) ? `tInputDialog ${className}` : 'tInputDialog'
 
         return (
-            <t-input-dialog ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-input-dialog>
+            <t-input-dialog ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-input-dialog>
         )
 
     }

@@ -156,7 +156,7 @@ class TSplitter extends React.Component {
         }
 
         return (
-            <t-splitter ref={( splitter ) => { this._domElement = splitter }} id={_id} className={_class} style={_style} onMouseMove={this.onMouseMoveHandler} onMouseUp={this.onMouseUpHandler} onMouseLeave={this.onMouseUpHandler}>
+            <t-splitter ref={( splitter ) => { this._domElement = splitter }} id={_id} class={_class} style={_style} onMouseMove={this.onMouseMoveHandler} onMouseUp={this.onMouseUpHandler} onMouseLeave={this.onMouseUpHandler}>
                 <div id={`tLeftSplit_${_instanceCounter}`} className={'tSplit tLeftSplit'} style={_firstStyle}>
                     {first}
                 </div>

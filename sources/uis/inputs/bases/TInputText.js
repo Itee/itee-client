@@ -49,7 +49,7 @@ class TInputText extends React.Component {
         const _class = ( className ) ? `tInputText ${className}` : 'tInputText'
 
         return (
-            <t-input-text ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-input-text>
+            <t-input-text ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-input-text>
         )
 
     }
