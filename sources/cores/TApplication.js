@@ -200,58 +200,96 @@ function TApplication ( container, parameters, onReady ) {
         // Init modals
         function _initToolBar ( parameters ) {
 
-            $( '#importBtn' ).on( "click", event => {
+            const importBtn = document.getElementById( 'importBtn' )
+            if ( importBtn ) {
 
-                self.popupImportFilesModal.call( self )
+                importBtn.addEventListener( 'click', ( event ) => {
 
-            } )
+                    self.popupImportFilesModal.call( self )
+
+                } )
+
+            }
 
             this.toggleXRay = false;
-            $( "#xRayBtn" ).on( "click", event => {
+            const xRayBtn   = document.getElementById( 'xRayBtn' )
+            if ( xRayBtn ) {
 
-                self.toggleXRay = !self.toggleXRay;
-                self.changeMaterialSide.call( self, self.webglViewport.scene.children, self.toggleXRay )
+                xRayBtn.addEventListener( 'click', ( event ) => {
 
-            } )
+                    self.toggleXRay = !self.toggleXRay;
+                    self.changeMaterialSide.call( self, self.webglViewport.scene.children, self.toggleXRay )
 
-            $( "#selectBtn" ).on( "click", event => {
+                } )
 
-                self.webglViewport.isRaycastable = !self.webglViewport.isRaycastable;
+            }
 
-            } )
+            const selectBtn = document.getElementById( 'selectBtn' )
+            if ( selectBtn ) {
 
-            $( '#cameraMode' ).find( 'li' ).on( 'click', event => {
+                selectBtn.addEventListener( 'click', ( event ) => {
 
-                var cameraMode = $( this ).find( 'a' ).attr( 'data-value' )
-                self.setCameraMode.call( self, cameraMode )
+                    self.webglViewport.isRaycastable = !self.webglViewport.isRaycastable;
 
-            } )
+                } )
 
-            $( '#renderEffectDropDown' ).find( 'li' ).on( 'click', event => {
+            }
 
-                var renderEffect = $( this ).find( 'a' ).attr( 'data-value' )
-                self.setRendersEffect.call( self, renderEffect )
+            const cameraMode = document.getElementById( 'cameraMode' )
+            if ( cameraMode ) {
+                const cameraModes = cameraMode.getElementsByTagName( 'li' )
+                if ( cameraModes ) {
+                    for ( let i = 0, element = undefined ; element = cameraModes[ i ] ; i++ ) {
+                        element.addEventListener( 'click', ( event ) => {
 
-            } )
+                            const child      = this.getElementsByTagName( "a" )
+                            const cameraMode = child.getAttribute( 'data-value' )
+                            self.setCameraMode.call( self, cameraMode )
 
-            this.detailBtn = $( "#detailBtn" )
-            this.detailBtn.on( "click", event => {
+                        } )
+                    }
+                }
+            }
 
-                const carlId = event.currentTarget.value
-                //                const carlId = event.currentTarget.value.slice( 0, -4 ).toUpperCase()
-                //                getBoxDetail( carlId )
-                parent.postMessage( `GISDetailAction#-#${carlId};com.carl.xnet.equipment.backend.bean.BoxBean#+#`, '*' )
+            const renderEffectDropDown = document.getElementById( 'renderEffectDropDown' )
+            if ( renderEffectDropDown ) {
+                const renderEffectDropDowns = renderEffectDropDown.getElementsByTagName( 'li' )
+                if ( renderEffectDropDowns ) {
+                    for ( let i = 0, element = undefined ; element = renderEffectDropDowns[ i ] ; i++ ) {
+                        element.addEventListener( 'click', ( event ) => {
 
-            } )
+                            const child        = this.getElementsByTagName( "a" )
+                            const renderEffect = child.getAttribute( 'data-value' )
+                            self.setRendersEffect.call( self, renderEffect )
 
-            this.createBtn = $( "#createBtn" )
-            this.createBtn.on( "click", event => {
+                        } )
+                    }
+                }
+            }
 
-                const carlId = event.currentTarget.value
-                //                const carlId = event.currentTarget.value.slice( 0, -4 ).toUpperCase()
-                parent.postMessage( `CREATE_WO#-#${carlId};com.carl.xnet.equipment.backend.bean.BoxBean#+#`, '*' )
+            const detailBtn = document.getElementById( 'detailBtn' )
+            if ( detailBtn ) {
 
-            } )
+                detailBtn.addEventListener( 'click', ( event ) => {
+
+                    const carlId = event.currentTarget.value
+                    parent.postMessage( `GISDetailAction#-#${carlId};com.carl.xnet.equipment.backend.bean.BoxBean#+#`, '*' )
+
+                } )
+
+            }
+
+            const createBtn = document.getElementById( 'createBtn' )
+            if ( createBtn ) {
+
+                createBtn.addEventListener( 'click', ( event ) => {
+
+                    const carlId = event.currentTarget.value
+                    parent.postMessage( `CREATE_WO#-#${carlId};com.carl.xnet.equipment.backend.bean.BoxBean#+#`, '*' )
+
+                } )
+
+            }
 
         }
 
@@ -270,17 +308,23 @@ function TApplication ( container, parameters, onReady ) {
 
             }, true );
 
+            const documentNode = this.mainContainer.context.model.documentManagerNode
+
             // Convert existing elements on the page into "Panels".
             // They can then be docked on to the dock manager
             // Panels get a titlebar and a close button, and can also be
             // converted to a floating dialog box which can be dragged / resized
-            this.treeView                   = new dockspawn.PanelContainer( document.getElementById( "treeViewContainer" ), this.mainContainer, 'Projet' )
-            this.webglViewportDockContainer = new dockspawn.PanelContainer( document.getElementById( "webglViewportContainer" ), this.mainContainer, 'Maquette' )
+            const treeViewContainer = document.getElementById( "treeViewContainer" )
+            if ( treeViewContainer ) {
+                this.treeView      = new dockspawn.PanelContainer( treeViewContainer, this.mainContainer, 'Projet' )
+                const solutionNode = this.mainContainer.dockLeft( documentNode, this.treeView, 0.20 )
+            }
 
-            // Dock the panels on the dock manager
-            var documentNode = this.mainContainer.context.model.documentManagerNode
-            var solutionNode = this.mainContainer.dockLeft( documentNode, this.treeView, 0.20 )
-            var outlineNode  = this.mainContainer.dockFill( documentNode, this.webglViewportDockContainer )
+            const webglViewportContainer = document.getElementById( "webglViewportContainer" )
+            if ( webglViewportContainer ) {
+                this.webglViewportDockContainer = new dockspawn.PanelContainer( webglViewportContainer, this.mainContainer, 'Maquette' )
+                const outlineNode               = this.mainContainer.dockFill( documentNode, this.webglViewportDockContainer )
+            }
 
         }
 
@@ -289,6 +333,10 @@ function TApplication ( container, parameters, onReady ) {
             const _parameters = parameters.parameters || {}
 
             this.webglViewportContainer = document.getElementById( 'webglViewportContainer' )
+            if(!this.webglViewportContainer) {
+                return
+            }
+
             this.webglViewport          = new TViewport( this.webglViewportContainer )
             this.webglViewportContainer.addEventListener( 'panelResize', this.webglViewport.updateSizes.bind( this.webglViewport ) )
             //        this.webglViewport.toggleAutorun()
@@ -312,24 +360,37 @@ function TApplication ( container, parameters, onReady ) {
 
             this.webglViewport.scene.add( new AmbientLight( 0x999999, 0.8 ) )
 
-            this.progressBar = $( '#progressBar .progress-bar' )
-            this.progressBar.parent().css( "display", "none" )
+//            this.progressBar = $( '#progressBar .progress-bar' )
+//            this.progressBar.parent().css( "display", "none" )
 
         }
 
         function _initTools ( parameters ) {
 
             // Measure Tool
-            this.measureTools = $( '#measureTools' ).find( 'li' )
-            this.measureTools.on( 'click', function ( event ) {
-                var selectedTool = $( this ).find( 'a' ).attr( 'data-value' )
-                self.startMeasure( selectedTool )
+            const measureTool = document.getElementById( 'measureTools' )
+            if ( measureTool ) {
 
-                self.webglViewport.isRaycastable = (selectedTool !== "clear")
-            } )
-            this.measureMode         = undefined
-            this.measureCounter      = 0
-            this.currentMeasureGroup = undefined
+                this.measureTools = measureTool.querySelectorAll( 'li' )
+                if ( this.measureTools ) {
+
+                    for ( let i = 0, element = undefined ; element = this.measureTools[ i ] ; i++ ) {
+                        element.onclick = function ( event ) {
+                            const value = this.getElementsByTagName( 'a' ).getAttribute( 'data-value' )
+                            self.startMeasure( value )
+
+                        }
+                    }
+
+                    this.measureMode         = undefined
+                    this.measureCounter      = 0
+                    this.currentMeasureGroup = undefined
+
+                }
+
+            }
+
+
 
             // Split Tool
             //        this.globalPlane = new SplitModifier( 100 );
@@ -400,10 +461,10 @@ function TApplication ( container, parameters, onReady ) {
 
             // OR
 
-            this.globalPlane     = new Plane( new Vector3( 0, -1, 0 ), 0.8 )
             this.splitToolButton = document.getElementById( 'splitBtn' )
-            if ( this.splitToolButton !== null && this.splitToolButton !== undefined ) {
+            if ( this.splitToolButton ) {
 
+                this.globalPlane          = new Plane( new Vector3( 0, -1, 0 ), 0.8 )
                 this.splitToolToggle      = false;
                 this.spliterSliderControl = new Slider( "#spliterSliderControl", {
                     reversed:         true,
@@ -452,57 +513,53 @@ function TApplication ( container, parameters, onReady ) {
 
                 }
 
-            } else {
-
-                TLogger.error( 'split button does not exist !' );
-
             }
 
         }
 
         function _initModals ( parameters ) {
 
-            this.importFilesModalView = $( '#importFilesModal' )
-            this.importFilesModalView.modal( {
-                keyboard: false,
-                show:     false
-            } )
-
-            this.validateImportFilesModal = $( '#validateImportFilesModal' )
-            this.validateImportFilesModal.on( "click", () => {
-
-                const importInput   = $( "#importInput" )
-                const files         = importInput[ 0 ].files
-                const numberOfFiles = files.length
-                TLogger.log( "numberOfFiles: " + numberOfFiles );
-
-                const filesUrls = []
-                let fileUrl     = ''
-                let fileIndex   = undefined
-                let fileObject  = undefined
-
-                for ( fileIndex = 0 ; fileIndex < numberOfFiles ; ++fileIndex ) {
-                    fileObject = files[ fileIndex ]
-                    fileUrl    = URL.createObjectURL( fileObject ) + '/' + fileObject.name
-
-                    filesUrls.push( { url: fileUrl } )
-                }
-
-                self.loadObjectFromURL( filesUrls )
-
-            } )
-
-            this.imageShotModalView = $( '#imageShotModal' )
-            this.imageShotModalView.modal( {
-                keyboard: false,
-                show:     false
-            } )
-
-            this.selectedObjectModalView = $( '#selectedObjectModal' )
-            this.selectedObjectModalView.modal( {
-                keyboard: false,
-                show:     false
-            } )
+//            this.importFilesModalView = $( '#importFilesModal' )
+//            this.importFilesModalView.modal( {
+//                keyboard: false,
+//                show:     false
+//            } )
+//
+//            this.validateImportFilesModal = $( '#validateImportFilesModal' )
+//            this.validateImportFilesModal.on( "click", () => {
+//
+//                const importInput   = $( "#importInput" )
+//                const files         = importInput[ 0 ].files
+//                const numberOfFiles = files.length
+//                TLogger.log( "numberOfFiles: " + numberOfFiles );
+//
+//                const filesUrls = []
+//                let fileUrl     = ''
+//                let fileIndex   = undefined
+//                let fileObject  = undefined
+//
+//                for ( fileIndex = 0 ; fileIndex < numberOfFiles ; ++fileIndex ) {
+//                    fileObject = files[ fileIndex ]
+//                    fileUrl    = URL.createObjectURL( fileObject ) + '/' + fileObject.name
+//
+//                    filesUrls.push( { url: fileUrl } )
+//                }
+//
+//                self.loadObjectFromURL( filesUrls )
+//
+//            } )
+//
+//            this.imageShotModalView = $( '#imageShotModal' )
+//            this.imageShotModalView.modal( {
+//                keyboard: false,
+//                show:     false
+//            } )
+//
+//            this.selectedObjectModalView = $( '#selectedObjectModal' )
+//            this.selectedObjectModalView.modal( {
+//                keyboard: false,
+//                show:     false
+//            } )
 
         }
 
