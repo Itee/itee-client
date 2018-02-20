@@ -12,6 +12,7 @@
 /* global $, H, URL */
 
 import { extend, createInterval } from '../utils/TObjectUtil'
+import { removeDiacritics } from '../utils/TStringUtil'
 import { TUniversalLoader } from '../loaders/TUniversalLoader'
 import { dockspawn } from '../third_party/dock-spawn'
 import { TViewport } from './TViewport'
