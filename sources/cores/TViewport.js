@@ -46,8 +46,10 @@ import {
     AnaglyphEffect,
     StereoEffect,
     OrbitControls
+//    GridHelper
 } from 'threejs-full-es6'
 import Stats from 'stats.js'
+import { GridHelper } from '../../node_modules/threejs-full-es6/sources/helpers/GridHelper'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { TOrbitControlsHelper } from '../objects3d/TOrbitControlsHelper'
 
@@ -73,7 +75,7 @@ function TViewport ( container ) {
 
     this.scene = new Scene()
 
-    //    this.scene.add( new GridHelper(100, 100) )
+        this.scene.add( new GridHelper(1000, 1000) )
 
     this.camera                   = new PerspectiveCamera()
     this.orbitControl             = new OrbitControls( this.camera, this.container )
