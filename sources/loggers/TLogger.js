@@ -52,6 +52,7 @@ const LogLevel = Object.freeze( {
  */
 function TLogger ( outputs ) {
 
+    this.outputLevel  = LogLevel.Info
     this.outputs      = outputs || LogOutput.All
     this.logsArray    = []
     this.counterTrace = 0
@@ -161,7 +162,7 @@ Object.assign( TLogger.prototype, {
         switch ( level ) {
 
             case LogLevel.Error:
-                if ( DEBUG_LEVEL === LogLevel.Error || DEBUG_LEVEL === LogLevel.Warning || DEBUG_LEVEL === LogLevel.Info ) {
+                if ( this.outputLevel === LogLevel.Error || this.outputLevel === LogLevel.Warning || this.outputLevel === LogLevel.Info ) {
 
                     if ( this.outputs & LogOutput.Console ) {
 
@@ -200,7 +201,7 @@ Object.assign( TLogger.prototype, {
                 break
 
             case LogLevel.Warning:
-                if ( DEBUG_LEVEL === LogLevel.Warning || DEBUG_LEVEL === LogLevel.Info ) {
+                if ( this.outputLevel === LogLevel.Warning || this.outputLevel === LogLevel.Info ) {
 
                     if ( this.outputs & LogOutput.Console ) {
 
@@ -239,7 +240,7 @@ Object.assign( TLogger.prototype, {
                 break
 
             case LogLevel.Info:
-                if ( DEBUG_LEVEL === LogLevel.Info ) {
+                if ( this.outputLevel === LogLevel.Info ) {
 
                     if ( this.outputs & LogOutput.Console ) {
 
