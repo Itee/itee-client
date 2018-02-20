@@ -67,14 +67,16 @@ function TViewport ( container ) {
     this.containerWidth  = this.container.clientWidth //outerWidth(true)
     this.containerHeight = this.container.clientHeight //height()
 
-    this.view = $( TViewport.getTemplate() )
+    const template = TViewport.getTemplate()
+    this.container.innerHTML += template
+    this.view = this.container.getElementsByClassName('webglViewport')[0]
 
     this.scene = new Scene()
 
     //    this.scene.add( new GridHelper(100, 100) )
 
     this.camera                   = new PerspectiveCamera()
-    this.orbitControl             = new OrbitControls( this.camera, this.view.get( 0 ) )
+    this.orbitControl             = new OrbitControls( this.camera, this.container )
     this.orbitControl.maxDistance = 2000
     this.orbitControlHelper       = new TOrbitControlsHelper( this.orbitControl )
     this.scene.add( this.orbitControlHelper )
@@ -97,7 +99,8 @@ function TViewport ( container ) {
     // Current renderer
     this.renderer = this.webGLRenderer;
 
-    $( this.webGLRenderer.domElement ).appendTo( this.view )
+    this.view.appendChild(this.webGLRenderer.domElement)
+//    $( this.webGLRenderer.domElement ).appendTo( this.view )
 
     this.measuring     = false
     this.mouse         = new Vector2()
@@ -138,7 +141,7 @@ function TViewport ( container ) {
 
     //    this.clock = new Clock()
 
-    this.view.appendTo( this.container )
+//    this.view.appendTo( this.container )
     init.call( this )
 
     if ( this.settings.showStat ) {
@@ -218,8 +221,8 @@ function TViewport ( container ) {
 
         window.addEventListener( 'resize', self.updateSizes.bind( self ), true );
 
-        self.view[ 0 ].addEventListener( 'mousemove', this.updateRaycasting.bind( this ), false )
-        self.view[ 0 ].addEventListener( 'mousedown', this.selectObject.bind( this ), false )
+        self.view.addEventListener( 'mousemove', this.updateRaycasting.bind( this ), false )
+        self.view.addEventListener( 'mousedown', this.selectObject.bind( this ), false )
 
         self.orbitControl.addEventListener( 'rotate', self.decimateVisibleMeshes.bind( self ), true )
         self.orbitControl.addEventListener( 'pan', self.decimateVisibleMeshes.bind( self ), true )
