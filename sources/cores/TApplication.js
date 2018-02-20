@@ -91,7 +91,7 @@ function TApplication ( container, parameters, onReady ) {
         return
     }
 
-    TLogger.time( "TApplication" )
+    //TLogger.time( "TApplication" )
     TLogger.log( "Starting TApplication..." )
 
     const self      = this;
@@ -1136,7 +1136,7 @@ function TApplication ( container, parameters, onReady ) {
 
         }
 
-        TLogger.timeEnd( "TApplication" )
+        //TLogger.timeEnd( "TApplication" )
         //        self.webglViewport.toggleAutorun()
 
         onReady()
