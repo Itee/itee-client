@@ -2217,11 +2217,10 @@ Object.assign( TApplication.prototype, {
         '   <ul class="children"></ul>' +
         '</li>'}`
 
-        var item = $( domElement )
+        document.getElementById( cleanParentName ).appendChild( domElement )
+//        $( '#' + cleanParentName ).children( '.children' ).append( item );
 
-        $( '#' + cleanParentName ).children( '.children' ).append( item );
-
-        return item;
+        return domElement;
 
     },
 
