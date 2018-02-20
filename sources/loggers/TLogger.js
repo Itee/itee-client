@@ -155,8 +155,8 @@ Object.assign( TLogger.prototype, {
      */
     dispatch ( message ) {
 
-        const level        = message.level
-        let formattedMessage = this._formatTrace( level )
+        const level          = message.level
+        let formattedMessage = this._formatTrace( level, message.message )
 
         // Root message in function of gravity
         switch ( level ) {
