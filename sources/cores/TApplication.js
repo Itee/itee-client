@@ -627,274 +627,278 @@ function TApplication ( container, parameters, onReady ) {
     function _initAvatarData ( parameters ) {
 
         const _parameters = parameters || {
-            url: ''
+            url: null
         }
 
-        const jsonLoader = new JSONLoader()
-        //        jsonLoader.load( 'resources/models/json/oko/Oko_textured.json', function ( geometry, materials ) {
-        //        jsonLoader.load( 'resources/models/json/oko/Oko_join.json', function ( geometry, materials ) {
-        jsonLoader.load( _parameters.url, function ( geometry, materials ) {
-            //        jsonLoader.load( 'resources/models/json/Ethan/Ethan_idle.json', function ( geometry, materials ) {
-            //        jsonLoader.load( 'resources/models/json/Ethan/Ethan_idle_centered.json', function ( geometry, materials ) {
+        if(_parameters.url) {
 
-            materials.visible = true
+            const jsonLoader = new JSONLoader()
+            //        jsonLoader.load( 'resources/models/json/oko/Oko_textured.json', function ( geometry, materials ) {
+            //        jsonLoader.load( 'resources/models/json/oko/Oko_join.json', function ( geometry, materials ) {
+            jsonLoader.load( _parameters.url, function ( geometry, materials ) {
+                //        jsonLoader.load( 'resources/models/json/Ethan/Ethan_idle.json', function ( geometry, materials ) {
+                //        jsonLoader.load( 'resources/models/json/Ethan/Ethan_idle_centered.json', function ( geometry, materials ) {
 
-            var mesh = undefined
-            if ( geometry.bones && geometry.bones.length > 0 ) {
+                materials.visible = true
 
-                mesh = new SkinnedMesh(
-                    geometry,
-                    materials
-                )
+                var mesh = undefined
+                if ( geometry.bones && geometry.bones.length > 0 ) {
 
-            } else {
-
-                mesh = new Mesh( geometry, materials )
-
-            }
-
-            mesh.name = 'Avatar'
-
-            var rad = 115 * Math.PI / 180;
-            mesh.rotateY( rad )
-
-            onLoad( mesh )
-
-        } )
-
-        //        var objectLoader = new ObjectLoader()
-        //        objectLoader.load( 'resources/models/json/materials.json', function ( object ) {
-        //
-        //            self.webglViewport.scene.add( object )
-        //
-        //        } )
-
-        var _recenter           = true
-        var _setDoubleSide      = false
-        var _displayCenter      = false
-        var _displayBoundingBox = false
-        var _displayWire        = false
-        var _displaySkeleton    = false
-        var _manageAnimation    = true
-
-        var currentActionIndex = undefined
-        var skeletonHelper     = undefined
-
-        var mixers  = []
-        var actions = []
-
-        function onLoad ( object ) {
-
-            if ( !object ) {
-
-                TLogger.error( 'Something when wrong... Object is null or undefined !' )
-                return
-
-            } else if ( object instanceof Group || object instanceof Scene ) {
-
-                var child = undefined
-                while ( object.children.length > 0 ) {
-
-                    child = object.children[ object.children.length - 1 ]
-
-                    _processObject( child )
-
-                }
-
-            } else if ( object instanceof Object3D ) {
-
-                _processObject( object )
-
-            } else if ( object.skeleton && object.clip ) {
-
-                skeletonHelper          = new SkeletonHelper( object.skeleton.bones[ 0 ] )
-                skeletonHelper.skeleton = object.skeleton // allow animation mixer to bind to SkeletonHelper directly
-                skeletonHelper.update()
-
-                self.webglViewport.scene.add( skeletonHelper )
-
-                // play animation
-                var mixer = new AnimationMixer( skeletonHelper );
-                mixer.clipAction( object.clip ).setEffectiveWeight( 1.0 ).play();
-                mixers.push( mixer )
-
-            } else {
-
-                TLogger.warn( 'Unknown object type !!!' )
-
-            }
-
-            function _processObject ( object ) {
-
-                if ( _recenter ) { _recenterGeometry( object ) }
-                if ( _setDoubleSide ) { _setDoubleSidedMaterial( object ) }
-                if ( _displayCenter ) { _addCenterHelper( object ) }
-                if ( _displayBoundingBox ) { _addBoundingBoxHelper( object ) }
-                if ( _displayWire ) { _addWire( object ) }
-                if ( _displaySkeleton ) { _addSkeletonHelper( object ) }
-                if ( _manageAnimation ) { _addAnimations( object ) }
-
-                //					var position = getNextPosition()
-                //					object.position.copy( position )
-
-                self.webglViewport.scene.add( object )
-                _avatarReady = true
-                _checkReady()
-
-            }
-
-            function _recenterGeometry ( object ) {
-
-                //						if( ! object.geometry.boundingBox ) { object.geometry.computeBoundingBox() }
-                //
-                //						var center = object.geometry.boundingBox.getCenter()
-                //						var negCenter = center.negate()
-
-                var offset = object.geometry.center()
-
-                var bb    = object.geometry.boundingBox
-                var bbMin = bb.min.negate()
-                object.geometry.translate( 0, bbMin.y, 0 )
-
-            }
-
-            function _setDoubleSidedMaterial ( object ) {
-
-                if ( 'material' in object ) {
-
-                    object.material.side    = DoubleSide
-                    object.material.opacity = 1
+                    mesh = new SkinnedMesh(
+                        geometry,
+                        materials
+                    )
 
                 } else {
 
-                    TLogger.warn( 'No material found !' )
+                    mesh = new Mesh( geometry, materials )
 
                 }
 
-            }
+                mesh.name = 'Avatar'
 
-            function _addWire ( object ) {
+                var rad = 115 * Math.PI / 180;
+                mesh.rotateY( rad )
 
-                var wireframe = new LineSegments(
-                    new WireframeGeometry( object.geometry ),
-                    new LineBasicMaterial( {
-                        color:     0xffffff,
-                        linewidth: 1
-                    } ) )
+                onLoad( mesh )
 
-                self.webglViewport.scene.add( wireframe )
+            } )
 
-            }
+            //        var objectLoader = new ObjectLoader()
+            //        objectLoader.load( 'resources/models/json/materials.json', function ( object ) {
+            //
+            //            self.webglViewport.scene.add( object )
+            //
+            //        } )
 
-            function _addCenterHelper ( object ) {
+            var _recenter           = true
+            var _setDoubleSide      = false
+            var _displayCenter      = false
+            var _displayBoundingBox = false
+            var _displayWire        = false
+            var _displaySkeleton    = false
+            var _manageAnimation    = true
 
-                if ( !object.geometry.boundingBox ) { object.geometry.computeBoundingBox() }
+            var currentActionIndex = undefined
+            var skeletonHelper     = undefined
 
-                var center = object.geometry.boundingBox.getCenter()
+            var mixers  = []
+            var actions = []
 
-                var axisHelper = new AxesHelper( 5 )
-                axisHelper.position.copy( center )
+            function onLoad ( object ) {
 
-                self.webglViewport.scene.add( axisHelper )
+                if ( !object ) {
 
-            }
+                    TLogger.error( 'Something when wrong... Object is null or undefined !' )
+                    return
 
-            function _addBoundingBoxHelper ( object ) {
+                } else if ( object instanceof Group || object instanceof Scene ) {
 
-                var boundingBoxHelper = new BoxHelper( object )
+                    var child = undefined
+                    while ( object.children.length > 0 ) {
 
-                self.webglViewport.scene.add( boundingBoxHelper )
+                        child = object.children[ object.children.length - 1 ]
 
-            }
-
-            function _addSkeletonHelper ( object ) {
-
-                if ( object.skeleton && object.skeleton.bones && object.skeleton.bones.length > 0 ) {
-
-                    skeletonHelper                    = new SkeletonHelper( object )
-                    skeletonHelper.material.linewidth = 3
-                    skeletonHelper.update()
-                    self.webglViewport.scene.add( skeletonHelper )
-
-                    var helper2                = new SkeletonHelper( object.skeleton.bones[ 0 ] )
-                    helper2.material.linewidth = 3
-                    helper2.update()
-                    self.webglViewport.scene.add( helper2 )
-
-                } else if ( object.geometry && object.geometry.bones && object.geometry.bones.length > 0 ) {
-
-                    // Create Skeleton from geometry bones
-                    //							object.skeleton = new THREE.Skeleton( object.geometry.bones )
-
-                    //							var helper = new THREE.SkeletonHelper( object.geometry.bones[ 0 ] )
-                    //							helper.material.linewidth = 3
-                    //							helper.update()
-                    //
-                    //							scene.add( helper )
-
-                    TLogger.warn( 'Unable to process skeleton from geometry !' )
-
-                } else {
-
-                    TLogger.warn( 'No skeleton founds !' )
-
-                }
-
-            }
-
-            function _addAnimations ( object ) {
-
-                if ( object.animations && object.animations.length > 0 ) {
-
-                    object.mixer = new AnimationMixer( object )
-                    //                    mixers.push( object.mixer )
-
-                    var action = object.mixer.clipAction( object.animations[ 1 ] )
-                    action.setEffectiveWeight( 1.0 )
-                    action.play()
-
-                } else if ( object.geometry.animations && object.geometry.animations.length > 0 ) {
-
-                    object.mixer = new AnimationMixer( object )
-                    //                    mixers.push( object.mixer )
-
-                    var anim   = undefined
-                    var action = undefined
-                    for ( var animIndex = 0, numberOfAnims = object.geometry.animations.length ; animIndex < numberOfAnims ; animIndex++ ) {
-
-                        anim   = object.geometry.animations[ animIndex ]
-                        action = object.mixer.clipAction( anim )
-
-                        actions.push( action )
+                        _processObject( child )
 
                     }
 
-                    currentActionIndex = 0
-                    actions[ currentActionIndex ].play()
+                } else if ( object instanceof Object3D ) {
+
+                    _processObject( object )
+
+                } else if ( object.skeleton && object.clip ) {
+
+                    skeletonHelper          = new SkeletonHelper( object.skeleton.bones[ 0 ] )
+                    skeletonHelper.skeleton = object.skeleton // allow animation mixer to bind to SkeletonHelper directly
+                    skeletonHelper.update()
+
+                    self.webglViewport.scene.add( skeletonHelper )
+
+                    // play animation
+                    var mixer = new AnimationMixer( skeletonHelper );
+                    mixer.clipAction( object.clip ).setEffectiveWeight( 1.0 ).play();
+                    mixers.push( mixer )
 
                 } else {
 
-                    TLogger.warn( 'No animations founds !' )
+                    TLogger.warn( 'Unknown object type !!!' )
 
-                    //							var url = 'models/bvh/01/01_01.bvh'
+                }
+
+                function _processObject ( object ) {
+
+                    if ( _recenter ) { _recenterGeometry( object ) }
+                    if ( _setDoubleSide ) { _setDoubleSidedMaterial( object ) }
+                    if ( _displayCenter ) { _addCenterHelper( object ) }
+                    if ( _displayBoundingBox ) { _addBoundingBoxHelper( object ) }
+                    if ( _displayWire ) { _addWire( object ) }
+                    if ( _displaySkeleton ) { _addSkeletonHelper( object ) }
+                    if ( _manageAnimation ) { _addAnimations( object ) }
+
+                    //					var position = getNextPosition()
+                    //					object.position.copy( position )
+
+                    self.webglViewport.scene.add( object )
+                    _avatarReady = true
+                    _checkReady()
+
+                }
+
+                function _recenterGeometry ( object ) {
+
+                    //						if( ! object.geometry.boundingBox ) { object.geometry.computeBoundingBox() }
                     //
-                    //							var bvhLoader = new THREE.BVHLoader( manager )
-                    //							bvhLoader.load(
-                    //									url,
-                    //									onLoad,
-                    ////									function( animation ) {
-                    ////
-                    ////										object.mixer = new THREE.AnimationMixer( object )
-                    ////										mixers.push( object.mixer )
-                    ////
-                    ////										var action = object.mixer.clipAction( animation.clip )
-                    ////										action.setEffectiveWeight( 1.0 )
-                    ////										action.play()
-                    ////
-                    ////									},
-                    //									onProgress,
-                    //									onError
-                    //							)
+                    //						var center = object.geometry.boundingBox.getCenter()
+                    //						var negCenter = center.negate()
+
+                    var offset = object.geometry.center()
+
+                    var bb    = object.geometry.boundingBox
+                    var bbMin = bb.min.negate()
+                    object.geometry.translate( 0, bbMin.y, 0 )
+
+                }
+
+                function _setDoubleSidedMaterial ( object ) {
+
+                    if ( 'material' in object ) {
+
+                        object.material.side    = DoubleSide
+                        object.material.opacity = 1
+
+                    } else {
+
+                        TLogger.warn( 'No material found !' )
+
+                    }
+
+                }
+
+                function _addWire ( object ) {
+
+                    var wireframe = new LineSegments(
+                        new WireframeGeometry( object.geometry ),
+                        new LineBasicMaterial( {
+                            color:     0xffffff,
+                            linewidth: 1
+                        } ) )
+
+                    self.webglViewport.scene.add( wireframe )
+
+                }
+
+                function _addCenterHelper ( object ) {
+
+                    if ( !object.geometry.boundingBox ) { object.geometry.computeBoundingBox() }
+
+                    var center = object.geometry.boundingBox.getCenter()
+
+                    var axisHelper = new AxesHelper( 5 )
+                    axisHelper.position.copy( center )
+
+                    self.webglViewport.scene.add( axisHelper )
+
+                }
+
+                function _addBoundingBoxHelper ( object ) {
+
+                    var boundingBoxHelper = new BoxHelper( object )
+
+                    self.webglViewport.scene.add( boundingBoxHelper )
+
+                }
+
+                function _addSkeletonHelper ( object ) {
+
+                    if ( object.skeleton && object.skeleton.bones && object.skeleton.bones.length > 0 ) {
+
+                        skeletonHelper                    = new SkeletonHelper( object )
+                        skeletonHelper.material.linewidth = 3
+                        skeletonHelper.update()
+                        self.webglViewport.scene.add( skeletonHelper )
+
+                        var helper2                = new SkeletonHelper( object.skeleton.bones[ 0 ] )
+                        helper2.material.linewidth = 3
+                        helper2.update()
+                        self.webglViewport.scene.add( helper2 )
+
+                    } else if ( object.geometry && object.geometry.bones && object.geometry.bones.length > 0 ) {
+
+                        // Create Skeleton from geometry bones
+                        //							object.skeleton = new THREE.Skeleton( object.geometry.bones )
+
+                        //							var helper = new THREE.SkeletonHelper( object.geometry.bones[ 0 ] )
+                        //							helper.material.linewidth = 3
+                        //							helper.update()
+                        //
+                        //							scene.add( helper )
+
+                        TLogger.warn( 'Unable to process skeleton from geometry !' )
+
+                    } else {
+
+                        TLogger.warn( 'No skeleton founds !' )
+
+                    }
+
+                }
+
+                function _addAnimations ( object ) {
+
+                    if ( object.animations && object.animations.length > 0 ) {
+
+                        object.mixer = new AnimationMixer( object )
+                        //                    mixers.push( object.mixer )
+
+                        var action = object.mixer.clipAction( object.animations[ 1 ] )
+                        action.setEffectiveWeight( 1.0 )
+                        action.play()
+
+                    } else if ( object.geometry.animations && object.geometry.animations.length > 0 ) {
+
+                        object.mixer = new AnimationMixer( object )
+                        //                    mixers.push( object.mixer )
+
+                        var anim   = undefined
+                        var action = undefined
+                        for ( var animIndex = 0, numberOfAnims = object.geometry.animations.length ; animIndex < numberOfAnims ; animIndex++ ) {
+
+                            anim   = object.geometry.animations[ animIndex ]
+                            action = object.mixer.clipAction( anim )
+
+                            actions.push( action )
+
+                        }
+
+                        currentActionIndex = 0
+                        actions[ currentActionIndex ].play()
+
+                    } else {
+
+                        TLogger.warn( 'No animations founds !' )
+
+                        //							var url = 'models/bvh/01/01_01.bvh'
+                        //
+                        //							var bvhLoader = new THREE.BVHLoader( manager )
+                        //							bvhLoader.load(
+                        //									url,
+                        //									onLoad,
+                        ////									function( animation ) {
+                        ////
+                        ////										object.mixer = new THREE.AnimationMixer( object )
+                        ////										mixers.push( object.mixer )
+                        ////
+                        ////										var action = object.mixer.clipAction( animation.clip )
+                        ////										action.setEffectiveWeight( 1.0 )
+                        ////										action.play()
+                        ////
+                        ////									},
+                        //									onProgress,
+                        //									onError
+                        //							)
+
+                    }
 
                 }
 
