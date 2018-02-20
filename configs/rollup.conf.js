@@ -78,7 +78,7 @@ function CreateRollupConfiguration ( format, onProduction, wantSourceMap ) {
                 commonJs( {
                     include: 'node_modules/**'
                 } ),
-                babel(require( './babel.conf' )),
+                babel(require( './babel.conf' )(_onProduction)),
                 replace( {
                     'process.env.NODE_ENV': JSON.stringify( (_onProduction) ? 'production' : 'development' )
                 } ),
