@@ -27,7 +27,7 @@ class TToolBar extends React.Component {
 
     render () {
 
-        const { id, className } = this.props
+        const { id, className, children } = this.props
 
         const _id    = id || `tToolBar_${_instanceCounter}`
         const _class = ( className ) ? `tToolBar ${className}` : 'tToolBar'
@@ -37,7 +37,9 @@ class TToolBar extends React.Component {
         }
 
         return (
-            <t-tool-bar id={_id} style={_style} class={_class}></t-tool-bar>
+            <t-tool-bar id={_id} style={_style} class={_class}>
+                {children}
+            </t-tool-bar>
         )
 
     }
