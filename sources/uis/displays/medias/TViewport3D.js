@@ -103,7 +103,7 @@ class TViewport3D extends React.Component {
 
     componentWillReceiveProps ( /*nextProps*/ ) {}
 
-    shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
+    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
 
     componentWillUpdate ( /*nextProps, nextState*/ ) {}
 
@@ -117,7 +117,8 @@ class TViewport3D extends React.Component {
         const _style = {
             width:    '100%',
             height:   '100%',
-            overflow: 'hidden'
+            overflow: 'hidden',
+            display: block
         }
         const _class = ( className ) ? `tViewport3D ${className}` : 'tViewport3D'
 
