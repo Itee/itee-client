@@ -79,7 +79,7 @@ class TViewport3D extends React.Component {
 
         // Create the scene
         const geometry = new BoxBufferGeometry( 1, 1, 1 )
-        const material = new MeshPhongMaterial( '0x0096FF' )
+        const material = new MeshPhongMaterial( 0x0096FF )
         this._cube     = new Mesh( geometry, material )
         this._scene.add( this._cube )
 
