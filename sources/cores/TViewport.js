@@ -46,7 +46,7 @@ import {
     AnaglyphEffect,
     StereoEffect,
     OrbitControls
-//    GridHelper
+    //    GridHelper
 } from 'threejs-full-es6'
 import Stats from 'stats.js'
 import { GridHelper } from '../../node_modules/threejs-full-es6/sources/helpers/GridHelper'
@@ -71,11 +71,11 @@ function TViewport ( container ) {
 
     const template = TViewport.getTemplate()
     this.container.innerHTML += template
-    this.view = this.container.getElementsByClassName('webglViewport')[0]
+    this.view      = this.container.getElementsByClassName( 'webglViewport' )[ 0 ]
 
     this.scene = new Scene()
 
-        this.scene.add( new GridHelper(1000, 1000) )
+    this.scene.add( new GridHelper( 1000, 1000 ) )
 
     this.camera                   = new PerspectiveCamera()
     this.orbitControl             = new OrbitControls( this.camera, this.container )
@@ -101,8 +101,8 @@ function TViewport ( container ) {
     // Current renderer
     this.renderer = this.webGLRenderer;
 
-    this.view.appendChild(this.webGLRenderer.domElement)
-//    $( this.webGLRenderer.domElement ).appendTo( this.view )
+    this.view.appendChild( this.webGLRenderer.domElement )
+    //    $( this.webGLRenderer.domElement ).appendTo( this.view )
 
     this.measuring     = false
     this.mouse         = new Vector2()
@@ -143,7 +143,7 @@ function TViewport ( container ) {
 
     //    this.clock = new Clock()
 
-//    this.view.appendTo( this.container )
+    //    this.view.appendTo( this.container )
     init.call( this )
 
     if ( this.settings.showStat ) {

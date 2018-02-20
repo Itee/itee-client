@@ -12,7 +12,7 @@
  *
  * @constructor
  */
-function TBoundingBox() {
+function TBoundingBox () {
     this.xMin = Number.MAX_VALUE;
     this.xMax = Number.MIN_VALUE;
     this.yMin = Number.MAX_VALUE;
@@ -68,7 +68,7 @@ Object.assign( TBoundingBox.prototype, {
     },
 
     /**
-     * 
+     *
      * @return {{x: number, y: number, z: number}}
      */
     getCenter () {

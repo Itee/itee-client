@@ -88,8 +88,6 @@ function TCameraPathController ( camera, domElement ) {
         y: new Quaternion()
     }
 
-
-
     this.mouseButtons = {
         ORBIT: MOUSE.LEFT,
         ZOOM:  MOUSE.MIDDLE,
@@ -371,7 +369,7 @@ Object.assign( TCameraPathController.prototype, EventDispatcher.prototype, {
      *
      * @param path
      */
-    setPath( path ) {
+    setPath ( path ) {
 
         this.currentPath = path
         this.cameraJump  = 1 / path.getLength()
@@ -383,7 +381,7 @@ Object.assign( TCameraPathController.prototype, EventDispatcher.prototype, {
      * @param paths
      * @param nameOfFirstPathToFollow
      */
-    setPaths( paths, nameOfFirstPathToFollow ) {
+    setPaths ( paths, nameOfFirstPathToFollow ) {
 
         this.paths            = paths
         this.currentPathIndex = 0
@@ -473,17 +471,17 @@ Object.assign( TCameraPathController.prototype, EventDispatcher.prototype, {
      *
      * @param quat
      */
-    setMouseQuat( quat ) {
+    setMouseQuat ( quat ) {
 
-    this.orientation.y = Math.asin( quat.y ) * 2
-    this.orientation.x = 0
+        this.orientation.y = Math.asin( quat.y ) * 2
+        this.orientation.x = 0
 
-},
+    },
 
     /**
      *
      */
-    getCurrentPathPosition() {
+    getCurrentPathPosition () {
 
         return this.currentPath.getPointAt( this.currentPathPosition )
 
@@ -493,7 +491,7 @@ Object.assign( TCameraPathController.prototype, EventDispatcher.prototype, {
      *
      * @return {undefined}
      */
-    getNextPathPosition() {
+    getNextPathPosition () {
 
         var nextPosition = undefined
 
@@ -511,7 +509,7 @@ Object.assign( TCameraPathController.prototype, EventDispatcher.prototype, {
      *
      * @return {number}
      */
-    getDistanceFromStart() {
+    getDistanceFromStart () {
 
         //Linear distance
         //		var firstPosition = this.currentPath.getPointAt( 0 )
@@ -528,7 +526,7 @@ Object.assign( TCameraPathController.prototype, EventDispatcher.prototype, {
     /**
      *
      */
-    lookAtPath() {
+    lookAtPath () {
 
         // Set lookup point at the camera height
         var nextPosition = this.getNextPathPosition()
@@ -545,7 +543,7 @@ Object.assign( TCameraPathController.prototype, EventDispatcher.prototype, {
      *
      * @param position
      */
-    goTo( position ) {
+    goTo ( position ) {
 
         //Todo: Should use 2D instead of 3D !
 

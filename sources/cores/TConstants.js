@@ -252,7 +252,7 @@ export const HttpStatusCode = Object.freeze( {
  *
  * @type {Enum} Keys
  */
-export const Keys = Object.freeze({
+export const Keys = Object.freeze( {
     8:  "backspace",
     9:  "tab",
     13: "enter",
@@ -308,7 +308,7 @@ export const Keys = Object.freeze({
     220:          "\\",
     221:          "]",
     222:          "'"
-})
+} )
 
 /**
  *

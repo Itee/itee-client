@@ -74,7 +74,7 @@ Object.assign( TCube, {
             z: 0.0
         }
     }
-    
+
 } )
 
 Object.assign( TCube.prototype, {

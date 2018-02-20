@@ -43,7 +43,7 @@ import { TBoundingBox } from '../cores/TBoundingBox'
  * @param manager
  * @constructor
  */
-function ASCLoader( manager ) {
+function ASCLoader ( manager ) {
 
     this.manager = ( manager ) ? manager : DefaultLoadingManager;
 

@@ -542,8 +542,8 @@ Object.assign( TUniversalLoader.prototype, {
 
             }
 
-            group.rotateX( degreesToRadians(-90) )
-            group.rotateZ( degreesToRadians(180) )
+            group.rotateX( degreesToRadians( -90 ) )
+            group.rotateZ( degreesToRadians( 180 ) )
             group.position.z -= 159.5
             group.position.x -= 0.6
             group.position.y = 14

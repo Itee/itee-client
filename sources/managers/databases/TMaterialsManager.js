@@ -19,7 +19,6 @@ import {
 import { DefaultLogger as TLogger } from '../../loggers/TLogger'
 import { TDataBaseManager } from '../TDataBaseManager'
 
-
 /**
  *
  * @constructor

@@ -90,7 +90,7 @@ Object.assign( DBFLoader, {
     /**
      *
      */
-    Terminator:    0x0D,
+    Terminator: 0x0D,
 
     /**
      *
@@ -100,7 +100,7 @@ Object.assign( DBFLoader, {
     /**
      *
      */
-    YearOffset:    1900
+    YearOffset: 1900
 
 } );
 
@@ -334,7 +334,8 @@ Object.assign( DBFLoader.prototype, {
 
     /**
      *
-     * @return {{year: *, month: (*|number), day: (*|number), numberOfRecords, numberOfByteInHeader, numberOfByteInRecord, incompleteTransactionFlag: (*|number), encryptionFlag: (*|number), MDXFlag: (*|number), languageDriverId: (*|number), fields: Array}}
+     * @return {{year: *, month: (*|number), day: (*|number), numberOfRecords, numberOfByteInHeader, numberOfByteInRecord, incompleteTransactionFlag: (*|number), encryptionFlag: (*|number), MDXFlag:
+     *     (*|number), languageDriverId: (*|number), fields: Array}}
      * @private
      */
     _parseHeaderV3 () {
@@ -405,7 +406,8 @@ Object.assign( DBFLoader.prototype, {
 
     /**
      *
-     * @return {{year: *, month: (*|number), day: (*|number), numberOfRecords, numberOfByteInHeader, numberOfByteInRecord, incompleteTransactionFlag: (*|number), encryptionFlag: (*|number), MDXFlag: (*|number), languageDriverId: (*|number), languageDriverName, fields: Array}}
+     * @return {{year: *, month: (*|number), day: (*|number), numberOfRecords, numberOfByteInHeader, numberOfByteInRecord, incompleteTransactionFlag: (*|number), encryptionFlag: (*|number), MDXFlag:
+     *     (*|number), languageDriverId: (*|number), languageDriverName, fields: Array}}
      * @private
      */
     _parseHeaderV4 () {
@@ -589,7 +591,8 @@ Object.assign( DBFLoader.prototype, {
 
     /**
      *
-     * @return {{numberOfStandardProperties, startOfStandardPropertiesDescriptor, numberOfCustomProperties, startOfCustomPropertiesDescriptor, numberOfReferentialIntegrityProperties, startOfReferentialIntegrityDescriptor, startOfData, sizeOfPropertiesStructure, standardProperties: Array, customProperties: Array, referentialIntegrityProperties: Array}}
+     * @return {{numberOfStandardProperties, startOfStandardPropertiesDescriptor, numberOfCustomProperties, startOfCustomPropertiesDescriptor, numberOfReferentialIntegrityProperties,
+     *     startOfReferentialIntegrityDescriptor, startOfData, sizeOfPropertiesStructure, standardProperties: Array, customProperties: Array, referentialIntegrityProperties: Array}}
      * @private
      */
     _parseFieldProperties () {
@@ -692,7 +695,8 @@ Object.assign( DBFLoader.prototype, {
 
     /**
      *
-     * @return {{databaseState: (*|number), sequentialNumberRule, offsetOfTheRIRuleName, sizeOfTheRIRuleName, offsetOfNameOfForeignTable, sizeOfNameOfForeignTable, stateBehaviour: (*|number), numberOfFieldsInLinkingKey, offsetOfLocalTableTagName, sizeOfTheLocalTableTagName, offsetOfForeignTableTagName, sizeOfTheForeignTableTagName}}
+     * @return {{databaseState: (*|number), sequentialNumberRule, offsetOfTheRIRuleName, sizeOfTheRIRuleName, offsetOfNameOfForeignTable, sizeOfNameOfForeignTable, stateBehaviour: (*|number),
+     *     numberOfFieldsInLinkingKey, offsetOfLocalTableTagName, sizeOfTheLocalTableTagName, offsetOfForeignTableTagName, sizeOfTheForeignTableTagName}}
      * @private
      */
     _getReferentialIntegrityProperties () {

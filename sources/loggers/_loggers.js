@@ -8,4 +8,7 @@
 
 /* eslint-env browser */
 
-export { TLogger, DefaultLogger } from './TLogger'
+export {
+    TLogger,
+    DefaultLogger
+} from './TLogger'

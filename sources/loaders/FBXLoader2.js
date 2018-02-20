@@ -57,8 +57,10 @@ import {
     Skeleton
 } from 'threejs-full-es6'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
-import { DEG_TO_RAD, degreesToRadians } from '../maths/TMath'
-
+import {
+    DEG_TO_RAD,
+    degreesToRadians
+} from '../maths/TMath'
 
 // Helper methods
 /**
@@ -263,7 +265,7 @@ function slice ( a, b, from, to ) {
  * @param logger
  * @constructor
  */
-function FBXLoader2( manager, logger ) {}
+function FBXLoader2 ( manager, logger ) {}
 
 // Public static methods
 Object.assign( FBXLoader2, {

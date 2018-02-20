@@ -27,7 +27,7 @@ function TFile ( path = '' ) {
 
     Object.defineProperties( this, {
 
-        path:      {
+        path: {
             enumerable: true,
             get () {
                 return _basePath + _name;
@@ -37,9 +37,9 @@ function TFile ( path = '' ) {
             }
         },
 
-        basePath:  {},
+        basePath: {},
 
-        name:      {},
+        name: {},
 
         extension: {},
 

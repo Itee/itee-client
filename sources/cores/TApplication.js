@@ -11,7 +11,10 @@
 /* eslint-env browser */
 /* global $, H, URL */
 
-import { extend, createInterval } from '../utils/TObjectUtil'
+import {
+    extend,
+    createInterval
+} from '../utils/TObjectUtil'
 import { removeDiacritics } from '../utils/TStringUtil'
 import { TUniversalLoader } from '../loaders/TUniversalLoader'
 import { dockspawn } from '../third_party/dock-spawn'
@@ -67,6 +70,7 @@ import {
     TPointsManager
 } from '../managers/databases/_databases'
 import { degreesToRadians } from '../maths/TMath'
+
 //import { SplitModifier } from '../../build/tmp/SplitModifier'
 
 /**
@@ -96,9 +100,9 @@ function TApplication ( container, parameters, onReady ) {
 
     const self      = this;
     let _parameters = {
-        view:       undefined,
-        model:      undefined,
-        urlQuery:   undefined
+        view:     undefined,
+        model:    undefined,
+        urlQuery: undefined
     }
 
     // Recursive merging parameter
@@ -333,11 +337,11 @@ function TApplication ( container, parameters, onReady ) {
             const _parameters = parameters.parameters || {}
 
             this.webglViewportContainer = document.getElementById( 'webglViewportContainer' )
-            if(!this.webglViewportContainer) {
+            if ( !this.webglViewportContainer ) {
                 return
             }
 
-            this.webglViewport          = new TViewport( this.webglViewportContainer )
+            this.webglViewport = new TViewport( this.webglViewportContainer )
             this.webglViewportContainer.addEventListener( 'panelResize', this.webglViewport.updateSizes.bind( this.webglViewport ) )
             //        this.webglViewport.toggleAutorun()
 
@@ -360,8 +364,8 @@ function TApplication ( container, parameters, onReady ) {
 
             this.webglViewport.scene.add( new AmbientLight( 0x999999, 0.8 ) )
 
-//            this.progressBar = $( '#progressBar .progress-bar' )
-//            this.progressBar.parent().css( "display", "none" )
+            //            this.progressBar = $( '#progressBar .progress-bar' )
+            //            this.progressBar.parent().css( "display", "none" )
 
         }
 
@@ -389,8 +393,6 @@ function TApplication ( container, parameters, onReady ) {
                 }
 
             }
-
-
 
             // Split Tool
             //        this.globalPlane = new SplitModifier( 100 );
@@ -519,47 +521,47 @@ function TApplication ( container, parameters, onReady ) {
 
         function _initModals ( parameters ) {
 
-//            this.importFilesModalView = $( '#importFilesModal' )
-//            this.importFilesModalView.modal( {
-//                keyboard: false,
-//                show:     false
-//            } )
-//
-//            this.validateImportFilesModal = $( '#validateImportFilesModal' )
-//            this.validateImportFilesModal.on( "click", () => {
-//
-//                const importInput   = $( "#importInput" )
-//                const files         = importInput[ 0 ].files
-//                const numberOfFiles = files.length
-//                TLogger.log( "numberOfFiles: " + numberOfFiles );
-//
-//                const filesUrls = []
-//                let fileUrl     = ''
-//                let fileIndex   = undefined
-//                let fileObject  = undefined
-//
-//                for ( fileIndex = 0 ; fileIndex < numberOfFiles ; ++fileIndex ) {
-//                    fileObject = files[ fileIndex ]
-//                    fileUrl    = URL.createObjectURL( fileObject ) + '/' + fileObject.name
-//
-//                    filesUrls.push( { url: fileUrl } )
-//                }
-//
-//                self.loadObjectFromURL( filesUrls )
-//
-//            } )
-//
-//            this.imageShotModalView = $( '#imageShotModal' )
-//            this.imageShotModalView.modal( {
-//                keyboard: false,
-//                show:     false
-//            } )
-//
-//            this.selectedObjectModalView = $( '#selectedObjectModal' )
-//            this.selectedObjectModalView.modal( {
-//                keyboard: false,
-//                show:     false
-//            } )
+            //            this.importFilesModalView = $( '#importFilesModal' )
+            //            this.importFilesModalView.modal( {
+            //                keyboard: false,
+            //                show:     false
+            //            } )
+            //
+            //            this.validateImportFilesModal = $( '#validateImportFilesModal' )
+            //            this.validateImportFilesModal.on( "click", () => {
+            //
+            //                const importInput   = $( "#importInput" )
+            //                const files         = importInput[ 0 ].files
+            //                const numberOfFiles = files.length
+            //                TLogger.log( "numberOfFiles: " + numberOfFiles );
+            //
+            //                const filesUrls = []
+            //                let fileUrl     = ''
+            //                let fileIndex   = undefined
+            //                let fileObject  = undefined
+            //
+            //                for ( fileIndex = 0 ; fileIndex < numberOfFiles ; ++fileIndex ) {
+            //                    fileObject = files[ fileIndex ]
+            //                    fileUrl    = URL.createObjectURL( fileObject ) + '/' + fileObject.name
+            //
+            //                    filesUrls.push( { url: fileUrl } )
+            //                }
+            //
+            //                self.loadObjectFromURL( filesUrls )
+            //
+            //            } )
+            //
+            //            this.imageShotModalView = $( '#imageShotModal' )
+            //            this.imageShotModalView.modal( {
+            //                keyboard: false,
+            //                show:     false
+            //            } )
+            //
+            //            this.selectedObjectModalView = $( '#selectedObjectModal' )
+            //            this.selectedObjectModalView.modal( {
+            //                keyboard: false,
+            //                show:     false
+            //            } )
 
         }
 
@@ -630,7 +632,7 @@ function TApplication ( container, parameters, onReady ) {
             url: null
         }
 
-        if(_parameters.url) {
+        if ( _parameters.url ) {
 
             const jsonLoader = new JSONLoader()
             //        jsonLoader.load( 'resources/models/json/oko/Oko_textured.json', function ( geometry, materials ) {
@@ -940,8 +942,8 @@ function TApplication ( container, parameters, onReady ) {
 
             default:
                 return
-//                throw new RangeError( `Invalid switch parameter: ${_parameters.schema}` )
-//                break
+            //                throw new RangeError( `Invalid switch parameter: ${_parameters.schema}` )
+            //                break
 
         }
 
@@ -954,12 +956,12 @@ function TApplication ( container, parameters, onReady ) {
 
             default:
                 return
-//                throw new RangeError( `Invalid switch parameter: ${_parameters.action}` )
-//                break
+            //                throw new RangeError( `Invalid switch parameter: ${_parameters.action}` )
+            //                break
 
         }
 
-//        const query = URL.decode( _parameters.query )
+        //        const query = URL.decode( _parameters.query )
         const jsonQuery = JSON.parse( _parameters.query )
 
         let dbQuery = undefined
@@ -985,10 +987,10 @@ function TApplication ( container, parameters, onReady ) {
 
                 // Update carl batiment button value
                 // Care parent will not be the scene for ever !!!
-                self.detailBtn.style.display='none'
-                self.createBtn.style.display='none'
-//                self.detailBtn.val( parentId )
-//                self.createBtn.val( parentId )
+                self.detailBtn.style.display = 'none'
+                self.createBtn.style.display = 'none'
+                //                self.detailBtn.val( parentId )
+                //                self.createBtn.val( parentId )
 
                 object.parent = null
 
@@ -2218,7 +2220,7 @@ Object.assign( TApplication.prototype, {
         '</li>'}`
 
         document.getElementById( cleanParentName ).appendChild( domElement )
-//        $( '#' + cleanParentName ).children( '.children' ).append( item );
+        //        $( '#' + cleanParentName ).children( '.children' ).append( item );
 
         return domElement;
 

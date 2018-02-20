@@ -14,7 +14,8 @@
 
 /**
  *
- * @type {{uniforms: {mRefractionRatio: {type: string, value: number}, mFresnelBias: {type: string, value: number}, mFresnelPower: {type: string, value: number}, mFresnelScale: {type: string, value: number}, tCube: {type: string, value: null}, alpha: {type: string, value: number}}, vertexShader: string, fragmentShader: string}}
+ * @type {{uniforms: {mRefractionRatio: {type: string, value: number}, mFresnelBias: {type: string, value: number}, mFresnelPower: {type: string, value: number}, mFresnelScale: {type: string, value:
+ *     number}, tCube: {type: string, value: null}, alpha: {type: string, value: number}}, vertexShader: string, fragmentShader: string}}
  */
 const TFresnelGreenShader = {
 
