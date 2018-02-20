@@ -79,7 +79,7 @@ Object.assign( ASCLoader.prototype, {
      */
     load ( url, onLoad, onProgress, onError, sampling ) {
 
-        //        TLogger.time("ASCLoader")
+        //        //TLogger.time("ASCLoader")
 
         const loader = new FileLoader( this.manager )
         loader.setResponseType( 'blob' )
@@ -180,7 +180,7 @@ Object.assign( ASCLoader.prototype, {
             // /!\ Rollback offset for last line that is uncompleted in most time
             offset -= lines[ numberOfLines - 1 ].length;
 
-            // TLogger.time("Parse Lines A");
+            // //TLogger.time("Parse Lines A");
             const modSampling = Math.round( 100 / _sampling )
             for ( let lineIndex = 0 ; lineIndex < numberOfLines - 1 ; lineIndex++ ) {
                 if ( lineIndex % modSampling === 0 ) // Just to make cloud lighter under debug !!!!
@@ -188,28 +188,28 @@ Object.assign( ASCLoader.prototype, {
                     self._parseLine( lines[ lineIndex ] )
                 }
             }
-            // TLogger.timeEnd("Parse Lines A");
+            // //TLogger.timeEnd("Parse Lines A");
 
-            // TLogger.time("Parse Lines B");
+            // //TLogger.time("Parse Lines B");
             // self._parseLines(lines);
-            // TLogger.timeEnd("Parse Lines B");
+            // //TLogger.timeEnd("Parse Lines B");
 
             ////Todo: use ArrayBuffer instead !!!
-            // TLogger.time("Parse Lines B");
+            // //TLogger.time("Parse Lines B");
             // self._bufferIndex = 0;
             // self._positions = new Float32Array( numberOfLines * 3 );
             // for (var lineIndex = 0; lineIndex < numberOfLines - 1; lineIndex++) {
             //     self._parseLineB(lines[ lineIndex ])
             // }
-            // TLogger.timeEnd("Parse Lines B");
+            // //TLogger.timeEnd("Parse Lines B");
             //
-            // TLogger.time("Parse Lines C");
+            // //TLogger.time("Parse Lines C");
             // self._bufferIndexC = 0;
             // self._positionsC = new Float32Array( numberOfLines * 3 );
             // for (var lineIndex = 0; lineIndex < numberOfLines - 1; lineIndex++) {
             //     self._parseLineB(lines[ lineIndex ])
             // }
-            // TLogger.timeEnd("Parse Lines C");
+            // //TLogger.timeEnd("Parse Lines C");
 
         };
 
@@ -222,18 +222,18 @@ Object.assign( ASCLoader.prototype, {
 
                 // Compute bounding box in view to get his center for auto offseting the cloud point.
                 // if ( self._autoOffset ) {
-                //     TLogger.time("Compute Points");
+                //     //TLogger.time("Compute Points");
                 //     self._boundingBox.computePoints(self._points);
-                //     TLogger.timeEnd("Compute Points");
+                //     //TLogger.timeEnd("Compute Points");
                 // }
 
-                // TLogger.time("Offset Points");
+                // //TLogger.time("Offset Points");
                 self._offsetPoints();
-                // TLogger.timeEnd("Offset Points");
+                // //TLogger.timeEnd("Offset Points");
 
-                // TLogger.time("Create WorldCell");
+                // //TLogger.time("Create WorldCell");
                 self._createSubCloudPoint( groupToFeed );
-                // TLogger.timeEnd("Create WorldCell");
+                // //TLogger.timeEnd("Create WorldCell");
 
             }
 
@@ -248,24 +248,24 @@ Object.assign( ASCLoader.prototype, {
         function seek () {
             if ( offset >= blob.size ) {
 
-                // TLogger.timeEnd("Parse")
-                //                TLogger.timeEnd( "ASCLoader" )
+                // //TLogger.timeEnd("Parse")
+                //                //TLogger.timeEnd( "ASCLoader" )
 
                 // // Compute bounding box in view to get his center for auto offseting the cloud point.
                 // if ( self._autoOffset ) {
-                //     TLogger.time("Compute Points");
+                //     //TLogger.time("Compute Points");
                 //     self._boundingBox.computePoints(self._points);
-                //     TLogger.timeEnd("Compute Points");
+                //     //TLogger.timeEnd("Compute Points");
                 // }
                 //
-                // TLogger.time("Offset Points");
+                // //TLogger.time("Offset Points");
                 // self._offsetPoints();
-                // TLogger.timeEnd("Offset Points");
+                // //TLogger.timeEnd("Offset Points");
                 //
-                // TLogger.time("Create WorldCell");
+                // //TLogger.time("Create WorldCell");
                 // self._createCloudPoint(groupToFeed);
                 // // var cloudPoints = self._createCloudPoint();
-                // TLogger.timeEnd("Create WorldCell");
+                // //TLogger.timeEnd("Create WorldCell");
                 // // onLoad(cloudPoints);
 
                 return;

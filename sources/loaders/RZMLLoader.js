@@ -61,7 +61,7 @@ Object.assign( RZMLLoader.prototype, {
      */
     load ( url, onLoad, onProgress, onError ) {
 
-        TLogger.time( "RZMLLoader" )
+        //TLogger.time( "RZMLLoader" )
 
         var filePath = url.replace( /[^\/]*$/, '' )
 
@@ -129,7 +129,7 @@ Object.assign( RZMLLoader.prototype, {
             } );
         }
 
-        TLogger.timeEnd( "RZMLLoader" );
+        //TLogger.timeEnd( "RZMLLoader" );
 
         return this._createImagesPacks( filePath );
     },
