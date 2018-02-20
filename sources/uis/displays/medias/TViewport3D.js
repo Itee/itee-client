@@ -32,11 +32,12 @@ class TViewport3D extends React.Component {
         super( props )
         _instanceCounter++
 
-        this._frameId  = undefined
-        this._renderer = new WebGLRenderer( { antialias: true } )
-        this._scene    = new Scene()
-        this._camera   = new PerspectiveCamera()
-        this._cube     = undefined
+        this._container = undefined
+        this._frameId   = undefined
+        this._renderer  = new WebGLRenderer( { antialias: true } )
+        this._scene     = new Scene()
+        this._camera    = new PerspectiveCamera()
+        this._cube      = undefined
 
         // Handler
         this._resize = this._resize.bind( this )
@@ -121,7 +122,7 @@ class TViewport3D extends React.Component {
         const _class = ( className ) ? `tViewport3D ${className}` : 'tViewport3D'
 
         return (
-            <t-viewport-3d id={_id} style={_style} className={_class}></t-viewport-3d>
+            <t-viewport-3d ref={( viewport ) => { this._container = viewport }} id={_id} style={_style} className={_class}></t-viewport-3d>
         )
 
     }
