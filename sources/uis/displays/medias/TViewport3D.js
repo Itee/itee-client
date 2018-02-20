@@ -118,7 +118,7 @@ class TViewport3D extends React.Component {
             width:    '100%',
             height:   '100%',
             overflow: 'hidden',
-            display: block
+            display:  'block'
         }
         const _class = ( className ) ? `tViewport3D ${className}` : 'tViewport3D'
 
