@@ -44,7 +44,7 @@ class TDateTime extends React.Component {
      */
 
 
-    componentWillMount () {}
+//    componentWillMount () {}
 
     componentDidMount () {
 
