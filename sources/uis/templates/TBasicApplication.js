@@ -169,7 +169,6 @@ class TBasicApplication extends React.Component {
                             <li className={'vDivider'} role={'separator'}></li>
                             <TToolButton id={'downloadBtn'} title={'Importer un fichier local'} icon={'fa fa-cloud-download'}></TToolButton>
                             <TToolButton id={'uploadBtn'} title={'Télécharger un fichier sur le serveur'} icon={'fa fa-cloud-upload'}></TToolButton>
-                            {/*<input id="importInput" type="file" style="display:none;" multiple=""></input>*/}
                             <li className={'vDivider'} role={'separator'}></li>
                         </TButtonGroup>
 
