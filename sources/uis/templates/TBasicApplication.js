@@ -12,7 +12,7 @@
 
 import React from 'react'
 import { THeader, TContent, TFooter } from '../displays/sections/_sections'
-import { TAppBar, TStatusBar } from '../displays/bars/_bars'
+import { TAppBar, TToolBar, TStatusBar } from '../displays/bars/_bars'
 import { TDateTime } from '../displays/bases/_bases'
 import { TBrand, TMenu, TMenuItem, TDropDownMenu } from '../displays/navigations/_navigations'
 import { TLogingButton, TButtonGroup, TToolButton } from '../inputs/buttons/_buttons'
@@ -163,7 +163,7 @@ class TBasicApplication extends React.Component {
                 </THeader>
                 <TContent>
 
-                    <TToolbar>
+                    <TToolBar>
                         <TButtonGroup>
                             <TToolButton id={'importBtn'} title={'Retourner à l\'acceuil'} icon={'fa fa-home'}></TToolButton>
                             <li className={'vDivider'} role={'separator'}></li>
@@ -316,7 +316,7 @@ class TBasicApplication extends React.Component {
                         {/*</a>*/}
                         {/*</li>*/}
                         {/*</ul>*/}
-                    </TToolbar>
+                    </TToolBar>
 
                     <TSplitter initPosition={15}
 
