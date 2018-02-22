@@ -20,7 +20,8 @@ import {
     BoxBufferGeometry,
     MeshPhongMaterial,
     Mesh,
-    GridHelper
+    GridHelper,
+    OrbitControls
 } from 'threejs-full-es6'
 
 let _instanceCounter = 0
@@ -37,6 +38,8 @@ class TViewport3D extends React.Component {
         this._renderer  = new WebGLRenderer( { antialias: true } )
         this._scene     = new Scene()
         this._camera    = new PerspectiveCamera()
+        this._orbitControl             = new OrbitControls( this._camera, this._container )
+        this._orbitControl.maxDistance = 2000
         this._cube      = undefined
 
         // Handler
@@ -150,6 +153,8 @@ class TViewport3D extends React.Component {
         this._cube.rotation.x -= SPEED * 2
         this._cube.rotation.y -= SPEED
         this._cube.rotation.z -= SPEED * 3
+
+        this._orbitControl.update()
 
         this._renderer.render( this._scene, this._camera )
 
