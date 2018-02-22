@@ -12,15 +12,20 @@
 
 import React from 'react'
 
+let _instanceCounter = 0
+
 class TButton extends React.Component {
 
     render () {
-        const { label, icon, onClickHandler } = this.props
+        const { id, label, icon, onClickHandler } = this.props
+
+        const _id    = id || `tButton_${_instanceCounter}`
 
         if ( label && icon ) {
 
             return (
                 <button
+                    id={_id}
                     className="btn"
                     onClick={onClickHandler}>
                     <i className={icon}></i>
@@ -32,6 +37,7 @@ class TButton extends React.Component {
 
             return (
                 <button
+                    id={_id}
                     className="btn"
                     onClick={onClickHandler}>
                     {label}
@@ -42,6 +48,7 @@ class TButton extends React.Component {
 
             return (
                 <button
+                    id={_id}
                     className="btn"
                     onClick={onClickHandler}>
                     <i className={icon}></i>
@@ -52,6 +59,7 @@ class TButton extends React.Component {
 
             return (
                 <button
+                    id={_id}
                     className="btn"
                     onClick={onClickHandler}>
                 </button>
