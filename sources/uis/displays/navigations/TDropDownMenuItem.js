@@ -74,16 +74,31 @@ class TDropDownMenuItem extends React.Component {
 
     render () {
 
-        const { id, className, label } = this.props
+        const { id, className, icon, label } = this.props
 
         const _id = id || `tDropDownMenuItem_${_instanceCounter}`
         const _class = ( className ) ? `tDropDownMenuItem ${className}` : 'tDropDownMenuItem'
 
         const _style = {}
 
-        return (
-            <t-drop-down-menu-item id={_id} style={_style} className={_class}>{label}</t-drop-down-menu-item>
-        )
+        if(icon) {
+
+            return (
+                <a id={_id} style={_style} className={_class}><i className={icon}></i>{label}</a>
+            )
+
+        } else {
+
+            return (
+                <a id={_id} style={_style} className={_class}>{label}</a>
+            )
+
+        }
+
+
+//        return (
+//            <t-drop-down-menu-item id={_id} style={_style} className={_class}>{label}</t-drop-down-menu-item>
+//        )
 
     }
 
