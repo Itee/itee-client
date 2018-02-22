@@ -8,4 +8,4 @@
 
 /* eslint-env browser */
 
-export { TBasicApplication } from './TBasicApplication'
+export { TApplication } from './TApplication'

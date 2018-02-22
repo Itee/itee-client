@@ -7,7 +7,7 @@
  */
 
 /* eslint-env browser */
-export { TApplication } from './TApplication'
+//export { TApplication } from './TApplication'
 export { TCache } from './TCache'
 export * from './TConstants'
 export { TFile } from './TFile'
