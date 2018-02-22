@@ -22,7 +22,7 @@
  */
 
 import React from 'react'
-import PropTypes from 'props-types'
+import PropTypes from 'prop-types'
 
 let _instanceCounter = 0
 
