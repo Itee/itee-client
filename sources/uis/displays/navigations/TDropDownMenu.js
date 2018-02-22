@@ -54,7 +54,8 @@ class TDropDownMenu extends React.Component {
         const _id    = id || `tDropDownMenu_${_instanceCounter}`
         const _style = {
             float:         'left',
-            listStyleType: 'none'
+            listStyleType: 'none',
+            position:      'relative'
         }
         const _class = ( className ) ? `tDropDownMenu ${className}` : 'tDropDownMenu'
 
@@ -103,13 +104,7 @@ class TDropDownMenu extends React.Component {
 
         } else if ( icon && !label ) {
 
-            const _iconStyle = {
-                fontSize:     '46px',
-                marginRight:  '11px',
-                marginBottom: '6px',
-                marginTop:    '6px',
-                color:        'white'
-            }
+            const _iconStyle = {}
 
             return (
                 <li id={_id} className={_class} style={_style} onMouseEnter={this.onMouseEnterHandler} onMouseLeave={this.onMouseLeaveHandler}>
