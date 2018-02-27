@@ -36,7 +36,7 @@ const jsdoc    = require( 'gulp-jsdoc3' )
 const eslint   = require( 'gulp-eslint' )
 const gulpif   = require( 'gulp-if' )
 const less     = require( 'gulp-less' )
-const scss     = require( 'gulp-scss' )
+const sass     = require( 'gulp-sass' )
 const cleanCss = require( 'gulp-clean-css' )
 const concat   = require( 'gulp-concat' )
 const del      = require( 'del' )
@@ -195,9 +195,9 @@ gulp.task( 'test', gulp.parallel( 'unit', 'bench' ) )
 
 const styleFiles = [
     './node_modules/font-awesome/less/font-awesome.less',
-    './node_modules/bootstrap/scss/bootstrap.scss',
-    './node_modules/bootstrap-slider/dist/css/bootstrap-slider.css',
-    './styles/**/*'
+    //    './node_modules/bootstrap/scss/bootstrap.scss',
+    //    './node_modules/bootstrap-slider/dist/css/bootstrap-slider.css',
+    './styles/itee-client.less'
 ]
 
 /**
@@ -208,7 +208,7 @@ gulp.task( 'build-style-dev', () => {
 
     return gulp.src( styleFiles )
                .pipe( gulpif( /[.]less$/, less() ) )
-               .pipe( gulpif( /[.]scss/, scss() ) )
+               .pipe( gulpif( /[.]scss/, sass() ) )
                .pipe( concat( 'itee-client.style.css' ) )
                .pipe( gulp.dest( './builds/' ) )
 
@@ -218,7 +218,7 @@ gulp.task( 'build-style-prod', () => {
 
     return gulp.src( styleFiles )
                .pipe( gulpif( /[.]less$/, less() ) )
-               .pipe( gulpif( /[.]scss/, scss() ) )
+               .pipe( gulpif( /[.]scss/, sass() ) )
                .pipe( concat( 'itee-client.style.min.css' ) )
                .pipe( cleanCss( { compatibility: 'ie8' } ) )
                .pipe( gulp.dest( './builds/' ) )
@@ -230,14 +230,14 @@ gulp.task( 'build-style', gulp.parallel( 'build-style-dev', 'build-style-prod' )
 /**
  * Add watcher to assets less/css files and run build-style on file change
  */
-gulp.task( 'watch-style', gulp.series( 'build-style', (done) => {
+gulp.task( 'watch-style', gulp.series( 'build-style', ( done ) => {
 
     log( 'Add watcher to style files !' )
 
     gulp.watch( styleFiles, [ 'build-style' ] )
     done()
 
-}) )
+} ) )
 
 /**
  * @method npm run build
