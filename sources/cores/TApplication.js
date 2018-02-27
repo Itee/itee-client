@@ -911,14 +911,6 @@ function TApplication ( container, parameters, onReady ) {
 
     }
 
-    function _initRemoteFiles ( files ) {
-
-        if ( !files ) { return }
-
-        self.universalLoader.load( files, self.addObjectToModel.bind( self ) )
-
-    }
-
     function _initURLQuery ( parameters ) {
 
         const _parameters = parameters || {
@@ -1156,7 +1148,7 @@ function TApplication ( container, parameters, onReady ) {
         _initModelData.call( self, _parameters.model )
         _initPointCloudData.call( self, _parameters.pointCloud )
         _initAvatarData.call( self, _parameters.avatar )
-        _initRemoteFiles.call( self, _parameters.files )
+        self.loadObjectFromURL( _parameters.files )
         _initURLQuery.call( self, _parameters.urlQuery )
 
         _initListener.call( self )
@@ -2268,6 +2260,8 @@ Object.assign( TApplication.prototype, {
      * @param filesUrls
      */
     loadObjectFromURL ( filesUrls ) {
+
+        if ( !filesUrls ) { return }
 
         this.universalLoader.load( filesUrls, this.addObjectToModel.bind( this ) )
 
