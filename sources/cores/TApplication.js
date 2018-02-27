@@ -1815,8 +1815,7 @@ Object.assign( TApplication.prototype, {
             this.webglViewport.addRaycastables( [ siteGroup ] )
 
             // Create new base tree item
-            const objectTreeViewItem = this.insertTreeViewItem( siteGroup._id, siteGroup.name, null, siteGroup.visible )
-            objectTreeViewItem.find( `#${siteGroup._id}VisibilityCheckbox` ).on( 'change', this._toggleObjectVisibility( siteGroup ) )
+            this.insertTreeViewItem(siteGroup)
 
             this._initBuildingsOf( site.buildings, siteGroup, siteGroup.visible )
 
@@ -1870,8 +1869,7 @@ Object.assign( TApplication.prototype, {
                 siteGroup.add( buildingGroup )
 
                 // Create new base tree item
-                const objectTreeViewItem = this.insertTreeViewItem( buildingGroup._id, buildingGroup.name, siteGroup._id, buildingGroup.visible )
-                objectTreeViewItem.find( `#${buildingGroup._id}VisibilityCheckbox` ).on( 'change', this._toggleObjectVisibility( buildingGroup ) )
+                this.insertTreeViewItem(buildingGroup, siteGroup._id)
 
                 this._initScenesOf( building.scenes, buildingGroup, buildingGroup.visible )
 
@@ -1907,7 +1905,7 @@ Object.assign( TApplication.prototype, {
 
     /**
      *
-     * @param building
+     * @param buildingGroup
      * @param visible
      * @param scenes
      * @private
@@ -1927,9 +1925,7 @@ Object.assign( TApplication.prototype, {
 
                 buildingGroup.add( sceneGroup )
 
-                // Create new base tree item
-                const objectTreeViewItem = this.insertTreeViewItem( sceneGroup._id, sceneGroup.name, buildingGroup._id, sceneGroup.visible )
-                objectTreeViewItem.find( `#${sceneGroup._id}VisibilityCheckbox` ).on( 'change', this._toggleObjectVisibility( sceneGroup ) )
+                this.insertTreeViewItem(sceneGroup, buildingGroup._id)
 
                 if ( scene.layers === 1 ) {
 
@@ -2143,11 +2139,11 @@ Object.assign( TApplication.prototype, {
      * @param isCheckedByDefault
      * @param recursive
      */
-    insertTreeViewItem2 ( object, isCheckedByDefault = true, recursive = true ) {
+    insertTreeViewItem ( object, parentId, isCheckedByDefault = true, recursive = true ) {
 
-        const itemId   = object.uuid
+        const itemId   = object._id || object.uuid
         const itemName = (object.name === "") ? itemId : object.name
-        const parentId = (object.parent === null) ? 'treeViewContainer' : object.parent.uuid
+        const _parentId = parentId || 'treeViewContainer'
         const checked  = (isCheckedByDefault) ? 'checked="checked"' : ''
 
         const domElement = `<li id="${itemId}">
@@ -2167,58 +2163,16 @@ Object.assign( TApplication.prototype, {
 
         } )
 
-        $( '#' + parentId ).children( '.children' ).append( item );
+        $( '#' + _parentId ).children( '.children' ).append( item );
 
         if ( recursive ) {
 
             const children = object.children
             for ( let childIndex = 0, numberOfChildren = children.length ; childIndex < numberOfChildren ; childIndex++ ) {
-                this.insertTreeViewItem2( children[ childIndex ] )
+                this.insertTreeViewItem2( children[ childIndex ], itemId )
             }
 
         }
-
-    },
-
-    /**
-     *
-     * @param itemId
-     * @param itemName
-     * @param parentId
-     * @param isCheckedByDefault
-     * @param recursive
-     * @return {jQuery|HTMLElement}
-     */
-    insertTreeViewItem ( itemId, itemName, parentId, isCheckedByDefault, recursive = true ) {
-
-        if ( itemName === "" ) {
-            itemName = itemId
-        }
-
-        parentId                 = parentId || 'treeViewContainer'
-        var concatedParentName   = parentId.replace( /\s/g, '' );
-        var undottedParentName   = concatedParentName.replace( /\./g, '' );
-        var unslashedParentName  = undottedParentName.replace( /\//g, '' );
-        var unsquaredParentName  = unslashedParentName.replace( /[\[\]@]+/g, '' );
-        var selectableParentName = unsquaredParentName.replace( /[<{(')}>]/g, '' );
-        var cleanParentName      = removeDiacritics( selectableParentName );
-
-        var checked = (isCheckedByDefault) ? 'checked="checked"' : ''
-
-        var domElement = `${'' +
-        '<li id="' + itemId + '">' +
-        '   <input type="checkbox" id="' + itemId + 'ExpandCheckbox" />' +
-        '   <label>' +
-        '       <input type="checkbox" id="' + itemId + 'VisibilityCheckbox" ' + checked + ' /><span></span>' +
-        '   </label>' +
-        '   <label for="' + itemId + 'ExpandCheckbox">' + itemName + '</label>' +
-        '   <ul class="children"></ul>' +
-        '</li>'}`
-
-        document.getElementById( cleanParentName ).appendChild( domElement )
-        //        $( '#' + cleanParentName ).children( '.children' ).append( item );
-
-        return domElement;
 
     },
 
