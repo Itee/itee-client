@@ -988,10 +988,13 @@ function TApplication ( container, parameters, onReady ) {
 
                 // Update carl batiment button value
                 // Care parent will not be the scene for ever !!!
-                self.detailBtn.style.display = 'none'
-                self.createBtn.style.display = 'none'
-                //                self.detailBtn.val( parentId )
-                //                self.createBtn.val( parentId )
+                if( self.detailBtn ) {
+                    self.detailBtn.style.display = 'none'
+                }
+
+                if( self.createBtn ) {
+                    self.createBtn.style.display = 'none'
+                }
 
                 object.parent = null
 
