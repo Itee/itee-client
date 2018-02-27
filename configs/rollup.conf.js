@@ -51,21 +51,24 @@ function glsl () {
 /**
  * Will create an appropriate configuration object for rollup, related to the given arguments.
  *
+ *
+ * @param fileName
+ * @param inputPath
+ * @param outputPath
  * @param {string} format - The desired module format output. Available values are: 'es', 'cjs', 'amd', 'iife' and 'umd'
  * @param {boolean} onProduction - The building environment. True for production, developement otherwise.
  * @param {boolean} wantSourceMap - Set to true if sourcemap must be include in the output.
  * @returns {object} The rollup configuration
  */
-function CreateRollupConfiguration ( format, onProduction, wantSourceMap ) {
+function CreateRollupConfiguration ( fileName, inputPath, outputPath, format, onProduction, wantSourceMap ) {
 
     const _format        = format || 'umd'
     const _onProduction  = onProduction || false
     const _wantSourceMap = wantSourceMap || false
 
-    const fileName       = 'itee-client'
     const fileExtension  = (_onProduction) ? '.min.js' : '.js'
-    const inputFilePath  = path.join( __dirname, '..', 'sources/' + fileName + '.js' )
-    const outputFilePath = path.join( __dirname, '..', 'builds/' + fileName + '.' + _format + fileExtension )
+    const inputFilePath  = path.join( inputPath, fileName + '.js' )
+    const outputFilePath = path.join( outputPath, fileName + '.' + _format + fileExtension )
 
     return {
         inputOptions:  {
