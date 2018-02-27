@@ -33,14 +33,13 @@ class TViewport3D extends React.Component {
         super( props )
         _instanceCounter++
 
-        this._container = undefined
-        this._frameId   = undefined
-        this._renderer  = new WebGLRenderer( { antialias: true } )
-        this._scene     = new Scene()
-        this._camera    = new PerspectiveCamera()
-        this._orbitControl             = new OrbitControls( this._camera, this._container )
-        this._orbitControl.maxDistance = 2000
-        this._cube      = undefined
+        this._container    = undefined
+        this._frameId      = undefined
+        this._renderer     = new WebGLRenderer( { antialias: true } )
+        this._scene        = new Scene()
+        this._camera       = new PerspectiveCamera()
+        this._orbitControl = undefined
+        this._cube         = undefined
 
         // Handler
         this._resize = this._resize.bind( this )
@@ -76,6 +75,10 @@ class TViewport3D extends React.Component {
         this._camera.position.z = 7.0
         this._camera.setRotationFromAxisAngle( new Vector3( 1.0, 0.0, 0.0 ), -0.610865 )
         this._camera.updateProjectionMatrix()
+
+        // Init camera controls
+        this._orbitControl             = new OrbitControls( this._camera, this._container )
+        this._orbitControl.maxDistance = 2000
 
         // Add light
         this._scene.add( new AmbientLight( 0xC8C8C8 ) )
