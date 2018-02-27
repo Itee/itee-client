@@ -1841,21 +1841,21 @@ Object.assign( TApplication.prototype, {
 
     /**
      *
-     * @param site
+     * @param siteGroup
      * @param visible
      * @param isReady
      * @param buildings
      * @param childrenToRemove
      * @private
      */
-    _processBuildings ( site, visible, isReady, buildings, childrenToRemove ) {
+    _processBuildings ( siteGroup, visible, isReady, buildings ) {
 
         let building = undefined
         for ( let buildingIndex = 0, numberOfBuildings = buildings.length ; buildingIndex < numberOfBuildings ; buildingIndex++ ) {
             building = buildings[ buildingIndex ]
 
+            // Update carl batiment button value
             if ( buildingIndex === 0 ) {
-                // Update carl batiment button value
                 this.detailBtn.val( building.gmaoId )
                 this.createBtn.val( building.gmaoId )
             }
@@ -1865,17 +1865,19 @@ Object.assign( TApplication.prototype, {
             buildingGroup.name     = building.name
             buildingGroup.visible  = (visible && buildingIndex === 0 )
 
-            const scenesIds = building.scenes
-            if ( childrenToRemove ) {
-                const index = scenesIds.indexOf( childrenToRemove )
-                scenesIds.splice( index, 1 )
-            }
+            if ( siteGroup ) {
 
-            let parentId = undefined
-            if ( site ) {
+                siteGroup.add( buildingGroup )
 
-                site.add( buildingGroup )
-                parentId = site._id
+                // Create new base tree item
+                const objectTreeViewItem = this.insertTreeViewItem( buildingGroup._id, buildingGroup.name, siteGroup._id, buildingGroup.visible )
+                objectTreeViewItem.find( `#${buildingGroup._id}VisibilityCheckbox` ).on( 'change', this._toggleObjectVisibility( buildingGroup ) )
+
+                this._initScenesOf( building.scenes, buildingGroup, buildingGroup.visible )
+
+            } else if ( building.site ){
+
+                this._initSitesOf( building.site, null, true )
 
             } else {
 
@@ -1883,12 +1885,6 @@ Object.assign( TApplication.prototype, {
                 this.webglViewport.addRaycastables( [ buildingGroup ] )
 
             }
-
-            // Create new base tree item
-            const objectTreeViewItem = this.insertTreeViewItem( buildingGroup._id, buildingGroup.name, parentId, buildingGroup.visible )
-            objectTreeViewItem.find( `#${buildingGroup._id}VisibilityCheckbox` ).on( 'change', this._toggleObjectVisibility( buildingGroup ) )
-
-            this._initScenesOf( scenesIds, buildingGroup, buildingGroup.visible )
 
         }
 
