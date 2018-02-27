@@ -505,7 +505,7 @@ Object.defineProperties( TDataBaseManager.prototype, {
 
                 function cacheOnLoadResult ( result ) {
 
-                    self._cache.add( id, result[ 0 ] )
+                    self._cache.add( id, result )
                     onLoadCallback( result )
 
                 }
