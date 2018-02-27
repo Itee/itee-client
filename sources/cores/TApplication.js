@@ -1912,7 +1912,7 @@ Object.assign( TApplication.prototype, {
      * @param scenes
      * @private
      */
-    _processScenes ( building, visible, scenes ) {
+    _processScenes ( buildingGroup, visible, scenes ) {
 
         let scene = undefined
         for ( let sceneIndex = 0, numberOfScenes = scenes.length ; sceneIndex < numberOfScenes ; sceneIndex++ ) {
@@ -1923,36 +1923,32 @@ Object.assign( TApplication.prototype, {
             sceneGroup.name     = scene.name
             sceneGroup.visible  = (visible && scene.layers === 1 )
 
-            let parentId = undefined
-            if ( building ) {
+            if ( buildingGroup ) {
 
-                building.add( sceneGroup )
-                parentId = building._id
+                buildingGroup.add( sceneGroup )
 
-            } else if ( scene.parent ) {
+                // Create new base tree item
+                const objectTreeViewItem = this.insertTreeViewItem( sceneGroup._id, sceneGroup.name, buildingGroup._id, sceneGroup.visible )
+                objectTreeViewItem.find( `#${sceneGroup._id}VisibilityCheckbox` ).on( 'change', this._toggleObjectVisibility( sceneGroup ) )
 
-                this._processBuildings( undefined, true, null, scene.parent, sceneGroup._id )
+                if ( scene.layers === 1 ) {
+
+                    this._initObjectsOf( scene.children, sceneGroup, true )
+
+                } else {
+
+                    sceneGroup[ 'childrenIds' ] = scene.children
+
+                }
+
+            } else if ( scene.parent ){
+
+                this._initBuildingsOf( scene.parent, null, true )
 
             } else {
 
                 this.webglViewport.scene.add( sceneGroup )
                 this.webglViewport.addRaycastables( [ sceneGroup ] )
-
-            }
-
-            // Create new base tree item
-            const objectTreeViewItem = this.insertTreeViewItem( sceneGroup._id, sceneGroup.name, parentId, sceneGroup.visible )
-            objectTreeViewItem.find( `#${sceneGroup._id}VisibilityCheckbox` ).on( 'change', this._toggleObjectVisibility( sceneGroup ) )
-
-            if ( scene.layers === 1 ) {
-
-                this._initObjectsOf( scene.children, sceneGroup, true )
-                // set children visible by default due to non recursive visible settings
-                //                    _initObjectsOf( scene.children, sceneGroup, sceneIsVisible )
-
-            } else {
-
-                sceneGroup[ 'childrenIds' ] = scene.children
 
             }
 
