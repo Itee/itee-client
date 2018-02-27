@@ -2118,7 +2118,7 @@ Object.assign( TApplication.prototype, {
             return
         }
 
-        this.insertTreeViewItem2( object )
+        this.insertTreeViewItem( object )
         this.webglViewport.scene.add( object )
         this.webglViewport.raycastables.push( object )
 
@@ -2161,7 +2161,7 @@ Object.assign( TApplication.prototype, {
 
             const children = object.children
             for ( let childIndex = 0, numberOfChildren = children.length ; childIndex < numberOfChildren ; childIndex++ ) {
-                this.insertTreeViewItem2( children[ childIndex ], itemId )
+                this.insertTreeViewItem( children[ childIndex ], itemId )
             }
 
         }
