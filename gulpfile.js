@@ -41,6 +41,7 @@ const cleanCss = require( 'gulp-clean-css' )
 const concat   = require( 'gulp-concat' )
 const del      = require( 'del' )
 const rollup   = require( 'rollup' )
+const path     = require( 'path' )
 
 const log     = util.log
 const colors  = util.colors
@@ -253,16 +254,37 @@ gulp.task( 'build-script', ( done ) => {
     function processArguments ( processArgv ) {
         'use strict'
 
+        //        let defaultOptions = {
+        //            environments: [ 'development', 'production' ],
+        //            formats:      [ 'amd', 'cjs', 'es', 'iife', 'umd' ],
+        //            sourceMap:    false
+        //        }
+
         let defaultOptions = {
-            environments: [ 'development', 'production' ],
-            formats:      [ 'amd', 'cjs', 'es', 'iife', 'umd' ],
+            fileName:     'itee-client',
+            inputPath:    path.join( __dirname, 'sources' ),
+            outputPath:   path.join( __dirname, 'builds' ),
+            environments: [ 'development' ],
+            formats:      [ 'es' ],
             sourceMap:    false
         }
 
         const argv = processArgv.slice( 3 ) // Ignore nodejs, script paths and gulp params
         argv.forEach( argument => {
 
-            if ( argument.indexOf( '-f' ) > -1 || argument.indexOf( '--format' ) > -1 ) {
+            if ( argument.indexOf( '-n' ) > -1 || argument.indexOf( '--name' ) > -1 ) {
+
+                defaultOptions.fileName = argument.split( ':' )[ 1 ]
+
+            } else if ( argument.indexOf( '-i' ) > -1 || argument.indexOf( '--input' ) > -1 ) {
+
+                defaultOptions.inputPath = argument.split( ':' )[ 1 ]
+
+            } else if ( argument.indexOf( '-o' ) > -1 || argument.indexOf( '--output' ) > -1 ) {
+
+                defaultOptions.outputPath = argument.split( ':' )[ 1 ]
+
+            } else if ( argument.indexOf( '-f' ) > -1 || argument.indexOf( '--format' ) > -1 ) {
 
                 const splits    = argument.split( ':' )
                 const splitPart = splits[ 1 ]
@@ -308,7 +330,7 @@ gulp.task( 'build-script', ( done ) => {
                 const environment  = options.environments[ envIndex ]
                 const onProduction = (environment === 'production')
 
-                const config = require( './configs/rollup.conf' )( format, onProduction, options.sourceMap )
+                const config = require( './configs/rollup.conf' )( options.fileName, options.inputPath, options.outputPath, format, onProduction, options.sourceMap )
 
                 configs.push( config )
             }
