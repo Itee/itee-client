@@ -11,6 +11,13 @@
 /* eslint-env browser */
 import { isObject } from '../validators/TObjectValidator'
 
+export function uniq ( a ) {
+    var seen = {};
+    return a.filter( function ( item ) {
+        return seen.hasOwnProperty( item ) ? false : (seen[ item ] = true);
+    } );
+}
+
 /**
  *
  * @param target
