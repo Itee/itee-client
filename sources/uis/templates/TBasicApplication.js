@@ -21,7 +21,7 @@ import { TTree, TTreeItem } from '../displays/trees/_trees'
 import { TViewport3D } from '../displays/medias/_medias'
 import { TDialogArea, TLoginDialog } from '../interactives/dialogs/_dialogs'
 
-class TApplication extends React.Component {
+class TBasicApplication extends React.Component {
 
     constructor ( props ) {
 
@@ -43,8 +43,6 @@ class TApplication extends React.Component {
     /**
      * Component lifecycle
      */
-
-
 
     componentWillMount () {}
 
@@ -141,4 +139,4 @@ class TApplication extends React.Component {
 
 }
 
-export { TApplication }
+export { TBasicApplication }
