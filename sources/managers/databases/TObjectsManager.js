@@ -10,12 +10,10 @@
 
 /* eslint-env browser */
 
+import { Object3D } from '../../../node_modules/threejs-full-es6/sources/core/Object3D'
+import { Mesh } from '../../../node_modules/threejs-full-es6/sources/objects/Mesh'
+import { LineSegments } from '../../../node_modules/threejs-full-es6/sources/objects/LineSegments'
 import { TDataBaseManager } from '../TDataBaseManager'
-import {
-    LineSegments,
-    Object3D,
-    Mesh
-} from 'threejs-full-es6'
 
 /**
  *
