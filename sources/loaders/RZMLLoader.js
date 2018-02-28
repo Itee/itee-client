@@ -18,17 +18,16 @@
  *
  */
 
-import {
-    _Math,
-    FileLoader,
-    DefaultLoadingManager,
-    PlaneGeometry,
-    TextureLoader,
-    MeshBasicMaterial,
-    DoubleSide,
-    Mesh,
-    Group
-} from 'threejs-full-es6'
+import { DoubleSide } from '../../node_modules/threejs-full-es6/sources/constants'
+import { _Math } from '../../node_modules/threejs-full-es6/sources/math/Math'
+import { FileLoader } from '../../node_modules/threejs-full-es6/sources/loaders/FileLoader'
+import { DefaultLoadingManager } from '../../node_modules/threejs-full-es6/sources/loaders/LoadingManager'
+import { Group } from '../../node_modules/threejs-full-es6/sources/objects/Group'
+import { Mesh } from '../../node_modules/threejs-full-es6/sources/objects/Mesh'
+import { PlaneGeometry } from '../../node_modules/threejs-full-es6/sources/geometries/PlaneGeometry'
+import { TextureLoader } from '../../node_modules/threejs-full-es6/sources/loaders/TextureLoader'
+import { MeshBasicMaterial } from '../../node_modules/threejs-full-es6/sources/materials/MeshBasicMaterial'
+
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 
 /**
