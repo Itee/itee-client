@@ -10,6 +10,8 @@
 
 /* eslint-env browser */
 import { isObject } from '../validators/TObjectValidator'
+import { isNull } from '../validators/TNullityValidator'
+import { isUndefined } from '../validators/TUndefineValidator'
 
 export function uniq ( a ) {
     var seen = {};
@@ -26,9 +28,19 @@ export function uniq ( a ) {
  */
 export function extend ( target, source ) {
 
-    let output = Object.assign( {}, target )
+    let output = undefined
 
-    if ( isObject( target ) && isObject( source ) ) {
+    if ( isObject( target ) && (isNull( source ) || isUndefined( source )) ) {
+
+        output = Object.assign( {}, target )
+
+    } else if ( (isNull( target ) || isUndefined( target )) && isObject( source ) ) {
+
+        output = Object.assign( {}, source )
+
+    } else if ( isObject( target ) && isObject( source ) ) {
+
+        output = Object.assign( {}, target )
 
         const keys = Object.keys( source )
 
@@ -38,13 +50,13 @@ export function extend ( target, source ) {
 
             if ( isObject( source[ key ] ) ) {
 
-                if ( !(key in target) ) {
+                if ( key in target ) {
 
-                    Object.assign( output, { [key]: source[ key ] } )
+                    output[ key ] = extend( target[ key ], source[ key ] )
 
                 } else {
 
-                    output[ key ] = mergeDeep( target[ key ], source[ key ] )
+                    Object.assign( output, { [key]: source[ key ] } )
 
                 }
 
@@ -53,7 +65,13 @@ export function extend ( target, source ) {
                 Object.assign( output, { [key]: source[ key ] } )
 
             }
+
         }
+
+    } else {
+
+        output = null
+
     }
 
     return output;
