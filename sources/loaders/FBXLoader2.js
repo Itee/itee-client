@@ -24,38 +24,35 @@
 /* eslint-env browser */
 /* globals TextDecoder, Zlib */
 
-import {
-    AnimationClip,
-    BufferAttribute,
-    BufferGeometry,
-    ClampToEdgeWrapping,
-    Color,
-    Euler,
-    FileLoader,
-    Float32BufferAttribute,
-    Geometry as THREEGeometry,
-    Group,
-    Loader,
-    Matrix4,
-    Mesh,
-    MeshPhongMaterial,
-    MeshLambertMaterial,
-    MeshStandardMaterial,
-    LineBasicMaterial,
-    Object3D,
-    Quaternion,
-    RepeatWrapping,
-    SkinnedMesh,
-    TextureLoader,
-    Vector2,
-    Vector3,
-    Vector4,
-    VertexColors,
-    NURBSCurve,
-    Bone,
-    Line,
-    Skeleton
-} from 'threejs-full-es6'
+import { VertexColors, RepeatWrapping, ClampToEdgeWrapping } from '../../node_modules/threejs-full-es6/sources/constants'
+import { FileLoader } from '../../node_modules/threejs-full-es6/sources/loaders/FileLoader'
+import { TextureLoader } from '../../node_modules/threejs-full-es6/sources/loaders/TextureLoader'
+import { LoaderUtils } from '../../node_modules/threejs-full-es6/sources/loaders/LoaderUtils'
+import { BufferGeometry } from '../../node_modules/threejs-full-es6/sources/core/BufferGeometry'
+import { BufferAttribute, Float32BufferAttribute } from '../../node_modules/threejs-full-es6/sources/core/BufferAttribute'
+import { Group } from '../../node_modules/threejs-full-es6/sources/objects/Group'
+import { Mesh } from '../../node_modules/threejs-full-es6/sources/objects/Mesh'
+import { SkinnedMesh } from '../../node_modules/threejs-full-es6/sources/objects/SkinnedMesh'
+import { Bone } from '../../node_modules/threejs-full-es6/sources/objects/Bone'
+import { Line } from '../../node_modules/threejs-full-es6/sources/objects/Line'
+import { Skeleton } from '../../node_modules/threejs-full-es6/sources/objects/Skeleton'
+import { Vector2 } from '../../node_modules/threejs-full-es6/sources/math/Vector2'
+import { Vector3 } from '../../node_modules/threejs-full-es6/sources/math/Vector3'
+import { Vector4 } from '../../node_modules/threejs-full-es6/sources/math/Vector4'
+import { Quaternion } from '../../node_modules/threejs-full-es6/sources/math/Quaternion'
+import { Matrix4 } from '../../node_modules/threejs-full-es6/sources/math/Matrix4'
+import { Color } from '../../node_modules/threejs-full-es6/sources/math/Color'
+import { Euler } from '../../node_modules/threejs-full-es6/sources/math/Euler'
+import { AnimationClip } from '../../node_modules/threejs-full-es6/sources/animation/AnimationClip'
+import { NURBSCurve } from '../../node_modules/threejs-full-es6/sources/curves/NURBSCurve'
+import { Object3D } from '../../node_modules/threejs-full-es6/sources/core/Object3D'
+import { MeshPhongMaterial } from '../../node_modules/threejs-full-es6/sources/materials/MeshPhongMaterial'
+import { MeshLambertMaterial } from '../../node_modules/threejs-full-es6/sources/materials/MeshLambertMaterial'
+import { MeshStandardMaterial } from '../../node_modules/threejs-full-es6/sources/materials/MeshStandardMaterial'
+import { LineBasicMaterial } from '../../node_modules/threejs-full-es6/sources/materials/LineBasicMaterial'
+
+
+
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import {
     DEG_TO_RAD,
@@ -2884,7 +2881,7 @@ Object.assign( FBXLoader2.prototype, (function privateAssignement () {
 
             var self = this;
 
-            var resourceDirectory = Loader.prototype.extractUrlBase( url );
+            var resourceDirectory = LoaderUtils.extractUrlBase( url );
 
             var loader = new FileLoader( this.manager );
             loader.setResponseType( 'arraybuffer' );
