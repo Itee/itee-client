@@ -9,4 +9,3 @@
 /* eslint-env browser */
 
 export { TFactory } from './TFactory'
-export { TApplicationFactory } from './TApplicationFactory'
