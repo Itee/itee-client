@@ -10,21 +10,19 @@
 
 /* eslint-env browser */
 
-import {
-    SphereGeometry,
-    MeshPhongMaterial,
-    Mesh,
-    UVMapping,
-    Color,
-    Texture,
-    DoubleSide,
-    Vector3,
-    Geometry,
-    Sphere,
-    Vector2,
-    Face3,
-    TextureLoader
-} from 'threejs-full-es6'
+import { UVMapping, DoubleSide } from '../../node_modules/threejs-full-es6/sources/constants'
+import { Color } from '../../node_modules/threejs-full-es6/sources/math/Color'
+import { Vector2 } from '../../node_modules/threejs-full-es6/sources/math/Vector2'
+import { Vector3 } from '../../node_modules/threejs-full-es6/sources/math/Vector3'
+import { Mesh } from '../../node_modules/threejs-full-es6/sources/objects/Mesh'
+import { MeshPhongMaterial } from '../../node_modules/threejs-full-es6/sources/materials/MeshPhongMaterial'
+import { TextureLoader } from '../../node_modules/threejs-full-es6/sources/loaders/TextureLoader'
+import { Geometry } from '../../node_modules/threejs-full-es6/sources/core/Geometry'
+import { Face3 } from '../../node_modules/threejs-full-es6/sources/core/Face3'
+import { SphereGeometry } from '../../node_modules/threejs-full-es6/sources/geometries/SphereGeometry'
+import { Texture } from '../../node_modules/threejs-full-es6/sources/textures/Texture'
+import { Sphere } from '../../node_modules/threejs-full-es6/sources/math/Sphere'
+
 
 // Todo: Convert into factory
 
