@@ -332,7 +332,9 @@ Object.defineProperties( TDataBaseManager.prototype, {
      */
     _onArrayBuffer: {
         value: function _onArrayBufferDefault ( data, onSuccess, onProgress, onError ) {
-            throw new Error( 'TDataBaseManager: _onArrayBuffer methods must be reimplemented !' )
+            onProgress( 1 )
+            onSuccess( data )
+            onError( 'TDataBaseManager: _onArrayBuffer methods must be reimplemented !' )
         }
     },
 
@@ -350,7 +352,9 @@ Object.defineProperties( TDataBaseManager.prototype, {
      */
     _onBlob: {
         value: function _onBlobDefault ( data, onSuccess, onProgress, onError ) {
-            throw new Error( 'TDataBaseManager: _onBlob methods must be reimplemented !' )
+            onProgress( 1 )
+            onSuccess( data )
+            onError( 'TDataBaseManager: _onBlob methods must be reimplemented !' )
         }
     },
 
@@ -368,7 +372,9 @@ Object.defineProperties( TDataBaseManager.prototype, {
      */
     _onJson: {
         value: function _onJsonDefault ( data, onSuccess, onProgress, onError ) {
-            throw new Error( 'TDataBaseManager: _onJson methods must be reimplemented !' )
+            onProgress( 1 )
+            onSuccess( data )
+            onError( 'TDataBaseManager: _onJson methods must be reimplemented !' )
         }
     },
 
@@ -386,7 +392,9 @@ Object.defineProperties( TDataBaseManager.prototype, {
      */
     _onText: {
         value: function _onTextDefault ( data, onSuccess, onProgress, onError ) {
-            throw new Error( 'TDataBaseManager: _onText methods must be reimplemented !' )
+            onProgress( 1 )
+            onSuccess( data )
+            onError( 'TDataBaseManager: _onText methods must be reimplemented !' )
         }
     },
 
