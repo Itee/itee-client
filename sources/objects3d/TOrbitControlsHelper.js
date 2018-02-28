@@ -10,15 +10,13 @@
 
 /* eslint-env browser */
 
-import {
-    VertexColors,
-    LineSegments,
-    BufferGeometry,
-    Float32BufferAttribute,
-    LineBasicMaterial,
-    Color,
-    OrbitControls
-} from 'threejs-full-es6'
+import { VertexColors } from '../../node_modules/threejs-full-es6/sources/constants'
+import { BufferGeometry } from '../../node_modules/threejs-full-es6/sources/core/BufferGeometry'
+import { Float32BufferAttribute } from '../../node_modules/threejs-full-es6/sources/core/BufferAttribute'
+import { LineBasicMaterial } from '../../node_modules/threejs-full-es6/sources/materials/LineBasicMaterial'
+import { Color } from '../../node_modules/threejs-full-es6/sources/math/Color'
+import { OrbitControls } from '../../node_modules/threejs-full-es6/sources/controls/OrbitControls'
+import { LineSegments } from '../../node_modules/threejs-full-es6/sources/objects/LineSegments'
 
 /**
  *
