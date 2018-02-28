@@ -30,26 +30,23 @@
 /* eslint-env browser */
 /* global $ */
 
-import {
-    PCFSoftShadowMap,
-    Scene,
-    PerspectiveCamera,
-    WebGLRenderer,
-    FogExp2,
-    DirectionalLight,
-    Raycaster,
-    Vector2,
-    Color,
-    ArrowHelper,
-    MeshPhongMaterial,
-    EventDispatcher,
-    AnaglyphEffect,
-    StereoEffect,
-    OrbitControls
-    //    GridHelper
-} from 'threejs-full-es6'
+import { PCFSoftShadowMap } from '../../node_modules/threejs-full-es6/sources/constants'
+import { EventDispatcher } from '../../node_modules/threejs-full-es6/sources/core/EventDispatcher'
+import { MeshPhongMaterial } from '../../node_modules/threejs-full-es6/sources/materials/MeshPhongMaterial'
+import { Color } from '../../node_modules/threejs-full-es6/sources/math/Color'
+import { Vector2 } from '../../node_modules/threejs-full-es6/sources/math/Vector2'
+import { OrbitControls } from '../../node_modules/threejs-full-es6/sources/controls/OrbitControls'
+import { StereoEffect } from '../../node_modules/threejs-full-es6/sources/effects/StereoEffect'
+import { AnaglyphEffect } from '../../node_modules/threejs-full-es6/sources/effects/AnaglyphEffect'
+import { Scene } from '../../node_modules/threejs-full-es6/sources/scenes/Scene'
+import { FogExp2 } from '../../node_modules/threejs-full-es6/sources/scenes/FogExp2'
+import { PerspectiveCamera } from '../../node_modules/threejs-full-es6/sources/cameras/PerspectiveCamera'
+import { WebGLRenderer } from '../../node_modules/threejs-full-es6/sources/renderers/WebGLRenderer'
+import { DirectionalLight } from '../../node_modules/threejs-full-es6/sources/lights/DirectionalLight'
+import { ArrowHelper } from '../../node_modules/threejs-full-es6/sources/helpers/ArrowHelper'
+import { Raycaster } from '../../node_modules/threejs-full-es6/sources/core/Raycaster'
+
 import Stats from 'stats.js'
-import { GridHelper } from '../../node_modules/threejs-full-es6/sources/helpers/GridHelper'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { TOrbitControlsHelper } from '../objects3d/TOrbitControlsHelper'
 
