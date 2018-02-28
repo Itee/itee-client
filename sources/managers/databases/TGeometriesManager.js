@@ -15,14 +15,13 @@
 
 /* eslint-env browser */
 
+import { BufferGeometry } from '../../../node_modules/threejs-full-es6/sources/core/BufferGeometry'
+import { BufferAttribute } from '../../../node_modules/threejs-full-es6/sources/core/BufferAttribute'
+import { Vector3 } from '../../../node_modules/threejs-full-es6/sources/math/Vector3'
+import { Face3 } from '../../../node_modules/threejs-full-es6/sources/core/Face3'
+import { Geometry } from '../../../node_modules/threejs-full-es6/sources/core/Geometry'
 import { TDataBaseManager } from '../TDataBaseManager'
-import {
-    Geometry,
-    BufferAttribute,
-    BufferGeometry,
-    Vector3,
-    Face3
-} from 'threejs-full-es6'
+
 
 /**
  *
