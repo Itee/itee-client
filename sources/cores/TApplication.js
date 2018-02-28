@@ -12,6 +12,45 @@
 /* global $, H, URL */
 
 import {
+    DoubleSide,
+    FrontSide,
+    BackSide,
+    LinearFilter,
+    UVMapping,
+    AdditiveBlending
+} from '../../node_modules/threejs-full-es6/sources/constants'
+import { AnimationMixer } from '../../node_modules/threejs-full-es6/sources/animation/AnimationMixer'
+import { AxesHelper } from '../../node_modules/threejs-full-es6/sources/helpers/AxesHelper'
+import { BoxHelper } from '../../node_modules/threejs-full-es6/sources/helpers/BoxHelper'
+import { SkeletonHelper } from '../../node_modules/threejs-full-es6/sources/helpers/SkeletonHelper'
+import { AmbientLight } from '../../node_modules/threejs-full-es6/sources/lights/AmbientLight'
+import { Color } from '../../node_modules/threejs-full-es6/sources/math/Color'
+import { Vector3 } from '../../node_modules/threejs-full-es6/sources/math/Vector3'
+import { Matrix4 } from '../../node_modules/threejs-full-es6/sources/math/Matrix4'
+import { Frustum } from '../../node_modules/threejs-full-es6/sources/math/Frustum'
+import { Plane } from '../../node_modules/threejs-full-es6/sources/math/Plane'
+import { Line } from '../../node_modules/threejs-full-es6/sources/objects/Line'
+import { LineSegments } from '../../node_modules/threejs-full-es6/sources/objects/LineSegments'
+import { Group } from '../../node_modules/threejs-full-es6/sources/objects/Group'
+import { Mesh } from '../../node_modules/threejs-full-es6/sources/objects/Mesh'
+import { SkinnedMesh } from '../../node_modules/threejs-full-es6/sources/objects/SkinnedMesh'
+import { Object3D } from '../../node_modules/threejs-full-es6/sources/core/Object3D'
+import { Scene } from '../../node_modules/threejs-full-es6/sources/scenes/Scene'
+import { WireframeGeometry } from '../../node_modules/threejs-full-es6/sources/geometries/WireframeGeometry'
+import { TubeGeometry } from '../../node_modules/threejs-full-es6/sources/geometries/TubeGeometry'
+import { SphereBufferGeometry } from '../../node_modules/threejs-full-es6/sources/geometries/SphereGeometry'
+import { LineCurve } from '../../node_modules/threejs-full-es6/sources/curves/LineCurve'
+import { CatmullRomCurve3 } from '../../node_modules/threejs-full-es6/sources/curves/CatmullRomCurve3'
+import { LineBasicMaterial } from '../../node_modules/threejs-full-es6/sources/materials/LineBasicMaterial'
+import { MeshLambertMaterial } from '../../node_modules/threejs-full-es6/sources/materials/MeshLambertMaterial'
+import { SpriteMaterial } from '../../node_modules/threejs-full-es6/sources/materials/SpriteMaterial'
+import { Texture } from '../../node_modules/threejs-full-es6/sources/textures/Texture'
+import { JSONLoader } from '../../node_modules/threejs-full-es6/sources/loaders/JSONLoader'
+import { ImageLoader } from '../../node_modules/threejs-full-es6/sources/loaders/ImageLoader'
+import { Sprite } from '../../node_modules/threejs-full-es6/sources/objects/Sprite'
+import { Geometry } from '../../node_modules/threejs-full-es6/sources/core/Geometry'
+
+import {
     extend,
     createInterval,
     uniq
@@ -21,45 +60,6 @@ import { TUniversalLoader } from '../loaders/TUniversalLoader'
 import { dockspawn } from '../third_party/dock-spawn'
 import { TViewport } from './TViewport'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
-import {
-    DoubleSide,
-    FrontSide,
-    BackSide,
-    LinearFilter,
-    UVMapping,
-    AdditiveBlending,
-    AnimationMixer,
-    AxesHelper,
-    BoxHelper,
-    AmbientLight,
-    Frustum,
-    Geometry,
-    Group,
-    ImageLoader,
-    JSONLoader,
-    Line,
-    LineBasicMaterial,
-    LineCurve,
-    LineSegments,
-    Matrix4,
-    Mesh,
-    MeshLambertMaterial,
-    Object3D,
-    Plane,
-    Scene,
-    SkeletonHelper,
-    SkinnedMesh,
-    SphereBufferGeometry,
-    Sprite,
-    SpriteMaterial,
-    Texture,
-    TubeGeometry,
-    Vector3,
-    WireframeGeometry,
-    CatmullRomCurve3,
-    Color
-} from 'threejs-full-es6'
-
 import { TDataBaseManager as CompaniesManager } from '../managers/TDataBaseManager'
 import { TDataBaseManager as SitesManager } from '../managers/TDataBaseManager'
 import { TDataBaseManager as BuildingsManager } from '../managers/TDataBaseManager'
