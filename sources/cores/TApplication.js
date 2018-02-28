@@ -170,6 +170,8 @@ function TApplication ( container, parameters, onReady ) {
     this.pointCloudManager       = undefined
     this.updatePointCloudTimeout = undefined
 
+    let _guiReady = false
+
     function _initGUI ( parameters ) {
 
         // Recursive merging parameter
@@ -186,6 +188,9 @@ function TApplication ( container, parameters, onReady ) {
         _initViewport.call( self, _parameters.viewport )
         _initTools.call( self, _parameters.tools )
         _initModals.call( self, _parameters.modals )
+
+        _guiReady = true
+        _checkReady()
 
         // Init modals
         function _initToolBar ( parameters ) {
@@ -611,6 +616,9 @@ function TApplication ( container, parameters, onReady ) {
         this._initScenesOf( _parameters.scenesIds, null, true )
         this._initObjectsOf( _parameters.objectsIds, null, true )
 
+        _modelReady = true
+        _checkReady()
+
     }
 
     var _pointCloudReady = false
@@ -928,6 +936,8 @@ function TApplication ( container, parameters, onReady ) {
 
     }
 
+    let _urlQueryReady = false
+
     function _initURLQuery ( parameters ) {
 
         const _parameters = extend( {
@@ -951,9 +961,9 @@ function TApplication ( container, parameters, onReady ) {
                 break
 
             default:
+                _urlQueryReady = true
+                _checkReady()
                 return
-            //                throw new RangeError( `Invalid switch parameter: ${_parameters.schema}` )
-            //                break
 
         }
 
@@ -965,9 +975,9 @@ function TApplication ( container, parameters, onReady ) {
                 break
 
             default:
+                _urlQueryReady = true
+                _checkReady()
                 return
-            //                throw new RangeError( `Invalid switch parameter: ${_parameters.action}` )
-            //                break
 
         }
 
@@ -1030,11 +1040,16 @@ function TApplication ( container, parameters, onReady ) {
 
                 self._initScenesOf( parentId, null, true )
 
+                _urlQueryReady = true
+                _checkReady()
+
             }
 
         }
 
     }
+
+    let _listenerReady = false
 
     function _initListener () {
 
@@ -1135,21 +1150,19 @@ function TApplication ( container, parameters, onReady ) {
             event.preventDefault();
         }, true );
 
+        _listenerReady = true
+        _checkReady()
+
     }
 
     function _checkReady () {
 
-        if ( parameters.webGL.modelEnable ) {
-
-            if ( !_modelReady ) { return }
-
-        }
-
-        if ( parameters.webGL.avatarEnable ) {
-
-            if ( !_avatarReady ) { return }
-
-        }
+        if ( !_guiReady ) { return }
+        if ( !_modelReady ) { return }
+        if ( !_pointCloudReady ) { return }
+        if ( !_avatarReady ) { return }
+        if ( !_urlQueryReady ) { return }
+        if ( !_listenerReady ) { return }
 
         //TLogger.timeEnd( "TApplication" )
         //        self.webglViewport.toggleAutorun()
