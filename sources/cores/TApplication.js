@@ -980,11 +980,11 @@ function TApplication ( container, parameters, onReady ) {
 
                 // Update carl batiment button value
                 // Care parent will not be the scene for ever !!!
-                if( self.detailBtn ) {
+                if ( self.detailBtn ) {
                     self.detailBtn.style.display = 'none'
                 }
 
-                if( self.createBtn ) {
+                if ( self.createBtn ) {
                     self.createBtn.style.display = 'none'
                 }
 
@@ -1847,8 +1847,12 @@ Object.assign( TApplication.prototype, {
 
             // Update carl batiment button value
             if ( buildingIndex === 0 ) {
-                this.detailBtn.val( building.gmaoId )
-                this.createBtn.val( building.gmaoId )
+                if ( this.detailBtn ) {
+                    this.detailBtn.val( building.gmaoId )
+                }
+                if ( this.createBtn ) {
+                    this.createBtn.val( building.gmaoId )
+                }
             }
 
             const buildingGroup    = new Group()
