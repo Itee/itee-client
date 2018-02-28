@@ -602,13 +602,20 @@ function TApplication ( container, parameters, onReady ) {
         }, parameters )
 
         self.companiesManager  = new CompaniesManager()
+        self.companiesManager.basePath = '/companies'
+
         self.sitesManager      = new SitesManager()
+        self.sitesManager.basePath = '/sites'
+
         self.buildingsManager  = new BuildingsManager()
+        self.buildingsManager.basePath = '/buildings'
+
         self.scenesManager     = new TScenesManager()
         self.objectsManager    = new TObjectsManager()
         self.geometriesManager = new TGeometriesManager()
         self.materialsManager  = new TMaterialsManager()
 
+        // Todo: onReady implementation with boolean for each
         this._initCompanies( _parameters.companiesIds )
         this._initSitesOf( _parameters.sitesIds )
         this._initBuildingsOf( _parameters.buildingsIds, null, true )
