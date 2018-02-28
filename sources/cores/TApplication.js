@@ -647,7 +647,7 @@ function TApplication ( container, parameters, onReady ) {
             self.pointCloudManager.setGlobalOffset( _parameters.globalOffset )
             if ( _parameters.samplingMin ) { self.pointCloudManager.setMinimumSamplingLimit( _parameters.samplingMin ) }
 
-            self.pointCloudManager.getPointClouds( function () {
+            self.pointCloudManager.getPointClouds( () => {
                 _pointCloudReady = true
                 _checkReady()
             } );
@@ -669,9 +669,9 @@ function TApplication ( container, parameters, onReady ) {
             const jsonLoader = new JSONLoader()
             //        jsonLoader.load( 'resources/models/json/oko/Oko_textured.json', function ( geometry, materials ) {
             //        jsonLoader.load( 'resources/models/json/oko/Oko_join.json', function ( geometry, materials ) {
+            //        jsonLoader.load( 'resources/models/json/Ethan/Ethan_idle.json', function ( geometry, materials ) {
+            //        jsonLoader.load( 'resources/models/json/Ethan/Ethan_idle_centered.json', function ( geometry, materials ) {
             jsonLoader.load( _parameters.url, function ( geometry, materials ) {
-                //        jsonLoader.load( 'resources/models/json/Ethan/Ethan_idle.json', function ( geometry, materials ) {
-                //        jsonLoader.load( 'resources/models/json/Ethan/Ethan_idle_centered.json', function ( geometry, materials ) {
 
                 materials.visible = true
 
@@ -1089,6 +1089,7 @@ function TApplication ( container, parameters, onReady ) {
         self.webglViewport.addEventListener( 'intersectPoint', self.updateTemporaryMeasure.bind( self ) )
         self.webglViewport.addEventListener( 'measureEnd', self.endMeasure.bind( self ) )
 
+        // Todo: Set correct global bounding box offset
         window.addEventListener( "keydown", function ( event ) {
             if ( event.defaultPrevented ) {
                 return; // Should do nothing if the key event was already consumed.
@@ -1180,13 +1181,11 @@ function TApplication ( container, parameters, onReady ) {
     (() => {
 
         _initGUI.call( self, _parameters.view )
-
         _initModelData.call( self, _parameters.model )
         _initPointCloudData.call( self, _parameters.pointCloud )
         _initAvatarData.call( self, _parameters.avatar )
         self.loadObjectFromURL( _parameters.files )
         _initURLQuery.call( self, _parameters.urlQuery )
-
         _initListener.call( self )
 
     })();
@@ -1843,7 +1842,7 @@ Object.assign( TApplication.prototype, {
             this.webglViewport.addRaycastables( [ siteGroup ] )
 
             // Create new base tree item
-            this.insertTreeViewItem(siteGroup)
+            this.insertTreeViewItem( siteGroup )
 
             this._initBuildingsOf( site.buildings, siteGroup, siteGroup.visible )
 
@@ -1901,11 +1900,11 @@ Object.assign( TApplication.prototype, {
                 siteGroup.add( buildingGroup )
 
                 // Create new base tree item
-                this.insertTreeViewItem(buildingGroup, siteGroup._id)
+                this.insertTreeViewItem( buildingGroup, siteGroup._id )
 
                 this._initScenesOf( building.scenes, buildingGroup, buildingGroup.visible )
 
-            } else if ( building.site ){
+            } else if ( building.site ) {
 
                 this._initSitesOf( building.site, null, true )
 
@@ -1957,7 +1956,7 @@ Object.assign( TApplication.prototype, {
 
                 buildingGroup.add( sceneGroup )
 
-                this.insertTreeViewItem(sceneGroup, buildingGroup._id)
+                this.insertTreeViewItem( sceneGroup, buildingGroup._id )
 
                 if ( scene.layers === 1 ) {
 
@@ -1969,7 +1968,7 @@ Object.assign( TApplication.prototype, {
 
                 }
 
-            } else if ( scene.parent ){
+            } else if ( scene.parent ) {
 
                 this._initBuildingsOf( scene.parent, null, true )
 
@@ -2173,10 +2172,10 @@ Object.assign( TApplication.prototype, {
      */
     insertTreeViewItem ( object, parentId, isCheckedByDefault = true, recursive = true ) {
 
-        const itemId   = object._id || object.uuid
-        const itemName = (object.name === "") ? itemId : object.name
+        const itemId    = object._id || object.uuid
+        const itemName  = (object.name === "") ? itemId : object.name
         const _parentId = parentId || 'treeViewContainer'
-        const checked  = (isCheckedByDefault) ? 'checked="checked"' : ''
+        const checked   = (isCheckedByDefault) ? 'checked="checked"' : ''
 
         const domElement = `<li id="${itemId}">
                                 <input type="checkbox" id="${itemId}ExpandCheckbox" />
