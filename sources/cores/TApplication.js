@@ -644,8 +644,8 @@ function TApplication ( container, parameters, onReady ) {
         if ( _parameters.fromDatabase ) {
 
             self.pointCloudManager = new TPointsManager( this.webglViewport )
-            self.pointCloudManager.setGlobalOffset( LAMBERT_NORD_OFFSET )
-            if ( parameters.samplingMin ) { self.pointCloudManager.setMinimumSamplingLimit( parameters.samplingMin ) }
+            self.pointCloudManager.setGlobalOffset( _parameters.globalOffset )
+            if ( _parameters.samplingMin ) { self.pointCloudManager.setMinimumSamplingLimit( _parameters.samplingMin ) }
 
             self.pointCloudManager.getPointClouds( function () {
                 _pointCloudReady = true
