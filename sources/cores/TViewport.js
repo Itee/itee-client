@@ -72,8 +72,6 @@ function TViewport ( container ) {
 
     this.scene = new Scene()
 
-    this.scene.add( new GridHelper( 1000, 1000 ) )
-
     this.camera                   = new PerspectiveCamera()
     this.orbitControl             = new OrbitControls( this.camera, this.container )
     this.orbitControl.maxDistance = 2000
