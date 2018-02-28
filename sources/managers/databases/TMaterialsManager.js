@@ -11,11 +11,10 @@
 
 /* eslint-env browser */
 
-import {
-    Color,
-    MeshPhongMaterial,
-    LineBasicMaterial
-} from 'threejs-full-es6'
+import { MeshPhongMaterial } from '../../../node_modules/threejs-full-es6/sources/materials/MeshPhongMaterial'
+import { LineBasicMaterial } from '../../../node_modules/threejs-full-es6/sources/materials/LineBasicMaterial'
+import { Color } from '../../../node_modules/threejs-full-es6/sources/math/Color'
+
 import { DefaultLogger as TLogger } from '../../loggers/TLogger'
 import { TDataBaseManager } from '../TDataBaseManager'
 
