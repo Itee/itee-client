@@ -9,6 +9,7 @@
 /* eslint-env browser */
 
 // Import browser fix
+import './third_party/dock-spawn.js'
 import './third_party/polyfills.js'
 
 // Export es6 Three stuff
@@ -21,6 +22,7 @@ export * from './debug/_debugs'
 export * from './factories/_factories'
 export * from './input_devices/_inputDevices'
 export * from './loaders/_loaders'
+export * from './loggers/_loggers'
 export * from './managers/_managers'
 export * from './maths/_maths'
 export * from './objects3d/_objects3d'
