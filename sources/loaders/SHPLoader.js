@@ -17,13 +17,12 @@
 
 /* eslint-env browser */
 
+import { FileLoader } from '../../node_modules/threejs-full-es6/sources/loaders/FileLoader'
+import { DefaultLoadingManager } from '../../node_modules/threejs-full-es6/sources/loaders/LoadingManager'
+import { Vector3 } from '../../node_modules/threejs-full-es6/sources/math/Vector3'
+import { Shape } from '../../node_modules/threejs-full-es6/sources/core/Shape'
+
 import { DefaultLogger as TLogger } from '../Loggers/TLogger'
-import {
-    DefaultLoadingManager,
-    FileLoader,
-    Vector3,
-    Shape
-} from 'threejs-full-es6'
 import {
     BinaryReader,
     Endianness
