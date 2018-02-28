@@ -256,8 +256,7 @@ function TApplication ( container, parameters, onReady ) {
                     for ( let i = 0, element = undefined ; element = renderEffectDropDowns[ i ] ; i++ ) {
                         element.addEventListener( 'click', ( event ) => {
 
-                            const child        = this.getElementsByTagName( "a" )
-                            const renderEffect = child.getAttribute( 'data-value' )
+                            const renderEffect = event.target.getAttribute( 'data-value' )
                             self.setRendersEffect.call( self, renderEffect )
 
                         } )
