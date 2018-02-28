@@ -100,14 +100,15 @@ function TApplication ( container, parameters, onReady ) {
     TLogger.log( "Starting TApplication..." )
 
     const self      = this;
-    let _parameters = {
-        view:     undefined,
-        model:    undefined,
-        urlQuery: undefined
-    }
 
     // Recursive merging parameter
-    extend( _parameters, parameters )
+    const _parameters = extend( {
+        view:       null,
+        model:      null,
+        pointCloud: null,
+        avatar:     null,
+        urlQuery:   null
+    }, parameters )
 
     this.imageLoader = new ImageLoader()
 
@@ -171,39 +172,26 @@ function TApplication ( container, parameters, onReady ) {
 
     function _initGUI ( parameters ) {
 
-        const _parameters = parameters || {
+        // Recursive merging parameter
+        const _parameters = extend( {
             toolbar:  null,
             content:  null,
-            viewport: {
-                type:       'webgl',
-                parameters: {
-                    effect: [ 'anaglyph', 'etc' ],
-                    camera: {
-                        position: {
-                            x: 1.0,
-                            y: 2.0,
-                            z: 3.0
-                        },
-                        target:   {
-                            x: 0.0,
-                            y: 0.0,
-                            z: 0.0
-                        }
-                    }
-                }
-            },
+            viewport: null,
             tools:    null,
             modals:   null
-        }
+        }, parameters )
 
-        _initToolBar.call( self, _parameters )
-        _initContent.call( self, _parameters )
-        _initWebGLViewport.call( self, _parameters.viewport )
-        _initTools.call( self, _parameters )
-        _initModals.call( self, _parameters )
+        _initToolBar.call( self, _parameters.toolbar )
+        _initContent.call( self, _parameters.content )
+        _initViewport.call( self, _parameters.viewport )
+        _initTools.call( self, _parameters.tools )
+        _initModals.call( self, _parameters.modals )
 
         // Init modals
         function _initToolBar ( parameters ) {
+
+            // Recursive merging parameter
+            const _parameters = extend( {}, parameters )
 
             const importBtn = document.getElementById( 'importBtn' )
             if ( importBtn ) {
@@ -300,6 +288,9 @@ function TApplication ( container, parameters, onReady ) {
 
         function _initContent ( parameters ) {
 
+            // Recursive merging parameter
+            const _parameters = extend( {}, parameters )
+
             // Docking view
             // Convert a div to a dock manager.  Panels can then be docked on to it
             this.mainContainer = new dockspawn.DockManager( container );
@@ -335,7 +326,25 @@ function TApplication ( container, parameters, onReady ) {
 
         function _initWebGLViewport ( parameters ) {
 
-            const _parameters = parameters.parameters || {}
+            // Recursive merging parameter
+            const _parameters = extend( {
+                type:       'webgl',
+                parameters: {
+                    effect: [ 'anaglyph', 'etc' ],
+                    camera: {
+                        position: {
+                            x: 1.0,
+                            y: 2.0,
+                            z: 3.0
+                        },
+                        target:   {
+                            x: 0.0,
+                            y: 0.0,
+                            z: 0.0
+                        }
+                    }
+                }
+            }, parameters )
 
             this.webglViewportContainer = document.getElementById( 'webglViewportContainer' )
             if ( !this.webglViewportContainer ) {
@@ -371,6 +380,9 @@ function TApplication ( container, parameters, onReady ) {
         }
 
         function _initTools ( parameters ) {
+
+            // Recursive merging parameter
+            const _parameters = extend( {}, parameters )
 
             // Measure Tool
             const measureTool = document.getElementById( 'measureTools' )
@@ -522,6 +534,9 @@ function TApplication ( container, parameters, onReady ) {
 
         function _initModals ( parameters ) {
 
+            // Recursive merging parameter
+            const _parameters = extend( {}, parameters )
+
             //            this.importFilesModalView = $( '#importFilesModal' )
             //            this.importFilesModalView.modal( {
             //                keyboard: false,
@@ -572,7 +587,7 @@ function TApplication ( container, parameters, onReady ) {
 
     function _initModelData ( parameters ) {
 
-        const _parameters = parameters || {
+        const _parameters = extend( {
             companiesIds:         null,
             sitesIds:             null,
             buildingsIds:         null,
@@ -580,7 +595,7 @@ function TApplication ( container, parameters, onReady ) {
             objectsIds:           null,
             lookAtObjectWithId:   null,
             lookAtObjectWithName: null,
-        }
+        }, parameters )
 
         self.companiesManager  = new CompaniesManager()
         self.sitesManager      = new SitesManager()
@@ -602,15 +617,17 @@ function TApplication ( container, parameters, onReady ) {
 
     function _initPointCloudData ( parameters ) {
 
-        parameters = parameters || {}
-
-        if ( parameters.fromDatabase ) {
-
-            var LAMBERT_NORD_OFFSET = {
+        const _parameters = extend( {
+            fromDatabase: false,
+            samplingMin:  1,
+            globalOffset: {
                 x: 600200,
                 y: 131400,
                 z: 60
             }
+        }, parameters )
+
+        if ( _parameters.fromDatabase ) {
 
             self.pointCloudManager = new TPointsManager( this.webglViewport )
             self.pointCloudManager.setGlobalOffset( LAMBERT_NORD_OFFSET )
@@ -629,9 +646,9 @@ function TApplication ( container, parameters, onReady ) {
 
     function _initAvatarData ( parameters ) {
 
-        const _parameters = parameters || {
+        const _parameters = extend( {
             url: null
-        }
+        }, parameters )
 
         if ( _parameters.url ) {
 
@@ -913,11 +930,11 @@ function TApplication ( container, parameters, onReady ) {
 
     function _initURLQuery ( parameters ) {
 
-        const _parameters = parameters || {
+        const _parameters = extend( {
             schema: '',
             action: '',
             query:  JSON.stringify( {} )
-        }
+        }, parameters )
 
         let manager   = undefined
         let processor = undefined
