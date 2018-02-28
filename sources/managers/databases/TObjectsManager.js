@@ -26,7 +26,7 @@ function TObjectsManager () {
 
 }
 
-Object.assign( TObjectsManager.prototype, TDataBaseManager.prototype, {
+TObjectsManager.prototype = Object.assign( Object.create(TDataBaseManager.prototype), {
 
     /**
      *
