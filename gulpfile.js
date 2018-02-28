@@ -379,7 +379,7 @@ gulp.task( 'build-script', ( done ) => {
 /**
  * Add watcher to assets javascript files and run build-js on file change
  */
-gulp.task( 'watch-script', gulp.series( 'build-script' , (done) => {
+gulp.task( 'watch-script', gulp.series( 'build-script', ( done ) => {
 
     log( 'Add watcher to javascript files !' )
 
