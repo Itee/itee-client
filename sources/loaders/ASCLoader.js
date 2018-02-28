@@ -25,16 +25,15 @@
 
 /* eslint-env browser */
 
-import {
-    FileLoader,
-    DefaultLoadingManager,
-    BufferGeometry,
-    BufferAttribute,
-    Color,
-    PointsMaterial,
-    Points,
-    Group
-} from 'threejs-full-es6'
+import { FileLoader } from '../../node_modules/threejs-full-es6/sources/loaders/FileLoader'
+import { DefaultLoadingManager } from '../../node_modules/threejs-full-es6/sources/loaders/LoadingManager'
+import { BufferGeometry } from '../../node_modules/threejs-full-es6/sources/core/BufferGeometry'
+import { BufferAttribute } from '../../node_modules/threejs-full-es6/sources/core/BufferAttribute'
+import { Group } from '../../node_modules/threejs-full-es6/sources/objects/Group'
+import { Points } from '../../node_modules/threejs-full-es6/sources/objects/Points'
+import { Color } from '../../node_modules/threejs-full-es6/sources/math/Color'
+import { PointsMaterial } from '../../node_modules/threejs-full-es6/sources/materials/PointsMaterial'
+
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { TBoundingBox } from '../cores/TBoundingBox'
 
