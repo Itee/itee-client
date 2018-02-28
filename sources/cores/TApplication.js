@@ -329,7 +329,7 @@ function TApplication ( container, parameters, onReady ) {
 
         }
 
-        function _initWebGLViewport ( parameters ) {
+        function _initViewport ( parameters ) {
 
             // Recursive merging parameter
             const _parameters = extend( {
