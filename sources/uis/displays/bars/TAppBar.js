@@ -8,53 +8,29 @@
  *
  * @example
  *
- * <TAppBar
- *      left={<TBrand />}
- *      center={<TMenu>...</TMenu>}
- *      right={<TLogingButton />}
- * />
  *
  */
 
 /* eslint-env browser */
 
-import React from 'react'
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-class TAppBar extends React.Component {
+export default Vue.component( 'TAppBar', {
+    template: `
+        <TContainer 
+            class="tAppBar" 
+            :height=height 
+            :width=width 
+            :orientation=orientation 
+            :expand=false 
+            :wrapContent=false 
+            vAlign="stretch" 
+            hAlign="spaced" 
+            overflow="visible"
+        >
+            <slot></slot>
+        </TContainer>
+    `,
+    props:    [ 'height', 'width', 'orientation' ]
 
-    render () {
-
-        const { id, left, center, right } = this.props
-
-        const _id = id || `tAppBarId`
-
-        const _style = {
-            display:        'flex',
-            justifyContent: 'space-between'
-        }
-
-        const _subStyle = {
-            display:      'flex',
-            alignContent: 'center',
-            alignItems:   'center'
-        }
-
-        return (
-            <t-app-bar id={_id} style={_style} class={'tAppBar'}>
-                <t-app-bar-left style={_subStyle} class={'tAppBarPart tAppBarLeft'}>
-                    {left}
-                </t-app-bar-left>
-                <t-app-bar-center style={_subStyle} class={'tAppBarPart tAppBarLCenter'}>
-                    {center}
-                </t-app-bar-center>
-                <t-app-bar-right style={_subStyle} class={'tAppBarPart tAppBarLRight'}>
-                    {right}
-                </t-app-bar-right>
-            </t-app-bar>
-        )
-
-    }
-
-}
-
-export { TAppBar }
+} )
