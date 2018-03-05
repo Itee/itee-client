@@ -26,7 +26,7 @@ export * from './loggers/_loggers'
 export * from './managers/_managers'
 export * from './maths/_maths'
 export * from './objects3d/_objects3d'
-export * from './uis/_uis'
+import './uis/_uis'
 export * from './utils/_utils'
 export * from './validators/_validators'
 
