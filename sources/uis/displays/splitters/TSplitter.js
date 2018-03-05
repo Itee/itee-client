@@ -10,165 +10,258 @@
 
 /* eslint-env browser */
 
-import React from 'react'
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
+import resize from 'vue-resize-directive'
 
-let _instanceCounter = 0
+export default Vue.component( 'TSplitter', {
+    template:   `
+        <div :class=computeClass :style=computeSplitterStyle @mousemove=onMouseMoveHandler @mouseup=onMouseUpHandler @mouseleave=onMouseUpHandler v-resize:debounce="onResize">
+            <slot name="left"></slot>
+            <div class="tSplitterSeparator" :style=computeSeparatorStyle @mousedown=onMouseDownHandler></div>
+            <slot name="right"></slot>
+        </div>
+    `,
+    directives: {
+        resize
+    },
+    data:       function () {
 
-class TSplitter extends React.Component {
-
-    constructor ( props ) {
-
-        super( props )
-        _instanceCounter++
-
-        this.state = {
-            isVertical:            true,
-            onTracking:            false,
-            initialMousePositionX: 0,
-            initialMousePositionY: 0,
-            position:              (props.initPosition) ? props.initPosition : 50
+        return {
+            onTracking:             false,
+            previousMousePositionX: 0,
+            previousMousePositionY: 0,
+            position:               (this.initPosition) ? this.initPosition : 50
         }
 
-        this._domElement = undefined
+    },
+    props:      [ 'initPosition', 'isVertical' ],
+    computed:   {
 
-        this.onMouseDownHandler = this.onMouseDownHandler.bind( this )
-        this.onMouseMoveHandler = this.onMouseMoveHandler.bind( this )
-        this.onMouseUpHandler   = this.onMouseUpHandler.bind( this )
+        computeClass () {
 
-    }
+            return ( this.isVertical ) ? 'tSplitter tSplitterVertical' : 'tSplitter tSplitterHorizontal'
 
-    onMouseDownHandler ( event ) {
+        },
 
-        this.setState( {
-            onTracking:            true,
-            initialMousePositionX: event.clientX,
-            initialMousePositionY: event.clientY
-        } )
+        computeSplitterStyle () {
 
-        event.preventDefault()
-
-    }
-
-    onMouseMoveHandler ( event ) {
-
-        if ( !this.state.onTracking ) {
-            return
-        }
-
-        const splitterElement = this._domElement
-
-        let position = 0
-        if ( this.state.isVertical ) {
-            position = ( 100 * (event.clientX - splitterElement.offsetLeft) ) / splitterElement.clientWidth
-        } else {
-            position = ( 100 * (event.clientY - splitterElement.offsetTop) ) / splitterElement.clientHeight
-        }
-
-        this.setState( { position: position } )
-
-        event.preventDefault()
-
-    }
-
-    onMouseUpHandler ( event ) {
-
-        this.setState( { onTracking: false } )
-
-        event.preventDefault()
-
-    }
-
-    /**
-     * React lifecycle
-     */
-    componentWillMount () {}
-
-    componentDidMount () {}
-
-    componentWillUnmount () {}
-
-    componentWillReceiveProps ( /*nextProps*/ ) {}
-
-//    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentWillUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentDidUpdate ( /*prevProps, prevState*/ ) {}
-
-    render () {
-
-        const { id, className, first, second } = this.props
-
-        const _id           = id || `tSplitter_${_instanceCounter}`
-        const _class        = ( className ) ? `tSplitter ${className}` : 'tSplitter'
-        let _style          = {}
-        let _firstStyle     = {}
-        let _secondStyle    = {}
-        let _separatorStyle = {}
-
-        const leftWidth  = this.state.position
-        const rightWidth = 100 - leftWidth
-
-        if ( this.state.isVertical ) {
-
-            _style = {
-                display: 'flex',
-                width:   '100%'
-            }
-
-            _firstStyle = {
-                width: leftWidth + '%'
-            }
-
-            _secondStyle = {
-                width: rightWidth + '%'
-            }
-
-            _separatorStyle = {
-                minWidth: '1px',
-                cursor:   'col-resize'
-            }
-
-        } else {
-
-            _style = {
+            return {
                 display:  'flex',
-                flexFlow: 'column',
-                width:    '100%'
+                flexFlow: ( this.isVertical ) ? 'row' : 'column',
+                overflow: 'hidden'
             }
 
-            _firstStyle = {
-                height: leftWidth + '%',
-                width:  '100%'
+        },
+
+        computeSeparatorStyle () {
+
+            console.log( 'computeSeparatorStyle' )
+
+            let _separatorStyle = {
+                //                display: 'flex'
             }
 
-            _secondStyle = {
-                height: rightWidth + '%',
-                width:  '100%'
+            if ( this.isVertical ) {
+
+                _separatorStyle = {
+                    minWidth: '1px',
+                    cursor:   'col-resize'
+                }
+
+            } else {
+
+                _separatorStyle = {
+                    minHeight: '1px',
+                    cursor:    'row-resize'
+                }
+
             }
 
-            _separatorStyle = {
-                minHeight: '1px',
-                cursor:    'row-resize',
-                width:     '100%'
-            }
+            return _separatorStyle
 
         }
 
-        return (
-            <t-splitter ref={( splitter ) => { this._domElement = splitter }} id={_id} class={_class} style={_style} onMouseMove={this.onMouseMoveHandler} onMouseUp={this.onMouseUpHandler} onMouseLeave={this.onMouseUpHandler}>
-                <div id={`tLeftSplit_${_instanceCounter}`} className={'tSplit tLeftSplit'} style={_firstStyle}>
-                    {first}
-                </div>
-                <div id={`tSplitterSeparator_${_instanceCounter}`} className={'tSplitterSeparator'} style={_separatorStyle} onMouseDown={this.onMouseDownHandler}></div>
-                <div id={`tRightSplit_${_instanceCounter}`} className={'tSplit tRightSplit'} style={_secondStyle}>
-                    {second}
-                </div>
-            </t-splitter>
-        )
+    },
+    methods:    {
+
+        onResize () {
+
+            const domElement      = this.$el
+            const firstSplitPart  = domElement.children[ 0 ]
+            const splitterElement = domElement.children[ 1 ]
+            const secondSplitPart = domElement.children[ 2 ]
+
+            const currentSplitterPosition = this.position
+
+            if ( this.isVertical ) {
+
+                const firstWidth    = Math.round( (domElement.offsetWidth / 100) * currentSplitterPosition )
+                const splitterWidth = splitterElement.offsetWidth
+                const secondWidth   = (Math.round( (domElement.offsetWidth / 100) * (100 - currentSplitterPosition) )) - splitterWidth
+                const globalHeight  = domElement.offsetHeight
+
+                firstSplitPart.style.width  = `${firstWidth}px`
+                firstSplitPart.style.height = `${globalHeight}px`
+
+                splitterElement.style.height = `${globalHeight}px`
+
+                secondSplitPart.style.width  = `${secondWidth}px`
+                secondSplitPart.style.height = `${globalHeight}px`
+
+                console.log( `TSplitter.onResize(fw/sw): ${firstWidth}/${secondWidth}` )
+
+            } else {
+
+                const firstHeight    = Math.round( (domElement.offsetHeight / 100) * currentSplitterPosition )
+                const splitterHeight = splitterElement.offsetHeight
+                const secondHeight   = (Math.round( (domElement.offsetHeight / 100) * (100 - currentSplitterPosition) )) - splitterHeight
+                const globalWidth    = domElement.offsetWidth
+
+                firstSplitPart.style.height = `${firstHeight}px`
+                firstSplitPart.style.width  = `${globalWidth}px`
+
+                splitterElement.style.width = `${globalWidth}px`
+
+                secondSplitPart.style.height = `${secondHeight}px`
+                secondSplitPart.style.width  = `${globalWidth}px`
+
+                console.log( `TSplitter.onResize(fh/sh): ${firstHeight}/${secondHeight}` )
+
+            }
+
+        },
+
+        onMouseDownHandler ( event ) {
+
+            this.onTracking             = true
+            this.previousMousePositionX = event.clientX
+            this.previousMousePositionY = event.clientY
+
+            event.preventDefault()
+
+        },
+
+        onMouseMoveHandler ( event ) {
+
+            if ( !this.onTracking ) {
+                return
+            }
+
+            const domElement      = this.$el
+            const firstSplitPart  = domElement.children[ 0 ]
+            const splitterElement = domElement.children[ 1 ]
+            const secondSplitPart = domElement.children[ 2 ]
+
+            if ( this.isVertical ) {
+
+                const deltaX   = event.clientX - this.previousMousePositionX
+                let firstWidth = firstSplitPart.offsetWidth + deltaX
+                if ( firstWidth < 0 ) {
+                    firstWidth = 0
+                }
+
+                const secondWidth  = domElement.offsetWidth - firstWidth - splitterElement.offsetWidth
+                const globalHeight = domElement.offsetHeight
+
+                firstSplitPart.style.width  = `${firstWidth}px`
+                firstSplitPart.style.height = `${globalHeight}px`
+
+                splitterElement.style.height = `${globalHeight}px`
+
+                secondSplitPart.style.width  = `${secondWidth}px`
+                secondSplitPart.style.height = `${globalHeight}px`
+
+                console.log( `TSplitter.onMouseMoveHandler(fw/sw): ${firstWidth}/${secondWidth}` )
+
+                this.previousMousePositionX = event.clientX
+
+            } else {
+
+                const deltaY    = event.clientY - this.previousMousePositionY
+                let firstHeight = firstSplitPart.offsetHeight + deltaY
+                if ( firstHeight < 0 ) {
+                    firstHeight = 0
+                }
+
+                const secondHeight = domElement.offsetHeight - firstHeight - splitterElement.offsetHeight
+                const globalWidth  = domElement.offsetWidth
+
+                firstSplitPart.style.height = `${firstHeight}px`
+                firstSplitPart.style.width  = `${globalWidth}px`
+
+                splitterElement.style.width = `${globalWidth}px`
+
+                secondSplitPart.style.height = `${secondHeight}px`
+                secondSplitPart.style.width  = `${globalWidth}px`
+
+                console.log( `TSplitter.onMouseMoveHandler(fh/sh): ${firstHeight}/${secondHeight}` )
+
+                this.previousMousePositionY = event.clientY
+
+            }
+
+            event.preventDefault()
+
+        },
+
+        onMouseUpHandler ( event ) {
+
+            this.onTracking = false
+            event.preventDefault()
+
+        }
+
+    },
+    mounted () {
+
+        const domElement      = this.$el
+        const firstSplitPart  = domElement.children[ 0 ]
+        const splitterElement = domElement.children[ 1 ]
+        const secondSplitPart = domElement.children[ 2 ]
+
+        const currentSplitterPosition = this.position
+
+        if ( this.isVertical ) {
+
+            const firstWidth    = Math.round( (domElement.offsetWidth / 100) * currentSplitterPosition )
+            const splitterWidth = splitterElement.offsetWidth
+            const secondWidth   = (Math.round( (domElement.offsetWidth / 100) * (100 - currentSplitterPosition) )) - splitterWidth
+            const globalHeight  = domElement.offsetHeight
+
+            firstSplitPart.style.width  = `${firstWidth}px`
+            firstSplitPart.style.height = `${globalHeight}px`
+
+            splitterElement.style.height = `${globalHeight}px`
+
+            secondSplitPart.style.width  = `${secondWidth}px`
+            secondSplitPart.style.height = `${globalHeight}px`
+
+            console.log( `TSplitter.mounted(fw/sw): ${firstWidth}/${secondWidth}` )
+
+        } else {
+
+            const firstHeight    = Math.round( (domElement.offsetHeight / 100) * currentSplitterPosition )
+            const splitterHeight = splitterElement.offsetHeight
+            const secondHeight   = (Math.round( (domElement.offsetHeight / 100) * (100 - currentSplitterPosition) )) - splitterHeight
+            const globalWidth    = domElement.offsetWidth
+
+            firstSplitPart.style.height = `${firstHeight}px`
+            firstSplitPart.style.width  = `${globalWidth}px`
+
+            splitterElement.style.width = `${globalWidth}px`
+
+            secondSplitPart.style.height = `${secondHeight}px`
+            secondSplitPart.style.width  = `${globalWidth}px`
+
+            console.log( `TSplitter.mounted(fh/sh): ${firstHeight}/${secondHeight}` )
+
+        }
+
+    },
+    updated () {
+
+        //        console.log('Updated !')
 
     }
 
-}
-
-export { TSplitter }
+} )
