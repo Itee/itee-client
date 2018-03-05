@@ -10,65 +10,31 @@
 
 /* eslint-env browser */
 
-import React from 'react'
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-let _instanceCounter = 0
-
-class TTree extends React.Component {
-
-    constructor ( props ) {
-
-        super( props )
-        _instanceCounter++
-
-    }
-
-    /**
-     * React lifecycle
-     */
-    componentWillMount () {}
-
-    componentDidMount () {}
-
-    componentWillUnmount () {}
-
-    componentWillReceiveProps ( /*nextProps*/ ) {}
-
-    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentWillUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentDidUpdate ( /*prevProps, prevState*/ ) {}
-
-    render () {
-
-        const { id, className, header, children } = this.props
-
-        const _id    = id || `tTree_${_instanceCounter}`
-        const _style = {
-            overflowY: 'auto',
-            padding:   '5px',
-            height:    '100%'
-        }
-        const _class = ( className ) ? `tTree ${className}` : 'tTree'
-
-        return (
-            <div id={_id} className={_class} style={_style}>
-                <div className={'tTreeHeader'}>
-                    {header}
-                </div>
-                <div className={'tTreeContent'}>
-                    {children}
-                </div>
+export default Vue.component( 'TTree', {
+    template: `
+        <div id={_id} class="tTree" :style=computeStyle>
+            <div class="tTreeHeader">
+                <slot name="header"></slot>
             </div>
-        )
+            <div class="tTreeContent">
+                <slot></slot>
+            </div>
+        </div>
+    `,
+    props:    [ 'height', 'width', 'orientation', 'expand', 'wrapContent', 'vAlign', 'hAlign', 'wAlign', 'overflow' ],
+    computed: {
 
-        //        return (
-        //            <t-tree ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-tree>
-        //        )
+        computeStyle () {
+
+            return {
+                overflowY: 'auto',
+                padding:   '5px',
+                height:    '100%'
+            }
+
+        }
 
     }
-
-}
-
-export { TTree }
+} )
