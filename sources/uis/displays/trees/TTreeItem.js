@@ -9,65 +9,36 @@
  */
 
 /* eslint-env browser */
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-import React from 'react'
+export default Vue.component( 'TTree', {
+    template: `
+        <li class="tTreeItem">
+            <input type="checkbox" id=computeExpandId />
+            <label>
+                <input type="checkbox" id=computeVisibilityId checked=isChecked />
+                <span></span>
+            </label>
+            <label htmlFor=computeExpandId>{{name}}</label>
+            <ul class="children">
+                {{children}}
+            </ul>
+        </li>
+    `,
+    props:    [ '_id', 'name', 'isChecked', 'children' ],
+    computed: {
 
-let _instanceCounter = 0
+        computeExpandId () {
 
-class TTreeItem extends React.Component {
+            return `${this._id}ExpandCheckbox`
 
-    constructor ( props ) {
+        },
 
-        super( props )
-        _instanceCounter++
+        computeVisibilityId () {
 
-    }
+            return `${this._id}VisibilityCheckbox`
 
-    /**
-     * React lifecycle
-     */
-    componentWillMount () {}
-
-    componentDidMount () {}
-
-    componentWillUnmount () {}
-
-    componentWillReceiveProps ( /*nextProps*/ ) {}
-
-    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentWillUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentDidUpdate ( /*prevProps, prevState*/ ) {}
-
-    render () {
-
-        const { id, className, name, isChecked, children } = this.props
-
-        const _id    = id || `tTreeItem_${_instanceCounter}`
-        const _style = {}
-        const _class = ( className ) ? `tTreeItem ${className}` : 'tTreeItem'
-
-        return (
-            <li id={_id} className={_class} style={_style}>
-                <input type={"checkbox"} id={`${_id}ExpandCheckbox`} />
-                <label>
-                    <input type={"checkbox"} id={`${_id}VisibilityCheckbox`} checked={isChecked} />
-                    <span></span>
-                </label>
-                <label htmlFor={`${_id}ExpandCheckbox`}>{name}</label>
-                <ul className={"children"}>
-                    {children}
-                </ul>
-            </li>
-        )
-
-        //        return (
-        //            <t-tree-item ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-tree-item>
-        //        )
+        }
 
     }
-
-}
-
-export { TTreeItem }
+} )
