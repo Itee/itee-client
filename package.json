@@ -29,6 +29,8 @@
     "test": "gulp test",
     "unit": "gulp unit",
     "bench": "gulp bench",
+    "build-style": "gulp build-style",
+    "build-script": "gulp build-script",
     "build": "gulp build",
     "build-auto": "gulp build-auto",
     "build-dev": "gulp build-dev",
