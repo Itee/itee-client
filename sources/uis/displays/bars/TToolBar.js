@@ -10,45 +10,23 @@
  */
 
 /* eslint-env browser */
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-import React from 'react'
-import PropTypes from 'prop-types'
-
-let _instanceCounter = 0
-
-class TToolBar extends React.Component {
-
-    constructor ( props ) {
-
-        super( props )
-        _instanceCounter++
-
-    }
-
-    render () {
-
-        const { id, className, children } = this.props
-
-        const _id    = id || `tToolBar_${_instanceCounter}`
-        const _class = ( className ) ? `tToolBar ${className}` : 'tToolBar'
-        const _style = {
-            display:    'flex',
-            alignItems: 'center'
-        }
-
-        return (
-            <t-tool-bar id={_id} style={_style} class={_class}>
-                {children}
-            </t-tool-bar>
-        )
-
-    }
-
-}
-
-TToolBar.propType = {
-    id:        PropTypes.string,
-    className: PropTypes.string
-}
-
-export { TToolBar }
+export default Vue.component( 'TToolBar', {
+    template: `
+        <TContainer 
+            class="tToolBar" 
+            :height=height 
+            :width=width 
+            :orientation=orientation 
+            :expand=false 
+            :wrapContent=false 
+            vAlign="center" 
+            hAlign="start" 
+            overflow="visible"
+        >
+            <slot></slot>
+        </TContainer>
+    `,
+    props:    [ 'height', 'width', 'orientation' ]
+} )
