@@ -30,3 +30,4 @@ import './uis/_uis'
 export * from './utils/_utils'
 export * from './validators/_validators'
 
+export { default as createSpaceCraft } from '../node_modules/vue/dist/vue.esm'
