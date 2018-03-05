@@ -53,7 +53,7 @@ const LogLevel = Object.freeze( {
 function TLogger ( outputs ) {
 
     this.outputLevel  = LogLevel.Info
-    this.outputs      = outputs || LogOutput.All
+    this.outputs      = outputs || LogOutput.Console
     this.logsArray    = []
     this.counterTrace = 0
 
