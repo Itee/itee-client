@@ -38,7 +38,6 @@
     "release": "gulp release"
   },
   "dependencies": {
-    "react": "^16.2.0",
     "stats.js": "^0.17.0",
     "threejs-full-es6": "^5.0.2",
     "vue": "^2.5.13",
@@ -48,8 +47,6 @@
     "babel-core": "^6.26.0",
     "babel-eslint": "^8.2.2",
     "babel-plugin-external-helpers": "^6.22.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-react-jsx": "^6.24.1",
     "babel-preset-env": "^1.6.1",
     "benchmark": "^2.1.4",
     "bootstrap": "^4.0.0",
@@ -57,7 +54,6 @@
     "chai": "^4.1.2",
     "del": "^3.0.0",
     "docdash": "^0.4.0",
-    "eslint-plugin-react": "^7.6.1",
     "font-awesome": "^4.7.0",
     "gulp": "^4.0.0",
     "gulp-clean-css": "^3.9.2",
@@ -83,7 +79,6 @@
     "karma-safari-launcher": "^1.0.0",
     "mocha": "^5.0.1",
     "mochawesome": "^3.0.2",
-    "prop-types": "^15.6.0",
     "rollup": "^0.55.5",
     "rollup-plugin-babel": "^3.0.3",
     "rollup-plugin-commonjs": "^8.3.0",
