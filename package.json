@@ -63,7 +63,7 @@
     "gulp-jsdoc3": "^1.0.1",
     "gulp-less": "^3.5.0",
     "gulp-rename": "^1.2.2",
-    "gulp-scss": "^1.4.0",
+    "gulp-sass": "^3.1.0",
     "gulp-util": "^3.0.8",
     "jquery": "^3.3.1",
     "karma": "^2.0.0",
