@@ -10,55 +10,12 @@
 
 /* eslint-env browser */
 
-import React from 'react'
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-let _instanceCounter = 0
-
-class TMenu extends React.Component {
-
-    constructor ( props ) {
-
-        super( props )
-        _instanceCounter++
-
-    }
-
-    /**
-     * React lifecycle
-     */
-    componentWillMount () {}
-
-    componentDidMount () {}
-
-    componentWillUnmount () {}
-
-    componentWillReceiveProps ( /*nextProps*/ ) {}
-
-    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentWillUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentDidUpdate ( /*prevProps, prevState*/ ) {}
-
-    render () {
-
-        const { id, className, children } = this.props
-
-        const _id    = id || `tMenu_${_instanceCounter}`
-        const _style = {
-            listStyleType: 'none',
-            margin:        0,
-            padding:       0
-        }
-        const _class = ( className ) ? `tMenu ${className}` : 'tMenu'
-
-        return (
-            <ul id={_id} style={_style} className={_class}>{children}</ul>
-//            <t-menu id={_id} style={_style} class={_class}>{children}</t-menu>
-        )
-
-    }
-
-}
-
-export { TMenu }
+export default Vue.component( 'TMenu', {
+    template: `
+        <TContainer class="tMenu" vAlign="center" hAlign="center">
+            <slot></slot>
+        </TContainer>
+    `
+} )
