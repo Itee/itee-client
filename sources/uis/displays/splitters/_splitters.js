@@ -8,4 +8,4 @@
 
 /* eslint-env browser */
 
-export { TSplitter } from './TSplitter'
+export { default as TSplitter } from './TSplitter'
