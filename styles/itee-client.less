@@ -63,16 +63,14 @@ body {
         }
 
         .tMenu {
-
             font-size: 2.0em;
 
             .tMenuItem {
-
                 padding: 11px 16px;
 
                 &:hover {
-                    margin-bottom: -1px;
-                    border-bottom: 1px solid #4eaeff;
+                    margin-bottom:    -1px;
+                    border-bottom:    1px solid #4eaeff;
                     background-color: rgba(150, 150, 150, 1);
                 }
 
@@ -128,16 +126,49 @@ body {
 
         .tToolItem {
             padding: 10px 15px;
-            cursor: pointer;
+            cursor:  pointer;
 
             &:hover {
-                margin-bottom: -1px;
-                border-bottom: 1px solid #4eaeff;
+                margin-bottom:    -1px;
+                border-bottom:    1px solid #4eaeff;
                 background-color: rgba(150, 150, 150, 1);
             }
 
             > * {
                 cursor: pointer;
+            }
+
+        }
+
+        .tToolDropDown {
+            padding: 11px 16px;
+
+            &:hover {
+                background-color: rgba(150, 150, 150, 1);
+            }
+
+            &.popAtRightUp:hover {
+                margin-right: -1px;
+                border-right: 1px solid #4eaeff;
+            }
+
+            &.popAtTop:hover {
+                margin-top: -1px;
+                border-top: 1px solid #4eaeff;
+            }
+
+            &.popAtBottom:hover {
+                margin-bottom: -1px;
+                border-bottom: 1px solid #4eaeff;
+            }
+
+            .tDropDownLabel {
+                cursor: pointer;
+            }
+
+            .tDropDownContent {
+                background-color: #323232f2;
+                box-shadow:       2px 2px 2px 0px rgba(0, 0, 0, 0.2);
             }
 
         }
@@ -207,12 +238,12 @@ body {
         }
 
         .tLeftSplit {
-            border-left: none;
+            border-left:   none;
             border-bottom: 1px inset rgb(65, 65, 65);
         }
 
         .tRightSplit {
-            border-right: none;
+            border-right:  none;
             border-bottom: 1px inset rgb(65, 65, 65);
         }
 
@@ -226,9 +257,9 @@ body {
     &.tSplitterHorizontal {
 
         .tSplitterSeparator {
-            border-top: 1px outset rgb(65, 65, 65);
-            border-bottom: 1px outset rgb(65, 65, 65);
-            height:            3px;
+            border-top:       1px outset rgb(65, 65, 65);
+            border-bottom:    1px outset rgb(65, 65, 65);
+            height:           3px;
             background-color: rgb(50, 50, 50);
         }
 
@@ -238,96 +269,77 @@ body {
 
 .tFooter {
     background-color: rgb(50, 50, 50);
-    border-top: 1px solid rgb(35, 35, 35);
+    border-top:       1px solid rgb(35, 35, 35);
 }
 
 /* Tree */
-.tTreeItem,
-.tTreeItem * {
-    padding:    0;
-    margin:     0;
-    list-style: none;
-}
+.tTree {
 
-.tTreeItem label[for]::before,
-.tTreeItem label span::before {
-    content:        "\25b6";
-    display:        inline-block;
-    margin:         2px 0 0;
-    width:          13px;
-    height:         13px;
-    vertical-align: top;
-    text-align:     center;
-    /*color:          #e74c3c;*/
-    font-size:      8px;
-    line-height:    13px;
-}
 
-.tTreeItem li ul {
-    margin: 0 0 0 22px;
-}
 
-.tTreeItem * {
-    vertical-align: middle;
-}
+    ul.tTreeItemChildren {
+        list-style-type: none;
+        padding-left:    14px;
 
-.tTreeItem {
-    font: normal 11px/16px "Segoe UI", Arial, Sans-serif;
-}
+        &.multiChild li.tTreeItem:not(:last-child) ul.tTreeItemChildren {
 
-.tTreeItem li {
-    -webkit-user-select: none;
-    -moz-user-select:    none;
-    user-select:         none;
-}
+            padding-left:    7px;
+            border-left:     2px dashed #656565;
+            margin-left:     5px;
 
-.tTreeItem input[type="checkbox"] {
-    display: none;
-}
+        }
 
-.tTreeItem label {
-    cursor: pointer;
-}
+        li.tTreeItem {
+            user-select: none;
+            min-height:  20px;
 
-.tTreeItem label[for]::before {
-    -webkit-transform: translatex(-24px);
-    -moz-transform:    translatex(-24px);
-    -ms-transform:     translatex(-24px);
-    -o-transform:      translatex(-24px);
-    transform:         translatex(-24px);
-}
+            &:last-child {
 
-.tTreeItem label span::before {
-    -webkit-transform: translatex(16px);
-    -moz-transform:    translatex(16px);
-    -ms-transform:     translatex(16px);
-    -o-transform:      translatex(16px);
-    transform:         translatex(16px);
-}
+                > .tTreeItemContent::before {
+                    content: "\2514";
+                }
 
-.tTreeItem input[type="checkbox"][id]:checked ~ label[for]::before {
-    content: "\25bc";
-}
+                //> .tTreeItemContent {
+                //
+                //    > label::before {
+                //        content: "\2514";
+                //    }
+                //
+                //}
 
-.tTreeItem input[type="checkbox"][id]:not(:checked) ~ ul {
-    display: none;
-}
+            }
 
-.tTreeItem label:not([for]) {
-    margin: 0 8px 0 0;
-}
+            .tTreeItemContent {
 
-.tTreeItem label span::before {
-    content: "";
-    border:  solid 1px white;
-    color:   white;
-    opacity: .50;
-}
+                &::before {
+                    content: "\251C";
+                }
 
-.tTreeItem label input:checked + span::before {
-    content:    "\2714";
-    box-shadow: 0 0 2px rgba(0, 0, 0, 0.25) inset;
-    opacity:    1;
+                i {
+                    min-width:  16px;
+                    min-height: 16px;
+                }
+
+                .tTreeItemModifiers {
+                    padding-left: 5px;
+                }
+
+            }
+
+            //.tTreeItemChildren {
+            //
+            //    &.multiChild {
+            //        padding-left:    7px;
+            //        border-left:     2px inset #ffffff;
+            //        margin-left:     5px;
+            //    }
+            //
+            //}
+
+        }
+
+    }
+
 }
 
 /* Generated by Paletton.com Â© 2002-2014 */
