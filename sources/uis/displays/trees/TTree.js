@@ -11,19 +11,27 @@
 /* eslint-env browser */
 
 import Vue from '../../../../node_modules/vue/dist/vue.esm'
+import './TTreeItem'
 
 export default Vue.component( 'TTree', {
     template: `
-        <div id={_id} class="tTree" :style=computeStyle>
+        <TContainerVertical class="tTree">
             <div class="tTreeHeader">
                 <slot name="header"></slot>
             </div>
-            <div class="tTreeContent">
-                <slot></slot>
-            </div>
-        </div>
+            <ul v-if="haveItems" class="tTreeContent">
+                <TTreeItem
+                    v-for="item in filteredItems"
+                    v-bind:key="item.id"
+                    v-bind:name="item.name"
+                    v-bind:modifiers="item.modifiers"
+                    v-bind:children="item.children"
+                    v-bind:childrenFilter="filter"
+                />
+            </ul>
+        </TContainerVertical>
     `,
-    props:    [ 'height', 'width', 'orientation', 'expand', 'wrapContent', 'vAlign', 'hAlign', 'wAlign', 'overflow' ],
+    props:    [ 'items', 'filter' ],
     computed: {
 
         computeStyle () {
@@ -33,6 +41,22 @@ export default Vue.component( 'TTree', {
                 padding:   '5px',
                 height:    '100%'
             }
+
+        },
+
+        filteredItems () {
+
+            if(!this.filter) {
+                return this.items
+            }
+
+            return this.items.filter(this.filter)
+
+        },
+
+        haveItems() {
+
+            return this.items && this.items.length > 0
 
         }
 
