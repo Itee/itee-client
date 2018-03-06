@@ -14,8 +14,7 @@ import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
 export default Vue.component( 'TContainerHorizontal', {
     template: `
-        <TContainer 
-		        class="tContainer tContainerHorizontal" 
+        <TContainer
 		        :height=height 
 		        :width=width 
 		        orientation="horizontal" 
