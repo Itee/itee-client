@@ -11,34 +11,97 @@
 /* eslint-env browser */
 import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-export default Vue.component( 'TTree', {
+export default Vue.component( 'TTreeItem', {
     template: `
         <li class="tTreeItem">
-            <input type="checkbox" id=computeExpandId />
-            <label>
-                <input type="checkbox" id=computeVisibilityId checked=isChecked />
-                <span></span>
-            </label>
-            <label htmlFor=computeExpandId>{{name}}</label>
-            <ul class="children">
-                {{children}}
+            <TContainerHorizontal hAlign="start" vAlign="center">
+                <i v-if="haveChildren" :class=computeToggleChildrenIconClass @click="toggleChildren()"></i>
+                <i v-else class="fa fa-minus"></i>
+                <label>{{name}}</label>
+                <span v-for="modifier in modifiers" class="tTreeItemModifiers">
+                    <i v-if="modifier.type === 'checkbox'" @click="updateCheckboxState( modifier.onClick )" :class=computeCheckboxClass></i>
+                    <input v-else-if="modifier.type === 'button'" type="button" @click="modifier.onClick">
+                    <input v-else-if="modifier.type === 'range'" type="range" @change="modifier.onChange">
+                    <input v-else-if="modifier.type === 'number'" type="number" @change="modifier.onChange">
+                    <input v-else-if="modifier.type === 'color'" type="color" @change="modifier.onChange">
+                    <label v-else>Error: Unknown modifier type !!!</label>
+                </span>
+            </TContainerHorizontal>
+            <ul v-if="haveChildren" :style=computeChildrenStyle>
+                <TTreeItem
+                    v-for="child in filteredChildren"
+                    v-bind:key="child.id"
+                    v-bind:name="child.name"
+                    v-bind:modifiers="child.modifiers"
+                    v-bind:children="child.children"
+                    v-bind:childrenFilter="childrenFilter"
+                />
             </ul>
         </li>
     `,
-    props:    [ '_id', 'name', 'isChecked', 'children' ],
+    data:     function () {
+
+        return {
+            showChildren: false,
+            isVisible: true
+        }
+
+    },
+    props:    [ 'id', 'name', 'modifiers', 'children', 'childrenFilter' ],
     computed: {
 
-        computeExpandId () {
+        computeToggleChildrenIconClass () {
 
-            return `${this._id}ExpandCheckbox`
+            return (this.showChildren) ? "fa fa-chevron-down" : "fa fa-chevron-right"
 
         },
 
-        computeVisibilityId () {
+        computeCheckboxClass () {
 
-            return `${this._id}VisibilityCheckbox`
+            return (this.isVisible) ? "fa fa-check-square" : "fa fa-square"
+
+        },
+
+        computeChildrenStyle () {
+
+            return {
+                display: ( this.showChildren ) ? "block" : "none"
+            }
+
+        },
+
+        filteredChildren() {
+
+            if(!this.childrenFilter) {
+                return this.children
+            }
+
+            return this.children.filter(this.childrenFilter)
+
+        },
+
+        haveChildren() {
+
+            return this.children && this.children.length > 0
 
         }
 
+    },
+    methods: {
+        
+        toggleChildren() {
+
+            this.showChildren = !this.showChildren
+
+        },
+
+        updateCheckboxState( onClickCallback ) {
+
+            this.isVisible = !this.isVisible
+            onClickCallback()
+
+        }
+        
     }
+
 } )
