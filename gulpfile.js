@@ -128,19 +128,14 @@ gulp.task( 'lint', () => {
                    quiet:             false,
                    envs:              [],
                    configFile:        './configs/eslint.conf.js',
-                   parser:            'babel-eslint',
+//                   parser:            'babel-eslint',
                    parserOptions:     {
-                       ecmaFeatures: {
-                           jsx: true
-                       }
+                       parser:            'babel-eslint'
                    },
                    plugins:           [
-                       'react'
+                       'vue'
                    ],
-                   rules:             {
-                       "react/jsx-uses-react": "error",
-                       "react/jsx-uses-vars":  "error"
-                   },
+                   rules:             {},
                    useEslintrc:       false
                } ) )
                .pipe( eslint.format( 'stylish' ) )
