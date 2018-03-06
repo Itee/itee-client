@@ -12,7 +12,7 @@
 
 import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-export default Vue.component( 'TMenuDropDown', {
+export default Vue.component( 'TToolDropDown', {
     template: `
         <div :class=computeClass @mouseenter=onMouseEnterHandler @mouseleave=onMouseLeaveHandler>
             <TLabel class="tDropDownLabel" :label=label :icon=icon></TLabel>
@@ -36,7 +36,7 @@ export default Vue.component( 'TMenuDropDown', {
 
         computeClass() {
 
-            let classList = 'tMenuDropDown'
+            let classList = 'tToolDropDown'
 
             switch ( this.popAt ) {
 
