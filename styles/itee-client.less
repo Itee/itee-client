@@ -63,11 +63,8 @@ body {
         }
 
         .tMenu {
-            font-size: 2.0em;
 
-            > * {
-                cursor: pointer;
-            }
+            font-size: 2.0em;
 
             .tMenuItem {
 
@@ -85,8 +82,12 @@ body {
 
             }
 
-            .tDropDownMenu {
+            .tMenuDropDown {
                 padding: 11px 16px;
+
+                &:hover {
+                    background-color: rgba(150, 150, 150, 1);
+                }
 
                 &.popAtRightUp:hover {
                     margin-right: -1px;
