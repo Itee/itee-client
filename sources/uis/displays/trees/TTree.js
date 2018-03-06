@@ -19,7 +19,7 @@ export default Vue.component( 'TTree', {
             <div class="tTreeHeader">
                 <slot name="header"></slot>
             </div>
-            <ul v-if="haveItems" class="tTreeContent">
+            <ul v-if="haveItems" class="tTreeItemChildren">
                 <TTreeItem
                     v-for="item in filteredItems"
                     v-bind:key="item.id"
