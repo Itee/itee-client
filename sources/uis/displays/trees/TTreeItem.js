@@ -27,7 +27,7 @@ export default Vue.component( 'TTreeItem', {
                     <label v-else>Error: Unknown modifier type !!!</label>
                 </span>
             </TContainerHorizontal>
-            <ul v-if="haveChildren" class="tTreeItemChildren" :style=computeChildrenStyle>
+            <ul v-if="haveChildren" :class=computeTreeItemChildrenClass :style=computeChildrenStyle>
                 <TTreeItem
                     v-for="child in filteredChildren"
                     v-bind:key="child.id"
@@ -49,6 +49,18 @@ export default Vue.component( 'TTreeItem', {
     },
     props:    [ 'id', 'name', 'modifiers', 'children', 'childrenFilter' ],
     computed: {
+
+        computeTreeItemChildrenClass() {
+
+            if( !this.children || this.children.length === 0) {
+                return 'tTreeItemChildren'
+            } else if ( this.children.length === 1 ) {
+                return 'tTreeItemChildren singleChild'
+            } else {
+                return 'tTreeItemChildren multiChild'
+            }
+
+        },
 
         computeToggleChildrenIconClass () {
 
