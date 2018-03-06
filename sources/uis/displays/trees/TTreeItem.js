@@ -14,7 +14,7 @@ import Vue from '../../../../node_modules/vue/dist/vue.esm'
 export default Vue.component( 'TTreeItem', {
     template: `
         <li class="tTreeItem">
-            <TContainerHorizontal hAlign="start" vAlign="center">
+            <TContainerHorizontal class="tTreeItemContent" hAlign="start" vAlign="center">
                 <i v-if="haveChildren" :class=computeToggleChildrenIconClass @click="toggleChildren()"></i>
                 <i v-else class="fa fa-minus"></i>
                 <label>{{name}}</label>
@@ -27,7 +27,7 @@ export default Vue.component( 'TTreeItem', {
                     <label v-else>Error: Unknown modifier type !!!</label>
                 </span>
             </TContainerHorizontal>
-            <ul v-if="haveChildren" :style=computeChildrenStyle>
+            <ul v-if="haveChildren" class="tTreeItemChildren" :style=computeChildrenStyle>
                 <TTreeItem
                     v-for="child in filteredChildren"
                     v-bind:key="child.id"
