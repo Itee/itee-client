@@ -8,6 +8,8 @@
  *
  */
 
+/* eslint-env browser */
+
 import React from 'react'
 
 let _instanceCounter = 0
@@ -32,7 +34,7 @@ class TColumn extends React.Component {
 
     componentWillReceiveProps ( /*nextProps*/ ) {}
 
-    shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
+    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
 
     componentWillUpdate ( /*nextProps, nextState*/ ) {}
 
@@ -47,7 +49,7 @@ class TColumn extends React.Component {
         const _class = ( className ) ? `tColumn ${className}` : 'tColumn'
 
         return (
-            <t-column ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-column>
+            <t-column ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-column>
         )
 
     }

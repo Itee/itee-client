@@ -1,5 +1,6 @@
 /**
- * @author TristanVALCKE / https://github.com/TristanVALCKE
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  *
  * This class allow to split any geometries type during runtime.
  * Keeping normals and Uvs. It is really usefull to see inside mesh like building.
@@ -8,15 +9,20 @@
  *
  * size - the size of the square view
  *
+ * @class Todo...
+ * @classdesc Todo...
+ * @example Todo...
+ *
  */
 
-import { DefaultLogger } from '../Loggers/TLogger'
-import {
-    DefaultLoadingManager,
-    FileLoader,
-    Vector3,
-    Shape
-} from 'threejs-full-es6'
+/* eslint-env browser */
+
+import { FileLoader } from '../../node_modules/threejs-full-es6/sources/loaders/FileLoader'
+import { DefaultLoadingManager } from '../../node_modules/threejs-full-es6/sources/loaders/LoadingManager'
+import { Vector3 } from '../../node_modules/threejs-full-es6/sources/math/Vector3'
+import { Shape } from '../../node_modules/threejs-full-es6/sources/core/Shape'
+
+import { DefaultLogger as TLogger } from '../Loggers/TLogger'
 import {
     BinaryReader,
     Endianness
@@ -24,6 +30,10 @@ import {
 
 ///////////
 
+/**
+ *
+ * @type {Object}
+ */
 const ShapeType = Object.freeze( {
     NullShape:   0,
     Point:       1,
@@ -42,6 +52,11 @@ const ShapeType = Object.freeze( {
 } );
 
 // Helpers
+/**
+ *
+ * @param ring
+ * @return {boolean}
+ */
 function ringClockwise ( ring ) {
 
     if ( (n = ring.length) < 4 ) {
@@ -55,6 +70,12 @@ function ringClockwise ( ring ) {
     return area >= 0;
 }
 
+/**
+ *
+ * @param ring
+ * @param hole
+ * @return {boolean}
+ */
 function ringContainsSome ( ring, hole ) {
 
     var i = -1, n = hole.length, c;
@@ -67,11 +88,17 @@ function ringContainsSome ( ring, hole ) {
 
 }
 
+/**
+ *
+ * @param ring
+ * @param point
+ * @return {number}
+ */
 function ringContains ( ring, point ) {
     var x = point[ 0 ], y = point[ 1 ], contains = -1;
     for ( var i = 0, n = ring.length, j = n - 1 ; i < n ; j = i++ ) {
-        var pi                               = ring[ i ], xi = pi[ 0 ], yi = pi[ 1 ],
-            pj = ring[ j ], xj = pj[ 0 ], yj = pj[ 1 ];
+        var pi = ring[ i ], xi = pi[ 0 ], yi = pi[ 1 ],
+            pj                               = ring[ j ], xj = pj[ 0 ], yj = pj[ 1 ];
         if ( segmentContains( pi, pj, point ) ) {
             return 0;
         }
@@ -82,6 +109,13 @@ function ringContains ( ring, point ) {
     return contains;
 }
 
+/**
+ *
+ * @param p0
+ * @param p1
+ * @param p2
+ * @return {boolean}
+ */
 function segmentContains ( p0, p1, p2 ) {
     var x20 = p2[ 0 ] - p0[ 0 ], y20 = p2[ 1 ] - p0[ 1 ];
     if ( x20 === 0 && y20 === 0 ) {
@@ -97,14 +131,11 @@ function segmentContains ( p0, p1, p2 ) {
 
 /**
  *
- * Loader
- *
  * @param manager
  * @param logger
  * @constructor
  */
-
-function SHPLoader ( manager = DefaultLoadingManager, logger = DefaultLogger ) {
+function SHPLoader ( manager = DefaultLoadingManager, logger = TLogger ) {
 
     this.manager = manager;
     this.logger  = logger;
@@ -121,14 +152,32 @@ function SHPLoader ( manager = DefaultLoadingManager, logger = DefaultLogger ) {
 
 Object.assign( SHPLoader, {
 
-    FileCode:      9994,
+    /**
+     *
+     */
+    FileCode: 9994,
+
+    /**
+     *
+     */
     MinFileLength: 100,
-    MinVersion:    1000
+
+    /**
+     *
+     */
+    MinVersion: 1000
 
 } );
 
 Object.assign( SHPLoader.prototype, {
 
+    /**
+     *
+     * @param url
+     * @param onLoad
+     * @param onProgress
+     * @param onError
+     */
     load ( url, onLoad, onProgress, onError ) {
 
         const scope = this;
@@ -143,6 +192,11 @@ Object.assign( SHPLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param arrayBuffer
+     * @return {*}
+     */
     parse ( arrayBuffer ) {
 
         this._reader
@@ -177,6 +231,11 @@ Object.assign( SHPLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @return {{fileCode, fileLength, version, shapeType, boundingBox: {xMin, xMax, yMin, yMax, zMin, zMax, mMin, mMax}}}
+     * @private
+     */
     _parseHeader () {
 
         const fileCode = this._reader.getInt32();
@@ -215,6 +274,12 @@ Object.assign( SHPLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param header
+     * @return {Array}
+     * @private
+     */
     _parseDatas ( header ) {
 
         this._reader.skipOffsetTo( 100 );
@@ -280,7 +345,8 @@ Object.assign( SHPLoader.prototype, {
                 case ShapeType.PolygonM:
                     while ( this._reader.getOffset() < endOfRecord ) {
 
-                        recordContent = this._parsePolygon();
+                        recordContent = this._parsePolyLine();
+                        //                        recordContent = this._parsePolygon();
                         if ( recordContent ) {
                             datas.push( recordContent );
                         }
@@ -324,6 +390,11 @@ Object.assign( SHPLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @return {{recordNumber, contentLength}}
+     * @private
+     */
     _parseRecordHeader () {
 
         this._reader.setEndianess( Endianness.Big );
@@ -345,6 +416,11 @@ Object.assign( SHPLoader.prototype, {
     //        return null;
     //    },
 
+    /**
+     *
+     * @return {*}
+     * @private
+     */
     _parsePoint () {
 
         const shapeType = this._reader.getInt32();
@@ -363,6 +439,11 @@ Object.assign( SHPLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @return {*}
+     * @private
+     */
     _parsePolyLine () {
 
         const shapeType = this._reader.getInt32();
@@ -404,6 +485,11 @@ Object.assign( SHPLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @return {*}
+     * @private
+     */
     _parsePolygon () {
 
         const shapeType = this._reader.getInt32();
@@ -478,6 +564,11 @@ Object.assign( SHPLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @return {*}
+     * @private
+     */
     _parseMultiPoint () {
 
         const shapeType = this._reader.getInt32();
@@ -509,6 +600,11 @@ Object.assign( SHPLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @return {*}
+     * @private
+     */
     _parseMultiPatch () {
 
         const shapeType = this._reader.getInt32();
@@ -522,6 +618,12 @@ Object.assign( SHPLoader.prototype, {
 
     },
 
+    /**
+     *
+     * @param datas
+     * @return {Array}
+     * @private
+     */
     _convertToObjects ( datas ) {
 
         let shapes = [];
@@ -531,7 +633,7 @@ Object.assign( SHPLoader.prototype, {
 
             if ( data.shapeType === ShapeType.Polygon || data.shapeType === ShapeType.PolygonZ || data.shapeType === ShapeType.PolygonM ) {
 
-                if ( Array.isArray( data.points ) ) {
+                if ( data.points && Array.isArray( data.points[ 0 ] ) ) {
 
                     __createObjectsFromArrays( data.points )
 
@@ -554,7 +656,7 @@ Object.assign( SHPLoader.prototype, {
                 let array = arrays[ arrayIndex ]
 
                 if ( !array ) {
-                    console.log( 'no array, oups !' )
+                    TLogger.log( 'no array, oups !' )
                     continue
                 }
 

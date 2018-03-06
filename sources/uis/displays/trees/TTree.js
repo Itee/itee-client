@@ -8,50 +8,57 @@
  *
  */
 
-import React from 'react'
+/* eslint-env browser */
 
-let _instanceCounter = 0
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
+import './TTreeItem'
 
-class TTree extends React.Component {
+export default Vue.component( 'TTree', {
+    template: `
+        <TContainerVertical class="tTree">
+            <div class="tTreeHeader">
+                <slot name="header"></slot>
+            </div>
+            <ul v-if="haveItems" class="tTreeItemChildren">
+                <TTreeItem
+                    v-for="item in filteredItems"
+                    v-bind:key="item.id"
+                    v-bind:name="item.name"
+                    v-bind:modifiers="item.modifiers"
+                    v-bind:children="item.children"
+                    v-bind:childrenFilter="filter"
+                />
+            </ul>
+        </TContainerVertical>
+    `,
+    props:    [ 'items', 'filter' ],
+    computed: {
 
-    constructor ( props ) {
+        computeStyle () {
 
-        super( props )
-        _instanceCounter++
+            return {
+                overflowY: 'auto',
+                padding:   '5px',
+                height:    '100%'
+            }
+
+        },
+
+        filteredItems () {
+
+            if(!this.filter) {
+                return this.items
+            }
+
+            return this.items.filter(this.filter)
+
+        },
+
+        haveItems() {
+
+            return this.items && this.items.length > 0
+
+        }
 
     }
-
-    /**
-     * React lifecycle
-     */
-    componentWillMount () {}
-
-    componentDidMount () {}
-
-    componentWillUnmount () {}
-
-    componentWillReceiveProps ( /*nextProps*/ ) {}
-
-    shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentWillUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentDidUpdate ( /*prevProps, prevState*/ ) {}
-
-    render () {
-
-        const { id, className } = this.props
-
-        const _id    = id || `tTree_${_instanceCounter}`
-        const _style = {}
-        const _class = ( className ) ? `tTree ${className}` : 'tTree'
-
-        return (
-            <t-tree ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-tree>
-        )
-
-    }
-
-}
-
-export { TTree }
+} )

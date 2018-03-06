@@ -8,6 +8,8 @@
  *
  */
 
+/* eslint-env browser */
+
 import React from 'react'
 
 let _instanceCounter = 0
@@ -32,7 +34,7 @@ class TNavbar extends React.Component {
 
     componentWillReceiveProps ( /*nextProps*/ ) {}
 
-    shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
+    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
 
     componentWillUpdate ( /*nextProps, nextState*/ ) {}
 
@@ -40,14 +42,69 @@ class TNavbar extends React.Component {
 
     render () {
 
-        const { id, className } = this.props
+        const { id, className, state, position, children } = this.props
 
         const _id    = id || `tNavbar_${_instanceCounter}`
-        const _style = {}
+        const _style = {
+            backgroundColor: '#323232',
+            position:        'fixed',
+            height:          '40px',
+            borderTop:       '1px solid rgb(30, 30, 30)',
+            display:         'flex',
+            alignItems:      'center'
+        }
         const _class = ( className ) ? `tNavbar ${className}` : 'tNavbar'
 
+        switch ( state ) {
+
+            case 'fixed':
+                _style[ 'position' ] = 'fixed'
+                break
+
+            case 'toggle':
+
+                break
+
+            case 'float':
+                _style[ 'position' ] = 'absolute'
+                break
+
+            default:
+                throw new RangeError( `Invalid switch parameter: ${state}`, 'TNavbar', 40 )
+
+        }
+
+        switch ( position ) {
+
+            case 'top':
+                _style[ 'top' ]   = '0px'
+                _style[ 'width' ] = '100%'
+                break
+
+            case 'right':
+                _style[ 'right' ]  = '0px'
+                _style[ 'height' ] = '100%'
+                break
+
+            case 'bottom':
+                _style[ 'bottom' ] = '0px'
+                _style[ 'width' ]  = '100%'
+                break
+
+            case 'left':
+                _style[ 'left' ]   = '0px'
+                _style[ 'height' ] = '100%'
+                break
+
+            default:
+                throw new RangeError( `Invalid switch parameter: ${position}`, 'TNavbar', 70 )
+
+        }
+
         return (
-            <t-navbar ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-navbar>
+            <t-navbar id={_id} class={_class} style={_style}>
+                {children}
+            </t-navbar>
         )
 
     }

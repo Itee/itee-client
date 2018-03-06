@@ -6,6 +6,8 @@
  *
  */
 
+/* eslint-env browser */
+
 export { TColumn } from './TColumn'
 export { TRow } from './TRow'
 export { TTable } from './TTable'

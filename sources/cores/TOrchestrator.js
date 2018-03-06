@@ -8,6 +8,8 @@
  *
  */
 
+/* eslint-env browser */
+
 /**
  *
  * @constructor
@@ -46,8 +48,7 @@ Object.assign( TOrchestrator.prototype, {
 
             self._processQueue.push( requestSkull )
 
-            request              = new XMLHttpRequest()
-            request.responseType = requestSkull.responseType
+            request = new XMLHttpRequest()
 
             request.onload = (function closureEndRequest () {
 
@@ -74,8 +75,9 @@ Object.assign( TOrchestrator.prototype, {
             request.onprogress = requestSkull.onProgress
             request.onerror    = requestSkull.onError
 
-            request.open( requestSkull.method, requestSkull.url )
+            request.open( requestSkull.method, requestSkull.url, true )
             request.setRequestHeader( "Content-Type", "application/json" )
+            request.responseType = requestSkull.responseType
 
             var dataToSend = (requestSkull.data && requestSkull.responseType === 'json') ? JSON.stringify( requestSkull.data ) : requestSkull.data
             request.send( dataToSend )
@@ -89,9 +91,9 @@ Object.assign( TOrchestrator.prototype, {
     },
 
     /**
-     * @public
-     * @memberOf TOrchestrator.prototype
      *
+     * @public
+     * @function
      * @param newRequest
      */
     queue: function queue ( newRequest ) {
@@ -170,6 +172,10 @@ Object.assign( TOrchestrator.prototype, {
 
 } )
 
+/**
+ *
+ * @type {TOrchestrator}
+ */
 let singletonInstance = new TOrchestrator()
 
 export { singletonInstance as TOrchestrator }

@@ -8,6 +8,8 @@
  *
  */
 
+/* eslint-env browser */
+
 import React from 'react'
 
 let _instanceCounter = 0
@@ -32,7 +34,7 @@ class TErrorNotification extends React.Component {
 
     componentWillReceiveProps ( /*nextProps*/ ) {}
 
-    shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
+    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
 
     componentWillUpdate ( /*nextProps, nextState*/ ) {}
 
@@ -47,7 +49,7 @@ class TErrorNotification extends React.Component {
         const _class = ( className ) ? `tErrorNotification ${className}` : 'tErrorNotification'
 
         return (
-            <t-error-notification ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-error-notification>
+            <t-error-notification ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-error-notification>
         )
 
     }

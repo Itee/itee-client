@@ -1,0 +1,38 @@
+
+
+#add-widget-btn {
+    cursor: pointer;
+    color: #3E3E3E;
+
+    &:hover {
+        color: darkgray;
+    }
+}
+
+
+#dialog-widget-manager {
+
+    height: auto !important;
+
+    .ui-autocomplete-loading {
+
+        &:after {
+            position:absolute;
+            font-family: FontAwesome;
+            top:0;
+            left:-5px;
+            content: "\f110";
+        }
+    }
+    .ui-autocomplete {
+        max-height: 100px;
+        overflow-y: auto;
+        /* prevent horizontal scrollbar */
+        overflow-x: hidden;
+        z-index: 9999;
+    }
+
+    .list-group-item {
+        color: black;
+    }
+}

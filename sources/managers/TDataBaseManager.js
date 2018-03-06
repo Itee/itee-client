@@ -15,14 +15,22 @@
  *
  */
 
+/* eslint-env browser */
+
 import {
     HttpVerb,
     ResponseType,
     HttpStatusCode
 } from '../cores/TConstants'
 import { TOrchestrator } from '../cores/TOrchestrator'
+import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { TCache } from '../cores/TCache'
 
+/**
+ *
+ * @return {*}
+ * @constructor
+ */
 function TDataBaseManager () {
 
     let _basePath     = '/'
@@ -116,11 +124,11 @@ Object.defineProperties( TDataBaseManager, {
 
             if ( status === HttpStatusCode.NoContent ) {
 
-                console.warn( 'Unable to retrieve data...' )
+                TLogger.warn( 'Unable to retrieve data...' )
 
             } else if ( status !== HttpStatusCode.Ok ) {
 
-                console.error( 'An error occurs when retrieve data from database !!!' )
+                TLogger.error( 'An error occurs when retrieve data from database !!!' )
 
             } else {
 
@@ -197,7 +205,7 @@ Object.defineProperties( TDataBaseManager.prototype, {
             if ( !TDataBaseManager._statusOk( status ) ) { return }
 
             if ( !response ) {
-                console.error( 'TDataBaseManager.onLoad: No data receive !' )
+                TLogger.error( 'TDataBaseManager.onLoad: No data receive !' )
                 return
             }
 
@@ -271,7 +279,7 @@ Object.defineProperties( TDataBaseManager.prototype, {
 
             } else {
 
-                //console.log( progressEvent )
+                //TLogger.log( progressEvent )
 
             }
 
@@ -300,7 +308,7 @@ Object.defineProperties( TDataBaseManager.prototype, {
 
             } else {
 
-                console.error( errorEvent )
+                TLogger.error( errorEvent )
 
             }
 
@@ -324,7 +332,9 @@ Object.defineProperties( TDataBaseManager.prototype, {
      */
     _onArrayBuffer: {
         value: function _onArrayBufferDefault ( data, onSuccess, onProgress, onError ) {
-            throw new Error( 'TDataBaseManager: _onArrayBuffer methods must be reimplemented !' )
+            onProgress( 1 )
+            onSuccess( data )
+            onError( 'TDataBaseManager: _onArrayBuffer methods must be reimplemented !' )
         }
     },
 
@@ -342,7 +352,9 @@ Object.defineProperties( TDataBaseManager.prototype, {
      */
     _onBlob: {
         value: function _onBlobDefault ( data, onSuccess, onProgress, onError ) {
-            throw new Error( 'TDataBaseManager: _onBlob methods must be reimplemented !' )
+            onProgress( 1 )
+            onSuccess( data )
+            onError( 'TDataBaseManager: _onBlob methods must be reimplemented !' )
         }
     },
 
@@ -360,7 +372,9 @@ Object.defineProperties( TDataBaseManager.prototype, {
      */
     _onJson: {
         value: function _onJsonDefault ( data, onSuccess, onProgress, onError ) {
-            throw new Error( 'TDataBaseManager: _onJson methods must be reimplemented !' )
+            onProgress( 1 )
+            onSuccess( data )
+            onError( 'TDataBaseManager: _onJson methods must be reimplemented !' )
         }
     },
 
@@ -378,7 +392,9 @@ Object.defineProperties( TDataBaseManager.prototype, {
      */
     _onText: {
         value: function _onTextDefault ( data, onSuccess, onProgress, onError ) {
-            throw new Error( 'TDataBaseManager: _onText methods must be reimplemented !' )
+            onProgress( 1 )
+            onSuccess( data )
+            onError( 'TDataBaseManager: _onText methods must be reimplemented !' )
         }
     },
 
@@ -434,7 +450,7 @@ Object.defineProperties( TDataBaseManager.prototype, {
 
                 cachedResult = this._cache.get( id )
                 if ( !cachedResult ) {
-                    break
+                    continue
                 }
 
                 results.push( cachedResult )
@@ -497,7 +513,7 @@ Object.defineProperties( TDataBaseManager.prototype, {
 
                 function cacheOnLoadResult ( result ) {
 
-                    self._cache.add( id, result[ 0 ] )
+                    self._cache.add( id, result )
                     onLoadCallback( result )
 
                 }
@@ -513,6 +529,22 @@ Object.defineProperties( TDataBaseManager.prototype, {
                 )
 
             }
+
+        }
+    },
+
+    _searchWhere: {
+        value: function _readOne ( query, onLoadCallback, onProgressCallback, onErrorCallback ) {
+
+            TDataBaseManager.requestServer(
+                HttpVerb.Read,
+                this.basePath,
+                query,
+                this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
+                this._onProgress.bind( this, onProgressCallback ),
+                this._onError.bind( this, onErrorCallback ),
+                this.responseType
+            )
 
         }
     },
@@ -645,7 +677,7 @@ Object.assign( TDataBaseManager.prototype, {
     create ( data, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         let dataArray = []
-        const onError = onErrorCallback || function ( error ) { console.error( error ) }
+        const onError = onErrorCallback || function ( error ) { TLogger.error( error ) }
 
         if ( !data ) { onError( 'TDataBaseManager.create: Data cannot be null or undefined !' ) }
 
@@ -677,7 +709,7 @@ Object.assign( TDataBaseManager.prototype, {
      */
     read ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        const onError = onErrorCallback || function ( error ) { console.error( error ) }
+        const onError = onErrorCallback || function ( error ) { TLogger.error( error ) }
 
         if ( !ids ) { onError( 'TDataBaseManager.read: Ids cannot be null or undefined !' ) }
 
@@ -713,6 +745,10 @@ Object.assign( TDataBaseManager.prototype, {
 
             this._readOne( ids, onLoadCallback, onProgressCallback, onError )
 
+        } else if ( typeof ids === 'object' ) {
+
+            this._searchWhere( ids, onLoadCallback, onProgressCallback, onError )
+
         } else {
 
             onError( 'TDataBaseManager.read: Expected string id or array of string id !' )
@@ -734,7 +770,7 @@ Object.assign( TDataBaseManager.prototype, {
      */
     update ( ids, data, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        const onError = onErrorCallback || function ( error ) { console.error( error ) }
+        const onError = onErrorCallback || function ( error ) { TLogger.error( error ) }
 
         if ( !ids ) { onError( 'TDataBaseManager.update: Ids cannot be null or undefined !' ) }
         if ( !data ) { onError( 'TDataBaseManager.update: Data cannot be null or undefined !' ) }
@@ -767,7 +803,7 @@ Object.assign( TDataBaseManager.prototype, {
      */
     delete ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        const onError = onErrorCallback || function ( error ) { console.error( error ) }
+        const onError = onErrorCallback || function ( error ) { TLogger.error( error ) }
 
         if ( !ids ) { onError( 'TDataBaseManager.delete: Ids data cannot be null or undefined !' ) }
 

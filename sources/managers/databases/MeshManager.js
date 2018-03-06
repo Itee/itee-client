@@ -1,8 +1,16 @@
 /**
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ *
+ * @class Todo...
+ * @classdesc Todo...
+ * @example Todo...
+ *
  */
 
+/* eslint-env browser */
+
+import { DefaultLogger as TLogger } from '../../loggers/TLogger'
 import { TOrchestrator } from '../../cores/TOrchestrator'
 import {
     Geometry,
@@ -128,7 +136,7 @@ Object.assign( MeshManager.prototype, {
 
             const data = ( loadEvent.target.response ) ? JSON.parse( loadEvent.target.response ) : null
             if ( !data ) {
-                console.error( 'MeshManager: No data receive !' );
+                TLogger.error( 'MeshManager: No data receive !' );
                 return
             }
 
@@ -149,7 +157,7 @@ Object.assign( MeshManager.prototype, {
         //
         //            if ( loadEvent.target.status !== 200 ) {
         //
-        //                console.error( object )
+        //                TLogger.error( object )
         //                return
         //
         //            }
@@ -163,7 +171,7 @@ Object.assign( MeshManager.prototype, {
         function onProgress ( progressEvent ) {
 
             var progressValue = Math.ceil( (progressEvent.loaded / progressEvent.total ) * 100 ) + '%';
-            console.log( "Mesh progress: " + progressValue );
+            TLogger.log( "Mesh progress: " + progressValue );
 
         }
 
@@ -178,7 +186,7 @@ Object.assign( MeshManager.prototype, {
     createMeshFromBuffer ( arraybuffer ) {
 
         if ( !arraybuffer ) {
-            console.error( 'Unable to create mesh from empty, null or undefined buffer !' );
+            TLogger.error( 'Unable to create mesh from empty, null or undefined buffer !' );
             return
         }
 
@@ -254,7 +262,7 @@ Object.assign( MeshManager.prototype, {
             for ( var i = 0 ; i < header.numberOfTexture ; i++ ) {
 
                 if ( meshData.resolution === 0 ) {
-                    console.error( 'meshData.resolution for texture load === 0' );
+                    TLogger.error( 'meshData.resolution for texture load === 0' );
                 }
 
                 material     = new MeshPhongMaterial()
@@ -305,7 +313,7 @@ Object.assign( MeshManager.prototype, {
 
         } else {
 
-            console.error( 'Unknown layer for mesh add to top level group !' );
+            TLogger.error( 'Unknown layer for mesh add to top level group !' );
             this._meshesGroup.add( mesh )
 
         }
@@ -422,7 +430,7 @@ Object.assign( MeshManager.prototype, {
 
                 var jsonMessage = convertArrayBufferToUTF8String( binaryMeshes )
                 var message     = JSON.parse( jsonMessage )
-                console.error( message )
+                TLogger.error( message )
                 return
 
             }
@@ -432,7 +440,7 @@ Object.assign( MeshManager.prototype, {
             // Header In
             var numberOfBuffers = dataView.getUint32( 0 )
             if ( numberOfBuffers === 0 ) { return }
-            //            console.log( 'numberOfBuffers to extract: ' + numberOfBuffers )
+            //            TLogger.log( 'numberOfBuffers to extract: ' + numberOfBuffers )
 
             var numberOfBuffersBytesLength = numberOfBuffers * 4 // UInt32
             var dataOffset                 = 4 + numberOfBuffersBytesLength
@@ -442,7 +450,7 @@ Object.assign( MeshManager.prototype, {
 
                 bufferLength = dataView.getUint32( bufferIndex )
 
-                //                console.log('header: ' + bufferLength )
+                //                TLogger.log('header: ' + bufferLength )
                 byteArray = binaryMeshes.slice( dataOffset, dataOffset + bufferLength )
                 self.createMeshFromBuffer( byteArray )
 
@@ -457,7 +465,7 @@ Object.assign( MeshManager.prototype, {
         function onProgress ( progressEvent ) {
 
             var progressValue = Math.ceil( (progressEvent.loaded / progressEvent.total ) * 100 ) + '%';
-            //            console.log( "progressValue: " + progressValue );
+            //            TLogger.log( "progressValue: " + progressValue );
 
         }
 
@@ -489,17 +497,17 @@ Object.assign( MeshManager.prototype, {
             //Todo: manage all status !!!
             if ( loadEvent.target.status === 204 || !meshes ) {
 
-                console.warn( 'Unable to retrieve meshes...' )
+                TLogger.warn( 'Unable to retrieve meshes...' )
                 return
 
             } else if ( loadEvent.target.status !== 200 ) {
 
-                console.error( meshes )
+                TLogger.error( meshes )
                 return
 
             } else {
 
-                console.log( 'Get ' + meshes.length + ' meshes infos from database.' );
+                TLogger.log( 'Get ' + meshes.length + ' meshes infos from database.' );
 
             }
 
@@ -512,7 +520,7 @@ Object.assign( MeshManager.prototype, {
         function onProgress ( progressEvent ) {
 
             var progressValue = Math.ceil( (progressEvent.loaded / progressEvent.total ) * 100 ) + '%';
-            //            console.log( "progressValue: " + progressValue );
+            //            TLogger.log( "progressValue: " + progressValue );
 
         }
 
@@ -530,15 +538,15 @@ Object.assign( MeshManager.prototype, {
 
         if ( status === 204 ) {
 
-            console.warn( 'Unable to retrieve data...' )
+            TLogger.warn( 'Unable to retrieve data...' )
 
         } else if ( status !== 200 ) {
 
-            console.error( 'An error occurs when retrieve data from database !!!' )
+            TLogger.error( 'An error occurs when retrieve data from database !!!' )
 
         } else {
 
-            //            console.log( 'Get data from database.' )
+            //            TLogger.log( 'Get data from database.' )
             statusOk = true
 
         }
@@ -563,7 +571,7 @@ Object.assign( MeshManager.prototype, {
 
             const data = ( loadEvent.target.response ) ? JSON.parse( loadEvent.target.response ) : null
             if ( !data ) {
-                console.error( 'MeshManager: No data receive !' );
+                TLogger.error( 'MeshManager: No data receive !' );
                 return
             }
 
@@ -575,7 +583,7 @@ Object.assign( MeshManager.prototype, {
                 if ( children ) {
                     Array.prototype.push.apply( childrenIds, children )
                 } else {
-                    console.error( `No children in ${scene.name}` )
+                    TLogger.error( `No children in ${scene.name}` )
                 }
 
             }
@@ -591,13 +599,13 @@ Object.assign( MeshManager.prototype, {
         function onProgressScene ( progressEvent ) {
 
             const progressValue = Math.ceil( (progressEvent.loaded / progressEvent.total ) * 100 )
-            console.log( `Load scene: ${progressValue}%` )
+            TLogger.log( `Load scene: ${progressValue}%` )
 
         }
 
         function onErrorScene ( errorEvent ) {
 
-            console.error( errorEvent )
+            TLogger.error( errorEvent )
 
         }
 
@@ -619,7 +627,7 @@ Object.assign( MeshManager.prototype, {
 
             const scenes = ( loadEvent.target.response ) ? JSON.parse( loadEvent.target.response ) : null
             if ( !scenes ) {
-                console.error( 'MeshManager: No scene receive !' );
+                TLogger.error( 'MeshManager: No scene receive !' );
                 return
             }
 
@@ -631,7 +639,7 @@ Object.assign( MeshManager.prototype, {
                 if ( children ) {
                     Array.prototype.push.apply( childrenIds, children )
                 } else {
-                    console.error( `No children in ${scene.name}` )
+                    TLogger.error( `No children in ${scene.name}` )
                 }
 
             }
@@ -643,7 +651,7 @@ Object.assign( MeshManager.prototype, {
             //            if ( children ) {
             //                Array.prototype.push.apply( childrenIds, children )
             //            } else {
-            //                console.error( `No children in ${scene.name}` )
+            //                TLogger.error( `No children in ${scene.name}` )
             //            }
             //            self.retrieveChildrenFor( self._viewport.scene, childrenIds )
 
@@ -656,13 +664,13 @@ Object.assign( MeshManager.prototype, {
         function onProgressScene ( progressEvent ) {
 
             const progressValue = Math.ceil( (progressEvent.loaded / progressEvent.total ) * 100 )
-            console.log( `Load scene: ${progressValue}%` )
+            TLogger.log( `Load scene: ${progressValue}%` )
 
         }
 
         function onErrorScene ( errorEvent ) {
 
-            console.error( errorEvent )
+            TLogger.error( errorEvent )
 
         }
 
@@ -694,7 +702,7 @@ Object.assign( MeshManager.prototype, {
 
             const data = ( loadEvent.target.response ) ? JSON.parse( loadEvent.target.response ) : null
             if ( !data ) {
-                console.error( 'MeshManager: No data receive !' );
+                TLogger.error( 'MeshManager: No data receive !' );
                 return
             }
 
@@ -719,13 +727,13 @@ Object.assign( MeshManager.prototype, {
         function onProgressChildren ( progressEvent ) {
 
             //            const progressValue = Math.ceil( (progressEvent.loaded / progressEvent.total ) * 100 )
-            //            console.log( `Load children: ${progressValue}%` )
+            //            TLogger.log( `Load children: ${progressValue}%` )
 
         }
 
         function onErrorChildren ( errorEvent ) {
 
-            console.error( errorEvent )
+            TLogger.error( errorEvent )
 
         }
 
@@ -776,7 +784,7 @@ Object.assign( MeshManager.prototype, {
 
             const data = ( loadEvent.target.response ) ? JSON.parse( loadEvent.target.response ) : null
             if ( !data ) {
-                console.error( 'MeshManager: No data receive !' );
+                TLogger.error( 'MeshManager: No data receive !' );
                 return
             }
 
@@ -807,13 +815,13 @@ Object.assign( MeshManager.prototype, {
         function onProgressChildren ( progressEvent ) {
 
             //            const progressValue = Math.ceil( (progressEvent.loaded / progressEvent.total ) * 100 )
-            //            console.log( `Load children: ${progressValue}%` )
+            //            TLogger.log( `Load children: ${progressValue}%` )
 
         }
 
         function onErrorChildren ( errorEvent ) {
 
-            console.error( errorEvent )
+            TLogger.error( errorEvent )
 
         }
 
@@ -957,7 +965,7 @@ Object.assign( MeshManager.prototype, {
 
                 const jsonData = ( loadEvent.target.response ) ? JSON.parse( loadEvent.target.response ) : null
                 if ( !jsonData ) {
-                    console.error( 'MeshManager: No data receive !' );
+                    TLogger.error( 'MeshManager: No data receive !' );
                     return
                 }
 
@@ -984,13 +992,13 @@ Object.assign( MeshManager.prototype, {
             function onProgressGeometry ( progressEvent ) {
 
                 //                const progressValue = Math.ceil( (progressEvent.loaded / progressEvent.total ) * 100 )
-                //                console.log( `Load geometry: ${progressValue}%` )
+                //                TLogger.log( `Load geometry: ${progressValue}%` )
 
             }
 
             function onErrorGeometry ( errorEvent ) {
 
-                console.error( errorEvent )
+                TLogger.error( errorEvent )
 
             }
 
@@ -1090,7 +1098,7 @@ Object.assign( MeshManager.prototype, {
             }
 
         } else {
-            console.error( 'Unable to retrieve geometry type !!!' );
+            TLogger.error( 'Unable to retrieve geometry type !!!' );
         }
 
         geometry.computeFaceNormals()
@@ -1165,7 +1173,7 @@ Object.assign( MeshManager.prototype, {
 
             const data = ( loadEvent.target.response ) ? JSON.parse( loadEvent.target.response ) : null
             if ( !data ) {
-                console.error( 'MeshManager: No data receive !' );
+                TLogger.error( 'MeshManager: No data receive !' );
                 return
             }
 
@@ -1185,7 +1193,7 @@ Object.assign( MeshManager.prototype, {
 
             const data = ( loadEvent.target.response ) ? JSON.parse( loadEvent.target.response ) : null
             if ( !data ) {
-                console.error( 'MeshManager: No data receive !' )
+                TLogger.error( 'MeshManager: No data receive !' )
                 return
             }
 
@@ -1217,13 +1225,13 @@ Object.assign( MeshManager.prototype, {
         function onProgressMaterial ( progressEvent ) {
 
             //            const progressValue = Math.ceil( (progressEvent.loaded / progressEvent.total ) * 100 );
-            //            console.log( `Load material: ${progressValue}%` );
+            //            TLogger.log( `Load material: ${progressValue}%` );
 
         }
 
         function onErrorMaterial ( errorEvent ) {
 
-            console.error( errorEvent )
+            TLogger.error( errorEvent )
 
         }
 
@@ -1328,7 +1336,7 @@ Object.assign( MeshManager.prototype, {
                         break;
 
                     default:
-                        console.error( 'Unknown material type !' );
+                        TLogger.error( 'Unknown material type !' );
                         break;
 
                 }
@@ -1425,7 +1433,7 @@ Object.assign( MeshManager.prototype, {
                     break;
 
                 default:
-                    console.error( 'Unknown material type !' );
+                    TLogger.error( 'Unknown material type !' );
                     break;
 
             }
@@ -1490,7 +1498,7 @@ Object.assign( MeshManager.prototype, {
 
     updateMeshes () {
 
-        console.log( 'Update meshes call !' );
+        TLogger.log( 'Update meshes call !' );
 
         var cameraWorldPosition = ( this._viewport.cameraControlType === "path" ) ? this._viewport.camera.getWorldPosition() : this._viewport.cameraControl.target
         var loadGround          = loadGround || ( this._viewport.cameraControl instanceof OrbitControls )

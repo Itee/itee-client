@@ -6,4 +6,6 @@
  *
  */
 
-export { TSplitter } from './TSplitter'
+/* eslint-env browser */
+
+export { default as TSplitter } from './TSplitter'

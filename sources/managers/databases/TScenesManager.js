@@ -11,6 +11,8 @@
  *
  */
 
+/* eslint-env browser */
+
 import { TDataBaseManager } from '../TDataBaseManager'
 
 /**
@@ -24,16 +26,22 @@ function TScenesManager () {
 
 }
 
-TScenesManager.prototype = Object.assign( Object.create( TDataBaseManager.prototype ), {
+TScenesManager.prototype = Object.assign( Object.create(TDataBaseManager.prototype), {
 
+    /**
+     *
+     */
     constructor: TScenesManager
 
 } )
 
 Object.defineProperties( TScenesManager.prototype, {
 
+    /**
+     *
+     */
     _onJson: {
-        value: function _onJson ( jsonData, onSuccess, onProgress, onError ) {
+        value: function _onJson ( jsonData, onSuccess ) {
 
             onSuccess( jsonData )
 

@@ -6,6 +6,8 @@
  *
  */
 
+/* eslint-env browser */
+
 export { ASCLoader } from './ASCLoader';
 export { BinaryReader } from './BinaryReader';
 export {
@@ -17,4 +19,5 @@ export {
     ShapeType
 } from './SHPLoader';
 export { FBXLoader2 } from './FBXLoader2';
+export { RZMLLoader } from './RZMLLoader';
 export { TUniversalLoader } from './TUniversalLoader'

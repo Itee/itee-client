@@ -8,50 +8,14 @@
  *
  */
 
-import React from 'react'
+/* eslint-env browser */
 
-let _instanceCounter = 0
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-class TContent extends React.Component {
-
-    constructor ( props ) {
-
-        super( props )
-        _instanceCounter++
-
-    }
-
-    /**
-     * React lifecycle
-     */
-    componentWillMount () {}
-
-    componentDidMount () {}
-
-    componentWillUnmount () {}
-
-    componentWillReceiveProps ( /*nextProps*/ ) {}
-
-    shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentWillUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentDidUpdate ( /*prevProps, prevState*/ ) {}
-
-    render () {
-
-        const { id, className } = this.props
-
-        const _id    = id || `tContent_${_instanceCounter}`
-        const _style = {}
-        const _class = ( className ) ? `tContent ${className}` : 'tContent'
-
-        return (
-            <t-content ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-content>
-        )
-
-    }
-
-}
-
-export { TContent }
+export default Vue.component( 'TContent', {
+    template: `
+        <TContainer class="tContent" :expand=true :wrap=true vAlign="stretch" hAlign="stretch" wAlign="stretch">
+            <slot></slot>
+        </TContainer>
+    `
+} )

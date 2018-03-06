@@ -9,12 +9,14 @@
  *
  */
 
+/* eslint-env browser */
+
+import { MeshPhongMaterial } from '../../../node_modules/threejs-full-es6/sources/materials/MeshPhongMaterial'
+import { LineBasicMaterial } from '../../../node_modules/threejs-full-es6/sources/materials/LineBasicMaterial'
+import { Color } from '../../../node_modules/threejs-full-es6/sources/math/Color'
+
+import { DefaultLogger as TLogger } from '../../loggers/TLogger'
 import { TDataBaseManager } from '../TDataBaseManager'
-import {
-    Color,
-    MeshPhongMaterial,
-    LineBasicMaterial
-} from 'threejs-full-es6'
 
 /**
  *
@@ -27,10 +29,18 @@ function TMaterialsManager () {
 
 }
 
-TMaterialsManager.prototype = Object.assign( Object.create( TDataBaseManager.prototype ), {
+TMaterialsManager.prototype = Object.assign( Object.create(TDataBaseManager.prototype), {
 
+    /**
+     *
+     */
     constructor: TMaterialsManager,
 
+    /**
+     *
+     * @param jsonMaterial
+     * @return {undefined}
+     */
     convertJsonToMaterial ( jsonMaterial ) {
 
         const materialType = jsonMaterial.type
@@ -119,7 +129,7 @@ TMaterialsManager.prototype = Object.assign( Object.create( TDataBaseManager.pro
                 break;
 
             default:
-                console.error( 'Unknown material type !' );
+                TLogger.error( 'Unknown material type !' );
                 break;
 
         }
@@ -132,6 +142,9 @@ TMaterialsManager.prototype = Object.assign( Object.create( TDataBaseManager.pro
 
 Object.defineProperties( TMaterialsManager.prototype, {
 
+    /**
+     *
+     */
     _onJson: {
         value: function _onJson ( jsonData, onSuccess, onProgress, onError ) {
 

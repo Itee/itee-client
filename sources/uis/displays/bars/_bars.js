@@ -6,7 +6,8 @@
  *
  */
 
-export { TAppBar } from './TAppBar'
-export { TStatusBar } from './TStatusBar'
-export { TTitleBar } from './TTitleBar'
-export { TToolBar } from './TToolBar'
+/* eslint-env browser */
+
+export { default as TAppBar } from './TAppBar'
+export { default as TStatusBar } from './TStatusBar'
+export { default as TTitleBar } from './TTitleBar'

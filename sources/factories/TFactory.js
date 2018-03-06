@@ -8,6 +8,12 @@
  *
  */
 
+/* eslint-env browser */
+
+/**
+ *
+ * @constructor
+ */
 function TFactory () {
 
 }

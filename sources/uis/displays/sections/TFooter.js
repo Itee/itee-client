@@ -8,50 +8,13 @@
  *
  */
 
-import React from 'react'
+/* eslint-env browser */
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-let _instanceCounter = 0
-
-class TFooter extends React.Component {
-
-    constructor ( props ) {
-
-        super( props )
-        _instanceCounter++
-
-    }
-
-    /**
-     * React lifecycle
-     */
-    componentWillMount () {}
-
-    componentDidMount () {}
-
-    componentWillUnmount () {}
-
-    componentWillReceiveProps ( /*nextProps*/ ) {}
-
-    shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentWillUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentDidUpdate ( /*prevProps, prevState*/ ) {}
-
-    render () {
-
-        const { id, className } = this.props
-
-        const _id    = id || `tFooter_${_instanceCounter}`
-        const _style = {}
-        const _class = ( className ) ? `tFooter ${className}` : 'tFooter'
-
-        return (
-            <t-footer ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-footer>
-        )
-
-    }
-
-}
-
-export { TFooter }
+export default Vue.component( 'TFooter', {
+    template: `
+        <TContainer class="tFooter" height="30px" vAlign="center" hAlign="center">
+            <slot></slot>
+        </TContainer>
+    `
+} )

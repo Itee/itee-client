@@ -6,6 +6,8 @@
  *
  */
 
+/* eslint-env browser */
+
 export { TDialog } from './TDialog'
 export { TDialogArea } from './TDialogArea'
 export { TErrorDialog } from './TErrorDialog'

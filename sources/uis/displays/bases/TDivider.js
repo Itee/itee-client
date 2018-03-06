@@ -8,51 +8,22 @@
  *
  */
 
-import React from 'react'
+/* eslint-env browser */
 
-let _instanceCounter = 0
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-class TDivider extends React.Component {
+export default Vue.component( 'TDivider', {
+    template: `
+        <div :class=computeClass role="separator"></div>
+    `,
+    props:    [ 'orientation' ],
+    computed: {
 
-    constructor ( props ) {
+        computeClass() {
 
-        super( props )
-        _instanceCounter++
+            return ( this.orientation === "vertical" ) ? 'tDivider tDividerVertical' : 'tDivider tDividerHorizontal'
 
-    }
-
-    /**
-     * React lifecycle
-     */
-    componentWillMount () {}
-
-    componentDidMount () {}
-
-    componentWillUnmount () {}
-
-    componentWillReceiveProps ( /*nextProps*/ ) {}
-
-    shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentWillUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentDidUpdate ( /*prevProps, prevState*/ ) {}
-
-    render () {
-
-        const { id, className } = this.props
-
-        const _id    = id || `tDivider_${_instanceCounter}`
-        const _style = {}
-        const _class = ( className ) ? `tDivider ${className}` : 'tDivider'
-
-        return (
-            <t-divider ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-divider>
-        )
+        }
 
     }
-
-}
-
-export { TDivider }
-
+} )

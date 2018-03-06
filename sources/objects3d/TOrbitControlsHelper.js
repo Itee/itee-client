@@ -8,16 +8,21 @@
  *
  */
 
-import {
-    VertexColors,
-    LineSegments,
-    BufferGeometry,
-    Float32BufferAttribute,
-    LineBasicMaterial,
-    Color,
-    OrbitControls
-} from 'threejs-full-es6'
+/* eslint-env browser */
 
+import { VertexColors } from '../../node_modules/threejs-full-es6/sources/constants'
+import { BufferGeometry } from '../../node_modules/threejs-full-es6/sources/core/BufferGeometry'
+import { Float32BufferAttribute } from '../../node_modules/threejs-full-es6/sources/core/BufferAttribute'
+import { LineBasicMaterial } from '../../node_modules/threejs-full-es6/sources/materials/LineBasicMaterial'
+import { Color } from '../../node_modules/threejs-full-es6/sources/math/Color'
+import { OrbitControls } from '../../node_modules/threejs-full-es6/sources/controls/OrbitControls'
+import { LineSegments } from '../../node_modules/threejs-full-es6/sources/objects/LineSegments'
+
+/**
+ *
+ * @param orbitControls
+ * @constructor
+ */
 function TOrbitControlsHelper ( orbitControls ) {
 
     if ( !orbitControls ) { throw new Error( 'Unable to create TOrbitControlsHelper for null or undefined controller !' ) }
@@ -116,10 +121,16 @@ function TOrbitControlsHelper ( orbitControls ) {
 
 }
 
-TOrbitControlsHelper.prototype = Object.assign( Object.create( LineSegments.prototype ), {
+TOrbitControlsHelper.prototype = Object.assign( Object.create(LineSegments.prototype), {
 
+    /**
+     *
+     */
     constructor: TOrbitControlsHelper,
 
+    /**
+     *
+     */
     updateHelperPosition () {
 
         const target = this.control.target
@@ -130,6 +141,9 @@ TOrbitControlsHelper.prototype = Object.assign( Object.create( LineSegments.prot
 
     },
 
+    /**
+     *
+     */
     startOpacityAnimation () {
 
         // In case fade off is running, kill it an restore opacity to 1
@@ -144,6 +158,9 @@ TOrbitControlsHelper.prototype = Object.assign( Object.create( LineSegments.prot
 
     },
 
+    /**
+     *
+     */
     endOpacityAnimation () {
 
         // Manage transparency interval

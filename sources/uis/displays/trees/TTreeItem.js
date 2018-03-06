@@ -8,50 +8,111 @@
  *
  */
 
-import React from 'react'
+/* eslint-env browser */
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-let _instanceCounter = 0
+export default Vue.component( 'TTreeItem', {
+    template: `
+        <li class="tTreeItem">
+            <TContainerHorizontal class="tTreeItemContent" hAlign="start" vAlign="center">
+                <i v-if="haveChildren" :class=computeToggleChildrenIconClass @click="toggleChildren()"></i>
+                <label>{{name}}</label>
+                <span v-for="modifier in modifiers" class="tTreeItemModifiers">
+                    <i v-if="modifier.type === 'checkbox'" @click="updateCheckboxState( modifier.onClick )" :class=computeCheckboxClass></i>
+                    <input v-else-if="modifier.type === 'button'" type="button" @click="modifier.onClick">
+                    <input v-else-if="modifier.type === 'range'" type="range" @change="modifier.onChange">
+                    <input v-else-if="modifier.type === 'number'" type="number" @change="modifier.onChange">
+                    <input v-else-if="modifier.type === 'color'" type="color" @change="modifier.onChange">
+                    <label v-else>Error: Unknown modifier type !!!</label>
+                </span>
+            </TContainerHorizontal>
+            <ul v-if="haveChildren" :class=computeTreeItemChildrenClass :style=computeChildrenStyle>
+                <TTreeItem
+                    v-for="child in filteredChildren"
+                    v-bind:key="child.id"
+                    v-bind:name="child.name"
+                    v-bind:modifiers="child.modifiers"
+                    v-bind:children="child.children"
+                    v-bind:childrenFilter="childrenFilter"
+                />
+            </ul>
+        </li>
+    `,
+    data:     function () {
 
-class TTreeItem extends React.Component {
+        return {
+            showChildren: false,
+            isVisible: true
+        }
 
-    constructor ( props ) {
+    },
+    props:    [ 'id', 'name', 'modifiers', 'children', 'childrenFilter' ],
+    computed: {
 
-        super( props )
-        _instanceCounter++
+        computeTreeItemChildrenClass() {
 
+            if( !this.children || this.children.length === 0) {
+                return 'tTreeItemChildren'
+            } else if ( this.children.length === 1 ) {
+                return 'tTreeItemChildren singleChild'
+            } else {
+                return 'tTreeItemChildren multiChild'
+            }
+
+        },
+
+        computeToggleChildrenIconClass () {
+
+            return (this.showChildren) ? "fa fa-chevron-down" : "fa fa-chevron-right"
+
+        },
+
+        computeCheckboxClass () {
+
+            return (this.isVisible) ? "fa fa-check-square" : "fa fa-square"
+
+        },
+
+        computeChildrenStyle () {
+
+            return {
+                display: ( this.showChildren ) ? "block" : "none"
+            }
+
+        },
+
+        filteredChildren() {
+
+            if(!this.childrenFilter) {
+                return this.children
+            }
+
+            return this.children.filter(this.childrenFilter)
+
+        },
+
+        haveChildren() {
+
+            return this.children && this.children.length > 0
+
+        }
+
+    },
+    methods: {
+        
+        toggleChildren() {
+
+            this.showChildren = !this.showChildren
+
+        },
+
+        updateCheckboxState( onClickCallback ) {
+
+            this.isVisible = !this.isVisible
+            onClickCallback()
+
+        }
+        
     }
 
-    /**
-     * React lifecycle
-     */
-    componentWillMount () {}
-
-    componentDidMount () {}
-
-    componentWillUnmount () {}
-
-    componentWillReceiveProps ( /*nextProps*/ ) {}
-
-    shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentWillUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentDidUpdate ( /*prevProps, prevState*/ ) {}
-
-    render () {
-
-        const { id, className } = this.props
-
-        const _id    = id || `tTreeItem_${_instanceCounter}`
-        const _style = {}
-        const _class = ( className ) ? `tTreeItem ${className}` : 'tTreeItem'
-
-        return (
-            <t-tree-item ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-tree-item>
-        )
-
-    }
-
-}
-
-export { TTreeItem }
+} )

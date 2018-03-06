@@ -6,13 +6,28 @@
  *
  */
 
-// Export Three stuff
+/* eslint-env browser */
+
+// Import browser fix
+import './third_party/dock-spawn.js'
+import './third_party/polyfills.js'
+
+// Export es6 Three stuff
 export * from 'threejs-full-es6'
 
 // Export Itee stuff
+export * from './controllers/_controllers'
 export * from './cores/_cores'
+export * from './debug/_debugs'
 export * from './factories/_factories'
+export * from './input_devices/_inputDevices'
 export * from './loaders/_loaders'
+export * from './loggers/_loggers'
 export * from './managers/_managers'
+export * from './maths/_maths'
 export * from './objects3d/_objects3d'
-export * from './uis/_uis'
+import './uis/_uis'
+export * from './utils/_utils'
+export * from './validators/_validators'
+
+export { default as createSpaceCraft } from '../node_modules/vue/dist/vue.esm'

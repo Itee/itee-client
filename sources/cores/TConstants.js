@@ -1,7 +1,14 @@
 /**
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ *
+ * @class ClassName
+ * @classdesc Todo...
+ * @example Todo...
+ *
  */
+
+/* eslint-env browser */
 
 /**
  * A freezed javascript object used like an enum.
@@ -239,4 +246,92 @@ export const HttpStatusCode = Object.freeze( {
     InvalidSSLCertificate:         526,
     RailgunError:                  527
 
+} )
+
+/**
+ *
+ * @type {Enum} Keys
+ */
+export const Keys = Object.freeze( {
+    8:  "backspace",
+    9:  "tab",
+    13: "enter",
+    16: "shift",
+    17: "ctrl",
+    18: "alt",
+    27: "esc",
+    32: "space",
+    33: "pageup",
+    34: "pagedown",
+    35: "end",
+    36: "home",
+
+    LEFT_ARROW:   37,
+    UP_ARROW:     38,
+    RIGHT_ARROW:  39,
+    BOTTOM_ARROW: 40,
+    45:           "insert",
+    46:           "delete",
+    A:            65,
+    B:            66,
+    C:            67,
+    D:            68,
+    E:            69,
+    F:            70,
+    G:            71,
+    H:            72,
+    I:            73,
+    J:            74,
+    K:            75,
+    L:            76,
+    M:            77,
+    N:            78,
+    O:            79,
+    P:            80,
+    Q:            81,
+    R:            82,
+    S:            83,
+    T:            84,
+    U:            85,
+    V:            86,
+    W:            87,
+    X:            88,
+    Y:            89,
+    Z:            90,
+    186:          ";",
+    187:          "=",
+    188:          ",",
+    189:          "-",
+    190:          ".",
+    191:          "/",
+    219:          "[",
+    220:          "\\",
+    221:          "]",
+    222:          "'"
+} )
+
+/**
+ *
+ * @type {Enum} FileFormat
+ */
+export const FileFormat = Object.freeze( {
+    Asc:  'asc',
+    Dbf:  'dbf',
+    Fbx:  'fbx',
+    Mtl:  'mtl',
+    Json: 'json',
+    Obj:  'obj',
+    Shp:  'shp',
+    Stl:  'stl',
+
+    toString () {
+
+        const formats = Object.values( this )
+        let result    = ''
+        for ( let index = 0, numberOfFormats = formats.length ; index < numberOfFormats ; index++ ) {
+            result += formats[ index ]
+            result += ((index === numberOfFormats - 1) ? ', ' : '.')
+        }
+
+    }
 } )

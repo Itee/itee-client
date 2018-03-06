@@ -3,12 +3,28 @@
 	<head>
 		<meta charset="UTF-8">
 		<title>Tests</title>
+		<style>
+			html, body, #mainContainer {
+				width: 100%;
+				height: 100%;
+				padding: 0;
+				margin: 0;
+			}
+		</style>
 	</head>
 	<body>
+		<div id="mainContainer">
+			<div id="webglViewportContainer"></div>
+		</div>
 		<script src="../builds/itee-client.iife.js"></script>
 		<script>
-			let app = new Itee.Application()
-			app.start()
+			const container = document.getElementById('mainContainer')
+			const parameters = {}
+			const onReady = function onReady () {
+                alert( 'Ready !' )
+            }
+
+			const app = new Itee.TApplication(container, parameters, onReady)
 		</script>
 	</body>
 </html>

@@ -8,6 +8,8 @@
  *
  */
 
+/* eslint-env browser */
+
 import React from 'react'
 
 let _instanceCounter = 0
@@ -32,7 +34,7 @@ class TWarningNotification extends React.Component {
 
     componentWillReceiveProps ( /*nextProps*/ ) {}
 
-    shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
+    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
 
     componentWillUpdate ( /*nextProps, nextState*/ ) {}
 
@@ -47,7 +49,7 @@ class TWarningNotification extends React.Component {
         const _class = ( className ) ? `tWarningNotification ${className}` : 'tWarningNotification'
 
         return (
-            <t-warning-notification ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-warning-notification>
+            <t-warning-notification ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-warning-notification>
         )
 
     }

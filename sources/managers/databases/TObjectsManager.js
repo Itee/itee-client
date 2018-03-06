@@ -2,18 +2,18 @@
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  *
- * @class TScenesManager
+ * @class ClassName
  * @classdesc Todo...
  * @example Todo...
  *
  */
 
+/* eslint-env browser */
+
+import { Object3D } from '../../../node_modules/threejs-full-es6/sources/core/Object3D'
+import { Mesh } from '../../../node_modules/threejs-full-es6/sources/objects/Mesh'
+import { LineSegments } from '../../../node_modules/threejs-full-es6/sources/objects/LineSegments'
 import { TDataBaseManager } from '../TDataBaseManager'
-import {
-    LineSegments,
-    Object3D,
-    Mesh
-} from 'threejs-full-es6'
 
 /**
  *
@@ -26,14 +26,22 @@ function TObjectsManager () {
 
 }
 
-TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.prototype ), {
+TObjectsManager.prototype = Object.assign( Object.create(TDataBaseManager.prototype), {
 
+    /**
+     *
+     */
     constructor: TObjectsManager,
 
+    /**
+     *
+     * @param jsonData
+     * @param onError
+     * @return {*}
+     */
     convertJsonToObject3D ( jsonData, onError ) {
 
         // Todo factory
-        const self       = this
         const data       = jsonData
         const objectType = data.type
 
@@ -84,7 +92,7 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
             segment.uuid           = data.uuid
             segment.name           = data.name
             segment.type           = data.type
-            segment.parent         = null//data.parent
+            segment.parent         = data.parent
             segment.children       = data.children
             segment.up.x           = data.up.x
             segment.up.y           = data.up.y
@@ -130,7 +138,7 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
             mesh.uuid           = data.uuid
             mesh.name           = data.name
             mesh.type           = data.type
-            mesh.parent         = null//data.parent
+            mesh.parent         = data.parent
             mesh.children       = data.children
             mesh.up.x           = data.up.x
             mesh.up.y           = data.up.y
@@ -207,6 +215,9 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
 
 Object.defineProperties( TObjectsManager.prototype, {
 
+    /**
+     *
+     */
     _onJson: {
         value: function _onJson ( jsonData, onSuccess, onProgress, onError ) {
 

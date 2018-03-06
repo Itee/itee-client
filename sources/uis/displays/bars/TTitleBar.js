@@ -8,50 +8,25 @@
  *
  */
 
-import React from 'react'
+/* eslint-env browser */
 
-let _instanceCounter = 0
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-class TTitleBar extends React.Component {
-
-    constructor ( props ) {
-
-        super( props )
-        _instanceCounter++
-
-    }
-
-    /**
-     * React lifecycle
-     */
-    componentWillMount () {}
-
-    componentDidMount () {}
-
-    componentWillUnmount () {}
-
-    componentWillReceiveProps ( /*nextProps*/ ) {}
-
-    shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentWillUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentDidUpdate ( /*prevProps, prevState*/ ) {}
-
-    render () {
-
-        const { id, className } = this.props
-
-        const _id    = id || `tTitleBar_${_instanceCounter}`
-        const _style = {}
-        const _class = ( className ) ? `tTitleBar ${className}` : 'tTitleBar'
-
-        return (
-            <t-title-bar ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-title-bar>
-        )
-
-    }
-
-}
-
-export { TTitleBar }
+export default Vue.component( 'TTitleBar', {
+    template: `
+        <TContainer 
+            class="tAppBar" 
+            :height=height 
+            :width=width 
+            :orientation=orientation 
+            :expand=false 
+            :wrapContent=false 
+            vAlign="center" 
+            hAlign="center" 
+            overflow="visible"
+        >
+            <TLabel :label=title />
+        </TContainer>
+    `,
+    props: [ 'height', 'width', 'orientation', 'title' ]
+} )

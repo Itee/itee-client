@@ -51,21 +51,24 @@ function glsl () {
 /**
  * Will create an appropriate configuration object for rollup, related to the given arguments.
  *
+ *
+ * @param fileName
+ * @param inputPath
+ * @param outputPath
  * @param {string} format - The desired module format output. Available values are: 'es', 'cjs', 'amd', 'iife' and 'umd'
  * @param {boolean} onProduction - The building environment. True for production, developement otherwise.
  * @param {boolean} wantSourceMap - Set to true if sourcemap must be include in the output.
  * @returns {object} The rollup configuration
  */
-function CreateRollupConfiguration ( format, onProduction, wantSourceMap ) {
+function CreateRollupConfiguration ( fileName, inputPath, outputPath, format, onProduction, wantSourceMap ) {
 
     const _format        = format || 'umd'
     const _onProduction  = onProduction || false
     const _wantSourceMap = wantSourceMap || false
 
-    const fileName       = 'itee-client'
     const fileExtension  = (_onProduction) ? '.min.js' : '.js'
-    const inputFilePath  = path.join( __dirname, '..', 'sources/' + fileName + '.js' )
-    const outputFilePath = path.join( __dirname, '..', 'builds/' + fileName + '.' + _format + fileExtension )
+    const inputFilePath  = path.join( inputPath, fileName + '.js' )
+    const outputFilePath = path.join( outputPath, fileName + '.' + _format + fileExtension )
 
     return {
         inputOptions:  {
@@ -78,7 +81,7 @@ function CreateRollupConfiguration ( format, onProduction, wantSourceMap ) {
                 commonJs( {
                     include: 'node_modules/**'
                 } ),
-                babel(require( './babel.conf' )),
+                babel(require( './babel.conf' )(_onProduction)),
                 replace( {
                     'process.env.NODE_ENV': JSON.stringify( (_onProduction) ? 'production' : 'development' )
                 } ),
@@ -88,14 +91,10 @@ function CreateRollupConfiguration ( format, onProduction, wantSourceMap ) {
 
             // advanced options
             onwarn: function onWarn ( { loc, frame, message } ) {
-                // print location if applicable
                 if ( loc ) {
-                    process.stderr.write( `${loc.file} (${loc.line}:${loc.column}) ${message}` )
-                    if ( frame ) {
-                        process.stderr.write( frame )
-                    }
+                    process.stderr.write( `/!\\ WARNING: ${loc.file} (${loc.line}:${loc.column}) ${frame} ${message}\n` )
                 } else {
-                    process.stderr.write( message )
+                    process.stderr.write( `/!\\ WARNING: ${message}\n` )
                 }
             },
             cache:  undefined,
