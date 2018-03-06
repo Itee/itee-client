@@ -27,9 +27,7 @@ function CreateBabelConfiguration ( onProduction ) {
             ]
         ],
         plugins: [
-            "external-helpers",
-            "transform-class-properties",
-            "transform-react-jsx"
+            "external-helpers"
         ],
         compact: onProduction
     }
