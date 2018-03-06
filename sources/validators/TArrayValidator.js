@@ -1,31 +1,39 @@
 /**
- * Created by Tristan on 17/08/2015.
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ *
+ * @class Todo...
+ * @classdesc Todo...
+ * @example Todo...
+ *
  */
+
+/* eslint-env browser */
 
 import {
     isNotNull,
     isNull
-} from "TNullityValidator"
+} from "./TNullityValidator"
 import {
     isDefined,
     isUndefined
-} from "TUndefineValidator"
+} from "./TUndefineValidator"
 import {
     isEmpty,
     isNotEmpty
-} from "TEmptinessValidator"
+} from "./TEmptinessValidator"
 import {
     isString,
     isNotString,
     isEmptyString,
     isNotEmptyString
-} from "TStringValidator"
+} from "./TStringValidator"
 import {
     isObject,
     isNotObject,
     isEmptyObject,
     isNotEmptyObject
-} from "TObjectValidator"
+} from "./TObjectValidator"
 
 //       _
 //      / \   _ __ _ __ __ _ _   _ ___
@@ -322,6 +330,11 @@ export function isNotArrayOfEmptyString ( data ) {
 //                         |___/
 //Todo: ARRAY OF ARRAY
 
+/**
+ *
+ * @param data
+ * @return {boolean}
+ */
 export function isArrayOfArray ( data ) {
 
     if ( isEmptyArray( data ) ) {
@@ -338,6 +351,11 @@ export function isArrayOfArray ( data ) {
 
 }
 
+/**
+ *
+ * @param data
+ * @return {boolean}
+ */
 export function isNotArrayOfArray ( data ) {
 
     if ( isEmptyArray( data ) ) {
@@ -360,6 +378,11 @@ export function isNotArrayOfArray ( data ) {
 //   | (_) | |_) | |  __/ (__| |_\__ \
 //    \___/|_.__// |\___|\___|\__|___/
 //             |__/
+/**
+ *
+ * @param data
+ * @return {boolean}
+ */
 export function isArrayOfObject ( data ) {
 
     if ( isEmptyArray( data ) ) {
@@ -376,6 +399,11 @@ export function isArrayOfObject ( data ) {
 
 }
 
+/**
+ *
+ * @param data
+ * @return {boolean}
+ */
 export function isNotArrayOfObject ( data ) {
 
     if ( isEmptyArray( data ) ) {

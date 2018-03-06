@@ -6,6 +6,8 @@
  *
  */
 
+/* eslint-env browser */
+
 export { TAutoComplete } from './TAutoComplete'
 export { TCascader } from './TCascader'
 export { TDropZone } from './TDropZone'

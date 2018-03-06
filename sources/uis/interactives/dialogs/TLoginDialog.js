@@ -8,6 +8,8 @@
  *
  */
 
+/* eslint-env browser */
+
 import React from 'react'
 
 import { THeader } from '../../displays/sections/THeader'
@@ -25,7 +27,7 @@ class TLoginDialog extends React.Component {
         super( props )
         _instanceCounter++
 
-        this.state = { value: '' };
+        this.state        = { value: '' };
         this.handleChange = this.handleChange.bind( this )
 
     }
@@ -47,7 +49,7 @@ class TLoginDialog extends React.Component {
 
     componentWillReceiveProps ( /*nextProps*/ ) {}
 
-    shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
+    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
 
     componentWillUpdate ( /*nextProps, nextState*/ ) {}
 
@@ -66,9 +68,7 @@ class TLoginDialog extends React.Component {
         const _class = ( className ) ? `tLoginDialog ${className}` : 'tLoginDialog'
 
         return (
-            <form className={'dialog login-dialog'} style={_STYLE} onSubmit={submitHandler}>
-                {/*<form className={'dialog login-dialog'} style={_STYLE} onSubmit={this.handleSubmit}>*/}
-
+            <form id={_id} className={_class} style={_style} onSubmit={submitHandler}>
                 <THeader>
                     <TCentererLayout>
                         <span>Connection</span>
@@ -104,9 +104,9 @@ class TLoginDialog extends React.Component {
             </form>
         )
 
-//        return (
-//            <t-login-dialog ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-login-dialog>
-//        )
+        //        return (
+        //            <t-login-dialog ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-login-dialog>
+        //        )
 
     }
 

@@ -7,28 +7,17 @@
  * @example Todo
  *
  */
-const FileFormat = Object.freeze( {
-    Asc:  'asc',
-    Dbf:  'dbf',
-    Fbx:  'fbx',
-    Mtl:  'mtl',
-    Json: 'json',
-    Obj:  'obj',
-    Shp:  'shp',
-    Stl:  'stl',
 
-    toString () {
+/* eslint-env browser */
 
-        const formats = Object.values( this )
-        let result    = ''
-        for ( let index = 0, numberOfFormats = formats.length ; index < numberOfFormats ; index++ ) {
-            result += formats[ index ]
-            result += ((index === numberOfFormats - 1) ? ', ' : '.')
-        }
+import { FileFormat } from '../cores/TConstants'
 
-    }
-} )
-
+/**
+ *
+ * @param path
+ * @return {*}
+ * @constructor
+ */
 function TFile ( path = '' ) {
 
     let _basePath  = undefined
@@ -37,21 +26,25 @@ function TFile ( path = '' ) {
     let _size      = undefined
 
     Object.defineProperties( this, {
-        path:      {
+
+        path: {
             enumerable: true,
             get () {
                 return _basePath + _name;
             },
-            set ( path ) {
-
-                valeurB = nouvelleValeur;
+            set ( newPath ) {
+                path = newPath
             }
         },
-        basePath:  {},
-        name:      {},
+
+        basePath: {},
+
+        name: {},
+
         extension: {},
+
     } );
 
 }
 
-
+export { TFile }

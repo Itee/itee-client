@@ -30,12 +30,18 @@
 
 /* eslint-env node */
 
-const gulp        = require( 'gulp' )
-const util        = require( 'gulp-util' )
-const jsdoc       = require( 'gulp-jsdoc3' )
-const eslint      = require( 'gulp-eslint' )
-const del         = require( 'del' )
-const rollup      = require( 'rollup' )
+const gulp     = require( 'gulp' )
+const util     = require( 'gulp-util' )
+const jsdoc    = require( 'gulp-jsdoc3' )
+const eslint   = require( 'gulp-eslint' )
+const gulpif   = require( 'gulp-if' )
+const less     = require( 'gulp-less' )
+const sass     = require( 'gulp-sass' )
+const cleanCss = require( 'gulp-clean-css' )
+const concat   = require( 'gulp-concat' )
+const del      = require( 'del' )
+const rollup   = require( 'rollup' )
+const path     = require( 'path' )
 
 const log     = util.log
 const colors  = util.colors
@@ -107,8 +113,14 @@ gulp.task( 'clean', () => {
 gulp.task( 'lint', () => {
 
     // Todo: split between source and test with differents env
+    const filesToLint = [
+        'gulpfile.js',
+        'scripts/**/*.js',
+        'sources/**/*',
+        'tests/**/*.js'
+    ]
 
-    return gulp.src( [ 'gulpfile.js', 'configs/**/*.js', 'scripts/**/*.js', 'sources/**/*', 'tests/**/*.js' ] )
+    return gulp.src( filesToLint )
                .pipe( eslint( {
                    allowInlineConfig: true,
                    globals:           [],
@@ -134,27 +146,6 @@ gulp.task( 'lint', () => {
                .pipe( eslint.format( 'stylish' ) )
                .pipe( eslint.failAfterError() )
 
-    // OR
-
-    //    return gulp.src([ 'gulpfile.js', 'configs/**/*.js', 'scripts/**/*.js', 'sources/**/*.js', 'tests/**/*.js' ])
-    //               .pipe(standard({
-    //                   fix:     true,   // automatically fix problems
-    //                   globals: [],  // custom global variables to declare
-    //                   plugins: [],  // custom eslint plugins
-    //                   envs:    [],     // custom eslint environment
-    //                   parser:  'babel-eslint'    // custom js parser (e.g. babel-eslint)
-    //               }))
-    //               .pipe(standard.reporter('default', {
-    //                   breakOnError:   true,
-    //                   breakOnWarning: true,
-    //                   quiet:          true,
-    //                   showRuleNames:  true,
-    //                   showFilePath:   true
-    //               }))
-    //               .pipe(gulp.dest((file) => {
-    //                   return file.base
-    //               }))
-
 } )
 
 /**
@@ -164,7 +155,13 @@ gulp.task( 'lint', () => {
 gulp.task( 'doc', ( done ) => {
 
     const config = require( './configs/jsdoc.conf' )
-    const files  = [ './configs/*.js', './sources/**/*.js', './tests/**/*.js' ]
+    const files  = [
+        'README.md',
+        'gulpfile.js',
+        './configs/*.js',
+        './sources/**/*.js',
+        './tests/**/*.js'
+    ]
 
     gulp.src( files, { read: false } )
         .pipe( jsdoc( config, done ) )
@@ -193,11 +190,61 @@ gulp.task( 'bench', ( done ) => {
  */
 gulp.task( 'test', gulp.parallel( 'unit', 'bench' ) )
 
+///
+/// BUILDS
+///
+
+const styleFiles = [
+    './node_modules/font-awesome/less/font-awesome.less',
+    //    './node_modules/bootstrap/scss/bootstrap.scss',
+    //    './node_modules/bootstrap-slider/dist/css/bootstrap-slider.css',
+    './styles/itee-client.less'
+]
+
+/**
+ *
+ * @description Build less files from assets, and concat them into one file
+ */
+gulp.task( 'build-style-dev', () => {
+
+    return gulp.src( styleFiles )
+               .pipe( gulpif( /[.]less$/, less() ) )
+               .pipe( gulpif( /[.]scss/, sass() ) )
+               .pipe( concat( 'itee-client.style.css' ) )
+               .pipe( gulp.dest( './builds/' ) )
+
+} )
+
+gulp.task( 'build-style-prod', () => {
+
+    return gulp.src( styleFiles )
+               .pipe( gulpif( /[.]less$/, less() ) )
+               .pipe( gulpif( /[.]scss/, sass() ) )
+               .pipe( concat( 'itee-client.style.min.css' ) )
+               .pipe( cleanCss( { compatibility: 'ie8' } ) )
+               .pipe( gulp.dest( './builds/' ) )
+
+} )
+
+gulp.task( 'build-style', gulp.parallel( 'build-style-dev', 'build-style-prod' ) )
+
+/**
+ * Add watcher to assets less/css files and run build-style on file change
+ */
+gulp.task( 'watch-style', gulp.series( 'build-style', ( done ) => {
+
+    log( 'Add watcher to style files !' )
+
+    gulp.watch( styleFiles, [ 'build-style' ] )
+    done()
+
+} ) )
+
 /**
  * @method npm run build
  * @description Will build itee client module using optional arguments, running clean and _extendThree tasks before. See help to further informations.
  */
-gulp.task( 'build', ( done ) => {
+gulp.task( 'build-script', ( done ) => {
 
     const options = processArguments( process.argv )
     const configs = createBuildsConfigs( options )
@@ -207,16 +254,37 @@ gulp.task( 'build', ( done ) => {
     function processArguments ( processArgv ) {
         'use strict'
 
+        //        let defaultOptions = {
+        //            environments: [ 'development', 'production' ],
+        //            formats:      [ 'amd', 'cjs', 'es', 'iife', 'umd' ],
+        //            sourceMap:    false
+        //        }
+
         let defaultOptions = {
-            environments: [ 'development', 'production' ],
-            formats:      [ 'amd', 'cjs', 'es', 'iife', 'umd' ],
+            fileName:     'itee-client',
+            inputPath:    path.join( __dirname, 'sources' ),
+            outputPath:   path.join( __dirname, 'builds' ),
+            environments: [ 'development' ],
+            formats:      [ 'iife' ],
             sourceMap:    false
         }
 
         const argv = processArgv.slice( 3 ) // Ignore nodejs, script paths and gulp params
         argv.forEach( argument => {
 
-            if ( argument.indexOf( '-f' ) > -1 || argument.indexOf( '--format' ) > -1 ) {
+            if ( argument.indexOf( '-n' ) > -1 || argument.indexOf( '--name' ) > -1 ) {
+
+                defaultOptions.fileName = argument.split( ':' )[ 1 ]
+
+            } else if ( argument.indexOf( '-i' ) > -1 || argument.indexOf( '--input' ) > -1 ) {
+
+                defaultOptions.inputPath = argument.split( ':' )[ 1 ]
+
+            } else if ( argument.indexOf( '-o' ) > -1 || argument.indexOf( '--output' ) > -1 ) {
+
+                defaultOptions.outputPath = argument.split( ':' )[ 1 ]
+
+            } else if ( argument.indexOf( '-f' ) > -1 || argument.indexOf( '--format' ) > -1 ) {
 
                 const splits    = argument.split( ':' )
                 const splitPart = splits[ 1 ]
@@ -262,7 +330,7 @@ gulp.task( 'build', ( done ) => {
                 const environment  = options.environments[ envIndex ]
                 const onProduction = (environment === 'production')
 
-                const config = require( './configs/rollup.conf' )( format, onProduction, options.sourceMap )
+                const config = require( './configs/rollup.conf' )( options.fileName, options.inputPath, options.outputPath, format, onProduction, options.sourceMap )
 
                 configs.push( config )
             }
@@ -309,10 +377,30 @@ gulp.task( 'build', ( done ) => {
 } )
 
 /**
+ * Add watcher to assets javascript files and run build-js on file change
+ */
+gulp.task( 'watch-script', gulp.series( 'build-script', ( done ) => {
+
+    log( 'Add watcher to javascript files !' )
+
+    gulp.watch( './assets/javascript/**/*.js', [ 'build-script' ] )
+    done()
+
+} ) )
+
+/**
+ * Build css and javascript files
+ */
+gulp.task( 'build-auto', gulp.parallel( 'watch-style', 'watch-script' ) )
+gulp.task( 'build-dev', gulp.parallel( 'build-style-dev', 'build-script' ) )
+gulp.task( 'build-prod', gulp.parallel( 'build-style-prod', 'build-script' ) )
+gulp.task( 'build', gulp.parallel( 'build-style', 'build-script' ) )
+
+/**
  * @method npm run release
  * @description Will perform a complet release of the library.
  */
-gulp.task( 'release', gulp.series( 'clean', gulp.parallel( 'lint', 'doc', 'test' ), 'build' ) )
+gulp.task( 'release', gulp.series( 'clean', gulp.parallel( 'lint', 'doc', 'test' ), gulp.parallel( 'build-style', 'build-script' ) ) )
 
 //---------
 

@@ -11,7 +11,7 @@
  *
  */
 
-/*eslint-env browser*/
+/* eslint-env browser */
 
 import React from 'react'
 import PropTypes from 'prop-types'
@@ -44,7 +44,7 @@ class TDateTime extends React.Component {
      */
 
 
-    componentWillMount () {}
+//    componentWillMount () {}
 
     componentDidMount () {
 
@@ -63,7 +63,7 @@ class TDateTime extends React.Component {
 
     componentWillReceiveProps ( /*nextProps*/ ) {}
 
-    shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
+//    shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
 
     componentWillUpdate ( /*nextProps, nextState*/ ) {}
 
@@ -98,7 +98,7 @@ class TDateTime extends React.Component {
         const _style = {}
 
         return (
-            <t-date-time id={_id} style={_style} className={_class} />
+            <t-date-time id={_id} style={_style} class={_class} />
         )
 
     }

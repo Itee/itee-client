@@ -8,6 +8,8 @@
  *
  */
 
+/* eslint-env browser */
+
 //    _   _                 _
 //   | \ | |_   _ _ __ ___ | |__   ___ _ __ ___
 //   |  \| | | | | '_ ` _ \| '_ \ / _ \ '__/ __|
@@ -33,26 +35,56 @@ export function isNotANumber ( data ) {
     return !isNumber( data )
 }
 
+/**
+ *
+ * @param data
+ * @return {boolean|*|boolean}
+ */
 export function isNumberPositive ( data ) {
     return (isNumber( data ) && data > 0)
 }
 
+/**
+ *
+ * @param data
+ * @return {boolean|*|boolean}
+ */
 export function isNumberNegative ( data ) {
     return (isNumber( data ) && data < 0)
 }
 
+/**
+ *
+ * @param data
+ * @return {boolean}
+ */
 export function isFinite ( data ) {
     return Number.isFinite( data )
 }
 
+/**
+ *
+ * @param data
+ * @return {boolean}
+ */
 export function isInfinite ( data ) {
     return !isFinite( data )
 }
 
+/**
+ *
+ * @param data
+ * @return {boolean}
+ */
 export function isInfinitePositive ( data ) {
     return (data === Infinity)
 }
 
+/**
+ *
+ * @param data
+ * @return {boolean}
+ */
 export function isInfiniteNegative ( data ) {
     return (data === -Infinity)
 }

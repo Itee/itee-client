@@ -8,6 +8,10 @@
  *
  */
 
+/* eslint-env browser */
+
+import { Vector3 } from '../../node_modules/threejs-full-es6/sources/math/Vector3'
+
 // RANDOM
 /**
  * Returns a random number between min (inclusive) and max (exclusive)
@@ -32,31 +36,66 @@ export const PI_4 = Math.PI / 4
 export const DEG_TO_RAD = (PI / 180)
 export const RAD_TO_DEG = (180 / PI)
 
+/**
+ *
+ * @param degrees
+ * @return {number}
+ */
 export function degreesToRadians ( degrees ) {
     return degrees * DEG_TO_RAD
 }
 
+/**
+ *
+ * @param radians
+ * @return {number}
+ */
 export function degreesFromRadians ( radians ) {
     return radians * RAD_TO_DEG
 }
 
+/**
+ *
+ * @param radians
+ * @return {number}
+ */
 export function radiansToDegrees ( radians ) {
     return radians * RAD_TO_DEG
 }
 
+/**
+ *
+ * @param degrees
+ * @return {number}
+ */
 export function radiansFromDegrees ( degrees ) {
     return degrees * DEG_TO_RAD
 }
 
 // PROJECTION 2D/3D
+/**
+ *
+ * @param vector
+ * @return {number}
+ */
 export function getYaw ( vector ) {
     return -Math.atan2( vector.x, vector.z )
 }
 
+/**
+ *
+ * @param vector
+ * @return {number}
+ */
 export function getPitch ( vector ) {
     return Math.asin( vector.y )
 }
 
+/**
+ *
+ * @param vectorDir
+ * @return {{yaw: number, pitch: number}}
+ */
 export function convertWebGLRotationToTopogicalYawPitch ( vectorDir ) {
 
     function getYaw ( vector ) {
@@ -86,12 +125,22 @@ var LAMBERT_NINETY_THREE_OFFSET = {
     y: 6864982.935
 }
 
+/**
+ *
+ * @param vector
+ * @return {Vector3}
+ */
 function convertWebglVectorToTopologicVector ( vector ) {
 
     return new Vector3( vector.x, -vector.z, vector.y )
 
 }
 
+/**
+ *
+ * @param coordinates
+ * @return {Vector3}
+ */
 function convertWebGLCoordinatesToLambert93Coordinates ( coordinates ) {
 
     return new Vector3(
@@ -102,6 +151,11 @@ function convertWebGLCoordinatesToLambert93Coordinates ( coordinates ) {
 
 }
 
+/**
+ *
+ * @param coordinates
+ * @return {Vector3}
+ */
 function convertLambert93CoordinatesToWebGLCoordinates ( coordinates ) {
 
     return new Vector3(

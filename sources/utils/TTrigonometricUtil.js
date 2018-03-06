@@ -1,106 +1,180 @@
 /**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ *
+ * @file TMath contains commons math function
+ *
+ * @example Todo
+ *
+ */
+
+/* eslint-env browser */
+/* globals $ */
+
+import { Vector2 } from '../../node_modules/threejs-full-es6/sources/math/Vector2'
+import { Vector3 } from '../../node_modules/threejs-full-es6/sources/math/Vector3'
+
+import { degreesToRadians } from '../maths/TMath'
+
+/**
  * TRIGONOMETRIC CIRCLE CONCEPT WITH INTEGRATED TIMER
  *
  * Provide position on any given referential (starting position)
  * this position is updated every tick on a trigonometric circle of rayon (radius)
  * and give new position in px about this point in current referential.
+ *
+ * @param settings
+ * @constructor
  */
-_geometry.TrigonometricCircle = _geometry.TrigonometricCircle || (function() {
+function TTrigonometricCircle ( settings ) {
 
-    function TrigonometricCircle( element, settings ) {
+    var _ = this;
 
-        var _ = this, dataSettings;
+    _.options = $.extend( {}, TTrigonometricCircle.DEFAULT_SETTINGS, settings );
 
-        _.angle  = 0;
-        _.radius = 5;
+}
 
-        _.defaultSettings = {
-            posOnScreen: new NODIX.geometry.Point2D(0, 0)
-        };
+Object.assign( TTrigonometricCircle, {
 
-        dataSettings = $(element).data('trigo') || {};
-
-        _.options = $.extend({}, _.defaultSettings, dataSettings, settings);
+    /**
+     *
+     */
+    DEFAULT_SETTINGS: {
+        angle:       0,
+        radius:      10,
+        posOnScreen: new Vector2( 0, 0 )
     }
 
-    return TrigonometricCircle;
+} )
 
-})();
+Object.assign( TTrigonometricCircle.prototype, {
 
-_geometry.TrigonometricCircle.prototype.increment = function( increment ) {
-    var _   = this;
-    _.angle = (increment ? _.angle + increment : _.angle + 1);
-    if ( _.angle >= 360 ) {
-        _.angle = 0;
+    /**
+     *
+     * @param increment
+     */
+    increment ( increment ) {
+        var _   = this;
+        _.angle = (increment ? _.angle + increment : _.angle + 1);
+        if ( _.angle >= 360 ) {
+            _.angle = 0;
+        }
+    },
+
+    /**
+     *
+     */
+    getRadius () {
+        var _ = this;
+        return _.radius;
+    },
+
+    /**
+     *
+     * @return {number}
+     */
+    getCosinus () {
+        var _ = this;
+        return Math.cos( degreesToRadians( _.angle ) ) * _.radius;
+    },
+
+    /**
+     *
+     * @return {number}
+     */
+    getSinus () {
+        var _ = this;
+        return Math.sin( degreesToRadians( _.angle ) ) * _.radius;
     }
-};
 
-_geometry.TrigonometricCircle.prototype.getRadius = function() {
-    var _ = this;
-    return _.radius;
-};
-
-_geometry.TrigonometricCircle.prototype.getCosinus = function() {
-    var _ = this;
-    return Math.cos(NODIX.math.radians(_.angle)) * _.radius;
-};
-
-_geometry.TrigonometricCircle.prototype.getSinus = function() {
-    var _ = this;
-    return Math.sin(NODIX.math.radians(_.angle)) * _.radius;
-};
+} )
 
 /////////
 
-_geometry.TrigonometricCone = _geometry.TrigonometricCone || (function() {
+/**
+ *
+ * @param settings
+ * @constructor
+ */
+function TTrigonometricCone ( settings ) {
 
-    function TrigonometricCone( settings ) {
+    var _ = this;
 
+    _.model = $.extend( {}, TTrigonometricCone.DEFAULT_SETTINGS, settings );
+}
+
+Object.assign( TTrigonometricCone, {
+
+    /**
+     *
+     */
+    DEFAULT_SETTINGS: {
+        angle:       0,
+        height:      10,
+        radius:      10,
+        posOnScreen: new Vector3( 0, 0, 0 )
+    }
+
+} )
+
+Object.assign( TTrigonometricCone.prototype, {
+
+    /**
+     *
+     * @param increment
+     */
+    increment ( increment ) {
+        var _         = this;
+        _.model.angle = (increment ? _.model.angle + increment : _.model.angle + 1);
+        if ( _.model.angle >= 360 ) {
+            _.model.angle = 0;
+        }
+    },
+
+    /**
+     *
+     */
+    getRadius () {
         var _ = this;
+        return _.model.radius;
+    },
 
-        _.model = $.extend({}, _geometry.TrigonometricCone.DEFAULT_SETTINGS, settings);
+    /**
+     *
+     * @return {number}
+     */
+    getCosinus () {
+        var _ = this;
+        return Math.cos( degreesToRadians( _.model.angle ) ) * _.model.radius;
+    },
+
+    /**
+     *
+     * @return {number}
+     */
+    getSinus () {
+        var _ = this;
+        return Math.sin( degreesToRadians( _.model.angle ) ) * _.model.radius;
+    },
+
+    /**
+     *
+     * @param height
+     * @return {number}
+     */
+    getCosinusForHeight ( height ) {
+        var _ = this;
+        return Math.cos( degreesToRadians( _.model.angle ) ) * ((_.model.radius / _.model.height) * Math.abs( height ) );
+    },
+
+    /**
+     *
+     * @param height
+     * @return {number}
+     */
+    getSinusForHeight ( height ) {
+        var _ = this;
+        return Math.sin( degreesToRadians( _.model.angle ) ) * ((_.model.radius / _.model.height) * Math.abs( height ));
     }
 
-    return TrigonometricCone;
-
-})();
-
-_geometry.TrigonometricCone.DEFAULT_SETTINGS = {
-    angle:       0,
-    height:      10,
-    radius:      10,
-    posOnScreen: new NODIX.geometry.Point3D(0, 0, 0)
-};
-
-_geometry.TrigonometricCone.prototype.increment = function( increment ) {
-    var _         = this;
-    _.model.angle = (increment ? _.model.angle + increment : _.model.angle + 1);
-    if ( _.model.angle >= 360 ) {
-        _.model.angle = 0;
-    }
-};
-
-_geometry.TrigonometricCone.prototype.getRadius = function() {
-    var _ = this;
-    return _.model.radius;
-};
-
-_geometry.TrigonometricCone.prototype.getCosinus = function() {
-    var _ = this;
-    return Math.cos(NODIX.math.radians(_.model.angle)) * _.model.radius;
-};
-
-_geometry.TrigonometricCone.prototype.getSinus = function() {
-    var _ = this;
-    return Math.sin(NODIX.math.radians(_.model.angle)) * _.model.radius;
-};
-
-_geometry.TrigonometricCone.prototype.getCosinusForHeight = function( height ) {
-    var _ = this;
-    return Math.cos(NODIX.math.radians(_.model.angle)) * ((_.model.radius / _.model.height) * Math.abs(height) );
-};
-
-_geometry.TrigonometricCone.prototype.getSinusForHeight = function( height ) {
-    var _ = this;
-    return Math.sin(NODIX.math.radians(_.model.angle)) * ((_.model.radius / _.model.height) * Math.abs(height));
-};
+} )

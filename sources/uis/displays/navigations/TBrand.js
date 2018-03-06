@@ -8,6 +8,8 @@
  *
  */
 
+/* eslint-env browser */
+
 import React from 'react'
 
 let _instanceCounter = 0
@@ -32,7 +34,7 @@ class TBrand extends React.Component {
 
     componentWillReceiveProps ( /*nextProps*/ ) {}
 
-    shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
+    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
 
     componentWillUpdate ( /*nextProps, nextState*/ ) {}
 
@@ -52,7 +54,7 @@ class TBrand extends React.Component {
         const _class = ( className ) ? `tBrand ${className}` : 'tBrand'
 
         return (
-            <t-brand id={_id} style={_style} className={_class}>
+            <t-brand id={_id} style={_style} class={_class}>
                 <i style={{ marginRight: '3px' }} className={icon}></i>
                 {label}
             </t-brand>

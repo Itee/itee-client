@@ -8,7 +8,12 @@
  *
  */
 
+/* eslint-env browser */
 
+/**
+ *
+ * @constructor
+ */
 function TErrorManager () {
 
 }

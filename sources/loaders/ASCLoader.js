@@ -1,37 +1,10 @@
-/*
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Lesser General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Lesser General Public License for more details.
- *
- * You should have received a copy of the GNU Lesser General Public License along
- * with this program.  If not, see <http://www.gnu.org/licenses/>.
- *
- */
-
-import {
-    FileLoader,
-    DefaultLoadingManager,
-    BufferGeometry,
-    BufferAttribute,
-    Color,
-    PointsMaterial,
-    Points,
-    Group
-} from 'threejs-full-es6'
-
 /**
- * @author Tristan Valcke / https://github.com/TristanVALCKE
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  *
- * Description: A loader for ASC cloud point files.
+ * @file A loader for ASC cloud point files.
  *
- *
- * Usage:
+ * @example
  *    var loader = new ASCLoader();
  *    loader.load('/path/to/file.asc', function (geometry) {
  *
@@ -50,81 +23,30 @@ import {
  *
  */
 
-/**
- * Bounding box
- * @constructor
- */
-const BoundingBox = function () {
-    this.xMin = Number.MAX_VALUE;
-    this.xMax = Number.MIN_VALUE;
-    this.yMin = Number.MAX_VALUE;
-    this.yMax = Number.MIN_VALUE;
-    this.zMin = Number.MAX_VALUE;
-    this.zMax = Number.MIN_VALUE;
-}
+/* eslint-env browser */
 
-BoundingBox.prototype = {
+import { FileLoader } from '../../node_modules/threejs-full-es6/sources/loaders/FileLoader'
+import { DefaultLoadingManager } from '../../node_modules/threejs-full-es6/sources/loaders/LoadingManager'
+import { BufferGeometry } from '../../node_modules/threejs-full-es6/sources/core/BufferGeometry'
+import { BufferAttribute } from '../../node_modules/threejs-full-es6/sources/core/BufferAttribute'
+import { Group } from '../../node_modules/threejs-full-es6/sources/objects/Group'
+import { Points } from '../../node_modules/threejs-full-es6/sources/objects/Points'
+import { Color } from '../../node_modules/threejs-full-es6/sources/math/Color'
+import { PointsMaterial } from '../../node_modules/threejs-full-es6/sources/materials/PointsMaterial'
 
-    constructor: BoundingBox,
-
-    computePoint( point ) {
-
-        if ( point.x < this.xMin ) {
-            this.xMin = point.x;
-        }
-
-        if ( point.x > this.xMax ) {
-            this.xMax = point.x;
-        }
-
-        if ( point.y < this.yMin ) {
-            this.yMin = point.y;
-        }
-
-        if ( point.y > this.yMax ) {
-            this.yMax = point.y;
-        }
-
-        if ( point.z < this.zMin ) {
-            this.zMin = point.z;
-        }
-
-        if ( point.z > this.zMax ) {
-            this.zMax = point.z;
-        }
-
-    },
-
-    computePoints ( points ) {
-
-        for ( let i = 0, numPts = points.length ; i < numPts ; ++i ) {
-            this.computePoint( points[ i ] );
-        }
-
-    },
-
-    getCenter () {
-
-        return {
-            x: (this.xMin + this.xMax) / 2,
-            y: (this.yMin + this.yMax) / 2,
-            z: (this.zMin + this.zMax) / 2
-        }
-
-    }
-
-};
+import { DefaultLogger as TLogger } from '../loggers/TLogger'
+import { TBoundingBox } from '../cores/TBoundingBox'
 
 /**
  *
  * @param manager
  * @constructor
  */
-var ASCLoader = function ( manager ) {
+function ASCLoader ( manager ) {
 
     this.manager = ( manager ) ? manager : DefaultLoadingManager;
 
-    this._boundingBox    = new BoundingBox();
+    this._boundingBox    = new TBoundingBox();
     this._points         = [];
     this._numberOfPoints = 0;
     this._coloredPoints  = false;
@@ -142,15 +64,21 @@ var ASCLoader = function ( manager ) {
     this._bufferIndexC = 0;
 
     this.wrongPoints = 0;
-};
+}
 
-ASCLoader.prototype = {
+Object.assign( ASCLoader.prototype, {
 
-    constructor: ASCLoader,
-
+    /**
+     *
+     * @param url
+     * @param onLoad
+     * @param onProgress
+     * @param onError
+     * @param sampling
+     */
     load ( url, onLoad, onProgress, onError, sampling ) {
 
-//        console.time("ASCLoader")
+        //        //TLogger.time("ASCLoader")
 
         const loader = new FileLoader( this.manager )
         loader.setResponseType( 'blob' )
@@ -160,10 +88,14 @@ ASCLoader.prototype = {
             this._parse( blob, groupToFeed, onLoad, onProgress, onError, sampling )
             onLoad( groupToFeed )
 
-        }.bind(this), onProgress, onError )
+        }.bind( this ), onProgress, onError )
 
     },
 
+    /**
+     *
+     * @param offset
+     */
     setOffset ( offset ) {
 
         //TODO: check is correct
@@ -173,6 +105,16 @@ ASCLoader.prototype = {
 
     },
 
+    /**
+     *
+     * @param blob
+     * @param groupToFeed
+     * @param onLoad
+     * @param onProgress
+     * @param onError
+     * @param sampling
+     * @private
+     */
     _parse ( blob, groupToFeed, onLoad, onProgress, onError, sampling ) {
 
         const self = this
@@ -181,19 +123,19 @@ ASCLoader.prototype = {
 
         const reader     = new FileReader()
         const CHUNK_SIZE = 134217728
-        let offset     = 0
+        let offset       = 0
 
         reader.onabort = function ( abortEvent ) {
 
-            // console.log("abortEvent:");
-            // console.log(abortEvent);
+            // TLogger.log("abortEvent:");
+            // TLogger.log(abortEvent);
 
         };
 
         reader.onerror = function ( errorEvent ) {
 
-            // console.log("errorEvent:");
-            // console.log(errorEvent);
+            // TLogger.log("errorEvent:");
+            // TLogger.log(errorEvent);
 
             if ( onError ) {
                 onError( errorEvent );
@@ -203,15 +145,15 @@ ASCLoader.prototype = {
 
         reader.onloadstart = function ( loadStartEvent ) {
 
-            // console.log("loadStartEvent:");
-            // console.log(loadStartEvent);
+            // TLogger.log("loadStartEvent:");
+            // TLogger.log(loadStartEvent);
 
         };
 
         reader.onprogress = function ( progressEvent ) {
 
-            // console.log("progressEvent:");
-            // console.log(progressEvent);
+            // TLogger.log("progressEvent:");
+            // TLogger.log(progressEvent);
 
             // // By lines
             // var lines = this.result.split('\n');
@@ -227,8 +169,8 @@ ASCLoader.prototype = {
 
         reader.onload = function ( loadEvent ) {
 
-            // console.log("loadEvent:");
-            // console.log(loadEvent);
+            // TLogger.log("loadEvent:");
+            // TLogger.log(loadEvent);
 
             // By lines
             const lines         = this.result.split( '\n' );
@@ -237,7 +179,7 @@ ASCLoader.prototype = {
             // /!\ Rollback offset for last line that is uncompleted in most time
             offset -= lines[ numberOfLines - 1 ].length;
 
-            // console.time("Parse Lines A");
+            // //TLogger.time("Parse Lines A");
             const modSampling = Math.round( 100 / _sampling )
             for ( let lineIndex = 0 ; lineIndex < numberOfLines - 1 ; lineIndex++ ) {
                 if ( lineIndex % modSampling === 0 ) // Just to make cloud lighter under debug !!!!
@@ -245,52 +187,52 @@ ASCLoader.prototype = {
                     self._parseLine( lines[ lineIndex ] )
                 }
             }
-            // console.timeEnd("Parse Lines A");
+            // //TLogger.timeEnd("Parse Lines A");
 
-            // console.time("Parse Lines B");
+            // //TLogger.time("Parse Lines B");
             // self._parseLines(lines);
-            // console.timeEnd("Parse Lines B");
+            // //TLogger.timeEnd("Parse Lines B");
 
             ////Todo: use ArrayBuffer instead !!!
-            // console.time("Parse Lines B");
+            // //TLogger.time("Parse Lines B");
             // self._bufferIndex = 0;
             // self._positions = new Float32Array( numberOfLines * 3 );
             // for (var lineIndex = 0; lineIndex < numberOfLines - 1; lineIndex++) {
             //     self._parseLineB(lines[ lineIndex ])
             // }
-            // console.timeEnd("Parse Lines B");
+            // //TLogger.timeEnd("Parse Lines B");
             //
-            // console.time("Parse Lines C");
+            // //TLogger.time("Parse Lines C");
             // self._bufferIndexC = 0;
             // self._positionsC = new Float32Array( numberOfLines * 3 );
             // for (var lineIndex = 0; lineIndex < numberOfLines - 1; lineIndex++) {
             //     self._parseLineB(lines[ lineIndex ])
             // }
-            // console.timeEnd("Parse Lines C");
+            // //TLogger.timeEnd("Parse Lines C");
 
         };
 
         reader.onloadend = function ( loadEndEvent ) {
 
-            // console.log("loadEndEvent");
-            // console.log(loadEndEvent);
+            // TLogger.log("loadEndEvent");
+            // TLogger.log(loadEndEvent);
 
             if ( self._points.length > 1000000 || offset + CHUNK_SIZE >= blob.size ) {
 
                 // Compute bounding box in view to get his center for auto offseting the cloud point.
                 // if ( self._autoOffset ) {
-                //     console.time("Compute Points");
+                //     //TLogger.time("Compute Points");
                 //     self._boundingBox.computePoints(self._points);
-                //     console.timeEnd("Compute Points");
+                //     //TLogger.timeEnd("Compute Points");
                 // }
 
-                // console.time("Offset Points");
+                // //TLogger.time("Offset Points");
                 self._offsetPoints();
-                // console.timeEnd("Offset Points");
+                // //TLogger.timeEnd("Offset Points");
 
-                // console.time("Create WorldCell");
+                // //TLogger.time("Create WorldCell");
                 self._createSubCloudPoint( groupToFeed );
-                // console.timeEnd("Create WorldCell");
+                // //TLogger.timeEnd("Create WorldCell");
 
             }
 
@@ -305,24 +247,24 @@ ASCLoader.prototype = {
         function seek () {
             if ( offset >= blob.size ) {
 
-                // console.timeEnd("Parse")
-//                console.timeEnd( "ASCLoader" )
+                // //TLogger.timeEnd("Parse")
+                //                //TLogger.timeEnd( "ASCLoader" )
 
                 // // Compute bounding box in view to get his center for auto offseting the cloud point.
                 // if ( self._autoOffset ) {
-                //     console.time("Compute Points");
+                //     //TLogger.time("Compute Points");
                 //     self._boundingBox.computePoints(self._points);
-                //     console.timeEnd("Compute Points");
+                //     //TLogger.timeEnd("Compute Points");
                 // }
                 //
-                // console.time("Offset Points");
+                // //TLogger.time("Offset Points");
                 // self._offsetPoints();
-                // console.timeEnd("Offset Points");
+                // //TLogger.timeEnd("Offset Points");
                 //
-                // console.time("Create WorldCell");
+                // //TLogger.time("Create WorldCell");
                 // self._createCloudPoint(groupToFeed);
                 // // var cloudPoints = self._createCloudPoint();
-                // console.timeEnd("Create WorldCell");
+                // //TLogger.timeEnd("Create WorldCell");
                 // // onLoad(cloudPoints);
 
                 return;
@@ -334,6 +276,11 @@ ASCLoader.prototype = {
 
     },
 
+    /**
+     *
+     * @param line
+     * @private
+     */
     _parseLine ( line ) {
 
         const values        = line.split( " " )
@@ -429,11 +376,16 @@ ASCLoader.prototype = {
             } )
 
         } else {
-            console.error( "Invalid data line: " + line )
+            TLogger.error( "Invalid data line: " + line )
         }
 
     },
 
+    /**
+     *
+     * @param lines
+     * @private
+     */
     _parseLines ( lines ) {
 
         const firstLine = lines[ 0 ].split( " " )
@@ -468,11 +420,16 @@ ASCLoader.prototype = {
             this._parseLinesAsXYZIRGBnXnYnZ( lines )
 
         } else {
-            console.error( "Invalid data line: " + line )
+            TLogger.error( "Invalid data line: " + line )
         }
 
     },
 
+    /**
+     *
+     * @param lines
+     * @private
+     */
     _parseLinesAsXYZ ( lines ) {
 
         let words = []
@@ -490,6 +447,11 @@ ASCLoader.prototype = {
 
     },
 
+    /**
+     *
+     * @param lines
+     * @private
+     */
     _parseLinesAsXYZI ( lines ) {
 
         this._pointsHaveIntensity = true
@@ -510,6 +472,11 @@ ASCLoader.prototype = {
 
     },
 
+    /**
+     *
+     * @param lines
+     * @private
+     */
     _parseLinesAsXYZRGB ( lines ) {
 
         this._pointsHaveColor = true
@@ -532,6 +499,11 @@ ASCLoader.prototype = {
 
     },
 
+    /**
+     *
+     * @param lines
+     * @private
+     */
     _parseLinesAsXYZnXnYnZ ( lines ) {
 
         let words = [];
@@ -543,6 +515,11 @@ ASCLoader.prototype = {
 
     },
 
+    /**
+     *
+     * @param lines
+     * @private
+     */
     _parseLinesAsXYZIRGB ( lines ) {
 
         this._pointsHaveIntensity = true
@@ -566,6 +543,11 @@ ASCLoader.prototype = {
 
     },
 
+    /**
+     *
+     * @param lines
+     * @private
+     */
     _parseLinesAsXYZInXnYnZ ( lines ) {
 
         let words = [];
@@ -576,6 +558,11 @@ ASCLoader.prototype = {
 
     },
 
+    /**
+     *
+     * @param lines
+     * @private
+     */
     _parseLinesAsXYZRGBnXnYnZ ( lines ) {
 
         this._pointsHaveColor   = true
@@ -602,6 +589,11 @@ ASCLoader.prototype = {
 
     },
 
+    /**
+     *
+     * @param lines
+     * @private
+     */
     _parseLinesAsXYZIRGBnXnYnZ ( lines ) {
 
         this._pointsHaveIntensity = true
@@ -629,6 +621,11 @@ ASCLoader.prototype = {
         }
     },
 
+    /**
+     *
+     * @param line
+     * @private
+     */
     _parseLineB ( line ) {
 
         const values        = line.split( " " )
@@ -648,6 +645,11 @@ ASCLoader.prototype = {
 
     },
 
+    /**
+     *
+     * @param line
+     * @private
+     */
     _parseLineC: function ( line ) {
 
         const values        = line.split( " " )
@@ -667,11 +669,15 @@ ASCLoader.prototype = {
 
     },
 
+    /**
+     *
+     * @private
+     */
     _offsetPoints () {
 
         const offset         = (this._autoOffset) ? this._boundingBox.getCenter() : this._offset
         const numberOfPoints = this._points.length;
-        let point          = null;
+        let point            = null;
         for ( let i = 0 ; i < numberOfPoints ; ++i ) {
 
             point = this._points[ i ]
@@ -683,6 +689,11 @@ ASCLoader.prototype = {
 
     },
 
+    /**
+     *
+     * @param groupToFeed
+     * @private
+     */
     _createCloudPoint ( groupToFeed ) {
 
         const SPLIT_LIMIT        = 1000000
@@ -695,13 +706,13 @@ ASCLoader.prototype = {
 
         for ( let splitIndex = 0 ; splitIndex < numberOfSplit ; ++splitIndex ) {
 
-            splice           = this._points.splice( 0, SPLIT_LIMIT )
+            splice               = this._points.splice( 0, SPLIT_LIMIT )
             numberOfPointInSplit = splice.length
 
-            const geometry    = new BufferGeometry()
-            const positions   = new Float32Array( numberOfPointInSplit * 3 )
-            const colors      = new Float32Array( numberOfPointInSplit * 3 )
-            const color       = new Color()
+            const geometry  = new BufferGeometry()
+            const positions = new Float32Array( numberOfPointInSplit * 3 )
+            const colors    = new Float32Array( numberOfPointInSplit * 3 )
+            const color     = new Color()
             let bufferIndex = 0
             let point       = undefined
 
@@ -747,6 +758,11 @@ ASCLoader.prototype = {
 
     },
 
+    /**
+     *
+     * @param group
+     * @private
+     */
     _createSubCloudPoint ( group ) {
 
         const numberOfPoints = this._points.length;
@@ -801,6 +817,6 @@ ASCLoader.prototype = {
 
     }
 
-}
+} )
 
 export { ASCLoader }

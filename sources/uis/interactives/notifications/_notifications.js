@@ -6,6 +6,8 @@
  *
  */
 
+/* eslint-env browser */
+
 export { TErrorNotification } from './TErrorNotification'
 export { TInfoNotification } from './TInfoNotification'
 export { TMessageNotification } from './TMessageNotification'

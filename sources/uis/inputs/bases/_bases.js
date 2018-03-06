@@ -6,6 +6,8 @@
  *
  */
 
+/* eslint-env browser */
+
 export { TCheckbox } from './TCheckbox'
 export { TDatePicker } from './TDatePicker'
 export { TInputGroup } from './TInputGroup'

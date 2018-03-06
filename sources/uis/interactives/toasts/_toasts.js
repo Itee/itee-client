@@ -6,6 +6,8 @@
  *
  */
 
+/* eslint-env browser */
+
 export { TErrorToast } from './TErrorToast'
 export { TInfoToast } from './TInfoToast'
 export { TMessageToast } from './TMessageToast'

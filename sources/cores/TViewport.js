@@ -30,25 +30,24 @@
 /* eslint-env browser */
 /* global $ */
 
-import {
-    PCFSoftShadowMap,
-    Scene,
-    PerspectiveCamera,
-    WebGLRenderer,
-    FogExp2,
-    DirectionalLight,
-    Raycaster,
-    Vector2,
-    Color,
-    ArrowHelper,
-    MeshPhongMaterial,
-    EventDispatcher,
-    AnaglyphEffect,
-    StereoEffect,
-    OrbitControls
-} from 'threejs-full-es6'
-import Stats from 'stats.js'
+import { PCFSoftShadowMap } from '../../node_modules/threejs-full-es6/sources/constants'
+import { EventDispatcher } from '../../node_modules/threejs-full-es6/sources/core/EventDispatcher'
+import { MeshPhongMaterial } from '../../node_modules/threejs-full-es6/sources/materials/MeshPhongMaterial'
+import { Color } from '../../node_modules/threejs-full-es6/sources/math/Color'
+import { Vector2 } from '../../node_modules/threejs-full-es6/sources/math/Vector2'
+import { OrbitControls } from '../../node_modules/threejs-full-es6/sources/controls/OrbitControls'
+import { StereoEffect } from '../../node_modules/threejs-full-es6/sources/effects/StereoEffect'
+import { AnaglyphEffect } from '../../node_modules/threejs-full-es6/sources/effects/AnaglyphEffect'
+import { Scene } from '../../node_modules/threejs-full-es6/sources/scenes/Scene'
+import { FogExp2 } from '../../node_modules/threejs-full-es6/sources/scenes/FogExp2'
+import { PerspectiveCamera } from '../../node_modules/threejs-full-es6/sources/cameras/PerspectiveCamera'
+import { WebGLRenderer } from '../../node_modules/threejs-full-es6/sources/renderers/WebGLRenderer'
+import { DirectionalLight } from '../../node_modules/threejs-full-es6/sources/lights/DirectionalLight'
+import { ArrowHelper } from '../../node_modules/threejs-full-es6/sources/helpers/ArrowHelper'
+import { Raycaster } from '../../node_modules/threejs-full-es6/sources/core/Raycaster'
 
+import Stats from 'stats.js'
+import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { TOrbitControlsHelper } from '../objects3d/TOrbitControlsHelper'
 
 /**
@@ -67,14 +66,14 @@ function TViewport ( container ) {
     this.containerWidth  = this.container.clientWidth //outerWidth(true)
     this.containerHeight = this.container.clientHeight //height()
 
-    this.view = $( TViewport.getTemplate() )
+    const template = TViewport.getTemplate()
+    this.container.innerHTML += template
+    this.view      = this.container.getElementsByClassName( 'webglViewport' )[ 0 ]
 
     this.scene = new Scene()
 
-    //    this.scene.add( new GridHelper(100, 100) )
-
     this.camera                   = new PerspectiveCamera()
-    this.orbitControl             = new OrbitControls( this.camera, this.view.get( 0 ) )
+    this.orbitControl             = new OrbitControls( this.camera, this.container )
     this.orbitControl.maxDistance = 2000
     this.orbitControlHelper       = new TOrbitControlsHelper( this.orbitControl )
     this.scene.add( this.orbitControlHelper )
@@ -97,7 +96,8 @@ function TViewport ( container ) {
     // Current renderer
     this.renderer = this.webGLRenderer;
 
-    $( this.webGLRenderer.domElement ).appendTo( this.view )
+    this.view.appendChild( this.webGLRenderer.domElement )
+    //    $( this.webGLRenderer.domElement ).appendTo( this.view )
 
     this.measuring     = false
     this.mouse         = new Vector2()
@@ -138,7 +138,7 @@ function TViewport ( container ) {
 
     //    this.clock = new Clock()
 
-    this.view.appendTo( this.container )
+    //    this.view.appendTo( this.container )
     init.call( this )
 
     if ( this.settings.showStat ) {
@@ -206,7 +206,7 @@ function TViewport ( container ) {
 
     function initRender () {
 
-        this.webGLRenderer.setClearColor( 0x777777 )
+        this.webGLRenderer.setClearColor( 0x222222 )
         this.webGLRenderer.autoClear         = true
         this.webGLRenderer.shadowMap.enabled = true
         this.webGLRenderer.shadowMap.yype    = PCFSoftShadowMap
@@ -218,8 +218,8 @@ function TViewport ( container ) {
 
         window.addEventListener( 'resize', self.updateSizes.bind( self ), true );
 
-        self.view[ 0 ].addEventListener( 'mousemove', this.updateRaycasting.bind( this ), false )
-        self.view[ 0 ].addEventListener( 'mousedown', this.selectObject.bind( this ), false )
+        self.view.addEventListener( 'mousemove', this.updateRaycasting.bind( this ), false )
+        self.view.addEventListener( 'mousedown', this.selectObject.bind( this ), false )
 
         self.orbitControl.addEventListener( 'rotate', self.decimateVisibleMeshes.bind( self ), true )
         self.orbitControl.addEventListener( 'pan', self.decimateVisibleMeshes.bind( self ), true )
@@ -233,6 +233,10 @@ function TViewport ( container ) {
 // Static methods
 Object.assign( TViewport, {
 
+    /**
+     *
+     * @return {string}
+     */
     getTemplate () {
         return '' +
             '<div class="webglViewport">' +
@@ -262,6 +266,9 @@ Object.assign( TViewport, {
 // Public methods
 Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
+    /**
+     *
+     */
     toggleAutorun () {
 
         // Toggle running state
@@ -273,11 +280,18 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
     },
 
+    /**
+     *
+     */
     toggleCamera () {
 
         this.toggleCam = !this.toggleCam
     },
 
+    /**
+     *
+     * @param forceUpdate
+     */
     update ( forceUpdate ) {
 
         if ( this.stats ) {
@@ -309,7 +323,7 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
             //            } else if ( this.cameraEffect === 'vr' ) {
             //                this.stereoEffectRenderer.render( this.scene, this.camera )
             //            } else {
-            //                console.error( 'Unknown camera effect: ' + this.cameraEffect )
+            //                TLogger.error( 'Unknown camera effect: ' + this.cameraEffect )
             //                this.webGLRenderer.render( this.scene, this.camera )
             //            }
 
@@ -321,6 +335,9 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
     },
 
+    /**
+     *
+     */
     updateSizes () {
 
         this.containerWidth  = this.container.clientWidth
@@ -333,6 +350,10 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
         this.camera.updateProjectionMatrix();
     },
 
+    /**
+     *
+     * @param objects
+     */
     addRaycastables ( objects ) {
 
         for ( let intersectableIndex = 0, numberOfIntersectables = objects.length ; intersectableIndex < numberOfIntersectables ; intersectableIndex++ ) {
@@ -343,6 +364,10 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
     },
 
+    /**
+     *
+     * @param event
+     */
     updateRaycasting ( event ) {
 
         if ( !this.isRaycastable ) {
@@ -460,6 +485,10 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
     },
 
+    /**
+     *
+     * @param clickEvent
+     */
     selectObject ( clickEvent ) {
 
         if ( this.measuring ) {
@@ -477,11 +506,14 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
                 } else {
 
+                    this.intersection = null
+                    this.dispatchEvent( { type: 'measureEnd' } )
+
                 }
 
             } else {
 
-                console.warn( 'Unable to get hit position for undefined intersection objects !!!' )
+                TLogger.warn( 'Unable to get hit position for undefined intersection objects !!!' )
 
             }
 
@@ -545,6 +577,10 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
     },
 
+    /**
+     *
+     * @param position
+     */
     setCameraPosition ( position ) {
 
         const cameraControllerType = this.cameraControlType
@@ -566,12 +602,16 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
         } else {
 
-            console.error( "Unable to change camera position, unknown camera controller type !" );
+            TLogger.error( "Unable to change camera position, unknown camera controller type !" );
 
         }
 
     },
 
+    /**
+     *
+     * @param cameraEffect
+     */
     setCameraEffect ( cameraEffect ) {
 
         var trimmedEffectName = cameraEffect.trim( ' ' );
@@ -605,6 +645,10 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
     },
 
+    /**
+     *
+     * @param cameraControlType
+     */
     setCameraControls ( cameraControlType ) {
 
         var currentCameraPosition = this.camera.position
@@ -634,7 +678,7 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
             this.cameraControl.update()
 
-        } else if ( mode === "avatar" ) {
+        } else if ( cameraControlType === "avatar" ) {
 
             // Set target to previous camera position
             this.cameraControl.object.position.x = this.cameraControl.target.x
@@ -660,12 +704,17 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
         } else {
 
-            console.error( "Invalid camera controller: " + cameraControlType );
+            TLogger.error( `Invalid camera controller: ${cameraControlType}` )
 
         }
 
     },
 
+    /**
+     *
+     * @param groupName
+     * @param visibility
+     */
     setGroupVisibility ( groupName, visibility ) {
 
         var group = this.scene.getObjectByName( groupName )
@@ -678,6 +727,9 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
     },
 
+    /**
+     *
+     */
     decimateVisibleMeshes () {
 
         //todo: recursive search against currently visible group and cache hide mesh for repopulate later !!!
@@ -705,6 +757,9 @@ Object.assign( TViewport.prototype, EventDispatcher.prototype, {
 
     },
 
+    /**
+     *
+     */
     populateVisibleMeshes () {
 
         const groups = this.scene.children.filter( child => child.type === 'Group' )

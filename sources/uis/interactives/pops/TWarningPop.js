@@ -8,6 +8,8 @@
  *
  */
 
+/* eslint-env browser */
+
 import React from 'react'
 
 let _instanceCounter = 0
@@ -32,7 +34,7 @@ class TWarningPop extends React.Component {
 
     componentWillReceiveProps ( /*nextProps*/ ) {}
 
-    shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
+    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
 
     componentWillUpdate ( /*nextProps, nextState*/ ) {}
 
@@ -47,7 +49,7 @@ class TWarningPop extends React.Component {
         const _class = ( className ) ? `tWarningPop ${className}` : 'tWarningPop'
 
         return (
-            <t-warning-pop ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-warning-pop>
+            <t-warning-pop ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-warning-pop>
         )
 
     }

@@ -1,35 +1,48 @@
 /**
- * Created by Tristan on 31/01/2017.
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ *
+ * @file Todo
+ *
+ * @example Todo
+ *
  */
 
-import {
-    MOUSE,
-    Quaternion,
-    Vector3,
-    EventDispatcher
-} from 'threejs-full-es6'
+/* eslint-env browser */
 
+import { MOUSE } from '../../node_modules/threejs-full-es6/sources/constants'
+import { Quaternion } from '../../node_modules/threejs-full-es6/sources/math/Quaternion'
+import { Vector3 } from '../../node_modules/threejs-full-es6/sources/math/Vector3'
+import { EventDispatcher } from '../../node_modules/threejs-full-es6/sources/core/EventDispatcher'
+import { Keys } from '../cores/TConstants'
+import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { PI_2 } from '../maths/TMath'
 
-var STATE   = {
+const STATE   = {
     NONE:   -1,
     ROTATE: 0,
     ZOOM:   1,
     PAN:    2
 }
-var xVector = new Vector3( 1, 0, 0 )
-var yVector = new Vector3( 0, 1, 0 )
+const xVector = new Vector3( 1, 0, 0 )
+const yVector = new Vector3( 0, 1, 0 )
 
+/**
+ *
+ * @param camera
+ * @param domElement
+ * @constructor
+ */
 function TCameraPathController ( camera, domElement ) {
 
     if ( !camera ) {
-        console.error( "Unable to create TCameraPathController with null or undefined camera !" )
+        TLogger.error( "Unable to create TCameraPathController with null or undefined camera !" )
         return
     }
 
-    var self = this
+    const self = this
 
-    var currentState = STATE.NONE
+    let currentState = STATE.NONE
 
     this.camera     = camera
     this.cameraJump = 0.0
@@ -63,21 +76,14 @@ function TCameraPathController ( camera, domElement ) {
     this.verticalOffset = 1.5
 
     this.keysCodes = {
-        forwardKeys:  [ KEYS.Z, KEYS.UP_ARROW ],
-        backwardKeys: [ KEYS.S, KEYS.BOTTOM_ARROW ]
+        forwardKeys:  [ Keys.Z, Keys.UP_ARROW ],
+        backwardKeys: [ Keys.S, Keys.BOTTOM_ARROW ]
     }
 
     // Mouse
-    var mouseQuat = {
+    let mouseQuat = {
         x: new Quaternion(),
         y: new Quaternion()
-    }
-
-    this.setMouseQuat = function ( quat ) {
-
-        this.orientation.y = Math.asin( quat.y ) * 2
-        this.orientation.x = 0
-
     }
 
     this.mouseButtons = {
@@ -97,7 +103,7 @@ function TCameraPathController ( camera, domElement ) {
         self.currentPathPosition += self.cameraJump
         if ( self.currentPathPosition > 1 ) {
 
-            console.log( 'reachEnd' )
+            TLogger.log( 'reachEnd' )
             var indexOfNextPath           = self.pathsMap.get( self.currentPathIndex ).indexOfNextPath
             var indexOfNextPathOfNextPath = self.pathsMap.get( indexOfNextPath ).indexOfNextPath
 
@@ -124,7 +130,7 @@ function TCameraPathController ( camera, domElement ) {
         self.currentPathPosition -= self.cameraJump
         if ( self.currentPathPosition < 0 ) {
 
-            console.log( 'reachStart' )
+            TLogger.log( 'reachStart' )
             var indexOfPreviousPath               = self.pathsMap.get( self.currentPathIndex ).indexOfPreviousPath
             var indexOfPreviousPathOfPreviousPath = self.pathsMap.get( indexOfPreviousPath ).indexOfPreviousPath
 
@@ -148,7 +154,7 @@ function TCameraPathController ( camera, domElement ) {
 
     function rotate ( event ) {
 
-        //console.log( 'handleMouseMoveRotate' )
+        //TLogger.log( 'handleMouseMoveRotate' )
 
         var movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0
         var movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0
@@ -206,7 +212,7 @@ function TCameraPathController ( camera, domElement ) {
 
         } else {
 
-            console.warn( "The key event is not implemented for key code: " + event.keyCode )
+            TLogger.warn( "The key event is not implemented for key code: " + event.keyCode )
 
         }
 
@@ -290,6 +296,28 @@ function TCameraPathController ( camera, domElement ) {
 
     }
 
+    function onForward ( event ) {
+
+        clearTimeout( self.timeoutId )
+
+        event.keyCode = Keys.UP_ARROW
+        onKeyDown( event )
+
+        self.timeoutId = setTimeout( onKeyUp.bind( self ), 750 )
+
+    }
+
+    function onBackward ( event ) {
+
+        clearTimeout( self.timeoutId )
+
+        event.keyCode = Keys.BOTTOM_ARROW
+        onKeyDown( event )
+
+        self.timeoutId = setTimeout( onKeyUp.bind( self ), 750 )
+
+    }
+
     // Public function that access private methods
     this.update = function () {
 
@@ -328,40 +356,30 @@ function TCameraPathController ( camera, domElement ) {
     window.addEventListener( 'keydown', onKeyDown, false )
     window.addEventListener( 'keyup', onKeyUp, false )
 
-    this.forwardControl.addEventListener( 'click', function ( event ) {
-
-        clearTimeout( self.timeoutId )
-
-        event.keyCode = KEYS.UP_ARROW
-        onKeyDown( event )
-
-        self.timeoutId = setTimeout( onKeyUp.bind( self ), 750 )
-
-    }, false )
-
-    this.backwardControl.addEventListener( 'click', function ( event ) {
-
-        clearTimeout( self.timeoutId )
-
-        event.keyCode = KEYS.BOTTOM_ARROW
-        onKeyDown( event )
-
-        self.timeoutId = setTimeout( onKeyUp.bind( self ), 750 )
-
-    }, false )
+    this.forwardControl.addEventListener( 'click', onForward, false )
+    this.backwardControl.addEventListener( 'click', onBackward, false )
 
 }
 
 Object.assign( TCameraPathController.prototype, EventDispatcher.prototype, {
 
-    setPath: function setPath ( path ) {
+    /**
+     *
+     * @param path
+     */
+    setPath ( path ) {
 
         this.currentPath = path
         this.cameraJump  = 1 / path.getLength()
 
     },
 
-    setPaths: function setPaths ( paths, nameOfFirstPathToFollow ) {
+    /**
+     *
+     * @param paths
+     * @param nameOfFirstPathToFollow
+     */
+    setPaths ( paths, nameOfFirstPathToFollow ) {
 
         this.paths            = paths
         this.currentPathIndex = 0
@@ -441,19 +459,37 @@ Object.assign( TCameraPathController.prototype, EventDispatcher.prototype, {
 
         }
 
-        //        console.log( this.pathsMap )
+        //        TLogger.log( this.pathsMap )
 
         this.setPath( pathToFollow )
 
     },
 
-    getCurrentPathPosition: function () {
+    /**
+     *
+     * @param quat
+     */
+    setMouseQuat ( quat ) {
+
+        this.orientation.y = Math.asin( quat.y ) * 2
+        this.orientation.x = 0
+
+    },
+
+    /**
+     *
+     */
+    getCurrentPathPosition () {
 
         return this.currentPath.getPointAt( this.currentPathPosition )
 
     },
 
-    getNextPathPosition: function () {
+    /**
+     *
+     * @return {undefined}
+     */
+    getNextPathPosition () {
 
         var nextPosition = undefined
 
@@ -467,7 +503,11 @@ Object.assign( TCameraPathController.prototype, EventDispatcher.prototype, {
 
     },
 
-    getDistanceFromStart: function getDistanceFromStart () {
+    /**
+     *
+     * @return {number}
+     */
+    getDistanceFromStart () {
 
         //Linear distance
         //		var firstPosition = this.currentPath.getPointAt( 0 )
@@ -481,7 +521,10 @@ Object.assign( TCameraPathController.prototype, EventDispatcher.prototype, {
 
     },
 
-    lookAtPath: function lookAtPath () {
+    /**
+     *
+     */
+    lookAtPath () {
 
         // Set lookup point at the camera height
         var nextPosition = this.getNextPathPosition()
@@ -494,7 +537,11 @@ Object.assign( TCameraPathController.prototype, EventDispatcher.prototype, {
 
     },
 
-    goTo: function goTo ( position ) {
+    /**
+     *
+     * @param position
+     */
+    goTo ( position ) {
 
         //Todo: Should use 2D instead of 3D !
 

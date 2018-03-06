@@ -13,12 +13,15 @@
  *
  */
 
+/* eslint-env browser */
+
+import { BufferGeometry } from '../../../node_modules/threejs-full-es6/sources/core/BufferGeometry'
+import { BufferAttribute } from '../../../node_modules/threejs-full-es6/sources/core/BufferAttribute'
+import { Vector3 } from '../../../node_modules/threejs-full-es6/sources/math/Vector3'
+import { Face3 } from '../../../node_modules/threejs-full-es6/sources/core/Face3'
+import { Geometry } from '../../../node_modules/threejs-full-es6/sources/core/Geometry'
 import { TDataBaseManager } from '../TDataBaseManager'
-import {
-    Geometry,
-    BufferAttribute,
-    BufferGeometry
-} from 'threejs-full-es6'
+
 
 /**
  *
@@ -31,8 +34,11 @@ function TGeometriesManager () {
 
 }
 
-TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.prototype ), {
+TGeometriesManager.prototype = Object.assign( Object.create(TDataBaseManager.prototype), {
 
+    /**
+     *
+     */
     constructor: TGeometriesManager,
 
     /**
@@ -154,6 +160,9 @@ TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.pr
 
 Object.defineProperties( TGeometriesManager.prototype, {
 
+    /**
+     *
+     */
     _onJson: {
         value: function _onJson ( jsonData, onSuccess, onProgress, onError ) {
 

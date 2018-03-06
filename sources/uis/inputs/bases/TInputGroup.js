@@ -8,6 +8,8 @@
  *
  */
 
+/* eslint-env browser */
+
 import React from 'react'
 
 let _instanceCounter = 0
@@ -32,7 +34,7 @@ class TInputGroup extends React.Component {
 
     componentWillReceiveProps ( /*nextProps*/ ) {}
 
-    shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
+    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
 
     componentWillUpdate ( /*nextProps, nextState*/ ) {}
 
@@ -47,7 +49,7 @@ class TInputGroup extends React.Component {
         const _class = ( className ) ? `tInputGroup ${className}` : 'tInputGroup'
 
         return (
-            <t-input-group ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-input-group>
+            <t-input-group ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-input-group>
         )
 
     }

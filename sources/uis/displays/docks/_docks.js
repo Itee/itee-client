@@ -6,4 +6,6 @@
  *
  */
 
+/* eslint-env browser */
+
 export { TDock } from './TDock'

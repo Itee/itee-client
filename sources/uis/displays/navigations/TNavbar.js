@@ -8,6 +8,8 @@
  *
  */
 
+/* eslint-env browser */
+
 import React from 'react'
 
 let _instanceCounter = 0
@@ -32,7 +34,7 @@ class TNavbar extends React.Component {
 
     componentWillReceiveProps ( /*nextProps*/ ) {}
 
-    shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
+    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
 
     componentWillUpdate ( /*nextProps, nextState*/ ) {}
 
@@ -56,7 +58,7 @@ class TNavbar extends React.Component {
         switch ( state ) {
 
             case 'fixed':
-                style[ 'position' ] = 'fixed'
+                _style[ 'position' ] = 'fixed'
                 break
 
             case 'toggle':
@@ -64,53 +66,46 @@ class TNavbar extends React.Component {
                 break
 
             case 'float':
-                style[ 'position' ] = 'absolute'
+                _style[ 'position' ] = 'absolute'
                 break
 
             default:
                 throw new RangeError( `Invalid switch parameter: ${state}`, 'TNavbar', 40 )
-                break
 
         }
 
         switch ( position ) {
 
             case 'top':
-                style[ 'top' ]   = '0px'
-                style[ 'width' ] = '100%'
+                _style[ 'top' ]   = '0px'
+                _style[ 'width' ] = '100%'
                 break
 
             case 'right':
-                style[ 'right' ]  = '0px'
-                style[ 'height' ] = '100%'
+                _style[ 'right' ]  = '0px'
+                _style[ 'height' ] = '100%'
                 break
 
             case 'bottom':
-                style[ 'bottom' ] = '0px'
-                style[ 'width' ]  = '100%'
+                _style[ 'bottom' ] = '0px'
+                _style[ 'width' ]  = '100%'
                 break
 
             case 'left':
-                style[ 'left' ]   = '0px'
-                style[ 'height' ] = '100%'
+                _style[ 'left' ]   = '0px'
+                _style[ 'height' ] = '100%'
                 break
 
             default:
                 throw new RangeError( `Invalid switch parameter: ${position}`, 'TNavbar', 70 )
-                break
 
         }
 
         return (
-            <nav className={'tNavbar'} style={style}>
-                {properties.children}
-            </nav>
-        );
-
-//
-//        return (
-//            <t-navbar ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}></t-navbar>
-//        )
+            <t-navbar id={_id} class={_class} style={_style}>
+                {children}
+            </t-navbar>
+        )
 
     }
 

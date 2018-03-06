@@ -8,6 +8,8 @@
  *
  */
 
+/* eslint-env browser */
+
 /**
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
@@ -22,7 +24,7 @@
  */
 
 import React from 'react'
-import PropTypes from 'props-types'
+import PropTypes from 'prop-types'
 
 let _instanceCounter = 0
 
@@ -69,7 +71,7 @@ class TErrorCatcher extends React.Component {
 
         if ( this.state.error ) {
             return (
-                <t-error-catcher ref={( container ) => {this._container = container}} id={_id} style={_style} className={_class}>
+                <t-error-catcher ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}>
                     <h1>Error: {this.state.error.toString()}</h1>
                     <div>Info: {this.state.info.toString()} </div>
                 </t-error-catcher>

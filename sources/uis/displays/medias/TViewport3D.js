@@ -8,78 +8,127 @@
  *
  */
 
-import React from 'react'
+/* eslint-env browser */
 
-let _instanceCounter = 0
+import { MeshPhongMaterial } from '../../../../node_modules/threejs-full-es6/sources/materials/MeshPhongMaterial'
+import { PerspectiveCamera } from '../../../../node_modules/threejs-full-es6/sources/cameras/PerspectiveCamera'
+import { WebGLRenderer } from '../../../../node_modules/threejs-full-es6/sources/renderers/WebGLRenderer'
+import { Scene } from '../../../../node_modules/threejs-full-es6/sources/scenes/Scene'
+import { Vector3 } from '../../../../node_modules/threejs-full-es6/sources/math/Vector3'
+import { AmbientLight } from '../../../../node_modules/threejs-full-es6/sources/lights/AmbientLight'
+import { Mesh } from '../../../../node_modules/threejs-full-es6/sources/objects/Mesh'
+import { GridHelper } from '../../../../node_modules/threejs-full-es6/sources/helpers/GridHelper'
+import { OrbitControls } from '../../../../node_modules/threejs-full-es6/sources/controls/OrbitControls'
+import { BoxBufferGeometry } from '../../../../node_modules/threejs-full-es6/sources/geometries/BoxGeometry'
 
-class TViewport3D extends React.Component {
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
+import resize from 'vue-resize-directive'
 
-    constructor ( props ) {
+import { DefaultLogger as TLogger } from '../../../loggers/TLogger'
+import { isString } from '../../../validators/TStringValidator'
 
-        super( props )
-        _instanceCounter++
+export default Vue.component( 'TViewport3D', {
+    template:   `
+        <div class="tViewport3D" v-resize:debounce="_resize"></div>
+    `,
+    directives: {
+        resize
+    },
+    data:       function () {
 
-        this._frameId  = undefined
-        this._renderer = new WebGLRenderer( { antialias: true } )
-        this._scene    = new Scene()
-        this._camera   = new PerspectiveCamera()
-        this._cube     = undefined
+        return {
+            _frameId:      undefined,
+            _renderer:     new WebGLRenderer( { antialias: true } ),
+            _camera:       new PerspectiveCamera(),
+            _orbitControl: undefined,
+            _cube:         undefined,
+            _needResize:   '',
+        }
 
-        // Handler
-        this._resize = this._resize.bind( this )
+    },
+    props:      [ 'width', 'height', 'cameraType', 'currentEffect', 'currentMode', 'scene' ],
+    methods:    {
 
-    }
+        _startLoop () {
 
-    /**
-     * React lifecycle
-     */
-    componentWillMount () {
+            if ( this.$data._frameId ) {
+                return
+            }
+
+            this.$data._frameId = window.requestAnimationFrame( this._loop.bind( this ) )
+
+        },
+
+        _loop () {
+
+            this.$data._frameId = window.requestAnimationFrame( this._loop.bind( this ) )
+
+            this.$data._orbitControl.update()
+
+            this.$data._renderer.render( this.scene, this.$data._camera )
+
+        },
+
+        _stopLoop () {
+
+            window.cancelAnimationFrame( this.$data._frameId )
+
+        },
+
+        _resize ( domElement ) {
+
+            const data            = this.$data
+            const containerWidth  = domElement.offsetWidth
+            const containerHeight = domElement.offsetHeight || 1 // In case height === 0 set to 1
+
+            data._renderer.setSize( containerWidth, containerHeight )
+            data._camera.aspect = ( containerWidth / containerHeight )
+            data._camera.updateProjectionMatrix()
+
+            console.log( `TViewport3D._resize(w/h): ${containerWidth}/${containerHeight}` )
+
+        }
+
+    },
+    created () {
 
         window.addEventListener( 'resize', this._resize, false )
 
-    }
+    },
+    mounted () {
 
-    componentDidMount () {
-
-        this._resize()
+        const domElement = this.$el
+        const data       = this.$data
 
         // Set renderer
-        this._renderer.setClearColor( 0x777777 )
-        this._renderer.autoClear = true
+        data._renderer.setClearColor( 0x777777 )
+        data._renderer.autoClear = true
 
         // Add renderer canvas
-        this._container.appendChild( this._renderer.domElement )
+        domElement.appendChild( data._renderer.domElement )
 
         // Set camera position
-        this._camera.fov        = 50
-        this._camera.near       = 0.01
-        this._camera.far        = 10000
-        this._camera.position.x = 0.0
-        this._camera.position.y = 5.0
-        this._camera.position.z = 7.0
-        this._camera.setRotationFromAxisAngle( new Vector3( 1.0, 0.0, 0.0 ), -0.610865 )
-        this._camera.updateProjectionMatrix()
+        data._camera.fov        = 50
+        data._camera.near       = 0.01
+        data._camera.far        = 10000
+        data._camera.position.x = 0.0
+        data._camera.position.y = 5.0
+        data._camera.position.z = 7.0
+        data._camera.setRotationFromAxisAngle( new Vector3( 1.0, 0.0, 0.0 ), -0.610865 )
+        data._camera.updateProjectionMatrix()
+
+        // Init camera controls
+        data._orbitControl             = new OrbitControls( data._camera, domElement )
+        data._orbitControl.maxDistance = 2000
 
         // Add light
-        this._scene.add( new AmbientLight( 0xC8C8C8 ) )
-
-        // Create the scene
-        const geometry = new BoxBufferGeometry( 1, 1, 1 )
-        const material = new MeshPhongMaterial( '0x0096FF' )
-        this._cube     = new Mesh( geometry, material )
-        this._scene.add( this._cube )
-
-        const gridHelper = new GridHelper( 100, 100 )
-        this._scene.add( gridHelper )
-
-        // Add listener
+        this.scene.add( new AmbientLight( 0xC8C8C8 ) )
 
         // Start rendering
         this._startLoop()
 
-    }
-
-    componentWillUnmount () {
+    },
+    beforeDestroy () {
 
         this._stopLoop()
 
@@ -87,76 +136,4 @@ class TViewport3D extends React.Component {
 
     }
 
-    componentWillReceiveProps ( /*nextProps*/ ) {}
-
-    shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentWillUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentDidUpdate ( /*prevProps, prevState*/ ) {}
-
-    render () {
-
-        const { id, className } = this.props
-
-        const _id    = id || `tViewport3D_${_instanceCounter}`
-        const _style = {
-            width:    '100%',
-            height:   '100%',
-            overflow: 'hidden'
-        }
-        const _class = ( className ) ? `tViewport3D ${className}` : 'tViewport3D'
-
-        return (
-            <t-viewport-3d id={_id} style={_style} className={_class}></t-viewport-3d>
-        )
-
-    }
-
-    /**
-     * Component methods
-     */
-    _startLoop () {
-
-        if ( this._frameId ) {
-            return
-        }
-
-        this._frameId = window.requestAnimationFrame( this._loop.bind( this ) )
-
-    }
-
-    _loop () {
-
-        this._frameId = window.requestAnimationFrame( this._loop.bind( this ) )
-
-        // Perform loop work here
-        const SPEED = 0.01
-        this._cube.rotation.x -= SPEED * 2
-        this._cube.rotation.y -= SPEED
-        this._cube.rotation.z -= SPEED * 3
-
-        this._renderer.render( this._scene, this._camera )
-
-    }
-
-    _stopLoop () {
-
-        window.cancelAnimationFrame( this._frameId )
-
-    }
-
-    _resize () {
-
-        const containerWidth  = this._container.clientWidth
-        const containerHeight = this._container.clientHeight || 1 // In case height === 0 set to 1
-
-        this._renderer.setSize( containerWidth, containerHeight )
-        this._camera.aspect = ( containerWidth / containerHeight )
-        this._camera.updateProjectionMatrix()
-
-    }
-
-}
-
-export { TViewport3D }
+} )

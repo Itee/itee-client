@@ -1,6 +1,14 @@
 /**
- * Created by Tristan on 17/08/2015.
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ *
+ * @class Todo...
+ * @classdesc Todo...
+ * @example Todo...
+ *
  */
+
+/* eslint-env browser */
 
 //    _____                 _   _
 //   |  ___|   _ _ __   ___| |_(_) ___  _ __  ___
@@ -14,7 +22,7 @@
  * @param data
  * @returns {boolean|*} true if data is a function, false otherwise.
  */
-export function isFunction( data ) {
+export function isFunction ( data ) {
     return (typeof data === "function")
 }
 
@@ -23,6 +31,6 @@ export function isFunction( data ) {
  * @param data
  * @returns {boolean|*} true if data is not a function, false otherwise.
  */
-export function isNotFunction( data ) {
-    return !isFunction(data)
+export function isNotFunction ( data ) {
+    return !isFunction( data )
 }

@@ -6,6 +6,8 @@
  *
  */
 
+/* eslint-env browser */
+
 export { TAccordion } from './TAccordion'
 export { TCollapse } from './TCollapse'
 export { TList } from './TList'

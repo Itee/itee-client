@@ -13,76 +13,25 @@
  *
  */
 
-import React from 'react'
+/* eslint-env browser */
 
-class TStatusBar extends React.Component {
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-    render () {
-
-        const { id, state, position, children } = this.props
-
-        const _id = id || 'tStatusBar'
-
-        let _style = {
-            height:     '40px',
-            display:    'flex',
-            alignItems: 'center'
-        }
-
-        switch ( state ) {
-
-            case 'fixed':
-                _style[ 'position' ] = 'fixed'
-                break
-
-            case 'toggle':
-
-                break
-
-            case 'float':
-                _style[ 'position' ] = 'absolute'
-                break
-
-            default:
-                throw new RangeError( `Invalid state parameter: ${state}`, 'TStatusBar' )
-
-        }
-
-        switch ( position ) {
-
-            case 'top':
-                _style[ 'top' ]   = '0px'
-                _style[ 'width' ] = '100%'
-                break
-
-            case 'right':
-                _style[ 'right' ]  = '0px'
-                _style[ 'height' ] = '100%'
-                break
-
-            case 'bottom':
-                _style[ 'bottom' ] = '0px'
-                _style[ 'width' ]  = '100%'
-                break
-
-            case 'left':
-                _style[ 'left' ]   = '0px'
-                _style[ 'height' ] = '100%'
-                break
-
-            default:
-                throw new RangeError( `Invalid position parameter: ${position}`, 'TStatusBar' )
-
-        }
-
-        return (
-            <t-status-bar id={_id} style={_style} className={'tStatusBar'}>
-                {children}
-            </t-status-bar>
-        )
-
-    }
-
-}
-
-export { TStatusBar }
+export default Vue.component( 'TStatusBar', {
+    template: `
+        <TContainer 
+            class="tStatusBar" 
+            :height=height 
+            :width=width 
+            :orientation=orientation 
+            :expand=false 
+            :wrapContent=false 
+            vAlign="stretch" 
+            hAlign="spaced" 
+            overflow="visible"
+        >
+            <slot></slot>
+        </TContainer>
+    `,
+    props:    [ 'height', 'width', 'orientation' ]
+} )

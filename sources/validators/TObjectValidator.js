@@ -1,13 +1,20 @@
 /**
- * Created by Tristan on 17/08/2015.
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ *
+ * @class Todo...
+ * @classdesc Todo...
+ * @example Todo...
+ *
  */
 
-import { isNotNull } from 'TNullityValidator'
+/* eslint-env browser */
+
+import { isNotNull } from './TNullityValidator'
 import {
     isEmpty,
     isNotEmpty
-} from "TEmptinessValidator"
-import { isNotArray } from "TArrayValidator"
+} from './TEmptinessValidator'
 
 //     ___  _     _           _
 //    / _ \| |__ (_) ___  ___| |_ ___
@@ -22,7 +29,7 @@ import { isNotArray } from "TArrayValidator"
  * @returns {boolean} true if data is object, false otherwise
  */
 export function isObject ( data ) {
-    return ( isNotNull( data ) && (typeof data === 'object') && isNotArray( data ) )
+    return ( isNotNull( data ) && (typeof data === 'object') && !Array.isArray( data ) )
 }
 
 /**

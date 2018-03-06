@@ -1,6 +1,14 @@
 /**
- * Created by Tristan on 17/08/2015.
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ *
+ * @class Todo...
+ * @classdesc Todo...
+ * @example Todo...
+ *
  */
+
+/* eslint-env browser */
 
 //    ____                  _           _
 //   / ___| _   _ _ __ ___ | |__   ___ | |___

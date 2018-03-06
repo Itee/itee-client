@@ -2,18 +2,18 @@
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  *
- * @class TScenesManager
+ * @class ClassName
  * @classdesc Todo...
  * @example Todo...
  *
  */
 
+/* eslint-env browser */
+
+import { Object3D } from '../../../node_modules/threejs-full-es6/sources/core/Object3D'
+import { Mesh } from '../../../node_modules/threejs-full-es6/sources/objects/Mesh'
+import { LineSegments } from '../../../node_modules/threejs-full-es6/sources/objects/LineSegments'
 import { TDataBaseManager } from '../TDataBaseManager'
-import {
-    LineSegments,
-    Object3D,
-    Mesh
-} from 'threejs-full-es6'
 
 /**
  *
@@ -26,14 +26,22 @@ function TObjectsManager () {
 
 }
 
-TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.prototype ), {
+TObjectsManager.prototype = Object.assign( Object.create(TDataBaseManager.prototype), {
 
+    /**
+     *
+     */
     constructor: TObjectsManager,
 
+    /**
+     *
+     * @param jsonData
+     * @param onError
+     * @return {*}
+     */
     convertJsonToObject3D ( jsonData, onError ) {
 
         // Todo factory
-        const self       = this
         const data       = jsonData
         const objectType = data.type
 
@@ -207,6 +215,9 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
 
 Object.defineProperties( TObjectsManager.prototype, {
 
+    /**
+     *
+     */
     _onJson: {
         value: function _onJson ( jsonData, onSuccess, onProgress, onError ) {
 

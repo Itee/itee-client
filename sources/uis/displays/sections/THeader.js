@@ -8,55 +8,14 @@
  *
  */
 
-import React from 'react'
+/* eslint-env browser */
 
-let _instanceCounter = 0
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-class THeader extends React.Component {
-
-    constructor ( props ) {
-
-        super( props )
-        _instanceCounter++
-
-    }
-
-    /**
-     * React lifecycle
-     */
-    componentWillMount () {}
-
-    componentDidMount () {}
-
-    componentWillUnmount () {}
-
-    componentWillReceiveProps ( /*nextProps*/ ) {}
-
-    shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentWillUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentDidUpdate ( /*prevProps, prevState*/ ) {}
-
-    render () {
-
-        const { id, className, children } = this.props
-
-        const _id    = id || `tHeader_${_instanceCounter}`
-        const _style = {
-            flex: '0 1 auto'
-        }
-        const _class = ( className ) ? `tHeader ${className}` : 'tHeader'
-
-        return (
-            <t-header id={_id} style={_style} className={_class}>
-                {children}
-            </t-header>
-        )
-
-    }
-
-}
-
-export { THeader }
-
+export default Vue.component( 'THeader', {
+    template: `
+        <TContainer class="tHeader" orientation="vertical" vAlign="center" hAlign="spaced">
+            <slot></slot>
+        </TContainer>
+    `
+} )
