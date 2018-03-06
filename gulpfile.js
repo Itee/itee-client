@@ -265,7 +265,7 @@ gulp.task( 'build-script', ( done ) => {
             inputPath:    path.join( __dirname, 'sources' ),
             outputPath:   path.join( __dirname, 'builds' ),
             environments: [ 'development' ],
-            formats:      [ 'es' ],
+            formats:      [ 'iife' ],
             sourceMap:    false
         }
 
