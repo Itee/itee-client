@@ -16,7 +16,6 @@ export default Vue.component( 'TTreeItem', {
         <li class="tTreeItem">
             <TContainerHorizontal class="tTreeItemContent" hAlign="start" vAlign="center">
                 <i v-if="haveChildren" :class=computeToggleChildrenIconClass @click="toggleChildren()"></i>
-                <i v-else class="fa fa-minus"></i>
                 <label>{{name}}</label>
                 <span v-for="modifier in modifiers" class="tTreeItemModifiers">
                     <i v-if="modifier.type === 'checkbox'" @click="updateCheckboxState( modifier.onClick )" :class=computeCheckboxClass></i>
