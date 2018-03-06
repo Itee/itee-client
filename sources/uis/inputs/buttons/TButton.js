@@ -8,12 +8,12 @@
  *
  */
 
-import Vue from '../../../node_modules/vue/dist/vue.esm'
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
 export default Vue.component( 'TButton', {
     template: `
-        <button class="button" @click="onClick(messageData)"><i v-if="icon" className={icon}></i>{{label}}</button>
+        <button class="button" @click="onClick(messageData)"><i v-if="icon" class="icon"></i>{{label}}</button>
     `,
-    props:    [ 'label', 'onClick', 'messageData' ]
+    props:    [ 'label', 'icon', 'onClick', 'messageData' ]
 } )
 
