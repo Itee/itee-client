@@ -6,7 +6,7 @@
  * @classdesc This is the top application bar that contain 3 sub part, one left, one center and one right. The purpose of this bar container is to display an brand to left, the main menu to center
  *     and login button to the right.
  *
- * @example
+ * @example //todo...
  *
  *
  */
