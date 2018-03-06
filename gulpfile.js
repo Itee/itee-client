@@ -391,10 +391,10 @@ gulp.task( 'watch-script', gulp.series( 'build-script', ( done ) => {
 /**
  * Build css and javascript files
  */
-gulp.task( 'build-auto', gulp.series( 'clean', 'lint', gulp.parallel( 'watch-style', 'watch-script' ) ) )
-gulp.task( 'build-dev', gulp.series( 'clean', gulp.parallel( 'lint', 'doc', 'test' ), gulp.parallel( 'build-style-dev', 'build-script' ) ) )
-gulp.task( 'build-prod', gulp.series( 'clean', gulp.parallel( 'lint', 'doc', 'test' ), gulp.parallel( 'build-style-prod', 'build-script' ) ) )
-gulp.task( 'build', gulp.series( 'clean', gulp.parallel( 'lint', 'doc', 'test' ), gulp.parallel( 'build-style', 'build-script' ) ) )
+gulp.task( 'build-auto', gulp.parallel( 'watch-style', 'watch-script' ) )
+gulp.task( 'build-dev', gulp.parallel( 'build-style-dev', 'build-script' ) )
+gulp.task( 'build-prod', gulp.parallel( 'build-style-prod', 'build-script' ) )
+gulp.task( 'build', gulp.parallel( 'build-style', 'build-script' ) )
 
 /**
  * @method npm run release
