@@ -39,7 +39,6 @@ export default Vue.component( 'TViewport3D', {
         return {
             _frameId:      undefined,
             _renderer:     new WebGLRenderer( { antialias: true } ),
-            _scene:        new Scene(),
             _camera:       new PerspectiveCamera(),
             _orbitControl: undefined,
             _cube:         undefined,
@@ -47,7 +46,7 @@ export default Vue.component( 'TViewport3D', {
         }
 
     },
-    props:      [ 'width', 'height', 'cameraType', 'currentEffect', 'currentMode' ],
+    props:      [ 'width', 'height', 'cameraType', 'currentEffect', 'currentMode', 'scene' ],
     methods:    {
 
         _startLoop () {
@@ -64,15 +63,9 @@ export default Vue.component( 'TViewport3D', {
 
             this.$data._frameId = window.requestAnimationFrame( this._loop.bind( this ) )
 
-            // Perform loop work here
-            const SPEED = 0.01
-            this.$data._cube.rotation.x -= SPEED * 2
-            this.$data._cube.rotation.y -= SPEED
-            this.$data._cube.rotation.z -= SPEED * 3
-
             this.$data._orbitControl.update()
 
-            this.$data._renderer.render( this.$data._scene, this.$data._camera )
+            this.$data._renderer.render( this.scene, this.$data._camera )
 
         },
 
@@ -129,16 +122,7 @@ export default Vue.component( 'TViewport3D', {
         data._orbitControl.maxDistance = 2000
 
         // Add light
-        data._scene.add( new AmbientLight( 0xC8C8C8 ) )
-
-        // Create the scene
-        const geometry = new BoxBufferGeometry( 1, 1, 1 )
-        const material = new MeshPhongMaterial( 0x0096FF )
-        data._cube     = new Mesh( geometry, material )
-        data._scene.add( data._cube )
-
-        const gridHelper = new GridHelper( 100, 100 )
-        data._scene.add( gridHelper )
+        this.scene.add( new AmbientLight( 0xC8C8C8 ) )
 
         // Start rendering
         this._startLoop()
