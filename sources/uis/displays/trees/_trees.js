@@ -8,5 +8,5 @@
 
 /* eslint-env browser */
 
-export { TTree } from './TTree'
-export { TTreeItem } from './TTreeItem'
+export { default as TTree } from './TTree'
+export { default as TTreeItem } from './TTreeItem'

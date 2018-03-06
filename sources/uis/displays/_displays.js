@@ -19,6 +19,6 @@ export * from './sections/_sections'
 export * from './splitters/_splitters'
 //export * from './tables/_tables'
 //export * from './tabs/_tabs'
-//export * from './trees/_trees'
+export * from './trees/_trees'
 
 

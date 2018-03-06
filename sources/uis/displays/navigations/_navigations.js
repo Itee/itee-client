@@ -11,7 +11,7 @@
 //export { TAffix } from './TAffix'
 //export { TAnchor } from './TAnchor'
 //export { TBackToTop } from './TBackToTop'
-export { TBrand } from './TBrand'
+//export { TBrand } from './TBrand'
 //export { TBreadcrumb } from './TBreadcrumb'
 export { default as TMenuDropDown } from './TMenuDropDown'
 export { default as TMenu } from './TMenu'
