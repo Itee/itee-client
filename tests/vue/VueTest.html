@@ -26,7 +26,12 @@
 		<script src="./VueConfig.js"></script>
 		<script>
 
-            var app = new Itee.createSpaceCraft( config )
+
+            const environment  = Itee.analyseEnvironment()
+            const rawMaterial  = Itee.getRawMaterial( environment )
+            const flyingSaucer = Itee.createFlyingSaucer( rawMaterial )
+            //
+            flyingSaucer.launch()
 
 		</script>
 	</body>
