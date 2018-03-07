@@ -249,20 +249,23 @@ gulp.task( 'build-script', ( done ) => {
     function processArguments ( processArgv ) {
         'use strict'
 
-        //        let defaultOptions = {
-        //            environments: [ 'development', 'production' ],
-        //            formats:      [ 'amd', 'cjs', 'es', 'iife', 'umd' ],
-        //            sourceMap:    false
-        //        }
-
         let defaultOptions = {
             fileName:     'itee-client',
             inputPath:    path.join( __dirname, 'sources' ),
             outputPath:   path.join( __dirname, 'builds' ),
-            environments: [ 'development' ],
-            formats:      [ 'iife' ],
+            environments: [ 'development', 'production' ],
+            formats:      [ 'amd', 'cjs', 'es', 'iife', 'umd' ],
             sourceMap:    false
         }
+
+//        let defaultOptions = {
+//            fileName:     'itee-client',
+//            inputPath:    path.join( __dirname, 'sources' ),
+//            outputPath:   path.join( __dirname, 'builds' ),
+//            environments: [ 'development' ],
+//            formats:      [ 'iife' ],
+//            sourceMap:    false
+//        }
 
         const argv = processArgv.slice( 3 ) // Ignore nodejs, script paths and gulp params
         argv.forEach( argument => {
