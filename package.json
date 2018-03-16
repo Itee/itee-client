@@ -46,6 +46,7 @@
     "threejs-full-es6": "^5.0.2",
     "vue": "^2.5.13",
     "vue-resize-directive": "^1.0.0"
+    "vue-router": "^3.0.1"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
