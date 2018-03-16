@@ -250,6 +250,9 @@ gulp.task( 'build-script', ( done ) => {
         'use strict'
 
         //        let defaultOptions = {
+        //            fileName:     'itee-client',
+        //            inputPath:    path.join( __dirname, 'sources' ),
+        //            outputPath:   path.join( __dirname, 'builds' ),
         //            environments: [ 'development', 'production' ],
         //            formats:      [ 'amd', 'cjs', 'es', 'iife', 'umd' ],
         //            sourceMap:    false
