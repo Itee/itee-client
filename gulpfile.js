@@ -190,7 +190,7 @@ gulp.task( 'test', gulp.parallel( 'unit', 'bench' ) )
 ///
 
 const styleFiles = [
-    './node_modules/font-awesome/less/font-awesome.less',
+//    './node_modules/font-awesome/less/font-awesome.less',
     //    './node_modules/bootstrap/scss/bootstrap.scss',
     //    './node_modules/bootstrap-slider/dist/css/bootstrap-slider.css',
     './styles/itee-client.less'
