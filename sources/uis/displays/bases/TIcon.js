@@ -10,51 +10,43 @@
 
 /* eslint-env browser */
 
-import React from 'react'
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
+import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 
-let _instanceCounter = 0
+import { isObject } from '../../../validators/TObjectValidator'
 
-class TIcon extends React.Component {
+// Todo: implement router facility here using target instead of clickHandler !
 
-    constructor ( props ) {
+export default Vue.component( 'TIcon', {
 
-        super( props )
-        _instanceCounter++
+    render:     function ( createElement ) {
 
-    }
+        let dataObject = {
+            class: this.iconClass,
+            style: this.iconStyle,
+            attrs: this.iconAttrs,
+            props: ( isObject( this.iconProps ) ) ? this.iconProps : { icon: this.iconProps },
+            domProps: this.iconDomProps,
+            on: this.iconOn,
+            nativeOn: this.iconNativeOn,
+            directives: this.iconDirectives,
+            scopedSlots: this.iconScopedSlots,
+            slot: this.iconSlot,
+            key: this.iconKey,
+            ref: this.iconRef,
+        }
 
-    /**
-     * React lifecycle
-     */
-    componentWillMount () {}
-
-    componentDidMount () {}
-
-    componentWillUnmount () {}
-
-    componentWillReceiveProps ( /*nextProps*/ ) {}
-
-    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentWillUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentDidUpdate ( /*prevProps, prevState*/ ) {}
-
-    render () {
-
-        const { id, className } = this.props
-
-        const _id    = id || `tIcon_${_instanceCounter}`
-        const _style = {}
-        const _class = ( className ) ? `tIcon ${className}` : 'tIcon'
-
-        return (
-            <t-icon ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-icon>
+        return createElement(
+            'font-awesome-icon',
+            dataObject
         )
 
+    },
+
+    props:      [ 'iconClass', 'iconStyle', 'iconAttrs', 'iconProps', 'iconDomProps', 'iconOn', 'iconNativeOn', 'iconDirectives', 'iconScopedSlots', 'iconSlot', 'iconKey', 'iconRef' ],
+
+    components: {
+        FontAwesomeIcon
     }
 
-}
-
-export { TIcon }
-
+} )
