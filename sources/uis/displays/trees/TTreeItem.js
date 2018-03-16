@@ -9,65 +9,112 @@
  */
 
 /* eslint-env browser */
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-import React from 'react'
+export default Vue.component( 'TTreeItem', {
+    template: `
+        <li class="tTreeItem">
+            <TContainerHorizontal class="tTreeItemContent" hAlign="start" vAlign="center">
+                <TIcon v-if="haveChildren" :iconProps=computeToggleChildrenIconClass :iconOn="{click: toggleChildren}" />
+                <!--<i v-if="haveChildren" :class=computeToggleChildrenIconClass @click="toggleChildren()"></i>-->
+                <label>{{name}}</label>
+                <span v-for="modifier in modifiers" class="tTreeItemModifiers">
+                    <TIcon v-if="modifier.type === 'checkbox'" :iconProps=computeCheckboxClass :iconOn="{click: function () { updateCheckboxState( modifier.onClick ) } }" />
+                    <input v-else-if="modifier.type === 'button'" type="button" @click="modifier.onClick">
+                    <input v-else-if="modifier.type === 'range'" type="range" @change="modifier.onChange">
+                    <input v-else-if="modifier.type === 'number'" type="number" @change="modifier.onChange">
+                    <input v-else-if="modifier.type === 'color'" type="color" @change="modifier.onChange">
+                    <label v-else>Error: Unknown modifier type !!!</label>
+                </span>
+            </TContainerHorizontal>
+            <ul v-if="haveChildren" :class=computeTreeItemChildrenClass :style=computeChildrenStyle>
+                <TTreeItem
+                    v-for="child in filteredChildren"
+                    v-bind:key="child.id"
+                    v-bind:name="child.name"
+                    v-bind:modifiers="child.modifiers"
+                    v-bind:children="child.children"
+                    v-bind:childrenFilter="childrenFilter"
+                />
+            </ul>
+        </li>
+    `,
+    data:     function () {
 
-let _instanceCounter = 0
+        return {
+            showChildren: false,
+            isVisible: true
+        }
 
-class TTreeItem extends React.Component {
+    },
+    props:    [ 'id', 'name', 'modifiers', 'children', 'childrenFilter' ],
+    computed: {
 
-    constructor ( props ) {
+        computeTreeItemChildrenClass() {
 
-        super( props )
-        _instanceCounter++
+            if( !this.children || this.children.length === 0) {
+                return 'tTreeItemChildren'
+            } else if ( this.children.length === 1 ) {
+                return 'tTreeItemChildren singleChild'
+            } else {
+                return 'tTreeItemChildren multiChild'
+            }
 
+        },
+
+        computeToggleChildrenIconClass () {
+
+            return (this.showChildren) ? "chevron-circle-down" : "chevron-circle-right"
+//            return (this.showChildren) ? "chevron-down" : "chevron-right"
+
+        },
+
+        computeCheckboxClass () {
+
+            return (this.isVisible) ? "check-square" : "square"
+
+        },
+
+        computeChildrenStyle () {
+
+            return {
+                display: ( this.showChildren ) ? "block" : "none"
+            }
+
+        },
+
+        filteredChildren() {
+
+            if(!this.childrenFilter) {
+                return this.children
+            }
+
+            return this.children.filter(this.childrenFilter)
+
+        },
+
+        haveChildren() {
+
+            return this.children && this.children.length > 0
+
+        }
+
+    },
+    methods: {
+        
+        toggleChildren() {
+
+            this.showChildren = !this.showChildren
+
+        },
+
+        updateCheckboxState( onClickCallback ) {
+
+            this.isVisible = !this.isVisible
+            onClickCallback()
+
+        }
+        
     }
 
-    /**
-     * React lifecycle
-     */
-    componentWillMount () {}
-
-    componentDidMount () {}
-
-    componentWillUnmount () {}
-
-    componentWillReceiveProps ( /*nextProps*/ ) {}
-
-    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentWillUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentDidUpdate ( /*prevProps, prevState*/ ) {}
-
-    render () {
-
-        const { id, className, name, isChecked, children } = this.props
-
-        const _id    = id || `tTreeItem_${_instanceCounter}`
-        const _style = {}
-        const _class = ( className ) ? `tTreeItem ${className}` : 'tTreeItem'
-
-        return (
-            <li id={_id} className={_class} style={_style}>
-                <input type={"checkbox"} id={`${_id}ExpandCheckbox`} />
-                <label>
-                    <input type={"checkbox"} id={`${_id}VisibilityCheckbox`} checked={isChecked} />
-                    <span></span>
-                </label>
-                <label htmlFor={`${_id}ExpandCheckbox`}>{name}</label>
-                <ul className={"children"}>
-                    {children}
-                </ul>
-            </li>
-        )
-
-        //        return (
-        //            <t-tree-item ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-tree-item>
-        //        )
-
-    }
-
-}
-
-export { TTreeItem }
+} )

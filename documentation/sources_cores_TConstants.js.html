@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>sources/cores/TConstants.js - Documentation</title>
+
+    <script src="scripts/prettify/prettify.js"></script>
+    <script src="scripts/prettify/lang-css.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc.css">
+</head>
+<body>
+
+<input type="checkbox" id="nav-trigger" class="nav-trigger" />
+<label for="nav-trigger" class="navicon-button x">
+  <div class="navicon"></div>
+</label>
+
+<label for="nav-trigger" class="overlay"></label>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Classes</h3><ul><li><a href="ASCLoader.html">ASCLoader</a></li><li><a href="BinaryReader.html">BinaryReader</a></li><li><a href="ClassName.html">ClassName</a></li><li><a href="DBFLoader.html">DBFLoader</a></li><li><a href="FBXLoader2.html">FBXLoader2</a></li><li><a href="MeshManager.html">MeshManager</a></li><li><a href="RZMLLoader.html">RZMLLoader</a></li><li><a href="SHPLoader.html">SHPLoader</a></li><li><a href="TAppBar.html">TAppBar</a></li><li><a href="TApplication.html">TApplication</a></li><li><a href="TBoundingBox.html">TBoundingBox</a></li><li><a href="TCache.html">TCache</a><ul class='methods'><li data-type='method'><a href="TCache.html#add">add</a></li><li data-type='method'><a href="TCache.html#clear">clear</a></li><li data-type='method'><a href="TCache.html#get">get</a></li><li data-type='method'><a href="TCache.html#remove">remove</a></li></ul></li><li><a href="TCameraPathController.html">TCameraPathController</a></li><li><a href="TCube.html">TCube</a></li><li><a href="TDataBaseManager.html">TDataBaseManager</a><ul class='methods'><li data-type='method'><a href="TDataBaseManager.html#._statusOk">_statusOk</a></li><li data-type='method'><a href="TDataBaseManager.html#.requestServer">requestServer</a></li><li data-type='method'><a href="TDataBaseManager.html#_create">_create</a></li><li data-type='method'><a href="TDataBaseManager.html#_deleteOne">_deleteOne</a></li><li data-type='method'><a href="TDataBaseManager.html#_deleteSome">_deleteSome</a></li><li data-type='method'><a href="TDataBaseManager.html#_onArrayBuffer">_onArrayBuffer</a></li><li data-type='method'><a href="TDataBaseManager.html#_onBlob">_onBlob</a></li><li data-type='method'><a href="TDataBaseManager.html#_onError">_onError</a></li><li data-type='method'><a href="TDataBaseManager.html#_onJson">_onJson</a></li><li data-type='method'><a href="TDataBaseManager.html#_onLoad">_onLoad</a></li><li data-type='method'><a href="TDataBaseManager.html#_onProgress">_onProgress</a></li><li data-type='method'><a href="TDataBaseManager.html#_onText">_onText</a></li><li data-type='method'><a href="TDataBaseManager.html#_readOne">_readOne</a></li><li data-type='method'><a href="TDataBaseManager.html#_readSome">_readSome</a></li><li data-type='method'><a href="TDataBaseManager.html#_updateOne">_updateOne</a></li><li data-type='method'><a href="TDataBaseManager.html#_updateSome">_updateSome</a></li><li data-type='method'><a href="TDataBaseManager.html#create">create</a></li><li data-type='method'><a href="TDataBaseManager.html#delete">delete</a></li><li data-type='method'><a href="TDataBaseManager.html#read">read</a></li><li data-type='method'><a href="TDataBaseManager.html#update">update</a></li></ul></li><li><a href="TDateTime.html">TDateTime</a><ul class='methods'><li data-type='method'><a href="TDateTime.html#componentDidMount">componentDidMount</a></li><li data-type='method'><a href="TDateTime.html#render">render</a></li><li data-type='method'><a href="TDateTime.html#tick">tick</a></li></ul></li><li><a href="TDebugPanel.html">TDebugPanel</a></li><li><a href="TErrorCatcher.html">TErrorCatcher</a><ul class='methods'><li data-type='method'><a href="TErrorCatcher.html#componentDidCatch">componentDidCatch</a></li><li data-type='method'><a href="TErrorCatcher.html#render">render</a></li></ul></li><li><a href="TErrorManager.html">TErrorManager</a></li><li><a href="TFactory.html">TFactory</a></li><li><a href="TFile.html">TFile</a></li><li><a href="TGeometriesManager.html">TGeometriesManager</a><ul class='methods'><li data-type='method'><a href="TGeometriesManager.html#convertJsonToGeometry">convertJsonToGeometry</a></li></ul></li><li><a href="TKeyboardState.html">TKeyboardState</a></li><li><a href="TLogger.html">TLogger</a></li><li><a href="TMaterialsManager.html">TMaterialsManager</a></li><li><a href="TMouseController.html">TMouseController</a></li><li><a href="TObjectsManager.html">TObjectsManager</a></li><li><a href="Todo....html">.</a></li><li><a href="TOrbitControlsHelper.html">TOrbitControlsHelper</a></li><li><a href="TOrchestrator.html">TOrchestrator</a><ul class='methods'><li data-type='method'><a href="TOrchestrator.html#processQueue">processQueue</a></li></ul></li><li><a href="TPlanets.html">TPlanets</a></li><li><a href="TPointsManager.html">TPointsManager</a></li><li><a href="TProgressManager.html">TProgressManager</a></li><li><a href="TScenesManager.html">TScenesManager</a></li><li><a href="TToolBar.html">TToolBar</a></li><li><a href="TTrigonometricCircle.html">TTrigonometricCircle</a></li><li><a href="TTrigonometricCone.html">TTrigonometricCone</a></li><li><a href="TUniversalLoader.html">TUniversalLoader</a></li><li><a href="TViewport.html">TViewport</a></li></ul><h3>Modules</h3><ul><li><a href="module-config_babelConfiguration.html">config/babelConfiguration</a><ul class='methods'><li data-type='method'><a href="module-config_babelConfiguration.html#~CreateBabelConfiguration">CreateBabelConfiguration</a></li></ul></li><li><a href="module-config_eslintConfiguration.html">config/eslintConfiguration</a><ul class='methods'><li data-type='method'><a href="module-config_eslintConfiguration.html#~CreateEslintConfiguration">CreateEslintConfiguration</a></li></ul></li><li><a href="module-config_jsdocConfiguration.html">config/jsdocConfiguration</a><ul class='methods'><li data-type='method'><a href="module-config_jsdocConfiguration.html#~CreateJsdocConfiguration">CreateJsdocConfiguration</a></li></ul></li><li><a href="module-config_karmaBenchConfiguration.html">config/karmaBenchConfiguration</a><ul class='methods'><li data-type='method'><a href="module-config_karmaBenchConfiguration.html#~CreateKarmaBenchmarkConfiguration">CreateKarmaBenchmarkConfiguration</a></li></ul></li><li><a href="module-config_karmaUnitConfiguration.html">config/karmaUnitConfiguration</a><ul class='methods'><li data-type='method'><a href="module-config_karmaUnitConfiguration.html#~CreateKarmaUnitTestingConfiguration">CreateKarmaUnitTestingConfiguration</a></li></ul></li><li><a href="module-config_rollupConfiguration.html">config/rollupConfiguration</a><ul class='methods'><li data-type='method'><a href="module-config_rollupConfiguration.html#~CreateRollupConfiguration">CreateRollupConfiguration</a></li></ul></li><li><a href="module-gulpfile.html">gulpfile</a><ul class='methods'><li data-type='method'><a href="module-gulpfile.html#~npmrunbench">npm run bench</a></li><li data-type='method'><a href="module-gulpfile.html#~npmrunbuild">npm run build</a></li><li data-type='method'><a href="module-gulpfile.html#~npmrunclean">npm run clean</a></li><li data-type='method'><a href="module-gulpfile.html#~npmrundoc">npm run doc</a></li><li data-type='method'><a href="module-gulpfile.html#~npmrunlint">npm run lint</a></li><li data-type='method'><a href="module-gulpfile.html#~npmrunrelease">npm run release</a></li><li data-type='method'><a href="module-gulpfile.html#~npmruntest">npm run test</a></li><li data-type='method'><a href="module-gulpfile.html#~npmrununit">npm run unit</a></li><li data-type='method'><a href="module-gulpfile.html#~npmrunhelpdefault">npm run help </a></li></ul></li></ul><h3>Global</h3><ul><li><a href="global.html#_convertToObjects">_convertToObjects</a></li><li><a href="global.html#_createCloudPoint">_createCloudPoint</a></li><li><a href="global.html#_createImagesPacks">_createImagesPacks</a></li><li><a href="global.html#_createSubCloudPoint">_createSubCloudPoint</a></li><li><a href="global.html#_formatObjectError">_formatObjectError</a></li><li><a href="global.html#_formatTrace">_formatTrace</a></li><li><a href="global.html#_getAndUpdateOffsetBy">_getAndUpdateOffsetBy</a></li><li><a href="global.html#_getCustomProperties">_getCustomProperties</a></li><li><a href="global.html#_getReferentialIntegrityProperties">_getReferentialIntegrityProperties</a></li><li><a href="global.html#_getStandardProperties">_getStandardProperties</a></li><li><a href="global.html#_initBuildingsOf">_initBuildingsOf</a></li><li><a href="global.html#_initCompanies">_initCompanies</a></li><li><a href="global.html#_initObjectsOf">_initObjectsOf</a></li><li><a href="global.html#_initScenesOf">_initScenesOf</a></li><li><a href="global.html#_initSitesOf">_initSitesOf</a></li><li><a href="global.html#_isValidVersion">_isValidVersion</a></li><li><a href="global.html#_levelToString">_levelToString</a></li><li><a href="global.html#_loadAsc">_loadAsc</a></li><li><a href="global.html#_loadDbf">_loadDbf</a></li><li><a href="global.html#_loadFbx">_loadFbx</a></li><li><a href="global.html#_loadJson">_loadJson</a></li><li><a href="global.html#_loadObj">_loadObj</a></li><li><a href="global.html#_loadObjMtlCouple">_loadObjMtlCouple</a></li><li><a href="global.html#_loadShp">_loadShp</a></li><li><a href="global.html#_loadShpDbfCouple">_loadShpDbfCouple</a></li><li><a href="global.html#_loadStl">_loadStl</a></li><li><a href="global.html#_offsetPoints">_offsetPoints</a></li><li><a href="global.html#_onJson">_onJson</a></li><li><a href="global.html#_parse">_parse</a></li><li><a href="global.html#_parseDatas">_parseDatas</a></li><li><a href="global.html#_parseFieldProperties">_parseFieldProperties</a></li><li><a href="global.html#_parseHeader">_parseHeader</a></li><li><a href="global.html#_parseHeaderV2">_parseHeaderV2</a></li><li><a href="global.html#_parseHeaderV2_5">_parseHeaderV2_5</a></li><li><a href="global.html#_parseHeaderV3">_parseHeaderV3</a></li><li><a href="global.html#_parseHeaderV4">_parseHeaderV4</a></li><li><a href="global.html#_parseLine">_parseLine</a></li><li><a href="global.html#_parseLineB">_parseLineB</a></li><li><a href="global.html#_parseLineC">_parseLineC</a></li><li><a href="global.html#_parseLines">_parseLines</a></li><li><a href="global.html#_parseLinesAsXYZ">_parseLinesAsXYZ</a></li><li><a href="global.html#_parseLinesAsXYZI">_parseLinesAsXYZI</a></li><li><a href="global.html#_parseLinesAsXYZInXnYnZ">_parseLinesAsXYZInXnYnZ</a></li><li><a href="global.html#_parseLinesAsXYZIRGB">_parseLinesAsXYZIRGB</a></li><li><a href="global.html#_parseLinesAsXYZIRGBnXnYnZ">_parseLinesAsXYZIRGBnXnYnZ</a></li><li><a href="global.html#_parseLinesAsXYZnXnYnZ">_parseLinesAsXYZnXnYnZ</a></li><li><a href="global.html#_parseLinesAsXYZRGB">_parseLinesAsXYZRGB</a></li><li><a href="global.html#_parseLinesAsXYZRGBnXnYnZ">_parseLinesAsXYZRGBnXnYnZ</a></li><li><a href="global.html#_parseMultiPatch">_parseMultiPatch</a></li><li><a href="global.html#_parseMultiPoint">_parseMultiPoint</a></li><li><a href="global.html#_parsePoint">_parsePoint</a></li><li><a href="global.html#_parsePolygon">_parsePolygon</a></li><li><a href="global.html#_parsePolyLine">_parsePolyLine</a></li><li><a href="global.html#_parseRecordHeader">_parseRecordHeader</a></li><li><a href="global.html#_processBuildings">_processBuildings</a></li><li><a href="global.html#_processCompanies">_processCompanies</a></li><li><a href="global.html#_processGeometries">_processGeometries</a></li><li><a href="global.html#_processMaterials">_processMaterials</a></li><li><a href="global.html#_processObjects">_processObjects</a></li><li><a href="global.html#_processScenes">_processScenes</a></li><li><a href="global.html#_processSites">_processSites</a></li><li><a href="global.html#_RingGeometry">_RingGeometry</a></li><li><a href="global.html#_toggleObjectVisibility">_toggleObjectVisibility</a></li><li><a href="global.html#_updateDataView">_updateDataView</a></li><li><a href="global.html#addObjectToModel">addObjectToModel</a></li><li><a href="global.html#addPointsFromBuffer">addPointsFromBuffer</a></li><li><a href="global.html#addRaycastables">addRaycastables</a></li><li><a href="global.html#append">append</a></li><li><a href="global.html#askUserForPosition">askUserForPosition</a></li><li><a href="global.html#autoRotate">autoRotate</a></li><li><a href="global.html#Byte">Byte</a></li><li><a href="global.html#celsiusToFahrenheit">celsiusToFahrenheit</a></li><li><a href="global.html#celsiusToKelvin">celsiusToKelvin</a></li><li><a href="global.html#changeMaterialSide">changeMaterialSide</a></li><li><a href="global.html#classNameify">classNameify</a></li><li><a href="global.html#computePoint">computePoint</a></li><li><a href="global.html#computePoints">computePoints</a></li><li><a href="global.html#computeSplinePath">computeSplinePath</a></li><li><a href="global.html#computeUrl">computeUrl</a></li><li><a href="global.html#constructor">constructor</a></li><li><a href="global.html#convertArrayBufferToString">convertArrayBufferToString</a></li><li><a href="global.html#convertJsonToMaterial">convertJsonToMaterial</a></li><li><a href="global.html#convertJsonToObject3D">convertJsonToObject3D</a></li><li><a href="global.html#convertLambert93CoordinatesToWebGLCoordinates">convertLambert93CoordinatesToWebGLCoordinates</a></li><li><a href="global.html#convertWebGLCoordinatesToLambert93Coordinates">convertWebGLCoordinatesToLambert93Coordinates</a></li><li><a href="global.html#convertWebGLRotationToTopogicalYawPitch">convertWebGLRotationToTopogicalYawPitch</a></li><li><a href="global.html#convertWebglVectorToTopologicVector">convertWebglVectorToTopologicVector</a></li><li><a href="global.html#createEarth">createEarth</a></li><li><a href="global.html#createEarthCloud">createEarthCloud</a></li><li><a href="global.html#createFlowParticlesGroup">createFlowParticlesGroup</a></li><li><a href="global.html#createInterval">createInterval</a></li><li><a href="global.html#createJupiter">createJupiter</a></li><li><a href="global.html#createMars">createMars</a></li><li><a href="global.html#createMercury">createMercury</a></li><li><a href="global.html#createMoon">createMoon</a></li><li><a href="global.html#createNeptune">createNeptune</a></li><li><a href="global.html#createNodesGroup">createNodesGroup</a></li><li><a href="global.html#createParticularEmbranchmentGroup">createParticularEmbranchmentGroup</a></li><li><a href="global.html#createPathGroup">createPathGroup</a></li><li><a href="global.html#createPluto">createPluto</a></li><li><a href="global.html#createPointCloudDataMap">createPointCloudDataMap</a></li><li><a href="global.html#createSamplingTable">createSamplingTable</a></li><li><a href="global.html#createSaturn">createSaturn</a></li><li><a href="global.html#createSaturnRing">createSaturnRing</a></li><li><a href="global.html#createSectionGroup">createSectionGroup</a></li><li><a href="global.html#createSprite">createSprite</a></li><li><a href="global.html#createSun">createSun</a></li><li><a href="global.html#createUranus">createUranus</a></li><li><a href="global.html#createUranusRing">createUranusRing</a></li><li><a href="global.html#createVenus">createVenus</a></li><li><a href="global.html#DataType">DataType</a></li><li><a href="global.html#DBFVersion">DBFVersion</a></li><li><a href="global.html#debug">debug</a></li><li><a href="global.html#decimateVisibleMeshes">decimateVisibleMeshes</a></li><li><a href="global.html#decreasePointCloudData">decreasePointCloudData</a></li><li><a href="global.html#DEFAULT_SETTINGS">DEFAULT_SETTINGS</a></li><li><a href="global.html#degreesFromRadians">degreesFromRadians</a></li><li><a href="global.html#degreesToRadians">degreesToRadians</a></li><li><a href="global.html#DeletedRecord">DeletedRecord</a></li><li><a href="global.html#dispatch">dispatch</a></li><li><a href="global.html#down">down</a></li><li><a href="global.html#Endianness">Endianness</a></li><li><a href="global.html#endianness">endianness</a></li><li><a href="global.html#endMeasure">endMeasure</a></li><li><a href="global.html#endOpacityAnimation">endOpacityAnimation</a></li><li><a href="global.html#error">error</a></li><li><a href="global.html#extend">extend</a></li><li><a href="global.html#extendObject">extendObject</a></li><li><a href="global.html#fahrenheitToCelsius">fahrenheitToCelsius</a></li><li><a href="global.html#fahrenheitToKelvin">fahrenheitToKelvin</a></li><li><a href="global.html#FileCode">FileCode</a></li><li><a href="global.html#FileFormat">FileFormat</a></li><li><a href="global.html#findIndex">findIndex</a></li><li><a href="global.html#getCenter">getCenter</a></li><li><a href="global.html#getChar">getChar</a></li><li><a href="global.html#getCosinus">getCosinus</a></li><li><a href="global.html#getCosinusForHeight">getCosinusForHeight</a></li><li><a href="global.html#getCurrentPathPosition">getCurrentPathPosition</a></li><li><a href="global.html#getDistanceFromStart">getDistanceFromStart</a></li><li><a href="global.html#getDouble">getDouble</a></li><li><a href="global.html#getFileExtension">getFileExtension</a></li><li><a href="global.html#getFileName">getFileName</a></li><li><a href="global.html#getFilePath">getFilePath</a></li><li><a href="global.html#getFloat">getFloat</a></li><li><a href="global.html#getInt8">getInt8</a></li><li><a href="global.html#getInt16">getInt16</a></li><li><a href="global.html#getInt32">getInt32</a></li><li><a href="global.html#getNextPathPosition">getNextPathPosition</a></li><li><a href="global.html#getOffset">getOffset</a></li><li><a href="global.html#getPitch">getPitch</a></li><li><a href="global.html#getPointClouds">getPointClouds</a></li><li><a href="global.html#getRadius">getRadius</a></li><li><a href="global.html#getRandomArbitrary">getRandomArbitrary</a></li><li><a href="global.html#getRandomInt">getRandomInt</a></li><li><a href="global.html#getSamplingForDistanceToCamera">getSamplingForDistanceToCamera</a></li><li><a href="global.html#getSinus">getSinus</a></li><li><a href="global.html#getSinusForHeight">getSinusForHeight</a></li><li><a href="global.html#getString">getString</a></li><li><a href="global.html#getTemplate">getTemplate</a></li><li><a href="global.html#getUInt8">getUInt8</a></li><li><a href="global.html#getUInt16">getUInt16</a></li><li><a href="global.html#getUInt32">getUInt32</a></li><li><a href="global.html#getYaw">getYaw</a></li><li><a href="global.html#goTo">goTo</a></li><li><a href="global.html#HttpStatusCode">HttpStatusCode</a></li><li><a href="global.html#HttpVerb">HttpVerb</a></li><li><a href="global.html#increasePointCloudData">increasePointCloudData</a></li><li><a href="global.html#increment">increment</a></li><li><a href="global.html#init">init</a></li><li><a href="global.html#initEvents">initEvents</a></li><li><a href="global.html#insertTreeViewItem">insertTreeViewItem</a></li><li><a href="global.html#isArray">isArray</a></li><li><a href="global.html#isArrayOfArray">isArrayOfArray</a></li><li><a href="global.html#isArrayOfEmpty">isArrayOfEmpty</a></li><li><a href="global.html#isArrayOfEmptyObject">isArrayOfEmptyObject</a></li><li><a href="global.html#isArrayOfEmptyString">isArrayOfEmptyString</a></li><li><a href="global.html#isArrayOfNull">isArrayOfNull</a></li><li><a href="global.html#isArrayOfObject">isArrayOfObject</a></li><li><a href="global.html#isArrayOfString">isArrayOfString</a></li><li><a href="global.html#isArrayOfUndefined">isArrayOfUndefined</a></li><li><a href="global.html#isBool">isBool</a></li><li><a href="global.html#isCelsius">isCelsius</a></li><li><a href="global.html#isDefined">isDefined</a></li><li><a href="global.html#isEmpty">isEmpty</a></li><li><a href="global.html#isEmptyArray">isEmptyArray</a></li><li><a href="global.html#isEmptyObject">isEmptyObject</a></li><li><a href="global.html#isEmptyString">isEmptyString</a></li><li><a href="global.html#isEndOfFile">isEndOfFile</a></li><li><a href="global.html#isFahrenheit">isFahrenheit</a></li><li><a href="global.html#isFinite">isFinite</a></li><li><a href="global.html#isFunction">isFunction</a></li><li><a href="global.html#isInfinite">isInfinite</a></li><li><a href="global.html#isInfiniteNegative">isInfiniteNegative</a></li><li><a href="global.html#isInfinitePositive">isInfinitePositive</a></li><li><a href="global.html#isKelvin">isKelvin</a></li><li><a href="global.html#isNotANumber">isNotANumber</a></li><li><a href="global.html#isNotArray">isNotArray</a></li><li><a href="global.html#isNotArrayOfArray">isNotArrayOfArray</a></li><li><a href="global.html#isNotArrayOfEmpty">isNotArrayOfEmpty</a></li><li><a href="global.html#isNotArrayOfEmptyObject">isNotArrayOfEmptyObject</a></li><li><a href="global.html#isNotArrayOfEmptyString">isNotArrayOfEmptyString</a></li><li><a href="global.html#isNotArrayOfNull">isNotArrayOfNull</a></li><li><a href="global.html#isNotArrayOfObject">isNotArrayOfObject</a></li><li><a href="global.html#isNotArrayOfString">isNotArrayOfString</a></li><li><a href="global.html#isNotArrayOfUndefined">isNotArrayOfUndefined</a></li><li><a href="global.html#isNotBool">isNotBool</a></li><li><a href="global.html#isNotCelsius">isNotCelsius</a></li><li><a href="global.html#isNotEmpty">isNotEmpty</a></li><li><a href="global.html#isNotEmptyArray">isNotEmptyArray</a></li><li><a href="global.html#isNotEmptyObject">isNotEmptyObject</a></li><li><a href="global.html#isNotEmptyObjectWithEmptyValues">isNotEmptyObjectWithEmptyValues</a></li><li><a href="global.html#isNotEmptyObjectWithNotEmptyValues">isNotEmptyObjectWithNotEmptyValues</a></li><li><a href="global.html#isNotEmptyString">isNotEmptyString</a></li><li><a href="global.html#isNotFahrenheit">isNotFahrenheit</a></li><li><a href="global.html#isNotFunction">isNotFunction</a></li><li><a href="global.html#isNotKelvin">isNotKelvin</a></li><li><a href="global.html#isNotNull">isNotNull</a></li><li><a href="global.html#isNotObject">isNotObject</a></li><li><a href="global.html#isNotString">isNotString</a></li><li><a href="global.html#isNotSymbol">isNotSymbol</a></li><li><a href="global.html#isNotSymbol2">isNotSymbol2</a></li><li><a href="global.html#isNotTemperature">isNotTemperature</a></li><li><a href="global.html#isNull">isNull</a></li><li><a href="global.html#isNumber">isNumber</a></li><li><a href="global.html#isNumberNegative">isNumberNegative</a></li><li><a href="global.html#isNumberPositive">isNumberPositive</a></li><li><a href="global.html#isObject">isObject</a></li><li><a href="global.html#isString">isString</a></li><li><a href="global.html#isSymbol">isSymbol</a></li><li><a href="global.html#isTemperature">isTemperature</a></li><li><a href="global.html#isUndefined">isUndefined</a></li><li><a href="global.html#k">k</a></li><li><a href="global.html#kelvinToCelsius">kelvinToCelsius</a></li><li><a href="global.html#kelvinToFahrenheit">kelvinToFahrenheit</a></li><li><a href="global.html#keyName">keyName</a></li><li><a href="global.html#Keys">Keys</a></li><li><a href="global.html#load">load</a></li><li><a href="global.html#loadAssociatedFiles">loadAssociatedFiles</a></li><li><a href="global.html#loadObjectFromURL">loadObjectFromURL</a></li><li><a href="global.html#loadSingleFile">loadSingleFile</a></li><li><a href="global.html#log">log</a></li><li><a href="global.html#LogLevel">LogLevel</a></li><li><a href="global.html#LogOutput">LogOutput</a></li><li><a href="global.html#lookAtPath">lookAtPath</a></li><li><a href="global.html#MinFileLength">MinFileLength</a></li><li><a href="global.html#MinVersion">MinVersion</a></li><li><a href="global.html#onKeyDown">onKeyDown</a></li><li><a href="global.html#onKeyUp">onKeyUp</a></li><li><a href="global.html#parse">parse</a></li><li><a href="global.html#parseColor">parseColor</a></li><li><a href="global.html#parseFloatArray">parseFloatArray</a></li><li><a href="global.html#parseIntArray">parseIntArray</a></li><li><a href="global.html#parseMatrixArray">parseMatrixArray</a></li><li><a href="global.html#parseVector3">parseVector3</a></li><li><a href="global.html#populateVisibleMeshes">populateVisibleMeshes</a></li><li><a href="global.html#popupImageShotModal">popupImageShotModal</a></li><li><a href="global.html#popupImportFilesModal">popupImportFilesModal</a></li><li><a href="global.html#popupSelectedObjectModal">popupSelectedObjectModal</a></li><li><a href="global.html#pressed">pressed</a></li><li><a href="global.html#queue">queue</a></li><li><a href="global.html#radiansFromDegrees">radiansFromDegrees</a></li><li><a href="global.html#radiansToDegrees">radiansToDegrees</a></li><li><a href="global.html#removeMeasure">removeMeasure</a></li><li><a href="global.html#removeTemporaryMeasure">removeTemporaryMeasure</a></li><li><a href="global.html#requestDataBuffer">requestDataBuffer</a></li><li><a href="global.html#resetDataPanel">resetDataPanel</a></li><li><a href="global.html#ResponseType">ResponseType</a></li><li><a href="global.html#ringClockwise">ringClockwise</a></li><li><a href="global.html#ringContains">ringContains</a></li><li><a href="global.html#ringContainsSome">ringContainsSome</a></li><li><a href="global.html#segmentContains">segmentContains</a></li><li><a href="global.html#selectObject">selectObject</a></li><li><a href="global.html#serializeObject">serializeObject</a></li><li><a href="global.html#setBuffer">setBuffer</a></li><li><a href="global.html#setCameraControls">setCameraControls</a></li><li><a href="global.html#setCameraEffect">setCameraEffect</a></li><li><a href="global.html#setCameraMode">setCameraMode</a></li><li><a href="global.html#setCameraPosition">setCameraPosition</a></li><li><a href="global.html#setEndianess">setEndianess</a></li><li><a href="global.html#setGlobalOffset">setGlobalOffset</a></li><li><a href="global.html#setGroupVisibility">setGroupVisibility</a></li><li><a href="global.html#setLayerGroupVisibility">setLayerGroupVisibility</a></li><li><a href="global.html#setMapViewer">setMapViewer</a></li><li><a href="global.html#setMaximumSamplingLimit">setMaximumSamplingLimit</a></li><li><a href="global.html#setMinimumSamplingLimit">setMinimumSamplingLimit</a></li><li><a href="global.html#setMouseQuat">setMouseQuat</a></li><li><a href="global.html#setOffset">setOffset</a></li><li><a href="global.html#setPath">setPath</a></li><li><a href="global.html#setPaths">setPaths</a></li><li><a href="global.html#setPosition">setPosition</a></li><li><a href="global.html#setRendersEffect">setRendersEffect</a></li><li><a href="global.html#ShapeType">ShapeType</a></li><li><a href="global.html#singletonInstance">singletonInstance</a></li><li><a href="global.html#skipOffsetOf">skipOffsetOf</a></li><li><a href="global.html#skipOffsetTo">skipOffsetTo</a></li><li><a href="global.html#slice">slice</a></li><li><a href="global.html#startMeasure">startMeasure</a></li><li><a href="global.html#startOpacityAnimation">startOpacityAnimation</a></li><li><a href="global.html#status">status</a></li><li><a href="global.html#Terminator">Terminator</a></li><li><a href="global.html#TFresnelBlueShader">TFresnelBlueShader</a></li><li><a href="global.html#TFresnelGreenShader">TFresnelGreenShader</a></li><li><a href="global.html#TFresnelRedShader">TFresnelRedShader</a></li><li><a href="global.html#toggleAutorun">toggleAutorun</a></li><li><a href="global.html#toggleCamera">toggleCamera</a></li><li><a href="global.html#up">up</a></li><li><a href="global.html#update">update</a></li><li><a href="global.html#updateAvatar">updateAvatar</a></li><li><a href="global.html#updateDataPanel">updateDataPanel</a></li><li><a href="global.html#updateDebugSize">updateDebugSize</a></li><li><a href="global.html#updateDocumentSize">updateDocumentSize</a></li><li><a href="global.html#updateHelperPosition">updateHelperPosition</a></li><li><a href="global.html#updateImageShot">updateImageShot</a></li><li><a href="global.html#updateInnerContainerSize">updateInnerContainerSize</a></li><li><a href="global.html#updateMainContainerSize">updateMainContainerSize</a></li><li><a href="global.html#updateMapViewer">updateMapViewer</a></li><li><a href="global.html#updateMapViewerDisplay">updateMapViewerDisplay</a></li><li><a href="global.html#updateMapViewerOrientation">updateMapViewerOrientation</a></li><li><a href="global.html#updateMapViewerPosition">updateMapViewerPosition</a></li><li><a href="global.html#updateMeasure">updateMeasure</a></li><li><a href="global.html#updateMeshResolution">updateMeshResolution</a></li><li><a href="global.html#updateNavbarSize">updateNavbarSize</a></li><li><a href="global.html#updatePointCloudDensity">updatePointCloudDensity</a></li><li><a href="global.html#updatePointClouds">updatePointClouds</a></li><li><a href="global.html#updatePointCloudSampling">updatePointCloudSampling</a></li><li><a href="global.html#updateRaycasting">updateRaycasting</a></li><li><a href="global.html#updateSizes">updateSizes</a></li><li><a href="global.html#updateTemporaryMeasure">updateTemporaryMeasure</a></li><li><a href="global.html#updateWindowSize">updateWindowSize</a></li><li><a href="global.html#warn">warn</a></li><li><a href="global.html#YearOffset">YearOffset</a></li></ul>
+</nav>
+
+<div id="main">
+    
+    <h1 class="page-title">sources/cores/TConstants.js</h1>
+    
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ *
+ * @class ClassName
+ * @classdesc Todo...
+ * @example Todo...
+ *
+ */
+
+/* eslint-env browser */
+
+/**
+ * A freezed javascript object used like an enum.
+ * @typedef {object} Enum
+ * @example
+ * const Foo = Object.freeze( {
+ *     Bar: 0,
+ *     Baz: 1,
+ *     Qux: 3
+ * } )
+ */
+
+/**
+ * @typedef {Enum} HttpVerb
+ * @property {string} Create="PUT" - Corresponding to the create http verb for an itee server, namely "PUT".
+ * @property {string} Read="POST" - Corresponding to the read http verb for an itee server, namely "POST".
+ * @property {string} Update="PATCH" - Corresponding to the update http verb for an itee server, namely "PATCH".
+ * @property {string} Delete="DELETE" - Corresponding to the delete http verb for an itee server, namely "DELETE".
+ *
+ * @constant
+ * @type {HttpVerb}
+ * @description HttpVerb contains the CRUD actions with corresponding http verb to request an itee server.
+ * @see {@link https://en.wikipedia.org/wiki/Create,_read,_update_and_delete} for further information.
+ */
+export const HttpVerb = Object.freeze( {
+    Create: "PUT",
+    Read:   "POST",
+    Update: "PATCH",
+    Delete: "DELETE"
+} )
+
+/**
+ * @typedef {Enum} ResponseType
+ * @property {string} ArrayBuffer="arraybuffer" - The "arraybuffer" server response type.
+ * @property {string} Blob="blob" - The "blob" server response type.
+ * @property {string} Document="document" - The "document" server response type.
+ * @property {string} Json="json" - The "json" server response type.
+ * @property {string} DOMString="text" - The "text" server response type.
+ * @property {string} Default="text" - The "" server response type ( equivalent to DOMString ).
+ *
+ * @constant
+ * @type {ResponseType}
+ * @description ResponseType allow to filter wich type of response is recieved from the server.
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType} for further information.
+ */
+export const ResponseType = Object.freeze( {
+    ArrayBuffer: 'arraybuffer',
+    Blob:        'blob',
+    Document:    'document',
+    Json:        'json',
+    DOMString:   'text',
+    Default:     ''
+} )
+
+/**
+ * @typedef {Enum} HttpStatusCode
+ * @property {number} Continue=100 - Waiting for the continuation of the request.
+ * @property {number} SwitchingProtocols=101 - The requester has asked the server to switch protocols and the server has agreed to do so.
+ * @property {number} Processing=102 - WebDAV: Processing in progress (prevents the client from exceeding the limited waiting time).
+ * @property {number} Ok=200 - Query successfully processed.
+ * @property {number} Created=201 - Query successfully processed and a document was created.
+ * @property {number} Accepted=202 - Query processed, but without guarantee of result.
+ * @property {number} NonAuthoritativeInformation=203 - Information returned, but generated by an uncertified source.
+ * @property {number} NoContent=204 - Query successfully processed but no information returned.
+ * @property {number} ResetContent=205 - Query successfully processed, the current page can be cleared.
+ * @property {number} PartialContent=206 - Only part of the resource has been transmitted.
+ * @property {number} MultiStatus=207 - WebDAV: Multiple Response.
+ * @property {number} AlreadyReported=208 - WebDAV: The document was previously sent to this collection.
+ * @property {number} ContentDifferent=210 - WebDAV: The copy of the client-side resource differs from that of the server (content or properties).
+ * @property {number} IMUsed=226 - The server has completed the request for the resource, and the response is a representation of the result of one or more instance manipulations applied to the
+ *     current instance.
+ * @property {number} MultipleChoices=300 - The requested URI refers to multiple resources.
+ * @property {number} MovedPermanently=301 - Document moved permanently.
+ * @property {number} Found=302 - Document moved temporarily.
+ * @property {number} SeeOther=303 - The answer to this query is elsewhere.
+ * @property {number} NotModified=304 - Document not modified since the last request.
+ * @property {number} UseProxy=305 - The request must be re-addressed to the proxy.
+ * @property {number} Unused=306 - Code used by an older version of RFC 2616, now reserved.
+ * @property {number} TemporaryRedirect=307 - The request must be temporarily redirected to the specified URI.
+ * @property {number} PermanentRedirect=308 - The request must be redirected permanently to the specified URI.
+ * @property {number} TooManyRedirects=310 - The request must be redirected too many times, or is the victim of a redirection loop.
+ * @property {number} BadRequest=400 - The syntax of the query is wrong.
+ * @property {number} Unauthorized=401 - Authentication is required to access the resource.
+ * @property {number} PaymentRequired=402 - Payment required to access the resource.
+ * @property {number} Forbidden=403 - The server understood the request, but refuses to execute it. Unlike error 401, authenticating will not make any difference. On servers where authentication is
+ *     required, this usually means that authentication has been accepted but access rights do not allow the client to access the resource.
+ * @property {number} NotFound=404 - Resource not found.
+ * @property {number} MethodNotAllowed=405 - Unauthorized request method.
+ * @property {number} NotAcceptable=406 - The requested resource is not available in a format that would respect the "Accept" headers of the request.
+ * @property {number} ProxyAuthenticationRequired=407 - Access to the authorized resource by identification with the proxy.
+ * @property {number} RequestTimeOut=408 - Waiting time for an elapsed client request.
+ * @property {number} Conflict=409 - The request can not be processed in the current state.
+ * @property {number} Gone=410 - The resource is no longer available and no redirection address is known.
+ * @property {number} LengthRequired=411 - The length of the request has not been specified.
+ * @property {number} PreconditionFailed=412 - Preconditions sent by the query unverified.
+ * @property {number} RequestEntityTooLarge=413 - Abandoned processing due to excessive request
+ * @property {number} RequestURITooLong=414 - URI too long
+ * @property {number} UnsupportedMediaType=415 - Unsupported query format for a given method and resource.
+ * @property {number} RequestRangeUnsatisfiable=416 - Invalid "range" request header fields.
+ * @property {number} ExpectationFailed=417 - Expected behavior and defined in the header of the unsatisfactory request.
+ * @property {number} ImATeapot=418 - "I am a teapot". This code is defined in RFC 2324 dated April 1, 1998, Hyper Text Coffee Pot Control Protocol.
+ * @property {number} BadMapping=421 - The request was sent to a server that is not able to produce a response (for example, because a connection has been reused).
+ * @property {number} UnprocessableEntity=422 - WebDAV: The entity provided with the request is incomprehensible or incomplete.
+ * @property {number} Locked=423 - WebDAV: The operation can not take place because the resource is locked.
+ * @property {number} MethodFailure=424 - WebDAV: A method of the transaction failed.
+ * @property {number} UnorderedCollection=425 - WebDAV RFC 3648. This code is defined in the WebDAV Advanced Collections Protocol draft , but is absent from the Web Distributed Authoring and
+ *     Versioning (WebDAV) Ordered Collections Protocol.
+ * @property {number} UpgradeRequired=426 - RFC 2817 The client should change protocol, for example to TLS / 1.0 .
+ * @property {number} PreconditionRequired=428 - RFC 6585 The request must be conditional.
+ * @property {number} TooManyRequests=429 - RFC 6585 The client has issued too many requests within a given time.
+ * @property {number} RequestHeaderFieldsTooLarge=431 - RFC 6585 HTTP headers issued exceed the maximum size allowed by the server.
+ * @property {number} NoResponse=444 - Indicates that the server did not return any information to the client and closed the connection.
+ * @property {number} RetryWith=449 - Code defined by Microsoft . The request should be returned after performing an action.
+ * @property {number} BlockedByWindowsParentalControls=450 - Code defined by Microsoft. This error is generated when Windows Parental Control tools are enabled and block access to the page.
+ * @property {number} UnavailableForLegalReasons=451 - This error code indicates that the requested resource is inaccessible for legal reasons
+ * @property {number} UnrecoverableError=456 - WebDAV: Fatal error.
+ * @property {number} SSLCertificateError=495 - An extension of the 400 Bad Request error, used when the client provided an invalid certificate.
+ * @property {number} SSLCertificateRequired=496 - An extension of the 400 Bad Request error, used when a required client certificate is not provided.
+ * @property {number} HTTPRequestSentToHTTPSPort=497 - An extension of the 400 Bad Request error, used when the client sends an HTTP request to port 443 normally intended for HTTPS requests.
+ * @property {number} ClientClosedRequest=499 - The client closed the connection before receiving the response. This error occurs when the processing is too long on the server side.
+ * @property {number} InternalServerError=500 - Internal server error.
+ * @property {number} NotImplemented=501 - Functionality claimed not supported by the server.
+ * @property {number} BadGateway=502 - Wrong response sent to an intermediate server by another server.
+ * @property {number} ServiceUnavailable=503 - Service temporarily unavailable or under maintenance.
+ * @property {number} GatewayTimeOut=504 - Waiting time for a response from a server to an intermediate server that has elapsed.
+ * @property {number} HTTPVersionNotSupported=505 - HTTP version not managed by the server.
+ * @property {number} VariantAlsoNegotiates=506 - RFC 2295: Negotiation Error. Transparent content negociation.
+ * @property {number} InsufficientStorage=507 - WebDAV: Insufficient space to modify properties or build the collection.
+ * @property {number} LoopDetected=508 - WebDAV: Loop in a Resource Match
+ * @property {number} BandwidthLimitExceeded=509 - Used by many servers to indicate a quota overrun.
+ * @property {number} NotExtended=510 - RFC 2774: The request does not respect the policy for accessing extended HTTP resources.
+ * @property {number} NetworkAuthenticationRequired=511 - RFC 6585: The client must authenticate to access the network. Used by captive portals to redirect clients to the authentication page.
+ * @property {number} UnknownError=520 - Error 520 is used as a wildcard response when the origin server returns an unexpected result.
+ * @property {number} WebServerIsDown=521 - The server has refused the connection from Cloudflare.
+ * @property {number} ConnectionTimedOut=522 - Cloudflare could not negotiate a TCP handshake with the origin server.
+ * @property {number} OriginIsUnreachable=523 - Cloudflare failed to reach the origin server. This can occur if DNS server name resolution fails.
+ * @property {number} ATimeoutOccured=524 - Cloudflare established a TCP connection with the origin server but did not receive an HTTP response before the login timeout.
+ * @property {number} SSLHandshakeFailed=525 - Cloudflare could not negotiate SSL / TLS handshake with the origin server.
+ * @property {number} InvalidSSLCertificate=526 - Cloudflare could not validate the SSL certificate presented by the origin server.
+ * @property {number} RailgunError=527 - Error 527 indicates that the request has timed out or failed after the WAN connection was established.
+ *
+ * @constant
+ * @type {HttpStatusCode}
+ * @description HttpStatusCode contains all http status code available to check and process correctly server response.
+ * @see {@link https://en.wikipedia.org/wiki/List_of_HTTP_status_codes} for further information.
+ */
+export const HttpStatusCode = Object.freeze( {
+
+    // 100
+    Continue:           100,
+    SwitchingProtocols: 101,
+    Processing:         102,
+
+    // 200
+    Ok:                          200,
+    Created:                     201,
+    Accepted:                    202,
+    NonAuthoritativeInformation: 203,
+    NoContent:                   204,
+    ResetContent:                205,
+    PartialContent:              206,
+    MultiStatus:                 207,
+    AlreadyReported:             208,
+    ContentDifferent:            210,
+    IMUsed:                      226,
+
+    // 300
+    MultipleChoices:   300,
+    MovedPermanently:  301,
+    Found:             302,
+    SeeOther:          303,
+    NotModified:       304,
+    UseProxy:          305,
+    Unused:            306,
+    TemporaryRedirect: 307,
+    PermanentRedirect: 308,
+    TooManyRedirects:  310,
+
+    // 400
+    BadRequest:                       400,
+    Unauthorized:                     401,
+    PaymentRequired:                  402,
+    Forbidden:                        403,
+    NotFound:                         404,
+    MethodNotAllowed:                 405,
+    NotAcceptable:                    406,
+    ProxyAuthenticationRequired:      407,
+    RequestTimeOut:                   408,
+    Conflict:                         409,
+    Gone:                             410,
+    LengthRequired:                   411,
+    PreconditionFailed:               412,
+    RequestEntityTooLarge:            413,
+    RequestRangeUnsatisfiable:        416,
+    ExpectationFailed:                417,
+    ImATeapot:                        418,
+    BadMapping:                       421,
+    UnprocessableEntity:              422,
+    Locked:                           423,
+    MethodFailure:                    424,
+    UnorderedCollection:              425,
+    UpgradeRequired:                  426,
+    PreconditionRequired:             428,
+    TooManyRequests:                  429,
+    RequestHeaderFieldsTooLarge:      431,
+    NoResponse:                       444,
+    RetryWith:                        449,
+    BlockedByWindowsParentalControls: 450,
+    UnavailableForLegalReasons:       451,
+    UnrecoverableError:               456,
+    SSLCertificateError:              495,
+    SSLCertificateRequired:           496,
+    HTTPRequestSentToHTTPSPort:       497,
+    ClientClosedRequest:              499,
+
+    // 500
+    InternalServerError:           500,
+    NotImplemented:                501,
+    BadGateway:                    502,
+    ServiceUnavailable:            503,
+    GatewayTimeOut:                504,
+    HTTPVersionNotSupported:       505,
+    VariantAlsoNegotiates:         506,
+    InsufficientStorage:           507,
+    LoopDetected:                  508,
+    BandwidthLimitExceeded:        509,
+    NotExtended:                   510,
+    NetworkAuthenticationRequired: 511,
+    UnknownError:                  520,
+    WebServerIsDown:               521,
+    ConnectionTimedOut:            522,
+    OriginIsUnreachable:           523,
+    ATimeoutOccured:               524,
+    SSLHandshakeFailed:            525,
+    InvalidSSLCertificate:         526,
+    RailgunError:                  527
+
+} )
+
+/**
+ *
+ * @type {Enum} Keys
+ */
+export const Keys = Object.freeze( {
+    8:  "backspace",
+    9:  "tab",
+    13: "enter",
+    16: "shift",
+    17: "ctrl",
+    18: "alt",
+    27: "esc",
+    32: "space",
+    33: "pageup",
+    34: "pagedown",
+    35: "end",
+    36: "home",
+
+    LEFT_ARROW:   37,
+    UP_ARROW:     38,
+    RIGHT_ARROW:  39,
+    BOTTOM_ARROW: 40,
+    45:           "insert",
+    46:           "delete",
+    A:            65,
+    B:            66,
+    C:            67,
+    D:            68,
+    E:            69,
+    F:            70,
+    G:            71,
+    H:            72,
+    I:            73,
+    J:            74,
+    K:            75,
+    L:            76,
+    M:            77,
+    N:            78,
+    O:            79,
+    P:            80,
+    Q:            81,
+    R:            82,
+    S:            83,
+    T:            84,
+    U:            85,
+    V:            86,
+    W:            87,
+    X:            88,
+    Y:            89,
+    Z:            90,
+    186:          ";",
+    187:          "=",
+    188:          ",",
+    189:          "-",
+    190:          ".",
+    191:          "/",
+    219:          "[",
+    220:          "\\",
+    221:          "]",
+    222:          "'"
+} )
+
+/**
+ *
+ * @type {Enum} FileFormat
+ */
+export const FileFormat = Object.freeze( {
+    Asc:  'asc',
+    Dbf:  'dbf',
+    Fbx:  'fbx',
+    Mtl:  'mtl',
+    Json: 'json',
+    Obj:  'obj',
+    Shp:  'shp',
+    Stl:  'stl',
+
+    toString () {
+
+        const formats = Object.values( this )
+        let result    = ''
+        for ( let index = 0, numberOfFormats = formats.length ; index &lt; numberOfFormats ; index++ ) {
+            result += formats[ index ]
+            result += ((index === numberOfFormats - 1) ? ', ' : '.')
+        }
+
+    }
+} )
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.5.5</a> using the <a href="https://github.com/clenemt/docdash">docdash</a> theme.
+</footer>
+
+<script>prettyPrint();</script>
+<script src="scripts/linenumber.js"></script>
+</body>
+</html>

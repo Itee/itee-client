@@ -1,0 +1,317 @@
+/* Palette */
+/* CSS - Cascading Style Sheet */
+/* Palette color codes */
+/* Palette URL: http://paletton.com/#uid=23x0I0kl2lDhZ2F2ymTONTbT5tV */
+.color-primary-0 {
+  color: #2b516f;
+}
+/* Main Primary color */
+.color-primary-1 {
+  color: #060b0e;
+}
+.color-primary-2 {
+  color: #6d7275;
+}
+.color-primary-3 {
+  color: #0686e9;
+}
+.color-primary-4 {
+  color: #025899;
+}
+.color-complement-0 {
+  color: #ac7c3b;
+}
+/* Main Complement color */
+.color-complement-1 {
+  color: #151009;
+}
+.color-complement-2 {
+  color: #b6b0a8;
+}
+.color-complement-3 {
+  color: #ff9200;
+}
+.color-complement-4 {
+  color: #ee8800;
+}
+html,
+body {
+  font-family: 'Arial';
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+body {
+  display: flex;
+  background-color: #4b4b4b;
+}
+label {
+  margin: 0!important;
+}
+#itee-application-root {
+  display: flex;
+  width: 100%;
+  height: 100%;
+}
+.stretchChildren > * {
+  flex: 1;
+}
+.tHeader {
+  z-index: 3;
+  /*box-shadow: 0px -7px 10px 7px rgb(0, 0, 0);*/
+  color: white;
+}
+.tHeader .tAppBar {
+  z-index: 3;
+  background-color: #646464;
+  box-shadow: 0px -7px 10px 7px #000000;
+  border-bottom: 1px solid #4b4b4b;
+  height: 60px;
+}
+.tHeader .tAppBar .tBrand {
+  margin-left: 10px;
+  font-size: 2.0em;
+}
+.tHeader .tAppBar .tMenu {
+  font-size: 2.0em;
+}
+.tHeader .tAppBar .tMenu .tMenuItem {
+  padding: 5px 16px;
+}
+.tHeader .tAppBar .tMenu .tMenuItem:hover {
+  margin-bottom: -1px;
+  border-bottom: 1px solid #4eaeff;
+  background-color: #969696;
+}
+.tHeader .tAppBar .tMenu .tMenuItem > * {
+  cursor: pointer;
+}
+.tHeader .tAppBar .tMenu .tMenuDropDown {
+  padding: 5px 16px;
+}
+.tHeader .tAppBar .tMenu .tMenuDropDown:hover {
+  background-color: #969696;
+}
+.tHeader .tAppBar .tMenu .tMenuDropDown.popAtRightUp:hover {
+  margin-right: -1px;
+  border-right: 1px solid #4eaeff;
+}
+.tHeader .tAppBar .tMenu .tMenuDropDown.popAtTop:hover {
+  margin-top: -1px;
+  border-top: 1px solid #4eaeff;
+}
+.tHeader .tAppBar .tMenu .tMenuDropDown.popAtBottom:hover {
+  margin-bottom: -1px;
+  border-bottom: 1px solid #4eaeff;
+}
+.tHeader .tAppBar .tMenu .tMenuDropDown .tDropDownLabel {
+  cursor: pointer;
+}
+.tHeader .tAppBar .tMenu .tMenuDropDown .tDropDownContent {
+  background-color: #323232f2;
+  box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
+  font-size: 20px;
+}
+.tToolBar {
+  z-index: 2;
+  background-color: #323232;
+  font-size: 1.6em;
+  color: #efefef;
+  min-height: 50px;
+}
+.tToolBar .tToolItem {
+  padding: 10px 15px;
+  cursor: pointer;
+}
+.tToolBar .tToolItem:hover {
+  margin-bottom: -1px;
+  border-bottom: 1px solid #4eaeff;
+  background-color: #969696;
+}
+.tToolBar .tToolItem > * {
+  cursor: pointer;
+}
+.tToolBar .tToolDropDown {
+  padding: 11px 16px;
+}
+.tToolBar .tToolDropDown:hover {
+  background-color: #969696;
+}
+.tToolBar .tToolDropDown.popAtTopLeft:hover,
+.tToolBar .tToolDropDown.popAtTop:hover,
+.tToolBar .tToolDropDown.popAtTopRight:hover {
+  margin-top: -1px;
+  border-top: 1px solid #4eaeff;
+}
+.tToolBar .tToolDropDown.popAtRightUp:hover,
+.tToolBar .tToolDropDown.popAtRight:hover,
+.tToolBar .tToolDropDown.popAtRightDown:hover {
+  margin-right: -1px;
+  border-right: 1px solid #4eaeff;
+}
+.tToolBar .tToolDropDown.popAtBottomRight:hover,
+.tToolBar .tToolDropDown.popAtBottom:hover,
+.tToolBar .tToolDropDown.popAtBottomLeft:hover {
+  margin-bottom: -1px;
+  border-bottom: 1px solid #4eaeff;
+}
+.tToolBar .tToolDropDown.popAtLeftDown:hover,
+.tToolBar .tToolDropDown.popAtLeft:hover,
+.tToolBar .tToolDropDown.popAtLeftUp:hover {
+  margin-left: -1px;
+  border-left: 1px solid #4eaeff;
+}
+.tToolBar .tToolDropDown .tDropDownLabel {
+  cursor: pointer;
+}
+.tToolBar .tToolDropDown .tDropDownContent {
+  background-color: #323232f2;
+  box-shadow: 2px 2px 2px 0px rgba(0, 0, 0, 0.2);
+  font-size: 20px;
+}
+.tContent {
+  background-color: #232323;
+  color: #c8c8c8;
+}
+.tFooter {
+  background-color: #323232;
+}
+.tFooter .tStatusBar {
+  background-color: #323232;
+  /*borderTop:       1px solid rgb(30, 30, 30);*/
+}
+.tDividerVertical {
+  height: 30px;
+  min-width: 1px;
+  background-color: #9d9d9d;
+  margin: 5px 0px;
+}
+.tDividerHorizontal {
+  min-height: 1px;
+  background-color: #9d9d9d;
+  margin: 5px 0px;
+}
+/* DIALOG */
+.dialog {
+  box-shadow: 4px 4px 7px 1px;
+}
+.dialog .header {
+  padding: 5px;
+  color: white;
+  font-size: 1.6em;
+  background-color: #323232;
+}
+.dialog .content .fa {
+  font-size: 16em;
+}
+.dialog.login-dialog .footer button {
+  flex-basis: 100%;
+}
+/* SEPARATOR */
+.tSplitter.tSplitterVertical .tSplit {
+  border: 1px inset #414141;
+}
+.tSplitter.tSplitterVertical .tLeftSplit {
+  border-left: none;
+  border-bottom: 1px inset #414141;
+}
+.tSplitter.tSplitterVertical .tRightSplit {
+  border-right: none;
+  border-bottom: 1px inset #414141;
+}
+.tSplitter.tSplitterVertical .tSplitterSeparator {
+  width: 3px;
+  background-color: #323232;
+}
+.tSplitter.tSplitterHorizontal .tSplitterSeparator {
+  border-top: 1px outset #414141;
+  border-bottom: 1px outset #414141;
+  height: 3px;
+  background-color: #323232;
+}
+/* Tree */
+.tTree ul.tTreeItemChildren {
+  list-style-type: none;
+  padding-left: 14px;
+}
+.tTree ul.tTreeItemChildren.multiChild li.tTreeItem:not(:last-child) ul.tTreeItemChildren {
+  padding-left: 6px;
+  border-left: 2px dashed #656565;
+  margin-left: 5px;
+}
+.tTree ul.tTreeItemChildren li.tTreeItem {
+  user-select: none;
+  min-height: 20px;
+}
+.tTree ul.tTreeItemChildren li.tTreeItem:last-child > .tTreeItemContent::before {
+  content: "\2514";
+}
+.tTree ul.tTreeItemChildren li.tTreeItem .tTreeItemContent::before {
+  content: "\251C";
+}
+.tTree ul.tTreeItemChildren li.tTreeItem .tTreeItemContent i {
+  min-width: 16px;
+  min-height: 16px;
+}
+.tTree ul.tTreeItemChildren li.tTreeItem .tTreeItemContent label {
+  padding-left: 4px;
+}
+.tTree ul.tTreeItemChildren li.tTreeItem .tTreeItemContent .tTreeItemModifiers {
+  padding-left: 5px;
+}
+/* Generated by Paletton.com Â© 2002-2014 */
+/* http://paletton.com */
+/*// LOGIN BUTTON*/
+/* The switch - the box around the slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+/* Hide default HTML checkbox */
+.switch input {
+  display: none;
+}
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #cccccc;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 26px;
+  width: 26px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: .4s;
+  transition: .4s;
+}
+input:checked + .slider {
+  background-color: #2196f3;
+}
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+.slider.round:before {
+  border-radius: 50%;
+}

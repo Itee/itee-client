@@ -10,50 +10,12 @@
 
 /* eslint-env browser */
 
-import React from 'react'
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-let _instanceCounter = 0
-
-class TSection extends React.Component {
-
-    constructor ( props ) {
-
-        super( props )
-        _instanceCounter++
-
-    }
-
-    /**
-     * React lifecycle
-     */
-    componentWillMount () {}
-
-    componentDidMount () {}
-
-    componentWillUnmount () {}
-
-    componentWillReceiveProps ( /*nextProps*/ ) {}
-
-    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentWillUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentDidUpdate ( /*prevProps, prevState*/ ) {}
-
-    render () {
-
-        const { id, className } = this.props
-
-        const _id    = id || `tSection_${_instanceCounter}`
-        const _style = {}
-        const _class = ( className ) ? `tSection ${className}` : 'tSection'
-
-        return (
-            <t-section ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-section>
-        )
-
-    }
-
-}
-
-export { TSection }
+export default Vue.component( 'TSection', {
+    template: `
+        <section class="tSection">
+            <slot></slot>
+        </section>
+    `
+} )

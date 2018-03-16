@@ -128,19 +128,14 @@ gulp.task( 'lint', () => {
                    quiet:             false,
                    envs:              [],
                    configFile:        './configs/eslint.conf.js',
-                   parser:            'babel-eslint',
+//                   parser:            'babel-eslint',
                    parserOptions:     {
-                       ecmaFeatures: {
-                           jsx: true
-                       }
+                       parser:            'babel-eslint'
                    },
                    plugins:           [
-                       'react'
+                       'vue'
                    ],
-                   rules:             {
-                       "react/jsx-uses-react": "error",
-                       "react/jsx-uses-vars":  "error"
-                   },
+                   rules:             {},
                    useEslintrc:       false
                } ) )
                .pipe( eslint.format( 'stylish' ) )
@@ -195,7 +190,7 @@ gulp.task( 'test', gulp.parallel( 'unit', 'bench' ) )
 ///
 
 const styleFiles = [
-    './node_modules/font-awesome/less/font-awesome.less',
+//    './node_modules/font-awesome/less/font-awesome.less',
     //    './node_modules/bootstrap/scss/bootstrap.scss',
     //    './node_modules/bootstrap-slider/dist/css/bootstrap-slider.css',
     './styles/itee-client.less'
@@ -255,6 +250,9 @@ gulp.task( 'build-script', ( done ) => {
         'use strict'
 
         //        let defaultOptions = {
+        //            fileName:     'itee-client',
+        //            inputPath:    path.join( __dirname, 'sources' ),
+        //            outputPath:   path.join( __dirname, 'builds' ),
         //            environments: [ 'development', 'production' ],
         //            formats:      [ 'amd', 'cjs', 'es', 'iife', 'umd' ],
         //            sourceMap:    false
@@ -265,7 +263,7 @@ gulp.task( 'build-script', ( done ) => {
             inputPath:    path.join( __dirname, 'sources' ),
             outputPath:   path.join( __dirname, 'builds' ),
             environments: [ 'development' ],
-            formats:      [ 'es' ],
+            formats:      [ 'iife' ],
             sourceMap:    false
         }
 
@@ -391,10 +389,10 @@ gulp.task( 'watch-script', gulp.series( 'build-script', ( done ) => {
 /**
  * Build css and javascript files
  */
-gulp.task( 'build-auto', gulp.series( 'clean', 'lint', gulp.parallel( 'watch-style', 'watch-script' ) ) )
-gulp.task( 'build-dev', gulp.series( 'clean', gulp.parallel( 'lint', 'doc', 'test' ), gulp.parallel( 'build-style-dev', 'build-script' ) ) )
-gulp.task( 'build-prod', gulp.series( 'clean', gulp.parallel( 'lint', 'doc', 'test' ), gulp.parallel( 'build-style-prod', 'build-script' ) ) )
-gulp.task( 'build', gulp.series( 'clean', gulp.parallel( 'lint', 'doc', 'test' ), gulp.parallel( 'build-style', 'build-script' ) ) )
+gulp.task( 'build-auto', gulp.parallel( 'watch-style', 'watch-script' ) )
+gulp.task( 'build-dev', gulp.parallel( 'build-style-dev', 'build-script' ) )
+gulp.task( 'build-prod', gulp.parallel( 'build-style-prod', 'build-script' ) )
+gulp.task( 'build', gulp.parallel( 'build-style', 'build-script' ) )
 
 /**
  * @method npm run release

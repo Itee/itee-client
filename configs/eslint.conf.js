@@ -16,16 +16,24 @@
 function CreateEslintConfiguration () {
 
     return {
-        "env": {
+        env: {
             "browser": true,
             "node": true,
             "es6": true
         },
-        "parserOptions": {
-            "ecmaVersion": 6,
-            "sourceType": "module"
+        parserOptions: {
+            ecmaVersion: 6,
+            sourceType: "module"
         },
-        "extends": "eslint:recommended"
+        extends: [
+            // add more generic rulesets here, such as:
+            // 'eslint:recommended',
+            'plugin:vue/essential'
+        ],
+        rules: {
+            // override/add rules settings here, such as:
+            // 'vue/no-unused-vars': 'error'
+        }
     }
 
 }

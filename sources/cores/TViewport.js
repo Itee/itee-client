@@ -209,7 +209,7 @@ function TViewport ( container ) {
         this.webGLRenderer.setClearColor( 0x222222 )
         this.webGLRenderer.autoClear         = true
         this.webGLRenderer.shadowMap.enabled = true
-        this.webGLRenderer.shadowMap.yype    = PCFSoftShadowMap
+        this.webGLRenderer.shadowMap.type    = PCFSoftShadowMap
     }
 
     function initEvent () {

@@ -1,0 +1,416 @@
+/* Palette */
+/* CSS - Cascading Style Sheet */
+/* Palette color codes */
+/* Palette URL: http://paletton.com/#uid=23x0I0kl2lDhZ2F2ymTONTbT5tV */
+.color-primary-0 { color: #2b516f }
+
+/* Main Primary color */
+.color-primary-1 { color: #060b0e }
+
+.color-primary-2 { color: #6d7275 }
+
+.color-primary-3 { color: #0686e9 }
+
+.color-primary-4 { color: #025899 }
+
+.color-complement-0 { color: #ac7c3b }
+
+/* Main Complement color */
+.color-complement-1 { color: #151009 }
+
+.color-complement-2 { color: #b6b0a8 }
+
+.color-complement-3 { color: #ff9200 }
+
+.color-complement-4 { color: #ee8800 }
+
+html, body {
+    font-family: 'Arial';
+    height:      100%;
+    width:       100%;
+    margin:      0;
+    padding:     0;
+}
+
+body {
+    display:          flex;
+    background-color: #4b4b4b;
+}
+
+// Against bootstrap
+label {
+    margin: 0!important;
+}
+
+#itee-application-root {
+    display: flex;
+    width: 100%;
+    height: 100%;
+}
+
+// Utils
+.stretchChildren > * {
+    flex: 1;
+}
+
+// Global objects
+.tHeader {
+    //position: relative;
+    z-index: 3;
+    /*box-shadow: 0px -7px 10px 7px rgb(0, 0, 0);*/
+    color:   white;
+
+    .tAppBar {
+        //position:         relative;
+        z-index:          3;
+        background-color: rgb(100, 100, 100);
+        box-shadow:       0px -7px 10px 7px rgb(0, 0, 0);
+        border-bottom:    1px solid rgb(75, 75, 75);
+        height:           60px;
+
+        .tBrand {
+            margin-left: 10px;
+            font-size:   2.0em;
+        }
+
+        .tMenu {
+            font-size: 2.0em;
+
+            .tMenuItem {
+                padding: 5px 16px;
+
+                &:hover {
+                    margin-bottom:    -1px;
+                    border-bottom:    1px solid #4eaeff;
+                    background-color: rgba(150, 150, 150, 1);
+                }
+
+                > * {
+                    cursor: pointer;
+                }
+
+            }
+
+            .tMenuDropDown {
+                padding: 5px 16px;
+
+                &:hover {
+                    background-color: rgba(150, 150, 150, 1);
+                }
+
+                &.popAtRightUp:hover {
+                    margin-right: -1px;
+                    border-right: 1px solid #4eaeff;
+                }
+
+                &.popAtTop:hover {
+                    margin-top: -1px;
+                    border-top: 1px solid #4eaeff;
+                }
+
+                &.popAtBottom:hover {
+                    margin-bottom: -1px;
+                    border-bottom: 1px solid #4eaeff;
+                }
+
+                .tDropDownLabel {
+                    cursor: pointer;
+                }
+
+                .tDropDownContent {
+                    background-color: #323232f2;
+                    box-shadow:       2px 2px 2px 0px rgba(0, 0, 0, 0.2);
+                    font-size:        20px;
+                }
+
+            }
+
+        }
+
+    }
+
+}
+
+
+.tToolBar {
+    z-index:          2;
+    background-color: rgb(50, 50, 50);
+    font-size:        1.6em;
+    color:            #efefef;
+    min-height:       50px;
+
+    .tToolItem {
+        padding: 10px 15px;
+        cursor:  pointer;
+
+        &:hover {
+            margin-bottom:    -1px;
+            border-bottom:    1px solid #4eaeff;
+            background-color: rgba(150, 150, 150, 1);
+        }
+
+        > * {
+            cursor: pointer;
+        }
+
+    }
+
+    .tToolDropDown {
+        padding: 11px 16px;
+
+        &:hover {
+            background-color: rgba(150, 150, 150, 1);
+        }
+
+        &.popAtTopLeft:hover,
+        &.popAtTop:hover,
+        &.popAtTopRight:hover {
+            margin-top: -1px;
+            border-top: 1px solid #4eaeff;
+        }
+
+        &.popAtRightUp:hover,
+        &.popAtRight:hover,
+        &.popAtRightDown:hover {
+            margin-right: -1px;
+            border-right: 1px solid #4eaeff;
+        }
+
+        &.popAtBottomRight:hover,
+        &.popAtBottom:hover,
+        &.popAtBottomLeft:hover {
+            margin-bottom: -1px;
+            border-bottom: 1px solid #4eaeff;
+        }
+
+        &.popAtLeftDown:hover,
+        &.popAtLeft:hover,
+        &.popAtLeftUp:hover {
+            margin-left: -1px;
+            border-left: 1px solid #4eaeff;
+        }
+
+        .tDropDownLabel {
+            cursor: pointer;
+        }
+
+        .tDropDownContent {
+            background-color: #323232f2;
+            box-shadow:       2px 2px 2px 0px rgba(0, 0, 0, 0.2);
+            font-size:        20px;
+        }
+
+    }
+
+}
+
+.tContent {
+    background-color: rgb(35, 35, 35);
+    color:            rgb(200, 200, 200);
+}
+
+.tFooter {
+    background-color: rgb(50, 50, 50);
+
+    .tStatusBar {
+        background-color: rgb(50, 50, 50);
+        /*borderTop:       1px solid rgb(30, 30, 30);*/
+    }
+
+}
+
+.tDividerVertical {
+    height:           30px;
+    min-width:        1px;
+    background-color: #9d9d9d;
+    margin:           5px 0px;
+}
+
+.tDividerHorizontal {
+    min-height:       1px;
+    background-color: #9d9d9d;
+    margin:           5px 0px;
+}
+
+/* DIALOG */
+
+.dialog {
+    box-shadow: 4px 4px 7px 1px;
+}
+
+.dialog .header {
+    padding:          5px;
+    color:            white;
+    font-size:        1.6em;
+    background-color: rgb(50, 50, 50);
+}
+
+.dialog .content .fa {
+    font-size: 16em;
+}
+
+.dialog.login-dialog .footer button {
+    flex-basis: 100%;
+}
+
+/* SEPARATOR */
+.tSplitter {
+
+    &.tSplitterVertical {
+
+        .tSplit {
+            border: 1px inset rgb(65, 65, 65);
+        }
+
+        .tLeftSplit {
+            border-left:   none;
+            border-bottom: 1px inset rgb(65, 65, 65);
+        }
+
+        .tRightSplit {
+            border-right:  none;
+            border-bottom: 1px inset rgb(65, 65, 65);
+        }
+
+        .tSplitterSeparator {
+            width:            3px;
+            background-color: rgb(50, 50, 50);
+        }
+
+    }
+
+    &.tSplitterHorizontal {
+
+        .tSplitterSeparator {
+            border-top:       1px outset rgb(65, 65, 65);
+            border-bottom:    1px outset rgb(65, 65, 65);
+            height:           3px;
+            background-color: rgb(50, 50, 50);
+        }
+
+    }
+
+}
+
+/* Tree */
+.tTree {
+
+    //margin-left: -1px;
+    //border-top: 1px inset red;
+    //border-right: 1px inset red;
+    //border-bottom: 1px inset red;
+
+    ul.tTreeItemChildren {
+        list-style-type: none;
+        padding-left:    14px;
+
+        &.multiChild li.tTreeItem:not(:last-child) ul.tTreeItemChildren {
+            padding-left: 6px;
+            border-left:  2px dashed #656565;
+            margin-left:  5px;
+        }
+
+        li.tTreeItem {
+            user-select: none;
+            min-height:  20px;
+
+            &:last-child {
+
+                > .tTreeItemContent::before {
+                    content: "\2514";
+                }
+
+            }
+
+            .tTreeItemContent {
+
+                &::before {
+                    content: "\251C";
+                }
+
+                i {
+                    min-width:  16px;
+                    min-height: 16px;
+                }
+
+                label {
+                    padding-left: 4px;
+                }
+
+                .tTreeItemModifiers {
+                    padding-left: 5px;
+                }
+
+            }
+
+        }
+
+    }
+
+}
+
+.tViewport3D {}
+
+/* Generated by Paletton.com Â© 2002-2014 */
+/* http://paletton.com */
+
+/*// LOGIN BUTTON*/
+
+/* The switch - the box around the slider */
+.switch {
+    position: relative;
+    display:  inline-block;
+    width:    60px;
+    height:   34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input { display: none; }
+
+/* The slider */
+.slider {
+    position:           absolute;
+    cursor:             pointer;
+    top:                0;
+    left:               0;
+    right:              0;
+    bottom:             0;
+    background-color:   #cccccc;
+    -webkit-transition: .4s;
+    transition:         .4s;
+}
+
+.slider:before {
+    position:           absolute;
+    content:            "";
+    height:             26px;
+    width:              26px;
+    left:               4px;
+    bottom:             4px;
+    background-color:   white;
+    -webkit-transition: .4s;
+    transition:         .4s;
+}
+
+input:checked + .slider {
+    background-color: #2196f3;
+}
+
+input:focus + .slider {
+    box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+    -webkit-transform: translateX(26px);
+    -ms-transform:     translateX(26px);
+    transform:         translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}

@@ -8,66 +8,15 @@
  *
  */
 
-/* eslint-env browser */
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-import React from 'react'
+export default Vue.component( 'TButton', {
+    template: `
+        <button class="button" @click="onClick(messageData)">
+            <TIcon v-if='icon' :iconProps="icon" />
+            {{label}}
+        </button>
+    `,
+    props:    [ 'label', 'icon', 'onClick', 'messageData' ]
+} )
 
-let _instanceCounter = 0
-
-class TButton extends React.Component {
-
-    render () {
-        const { id, label, icon, onClickHandler } = this.props
-
-        const _id    = id || `tButton_${_instanceCounter}`
-
-        if ( label && icon ) {
-
-            return (
-                <button
-                    id={_id}
-                    className="btn"
-                    onClick={onClickHandler}>
-                    <i className={icon}></i>
-                    {label}
-                </button>
-            )
-
-        } else if ( label && !icon ) {
-
-            return (
-                <button
-                    id={_id}
-                    className="btn"
-                    onClick={onClickHandler}>
-                    {label}
-                </button>
-            )
-
-        } else if ( !label && icon ) {
-
-            return (
-                <button
-                    id={_id}
-                    className="btn"
-                    onClick={onClickHandler}>
-                    <i className={icon}></i>
-                </button>
-            )
-
-        } else {
-
-            return (
-                <button
-                    id={_id}
-                    className="btn"
-                    onClick={onClickHandler}>
-                </button>
-            )
-
-        }
-    }
-
-}
-
-export { TButton }

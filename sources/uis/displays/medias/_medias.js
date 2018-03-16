@@ -8,10 +8,10 @@
 
 /* eslint-env browser */
 
-export { TAudio } from './TAudio'
-export { TCarousel } from './TCarousel'
-export { TImage } from './TImage'
-export { TMap } from './TMap'
-export { TParallax } from './TParallax'
-export { TVideo } from './TVideo'
-export { TViewport3D } from './TViewport3D'
+//export { TAudio } from './TAudio'
+//export { TCarousel } from './TCarousel'
+//export { TImage } from './TImage'
+//export { TMap } from './TMap'
+//export { TParallax } from './TParallax'
+//export { TVideo } from './TVideo'
+export { default as TViewport3D } from './TViewport3D'

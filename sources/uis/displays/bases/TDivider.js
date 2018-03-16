@@ -10,80 +10,20 @@
 
 /* eslint-env browser */
 
-import React from 'react'
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-let _instanceCounter = 0
+export default Vue.component( 'TDivider', {
+    template: `
+        <div :class=computeClass role="separator"></div>
+    `,
+    props:    [ 'orientation' ],
+    computed: {
 
-class TDivider extends React.Component {
+        computeClass() {
 
-    constructor ( props ) {
-
-        super( props )
-        _instanceCounter++
-
-    }
-
-    /**
-     * React lifecycle
-     */
-    componentWillMount () {}
-
-    componentDidMount () {}
-
-    componentWillUnmount () {}
-
-    componentWillReceiveProps ( /*nextProps*/ ) {}
-
-    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentWillUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentDidUpdate ( /*prevProps, prevState*/ ) {}
-
-    render () {
-
-        const { id, className, orientation } = this.props
-
-        const _id    = id || `tDivider_${_instanceCounter}`
-        const _style = TDivider._computeStyle( orientation )
-        const _class = ( className ) ? `tDivider ${className}` : 'tDivider'
-
-        return (
-            <t-divider id={_id} style={_style} class={_class} role={'separator'}></t-divider>
-        )
-
-    }
-
-    // Private stuff
-    static _computeStyle ( orientation ) {
-
-        let style = undefined
-
-        if ( !orientation || orientation === 'vertical' ) {
-
-            style = {
-                height:          '30px',
-                width:           '1px',
-                backgroundColor: '#9d9d9d',
-                margin:          '5px 0px'
-            }
-
-        } else {
-
-            style = {
-                height:          '1px',
-                width:           '30px',
-                backgroundColor: '#9d9d9d',
-                margin:          '5px 0px'
-            }
+            return ( this.orientation === "vertical" ) ? 'tDivider tDividerVertical' : 'tDivider tDividerHorizontal'
 
         }
 
-        return style
-
     }
-
-}
-
-export { TDivider }
-
+} )

@@ -10,51 +10,18 @@
 
 /* eslint-env browser */
 
-import React from 'react'
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-let _instanceCounter = 0
-
-class TLabel extends React.Component {
-
-    constructor ( props ) {
-
-        super( props )
-        _instanceCounter++
-
-    }
-
-    /**
-     * React lifecycle
-     */
-    componentWillMount () {}
-
-    componentDidMount () {}
-
-    componentWillUnmount () {}
-
-    componentWillReceiveProps ( /*nextProps*/ ) {}
-
-    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentWillUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentDidUpdate ( /*prevProps, prevState*/ ) {}
-
-    render () {
-
-        const { id, className } = this.props
-
-        const _id    = id || `tLabel_${_instanceCounter}`
-        const _style = {}
-        const _class = ( className ) ? `tLabel ${className}` : 'tLabel'
-
-        return (
-            <t-label ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-label>
-        )
-
-    }
-
-}
-
-export { TLabel }
-
+export default Vue.component( 'TLabel', {
+    template: `
+        <label v-if=onClickHandler class="tLabel" :title=tooltip @click=onClickHandler>
+            <TIcon v-if='icon' :iconProps="icon" />
+            {{label}}
+        </label>
+        <label v-else class="tLabel" :title=tooltip>
+            <TIcon v-if='icon' :iconProps="icon" />
+            {{label}}
+        </label>
+    `,
+    props:    [ 'label', 'icon', 'tooltip', 'onClickHandler' ]
+} )
