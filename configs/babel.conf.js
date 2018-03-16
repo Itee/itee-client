@@ -18,6 +18,7 @@
 function CreateBabelConfiguration ( onProduction ) {
 
     return {
+        exclude: 'node_modules/**',
         presets: [
             [
                 "env",
