@@ -12,6 +12,10 @@
 import './third_party/dock-spawn.js'
 import './third_party/polyfills.js'
 
+// Import FontAwesome
+import '@fortawesome/fontawesome-free-solid'
+import '@fortawesome/fontawesome-free-brands'
+
 // Export es6 Three stuff
 export * from 'threejs-full-es6'
 
