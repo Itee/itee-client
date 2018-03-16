@@ -255,13 +255,8 @@ export default Vue.component( 'TViewport3D', {
         const domElement = this.$el
 
         // Set renderer
-<<<<<<< Updated upstream
-        data._renderer.setClearColor( 0x777777 )
-        data._renderer.autoClear = true
-=======
         this.renderer.setClearColor( this.backgroundColor || 0x000000 )
         this.renderer.autoClear = true
->>>>>>> Stashed changes
 
         // Add renderer canvas
         domElement.appendChild( this.renderer.domElement )
