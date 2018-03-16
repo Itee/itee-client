@@ -15,10 +15,11 @@ export default Vue.component( 'TTreeItem', {
     template: `
         <li class="tTreeItem">
             <TContainerHorizontal class="tTreeItemContent" hAlign="start" vAlign="center">
-                <i v-if="haveChildren" :class=computeToggleChildrenIconClass @click="toggleChildren()"></i>
+                <TIcon v-if="haveChildren" :iconProps=computeToggleChildrenIconClass :iconOn="{click: toggleChildren}" />
+                <!--<i v-if="haveChildren" :class=computeToggleChildrenIconClass @click="toggleChildren()"></i>-->
                 <label>{{name}}</label>
                 <span v-for="modifier in modifiers" class="tTreeItemModifiers">
-                    <i v-if="modifier.type === 'checkbox'" @click="updateCheckboxState( modifier.onClick )" :class=computeCheckboxClass></i>
+                    <TIcon v-if="modifier.type === 'checkbox'" :iconProps=computeCheckboxClass :iconOn="{click: function () { updateCheckboxState( modifier.onClick ) } }" />
                     <input v-else-if="modifier.type === 'button'" type="button" @click="modifier.onClick">
                     <input v-else-if="modifier.type === 'range'" type="range" @change="modifier.onChange">
                     <input v-else-if="modifier.type === 'number'" type="number" @change="modifier.onChange">
@@ -63,13 +64,14 @@ export default Vue.component( 'TTreeItem', {
 
         computeToggleChildrenIconClass () {
 
-            return (this.showChildren) ? "fa fa-chevron-down" : "fa fa-chevron-right"
+            return (this.showChildren) ? "chevron-circle-down" : "chevron-circle-right"
+//            return (this.showChildren) ? "chevron-down" : "chevron-right"
 
         },
 
         computeCheckboxClass () {
 
-            return (this.isVisible) ? "fa fa-check-square" : "fa fa-square"
+            return (this.isVisible) ? "check-square" : "square"
 
         },
 
