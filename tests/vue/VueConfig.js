@@ -13,16 +13,22 @@
 var config = {
     el:       '#root',
     data:     {
-        scene:     new Itee.Scene(),
+        viewport:  {
+            scene:    new Itee.Scene(),
+            camera:   'perspective',
+            renderer: new Itee.WebGLRenderer( { antialias: true } ),
+            backgroundColor: 0x123456,
+            control: 'orbital'
+        },
         treeItems: []
     },
     template: `
         <TContainer orientation="vertical" hAlign="stretch" vAlign="start" expand=true>
-       
+                   
             <THeader>
                 <TAppBar height="60px">
                     <TContainer vAlign="center" hAlign="start">
-                        <TLabel class="tBrand" label="ITEE" icon="fa fa-rocket" />
+                        <TLabel class="tBrand" label="ITEE" icon="rocket" />
                     </TContainer>
                     <TMenu>
                         <TMenuItem label="Home" :onClickHandler=alertFooBar />
@@ -54,28 +60,95 @@ var config = {
                     </TContainer>
                 </TAppBar>
                 <TToolBar>
-                    <TToolItem icon="fa fa-home" :onClickHandler=addCube />
-                    <TToolItem icon="fa fa-eye" :onClickHandler=alertFooBar />
-                    <TToolItem icon="fa fa-cloud" :onClickHandler=alertFooBar />
-                    <TToolDropDown popAt="bottom" icon="fa fa-th">
-                        <TToolItem label="Plan XY" :onClickHandler=alertFooBar />
-                        <TToolItem label="Plan XZ" :onClickHandler=alertFooBar />
-                        <TToolItem label="Plan YZ" :onClickHandler=alertFooBar />
+                    <TToolDropDown popAt="bottomLeft" icon="crosshairs" tooltip="Outils de mesure" >
+                        <TToolItem icon="mars" label="Segment" tooltip="Prendre une distance entre un point A et un point B" :onClick=setMesureModeOfType onClickData="segment" />
+                        <TToolItem icon="share-alt" label="PolyLigne" tooltip="Prendre des distances entre plusieurs points qui se suivent" :onClick=setMesureModeOfType onClickData="polyline" />
+                        <TToolItem :icon="['fab', 'hubspot']" label="PolySegment" tooltip="Prendre des distances entre un point central et plusieurs points" :onClick=setMesureModeOfType onClickData="polysegment" />
+                        <TDivider orientation="horizontal" />
+                        <TToolItem class="disabled" icon="circle" label="Disque" tooltip="Prendre des mesures de type circulaire" :onClick=setMesureModeOfType onClickData="disk" />
+                        <TToolItem class="disabled" icon="square" label="Carré" tooltip="Prendre des mesures de type rectangulaire" :onClick=setMesureModeOfType onClickData="square" />
+                        <TToolItem class="disabled" icon="star" label="Polygone" tooltip="Prendre des mesures de type polygonale" :onClick=setMesureModeOfType onClickData="polygone" />
+                        <TDivider orientation="horizontal" />
+                        <TToolItem class="disabled" :icon="['fab', 'dribbble']" label="Sphère" tooltip="Volume sphèrique" :onClick=setMesureModeOfType onClickData="sphere" />
+                        <TToolItem class="disabled" icon="cube" label="Cube" tooltip="Volume cubique" :onClick=setMesureModeOfType onClickData="cube" />
                     </TToolDropDown>
+                    <TToolItem icon="wifi" tooltip="Rayon X" :onClick=alertFooBar />
+                    <TToolItem icon="cut" tooltip="Outil de découpe" :onClick=alertFooBar />
+                    <TToolItem icon="hand-pointer" tooltip="Sélection" :onClick=alertFooBar />
+
+                    <TDivider orientation="vertical" />
+
+                    <TToolDropDown popAt="bottomLeft" tooltip="Choisir le type de projection de la camera" icon="camera">
+                        <TToolItem icon="cubes" label="Orthographique" :onClick=setCameraOfType onClickData="orthographic" />
+                        <TToolItem :icon="['fab', 'linode']" label="Perspective" :onClick=setCameraOfType onClickData="perspective" />
+                    </TToolDropDown>
+                    <TToolDropDown popAt="bottomLeft" tooltip="Choisir le type de contrôle de caméra" icon="gamepad">
+                        <TToolItem icon="globe" label="Orbital" tooltip="Permet de se déplacer en mode orbital autour du model 3D" :onClick=setControlOfType onClickData="orbital" />
+                        <TToolItem icon="street-view" label="Avatar" tooltip="Permet de se déplacer en mode immersif dans le model 3D" :onClick=setControlOfType onClickData="avatar" />
+                    </TToolDropDown>
+                    <TToolDropDown popAt="bottomLeft" tooltip="Choisir un effet de camera" icon="eye">
+                        <TToolItem icon="globe" label="Normal" tooltip="Vision de base" :onClick=setEffectOfType onClickData="normal" />
+                        <TToolItem :icon="['fab', 'nintendo-switch']" label="Anaglyphe" tooltip="Anaglyphe" :onClick=setEffectOfType onClickData="anaglyph" />
+                        <TToolItem :icon="{icon:['fab', 'simplybuilt'], flip: 'vertical'}" label="VR" tooltip="VR" :onClick=setEffectOfType onClickData="vr" />
+                    </TToolDropDown>
+
+                    <TDivider orientation="vertical" />
+
+                    <TToolItem icon="cloud" :onClick=alertFooBar />
+                    <TToolDropDown popAt="bottomLeft" icon="th">
+                        <TToolItem label="Plan XY" :onClick=addCube />
+                        <TToolItem label="Plan XZ" :onClick=alertFooBar />
+                        <TToolItem label="Plan YZ" :onClick=alertFooBar />
+                    </TToolDropDown>
+
                 </TToolBar>
             </THeader>
+
             <TContent>
                 <TSplitter :isVertical=true :initPosition=20>
-                    <TTree slot="left" :items="scene.children" :filter=filterTreeItem></TTree>
-                    <TViewport3D slot="right" :scene="scene" />
+                    <TTree slot="left" :items="viewport.scene.children" :filter=filterTreeItem></TTree>
+                    <TViewport3D slot="right" 
+                        :scene=viewport.scene 
+                        :camera=viewport.camera
+                        :control=viewport.control
+                        :renderer=viewport.renderer
+                        :backgroundColor=0x232323
+                     />
                 </TSplitter>
             </TContent>
+
             <TFooter>
                 Footer
             </TFooter>
+                
         </TContainer>
     `,
     methods:  {
+
+        setCameraOfType( cameraType ) {
+            'use strict'
+
+            this.viewport.camera = cameraType
+
+        },
+
+        setControlOfType( controlType ) {
+            'use strict'
+
+            this.viewport.control = controlType
+
+        },
+
+        setEffectOfType( effectType ) {
+            'use strict'
+
+        },
+
+        setMesureModeOfType( effectType ) {
+            'use strict'
+
+        },
+
         alertFooBar () {
             'use strict'
             alert( 'foo bar' )
@@ -93,7 +166,7 @@ var config = {
                     onClick: this.toggleVisibilityOf( mainGroup )
                 }
             ]
-            this.scene.add( mainGroup )
+            this.viewport.scene.add( mainGroup )
 
             const group     = new Itee.Group()
             group.name      = "MyGroup"
@@ -126,40 +199,38 @@ var config = {
             ]
             mainGroup.add( group )
 
-            const gridHelperXZ     = new Itee.GridHelper( 100, 100 )
-            gridHelperXZ.name      = "gridHelperZ"
-            gridHelperXZ.modifiers = [
+            const gridHelperXZ_10     = new Itee.GridHelper( 20, 20 )
+            gridHelperXZ_10.name      = "gridHelperXZ_10"
+            gridHelperXZ_10.modifiers = [
                 {
                     type:    'checkbox',
                     value:   'checked',
-                    onClick: this.toggleVisibilityOf( gridHelperXZ )
+                    onClick: this.toggleVisibilityOf( gridHelperXZ_10 )
                 }
             ]
-            group.add( gridHelperXZ )
+            group.add( gridHelperXZ_10 )
 
-            const gridHelperXY     = new Itee.GridHelper( 100, 100 )
-            gridHelperXY.name      = "gridHelperX"
-            gridHelperXY.modifiers = [
+            const gridHelperXZ_100     = new Itee.GridHelper( 200, 20 )
+            gridHelperXZ_100.name      = "gridHelperXZ"
+            gridHelperXZ_100.modifiers = [
                 {
                     type:    'checkbox',
                     value:   'checked',
-                    onClick: this.toggleVisibilityOf( gridHelperXY )
+                    onClick: this.toggleVisibilityOf( gridHelperXZ_100 )
                 }
             ]
-            gridHelperXY.rotateX( Itee.radiansFromDegrees( 90 ) )
-            group.add( gridHelperXY )
+            group.add( gridHelperXZ_100 )
 
-            const gridHelperYZ     = new Itee.GridHelper( 100, 100 )
-            gridHelperYZ.name      = "gridHelperZ"
-            gridHelperYZ.modifiers = [
+            const gridHelperXZ_1000     = new Itee.GridHelper( 2000, 20 )
+            gridHelperXZ_1000.name      = "gridHelperXZ_10"
+            gridHelperXZ_1000.modifiers = [
                 {
                     type:    'checkbox',
                     value:   'checked',
-                    onClick: this.toggleVisibilityOf( gridHelperYZ )
+                    onClick: this.toggleVisibilityOf( gridHelperXZ_1000 )
                 }
             ]
-            gridHelperYZ.rotateZ( Itee.radiansFromDegrees( 90 ) )
-            group.add( gridHelperYZ )
+            group.add( gridHelperXZ_1000 )
 
             // ----
 

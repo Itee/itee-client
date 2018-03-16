@@ -22,11 +22,18 @@
 	</head>
 	<body>
 		<div id="root"></div>
+
 		<script src="../../builds/itee-client.iife.js"></script>
 		<script src="./VueConfig.js"></script>
 		<script>
-
-            var app = new Itee.createSpaceCraft( config )
+//            var app = new Itee.createSpaceCraft( config )
+            
+            const environment  = Itee.analyseEnvironment()
+            const rawMaterial  = Itee.getRawMaterial( environment )
+//            const fuselage     = Itee.createFuselage()
+            const flyingSaucer = Itee.createFlyingSaucer( rawMaterial )
+            //
+            flyingSaucer.launch()
 
 		</script>
 	</body>
