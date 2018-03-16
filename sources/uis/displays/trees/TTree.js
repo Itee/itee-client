@@ -15,7 +15,7 @@ import './TTreeItem'
 
 export default Vue.component( 'TTree', {
     template: `
-        <TContainerVertical class="tTree" hAlign="start" vAlign="start">
+        <TContainerVertical class="tTree" hAlign="start" vAlign="start" overflowY="auto">
             <div class="tTreeHeader">
                 <slot name="header"></slot>
             </div>

@@ -16,9 +16,11 @@ import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
 export default Vue.component( 'TToolItem', {
     template: `
-        <div class="tToolItem">
-            <TLabel :label=label :icon=icon :tooltip=tooltip :onClickHandler=onClickHandler />
+        <div class="tToolItem" :title=tooltip @click=onClick(onClickData)>
+            <TIcon v-if='icon' :iconProps="icon" />
+            {{label}}
+            <slot></slot>
         </div>
     `,
-    props:    [ 'label', 'icon', 'target', 'tooltip', 'onClickHandler' ]
+    props:    [ 'label', 'icon', 'target', 'tooltip', 'onClick', 'onClickData' ]
 } )

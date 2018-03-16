@@ -24,9 +24,11 @@ export default Vue.component( 'TContainerHorizontal', {
 		        :hAlign=hAlign
 		        :wAlign=wAlign
 		        :overflow=overflow 
+		        :overflowX=overflowX 
+		        :overflowY=overflowY 
         >
             <slot></slot>
         </TContainer>
     `,
-    props:    [ 'height', 'width', 'expand', 'wrapContent', 'vAlign', 'hAlign', 'wAlign', 'overflow' ]
+    props:    [ 'height', 'width', 'expand', 'wrapContent', 'vAlign', 'hAlign', 'wAlign', 'overflow', 'overflowX', 'overflowY'  ]
 } )

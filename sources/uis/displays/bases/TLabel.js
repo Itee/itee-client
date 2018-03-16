@@ -15,11 +15,11 @@ import Vue from '../../../../node_modules/vue/dist/vue.esm'
 export default Vue.component( 'TLabel', {
     template: `
         <label v-if=onClickHandler class="tLabel" :title=tooltip @click=onClickHandler>
-            <i v-if=icon :class=icon></i>
+            <TIcon v-if='icon' :iconProps="icon" />
             {{label}}
         </label>
         <label v-else class="tLabel" :title=tooltip>
-            <i v-if=icon :class="icon"></i>
+            <TIcon v-if='icon' :iconProps="icon" />
             {{label}}
         </label>
     `,

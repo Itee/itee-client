@@ -52,3 +52,7 @@ export function isEmptyString ( data ) {
 export function isNotEmptyString ( data ) {
     return (isString( data ) && data.length > 0)
 }
+
+export function isBlankString ( data ) {
+    return ( isNotEmptyString( data ) && !/\S/.test( data ) )
+}

@@ -21,7 +21,7 @@ export default Vue.component( 'TContainer', {
             <slot></slot>
         </div>
     `,
-    props:    [ 'height', 'width', 'orientation', 'expand', 'wrapContent', 'vAlign', 'hAlign', 'wAlign', 'overflow' ],
+    props:    [ 'height', 'width', 'orientation', 'expand', 'wrapContent', 'vAlign', 'hAlign', 'wAlign', 'overflow', 'overflowX', 'overflowY' ],
     watch: {
         // whenever question changes, this function will run
         width: function ( newValue, oldValue ) {
@@ -77,6 +77,10 @@ export default Vue.component( 'TContainer', {
 
             if ( this.overflow ) {
                 style.overflow = this.overflow
+            } else if( this.overflowX ) {
+                style.overflowX = this.overflowX
+            } else if( this.overflowY ) {
+                style.overflowY = this.overflowY
             }
 
             if ( this.expand && this.width && this.height ) {

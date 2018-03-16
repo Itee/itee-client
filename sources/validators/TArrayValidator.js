@@ -78,6 +78,10 @@ export function isNotEmptyArray ( data ) {
     return ( isArray( data ) && isNotEmpty( data ) )
 }
 
+export function isOneElementArray ( data ) {
+    return ( isArray( data ) && data.length === 1 )
+}
+
 //       _                                      __
 //      / \   _ __ _ __ __ _ _   _ ___    ___  / _|
 //     / _ \ | '__| '__/ _` | | | / __|  / _ \| |_

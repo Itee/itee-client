@@ -25,9 +25,11 @@ export default Vue.component( 'TContainerCentered', {
 		        hAlign="center" 
 		        wAlign="center" 
 		        :overflow=overflow 
+		        :overflowX=overflowX 
+		        :overflowY=overflowY 
         >
             <slot></slot>
         </TContainer>
     `,
-    props:    [ 'height', 'width', 'orientation', 'expand', 'wrapContent', 'overflow' ]
+    props:    [ 'height', 'width', 'orientation', 'expand', 'wrapContent', 'overflow', 'overflowX', 'overflowY'  ]
 } )

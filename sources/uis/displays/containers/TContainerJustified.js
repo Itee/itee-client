@@ -25,9 +25,11 @@ export default Vue.component( 'TContainerJustified', {
 		        hAlign="justified"
 		        wAlign="justified"
 		        :overflow=overflow 
+		        :overflowX=overflowX 
+		        :overflowY=overflowY 
         >
             <slot></slot>
         </TContainer>
     `,
-    props:    [ 'height', 'width', 'expand', 'wrapContent', 'overflow' ]
+    props:    [ 'height', 'width', 'expand', 'wrapContent', 'overflow', 'overflowX', 'overflowY'  ]
 } )

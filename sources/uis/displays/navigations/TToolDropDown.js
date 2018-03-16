@@ -14,7 +14,7 @@ import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
 export default Vue.component( 'TToolDropDown', {
     template: `
-        <div :class=computeClass @mouseenter=onMouseEnterHandler @mouseleave=onMouseLeaveHandler>
+        <div :class=computeClass :title=tooltip @mouseenter=onMouseEnterHandler @mouseleave=onMouseLeaveHandler>
             <TLabel class="tDropDownLabel" :label=label :icon=icon></TLabel>
             <div class="tDropDownContent" :style=computeContentStyle>
                 <slot></slot>
@@ -31,7 +31,7 @@ export default Vue.component( 'TToolDropDown', {
         }
 
     },
-    props:    [ 'popAt', 'icon', 'label' ],
+    props:    [ 'popAt', 'icon', 'label', 'tooltip' ],
     computed: {
 
         computeClass() {

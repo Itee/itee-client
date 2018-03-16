@@ -25,9 +25,11 @@ export default Vue.component( 'TContainerSpaced', {
 		        hAlign="spaced"
 		        wAlign="spaced"
 		        :overflow=overflow 
+		        :overflowX=overflowX 
+		        :overflowY=overflowY 
         >
             <slot></slot>
         </TContainer>
     `,
-    props:    [ 'height', 'width', 'expand', 'wrapContent', 'overflow' ]
+    props:    [ 'height', 'width', 'expand', 'wrapContent', 'overflow', 'overflowX', 'overflowY'  ]
 } )

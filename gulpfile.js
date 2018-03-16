@@ -190,7 +190,7 @@ gulp.task( 'test', gulp.parallel( 'unit', 'bench' ) )
 ///
 
 const styleFiles = [
-    './node_modules/font-awesome/less/font-awesome.less',
+//    './node_modules/font-awesome/less/font-awesome.less',
     //    './node_modules/bootstrap/scss/bootstrap.scss',
     //    './node_modules/bootstrap-slider/dist/css/bootstrap-slider.css',
     './styles/itee-client.less'
@@ -249,23 +249,23 @@ gulp.task( 'build-script', ( done ) => {
     function processArguments ( processArgv ) {
         'use strict'
 
+        //        let defaultOptions = {
+        //            fileName:     'itee-client',
+        //            inputPath:    path.join( __dirname, 'sources' ),
+        //            outputPath:   path.join( __dirname, 'builds' ),
+        //            environments: [ 'development', 'production' ],
+        //            formats:      [ 'amd', 'cjs', 'es', 'iife', 'umd' ],
+        //            sourceMap:    false
+        //        }
+
         let defaultOptions = {
             fileName:     'itee-client',
             inputPath:    path.join( __dirname, 'sources' ),
             outputPath:   path.join( __dirname, 'builds' ),
-            environments: [ 'development', 'production' ],
-            formats:      [ 'amd', 'cjs', 'es', 'iife', 'umd' ],
+            environments: [ 'development' ],
+            formats:      [ 'iife' ],
             sourceMap:    false
         }
-
-//        let defaultOptions = {
-//            fileName:     'itee-client',
-//            inputPath:    path.join( __dirname, 'sources' ),
-//            outputPath:   path.join( __dirname, 'builds' ),
-//            environments: [ 'development' ],
-//            formats:      [ 'iife' ],
-//            sourceMap:    false
-//        }
 
         const argv = processArgv.slice( 3 ) // Ignore nodejs, script paths and gulp params
         argv.forEach( argument => {
