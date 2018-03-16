@@ -35,6 +35,7 @@ function TDataBaseManager () {
 
     let _basePath     = '/'
     let _responseType = ResponseType.Json
+    let _bunchSize = 500
 
     // Todo: progress and error manager
     this.progressManager = null
@@ -85,6 +86,29 @@ function TDataBaseManager () {
                 }
 
                 _responseType = responseType
+            }
+        },
+
+        bunchSize: {
+            enumerable: true,
+            get () {
+                return _bunchSize
+            },
+            set ( bunchSize ) {
+
+                if ( isNull(bunchSize) ) {
+                    throw new Error( 'TDataBaseManager: bunchSize cannot be null !' )
+                }
+
+                if ( isUndefined(bunchSize) ) {
+                    throw new Error( 'TDataBaseManager: bunchSize cannot be undefined !' )
+                }
+
+                if ( !isNumber(bunchSize) ) {
+                    throw new Error( 'TDataBaseManager: bunchSize is expected to be a number !' )
+                }
+
+                _bunchSize = bunchSize
             }
         },
 
@@ -721,9 +745,7 @@ Object.assign( TDataBaseManager.prototype, {
                 this._readOne( ids[ 0 ], onLoadCallback, onProgressCallback, onError )
             } else {
 
-                // Todo: allow to set bunch size
 
-                const _BUNCH_SIZE = 500
 
                 let idBunch = []
                 let id      = undefined
@@ -732,7 +754,7 @@ Object.assign( TDataBaseManager.prototype, {
 
                     idBunch.push( id )
 
-                    if ( idBunch.length === _BUNCH_SIZE || idIndex === numberOfIds - 1 ) {
+                    if ( idBunch.length === this.bunchSize || idIndex === numberOfIds - 1 ) {
                         this._readSome( idBunch, onLoadCallback, onProgressCallback, onError )
                         idBunch = []
                     }
