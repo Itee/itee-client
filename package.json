@@ -45,7 +45,7 @@
     "stats.js": "^0.17.0",
     "threejs-full-es6": "^5.0.2",
     "vue": "^2.5.13",
-    "vue-resize-directive": "^1.0.0"
+    "vue-resize-directive": "^1.0.1",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
@@ -90,6 +90,6 @@
     "rollup-plugin-node-resolve": "^3.0.3",
     "rollup-plugin-replace": "^2.0.0",
     "rollup-plugin-strip": "^1.1.1",
-    "rollup-plugin-uglify-es": "0.0.1",
+    "rollup-plugin-uglify-es": "0.0.1"
   }
 }
