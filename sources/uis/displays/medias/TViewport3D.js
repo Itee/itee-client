@@ -10,44 +10,84 @@
 
 /* eslint-env browser */
 
-import { MeshPhongMaterial } from '../../../../node_modules/threejs-full-es6/sources/materials/MeshPhongMaterial'
-import { PerspectiveCamera } from '../../../../node_modules/threejs-full-es6/sources/cameras/PerspectiveCamera'
 import { WebGLRenderer } from '../../../../node_modules/threejs-full-es6/sources/renderers/WebGLRenderer'
-import { Scene } from '../../../../node_modules/threejs-full-es6/sources/scenes/Scene'
 import { Vector3 } from '../../../../node_modules/threejs-full-es6/sources/math/Vector3'
 import { AmbientLight } from '../../../../node_modules/threejs-full-es6/sources/lights/AmbientLight'
-import { Mesh } from '../../../../node_modules/threejs-full-es6/sources/objects/Mesh'
-import { GridHelper } from '../../../../node_modules/threejs-full-es6/sources/helpers/GridHelper'
 import { OrbitControls } from '../../../../node_modules/threejs-full-es6/sources/controls/OrbitControls'
-import { BoxBufferGeometry } from '../../../../node_modules/threejs-full-es6/sources/geometries/BoxGeometry'
+import { OrthographicCamera } from '../../../../node_modules/threejs-full-es6/sources/cameras/OrthographicCamera'
+import { PerspectiveCamera } from '../../../../node_modules/threejs-full-es6/sources/cameras/PerspectiveCamera'
 
 import Vue from '../../../../node_modules/vue/dist/vue.esm'
 import resize from 'vue-resize-directive'
 
-import { DefaultLogger as TLogger } from '../../../loggers/TLogger'
-import { isString } from '../../../validators/TStringValidator'
-
 export default Vue.component( 'TViewport3D', {
-    template:   `
+
+    template: `
         <div class="tViewport3D" v-resize:debounce="_resize"></div>
     `,
+
     directives: {
         resize
     },
-    data:       function () {
+
+    data: function () {
 
         return {
-            _frameId:      undefined,
-            _renderer:     new WebGLRenderer( { antialias: true } ),
-            _camera:       new PerspectiveCamera(),
-            _orbitControl: undefined,
-            _cube:         undefined,
-            _needResize:   '',
+            _frameId: undefined,
+            _camera:  undefined,
+            _control: undefined
         }
 
     },
-    props:      [ 'width', 'height', 'cameraType', 'currentEffect', 'currentMode', 'scene' ],
-    methods:    {
+
+    watch: {
+
+        camera: function ( newCamera, oldCamera ) { // watch it
+
+            this._updateCamera( newCamera, oldCamera )
+//            this._updateControl( this.control )
+
+            this._resize( this.$el )
+
+        },
+
+        control: function ( newControl, oldControl ) {
+
+            this._updateControl( newControl, oldControl )
+
+        },
+
+        effect: function ( newEffect, oldEffect ) {
+
+        },
+
+        renderer: function ( newRenderer, oldRenderer ) {
+
+        },
+
+        backgroundColor: function ( newBg, oldBg ) {
+
+            this.renderer.setClearColor( newBg || 0x000000 )
+
+        }
+
+    },
+
+    props: [
+        'width',
+        'height',
+        'scene',
+        'camera',
+        'control',
+        'effect',
+        'renderer',
+        'showStat',
+        'autoUpdate',
+        'backgroundColor',
+        'enableShadow'
+    ],
+
+    methods: {
 
         _startLoop () {
 
@@ -63,9 +103,15 @@ export default Vue.component( 'TViewport3D', {
 
             this.$data._frameId = window.requestAnimationFrame( this._loop.bind( this ) )
 
-            this.$data._orbitControl.update()
+            if ( this.$data._control ) {
+                this.$data._control.update()
+            }
 
-            this.$data._renderer.render( this.scene, this.$data._camera )
+            if ( this.$data._camera.update ) {
+                this.$data._camera.update( this.scene )
+            }
+
+            this.renderer.render( this.scene, this.$data._camera )
 
         },
 
@@ -77,49 +123,154 @@ export default Vue.component( 'TViewport3D', {
 
         _resize ( domElement ) {
 
-            const data            = this.$data
             const containerWidth  = domElement.offsetWidth
             const containerHeight = domElement.offsetHeight || 1 // In case height === 0 set to 1
+            const aspectRatio     = ( containerWidth / containerHeight )
 
-            data._renderer.setSize( containerWidth, containerHeight )
-            data._camera.aspect = ( containerWidth / containerHeight )
-            data._camera.updateProjectionMatrix()
+            this.renderer.setSize( containerWidth, containerHeight )
 
-            console.log( `TViewport3D._resize(w/h): ${containerWidth}/${containerHeight}` )
+            if ( this.$data._camera.isPerspectiveCamera ) {
+
+                this.$data._camera.aspect = aspectRatio
+
+            } else if ( this.$data._camera.isOrthographicCamera ) {
+
+                const frustumSize  = 20
+                this.$data._camera.left   = -frustumSize * aspectRatio / 2
+                this.$data._camera.right  = frustumSize * aspectRatio / 2
+                this.$data._camera.top    = frustumSize / 2
+                this.$data._camera.bottom = -frustumSize / 2
+
+            } else {
+
+                console.error( `TViewport3D: Unable to resize unknown camera of type ${typeof this.$data._camera}` )
+
+            }
+
+            this.$data._camera.updateProjectionMatrix()
+
+            //            console.log( `TViewport3D._resize(w/h): ${containerWidth}/${containerHeight}` )
+
+        },
+
+        _updateCamera( newCamera, oldCamera ) {
+
+            if ( newCamera === oldCamera ) {
+                return
+            }
+
+            switch ( newCamera ) {
+
+                case "perspective":
+
+                    this.$data._camera      = new PerspectiveCamera()
+                    this.$data._camera.fov  = 50
+                    this.$data._camera.near = 0.01
+                    this.$data._camera.far  = 1000
+
+                    this.$data._camera.position.x = 0.0
+                    this.$data._camera.position.y = 5.0
+                    this.$data._camera.position.z = 7.0
+
+                    break
+
+                case "orthographic":
+
+                    const frustum = 10
+
+                    this.$data._camera        = new OrthographicCamera()
+                    this.$data._camera.left   = -frustum
+                    this.$data._camera.right  = frustum
+                    this.$data._camera.top    = frustum
+                    this.$data._camera.bottom = -frustum
+                    this.$data._camera.near   = 100
+                    this.$data._camera.far    = 2000
+
+                    this.$data._camera.position.x = 0.0
+                    this.$data._camera.position.y = 500.0
+                    this.$data._camera.position.z = 700.0
+
+                    break
+
+                default:
+                    throw new RangeError( `Invalid switch parameter: ${ newCamera }`, 'fileName' )
+                    break
+
+            }
+
+            this.$data._camera.updateProjectionMatrix()
+
+        },
+
+        _updateControl( newControl, oldControl ) {
+
+            if(newControl === oldControl) {
+                return
+            }
+
+            switch ( newControl ) {
+
+                case "orbital":
+                    this.$data._control = new OrbitControls( this.$data._camera, this.$el )
+                    break
+
+                case "avatar":
+                    this.$data._control = new PointerLockControls( this.$data._camera )
+                    break
+
+                default:
+                    throw new RangeError(`Invalid switch parameter: ${ newControl }`, 'fileName' )
+                    break
+
+            }
 
         }
 
     },
+
+    beforeCreate () {
+
+        console.log( 'TViewport3D: beforeCreate' )
+
+    },
+
     created () {
+
+        console.log( 'TViewport3D: created' )
 
         window.addEventListener( 'resize', this._resize, false )
 
     },
+
+    beforeMount () {
+
+        console.log( 'TViewport3D: beforeMount' )
+
+    },
+
     mounted () {
 
+        console.log( 'TViewport3D: mounted' )
+
         const domElement = this.$el
-        const data       = this.$data
 
         // Set renderer
+<<<<<<< Updated upstream
         data._renderer.setClearColor( 0x777777 )
         data._renderer.autoClear = true
+=======
+        this.renderer.setClearColor( this.backgroundColor || 0x000000 )
+        this.renderer.autoClear = true
+>>>>>>> Stashed changes
 
         // Add renderer canvas
-        domElement.appendChild( data._renderer.domElement )
+        domElement.appendChild( this.renderer.domElement )
 
-        // Set camera position
-        data._camera.fov        = 50
-        data._camera.near       = 0.01
-        data._camera.far        = 10000
-        data._camera.position.x = 0.0
-        data._camera.position.y = 5.0
-        data._camera.position.z = 7.0
-        data._camera.setRotationFromAxisAngle( new Vector3( 1.0, 0.0, 0.0 ), -0.610865 )
-        data._camera.updateProjectionMatrix()
+        // Init camera
+        this._updateCamera( this.camera )
 
-        // Init camera controls
-        data._orbitControl             = new OrbitControls( data._camera, domElement )
-        data._orbitControl.maxDistance = 2000
+        // Init controls
+        this._updateControl( this.control )
 
         // Add light
         this.scene.add( new AmbientLight( 0xC8C8C8 ) )
@@ -128,6 +279,19 @@ export default Vue.component( 'TViewport3D', {
         this._startLoop()
 
     },
+
+    beforeUpdate () {
+
+        console.log( 'TViewport3D: beforeUpdate' )
+
+    },
+
+    updated () {
+
+        console.log( 'TViewport3D: updated' )
+
+    },
+
     beforeDestroy () {
 
         this._stopLoop()
