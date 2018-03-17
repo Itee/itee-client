@@ -8,26 +8,33 @@
  *
  */
 
-/**
- * @author [Tristan Valcke]{@link https://github.com/Itee}
- * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
- *
- * @file Todo
- *
- * @example Todo
- *
- */
-
-import Vue from '../../../node_modules/vue/dist/vue.esm'
-import { DefaultLogger as TLogger } from '../../loggers/TLogger'
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
+import { DefaultLogger as TLogger } from '../../../loggers/TLogger'
 
 export default Vue.component( 'TItemList', {
     template: `
+        <TContainer
+            class="tContainer tContainerCentered itemList" 
+            :height=height 
+            :width=width 
+            :orientation=orientation 
+            :expand=expand 
+            :wrapContent=wrapContent 
+            :vAlign=vAlign
+            :hAlign=hAlign
+            :wAlign=wAlign
+            :overflow=overflow 
+            :overflowX=overflowX 
+            :overflowY=overflowY >
+            <TLabel v-for="item in items" :class=item.class :label=item.label></TLabel>
+        </TContainer>
+    `,
+    template_old: `
         <div :class=computeClass :style=computeStyle>
-            <TLabel v-for="item in items" :class=item.class :label=item.label :backgroundColor=item.bgColor></TLabel>
+            <TLabel v-for="item in items" :class=item.class :label=item.label></TLabel>
         </div>
     `,
-    props:    [ 'height', 'width', 'orientation', 'expand', 'wrapContent', 'vAlign', 'hAlign', 'wAlign', 'overflow', 'items' ],
+    props:    [ 'height', 'width', 'orientation', 'expand', 'wrapContent', 'vAlign', 'hAlign', 'wAlign', 'overflow', 'overflowX', 'overflowY', 'items' ],
     computed: {
         computeClass () {
 
