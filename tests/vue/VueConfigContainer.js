@@ -23,7 +23,7 @@ var config = {
         }
     },
     template: `
-<TRootContainer>
+<TContainer orientation=vertical vAlign="start" hAlign="stretch" expand=true>
 
     <TItemList :wrapContent=container.wrapContent :orientation=container.orientation :vAlign=container.vAlign :hAlign=container.hAlign :wAlign=container.wAlign :expand=container.expand :items=container.items></TItemList>
 	
@@ -70,7 +70,7 @@ var config = {
 		</div>
 	</div>
 	
-</TRootContainer>`,
+</TContainer>`,
     methods:  {
         addItem ( color ) {
             'use strict'
@@ -81,32 +81,28 @@ var config = {
 
                 item = {
                     class:   'item itemRed',
-                    label:   'labelRed',
-                    bgColor: 'red'
+                    label:   'labelRed'
                 }
 
             } else if ( color === 'green' ) {
 
                 item = {
                     class:   'item itemGreen',
-                    label:   'labelGreen',
-                    bgColor: 'green'
+                    label:   'labelGreen'
                 }
 
             } else if ( color === 'blue' ) {
 
                 item = {
                     class:   'item itemBlue',
-                    label:   'labelBlue',
-                    bgColor: 'blue'
+                    label:   'labelBlue'
                 }
 
             } else {
 
                 item = {
                     class:   'item itemDefault',
-                    label:   'labelDefault',
-                    bgColor: 'black'
+                    label:   'labelDefault'
                 }
 
             }
