@@ -95,17 +95,27 @@ export function startApp ( config ) {
 
     }
 
-    Vue.use( VueRouter )
+    if( config.router ) {
 
-    const router = new VueRouter( {
-        routes: config.routes
-    } )
+        Vue.use( VueRouter )
 
-    const app = new Vue( {
-        router
-    } )
+        const router = new VueRouter( {
+            routes: config.routes
+        } )
 
-    app.$mount( config.launchingSite )
+        const app = new Vue( {
+            router
+        } )
+
+        app.$mount( config.launchingSite )
+
+    } else {
+
+        const app = new Vue( config )
+
+    }
+
+
 
 }
 
