@@ -10,51 +10,103 @@
 
 /* eslint-env browser */
 
-import React from 'react'
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-let _instanceCounter = 0
+export default Vue.component( 'TProgress', {
 
-class TProgress extends React.Component {
+    template: `
+        <div class="progress" :style="computeProgressStyle">
+            <div v-if="showLabel" class="progress-bar" role="progressbar" :style="computeProgressBarStyle" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">{{computeLabel}}</div>
+            <div v-else class="progress-bar" role="progressbar" :style="computeProgressBarStyle" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+        </div>
+    `,
 
-    constructor ( props ) {
+    props:      {
+        orientation: {
+            type: String,
+            default: 'horizontal'
+        },
+        thickness: {
+            type: Number,
+            default: 30
+        },
+        state: {
+            type: String,
+            default: 'info'
+        },
+        done: {
+            type: Number,
+            default: 50
+        },
+        todo: {
+            type: Number,
+            default: 100
+        },
+        reverse: {
+            type: Boolean,
+            default: false
+        },
+        showLabel: {
+            type: Boolean,
+            default: true
+        }
+    },
 
-        super( props )
-        _instanceCounter++
+    computed: {
+
+        _progress() {
+
+            return Math.ceil( ( this.done / this.todo ) * 100 )
+
+        },
+
+        computeProgressStyle() {
+
+            let style = ''
+
+            if (this.orientation === 'vertical'){
+
+                style += `width: ${this.thickness}px;`
+
+                if(this.reverse) {
+                    style += 'flex-direction: column-reverse;'
+                }
+
+            } else {
+
+                style += `height: ${this.thickness}px;`
+
+                if(this.reverse) {
+                    style += 'flex-direction: row-reverse;'
+                }
+
+            }
+
+            return style
+
+        },
+
+        computeProgressBarStyle() {
+
+            const progress = this._progress
+            let style = ''
+
+            if (this.orientation === 'vertical'){
+                style += `height: ${progress}%; width: ${this.thickness}px;`
+            } else {
+                style += `width: ${progress}%; height: ${this.thickness}px;`
+            }
+
+            return style
+
+        },
+
+        computeLabel() {
+
+            return `${this._progress}%`
+
+        }
 
     }
 
-    /**
-     * React lifecycle
-     */
-    componentWillMount () {}
-
-    componentDidMount () {}
-
-    componentWillUnmount () {}
-
-    componentWillReceiveProps ( /*nextProps*/ ) {}
-
-    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentWillUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentDidUpdate ( /*prevProps, prevState*/ ) {}
-
-    render () {
-
-        const { id, className } = this.props
-
-        const _id    = id || `tProgress_${_instanceCounter}`
-        const _style = {}
-        const _class = ( className ) ? `tProgress ${className}` : 'tProgress'
-
-        return (
-            <t-progress ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-progress>
-        )
-
-    }
-
-}
-
-export { TProgress }
-
+} )
