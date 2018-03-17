@@ -95,7 +95,7 @@ export function startApp ( config ) {
 
     }
 
-    if( config.router ) {
+    if( config.routes ) {
 
         Vue.use( VueRouter )
 
