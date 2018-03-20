@@ -108,6 +108,23 @@ export default Vue.component( 'TViewport3D', {
 
         },
 
+        'camera.position': function ( newCameraPosition, oldCameraPosition ) {
+
+            this._camera.position.x = newCameraPosition.x
+            this._camera.position.y = newCameraPosition.y
+            this._camera.position.z = newCameraPosition.z
+
+        },
+
+        'camera.target': function ( newCameraTarget, oldCameraTarget ) {
+
+            this._camera.lookAt( newCameraTarget )
+            this._control.target.x = newCameraTarget.x
+            this._control.target.y = newCameraTarget.y
+            this._control.target.z = newCameraTarget.z
+
+        },
+
         control: function ( newControl, oldControl ) {
 
             this._setControl( newControl, oldControl )
@@ -156,7 +173,7 @@ export default Vue.component( 'TViewport3D', {
                 return
             }
 
-            switch ( newCamera ) {
+            switch ( newCamera.type ) {
 
                 case 'none': {
 
@@ -204,9 +221,10 @@ export default Vue.component( 'TViewport3D', {
                     const far     = 2000
                     this._camera  = new OrthographicCamera( left, right, top, bottom, near, far )
 
-                    this._camera.position.x = 0.0
-                    this._camera.position.y = 500.0
-                    this._camera.position.z = 700.0
+                    this._camera.position.x = this.camera.position.x
+                    this._camera.position.y = this.camera.position.y
+                    this._camera.position.z = this.camera.position.z
+                    this._camera.lookAt( this.camera.target )
 
                     break
                 }
@@ -218,9 +236,10 @@ export default Vue.component( 'TViewport3D', {
                     const far    = 1000
                     this._camera = new PerspectiveCamera( fov, aspect, near, far )
 
-                    this._camera.position.x = 0.0
-                    this._camera.position.y = 5.0
-                    this._camera.position.z = 7.0
+                    this._camera.position.x = this.camera.position.x
+                    this._camera.position.y = this.camera.position.y
+                    this._camera.position.z = this.camera.position.z
+                    this._camera.lookAt( this.camera.target )
 
                     break
                 }
