@@ -2,9 +2,434 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>$Title$</title>
+		<title>TProgress</title>
+		<link rel='stylesheet' type='text/css' href="../../../../../styles/bootstrap.css"></link>
+		<link rel='stylesheet' type='text/css' href="../../../../../builds/itee-client.style.css"></link>
+		<style>
+			html, body, div, canvas {
+				margin:  0;
+				padding: 0;
+			}
+
+			body {
+				display: flex;
+				width:   100vw;
+				height:  100vh;
+			}
+
+			.stretchChildren > * {
+				flex: 1;
+			}
+
+		</style>
 	</head>
 	<body>
-		$END$
+		<div id="itee-application-root"></div>
+
+		<script src="../../../../../builds/itee-client.iife.js"></script>
+		<script>
+
+            Itee.startApp(
+                {
+                    el:       '#itee-application-root',
+                    data:     {
+                        viewport:         {
+                            scene:           new Itee.Scene(),
+                            camera:          'perspective',
+                            control:         'orbit',
+                            effect:          'none',
+                            renderer:        'webgl',
+                            showStats:       true,
+                            autoUpdate:      true,
+                            backgroundColor: 0x000000,
+                            enableShadow:    false,
+                            isRaycastable:   false
+                        },
+                        selectedObject3D: undefined,
+                        inputFileModal:   {
+                            title:  'Importer un fichier utilisateur dans la vue 3d',
+                            inputs: {
+                                files: FileList
+                            }
+                        }
+                    },
+                    template: `
+	                    <TContainer orientation="vertical" vAlign="start" hAlign="stretch" expand=true>
+
+	                            <TToolBar style="height: 60px;">
+                                    <TToolItem icon="plus" tooltip="Sélection" :onClick=createObjectsToViewportScene />
+                                    <TToolItem icon="upload" tooltip="Importer des fichiers" :onClick="onToggleModalVisibility" :onClickData="'inputFileModal'" />
+                                    <TToolItem icon="edit" tooltip="Sélection" :onClick=updateObjectsOfViewportScene />
+                                    <TToolItem icon="minus" tooltip="Sélection" :onClick=removeObjectsFromViewportScene />
+
+	                                <TDivider orientation="vertical" />
+
+						            <TToolDropDown popAt="bottomLeft" tooltip="Choisir le type de projection de la camera" icon="camera">
+                                        <TToolItem icon="times" label="Aucun" tooltip="..." :onClick=setViewportCameraOfType onClickData="none" />
+                                        <TToolItem icon="th" label="Tableaux de caméras" :onClick=setViewportCameraOfType onClickData="array" />
+						                <TToolItem icon="video" label="Cinématique" :onClick=setViewportCameraOfType onClickData="cinematic" />
+						                <TToolItem icon="cube" label="Cubique" :onClick=setViewportCameraOfType onClickData="cube" />
+						                <TToolItem icon="cubes" label="Orthographique" :onClick=setViewportCameraOfType onClickData="orthographic" />
+						                <TToolItem :icon="['fab', 'linode']" label="Perspective" :onClick=setViewportCameraOfType onClickData="perspective" />
+						            </TToolDropDown>
+
+						            <TToolDropDown popAt="bottomLeft" tooltip="Choisir le type de contrôle de caméra" icon="gamepad">
+                                        <TToolItem icon="times" label="Aucun" tooltip="..." :onClick=setViewportControlOfType onClickData="none" />
+                                        <TToolItem icon="tablet-alt" label="Device" tooltip="Permet de..." :onClick=setViewportControlOfType onClickData="deviceorientation" />
+						                <TToolItem icon="hand-rock" label="Drag" tooltip="Permet de..." :onClick=setViewportControlOfType onClickData="drag" />
+						                <TToolItem icon="edit" label="Editor" tooltip="Permet de..." :onClick=setViewportControlOfType onClickData="editor" />
+						                <TToolItem icon="smile" label="Première personne" tooltip="Permet de..." :onClick=setViewportControlOfType onClickData="firstperson" />
+						                <TToolItem icon="fighter-jet" label="Vol libre" tooltip="Permet de..." :onClick=setViewportControlOfType onClickData="fly" />
+						                <TToolItem icon="globe" label="Orbital" tooltip="Permet de se déplacer en mode orbital autour du model 3D" :onClick=setViewportControlOfType onClickData="orbit" />
+						                <TToolItem icon="cubes" label="Orthographique trackball" tooltip="Permet de..." :onClick=setViewportControlOfType onClickData="orthographictrackball" />
+						                <TToolItem icon="street-view" label="Avatar" tooltip="Permet de se déplacer en mode immersif dans le model 3D" :onClick=setViewportControlOfType onClickData="pointerlock" />
+						                <TToolItem :icon="{icon:['fab', 'quinscape']}" label="Trackball" tooltip="Permet de se déplacer en mode immersif dans le model 3D" :onClick=setViewportControlOfType onClickData="trackball" />
+						                <TToolItem icon="recycle" label="Transformation" tooltip="Permet de se déplacer en mode immersif dans le model 3D" :onClick=setViewportControlOfType onClickData="transform" />
+						                <TToolItem :icon="{icon:['fab', 'simplybuilt'], flip: 'vertical'}" label="Realité Virtuel" tooltip="Permet de se déplacer en mode immersif dans le model 3D" :onClick=setViewportControlOfType onClickData="vr" />
+						            </TToolDropDown>
+						            <TToolDropDown popAt="bottomLeft" tooltip="Choisir un effet de camera" icon="eye">
+						                <TToolItem icon="times" label="Aucun" tooltip="Vision de base" :onClick=setViewportEffectOfType onClickData="none" />
+						                <TToolItem :icon="['fab', 'nintendo-switch']" label="Anaglyphe" tooltip="Anaglyphe" :onClick=setViewportEffectOfType onClickData="anaglyph" />
+						                <TToolItem :icon="['fab', 'autoprefixer']" label="ASCII" tooltip="Effet de caractère" :onClick=setViewportEffectOfType onClickData="ascii" />
+						                <TToolItem icon="unlink" label="Outline" tooltip="Effet de caractère" :onClick=setViewportEffectOfType onClickData="outline" />
+						                <TToolItem :icon="{icon:'barcode', rotate: '90'}" label="Parallax" tooltip="Effet de caractère" :onClick=setViewportEffectOfType onClickData="parallaxbarrier" />
+						                <TToolItem icon="th-large" label="Peppers Ghost" tooltip="Effet de caractère" :onClick=setViewportEffectOfType onClickData="peppersghost" />
+						                <TToolItem icon="adjust" label="Stereo" tooltip="Effet stereo pour google cardboard" :onClick=setViewportEffectOfType onClickData="stereo" />
+						                <TToolItem :icon="{icon:['fab', 'simplybuilt'], flip: 'vertical'}" label="VR" tooltip="VR" :onClick=setViewportEffectOfType onClickData="vr" />
+						            </TToolDropDown>
+						            <TToolDropDown popAt="bottomLeft" tooltip="Choisir un moteur de rendu 3d" icon="cogs">
+						                <TToolItem icon="cubes" label="Classique" :onClick=setViewportRendererOfType onClickData="classic" />
+						            </TToolDropDown>
+
+						            <TDivider orientation="vertical" />
+
+						            <TToolItem icon="chart-bar" tooltip="Afficher les statistiques webgl" :onClick=toggleViewportStats />
+						            <TToolItem icon="recycle" tooltip="Activer/Désactivé la mise à jours automatique du viewport" :onClick=toggleViewportAutoUpdate />
+						            <input type="color" value="#ff0000" v-on:change="setViewportBackgroundColor">
+						            <TToolItem icon="sun" tooltip="Activer/Désactiver les ombres" :onClick=toggleViewportShadow />
+                                    <TToolItem icon="hand-pointer" tooltip="Activer/Désactiver la sélection" :onClick=toggleViewportRaycasting />
+
+						        </TToolBar>
+
+	                        <TContainer orientation="vertical" vAlign="stretch" hAlign="stretch" expand=true overflowY="hidden">
+		                        <TViewport3D
+			                        width=800px
+			                        height=600px
+					                :scene=viewport.scene
+					                :camera=viewport.camera
+					                :control=viewport.control
+					                :effect=viewport.effect
+					                :renderer=viewport.renderer
+					                :showStats=viewport.showStats
+	                                :autoUpdate=viewport.autoUpdate
+					                :backgroundColor=viewport.backgroundColor
+					                :enableShadow=viewport.enableShadow
+	                                :isRaycastable=viewport.isRaycastable
+					             />
+					        </TContainer>
+
+							<div v-on:click="onToggleModalVisibility('inputFileModal')" id="inputFileModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+							    <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+							        <div v-on:click.stop class="modal-content">
+							            <div class="modal-header">
+							                <h5 class="modal-title" id="exampleModalLongTitle">{{inputFileModal.title}}</h5>
+							                <button type="button" class="close" data-dismiss="modal" aria-label="Close" v-on:click.stop="onToggleModalVisibility('inputFileModal')">
+							                    <span aria-hidden="true">&times;</span>
+							                </button>
+							            </div>
+							            <div class="modal-body">
+
+							                <div class="input-group mb-3">
+								                <div class="custom-file">
+												    <input id="js-upload-files" type="file" class="custom-file-input" name="files[]" multiple v-on:click="resetFileInputLabel" v-on:change="setFileInputModel">
+												    <label for="js-upload-files" class="custom-file-label" >Choose file</label>
+												</div>
+											</div>
+
+							            </div>
+							            <div class="modal-footer">
+							                <button type="button" class="btn btn-secondary" data-dismiss="modal" v-on:click.stop="onToggleModalVisibility('inputFileModal')">Fermer</button>
+							                <button type="button" class="btn btn-primary" v-on:click.stop="importFilesToViewportScene">Valider</button>
+							            </div>
+							        </div>
+							    </div>
+							</div>
+
+				        </TContainer>
+				    `,
+                    methods:  {
+
+                        createObjectsToViewportScene () {
+                            'use strict'
+                            console.log( 'createObjectsToViewportScene' )
+                        },
+
+                        resetFileInputLabel ( clickEvent ) {
+                            'use strict'
+
+                            clickEvent.target.value = ''
+
+                        },
+
+                        setFileInputModel ( changeEvent ) {
+
+                            this.$data.inputFileModal.inputs.files = changeEvent.target.files
+
+                        },
+
+                        importFilesToViewportScene ( changeEvent ) {
+                            'use strict'
+                            console.log( 'importFilesToViewportScene' )
+
+                            const self     = this
+                            const fileList = this.$data.inputFileModal.inputs.files
+
+                            this.onToggleModalVisibility( 'inputFileModal' )
+
+                            if ( !fileList ) { return }
+
+                            const universalLoader = new Itee.TUniversalLoader()
+
+                            universalLoader.load(
+                                fileList,
+                                ( data ) => {
+
+                                    self.viewport.scene.add( data )
+
+                                },
+                                ( progress ) => {
+
+                                    console.log( progress )
+
+                                },
+                                ( error ) => {
+
+                                    console.error( error )
+
+                                },
+                            )
+
+                        },
+
+                        updateObjectsOfViewportScene () {
+                            'use strict'
+                            console.log( 'updateObjectsOfViewportScene' )
+                        },
+
+                        removeObjectsFromViewportScene () {
+                            'use strict'
+                            console.log( 'removeObjectsFromViewportScene' )
+                        },
+
+                        //// Modal
+
+                        onToggleModalVisibility ( modalId ) {
+                            'use strict'
+
+                            console.log( 'onToggleModalVisibility' )
+
+                            const modal = document.getElementById( modalId )
+                            if ( modal ) {
+
+                                if ( modal.className === 'modal fade' ) {
+                                    modal.className             = 'modal fade show'
+                                    modal.style.display         = 'block'
+                                    modal.style.backgroundColor = '#f9f9f980'
+                                } else {
+                                    modal.className     = 'modal fade'
+                                    modal.style.display = 'none'
+                                }
+
+                            }
+
+                        },
+
+                        ////
+
+                        setViewportCameraOfType ( cameraType ) {
+                            'use strict'
+                            console.log( 'setViewportCameraOfType' )
+
+                            this.viewport.camera = cameraType
+
+                        },
+
+                        setViewportControlOfType ( controlType ) {
+                            'use strict'
+                            console.log( 'setViewportControlOfType' )
+
+                            this.viewport.control = controlType
+
+                        },
+
+                        setViewportEffectOfType ( effectType ) {
+                            'use strict'
+                            console.log( 'setViewportEffectOfType' )
+
+                            this.viewport.effect = effectType
+
+                        },
+
+                        setViewportRendererOfType ( rendererType ) {
+                            'use strict'
+                            console.log( 'setViewportRendererOfType' )
+
+                            this.viewport.renderer = rendererType
+
+                        },
+
+                        toggleViewportStats () {
+                            'use strict'
+                            console.log( 'toggleViewportStats' )
+
+                            this.viewport.showStats = !this.viewport.showStats
+
+                        },
+
+                        toggleViewportAutoUpdate () {
+                            'use strict'
+                            console.log( 'toggleViewportAutoUpdate' )
+
+                            this.viewport.autoUpdate = !this.viewport.autoUpdate
+
+                        },
+
+                        setViewportBackgroundColor ( colorEvent ) {
+                            'use strict'
+                            console.log( 'setViewportBackgroundColor' )
+
+                            const hexaStringColor         = colorEvent.target.value
+                            const hexaIntColor            = parseInt( hexaStringColor.replace( '#', '0x' ) )
+                            this.viewport.backgroundColor = hexaIntColor
+
+                        },
+
+                        toggleViewportShadow () {
+                            'use strict'
+                            console.log( 'toggleViewportShadow' )
+
+                            this.viewport.enableShadow = !this.viewport.enableShadow
+
+                        },
+
+                        toggleViewportRaycasting () {
+                            'use strict'
+                            console.log( 'toggleViewportRaycasting' )
+
+                            this.viewport.isRaycastable = !this.viewport.isRaycastable
+
+                        }
+
+                    },
+                    mounted () {
+
+                        ///////////////////
+                        // Add Env group //
+                        ///////////////////
+                        const envGroup = new Itee.Group()
+                        envGroup.name  = "Environement"
+                        this.viewport.scene.add( envGroup )
+
+                        ///////////////
+                        // Add light //
+                        ///////////////
+                        const lightGroup = new Itee.Group()
+                        lightGroup.name  = "Lumières"
+                        envGroup.add( lightGroup )
+
+                        const ambiantLight = new Itee.AmbientLight( 0xC8C8C8 )
+                        lightGroup.add( ambiantLight )
+
+                        ///////////////
+                        // Add grids //
+                        ///////////////
+                        const gridGroup = new Itee.Group()
+                        gridGroup.name  = "Grilles"
+                        envGroup.add( gridGroup )
+
+                        /// XZ
+
+                        const gridHelperXZ_1 = new Itee.GridHelper( 20, 20 )
+                        gridHelperXZ_1.name  = "Grille XZ - Mètrique"
+                        gridGroup.add( gridHelperXZ_1 )
+
+                        const gridHelperXZ_10 = new Itee.GridHelper( 200, 20 )
+                        gridHelperXZ_10.name  = "Grille XZ - Décamètrique"
+                        gridGroup.add( gridHelperXZ_10 )
+
+                        const gridHelperXZ_100 = new Itee.GridHelper( 2000, 20 )
+                        gridHelperXZ_100.name  = "Grille XZ - Hectomètrique"
+                        gridGroup.add( gridHelperXZ_100 )
+
+                        /// XY
+
+                        const gridHelperXY_1 = new Itee.GridHelper( 20, 20 )
+                        gridHelperXY_1.name  = "Grille XY - Mètrique"
+                        gridHelperXY_1.rotateX( Itee.degreesToRadians( 90 ) )
+                        gridGroup.add( gridHelperXY_1 )
+
+                        const gridHelperXY_10 = new Itee.GridHelper( 200, 20 )
+                        gridHelperXY_10.name  = "Grille XY - Décamètrique"
+                        gridHelperXY_10.rotateX( Itee.degreesToRadians( 90 ) )
+                        gridGroup.add( gridHelperXY_10 )
+
+                        const gridHelperXY_100 = new Itee.GridHelper( 2000, 20 )
+                        gridHelperXY_100.name  = "Grille XY - Hectomètrique"
+                        gridHelperXY_100.rotateX( Itee.degreesToRadians( 90 ) )
+                        gridGroup.add( gridHelperXY_100 )
+
+                        /// YZ
+
+                        const gridHelperYZ_1 = new Itee.GridHelper( 20, 20 )
+                        gridHelperYZ_1.name  = "Grille YZ - Mètrique"
+                        gridHelperYZ_1.rotateZ( Itee.degreesToRadians( 90 ) )
+                        gridGroup.add( gridHelperYZ_1 )
+
+                        const gridHelperYZ_10 = new Itee.GridHelper( 200, 20 )
+                        gridHelperYZ_10.name  = "Grille YZ - Décamètrique"
+                        gridHelperYZ_10.rotateZ( Itee.degreesToRadians( 90 ) )
+                        gridGroup.add( gridHelperYZ_10 )
+
+                        const gridHelperYZ_100 = new Itee.GridHelper( 2000, 20 )
+                        gridHelperYZ_100.name  = "Grille YZ - Hectomètrique"
+                        gridHelperYZ_100.rotateZ( Itee.degreesToRadians( 90 ) )
+                        gridGroup.add( gridHelperYZ_100 )
+
+                        ///////////////
+                        // Add cubes //
+                        ///////////////
+                        const cubeGroup = new Itee.Group()
+                        cubeGroup.name  = "Cubes"
+                        envGroup.add( cubeGroup )
+
+                        const numberOfCubes = 1000
+                        const spreadArea    = 100
+                        for ( let cubeIndex = 0 ; cubeIndex < numberOfCubes ; cubeIndex++ ) {
+
+                            const width    = Itee.getRandomInt( 0, 7 )
+                            const height   = Itee.getRandomInt( 0, 7 )
+                            const depth    = Itee.getRandomInt( 0, 7 )
+                            const geometry = new Itee.BoxGeometry( width, height, depth )
+
+                            const color    = Itee.getRandomInt( 0, 16777216 )
+                            const material = new Itee.MeshPhongMaterial( { color } )
+
+                            const x         = Itee.getRandomInt( -spreadArea, spreadArea )
+                            const y         = Itee.getRandomInt( -spreadArea, spreadArea )
+                            const z         = Itee.getRandomInt( -spreadArea, spreadArea )
+                            const cube      = new Itee.Mesh( geometry, material )
+                            cube.position.x = x
+                            cube.position.y = y
+                            cube.position.z = z
+
+                            cubeGroup.add( cube )
+
+                        }
+
+                    }
+                }
+            )
+
+		</script>
 	</body>
 </html>
