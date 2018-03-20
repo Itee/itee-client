@@ -552,20 +552,20 @@ function TApplication ( container, parameters, onReady ) {
             //
             //                const importInput   = $( "#importInput" )
             //                const files         = importInput[ 0 ].files
-            //                const numberOfFiles = files.length
-            //                TLogger.log( "numberOfFiles: " + numberOfFiles );
-            //
-            //                const filesUrls = []
-            //                let fileUrl     = ''
-            //                let fileIndex   = undefined
-            //                let fileObject  = undefined
-            //
-            //                for ( fileIndex = 0 ; fileIndex < numberOfFiles ; ++fileIndex ) {
-            //                    fileObject = files[ fileIndex ]
-            //                    fileUrl    = URL.createObjectURL( fileObject ) + '/' + fileObject.name
-            //
-            //                    filesUrls.push( { url: fileUrl } )
-            //                }
+//                            const numberOfFiles = files.length
+//                            TLogger.log( "numberOfFiles: " + numberOfFiles );
+//
+//                            const filesUrls = []
+//                            let fileUrl     = ''
+//                            let fileIndex   = undefined
+//                            let fileObject  = undefined
+//
+//                            for ( fileIndex = 0 ; fileIndex < numberOfFiles ; ++fileIndex ) {
+//                                fileObject = files[ fileIndex ]
+//                                fileUrl    = URL.createObjectURL( fileObject ) + '/' + fileObject.name
+//
+//                                filesUrls.push( { url: fileUrl } )
+//                            }
             //
             //                self.loadObjectFromURL( filesUrls )
             //
