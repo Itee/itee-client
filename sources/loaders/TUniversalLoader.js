@@ -110,7 +110,26 @@ Object.assign( TUniversalLoader.prototype, {
             return
         }
 
-        if ( TValidator.isObject( files ) ) {
+        if ( files instanceof FileList ) {
+
+            const numberOfFiles = files.length
+            TLogger.log( "numberOfFiles: " + numberOfFiles );
+
+            const filesUrls = []
+            let fileUrl     = ''
+            let fileIndex   = undefined
+            let fileObject  = undefined
+
+            for ( fileIndex = 0 ; fileIndex < numberOfFiles ; ++fileIndex ) {
+                fileObject = files[ fileIndex ]
+                fileUrl    = URL.createObjectURL( fileObject ) + '/' + fileObject.name
+
+                filesUrls.push( { url: fileUrl } )
+            }
+
+            this.load( filesUrls, onLoad, onProgress, onError )
+
+        } else if ( TValidator.isObject( files ) ) {
 
             this.loadSingleFile( files, onLoad, onProgress, onError )
 
