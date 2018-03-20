@@ -28,7 +28,7 @@ export default Vue.component( 'TProgress', {
         },
         thickness: {
             type: Number,
-            default: 30
+            default: 15
         },
         state: {
             type: String,
@@ -36,7 +36,7 @@ export default Vue.component( 'TProgress', {
         },
         done: {
             type: Number,
-            default: 50
+            default: 0
         },
         todo: {
             type: Number,
