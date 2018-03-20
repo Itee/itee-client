@@ -74,7 +74,8 @@ export default Vue.component( 'TViewport3D', {
         'autoUpdate',
         'backgroundColor',
         'enableShadow',
-        'isRaycastable'
+        'isRaycastable',
+        'needResize'
     ],
 
     data: function () {
@@ -134,6 +135,14 @@ export default Vue.component( 'TViewport3D', {
         showStats: function ( newValue, oldValue ) {
 
             this._stats.domElement.style.display = (newValue) ? 'block' : 'none'
+
+        },
+
+        needResize: function ( newValue, oldValue ) {
+
+            if( newValue === true ) {
+                this._resize(this.$el)
+            }
 
         }
 
