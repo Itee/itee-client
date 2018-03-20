@@ -460,7 +460,7 @@ Object.assign( TUniversalLoader.prototype, {
         const mtlLoader = new MTLLoader( this.manager )
         const objLoader = new OBJLoader( this.manager )
 
-        const texturePath = mtlFile.texturePath || 'resources/models/evan/'
+        const texturePath = mtlFile.texturePath
         if ( texturePath ) {
             mtlLoader.setTexturePath( texturePath )
         }
