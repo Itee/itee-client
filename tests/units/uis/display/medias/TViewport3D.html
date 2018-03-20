@@ -35,7 +35,19 @@
                     data:     {
                         viewport:         {
                             scene:           new Itee.Scene(),
-                            camera:          'perspective',
+                            camera:          {
+                                type:     'perspective',
+                                position: {
+                                    x: 7,
+                                    y: 2,
+                                    z: 5
+                                },
+                                target:   {
+                                    x: 0,
+                                    y: 0,
+                                    z: 0
+                                }
+                            },
                             control:         'orbit',
                             effect:          'none',
                             renderer:        'webgl',
