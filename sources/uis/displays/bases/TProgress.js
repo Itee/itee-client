@@ -49,6 +49,10 @@ export default Vue.component( 'TProgress', {
         showLabel: {
             type: Boolean,
             default: true
+        },
+        isVisible: {
+            type: Boolean,
+            default: true
         }
     },
 
@@ -81,6 +85,8 @@ export default Vue.component( 'TProgress', {
                 }
 
             }
+
+            style += ( this.isVisible ) ? 'display:flex;' : 'display:none;'
 
             return style
 
