@@ -623,7 +623,6 @@ Object.defineProperties( TDataBaseManager.prototype, {
         }
     },
 
-    //Todo: where are update datas ?
     /**
      * @private
      * @function
