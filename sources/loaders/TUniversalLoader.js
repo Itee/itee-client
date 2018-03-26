@@ -130,6 +130,11 @@ Object.assign( TUniversalLoader.prototype, {
 
             this.load( filesUrls, onLoad, onProgress, onError )
 
+        } else if ( files instanceof File ) {
+
+            const fileUrl = URL.createObjectURL( files ) + '/' + files.name
+            this.loadSingleFile( {url: fileUrl}, onLoad, onProgress, onError )
+
         } else if ( TValidator.isObject( files ) ) {
 
             this.loadSingleFile( files, onLoad, onProgress, onError )
