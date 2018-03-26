@@ -10,6 +10,19 @@
 
 /* eslint-env browser */
 
+// Constants
+import {
+    BasicShadowMap,
+    PCFShadowMap,
+    PCFSoftShadowMap
+} from '../../../../node_modules/threejs-full-es6/sources/constants'
+
+// Internals
+import { Clock } from '../../../../node_modules/threejs-full-es6/sources/core/Clock'
+import { Vector3 } from '../../../../node_modules/threejs-full-es6/sources/math/Vector3'
+import { default as Stats } from '../../../../node_modules/stats.js/src/Stats'
+import { Raycaster } from '../../../../node_modules/threejs-full-es6/sources/core/Raycaster'
+
 // Cameras
 import { ArrayCamera } from '../../../../node_modules/threejs-full-es6/sources/cameras/ArrayCamera'
 import { CinematicCamera } from '../../../../node_modules/threejs-full-es6/sources/cameras/CinematicCamera'
@@ -47,10 +60,6 @@ import { SVGRenderer } from '../../../../node_modules/threejs-full-es6/sources/r
 import { WebGL2Renderer } from '../../../../node_modules/threejs-full-es6/sources/renderers/WebGL2Renderer'
 import { WebGLRenderer } from '../../../../node_modules/threejs-full-es6/sources/renderers/WebGLRenderer'
 
-// Internals
-import { Clock } from '../../../../node_modules/threejs-full-es6/sources/core/Clock'
-import { default as Stats } from '../../../../node_modules/stats.js/src/Stats'
-import { Raycaster } from '../../../../node_modules/threejs-full-es6/sources/core/Raycaster'
 
 // Vue
 import Vue from '../../../../node_modules/vue/dist/vue.esm'
@@ -59,7 +68,7 @@ import resize from 'vue-resize-directive'
 export default Vue.component( 'TViewport3D', {
 
     template: `
-        <div class="tViewport3D" v-resize:debounce="_resize"></div>
+        <div class="tViewport3D" v-resize:debounce="_resize" @click.left="_select" @click.right="_deselect"></div>
     `,
 
     props: [
@@ -75,7 +84,8 @@ export default Vue.component( 'TViewport3D', {
         'backgroundColor',
         'enableShadow',
         'isRaycastable',
-        'needResize'
+        'needResize',
+        'fitCamera'
     ],
 
     data: function () {
@@ -109,23 +119,24 @@ export default Vue.component( 'TViewport3D', {
             this._resize( this.$el )
 
         },
-
-        'camera.position': function ( newCameraPosition, oldCameraPosition ) {
-
-            this._camera.position.x = newCameraPosition.x
-            this._camera.position.y = newCameraPosition.y
-            this._camera.position.z = newCameraPosition.z
-
-        },
-
-        'camera.target': function ( newCameraTarget, oldCameraTarget ) {
-
-            this._camera.lookAt( newCameraTarget )
-            this._control.target.x = newCameraTarget.x
-            this._control.target.y = newCameraTarget.y
-            this._control.target.z = newCameraTarget.z
-
-        },
+//
+//        'camera.type': function ( newCameraType, oldCameraType ) {
+//
+//            this._setCameraType( newCameraType )
+//
+//        },
+//
+//        'camera.position': function ( newCameraPosition, oldCameraPosition ) {
+//
+//            this._setCameraPosition( newCameraPosition )
+//
+//        },
+//
+//        'camera.target': function ( newCameraTarget, oldCameraTarget ) {
+//
+//            this._setCameraTarget( newCameraTarget )
+//
+//        },
 
         control: function ( newControl, oldControl ) {
 
@@ -163,8 +174,13 @@ export default Vue.component( 'TViewport3D', {
                 this._resize( this.$el )
             }
 
-        }
+        },
 
+        fitCamera: function () {
+
+            this._fitCameraToWorld()
+
+        }
     },
 
     methods: {
@@ -175,7 +191,15 @@ export default Vue.component( 'TViewport3D', {
                 return
             }
 
-            switch ( newCamera.type ) {
+            this._setCameraType( newCamera.type )
+            this._setCameraPosition( newCamera.position )
+            this._setCameraTarget( newCamera.target )
+
+        },
+
+        _setCameraType ( type ) {
+
+            switch ( type ) {
 
                 case 'none': {
 
@@ -214,20 +238,14 @@ export default Vue.component( 'TViewport3D', {
                 }
 
                 case 'orthographic': {
-                    const frustum = 10
+                    const frustum = 500
                     const left    = -frustum
                     const right   = frustum
                     const top     = frustum
                     const bottom  = -frustum
-                    const near    = 100
+                    const near    = 1
                     const far     = 2000
                     this._camera  = new OrthographicCamera( left, right, top, bottom, near, far )
-
-                    this._camera.position.x = this.camera.position.x
-                    this._camera.position.y = this.camera.position.y
-                    this._camera.position.z = this.camera.position.z
-                    this._camera.lookAt( this.camera.target )
-
                     break
                 }
 
@@ -239,12 +257,6 @@ export default Vue.component( 'TViewport3D', {
                     //                    const near   = 1
                     //                    const far    = 1000
                     this._camera = new PerspectiveCamera( fov, aspect, near, far )
-
-                    this._camera.position.x = this.camera.position.x
-                    this._camera.position.y = this.camera.position.y
-                    this._camera.position.z = this.camera.position.z
-                    this._camera.lookAt( this.camera.target )
-
                     break
                 }
 
@@ -253,8 +265,28 @@ export default Vue.component( 'TViewport3D', {
 
             }
 
-            //            this._camera.updateProjectionMatrix()
+        },
 
+        _setCameraPosition ( position ) {
+
+            this._camera.position.x = position.x
+            this._camera.position.y = position.y
+            this._camera.position.z = position.z
+
+        },
+
+        _setCameraTarget ( target ) {
+
+//            this._camera.lookAt( target )
+
+            if ( this._control ) {
+
+                this._control.target.x = target.x
+                this._control.target.y = target.y
+                this._control.target.z = target.z
+
+            }
+            //            this._camera.lookAt( this.camera.target )
         },
 
         _setControl ( newControl, oldControl ) {
@@ -415,8 +447,13 @@ export default Vue.component( 'TViewport3D', {
                         antialias:              true,
                         logarithmicDepthBuffer: true
                     } )
+                    this._renderer.setPixelRatio( window.devicePixelRatio )
                     this._renderer.setClearColor( this.backgroundColor || 0x000000 )
-                    this._renderer.autoClear = true
+                    this._renderer.autoClear         = true
+                    this._renderer.shadowMap.enabled = true
+                    //                    this._renderer.shadowMap.type = BasicShadowMap
+                    this._renderer.shadowMap.type    = PCFShadowMap
+                    //                    this._renderer.shadowMap.type = PCFSoftShadowMap
 
                     // Add renderer canvas
                     this._renderer.domElement.style.display = 'block'
@@ -430,6 +467,7 @@ export default Vue.component( 'TViewport3D', {
             }
 
         },
+
 
         _updateCamera () {
 
@@ -541,6 +579,32 @@ export default Vue.component( 'TViewport3D', {
 
         },
 
+
+        _resize ( domElement ) {
+
+            const isEvent       = ( domElement instanceof Event )
+            let containerWidth  = 1
+            let containerHeight = 1
+
+            if ( isEvent && domElement.target instanceof Window ) {
+
+                containerWidth  = this.$el.offsetWidth
+                containerHeight = this.$el.offsetHeight
+
+            } else {
+
+                containerWidth  = domElement.offsetWidth
+                containerHeight = domElement.offsetHeight
+
+            }
+
+            this._resizeCamera( containerWidth, containerHeight )
+            this._resizeControl( containerWidth, containerHeight )
+            this._resizeEffect( containerWidth, containerHeight )
+            this._resizeRenderer( containerWidth, containerHeight )
+
+        },
+
         _resizeCamera ( width, height ) {
 
             if ( !this._camera ) { return }
@@ -631,6 +695,7 @@ export default Vue.component( 'TViewport3D', {
 
         },
 
+
         _startLoop () {
 
             if ( this._frameId ) {
@@ -666,30 +731,6 @@ export default Vue.component( 'TViewport3D', {
 
         },
 
-        _resize ( domElement ) {
-
-            const isEvent       = ( domElement instanceof Event )
-            let containerWidth  = 1
-            let containerHeight = 1
-
-            if ( isEvent && domElement.target instanceof Window ) {
-
-                containerWidth  = this.$el.offsetWidth
-                containerHeight = this.$el.offsetHeight
-
-            } else {
-
-                containerWidth  = domElement.offsetWidth
-                containerHeight = domElement.offsetHeight
-
-            }
-
-            this._resizeCamera( containerWidth, containerHeight )
-            this._resizeControl( containerWidth, containerHeight )
-            this._resizeEffect( containerWidth, containerHeight )
-            this._resizeRenderer( containerWidth, containerHeight )
-
-        },
 
         _raycast ( mouseEvent ) {
 
@@ -732,7 +773,7 @@ export default Vue.component( 'TViewport3D', {
 
             }
 
-            const intersects = this._raycaster.intersectObjects( raycastables, true )
+            const intersects = this._raycaster.intersectObjects( raycastables, false )
             if ( intersects.length > 0 ) {
 
                 for ( let intersectIndex = 0, numberOfIntersects = intersects.length ; intersectIndex < numberOfIntersects ; intersectIndex++ ) {
@@ -751,22 +792,6 @@ export default Vue.component( 'TViewport3D', {
 
                     this.$emit( 'intersect', closest )
                     break
-
-//                    const face = closest.face
-//                    if ( !face ) {
-//                        continue
-//                    }
-//
-//                    const direction = face.normal.normalize().transformDirection( object.matrixWorld )
-//                    if ( !direction ) {
-//                        continue
-//                    }
-//
-//                    this.$emit( 'intersect', {
-//                        origin,
-//                        direction
-//                    } )
-//                    break
 
                 }
 
@@ -798,12 +823,88 @@ export default Vue.component( 'TViewport3D', {
             // update the picking ray with the camera and mouse position
             this._raycaster.setFromCamera( normalizedMouseCoordinates, this._camera )
 
+            const raycastables = []
+            getRaycastables( this.scene.children )
+
+            function getRaycastables ( children ) {
+
+                for ( let i = 0, n = children.length ; i < n ; i++ ) {
+                    let child = children[ i ]
+                    if ( child.isRaycastable ) {
+                        raycastables.push( child )
+                    }
+
+                    if ( child.children ) {
+                        getRaycastables( child.children )
+                    }
+                }
+
+            }
+
             // calculate objects intersecting the picking ray
-            const intersects = this._raycaster.intersectObjects( this.scene.children, true )
+            const intersects = this._raycaster.intersectObjects( raycastables, false )
             if ( intersects.length > 0 && intersects[ 0 ].object ) {
                 this.$emit( 'select', intersects[ 0 ].object )
             }
-        }
+        },
+
+        _deselect () {
+
+            if ( !this.isRaycastable ) {
+                return
+            }
+
+            event.preventDefault()
+
+            this.$emit( 'deselect' )
+
+        },
+
+        /// Helpers
+
+        _fitCameraToWorld () {
+            'use strict'
+
+            const radius = []
+            const centers = []
+            this.scene.traverse( child => {
+
+                if ( child.isMesh || child.isLineSegments ) {
+
+                    if( !child.geometry.boundingSphere ) {
+                        child.geometry.computeBoundingSphere()
+                    }
+                    radius.push( child.geometry.boundingSphere.radius )
+                    centers.push( child.geometry.boundingSphere.center )
+
+                }
+
+            } )
+
+            const globalBarycenter = centers.reduce( ( a, b ) => { return new Vector3().addVectors( a, b )} )
+                                                    .divideScalar( centers.length )
+
+
+
+            let maxCubiqueDistance = 0
+            for ( let barycenterIndex = 0, numberOfBarycenter = centers.length ; barycenterIndex < numberOfBarycenter ; barycenterIndex++ ) {
+                const currentCubiqueDistance = centers[ barycenterIndex ].distanceToSquared( globalBarycenter )
+                if ( currentCubiqueDistance > maxCubiqueDistance ) {
+                    maxCubiqueDistance = currentCubiqueDistance
+                }
+            }
+            const maxDistance = Math.sqrt( maxCubiqueDistance ) * 1.5 || 100
+
+            const newCameraPosition = {
+                x: globalBarycenter.x + maxDistance,
+                y: globalBarycenter.y + maxDistance,
+                z: globalBarycenter.z + maxDistance
+            }
+
+            this._setCameraPosition( newCameraPosition )
+            this._setCameraTarget( globalBarycenter )
+
+        },
 
     },
 
@@ -861,7 +962,7 @@ export default Vue.component( 'TViewport3D', {
 
         // Listen ( should bind in template ???)
         this.$el.addEventListener( 'mousemove', this._raycast.bind( this ), true )
-        this.$el.addEventListener( 'mousedown', this._select.bind( this ), true )
+        //        this.$el.addEventListener( 'mousedown', this._select.bind( this ), true )
 
         // Start rendering
         this._startLoop()
