@@ -32,51 +32,11 @@
             Itee.startApp(
                 {
                     el:       '#itee-application-root',
-                    data:     {
-                        viewport:       {
-                            //                            scene:           new Itee.Scene(),
-                            camera:          {
-                                type:     'perspective',
-                                position: {
-                                    x: 7,
-                                    y: 2,
-                                    z: 5
-                                },
-                                target:   {
-                                    x: 0,
-                                    y: 0,
-                                    z: 0
-                                }
-                            },
-                            control:         'orbit',
-                            effect:          'none',
-                            renderer:        'webgl',
-                            showStats:       true,
-                            autoUpdate:      true,
-                            backgroundColor: 0x000000,
-                            enableShadow:    false,
-                            isRaycastable:   false
-                        },
-                        intersected:    {
-                            object:           undefined,
-                            originalMaterial: undefined
-                        },
-                        selected:       {
-                            object:           undefined,
-                            originalMaterial: undefined
-                        },
-                        inputFileModal: {
-                            title:  'Importer un fichier utilisateur dans la vue 3d',
-                            inputs: {
-                                files: FileList
-                            }
-                        }
-                    },
                     template: `
 	                    <TContainer orientation="vertical" vAlign="start" hAlign="stretch" expand=true>
 
 	                            <TToolBar style="height: 60px;">
-                                    <TToolItem icon="plus" tooltip="Sélection" :onClick=createObjectsToViewportScene />
+                                    <TToolItem icon="plus" tooltip="Sélection" :onClick=addObjectsToViewportScene />
                                     <TToolItem icon="upload" tooltip="Importer des fichiers" :onClick="onToggleModalVisibility" :onClickData="'inputFileModal'" />
                                     <TToolItem icon="edit" tooltip="Sélection" :onClick=updateObjectsOfViewportScene />
                                     <TToolItem icon="minus" tooltip="Sélection" :onClick=removeObjectsFromViewportScene />
@@ -106,6 +66,7 @@
 						                <TToolItem icon="recycle" label="Transformation" tooltip="Permet de se déplacer en mode immersif dans le model 3D" :onClick=setViewportControlOfType onClickData="transform" />
 						                <TToolItem :icon="{icon:['fab', 'simplybuilt'], flip: 'vertical'}" label="Realité Virtuel" tooltip="Permet de se déplacer en mode immersif dans le model 3D" :onClick=setViewportControlOfType onClickData="vr" />
 						            </TToolDropDown>
+
 						            <TToolDropDown popAt="bottomLeft" tooltip="Choisir un effet de camera" icon="eye">
 						                <TToolItem icon="times" label="Aucun" tooltip="Vision de base" :onClick=setViewportEffectOfType onClickData="none" />
 						                <TToolItem :icon="['fab', 'nintendo-switch']" label="Anaglyphe" tooltip="Anaglyphe" :onClick=setViewportEffectOfType onClickData="anaglyph" />
@@ -116,6 +77,7 @@
 						                <TToolItem icon="adjust" label="Stereo" tooltip="Effet stereo pour google cardboard" :onClick=setViewportEffectOfType onClickData="stereo" />
 						                <TToolItem :icon="{icon:['fab', 'simplybuilt'], flip: 'vertical'}" label="VR" tooltip="VR" :onClick=setViewportEffectOfType onClickData="vr" />
 						            </TToolDropDown>
+
 						            <TToolDropDown popAt="bottomLeft" tooltip="Choisir un moteur de rendu 3d" icon="cogs">
 						                <TToolItem icon="cubes" label="Classique" :onClick=setViewportRendererOfType onClickData="classic" />
 						            </TToolDropDown>
@@ -132,19 +94,11 @@
 
 	                        <TContainer orientation="vertical" vAlign="stretch" hAlign="stretch" expand=true overflowY="hidden">
 		                        <TViewport3D
-					                :scene=viewport.scene
-					                :camera=viewport.camera
-					                :control=viewport.control
-					                :effect=viewport.effect
-					                :renderer=viewport.renderer
-					                :showStats=viewport.showStats
-	                                :autoUpdate=viewport.autoUpdate
-					                :backgroundColor=viewport.backgroundColor
-					                :enableShadow=viewport.enableShadow
-	                                :isRaycastable=viewport.isRaycastable
+		                            v-bind="viewport"
 	                                v-on:intersect=onIntersect
 	                                v-on:noIntersect=onNoIntersect
 	                                v-on:select=onSelect
+	                                v-on:deselect=onDeselect
 					             />
 					        </TContainer>
 
@@ -159,12 +113,7 @@
 							            </div>
 							            <div class="modal-body">
 
-							                <div class="input-group mb-3">
-								                <div class="custom-file">
-												    <input id="js-upload-files" type="file" class="custom-file-input" name="files[]" multiple v-on:click="resetFileInputLabel" v-on:change="setFileInputModel">
-												    <label for="js-upload-files" class="custom-file-label" >Choose file</label>
-												</div>
-											</div>
+											<TInputFile :onChange=setFileInputModel />
 
 							            </div>
 							            <div class="modal-footer">
@@ -177,12 +126,49 @@
 
 				        </TContainer>
 				    `,
+                    data:     {
+                        viewport:       {
+                            scene:           new Itee.Scene(),
+                            camera:          {
+                                type:     'perspective',
+                                position: {
+                                    x: 700,
+                                    y: 200,
+                                    z: 500
+                                },
+                                target:   {
+                                    x: 0,
+                                    y: 0,
+                                    z: 0
+                                }
+                            },
+                            control:         'orbit',
+                            effect:          'none',
+                            renderer:        'webgl',
+                            showStats:       true,
+                            autoUpdate:      true,
+                            backgroundColor: 0x000000,
+                            enableShadow:    false,
+                            isRaycastable:   false
+                        },
+                        intersected:    {
+                            object:           undefined,
+                            originalMaterial: undefined
+                        },
+                        selected:       {
+                            object:           undefined,
+                            originalMaterial: undefined
+                        },
+                        inputFileModal: {
+                            title:  'Importer un fichier utilisateur dans la vue 3d',
+                            inputs: {
+                                files: undefined
+                            }
+                        }
+                    },
                     methods:  {
 
-                        createObjectsToViewportScene () {
-                            'use strict'
-                            console.log( 'createObjectsToViewportScene' )
-                        },
+                        addObjectsToViewportScene() {},
 
                         resetFileInputLabel ( clickEvent ) {
                             'use strict'
@@ -191,9 +177,9 @@
 
                         },
 
-                        setFileInputModel ( changeEvent ) {
+                        setFileInputModel ( files ) {
 
-                            this.$data.inputFileModal.inputs.files = changeEvent.target.files
+                            this.$data.inputFileModal.inputs.files = files
 
                         },
 
@@ -217,10 +203,14 @@
                                     data.traverse( object => {
                                         if ( object.isMesh ) {
                                             object.isRaycastable = true
+                                            object.geometry.computeFaceNormals()
+                                            object.geometry.computeVertexNormals()
+//                                            object.castShadow    = true        //default is false
+//                                            object.receiveShadow = true     //default is false
                                         }
                                     } )
 
-	                                const dataGroup = self.viewport.scene.getObjectByName('Données')
+                                    const dataGroup = self.viewport.scene.getObjectByName( 'Données' )
                                     dataGroup.add( data )
 
                                 },
@@ -246,7 +236,7 @@
                         removeObjectsFromViewportScene () {
                             'use strict'
 
-                            let dataGroup   = this.viewport.scene.getObjectByName( 'Données' )
+                            let dataGroup = this.viewport.scene.getObjectByName( 'Données' )
 
                             for ( let childIndex = 0, numChildren = dataGroup.children.length ; childIndex < numChildren ; childIndex++ ) {
                                 let child = dataGroup.children[ childIndex ]
@@ -284,7 +274,15 @@
                             'use strict'
                             console.log( 'setViewportCameraOfType' )
 
-                            this.viewport.camera = cameraType
+	                        const camera = this.viewport.camera
+	                        const position = camera.position
+	                        const target = camera.target
+
+                            this.viewport.camera = {
+                                type: cameraType,
+	                            position: position,
+                                target: target
+                            }
 
                         },
 
@@ -420,19 +418,6 @@
 
                             //Todo: scale sphere in squared idstance to intersect origin and camera position
 
-                            //                            let arrow = this.viewport.scene.getObjectByName( 'ArrowPointer' )
-                            //                            if ( !arrow ) {
-                            //
-                            //                                this.viewport.scene.remove( arrow )
-                            //                                arrow = undefined
-                            //
-                            //                            }
-                            //
-                            //                            arrow      = new Itee.ArrowHelper( intersect.direction, intersect.origin, 2, 0xff0000 )
-                            //                            arrow.name = 'ArrowPointer'
-                            //
-                            //                            this.viewport.scene.add( arrow )
-
                         },
 
                         onNoIntersect () {
@@ -452,18 +437,51 @@
 
                         },
 
-                        onSelect ( selected ) {
+                        onSelect () {
+
+                            // In case we already have a selected object and it is different from intersected
+                            // Reset the current selection before new selection assignement
+                            if ( this.selected.object && (this.selected.object.uuid !== this.intersected.object.uuid) ) {
+
+                                this.selected.object.material      = this.selected.originalMaterial
+                                this.selected.object.isRaycastable = true
+
+                            }
+
+                            // Update selection with intersected object
+                            this.selected.object               = this.intersected.object
+                            this.selected.originalMaterial     = this.intersected.originalMaterial
+                            this.selected.object.isRaycastable = false
+
+                            // Clear current intersected object
+                            this.intersected.object           = undefined
+                            this.intersected.originalMaterial = undefined
+
+                        },
+
+                        onDeselect () {
+
+                            if ( this.selected.object ) {
+
+                                this.selected.object.material.dispose()
+                                this.selected.object.material      = this.selected.originalMaterial
+                                this.selected.object.isRaycastable = true
+
+                                this.selected.object           = undefined
+                                this.selected.originalMaterial = undefined
+
+                            }
 
                         }
 
                     },
-                    created () {
-
-
-                        // Should not be observed...
-                        this.viewport.scene = new Itee.Scene()
-
-                    },
+//                    created () {
+//
+//
+//                        // Should not be observed...
+//                        this.viewport.scene = new Itee.Scene()
+//
+//                    },
                     mounted () {
 
                         ///////////////////
@@ -483,15 +501,39 @@
                         const ambiantLight = new Itee.AmbientLight( 0xC8C8C8 )
                         lightGroup.add( ambiantLight )
 
-                        const dirLight = new Itee.DirectionalLight( 0xffaaaa, 0.6 )
-                        dirLight.position.set( 100, 200, 100 )
-                        dirLight.castShadow            = true
-                        dirLight.shadow.mapSize.width  = 2048
-                        dirLight.shadow.mapSize.height = 2048
+//                        const SHADOW_MAP_SIZE = 16384
+//                        const spotLight       = new Itee.SpotLight( 0xffffff, 1, 0, Math.PI / 2 )
+//                        spotLight.position.set( 0, 1500, 1000 )
+//                        spotLight.target.position.set( 0, 0, 0 )
+//                        spotLight.castShadow            = true
+//                        spotLight.shadow                = new Itee.LightShadow( new Itee.PerspectiveCamera( 50, 1, 1200, 2500 ) )
+//                        spotLight.shadow.bias           = 0.0001
+//                        spotLight.shadow.mapSize.width  = SHADOW_MAP_SIZE
+//                        spotLight.shadow.mapSize.height = SHADOW_MAP_SIZE
+//                        envGroup.add( spotLight )
+
+                        const frustum  = 500
+                        const mapSize  = 2048
+                        const dirLight = new Itee.DirectionalLight( 0xaaaaaa, 0.6 )
+                        dirLight.position.set( 100, 300, 100 )
+//                        dirLight.castShadow            = true
+//                        dirLight.shadow.mapSize.width  = mapSize
+//                        dirLight.shadow.mapSize.height = mapSize
+//                        dirLight.shadow.darkness       = 1
+//                        dirLight.shadow.camera.left    = -frustum
+//                        dirLight.shadow.camera.right   = frustum
+//                        dirLight.shadow.camera.top     = frustum
+//                        dirLight.shadow.camera.bottom  = -frustum
+//                        dirLight.shadow.camera.near    = 1
+//                        dirLight.shadow.camera.far     = 500
                         envGroup.add( dirLight )
 
-                        const dirLightHeper = new Itee.DirectionalLightHelper( dirLight, 10 )
-                        envGroup.add( dirLightHeper )
+//                        const dirLightHelper = new Itee.DirectionalLightHelper( dirLight, 10 )
+//                        envGroup.add( dirLightHelper )
+//
+//                        //Create a helper for the shadow camera
+//                        const dirLightShadowCameraHelper = new Itee.CameraHelper( dirLight.shadow.camera )
+//                        envGroup.add( dirLightShadowCameraHelper )
 
                         ///////////////
                         // Add grids //
@@ -563,7 +605,8 @@
 
                         pointersGroup.add( sphere )
 
-	                    /////////////////////////////////////////////
+                        /////////////////////////////////////////////
+
                         const dataGroup = new Itee.Group()
                         dataGroup.name  = "Données"
                         this.viewport.scene.add( dataGroup )
