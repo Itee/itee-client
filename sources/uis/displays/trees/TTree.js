@@ -24,6 +24,7 @@ export default Vue.component( 'TTree', {
                     v-for="item in filteredItems"
                     v-bind:key="item.id"
                     v-bind:name="item.name"
+                    v-bind:onClick="item.onClick"
                     v-bind:modifiers="item.modifiers"
                     v-bind:children="item.children"
                     v-bind:childrenFilter="filter"

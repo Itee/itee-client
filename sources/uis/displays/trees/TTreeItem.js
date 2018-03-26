@@ -13,17 +13,16 @@ import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
 export default Vue.component( 'TTreeItem', {
     template: `
-        <li class="tTreeItem">
+        <li :class=computeTreeItemClass>
             <TContainerHorizontal class="tTreeItemContent" hAlign="start" vAlign="center">
                 <TIcon v-if="haveChildren" :iconProps=computeToggleChildrenIconClass :iconOn="{click: toggleChildren}" />
-                <!--<i v-if="haveChildren" :class=computeToggleChildrenIconClass @click="toggleChildren()"></i>-->
-                <label>{{name}}</label>
+                <label @click="function () { updateSelectionState( onClick ) }">{{name}}</label>
                 <span v-for="modifier in modifiers" class="tTreeItemModifiers">
                     <TIcon v-if="modifier.type === 'checkbox'" :iconProps=computeCheckboxClass :iconOn="{click: function () { updateCheckboxState( modifier.onClick ) } }" />
-                    <input v-else-if="modifier.type === 'button'" type="button" @click="modifier.onClick">
-                    <input v-else-if="modifier.type === 'range'" type="range" @change="modifier.onChange">
-                    <input v-else-if="modifier.type === 'number'" type="number" @change="modifier.onChange">
-                    <input v-else-if="modifier.type === 'color'" type="color" @change="modifier.onChange">
+                    <input v-else-if="modifier.type === 'button'" type="button" @click="modifier.onClick" :value="modifier.value"/>
+                    <input v-else-if="modifier.type === 'range'" type="range" @change="modifier.onChange" />
+                    <input v-else-if="modifier.type === 'number'" type="number" @change="modifier.onChange" />
+                    <input v-else-if="modifier.type === 'color'" type="color" @change="modifier.onChange" />
                     <label v-else>Error: Unknown modifier type !!!</label>
                 </span>
             </TContainerHorizontal>
@@ -32,6 +31,7 @@ export default Vue.component( 'TTreeItem', {
                     v-for="child in filteredChildren"
                     v-bind:key="child.id"
                     v-bind:name="child.name"
+                    v-bind:onClick="child.onClick"
                     v-bind:modifiers="child.modifiers"
                     v-bind:children="child.children"
                     v-bind:childrenFilter="childrenFilter"
@@ -43,12 +43,19 @@ export default Vue.component( 'TTreeItem', {
 
         return {
             showChildren: false,
+            isSelected: false,
             isVisible: true
         }
 
     },
-    props:    [ 'id', 'name', 'modifiers', 'children', 'childrenFilter' ],
+    props:    [ 'id', 'name', 'onClick', 'modifiers', 'children', 'childrenFilter' ],
     computed: {
+
+        computeTreeItemClass() {
+
+            return (this.isSelected) ? 'tTreeItem selected' : 'tTreeItem'
+
+        },
 
         computeTreeItemChildrenClass() {
 
@@ -111,6 +118,13 @@ export default Vue.component( 'TTreeItem', {
         updateCheckboxState( onClickCallback ) {
 
             this.isVisible = !this.isVisible
+            onClickCallback()
+
+        },
+
+         updateSelectionState( onClickCallback ) {
+
+            this.isSelected = !this.isSelected
             onClickCallback()
 
         }
