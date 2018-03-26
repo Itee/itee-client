@@ -17,6 +17,7 @@ import {
     FBXLoader,
     MTLLoader,
     ObjectLoader,
+    ColladaLoader,
 
     DoubleSide,
     DefaultLoadingManager,
@@ -185,6 +186,10 @@ Object.assign( TUniversalLoader.prototype, {
                 this._loadAsc( file, onLoad, onProgress, onError )
                 break
 
+            case FileFormat.Dae:
+                this._loadDae( file, onLoad, onProgress, onError )
+                break
+
             case FileFormat.Dbf:
                 this._loadDbf( file, onLoad, onProgress, onError )
                 break
@@ -277,6 +282,30 @@ Object.assign( TUniversalLoader.prototype, {
         loader.load(
             file.url,
             onLoad,
+            onProgress,
+            onError
+        )
+
+    },
+
+    /**
+     *
+     * @param file
+     * @param onLoad
+     * @param onProgress
+     * @param onError
+     * @private
+     */
+    _loadDae( file, onLoad, onProgress, onError ) {
+
+        const loader = new ColladaLoader( this.manager )
+        loader.load(
+            file.url,
+            data => {
+
+                onLoad( data.scene )
+
+            },
             onProgress,
             onError
         )
