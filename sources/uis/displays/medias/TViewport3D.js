@@ -10,9 +10,6 @@
 
 /* eslint-env browser */
 
-import { Vector3 } from '../../../../node_modules/threejs-full-es6/sources/math/Vector3'
-import { AmbientLight } from '../../../../node_modules/threejs-full-es6/sources/lights/AmbientLight'
-
 // Cameras
 import { ArrayCamera } from '../../../../node_modules/threejs-full-es6/sources/cameras/ArrayCamera'
 import { CinematicCamera } from '../../../../node_modules/threejs-full-es6/sources/cameras/CinematicCamera'
@@ -50,9 +47,12 @@ import { SVGRenderer } from '../../../../node_modules/threejs-full-es6/sources/r
 import { WebGL2Renderer } from '../../../../node_modules/threejs-full-es6/sources/renderers/WebGL2Renderer'
 import { WebGLRenderer } from '../../../../node_modules/threejs-full-es6/sources/renderers/WebGLRenderer'
 
+// Internals
 import { Clock } from '../../../../node_modules/threejs-full-es6/sources/core/Clock'
 import { default as Stats } from '../../../../node_modules/stats.js/src/Stats'
+import { Raycaster } from '../../../../node_modules/threejs-full-es6/sources/core/Raycaster'
 
+// Vue
 import Vue from '../../../../node_modules/vue/dist/vue.esm'
 import resize from 'vue-resize-directive'
 
@@ -85,6 +85,8 @@ export default Vue.component( 'TViewport3D', {
             _control:  undefined,
             _effect:   undefined,
             _renderer: undefined,
+
+            //            _raycaster: new Raycaster(),
 
             _selected: undefined,
             _frameId:  undefined,
@@ -157,8 +159,8 @@ export default Vue.component( 'TViewport3D', {
 
         needResize: function ( newValue, oldValue ) {
 
-            if( newValue === true ) {
-                this._resize(this.$el)
+            if ( newValue === true ) {
+                this._resize( this.$el )
             }
 
         }
@@ -232,8 +234,10 @@ export default Vue.component( 'TViewport3D', {
                 case 'perspective': {
                     const fov    = 50
                     const aspect = ( this.$el.offsetWidth / this.$el.offsetHeight )
-                    const near   = 0.001
-                    const far    = 1000
+                    const near   = 0.01
+                    const far    = 10000 // logDepthBuffer
+                    //                    const near   = 1
+                    //                    const far    = 1000
                     this._camera = new PerspectiveCamera( fov, aspect, near, far )
 
                     this._camera.position.x = this.camera.position.x
@@ -407,7 +411,10 @@ export default Vue.component( 'TViewport3D', {
                     break
 
                 case 'webgl':
-                    this._renderer = new WebGLRenderer( { antialias: true } )
+                    this._renderer = new WebGLRenderer( {
+                        antialias:              true,
+                        logarithmicDepthBuffer: true
+                    } )
                     this._renderer.setClearColor( this.backgroundColor || 0x000000 )
                     this._renderer.autoClear = true
 
@@ -682,6 +689,120 @@ export default Vue.component( 'TViewport3D', {
             this._resizeEffect( containerWidth, containerHeight )
             this._resizeRenderer( containerWidth, containerHeight )
 
+        },
+
+        _raycast ( mouseEvent ) {
+
+            if ( !this.isRaycastable ) {
+                return
+            }
+
+            event.preventDefault()
+
+            // calculate mouse position in normalized device coordinates
+            // (-1 to +1) for both components
+            const mousePositionX             = mouseEvent.layerX || mouseEvent.offsetX || 1
+            const mousePositionY             = mouseEvent.layerY || mouseEvent.offsetY || 1
+            const containerWidth             = this.$el.offsetWidth
+            const containerHeight            = this.$el.offsetHeight
+            const normalizedMouseCoordinates = {
+                x: ( mousePositionX / containerWidth ) * 2 - 1,
+                y: -( mousePositionY / containerHeight ) * 2 + 1
+            }
+
+            // update the picking ray with the camera and mouse position
+            this._raycaster.setFromCamera( normalizedMouseCoordinates, this._camera )
+
+            // calculate objects intersecting the picking ray
+            const raycastables = []
+            getRaycastables( this.scene.children )
+
+            function getRaycastables ( children ) {
+
+                for ( let i = 0, n = children.length ; i < n ; i++ ) {
+                    let child = children[ i ]
+                    if ( child.isRaycastable ) {
+                        raycastables.push( child )
+                    }
+
+                    if ( child.children ) {
+                        getRaycastables( child.children )
+                    }
+                }
+
+            }
+
+            const intersects = this._raycaster.intersectObjects( raycastables, true )
+            if ( intersects.length > 0 ) {
+
+                for ( let intersectIndex = 0, numberOfIntersects = intersects.length ; intersectIndex < numberOfIntersects ; intersectIndex++ ) {
+
+                    let closest = intersects[ intersectIndex ]
+
+                    const object = closest.object
+                    if ( !object ) {
+                        continue
+                    }
+
+                    const origin = closest.point
+                    if ( !origin ) {
+                        continue
+                    }
+
+                    this.$emit( 'intersect', closest )
+                    break
+
+//                    const face = closest.face
+//                    if ( !face ) {
+//                        continue
+//                    }
+//
+//                    const direction = face.normal.normalize().transformDirection( object.matrixWorld )
+//                    if ( !direction ) {
+//                        continue
+//                    }
+//
+//                    this.$emit( 'intersect', {
+//                        origin,
+//                        direction
+//                    } )
+//                    break
+
+                }
+
+            } else {
+                this.$emit( 'noIntersect' )
+            }
+
+        },
+
+        _select ( mouseEvent ) {
+
+            if ( !this.isRaycastable ) {
+                return
+            }
+
+            event.preventDefault()
+
+            // calculate mouse position in normalized device coordinates
+            // (-1 to +1) for both components
+            const mousePositionX             = mouseEvent.layerX || mouseEvent.offsetX || 1
+            const mousePositionY             = mouseEvent.layerY || mouseEvent.offsetY || 1
+            const containerWidth             = this.$el.offsetWidth
+            const containerHeight            = this.$el.offsetHeight
+            const normalizedMouseCoordinates = {
+                x: ( mousePositionX / containerWidth ) * 2 - 1,
+                y: -( mousePositionY / containerHeight ) * 2 + 1
+            }
+
+            // update the picking ray with the camera and mouse position
+            this._raycaster.setFromCamera( normalizedMouseCoordinates, this._camera )
+
+            // calculate objects intersecting the picking ray
+            const intersects = this._raycaster.intersectObjects( this.scene.children, true )
+            if ( intersects.length > 0 && intersects[ 0 ].object ) {
+                this.$emit( 'select', intersects[ 0 ].object )
+            }
         }
 
     },
@@ -722,6 +843,9 @@ export default Vue.component( 'TViewport3D', {
         // Init effects
         this._setEffect( this.effect )
 
+        // Init raycaster
+        this._raycaster = new Raycaster()
+
         // Init stats
         this._stats                           = new Stats()
         this._stats.domElement.style.display  = (this.showStats) ? 'block' : 'none'
@@ -734,6 +858,10 @@ export default Vue.component( 'TViewport3D', {
 
         // Fill parent
         this._resize( this.$el )
+
+        // Listen ( should bind in template ???)
+        this.$el.addEventListener( 'mousemove', this._raycast.bind( this ), true )
+        this.$el.addEventListener( 'mousedown', this._select.bind( this ), true )
 
         // Start rendering
         this._startLoop()
