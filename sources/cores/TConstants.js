@@ -316,6 +316,7 @@ export const Keys = Object.freeze( {
  */
 export const FileFormat = Object.freeze( {
     Asc:  'asc',
+    Dae:  'dae',
     Dbf:  'dbf',
     Fbx:  'fbx',
     Mtl:  'mtl',
@@ -332,6 +333,6 @@ export const FileFormat = Object.freeze( {
             result += formats[ index ]
             result += ((index === numberOfFormats - 1) ? ', ' : '.')
         }
-
+        return result
     }
 } )
