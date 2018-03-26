@@ -6,6 +6,6 @@
  *
  */
 
-//export * from './bases/_bases'
+export * from './bases/_bases'
 export * from './buttons/_buttons'
 //export * from './others/_others'
