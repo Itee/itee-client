@@ -462,38 +462,54 @@ export default Vue.component( 'TViewport3D', {
                 return
             }
 
-            switch ( newRenderer ) {
-
-                case 'none':
-                    this._renderer = null
-                    break
-
-                case 'webgl':
-                    this._renderer = new WebGLRenderer( {
-                        antialias:              true,
-                        logarithmicDepthBuffer: true
-                    } )
-                    this._renderer.setPixelRatio( window.devicePixelRatio )
-                    this._renderer.setClearColor( this.backgroundColor || 0x000000 )
-                    this._renderer.autoClear         = true
-                    this._renderer.shadowMap.enabled = true
-                    //                    this._renderer.shadowMap.type = BasicShadowMap
-                    this._renderer.shadowMap.type    = PCFShadowMap
-                    //                    this._renderer.shadowMap.type = PCFSoftShadowMap
-
-                    // Add renderer canvas
-                    this._renderer.domElement.style.display = 'block'
-                    this.$el.appendChild( this._renderer.domElement )
-
-                    break
-
-                default:
-                    throw new RangeError( `Invalid renderer parameter: ${newRenderer}`, 'TViewport3D' )
-
+            if ( !newRenderer ) {
+                return
             }
 
-        },
+            this._renderer = newRenderer
+            this._renderer.setPixelRatio( window.devicePixelRatio )
+            this._renderer.setClearColor( this.backgroundColor || 0x000000 )
+            this._renderer.autoClear         = true
+            this._renderer.shadowMap.enabled = true
+            //                    this._renderer.shadowMap.type = BasicShadowMap
+            this._renderer.shadowMap.type    = PCFShadowMap
+            //                    this._renderer.shadowMap.type = PCFSoftShadowMap
 
+            // Add renderer canvas
+            this._renderer.domElement.style.display = 'block'
+            this.$el.appendChild( this._renderer.domElement )
+
+            //            switch ( newRenderer ) {
+            //
+            //                case 'none':
+            //                    this._renderer = null
+            //                    break
+            //
+            //                case 'webgl':
+            //                    this._renderer = new WebGLRenderer( {
+            //                        antialias:              true,
+            //                        logarithmicDepthBuffer: true
+            //                    } )
+            //                    this._renderer.setPixelRatio( window.devicePixelRatio )
+            //                    this._renderer.setClearColor( this.backgroundColor || 0x000000 )
+            //                    this._renderer.autoClear         = true
+            //                    this._renderer.shadowMap.enabled = true
+            //                    //                    this._renderer.shadowMap.type = BasicShadowMap
+            //                    this._renderer.shadowMap.type    = PCFShadowMap
+            //                    //                    this._renderer.shadowMap.type = PCFSoftShadowMap
+            //
+            //                    // Add renderer canvas
+            //                    this._renderer.domElement.style.display = 'block'
+            //                    this.$el.appendChild( this._renderer.domElement )
+            //
+            //                    break
+            //
+            //                default:
+            //                    throw new RangeError( `Invalid renderer parameter: ${newRenderer}`, 'TViewport3D' )
+            //
+            //            }
+
+        },
 
         _updateCamera () {
 
