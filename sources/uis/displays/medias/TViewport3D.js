@@ -729,7 +729,11 @@ export default Vue.component( 'TViewport3D', {
 
         },
 
+        // Todo: dispatch mouse/keyboard events in differents methods to be handler with intersected object
+        // Todo: drag/drop altClick keymodifier
+        // Todo :allow to change keymodifier signification !!!
 
+        // Raycast if(raycastOnClick) onClick(raycast)
         _raycast ( mouseEvent ) {
 
             if ( !this.isRaycastable ) {
@@ -753,48 +757,12 @@ export default Vue.component( 'TViewport3D', {
             this._raycaster.setFromCamera( normalizedMouseCoordinates, this._camera )
 
             // calculate objects intersecting the picking ray
-            const raycastables = []
-            getRaycastables( this.scene.children )
-
-            function getRaycastables ( children ) {
-
-                for ( let i = 0, n = children.length ; i < n ; i++ ) {
-                    let child = children[ i ]
-                    if ( child.isRaycastable ) {
-                        raycastables.push( child )
-                    }
-
-                    if ( child.children ) {
-                        getRaycastables( child.children )
-                    }
-                }
-
-            }
-
-            const intersects = this._raycaster.intersectObjects( raycastables, false )
-            if ( intersects.length > 0 ) {
-
-                for ( let intersectIndex = 0, numberOfIntersects = intersects.length ; intersectIndex < numberOfIntersects ; intersectIndex++ ) {
-
-                    let closest = intersects[ intersectIndex ]
-
-                    const object = closest.object
-                    if ( !object ) {
-                        continue
-                    }
-
-                    const origin = closest.point
-                    if ( !origin ) {
-                        continue
-                    }
-
-                    this.$emit( 'intersect', closest )
-                    break
-
-                }
-
+            const raycastables = this._getRaycastableCache()
+            const intersects   = this._raycaster.intersectObjects( raycastables, false )
+            if ( intersects && intersects.length > 0 ) {
+                this.$emit( 'intersect', intersects[ 0 ] )
             } else {
-                this.$emit( 'noIntersect' )
+                this.$emit( 'intersect', null )
             }
 
         },
@@ -821,28 +789,11 @@ export default Vue.component( 'TViewport3D', {
             // update the picking ray with the camera and mouse position
             this._raycaster.setFromCamera( normalizedMouseCoordinates, this._camera )
 
-            const raycastables = []
-            getRaycastables( this.scene.children )
-
-            function getRaycastables ( children ) {
-
-                for ( let i = 0, n = children.length ; i < n ; i++ ) {
-                    let child = children[ i ]
-                    if ( child.isRaycastable ) {
-                        raycastables.push( child )
-                    }
-
-                    if ( child.children ) {
-                        getRaycastables( child.children )
-                    }
-                }
-
-            }
-
             // calculate objects intersecting the picking ray
-            const intersects = this._raycaster.intersectObjects( raycastables, false )
-            if ( intersects.length > 0 && intersects[ 0 ].object ) {
-                this.$emit( 'select', intersects[ 0 ].object )
+            const raycastables = this._getRaycastableCache()
+            const intersects   = this._raycaster.intersectObjects( raycastables, false )
+            if ( intersects && intersects.length > 0 ) {
+                this.$emit( 'select', intersects[ 0 ] )
             }
         },
 
@@ -942,6 +893,25 @@ export default Vue.component( 'TViewport3D', {
 
         },
 
+        _getRaycastableCache () {
+
+            if ( this.needCacheUpdate || this._cache.raycastables.length === 0 ) {
+
+                this._cache.raycastables = []
+                this.scene.traverse( object => {
+
+                    if ( object.visible && object.isRaycastable ) {
+                        this._cache.raycastables.push( object )
+                    }
+
+                } )
+
+                this.$emit( 'cacheUpdated', 'raycastables' )
+
+            }
+
+            return this._cache.raycastables
+
         },
 
         _getDecimateCache () {
@@ -992,7 +962,11 @@ export default Vue.component( 'TViewport3D', {
         // Untracked private data
         this._cache = {
             decimables:   [],
+            raycastables: []
         }
+
+        this._repopulateTimeoutId = undefined
+
     },
 
     beforeMount () {
