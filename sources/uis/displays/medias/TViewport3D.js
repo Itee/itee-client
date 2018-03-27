@@ -297,7 +297,14 @@ export default Vue.component( 'TViewport3D', {
 
             // Dispose controls handlers before create new one
             if ( this._control && this._control.dispose ) {
+
+                if ( oldControl === 'orbit' ) {
+                    this._control.removeEventListener( 'change' )
+                    this._control.removeEventListener( 'end' )
+                }
+
                 this._control.dispose()
+
             }
 
             switch ( newControl ) {
@@ -329,6 +336,9 @@ export default Vue.component( 'TViewport3D', {
 
                 case "orbit":
                     this._control = new OrbitControls( this._camera, this.$el )
+                    this._control.addEventListener( 'change', this._decimateVisibleMeshes.bind( this ), true )
+                    this._control.addEventListener( 'end', this._populateVisibleMeshes.bind( this ), true )
+
                     break
 
                 case "orthographictrackball":
