@@ -29,6 +29,8 @@
 		<script src="../../../../../builds/itee-client.iife.js"></script>
 		<script>
 
+            /* global Itee */
+
             Itee.startApp(
                 {
                     el:       '#itee-application-root',
@@ -88,7 +90,8 @@
 						            <TToolItem icon="recycle" tooltip="Activer/Désactivé la mise à jours automatique du viewport" :onClick=toggleViewportAutoUpdate />
 						            <input type="color" value="#ff0000" v-on:change="setViewportBackgroundColor">
 						            <TToolItem icon="sun" tooltip="Activer/Désactiver les ombres" :onClick=toggleViewportShadow />
-                                    <TToolItem icon="hand-pointer" tooltip="Activer/Désactiver la sélection" :onClick=toggleViewportRaycasting />
+                                    <TToolItem icon="hand-pointer" tooltip="Activer/Désactiver la sélection" :onClick=setSelectionMode />
+                                    <TToolItem icon="hand-pointer" tooltip="Activer/Désactiver la sélection" :onClick=setClippingSelectionMode />
 
 						        </TToolBar>
 
@@ -96,9 +99,9 @@
 		                        <TViewport3D
 		                            v-bind="viewport"
 	                                v-on:intersect=onIntersect
-	                                v-on:noIntersect=onNoIntersect
 	                                v-on:select=onSelect
 	                                v-on:deselect=onDeselect
+	                                v-on:cacheUpdated="viewport.cacheNeedUpdate = false"
 					             />
 					        </TContainer>
 
@@ -127,14 +130,16 @@
 				        </TContainer>
 				    `,
                     data:     {
+                        action:         'none',
+                        // Viewport
                         viewport:       {
                             scene:           new Itee.Scene(),
                             camera:          {
                                 type:     'perspective',
                                 position: {
-                                    x: 700,
-                                    y: 200,
-                                    z: 500
+                                    x: 70,
+                                    y: 20,
+                                    z: 50
                                 },
                                 target:   {
                                     x: 0,
@@ -144,12 +149,15 @@
                             },
                             control:         'orbit',
                             effect:          'none',
-                            renderer:        'webgl',
+                            renderer:        undefined,
                             showStats:       true,
                             autoUpdate:      true,
                             backgroundColor: 0x000000,
                             enableShadow:    false,
-                            isRaycastable:   false
+                            isRaycastable:   false,
+                            allowDecimate:   true,
+                            fitCamera:       false,
+                            cacheNeedUpdate:         false
                         },
                         intersected:    {
                             object:           undefined,
@@ -159,6 +167,8 @@
                             object:           undefined,
                             originalMaterial: undefined
                         },
+                        pointer:        undefined,
+                        // File
                         inputFileModal: {
                             title:  'Importer un fichier utilisateur dans la vue 3d',
                             inputs: {
@@ -168,7 +178,196 @@
                     },
                     methods:  {
 
-                        addObjectsToViewportScene() {},
+                        // GLOBALS
+
+                        _createEnvironement () {
+
+                            ///////////////////
+                            // Add Env group //
+                            ///////////////////
+                            const envGroup = new Itee.Group()
+                            envGroup.name  = "Environement"
+                            this.viewport.scene.add( envGroup )
+
+                            ///////////////
+                            // Add light //
+                            ///////////////
+                            const lightGroup = new Itee.Group()
+                            lightGroup.name  = "Lumières"
+                            envGroup.add( lightGroup )
+
+                            const ambiantLight = new Itee.AmbientLight( 0xC8C8C8 )
+                            lightGroup.add( ambiantLight )
+
+                            //                        const SHADOW_MAP_SIZE = 16384
+                            //                        const spotLight       = new Itee.SpotLight( 0xffffff, 1, 0, Math.PI / 2 )
+                            //                        spotLight.position.set( 0, 1500, 1000 )
+                            //                        spotLight.target.position.set( 0, 0, 0 )
+                            //                        spotLight.castShadow            = true
+                            //                        spotLight.shadow                = new Itee.LightShadow( new Itee.PerspectiveCamera( 50, 1, 1200, 2500 ) )
+                            //                        spotLight.shadow.bias           = 0.0001
+                            //                        spotLight.shadow.mapSize.width  = SHADOW_MAP_SIZE
+                            //                        spotLight.shadow.mapSize.height = SHADOW_MAP_SIZE
+                            //                        envGroup.add( spotLight )
+
+                            const frustum  = 500
+                            const mapSize  = 2048
+                            const dirLight = new Itee.DirectionalLight( 0xaaaaaa, 0.6 )
+                            dirLight.position.set( 100, 300, 100 )
+                            //                        dirLight.castShadow            = true
+                            //                        dirLight.shadow.mapSize.width  = mapSize
+                            //                        dirLight.shadow.mapSize.height = mapSize
+                            //                        dirLight.shadow.darkness       = 1
+                            //                        dirLight.shadow.camera.left    = -frustum
+                            //                        dirLight.shadow.camera.right   = frustum
+                            //                        dirLight.shadow.camera.top     = frustum
+                            //                        dirLight.shadow.camera.bottom  = -frustum
+                            //                        dirLight.shadow.camera.near    = 1
+                            //                        dirLight.shadow.camera.far     = 500
+                            envGroup.add( dirLight )
+
+                            //                        const dirLightHelper = new Itee.DirectionalLightHelper( dirLight, 10 )
+                            //                        envGroup.add( dirLightHelper )
+                            //
+                            //                        //Create a helper for the shadow camera
+                            //                        const dirLightShadowCameraHelper = new Itee.CameraHelper( dirLight.shadow.camera )
+                            //                        envGroup.add( dirLightShadowCameraHelper )
+
+                            ///////////////
+                            // Add grids //
+                            ///////////////
+                            const gridGroup = new Itee.Group()
+                            gridGroup.name  = "Grilles"
+                            envGroup.add( gridGroup )
+
+                            /// XZ
+
+                            const gridHelperXZ_1 = new Itee.GridHelper( 20, 20 )
+                            gridHelperXZ_1.name  = "Grille XZ - Mètrique"
+                            gridGroup.add( gridHelperXZ_1 )
+
+                            const gridHelperXZ_10 = new Itee.GridHelper( 200, 20 )
+                            gridHelperXZ_10.name  = "Grille XZ - Décamètrique"
+                            gridGroup.add( gridHelperXZ_10 )
+
+                            const gridHelperXZ_100 = new Itee.GridHelper( 2000, 20 )
+                            gridHelperXZ_100.name  = "Grille XZ - Hectomètrique"
+                            gridGroup.add( gridHelperXZ_100 )
+
+                            /// XY
+
+                            //                        const gridHelperXY_1 = new Itee.GridHelper( 20, 20 )
+                            //                        gridHelperXY_1.name  = "Grille XY - Mètrique"
+                            //                        gridHelperXY_1.rotateX( Itee.degreesToRadians( 90 ) )
+                            //                        gridGroup.add( gridHelperXY_1 )
+                            //
+                            //                        const gridHelperXY_10 = new Itee.GridHelper( 200, 20 )
+                            //                        gridHelperXY_10.name  = "Grille XY - Décamètrique"
+                            //                        gridHelperXY_10.rotateX( Itee.degreesToRadians( 90 ) )
+                            //                        gridGroup.add( gridHelperXY_10 )
+                            //
+                            //                        const gridHelperXY_100 = new Itee.GridHelper( 2000, 20 )
+                            //                        gridHelperXY_100.name  = "Grille XY - Hectomètrique"
+                            //                        gridHelperXY_100.rotateX( Itee.degreesToRadians( 90 ) )
+                            //                        gridGroup.add( gridHelperXY_100 )
+
+                            /// YZ
+
+                            //                        const gridHelperYZ_1 = new Itee.GridHelper( 20, 20 )
+                            //                        gridHelperYZ_1.name  = "Grille YZ - Mètrique"
+                            //                        gridHelperYZ_1.rotateZ( Itee.degreesToRadians( 90 ) )
+                            //                        gridGroup.add( gridHelperYZ_1 )
+                            //
+                            //                        const gridHelperYZ_10 = new Itee.GridHelper( 200, 20 )
+                            //                        gridHelperYZ_10.name  = "Grille YZ - Décamètrique"
+                            //                        gridHelperYZ_10.rotateZ( Itee.degreesToRadians( 90 ) )
+                            //                        gridGroup.add( gridHelperYZ_10 )
+                            //
+                            //                        const gridHelperYZ_100 = new Itee.GridHelper( 2000, 20 )
+                            //                        gridHelperYZ_100.name  = "Grille YZ - Hectomètrique"
+                            //                        gridHelperYZ_100.rotateZ( Itee.degreesToRadians( 90 ) )
+                            //                        gridGroup.add( gridHelperYZ_100 )
+
+                            //////////////////
+                            // Add pointers //
+                            //////////////////
+                            const pointersGroup = new Itee.Group()
+                            pointersGroup.name  = "Pointers"
+                            envGroup.add( pointersGroup )
+
+                            const sphereGeometry = new Itee.SphereBufferGeometry( 0.5, 32, 32 )
+                            const sphereMaterial = new Itee.MeshPhongMaterial( { color: 0xffff00 } )
+                            const sphere         = new Itee.Mesh( sphereGeometry, sphereMaterial )
+                            sphere.name          = 'Sphère'
+                            sphere.visible       = false
+                            sphere.isRaycastable = false
+                            pointersGroup.add( sphere )
+
+                            // Plane
+                            const planeGeometry = new Itee.PlaneGeometry( 2, 2, 10, 10 )
+                            const planeMaterial = new Itee.MeshBasicMaterial( {
+                                color:       0x000000,
+                                side:        Itee.DoubleSide,
+                                opacity:     0.2,
+                                transparent: true
+                            } )
+                            const plane         = new Itee.Mesh( planeGeometry, planeMaterial )
+                            plane.name          = 'Plan'
+                            plane.visible       = false
+                            plane.isRaycastable = false
+                            pointersGroup.add( plane )
+
+                            //////////////
+
+                            const modifiersGroup = new Itee.Group()
+                            modifiersGroup.name  = "Modificateurs"
+                            this.viewport.scene.add( modifiersGroup )
+
+                        },
+
+                        _fetchData () {
+
+                            const datasGroup = new Itee.Group()
+                            datasGroup.name  = "Données"
+                            this.viewport.scene.add( datasGroup )
+
+                            ///////////////
+                            // Add cubes //
+                            ///////////////
+                            const cubesGroup = new Itee.Group()
+                            cubesGroup.name  = "Cubes"
+                            datasGroup.add( cubesGroup )
+
+                            const numberOfCubes = 1000
+                            const spreadArea    = 100
+                            for ( let cubeIndex = 0 ; cubeIndex < numberOfCubes ; cubeIndex++ ) {
+
+                                const width    = Itee.getRandomInt( 0, 7 )
+                                const height   = Itee.getRandomInt( 0, 7 )
+                                const depth    = Itee.getRandomInt( 0, 7 )
+                                const geometry = new Itee.BoxGeometry( width, height, depth )
+
+                                const color    = Itee.getRandomInt( 0, 16777216 )
+                                const material = new Itee.MeshPhongMaterial( { color } )
+
+                                const x            = Itee.getRandomInt( -spreadArea, spreadArea )
+                                const y            = Itee.getRandomInt( -spreadArea, spreadArea )
+                                const z            = Itee.getRandomInt( -spreadArea, spreadArea )
+                                const cube         = new Itee.Mesh( geometry, material )
+                                cube.isRaycastable = true
+                                cube.position.x    = x
+                                cube.position.y    = y
+                                cube.position.z    = z
+
+                                cubesGroup.add( cube )
+
+                            }
+
+                        },
+
+                        // FILES
+
+                        addObjectsToViewportScene () {},
 
                         resetFileInputLabel ( clickEvent ) {
                             'use strict'
@@ -205,13 +404,15 @@
                                             object.isRaycastable = true
                                             object.geometry.computeFaceNormals()
                                             object.geometry.computeVertexNormals()
-//                                            object.castShadow    = true        //default is false
-//                                            object.receiveShadow = true     //default is false
+                                            //                                            object.castShadow    = true        //default is false
+                                            //                                            object.receiveShadow = true     //default is false
                                         }
                                     } )
 
                                     const dataGroup = self.viewport.scene.getObjectByName( 'Données' )
                                     dataGroup.add( data )
+
+                                    self.viewport.isDirty = true
 
                                 },
                                 ( progress ) => {
@@ -274,14 +475,14 @@
                             'use strict'
                             console.log( 'setViewportCameraOfType' )
 
-	                        const camera = this.viewport.camera
-	                        const position = camera.position
-	                        const target = camera.target
+                            const camera   = this.viewport.camera
+                            const position = camera.position
+                            const target   = camera.target
 
                             this.viewport.camera = {
-                                type: cameraType,
-	                            position: position,
-                                target: target
+                                type:     cameraType,
+                                position: position,
+                                target:   target
                             }
 
                         },
@@ -344,10 +545,19 @@
 
                         },
 
-                        toggleViewportRaycasting () {
+                        setSelectionMode () {
                             'use strict'
-                            console.log( 'toggleViewportRaycasting' )
 
+                            this.action                 = 'selection'
+                            this.pointer                = this.viewport.scene.getObjectByName( 'Environement' ).getObjectByName( 'Pointers' ).getObjectByName( 'Sphère' )
+                            this.viewport.isRaycastable = !this.viewport.isRaycastable
+                        },
+
+                        setClippingSelectionMode () {
+                            'use strict'
+
+                            this.action                 = 'clippingSelection'
+                            this.pointer                = this.viewport.scene.getObjectByName( 'Environement' ).getObjectByName( 'Pointers' ).getObjectByName( 'Plan' )
                             this.viewport.isRaycastable = !this.viewport.isRaycastable
                         },
 
@@ -355,293 +565,305 @@
 
                         onIntersect ( intersect ) {
 
-                            const object    = intersect.object
-                            const materials = object.material
-                            if ( !this.intersected.object ) {
+                            if ( intersect ) {
 
-                                this.intersected.object           = object
-                                this.intersected.originalMaterial = materials
+                                this._activePointer()
+                                this._updatePointer( intersect.point, intersect.face )
+                                this._updateIntersected( intersect.object )
 
-                                if ( Array.isArray( materials ) ) {
+                            } else {
 
-                                    const cloneMaterials = []
-                                    for ( let i = 0, n = materials.length ; i < n ; i++ ) {
-                                        let cloneMaterial = materials[ i ].clone()
-                                        cloneMaterial.color.set( 0x00c8ff )
-                                        cloneMaterials.push( cloneMaterial )
-                                    }
-                                    this.intersected.object.material = cloneMaterials
+                                this._disablePointer()
+                                this._clearPreviousIntersected()
 
-                                } else {
+                            }
 
-                                    const cloneMaterial = materials.clone()
-                                    cloneMaterial.color.set( 0x00c8ff )
-                                    this.intersected.object.material = cloneMaterial
+                        },
 
-                                }
+                        onSelect ( intersect ) {
 
-                            } else if ( this.intersected.object.uuid !== object.uuid ) {
+                            if ( intersect ) {
 
-                                this.intersected.object.material = this.intersected.originalMaterial
+                                switch ( this.action ) {
 
-                                this.intersected.object           = object
-                                this.intersected.originalMaterial = materials
+                                    case 'selection':
+                                        this._updateSelected( intersect.object )
+                                        break
 
-                                if ( Array.isArray( materials ) ) {
+                                    case 'clippingSelection':
+                                        this._addClippingPlan( intersect.point, intersect.face )
+                                        break
 
-                                    const cloneMaterials = []
-                                    for ( let i = 0, n = materials.length ; i < n ; i++ ) {
-                                        let cloneMaterial = materials[ i ].clone()
-                                        cloneMaterial.color.set( 0x00c8ff )
-                                        cloneMaterials.push( cloneMaterial )
-                                    }
-                                    this.intersected.object.material = cloneMaterials
-
-                                } else {
-
-                                    const cloneMaterial = materials.clone()
-                                    cloneMaterial.color.set( 0x00c8ff )
-                                    this.intersected.object.material = cloneMaterial
+                                    default:
+                                        throw new RangeError( `Invalid action: ${this.action}` )
+                                        break
 
                                 }
 
                             } else {
 
-                                // Same intersect, do nothing...
-
                             }
-
-                            const intersectPoint = intersect.point
-                            let sphere           = this.viewport.scene.getObjectByName( 'SpherePointer' )
-                            sphere.visible       = true
-                            sphere.position.set( intersectPoint.x, intersectPoint.y, intersectPoint.z )
-
-                            //Todo: scale sphere in squared idstance to intersect origin and camera position
-
-                        },
-
-                        onNoIntersect () {
-
-                            if ( this.intersected.object ) {
-
-                                this.intersected.object.material.dispose()
-                                this.intersected.object.material = this.intersected.originalMaterial
-
-                                this.intersected.object           = undefined
-                                this.intersected.originalMaterial = undefined
-
-                            }
-
-                            let sphere     = this.viewport.scene.getObjectByName( 'SpherePointer' )
-                            sphere.visible = false
-
-                        },
-
-                        onSelect () {
-
-                            // In case we already have a selected object and it is different from intersected
-                            // Reset the current selection before new selection assignement
-                            if ( this.selected.object && (this.selected.object.uuid !== this.intersected.object.uuid) ) {
-
-                                this.selected.object.material      = this.selected.originalMaterial
-                                this.selected.object.isRaycastable = true
-
-                            }
-
-                            // Update selection with intersected object
-                            this.selected.object               = this.intersected.object
-                            this.selected.originalMaterial     = this.intersected.originalMaterial
-                            this.selected.object.isRaycastable = false
-
-                            // Clear current intersected object
-                            this.intersected.object           = undefined
-                            this.intersected.originalMaterial = undefined
 
                         },
 
                         onDeselect () {
 
-                            if ( this.selected.object ) {
+                            if ( !this.selected.object ) { return }
 
-                                this.selected.object.material.dispose()
-                                this.selected.object.material      = this.selected.originalMaterial
-                                this.selected.object.isRaycastable = true
+                            if ( this.selected.object.material ) {
 
-                                this.selected.object           = undefined
-                                this.selected.originalMaterial = undefined
+                                this._resetOriginalMaterialOf( this.selected )
 
+                            }
+
+                            this._releaseReferenceFrom( this.selected )
+
+                        },
+
+                        _activePointer () {
+
+                            if ( !this.pointer ) {
+                                return
+                            }
+
+                            this.pointer.visible = true
+
+                        },
+
+                        _updatePointer ( point, face ) {
+
+                            if ( !this.pointer || !point ) {
+                                return
+                            }
+
+                            //Todo: scale sphere in squared distance to intersect origin and camera position
+                            if ( this.pointer.name === 'Plan' ) {
+
+                                //                                const arrowHelper = new Itee.ArrowHelper( face.normal, point, 1, 0x123456 )
+                                //                                this.viewport.scene.add( arrowHelper )
+
+                                const direction       = new Itee.Vector3().addVectors( point, face.normal )
+                                const div             = direction.clone().normalize().divideScalar( 10 )
+                                const offsetPosition  = point.clone().add( div )
+                                const offsetDirection = direction.clone().add( div )
+                                this.pointer.position.set( offsetPosition.x, offsetPosition.y, offsetPosition.z )
+                                this.pointer.lookAt( offsetDirection )
+                                //                                this.pointer.position.set( point.x, point.y, point.z )
+                                //                                this.pointer.lookAt( direction )
+                                //                                this.pointer.rotateX(Itee.degreesToRadians(90))
+
+                            } else {
+                                this.pointer.position.set( point.x, point.y, point.z )
+                            }
+
+                        },
+
+                        _disablePointer () {
+
+                            if ( !this.pointer ) {
+                                return
+                            }
+
+                            this.pointer.visible = false
+
+                        },
+
+                        _addClippingPlan ( point, face ) {
+
+                            const normal = face.normal.clone()
+//                            const normal = face.normal.clone().negate()
+                            const subClippinPlane     = new Itee.Plane( normal, 0 )
+
+                            let projectedPoint = new Itee.Vector3( 0, 0, 0 )
+                            subClippinPlane.projectPoint ( point, projectedPoint )
+
+	                        const orthogonalDistanceToOrigin = point.distanceTo(projectedPoint) + 0.1
+
+                            const clippinPlane     = new Itee.Plane( face.normal, -orthogonalDistanceToOrigin )
+
+//                            const direction       = new Itee.Vector3().addVectors( point, face.normal ).normalize()
+//                            const distanceToOrigin = point.distanceTo( new Itee.Vector3( 0, 0, 0 ) )
+//                            const clippinPlane     = new Itee.Plane( direction, distanceToOrigin )
+
+                            //                            const modifierGroup = this.viewport.scene.getObjectByName( 'Modificateurs' )
+                            //                            modifierGroup.add(clippinPlane)
+
+                            this.viewport.renderer.clippingPlanes.push( clippinPlane )
+
+                        },
+
+                        _updateIntersected ( object ) {
+
+                            if ( !object || (object.type === 'Group' || object.type === 'Scene') ) {
+                                return
+                            }
+
+                            if ( !this.intersected.object ) {
+
+                                this._keepReferenceOf( object, this.intersected )
+
+                            } else {
+
+                                if ( this.intersected.object.uuid !== object.uuid ) {
+
+                                    this._clearPreviousIntersected()
+                                    this._keepReferenceOf( object, this.intersected )
+
+                                }
+
+                            }
+
+                        },
+
+                        _updateSelected ( object ) {
+
+                            if ( object && (object.type === 'Group' || object.type === 'Scene') ) {
+                                return
+                            }
+
+                            if ( !this.selected.object ) {
+
+                                if ( this.intersected.object ) {
+                                    this._clearPreviousIntersected()
+                                }
+
+                                this._keepReferenceOf( object, this.selected )
+
+                            } else {
+
+                                if ( this.selected.object.uuid !== this.intersected.object.uuid ) {
+
+                                    this.onDeselect()
+
+                                    if ( this.intersected.object ) {
+                                        this._clearPreviousIntersected()
+                                    }
+
+                                    this._keepReferenceOf( object, this.selected )
+
+                                }
+
+                            }
+
+                        },
+
+                        _keepReferenceOf ( objectToRef, refObject ) {
+
+                            refObject.object           = objectToRef
+                            refObject.originalMaterial = objectToRef.material
+                            refObject.object.material  = this._cloneMaterials( objectToRef.material )
+
+                        },
+
+                        _cloneMaterials ( materials ) {
+
+                            if ( !materials ) {
+                                return
+                            }
+
+                            if ( Array.isArray( materials ) ) {
+
+                                const cloneMaterials = []
+                                for ( let i = 0, n = materials.length ; i < n ; i++ ) {
+
+                                    const material = materials[ i ]
+                                    // Fix wrong cloning with undefined
+                                    if ( material.userData === undefined ) {
+                                        material.userData = {}
+                                    }
+
+                                    let cloneMaterial = material.clone()
+                                    cloneMaterial.color.set( 0x00c8ff ) //0xfa9600
+                                    cloneMaterials.push( cloneMaterial )
+
+                                }
+                                return cloneMaterials
+
+                            } else {
+
+                                // Fix wrong cloning with undefined
+                                if ( materials.userData === undefined ) {
+                                    materials.userData = {}
+                                }
+
+                                const cloneMaterial = materials.clone()
+                                cloneMaterial.color.set( 0x00c8ff ) //0xfa9600
+                                return cloneMaterial
+
+                            }
+
+                        },
+
+                        _clearPreviousIntersected () {
+
+                            if ( this.intersected.object ) {
+
+                                if ( this.intersected.object.material ) {
+
+                                    this._releaseMaterials( this.intersected.object.material )
+                                    this.intersected.object.material = this.intersected.originalMaterial
+
+                                }
+
+                                this._releaseReferenceFrom( this.intersected )
+
+                            }
+
+                        },
+
+                        _releaseReferenceFrom ( refObject ) {
+
+                            refObject.originalMaterial = undefined
+                            refObject.object           = undefined
+
+                        },
+
+                        _resetOriginalMaterialOf ( refObject ) {
+
+                            this._releaseMaterials( refObject.object.material )
+                            refObject.object.material = refObject.originalMaterial
+
+                        },
+
+                        _releaseMaterials ( materials ) {
+
+                            if ( !materials ) {
+                                return
+                            }
+
+                            if ( Array.isArray( materials ) ) {
+                                for ( let i = 0, n = materials.length ; i < n ; i++ ) {
+                                    materials[ i ].dispose()
+                                }
+                            } else {
+                                materials.dispose()
                             }
 
                         }
 
                     },
-//                    created () {
-//
-//
-//                        // Should not be observed...
-//                        this.viewport.scene = new Itee.Scene()
-//
-//                    },
+                    created () {
+
+
+                        // Should not be observed...
+                        this.viewport.scene    = new Itee.Scene()
+                        this.viewport.renderer = new Itee.WebGLRenderer( {
+                            antialias:              true,
+                            logarithmicDepthBuffer: true
+                        } )
+                        //                        this.viewport.renderer.setPixelRatio( window.devicePixelRatio )
+                        //                        this._renderer.setClearColor( this.backgroundColor || 0x000000 )
+                        //                        this._renderer.autoClear         = true
+                        //                        this._renderer.shadowMap.enabled = true
+                        //                        //                    this._renderer.shadowMap.type = BasicShadowMap
+                        //                        this._renderer.shadowMap.type    = PCFShadowMap
+                        //                        //                    this._renderer.shadowMap.type = PCFSoftShadowMap
+
+                    },
                     mounted () {
 
-                        ///////////////////
-                        // Add Env group //
-                        ///////////////////
-                        const envGroup = new Itee.Group()
-                        envGroup.name  = "Environement"
-                        this.viewport.scene.add( envGroup )
-
-                        ///////////////
-                        // Add light //
-                        ///////////////
-                        const lightGroup = new Itee.Group()
-                        lightGroup.name  = "Lumières"
-                        envGroup.add( lightGroup )
-
-                        const ambiantLight = new Itee.AmbientLight( 0xC8C8C8 )
-                        lightGroup.add( ambiantLight )
-
-//                        const SHADOW_MAP_SIZE = 16384
-//                        const spotLight       = new Itee.SpotLight( 0xffffff, 1, 0, Math.PI / 2 )
-//                        spotLight.position.set( 0, 1500, 1000 )
-//                        spotLight.target.position.set( 0, 0, 0 )
-//                        spotLight.castShadow            = true
-//                        spotLight.shadow                = new Itee.LightShadow( new Itee.PerspectiveCamera( 50, 1, 1200, 2500 ) )
-//                        spotLight.shadow.bias           = 0.0001
-//                        spotLight.shadow.mapSize.width  = SHADOW_MAP_SIZE
-//                        spotLight.shadow.mapSize.height = SHADOW_MAP_SIZE
-//                        envGroup.add( spotLight )
-
-                        const frustum  = 500
-                        const mapSize  = 2048
-                        const dirLight = new Itee.DirectionalLight( 0xaaaaaa, 0.6 )
-                        dirLight.position.set( 100, 300, 100 )
-//                        dirLight.castShadow            = true
-//                        dirLight.shadow.mapSize.width  = mapSize
-//                        dirLight.shadow.mapSize.height = mapSize
-//                        dirLight.shadow.darkness       = 1
-//                        dirLight.shadow.camera.left    = -frustum
-//                        dirLight.shadow.camera.right   = frustum
-//                        dirLight.shadow.camera.top     = frustum
-//                        dirLight.shadow.camera.bottom  = -frustum
-//                        dirLight.shadow.camera.near    = 1
-//                        dirLight.shadow.camera.far     = 500
-                        envGroup.add( dirLight )
-
-//                        const dirLightHelper = new Itee.DirectionalLightHelper( dirLight, 10 )
-//                        envGroup.add( dirLightHelper )
-//
-//                        //Create a helper for the shadow camera
-//                        const dirLightShadowCameraHelper = new Itee.CameraHelper( dirLight.shadow.camera )
-//                        envGroup.add( dirLightShadowCameraHelper )
-
-                        ///////////////
-                        // Add grids //
-                        ///////////////
-                        const gridGroup = new Itee.Group()
-                        gridGroup.name  = "Grilles"
-                        envGroup.add( gridGroup )
-
-                        /// XZ
-
-                        const gridHelperXZ_1 = new Itee.GridHelper( 20, 20 )
-                        gridHelperXZ_1.name  = "Grille XZ - Mètrique"
-                        gridGroup.add( gridHelperXZ_1 )
-
-                        const gridHelperXZ_10 = new Itee.GridHelper( 200, 20 )
-                        gridHelperXZ_10.name  = "Grille XZ - Décamètrique"
-                        gridGroup.add( gridHelperXZ_10 )
-
-                        const gridHelperXZ_100 = new Itee.GridHelper( 2000, 20 )
-                        gridHelperXZ_100.name  = "Grille XZ - Hectomètrique"
-                        gridGroup.add( gridHelperXZ_100 )
-
-                        /// XY
-
-                        //                        const gridHelperXY_1 = new Itee.GridHelper( 20, 20 )
-                        //                        gridHelperXY_1.name  = "Grille XY - Mètrique"
-                        //                        gridHelperXY_1.rotateX( Itee.degreesToRadians( 90 ) )
-                        //                        gridGroup.add( gridHelperXY_1 )
-                        //
-                        //                        const gridHelperXY_10 = new Itee.GridHelper( 200, 20 )
-                        //                        gridHelperXY_10.name  = "Grille XY - Décamètrique"
-                        //                        gridHelperXY_10.rotateX( Itee.degreesToRadians( 90 ) )
-                        //                        gridGroup.add( gridHelperXY_10 )
-                        //
-                        //                        const gridHelperXY_100 = new Itee.GridHelper( 2000, 20 )
-                        //                        gridHelperXY_100.name  = "Grille XY - Hectomètrique"
-                        //                        gridHelperXY_100.rotateX( Itee.degreesToRadians( 90 ) )
-                        //                        gridGroup.add( gridHelperXY_100 )
-
-                        /// YZ
-
-                        //                        const gridHelperYZ_1 = new Itee.GridHelper( 20, 20 )
-                        //                        gridHelperYZ_1.name  = "Grille YZ - Mètrique"
-                        //                        gridHelperYZ_1.rotateZ( Itee.degreesToRadians( 90 ) )
-                        //                        gridGroup.add( gridHelperYZ_1 )
-                        //
-                        //                        const gridHelperYZ_10 = new Itee.GridHelper( 200, 20 )
-                        //                        gridHelperYZ_10.name  = "Grille YZ - Décamètrique"
-                        //                        gridHelperYZ_10.rotateZ( Itee.degreesToRadians( 90 ) )
-                        //                        gridGroup.add( gridHelperYZ_10 )
-                        //
-                        //                        const gridHelperYZ_100 = new Itee.GridHelper( 2000, 20 )
-                        //                        gridHelperYZ_100.name  = "Grille YZ - Hectomètrique"
-                        //                        gridHelperYZ_100.rotateZ( Itee.degreesToRadians( 90 ) )
-                        //                        gridGroup.add( gridHelperYZ_100 )
-
-                        //////////////////
-                        // Add pointers //
-                        //////////////////
-                        const pointersGroup = new Itee.Group()
-                        pointersGroup.name  = "Pointers"
-                        envGroup.add( pointersGroup )
-
-                        const geometry = new Itee.SphereBufferGeometry( 0.5, 32, 32 )
-                        const material = new Itee.MeshPhongMaterial( { color: 0xffff00 } )
-                        const sphere   = new Itee.Mesh( geometry, material )
-                        sphere.name    = 'SpherePointer'
-                        sphere.visible = false
-
-                        pointersGroup.add( sphere )
-
-                        /////////////////////////////////////////////
-
-                        const dataGroup = new Itee.Group()
-                        dataGroup.name  = "Données"
-                        this.viewport.scene.add( dataGroup )
-
-                        ///////////////
-                        // Add cubes //
-                        ///////////////
-                        const cubesGroup = new Itee.Group()
-                        cubesGroup.name  = "Cubes"
-                        dataGroup.add( cubesGroup )
-
-                        const numberOfCubes = 1000
-                        const spreadArea    = 100
-                        for ( let cubeIndex = 0 ; cubeIndex < numberOfCubes ; cubeIndex++ ) {
-
-                            const width    = Itee.getRandomInt( 0, 7 )
-                            const height   = Itee.getRandomInt( 0, 7 )
-                            const depth    = Itee.getRandomInt( 0, 7 )
-                            const geometry = new Itee.BoxGeometry( width, height, depth )
-
-                            const color    = Itee.getRandomInt( 0, 16777216 )
-                            const material = new Itee.MeshPhongMaterial( { color } )
-
-                            const x            = Itee.getRandomInt( -spreadArea, spreadArea )
-                            const y            = Itee.getRandomInt( -spreadArea, spreadArea )
-                            const z            = Itee.getRandomInt( -spreadArea, spreadArea )
-                            const cube         = new Itee.Mesh( geometry, material )
-                            cube.isRaycastable = true
-                            cube.position.x    = x
-                            cube.position.y    = y
-                            cube.position.z    = z
-
-                            cubesGroup.add( cube )
-
-                        }
+                        this._createEnvironement()
+                        this._fetchData()
 
                     }
                 }
