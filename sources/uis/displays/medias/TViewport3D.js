@@ -60,7 +60,6 @@ import { SVGRenderer } from '../../../../node_modules/threejs-full-es6/sources/r
 import { WebGL2Renderer } from '../../../../node_modules/threejs-full-es6/sources/renderers/WebGL2Renderer'
 import { WebGLRenderer } from '../../../../node_modules/threejs-full-es6/sources/renderers/WebGLRenderer'
 
-
 // Vue
 import Vue from '../../../../node_modules/vue/dist/vue.esm'
 import resize from 'vue-resize-directive'
@@ -84,6 +83,7 @@ export default Vue.component( 'TViewport3D', {
         'backgroundColor',
         'enableShadow',
         'isRaycastable',
+        'allowDecimate',
         'needResize',
         'fitCamera'
     ],
@@ -579,7 +579,6 @@ export default Vue.component( 'TViewport3D', {
 
         },
 
-
         _resize ( domElement ) {
 
             const isEvent       = ( domElement instanceof Event )
@@ -694,7 +693,6 @@ export default Vue.component( 'TViewport3D', {
             this._renderer.setSize( width, height )
 
         },
-
 
         _startLoop () {
 
@@ -904,7 +902,78 @@ export default Vue.component( 'TViewport3D', {
             this._setCameraPosition( newCameraPosition )
             this._setCameraTarget( globalBarycenter )
 
+
+        _decimateVisibleMeshes () {
+
+            if ( !this.allowDecimate ) {
+                return
+            }
+
+            // Decimate scene
+            const cache = this._getDecimateCache()
+            for ( let meshIndex = 0, numberOfMeshesToDecimate = cache.length ; meshIndex < numberOfMeshesToDecimate ; meshIndex++ ) {
+
+                cache[ meshIndex ].visible = false
+
+            }
+
         },
+
+        _populateVisibleMeshes () {
+
+            if ( !this.allowDecimate ) {
+                return
+            }
+
+            if ( this._repopulateTimeoutId ) {
+                clearTimeout( this._repopulateTimeoutId )
+            }
+
+            this._repopulateTimeoutId = setTimeout( () => {
+
+                const decimables = this._cache.decimables
+                for ( let meshIndex = 0, numberOfMeshesToDecimate = decimables.length ; meshIndex < numberOfMeshesToDecimate ; meshIndex++ ) {
+
+                    decimables[ meshIndex ].visible = true
+
+                }
+
+            }, 250 )
+
+        },
+
+        },
+
+        _getDecimateCache () {
+
+            // TODO: should be params 
+            const decimateValue = 0.9
+
+            if ( this.needCacheUpdate || this._cache.decimables.length === 0 ) {
+
+                const meshes = []
+                this.scene.traverse( object => {
+
+                    if ( object.isMesh ) {
+                        meshes.push( object )
+                    }
+
+                } )
+
+                // Store random meshes to decimate
+                const numberOfMeshes       = meshes.length
+                const numberOfMeshesToHide = Math.round( numberOfMeshes * decimateValue )
+                while ( this._cache.decimables.length < numberOfMeshesToHide ) {
+                    this._cache.decimables.push( meshes[ Math.floor( Math.random() * numberOfMeshes ) ] )
+                }
+
+                this.$emit( 'cacheUpdated', 'decimables' )
+
+            }
+
+            return this._cache.decimables
+
+        }
 
     },
 
@@ -920,6 +989,10 @@ export default Vue.component( 'TViewport3D', {
 
         window.addEventListener( 'resize', this._resize.bind( this.$el ), false )
 
+        // Untracked private data
+        this._cache = {
+            decimables:   [],
+        }
     },
 
     beforeMount () {
