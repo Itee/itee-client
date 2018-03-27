@@ -85,7 +85,8 @@ export default Vue.component( 'TViewport3D', {
         'isRaycastable',
         'allowDecimate',
         'needResize',
-        'fitCamera'
+        'needCameraFitWorldBoundingBox',
+        'needCacheUpdate'
     ],
 
     data: function () {
@@ -112,63 +113,73 @@ export default Vue.component( 'TViewport3D', {
 
     watch: {
 
-        camera: function ( newCamera, oldCamera ) {
+        camera ( newCamera, oldCamera ) {
 
             this._setCamera( newCamera, oldCamera )
             this._setControl( this.control )
             this._resize( this.$el )
 
         },
-//
-//        'camera.type': function ( newCameraType, oldCameraType ) {
-//
-//            this._setCameraType( newCameraType )
-//
-//        },
-//
-//        'camera.position': function ( newCameraPosition, oldCameraPosition ) {
-//
-//            this._setCameraPosition( newCameraPosition )
-//
-//        },
-//
-//        'camera.target': function ( newCameraTarget, oldCameraTarget ) {
-//
-//            this._setCameraTarget( newCameraTarget )
-//
-//        },
+        //
+        //        'camera.type': function ( newCameraType, oldCameraType ) {
+        //
+        //            this._setCameraType( newCameraType )
+        //
+        //        },
+        //
+        //        'camera.position': function ( newCameraPosition, oldCameraPosition ) {
+        //
+        //            this._setCameraPosition( newCameraPosition )
+        //
+        //        },
+        //
+        //        'camera.target': function ( newCameraTarget, oldCameraTarget ) {
+        //
+        //            this._setCameraTarget( newCameraTarget )
+        //
+        //        },
 
-        control: function ( newControl, oldControl ) {
+        control ( newControl, oldControl ) {
 
             this._setControl( newControl, oldControl )
 
         },
 
-        effect: function ( newEffect, oldEffect ) {
+        effect ( newEffect, oldEffect ) {
 
             this._setEffect( newEffect, oldEffect )
 
         },
 
-        renderer: function ( newRenderer, oldRenderer ) {
+        renderer ( newRenderer, oldRenderer ) {
 
             this._setRenderer( newRenderer, oldRenderer )
 
         },
 
-        backgroundColor: function ( newBg, oldBg ) {
+        autoUpdate ( autoUpdate, oldAutoUpdate ) {
+
+            if ( autoUpdate ) {
+                this._startLoop()
+            } else {
+                this._stopLoop()
+            }
+
+        },
+
+        backgroundColor ( newBg, oldBg ) {
 
             this._renderer.setClearColor( newBg || 0x000000 )
 
         },
 
-        showStats: function ( newValue, oldValue ) {
+        showStats ( newValue, oldValue ) {
 
             this._stats.domElement.style.display = (newValue) ? 'block' : 'none'
 
         },
 
-        needResize: function ( newValue, oldValue ) {
+        needResize ( newValue, oldValue ) {
 
             if ( newValue === true ) {
                 this._resize( this.$el )
@@ -176,11 +187,14 @@ export default Vue.component( 'TViewport3D', {
 
         },
 
-        fitCamera: function () {
+        needCameraFitWorldBoundingBox ( needCameraFitWorldBoundingBox ) {
 
-            this._fitCameraToWorld()
+            if ( needCameraFitWorldBoundingBox ) {
+                this._fitCameraToWorldBoundingBox()
+            }
 
         }
+
     },
 
     methods: {
@@ -277,7 +291,7 @@ export default Vue.component( 'TViewport3D', {
 
         _setCameraTarget ( target ) {
 
-//            this._camera.lookAt( target )
+            //            this._camera.lookAt( target )
 
             if ( this._control ) {
 
@@ -437,6 +451,8 @@ export default Vue.component( 'TViewport3D', {
                     throw new RangeError( `Invalid effect parameter: ${newEffect}`, 'TViewport3D' )
 
             }
+
+            this._resize( this.$el )
 
         },
 
@@ -736,6 +752,7 @@ export default Vue.component( 'TViewport3D', {
         _stopLoop () {
 
             window.cancelAnimationFrame( this._frameId )
+            this._frameId = null
 
         },
 
@@ -821,29 +838,34 @@ export default Vue.component( 'TViewport3D', {
 
         /// Helpers
 
-        _fitCameraToWorld () {
+        _fitCameraToWorldBoundingBox () {
             'use strict'
 
-            const radius = []
+            const radius  = []
             const centers = []
             this.scene.traverse( child => {
 
                 if ( child.isMesh || child.isLineSegments ) {
 
-                    if( !child.geometry.boundingSphere ) {
+                    if ( !child.geometry.boundingSphere ) {
                         child.geometry.computeBoundingSphere()
                     }
+                    const boundingSphereCenter = child.geometry.boundingSphere.center
+                    const meshPosition = child.position
+                    const center = new Vector3().addVectors(boundingSphereCenter, meshPosition)
+
                     radius.push( child.geometry.boundingSphere.radius )
-                    centers.push( child.geometry.boundingSphere.center )
+                    centers.push( center )
 
                 }
 
             } )
 
-            const globalBarycenter = centers.reduce( ( a, b ) => { return new Vector3().addVectors( a, b )} )
-                                                    .divideScalar( centers.length )
-
-
+            let globalBarycenter = new Vector3()
+            if ( centers.length > 0 ) {
+                globalBarycenter = centers.reduce( ( a, b ) => { return new Vector3().addVectors( a, b )} )
+                                          .divideScalar( centers.length )
+            }
 
             let maxCubiqueDistance = 0
             for ( let barycenterIndex = 0, numberOfBarycenter = centers.length ; barycenterIndex < numberOfBarycenter ; barycenterIndex++ ) {
@@ -863,6 +885,9 @@ export default Vue.component( 'TViewport3D', {
             this._setCameraPosition( newCameraPosition )
             this._setCameraTarget( globalBarycenter )
 
+            this.$emit( 'cameraFitWorldBoundingBox' )
+
+        },
 
         _decimateVisibleMeshes () {
 
