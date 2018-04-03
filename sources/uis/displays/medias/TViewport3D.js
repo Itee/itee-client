@@ -1111,8 +1111,8 @@ export default Vue.component( 'TViewport3D', {
                         child.geometry.computeBoundingSphere()
                     }
                     const boundingSphereCenter = child.geometry.boundingSphere.center
-                    const meshPosition = child.position
-                    const center = new Vector3().addVectors(boundingSphereCenter, meshPosition)
+                    const meshPosition         = child.position
+                    const center               = new Vector3().addVectors( boundingSphereCenter, meshPosition )
 
                     radius.push( child.geometry.boundingSphere.radius )
                     centers.push( center )
