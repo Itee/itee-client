@@ -396,7 +396,156 @@ export default Vue.component( 'TViewport3D', {
                     break
 
                 case "pointerlock":
-                    this._control = new PointerLockControls( this._camera )
+                    var havePointerLock = 'pointerLockElement' in document || 'mozPointerLockElement' in document || 'webkitPointerLockElement' in document;
+                    if ( havePointerLock ) {
+
+                        const self    = this
+                        const element = this.$el
+
+                        function lockPointer () {
+
+                            // On débute par mettre l'élément en plein écran. L'implémentation actuelle
+                            // demande à ce que l'élément soit en plein écran (fullscreen) pour
+                            // pouvoir capturer le pointeur--c'est une chose qui sera probablement
+                            // modifiée dans le futur.
+                            element.requestFullscreen = element.requestFullscreen ||
+                                element.mozRequestFullscreen ||
+                                element.mozRequestFullScreen || // Le caractère 'S' majuscule de l'ancienne API. (note de traduction: ?)
+                                element.webkitRequestFullscreen
+
+                            element.requestFullscreen()
+
+                        }
+
+                        function fullscreenChange () {
+
+                            if ( document.webkitFullscreenElement === elem ||
+                                document.mozFullscreenElement === elem ||
+                                document.mozFullScreenElement === elem ) { // Le caractère 'S' majuscule de l'ancien API. (note de traduction: ?)
+                                // L'élément est en plein écran, nous pouvons maintenant faire une requête pour capturer le curseur.
+
+                                element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock
+                                element.requestPointerLock()
+
+                            }
+
+                        }
+
+                        function pointerlockchange ( event ) {
+
+                            if ( document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element ) {
+
+                                self._control.enabled = true
+
+                            } else {
+
+                                self._control.enabled = false
+
+                            }
+
+                        }
+
+                        function pointerlockerror ( event ) {
+
+                            console.error( event )
+
+                            self._control.enabled = false
+
+                        }
+
+                        this._control                       = new PointerLockControls( this._camera )
+                        this._control.isPointerLockControls = true
+                        this._pointerLockRaycaster          = new Raycaster( new Vector3(), new Vector3( 0, -1, 0 ), 0, 10 )
+                        this._moveForward                   = false
+                        this._moveBackward                  = false
+                        this._moveLeft                      = false
+                        this._moveRight                     = false
+                        this._canJump                       = false
+                        this._prevTime                      = performance.now()
+                        this._velocity                      = new Vector3()
+                        this._direction                     = new Vector3()
+                        this.scene.add( this._control.getObject() )
+
+                        // Hook pointer lock state change events
+                        document.addEventListener( 'fullscreenchange', fullscreenChange, false );
+                        document.addEventListener( 'mozfullscreenchange', fullscreenChange, false );
+                        document.addEventListener( 'webkitfullscreenchange', fullscreenChange, false );
+
+                        document.addEventListener( 'pointerlockchange', pointerlockchange, false )
+                        document.addEventListener( 'mozpointerlockchange', pointerlockchange, false )
+                        document.addEventListener( 'webkitpointerlockchange', pointerlockchange, false )
+
+                        document.addEventListener( 'pointerlockerror', pointerlockerror, false )
+                        document.addEventListener( 'mozpointerlockerror', pointerlockerror, false )
+                        document.addEventListener( 'webkitpointerlockerror', pointerlockerror, false )
+
+                        document.addEventListener( 'keydown', event => {
+
+                            switch ( event.keyCode ) {
+
+                                case 38: // up
+                                case 90: // z
+                                    self._moveForward = true
+                                    break
+
+                                case 37: // left
+                                case 81: // q
+                                    self._moveLeft = true
+                                    break
+
+                                case 40: // down
+                                case 83: // s
+                                    self._moveBackward = true
+                                    break
+
+                                case 39: // right
+                                case 68: // d
+                                    self._moveRight = true
+                                    break
+
+                                case 32: // space
+                                    if ( this._canJump === true ) {
+                                        this._velocity.y += 350
+                                    }
+                                    self._canJump = false
+                                    break
+                            }
+
+                        }, false )
+                        document.addEventListener( 'keyup', event => {
+
+                            switch ( event.keyCode ) {
+
+                                case 38: // up
+                                case 90: // z
+                                    self._moveForward = false
+                                    break
+
+                                case 37: // left
+                                case 81: // q
+                                    self._moveLeft = false
+                                    break
+
+                                case 40: // down
+                                case 83: // s
+                                    self._moveBackward = false
+                                    break
+
+                                case 39: // right
+                                case 68: // d
+                                    self._moveRight = false
+                                    break
+                            }
+
+                        }, false )
+
+                        lockPointer()
+
+                    } else {
+
+                        alert( 'Your browser doesn\'t seem to support Pointer Lock API' )
+                    }
+
                     break
 
                 case "trackball":
@@ -611,6 +760,51 @@ export default Vue.component( 'TViewport3D', {
             } else {
 
                 throw new Error( `Unmanaged control type: ${this._control}` )
+            } else if ( this._control.isPointerLockControls ) {
+
+                this._pointerLockRaycaster.ray.origin.copy( this._control.getObject().position )
+                this._pointerLockRaycaster.ray.origin.y -= 10
+
+                const intersections = this._pointerLockRaycaster.intersectObjects( this.scene )
+                const onObject      = intersections.length > 0
+                const time          = performance.now()
+                const delta         = ( time - this._prevTime ) / 1000
+
+                this._velocity.x -= this._velocity.x * 10.0 * delta
+                this._velocity.z -= this._velocity.z * 10.0 * delta
+                this._velocity.y -= 9.8 * 100.0 * delta // 100.0 = mass
+
+                this._direction.z = Number( this._moveForward ) - Number( this._moveBackward )
+                this._direction.x = Number( this._moveLeft ) - Number( this._moveRight )
+                this._direction.normalize(); // this ensures consistent movements in all directions
+
+                if ( this._moveForward || this._moveBackward ) {
+                    this._velocity.z -= this._direction.z * 400.0 * delta
+                }
+
+                if ( this._moveLeft || this._moveRight ) {
+                    this._velocity.x -= this._direction.x * 400.0 * delta
+                }
+
+                if ( onObject === true ) {
+                    this._velocity.y = Math.max( 0, this._velocity.y )
+                    this._canJump    = true
+                }
+
+                this._control.getObject().translateX( this._velocity.x * delta )
+                this._control.getObject().translateY( this._velocity.y * delta )
+                this._control.getObject().translateZ( this._velocity.z * delta )
+
+                if ( this._control.getObject().position.y < 10 ) {
+                    this._velocity.y                     = 0
+                    this._control.getObject().position.y = 10
+                    this._canJump                        = true
+                }
+
+                this._prevTime = time
+
+            }
+            else {
 
             }
 
