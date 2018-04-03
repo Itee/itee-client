@@ -20,7 +20,7 @@ export default Vue.component( 'TInputObject', {
             </div>
             <div v-if="!isCollapsed" class="card-body bg-transparent" style="overflow-y: auto;">
 
-                <div v-for="(property, key) in value">
+                <div v-for="(property, key) in filteredProperties">
                     <TInput v-if="key && value" :data="{label: key, value: property}" :onChange="function(newValue){_onChange(key, newValue)}" />
                     <TInput v-else-if="key && !value" :data="{label: key, value: null}" :onChange="function(newValue){_onChange(key, newValue)}" />
                     <TInput v-else-if="!key && value" :data="{label: '', value: property}" :onChange="function(newValue){_onChange(key, newValue)}" />
@@ -39,10 +39,38 @@ export default Vue.component( 'TInputObject', {
         }
 
     },
-    props:    [ 'label', 'value', 'onChange' ],
+    props:    [ 'label', 'value', 'onChange', 'filter' ],
+    computed: {
+
+        filteredProperties () {
+
+            if ( !this.filter ) {
+                return this.value
+            }
+
+            const filteredProperties = {}
+            const value              = this.value
+            const filter             = this.filter
+
+            Object.keys( value )
+                  .forEach( key => {
+
+                      const property = value[ key ]
+
+                      if ( filter( key, property ) ) {
+                          filteredProperties[ key ] = property
+                      }
+
+                  } )
+
+            return filteredProperties
+
+        },
+
+    },
     methods:  {
 
-        _toggleCollapse() {
+        _toggleCollapse () {
 
             this.isCollapsed = !this.isCollapsed
 
@@ -53,7 +81,17 @@ export default Vue.component( 'TInputObject', {
             //Todo: Should return a deep copy updated ??!
             this.onChange( key, newValue )
 
-        }
+        },
+
+        //        _availableProperty ( propertyName ) {
+        //
+        //            if ( !this.filters ) {
+        //                return true
+        //            }
+        //
+        //            return (this.filters.indexOf( propertyName ) === -1)
+        //
+        //        }
 
     }
 
