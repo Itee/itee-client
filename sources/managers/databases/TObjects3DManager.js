@@ -221,8 +221,8 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
         object.castShadow             = data.castShadow
         object.receiveShadow          = data.receiveShadow
         object.frustumCulled          = data.frustumCulled
-        object.renderOrder            = data.renderOrder
-        object.userData               = data.userData
+        object.renderOrder            = 0 //data.renderOrder
+        object.userData               = {} //data.userData
 
         if (
             objectType === 'Line' ||
