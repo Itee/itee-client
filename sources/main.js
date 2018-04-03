@@ -34,12 +34,10 @@ export function analyseEnvironment () {
 
 export function getRawMaterial ( environment ) {
 
-    const rawMaterial = extend( extend( extend( window.TConfigParameters || {}, window.TUrlParameters || {} ), environment || {} ), {
-        //        alloy: {
-        //            Foo: { template: '<div>foo</div>' },
-        //            Bar: { template: '<div>bar</div>' }
-        //        }
-    } )
+    const tConfigParameters = window.IteeConfig || {}
+    const tUrlParameters = window.IteeExternalConfig || {}
+    const tServerParameters = extend( tConfigParameters, tUrlParameters )
+    const rawMaterial = extend( tServerParameters, environment )
 
     return rawMaterial
 
