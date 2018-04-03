@@ -279,28 +279,32 @@ export default Vue.component( 'TViewport3D', {
 
             }
 
-        },
+            this._camera.position.set( position.x, position.y, position.z )
 
-        _setCameraPosition ( position ) {
-
-            this._camera.position.x = position.x
-            this._camera.position.y = position.y
-            this._camera.position.z = position.z
+            // update control
+            this._setCameraTarget( target )
 
         },
 
         _setCameraTarget ( target ) {
 
-            //            this._camera.lookAt( target )
-
             if ( this._control ) {
 
+                this._control.object   = this._camera
                 this._control.target.x = target.x
                 this._control.target.y = target.y
                 this._control.target.z = target.z
+                this._control.update()
+
+                // Todo: need to check about start control event and repopulate in case of external change
+                this._populateVisibleMeshes()
+
+            } else {
+
+                this._camera.lookAt( target )
 
             }
-            //            this._camera.lookAt( this.camera.target )
+
         },
 
         _setControl ( newControl, oldControl ) {
