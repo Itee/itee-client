@@ -982,16 +982,33 @@ export default Vue.component( 'TViewport3D', {
 
         _getRaycastableCache () {
 
+            const self = this
             if ( this.needCacheUpdate || this._cache.raycastables.length === 0 ) {
 
                 this._cache.raycastables = []
-                this.scene.traverse( object => {
 
-                    if ( object.visible && object.isRaycastable ) {
-                        this._cache.raycastables.push( object )
+                updateRaycastableChildren( this.scene.children )
+
+                function updateRaycastableChildren ( children ) {
+
+                    for ( let i = 0, n = children.length ; i < n ; i++ ) {
+                        let child = children[ i ]
+
+                        if ( child.visible ) {
+
+                            if ( child.isGroup ) {
+                                updateRaycastableChildren( child.children )
+                            } else if ( child.isRaycastable ) {
+                                self._cache.raycastables.push( child )
+                                updateRaycastableChildren( child.children )
+
+                            }
+
+                        }
+
                     }
 
-                } )
+                }
 
                 this.$emit( 'cacheUpdated', 'raycastables' )
 
