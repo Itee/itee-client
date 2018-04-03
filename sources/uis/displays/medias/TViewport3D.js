@@ -43,6 +43,7 @@ import { PointerLockControls } from '../../../../node_modules/threejs-full-es6/s
 import { TrackballControls } from '../../../../node_modules/threejs-full-es6/sources/controls/TrackballControls'
 import { TransformControls } from '../../../../node_modules/threejs-full-es6/sources/controls/TransformControls'
 import { VRControls } from '../../../../node_modules/threejs-full-es6/sources/controls/VRControls'
+import { TOrbitControlsHelper } from '../../../objects3d/TOrbitControlsHelper'
 
 // Effects
 import { AnaglyphEffect } from '../../../../node_modules/threejs-full-es6/sources/effects/AnaglyphEffect'
