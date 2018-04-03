@@ -1020,13 +1020,22 @@ export default Vue.component( 'TViewport3D', {
 
         _getDecimateCache () {
 
-            // TODO: should be params 
+            // TODO: should be params
             const decimateValue = 0.9
 
             if ( this.needCacheUpdate || this._cache.decimables.length === 0 ) {
 
-                const meshes = []
-                this.scene.traverse( object => {
+                const meshes  = []
+                //Todo: Should be able to specify the Group/Layers/whatever where decimate
+                let dataGroup = this.scene.getObjectByName( 'Données' )
+                if ( !dataGroup ) {
+                    dataGroup = this.scene.getObjectByName( 'Sites' )
+                }
+                if ( !dataGroup ) {
+                    dataGroup = this.scene
+                }
+
+                dataGroup.traverse( object => {
 
                     if ( object.isMesh ) {
                         meshes.push( object )
