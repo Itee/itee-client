@@ -926,7 +926,7 @@ export default Vue.component( 'TViewport3D', {
                     maxCubiqueDistance = currentCubiqueDistance
                 }
             }
-            const maxDistance = Math.sqrt( maxCubiqueDistance ) * 1.5 || 100
+            const maxDistance = Math.sqrt( maxCubiqueDistance ) || 100
 
             const newCameraPosition = {
                 x: globalBarycenter.x + maxDistance,
