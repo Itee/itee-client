@@ -1142,8 +1142,11 @@ export default Vue.component( 'TViewport3D', {
                 z: globalBarycenter.z + maxDistance
             }
 
-            this._setCameraPosition( newCameraPosition )
+            this._camera.position.set( newCameraPosition.x, newCameraPosition.y, newCameraPosition.z )
             this._setCameraTarget( globalBarycenter )
+
+            // Todo: need to check about start control event and repopulate in case of external change
+            this._populateVisibleMeshes()
 
             this.$emit( 'cameraFitWorldBoundingBox' )
 
