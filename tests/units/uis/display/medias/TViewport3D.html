@@ -317,12 +317,6 @@
                             plane.isRaycastable = false
                             pointersGroup.add( plane )
 
-                            //////////////
-
-                            const modifiersGroup = new Itee.Group()
-                            modifiersGroup.name  = "Modificateurs"
-                            this.viewport.scene.add( modifiersGroup )
-
                         },
 
                         _fetchData () {
@@ -362,6 +356,12 @@
                                 cubesGroup.add( cube )
 
                             }
+
+                            //////////////
+
+                            const modifiersGroup = new Itee.Group()
+                            modifiersGroup.name  = "Modificateurs"
+                            this.viewport.scene.add( modifiersGroup )
 
                         },
 
