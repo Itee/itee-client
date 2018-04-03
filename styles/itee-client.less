@@ -88,7 +88,7 @@ body {
             .tMenuItem {
                 padding: 5px 16px;
 
-                &:hover {
+                &:hover, &.isActive {
                     margin-bottom:    -1px;
                     border-bottom:    1px solid #4eaeff;
                     background-color: rgba(150, 150, 150, 1);
@@ -151,10 +151,20 @@ body {
         padding: 10px 15px;
         cursor:  pointer;
 
-        &:hover {
+        &:not(.disable):hover, &.isActive {
             margin-bottom:    -1px;
             border-bottom:    1px solid #4eaeff;
             background-color: rgba(150, 150, 150, 1);
+        }
+
+        &.disabled {
+            cursor: not-allowed;
+            background-color: rgb(95, 95, 95);
+
+            svg {
+                cursor: not-allowed;
+            }
+
         }
 
         > * {
