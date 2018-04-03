@@ -357,6 +357,38 @@ export default Vue.component( 'TViewport3D', {
                     this._control.addEventListener( 'change', this._decimateVisibleMeshes.bind( this ), true )
                     this._control.addEventListener( 'end', this._populateVisibleMeshes.bind( this ), true )
 
+                    let envGroup = this.scene.getObjectByName( 'Environement' )
+                    if ( !envGroup ) {
+
+                        envGroup      = new Group()
+                        envGroup.name = "Environement"
+                        this.scene.add( envGroup )
+
+                    }
+
+                    let helpGroup = envGroup.getObjectByName( 'Aides' )
+                    if ( !helpGroup ) {
+
+                        helpGroup      = new Group()
+                        helpGroup.name = "Aides"
+                        envGroup.add( helpGroup )
+
+                    }
+
+                    let controlHelper = helpGroup.getObjectByName( 'Orbital' )
+                    if ( !controlHelper ) {
+
+                        controlHelper      = new TOrbitControlsHelper( this._control )
+                        controlHelper.name = "Orbital"
+                        helpGroup.add( controlHelper )
+
+                    } else {
+
+                        controlHelper.dispose()
+                        controlHelper.control = this._control
+                        controlHelper.impose()
+
+                    }
                     break
 
                 case "orthographictrackball":
