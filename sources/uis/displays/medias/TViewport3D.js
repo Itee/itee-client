@@ -857,7 +857,11 @@ export default Vue.component( 'TViewport3D', {
                 return
             }
 
-            this._renderer.render( this.scene, this._camera )
+            const scene = this.scene
+            const camera = this._camera
+            const renderer = this._renderer
+
+            renderer.render( scene, camera )
 
         },
 
