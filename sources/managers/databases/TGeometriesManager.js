@@ -414,7 +414,7 @@ TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.pr
 
         // Extract index
         const dataIndexes = data.index
-        if ( dataIndexes ) {
+        if ( dataIndexes && dataIndexes.array && dataIndexes.array.length > 0 ) {
             bufferGeometry.index = new BufferAttribute( new Uint32Array( dataIndexes.array ), dataIndexes.itemSize, dataIndexes.normalized )
         }
 
@@ -424,10 +424,20 @@ TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.pr
 
             let attributes = {}
 
-            // TODO: make the other attribs or using loop over them !!
+            // TODO: using loop instead !!
             const positionAttributes = dataAttributes.position
             if ( positionAttributes ) {
                 attributes[ 'position' ] = new BufferAttribute( new Float32Array( positionAttributes.array ), positionAttributes.itemSize, positionAttributes.normalized )
+            }
+
+            const normalAttributes = dataAttributes.normal
+            if ( normalAttributes ) {
+                attributes[ 'normal' ] = new BufferAttribute( new Float32Array( normalAttributes.array ), normalAttributes.itemSize, normalAttributes.normalized )
+            }
+
+            const uvAttributes = dataAttributes.uv
+            if ( uvAttributes ) {
+                attributes[ 'uv' ] = new BufferAttribute( new Float32Array( uvAttributes.array ), uvAttributes.itemSize, uvAttributes.normalized )
             }
 
             bufferGeometry.attributes = attributes
