@@ -17,7 +17,7 @@ export default Vue.component( 'TTreeItem', {
             <TContainerHorizontal class="tTreeItemContent" hAlign="start" vAlign="center">
                 <TIcon v-if="haveChildren" :iconProps=computeToggleChildrenIconClass :iconOn="{click: toggleChildren}" />
                 <label @click="function () { updateSelectionState( onClick ) }">{{name}}</label>
-                <span v-for="modifier in modifiers" class="tTreeItemModifiers">
+                <span v-if="isSelected" v-for="modifier in modifiers" class="tTreeItemModifiers">
                     <TIcon v-if="modifier.type === 'checkbox'" :iconProps=computeCheckboxClass :iconOn="{click: function () { updateCheckboxState( modifier.onClick ) } }" />
                     <input v-else-if="modifier.type === 'button'" type="button" @click="modifier.onClick" :value="modifier.value"/>
                     <input v-else-if="modifier.type === 'range'" type="range" @change="modifier.onChange" />
@@ -26,7 +26,7 @@ export default Vue.component( 'TTreeItem', {
                     <label v-else>Error: Unknown modifier type !!!</label>
                 </span>
             </TContainerHorizontal>
-            <ul v-if="haveChildren" :class=computeTreeItemChildrenClass :style=computeChildrenStyle>
+            <ul v-if="haveChildren && showChildren && (_currentDeepLevel < maxDeepLevel)" :class=computeTreeItemChildrenClass :style=computeChildrenStyle>
                 <TTreeItem
                     v-for="child in filteredChildren"
                     v-bind:key="child.id"
@@ -35,6 +35,9 @@ export default Vue.component( 'TTreeItem', {
                     v-bind:modifiers="child.modifiers"
                     v-bind:children="child.children"
                     v-bind:childrenFilter="childrenFilter"
+                    v-bind:needUpdate="needUpdate"
+                    v-bind:maxDeepLevel="maxDeepLevel"
+                    v-bind:_currentDeepLevel="_currentDeepLevel + 1"
                 />
             </ul>
         </li>
@@ -43,23 +46,23 @@ export default Vue.component( 'TTreeItem', {
 
         return {
             showChildren: false,
-            isSelected: false,
-            isVisible: true
+            isSelected:   false,
+            isVisible:    true
         }
 
     },
-    props:    [ 'id', 'name', 'onClick', 'modifiers', 'children', 'childrenFilter' ],
+    props:    [ 'id', 'name', 'onClick', 'modifiers', 'children', 'childrenFilter', 'needUpdate', 'maxDeepLevel', '_currentDeepLevel' ],
     computed: {
 
-        computeTreeItemClass() {
+        computeTreeItemClass () {
 
             return (this.isSelected) ? 'tTreeItem selected' : 'tTreeItem'
 
         },
 
-        computeTreeItemChildrenClass() {
+        computeTreeItemChildrenClass () {
 
-            if( !this.children || this.children.length === 0) {
+            if ( !this.children || this.children.length === 0 ) {
                 return 'tTreeItemChildren'
             } else if ( this.children.length === 1 ) {
                 return 'tTreeItemChildren singleChild'
@@ -72,7 +75,7 @@ export default Vue.component( 'TTreeItem', {
         computeToggleChildrenIconClass () {
 
             return (this.showChildren) ? "chevron-circle-down" : "chevron-circle-right"
-//            return (this.showChildren) ? "chevron-down" : "chevron-right"
+            //            return (this.showChildren) ? "chevron-down" : "chevron-right"
 
         },
 
@@ -90,45 +93,52 @@ export default Vue.component( 'TTreeItem', {
 
         },
 
-        filteredChildren() {
+        filteredChildren () {
 
-            if(!this.childrenFilter) {
+            if ( !this.childrenFilter ) {
                 return this.children
             }
 
-            return this.children.filter(this.childrenFilter)
-
-        },
-
-        haveChildren() {
-
-            return this.children && this.children.length > 0
+            return this.children.filter( this.childrenFilter )
 
         }
 
     },
-    methods: {
-        
-        toggleChildren() {
+    methods:  {
+
+        // need to be a methods in view to be rerender on every template update
+        haveChildren () {
+
+            return (this.children && this.children.length > 0)
+
+        },
+
+        toggleChildren () {
 
             this.showChildren = !this.showChildren
 
         },
 
-        updateCheckboxState( onClickCallback ) {
+        updateCheckboxState ( onClickCallback ) {
 
             this.isVisible = !this.isVisible
-            onClickCallback()
+
+            if ( onClickCallback ) {
+                onClickCallback()
+            }
 
         },
 
-         updateSelectionState( onClickCallback ) {
+        updateSelectionState ( onClickCallback ) {
 
             this.isSelected = !this.isSelected
-            onClickCallback()
+
+            if ( onClickCallback ) {
+                onClickCallback()
+            }
 
         }
-        
+
     }
 
 } )
