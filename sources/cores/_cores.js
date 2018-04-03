@@ -7,9 +7,9 @@
  */
 
 /* eslint-env browser */
-export { TApplication } from './TApplication'
+//export { TApplication } from './TApplication'
 export { TCache } from './TCache'
 export * from './TConstants'
 export { TFile } from './TFile'
 export { TOrchestrator } from './TOrchestrator'
-export { TViewport } from './TViewport'
+//export { TViewport } from './TViewport'
