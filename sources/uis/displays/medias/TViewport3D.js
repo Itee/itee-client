@@ -117,28 +117,8 @@ export default Vue.component( 'TViewport3D', {
         camera ( newCamera, oldCamera ) {
 
             this._setCamera( newCamera, oldCamera )
-            this._setControl( this.control )
-            this._resize( this.$el )
 
         },
-        //
-        //        'camera.type': function ( newCameraType, oldCameraType ) {
-        //
-        //            this._setCameraType( newCameraType )
-        //
-        //        },
-        //
-        //        'camera.position': function ( newCameraPosition, oldCameraPosition ) {
-        //
-        //            this._setCameraPosition( newCameraPosition )
-        //
-        //        },
-        //
-        //        'camera.target': function ( newCameraTarget, oldCameraTarget ) {
-        //
-        //            this._setCameraTarget( newCameraTarget )
-        //
-        //        },
 
         control ( newControl, oldControl ) {
 
@@ -206,13 +186,11 @@ export default Vue.component( 'TViewport3D', {
                 return
             }
 
-            this._setCameraType( newCamera.type )
-            this._setCameraPosition( newCamera.position )
-            this._setCameraTarget( newCamera.target )
+            if ( this._camera ) { this._camera = null }
 
-        },
-
-        _setCameraType ( type ) {
+            const type     = newCamera.type
+            const position = newCamera.position
+            const target   = newCamera.target
 
             switch ( type ) {
 
@@ -333,28 +311,38 @@ export default Vue.component( 'TViewport3D', {
                     break
 
                 case "deviceorientation":
-                    this._control = new DeviceOrientationControls( this._camera )
+                    this._control                             = new DeviceOrientationControls( this._camera )
+                    this._control.isDeviceOrientationControls = true
                     break
 
                 case "drag":
-                    this._control = new DragControls( this.scene.children[ 0 ].children[ 2 ].children, this._camera, this.$el )
+                    this._control                = new DragControls( this.scene.children[ 1 ], this._camera, this.$el )
+                    this._control.isDragControls = true
                     break
 
                 case "editor":
-                    this._control = new EditorControls( this._camera, this.$el )
+                    this._control                  = new EditorControls( this._camera, this.$el )
+                    this._control.isEditorControls = true
                     break
 
                 case "firstperson":
-                    this._control = new FirstPersonControls( this._camera, this.$el )
+                    this._control                       = new FirstPersonControls( this._camera, this.$el )
+                    this._control.isFirstPersonControls = true
+                    this._control.movementSpeed         = 10.0
+                    this._control.lookSpeed             = 0.1
                     break
 
                 case "fly":
                     // Should it be this._selected ???
-                    this._control = new FlyControls( this._camera, this.$el )
+                    this._control               = new FlyControls( this._camera, this.$el )
+                    this._control.isFlyControls = true
+                    this._control.movementSpeed = 10.0
+                    this._control.rollSpeed     = 0.1
                     break
 
                 case "orbit":
-                    this._control = new OrbitControls( this._camera, this.$el )
+                    this._control                 = new OrbitControls( this._camera, this.$el )
+                    this._control.isOrbitControls = true
                     this._control.addEventListener( 'change', this._decimateVisibleMeshes.bind( this ), true )
                     this._control.addEventListener( 'end', this._populateVisibleMeshes.bind( this ), true )
 
@@ -393,7 +381,8 @@ export default Vue.component( 'TViewport3D', {
                     break
 
                 case "orthographictrackball":
-                    this._control = new OrthographicTrackballControls( this._camera, this.$el )
+                    this._control                                 = new OrthographicTrackballControls( this._camera, this.$el )
+                    this._control.isOrthographicTrackballControls = true
                     break
 
                 case "pointerlock":
@@ -550,17 +539,20 @@ export default Vue.component( 'TViewport3D', {
                     break
 
                 case "trackball":
-                    this._control = new TrackballControls( this._camera, this.$el )
+                    this._control                     = new TrackballControls( this._camera, this.$el )
+                    this._control.isTrackballControls = true
                     break
 
                 case "transform":
-                    this._control = new TransformControls( this._camera, this.$el )
+                    this._control                     = new TransformControls( this._camera, this.$el )
+                    this._control.isTransformControls = true
                     break
 
                 case "vr":
-                    this._control = new VRControls( this._camera, ( error ) => {
+                    this._control              = new VRControls( this._camera, ( error ) => {
                         console.error( error )
                     } )
+                    this._control.isVRControls = true
                     break
 
                 default:
@@ -568,6 +560,8 @@ export default Vue.component( 'TViewport3D', {
                     break
 
             }
+
+            //            this._control = newControl
 
         },
 
@@ -732,35 +726,48 @@ export default Vue.component( 'TViewport3D', {
 
             if ( !this._control ) { return }
 
-            if (
-                this._control instanceof EditorControls ||
-                this._control instanceof DragControls ||
-                this._control instanceof PointerLockControls
-            ) {
+            if ( this._control.isEditorControls ) {
 
-                // Do nothing here...
+                return
 
-            } else if (
-                this._control instanceof FirstPersonControls ||
-                this._control instanceof FlyControls
-            ) {
+            } else if ( this._control.isDragControls ) {
+
+                return
+
+            } else if ( this._control.isFirstPersonControls ) {
 
                 this._control.update( this.$data._timer.getDelta() )
 
-            } else if (
-                this._control instanceof OrbitControls ||
-                this._control instanceof DeviceOrientationControls ||
-                this._control instanceof OrthographicTrackballControls ||
-                this._control instanceof TrackballControls ||
-                this._control instanceof TransformControls ||
-                this._control instanceof VRControls
-            ) {
+            } else if ( this._control.isFlyControls ) {
+
+                this._control.update( this.$data._timer.getDelta() )
+
+            } else if ( this._control.isOrbitControls ) {
+
+                if ( this._control.autoRotate ) {
+                    this._control.update()
+                }
+
+            } else if ( this._control.isDeviceOrientationControls ) {
 
                 this._control.update()
 
-            } else {
+            } else if ( this._control.isOrthographicTrackballControls ) {
 
-                throw new Error( `Unmanaged control type: ${this._control}` )
+                this._control.update()
+
+            } else if ( this._control.isTrackballControls ) {
+
+                this._control.update()
+
+            } else if ( this._control.isTransformControls ) {
+
+                this._control.update()
+
+            } else if ( this._control.isVRControls ) {
+
+                this._control.update()
+
             } else if ( this._control.isPointerLockControls ) {
 
                 this._pointerLockRaycaster.ray.origin.copy( this._control.getObject().position )
@@ -806,6 +813,8 @@ export default Vue.component( 'TViewport3D', {
 
             }
             else {
+
+                console.error( `Unmanaged control type: ${this._control}` )
 
             }
 
