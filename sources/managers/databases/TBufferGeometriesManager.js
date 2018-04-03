@@ -10,13 +10,13 @@
 
 import { TDataBaseManager } from '../TDataBaseManager'
 
-import { BufferGeometry } from '../../../node_modules/threejs-full-es6/sources/core/BufferGeometry'
-import { BoxBufferGeometry } from '../../../node_modules/threejs-full-es6/sources/geometries/BoxGeometry'
-
-import { BufferAttribute } from '../../../node_modules/threejs-full-es6/sources/core/BufferAttribute'
-import { Vector3 } from '../../../node_modules/threejs-full-es6/sources/math/Vector3'
-import { Face3 } from '../../../node_modules/threejs-full-es6/sources/core/Face3'
-
+import {
+    BoxBufferGeometry,
+    BufferAttribute,
+    BufferGeometry,
+    Face3,
+    Vector3,
+} from 'threejs-full-es6'
 
 /**
  *
@@ -45,7 +45,7 @@ TBufferGeometriesManager.prototype = Object.assign( Object.create( TDataBaseMana
     convertJsonToObject3D ( data, onError ) {
 
         const textureType = data.type
-        let texture = undefined
+        let texture       = undefined
 
         switch ( textureType ) {
 

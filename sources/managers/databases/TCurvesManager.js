@@ -10,21 +10,25 @@
 
 import { TDataBaseManager } from '../TDataBaseManager'
 
-import { Curve } from '../../../node_modules/threejs-full-es6/sources/curves/Curve'
-import { ArcCurve } from '../../../node_modules/threejs-full-es6/sources/curves/ArcCurve'
-import { CatmullRomCurve3 } from '../../../node_modules/threejs-full-es6/sources/curves/CatmullRomCurve3'
-import { CubicBezierCurve } from '../../../node_modules/threejs-full-es6/sources/curves/CubicBezierCurve'
-import { CubicBezierCurve3 } from '../../../node_modules/threejs-full-es6/sources/curves/CubicBezierCurve3'
-import { EllipseCurve } from '../../../node_modules/threejs-full-es6/sources/curves/EllipseCurve'
-import { LineCurve } from '../../../node_modules/threejs-full-es6/sources/curves/LineCurve'
-import { LineCurve3 } from '../../../node_modules/threejs-full-es6/sources/curves/LineCurve3'
-import { QuadraticBezierCurve } from '../../../node_modules/threejs-full-es6/sources/curves/QuadraticBezierCurve'
-import { QuadraticBezierCurve3 } from '../../../node_modules/threejs-full-es6/sources/curves/QuadraticBezierCurve3'
-import { SplineCurve } from '../../../node_modules/threejs-full-es6/sources/curves/SplineCurve'
+import {
+    ArcCurve,
+    CatmullRomCurve3,
+    CubicBezierCurve,
+    CubicBezierCurve3,
+    Curve,
+    EllipseCurve,
+    LineCurve,
+    LineCurve3,
+    QuadraticBezierCurve,
+    QuadraticBezierCurve3,
+    SplineCurve,
+} from 'threejs-full-es6'
 
-import { CurvePath } from '../../../node_modules/threejs-full-es6/sources/core/CurvePath'
-import { Path } from '../../../node_modules/threejs-full-es6/sources/core/Path'
-import { Shape } from '../../../node_modules/threejs-full-es6/sources/core/Shape'
+import {
+    CurvePath,
+    Path,
+    Shape
+} from 'threejs-full-es6'
 
 /**
  *
@@ -53,7 +57,7 @@ TCurvesManager.prototype = Object.assign( Object.create( TDataBaseManager.protot
     convertJsonToObject3D ( data, onError ) {
 
         const curveType = data.type
-        let curve = undefined
+        let curve       = undefined
 
         switch ( curveType ) {
 
@@ -116,7 +120,7 @@ TCurvesManager.prototype = Object.assign( Object.create( TDataBaseManager.protot
                 break
 
             default:
-                onError(`Invalid curve type: ${curveType}`)
+                onError( `Invalid curve type: ${curveType}` )
                 break
 
         }
@@ -144,7 +148,7 @@ Object.defineProperties( TCurvesManager.prototype, {
                 let data    = undefined
                 for ( let dataIndex = 0, numberOfDatas = jsonData.length ; dataIndex < numberOfDatas ; dataIndex++ ) {
 
-                    data   = jsonData[ dataIndex ]
+                    data = jsonData[ dataIndex ]
                     object = this.convertJsonToObject3D( data, onError )
 
                     if ( object ) { objects.push( object ) }

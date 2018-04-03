@@ -11,21 +11,22 @@
 /* eslint-env browser */
 
 import {
-    STLLoader,
-    OBJLoader,
-    OBJLoader2,
+    ColladaLoader,
     FBXLoader,
     MTLLoader,
     ObjectLoader,
-    ColladaLoader,
+    OBJLoader,
+    OBJLoader2,
+    STLLoader,
 
     DoubleSide,
     DefaultLoadingManager,
     Group,
     Mesh,
+    MeshPhongMaterial,
     ShapeBufferGeometry,
-    MeshPhongMaterial
 } from 'threejs-full-es6'
+
 import { FBXLoader2 } from './FBXLoader2'
 import { ASCLoader } from './ASCLoader'
 import { SHPLoader } from './SHPLoader'
@@ -133,7 +134,7 @@ Object.assign( TUniversalLoader.prototype, {
         } else if ( files instanceof File ) {
 
             const fileUrl = URL.createObjectURL( files ) + '/' + files.name
-            this.loadSingleFile( {url: fileUrl}, onLoad, onProgress, onError )
+            this.loadSingleFile( { url: fileUrl }, onLoad, onProgress, onError )
 
         } else if ( TValidator.isObject( files ) ) {
 
@@ -301,7 +302,7 @@ Object.assign( TUniversalLoader.prototype, {
      * @param onError
      * @private
      */
-    _loadDae( file, onLoad, onProgress, onError ) {
+    _loadDae ( file, onLoad, onProgress, onError ) {
 
         const loader = new ColladaLoader( this.manager )
         loader.load(

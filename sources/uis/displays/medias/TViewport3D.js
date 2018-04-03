@@ -10,56 +10,53 @@
 
 /* eslint-env browser */
 
-// Constants
 import {
+    // Constants
     BasicShadowMap,
     PCFShadowMap,
-    PCFSoftShadowMap
-} from '../../../../node_modules/threejs-full-es6/sources/constants'
+    PCFSoftShadowMap,
+    // Cameras
+    ArrayCamera,
+    CinematicCamera,
+    CubeCamera,
+    OrthographicCamera,
+    PerspectiveCamera,
+    StereoCamera,
+    // Controls
+    DeviceOrientationControls,
+    DragControls,
+    EditorControls,
+    FirstPersonControls,
+    FlyControls,
+    OrbitControls,
+    OrthographicTrackballControls,
+    PointerLockControls,
+    TrackballControls,
+    TransformControls,
+    VRControls,
+    // Effects
+    AnaglyphEffect,
+    AsciiEffect,
+    OutlineEffect,
+    ParallaxBarrierEffect,
+    PeppersGhostEffect,
+    StereoEffect,
+    VREffect,
+    // Renderers
+    CSS2DRenderer,
+    CSS3DRenderer,
+    SVGRenderer,
+    WebGL2Renderer,
+    WebGLRenderer,
+    // Internals
+    Clock,
+    Group,
+    Raycaster,
+    Vector3,
+} from 'threejs-full-es6'
 
-// Internals
-import { Clock } from '../../../../node_modules/threejs-full-es6/sources/core/Clock'
-import { Vector3 } from '../../../../node_modules/threejs-full-es6/sources/math/Vector3'
 import { default as Stats } from '../../../../node_modules/stats.js/src/Stats'
-import { Raycaster } from '../../../../node_modules/threejs-full-es6/sources/core/Raycaster'
-
-// Cameras
-import { ArrayCamera } from '../../../../node_modules/threejs-full-es6/sources/cameras/ArrayCamera'
-import { CinematicCamera } from '../../../../node_modules/threejs-full-es6/sources/cameras/CinematicCamera'
-import { CubeCamera } from '../../../../node_modules/threejs-full-es6/sources/cameras/CubeCamera'
-import { OrthographicCamera } from '../../../../node_modules/threejs-full-es6/sources/cameras/OrthographicCamera'
-import { PerspectiveCamera } from '../../../../node_modules/threejs-full-es6/sources/cameras/PerspectiveCamera'
-import { StereoCamera } from '../../../../node_modules/threejs-full-es6/sources/cameras/StereoCamera'
-
-// Controls
-import { DeviceOrientationControls } from '../../../../node_modules/threejs-full-es6/sources/controls/DeviceOrientationControls'
-import { DragControls } from '../../../../node_modules/threejs-full-es6/sources/controls/DragControls'
-import { EditorControls } from '../../../../node_modules/threejs-full-es6/sources/controls/EditorControls'
-import { FirstPersonControls } from '../../../../node_modules/threejs-full-es6/sources/controls/FirstPersonControls'
-import { FlyControls } from '../../../../node_modules/threejs-full-es6/sources/controls/FlyControls'
-import { OrbitControls } from '../../../../node_modules/threejs-full-es6/sources/controls/OrbitControls'
-import { OrthographicTrackballControls } from '../../../../node_modules/threejs-full-es6/sources/controls/OrthographicTrackballControls'
-import { PointerLockControls } from '../../../../node_modules/threejs-full-es6/sources/controls/PointerLockControls'
-import { TrackballControls } from '../../../../node_modules/threejs-full-es6/sources/controls/TrackballControls'
-import { TransformControls } from '../../../../node_modules/threejs-full-es6/sources/controls/TransformControls'
-import { VRControls } from '../../../../node_modules/threejs-full-es6/sources/controls/VRControls'
 import { TOrbitControlsHelper } from '../../../objects3d/TOrbitControlsHelper'
-
-// Effects
-import { AnaglyphEffect } from '../../../../node_modules/threejs-full-es6/sources/effects/AnaglyphEffect'
-import { AsciiEffect } from '../../../../node_modules/threejs-full-es6/sources/effects/AsciiEffect'
-import { OutlineEffect } from '../../../../node_modules/threejs-full-es6/sources/effects/OutlineEffect'
-import { ParallaxBarrierEffect } from '../../../../node_modules/threejs-full-es6/sources/effects/ParallaxBarrierEffect'
-import { PeppersGhostEffect } from '../../../../node_modules/threejs-full-es6/sources/effects/PeppersGhostEffect'
-import { StereoEffect } from '../../../../node_modules/threejs-full-es6/sources/effects/StereoEffect'
-import { VREffect } from '../../../../node_modules/threejs-full-es6/sources/effects/VREffect'
-
-// Renderers
-import { CSS2DRenderer } from '../../../../node_modules/threejs-full-es6/sources/renderers/CSS2DRenderer'
-import { CSS3DRenderer } from '../../../../node_modules/threejs-full-es6/sources/renderers/CSS3DRenderer'
-import { SVGRenderer } from '../../../../node_modules/threejs-full-es6/sources/renderers/SVGRenderer'
-import { WebGL2Renderer } from '../../../../node_modules/threejs-full-es6/sources/renderers/WebGL2Renderer'
-import { WebGLRenderer } from '../../../../node_modules/threejs-full-es6/sources/renderers/WebGLRenderer'
 
 // Vue
 import Vue from '../../../../node_modules/vue/dist/vue.esm'
@@ -857,8 +854,8 @@ export default Vue.component( 'TViewport3D', {
                 return
             }
 
-            const scene = this.scene
-            const camera = this._camera
+            const scene    = this.scene
+            const camera   = this._camera
             const renderer = this._renderer
 
             renderer.render( scene, camera )

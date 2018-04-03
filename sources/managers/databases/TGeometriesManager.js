@@ -14,97 +14,61 @@
  */
 
 /* eslint-env browser */
-import { TDataBaseManager } from '../TDataBaseManager'
-
-import { Geometry } from '../../../node_modules/threejs-full-es6/sources/core/Geometry'
-import { BufferGeometry } from '../../../node_modules/threejs-full-es6/sources/core/BufferGeometry'
 import {
+    Geometry,
+    BufferGeometry,
     BoxGeometry,
-    BoxBufferGeometry
-} from '../../../node_modules/threejs-full-es6/sources/geometries/BoxGeometry'
-import {
+    BoxBufferGeometry,
     CircleGeometry,
-    CircleBufferGeometry
-} from '../../../node_modules/threejs-full-es6/sources/geometries/CircleGeometry'
-import {
+    CircleBufferGeometry,
     CylinderGeometry,
-    CylinderBufferGeometry
-} from '../../../node_modules/threejs-full-es6/sources/geometries/CylinderGeometry'
-import {
+    CylinderBufferGeometry,
     ConeGeometry,
-    ConeBufferGeometry
-} from '../../../node_modules/threejs-full-es6/sources/geometries/ConeGeometry'
-import { EdgesGeometry } from '../../../node_modules/threejs-full-es6/sources/geometries/EdgesGeometry'
-import {
+    ConeBufferGeometry,
+    EdgesGeometry,
     DodecahedronGeometry,
-    DodecahedronBufferGeometry
-} from '../../../node_modules/threejs-full-es6/sources/geometries/DodecahedronGeometry'
-import {
+    DodecahedronBufferGeometry,
     ExtrudeGeometry,
-    ExtrudeBufferGeometry
-} from '../../../node_modules/threejs-full-es6/sources/geometries/ExtrudeGeometry'
-import {
+    ExtrudeBufferGeometry,
     IcosahedronGeometry,
-    IcosahedronBufferGeometry
-} from '../../../node_modules/threejs-full-es6/sources/geometries/IcosahedronGeometry'
-import {
+    IcosahedronBufferGeometry,
     LatheGeometry,
-    LatheBufferGeometry
-} from '../../../node_modules/threejs-full-es6/sources/geometries/LatheGeometry'
-import {
+    LatheBufferGeometry,
     OctahedronGeometry,
-    OctahedronBufferGeometry
-} from '../../../node_modules/threejs-full-es6/sources/geometries/OctahedronGeometry'
-import {
+    OctahedronBufferGeometry,
     ParametricGeometry,
-    ParametricBufferGeometry
-} from '../../../node_modules/threejs-full-es6/sources/geometries/ParametricGeometry'
-import {
+    ParametricBufferGeometry,
     PlaneGeometry,
-    PlaneBufferGeometry
-} from '../../../node_modules/threejs-full-es6/sources/geometries/PlaneGeometry'
-import {
+    PlaneBufferGeometry,
     PolyhedronGeometry,
-    PolyhedronBufferGeometry
-} from '../../../node_modules/threejs-full-es6/sources/geometries/PolyhedronGeometry'
-import {
+    PolyhedronBufferGeometry,
     RingGeometry,
-    RingBufferGeometry
-} from '../../../node_modules/threejs-full-es6/sources/geometries/RingGeometry'
-import {
+    RingBufferGeometry,
     ShapeGeometry,
-    ShapeBufferGeometry
-} from '../../../node_modules/threejs-full-es6/sources/geometries/ShapeGeometry'
-import {
+    ShapeBufferGeometry,
     TetrahedronGeometry,
-    TetrahedronBufferGeometry
-} from '../../../node_modules/threejs-full-es6/sources/geometries/TetrahedronGeometry'
-import {
+    TetrahedronBufferGeometry,
     TextGeometry,
-    TextBufferGeometry
-} from '../../../node_modules/threejs-full-es6/sources/geometries/TextGeometry'
-import {
+    TextBufferGeometry,
     TorusGeometry,
-    TorusBufferGeometry
-} from '../../../node_modules/threejs-full-es6/sources/geometries/TorusGeometry'
-import {
+    TorusBufferGeometry,
     TorusKnotGeometry,
-    TorusKnotBufferGeometry
-} from '../../../node_modules/threejs-full-es6/sources/geometries/TorusKnotGeometry'
-import {
+    TorusKnotBufferGeometry,
     TubeGeometry,
-    TubeBufferGeometry
-} from '../../../node_modules/threejs-full-es6/sources/geometries/TubeGeometry'
-import {
+    TubeBufferGeometry,
     SphereGeometry,
-    SphereBufferGeometry
-} from '../../../node_modules/threejs-full-es6/sources/geometries/SphereGeometry'
-import { WireframeGeometry } from '../../../node_modules/threejs-full-es6/sources/geometries/WireframeGeometry'
-import { InstancedBufferGeometry } from '../../../node_modules/threejs-full-es6/sources/core/InstancedBufferGeometry'
+    SphereBufferGeometry,
+    WireframeGeometry,
+    InstancedBufferGeometry
+} from 'threejs-full-es6'
 
-import { BufferAttribute } from '../../../node_modules/threejs-full-es6/sources/core/BufferAttribute'
-import { Vector3 } from '../../../node_modules/threejs-full-es6/sources/math/Vector3'
-import { Face3 } from '../../../node_modules/threejs-full-es6/sources/core/Face3'
+import {
+    BufferAttribute,
+    Face3,
+    Vector3,
+} from 'threejs-full-es6'
+
+import { TDataBaseManager } from '../TDataBaseManager'
 
 /**
  *
@@ -368,8 +332,8 @@ TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.pr
                 break
 
             case 'ShapeBufferGeometry':
-                bufferGeometry = new BufferGeometry(  )
-//                bufferGeometry = new ShapeBufferGeometry(  )
+                bufferGeometry = new BufferGeometry()
+                //                bufferGeometry = new ShapeBufferGeometry(  )
                 break
 
             case 'TetrahedronBufferGeometry':
@@ -447,7 +411,7 @@ TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.pr
         bufferGeometry.groups         = data.groups
         bufferGeometry.boundingBox    = null // Need to set null because only checked vs undefined data.boundingBox
         bufferGeometry.boundingSphere = null // idem... data.boundingSphere
-//        bufferGeometry.drawRange      = data.drawRange
+        //        bufferGeometry.drawRange      = data.drawRange
 
         if ( bufferGeometryType === 'ShapeBufferGeometry' ) {
 

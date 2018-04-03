@@ -9,11 +9,13 @@
  */
 
 /* eslint-env browser */
+import {
+    EventDispatcher,
+    MOUSE,
+    Quaternion,
+    Vector3
+} from 'threejs-full-es6'
 
-import { MOUSE } from '../../node_modules/threejs-full-es6/sources/constants'
-import { Quaternion } from '../../node_modules/threejs-full-es6/sources/math/Quaternion'
-import { Vector3 } from '../../node_modules/threejs-full-es6/sources/math/Vector3'
-import { EventDispatcher } from '../../node_modules/threejs-full-es6/sources/core/EventDispatcher'
 import { Keys } from '../cores/TConstants'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { PI_2 } from '../maths/TMath'

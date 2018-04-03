@@ -11,9 +11,12 @@
 
 /* eslint-env browser */
 
-import { MeshPhongMaterial } from '../../../node_modules/threejs-full-es6/sources/materials/MeshPhongMaterial'
-import { LineBasicMaterial } from '../../../node_modules/threejs-full-es6/sources/materials/LineBasicMaterial'
-import { Color } from '../../../node_modules/threejs-full-es6/sources/math/Color'
+import {
+    MeshPhongMaterial,
+    LineBasicMaterial,
+    Color,
+    Vector2,
+} from 'threejs-full-es6'
 
 import { DefaultLogger as TLogger } from '../../loggers/TLogger'
 import { TDataBaseManager } from '../TDataBaseManager'
@@ -29,7 +32,7 @@ function TMaterialsManager () {
 
 }
 
-TMaterialsManager.prototype = Object.assign( Object.create(TDataBaseManager.prototype), {
+TMaterialsManager.prototype = Object.assign( Object.create( TDataBaseManager.prototype ), {
 
     /**
      *

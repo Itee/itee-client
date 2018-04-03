@@ -9,58 +9,64 @@
  */
 
 /* eslint-env browser */
+import {
+    AmbientLight,
+    ArrayCamera,
+    ArrowHelper,
+    Audio,
+    AudioListener,
+    AxesHelper,
+    Bone,
+    Box3Helper,
+    BoxHelper,
+    Camera,
+    CameraHelper,
+    CubeCamera,
+    DirectionalLight,
+    DirectionalLightHelper,
+    FaceNormalsHelper,
+    GridHelper,
+    Group,
+    HemisphereLight,
+    HemisphereLightHelper,
+    ImmediateRenderObject,
+    Lensflare,
+    Light,
+    Line,
+    LineLoop,
+    LineSegments,
+    LOD,
+    Mesh,
+    Object3D,
+    OrthographicCamera,
+    PerspectiveCamera,
+    PlaneHelper,
+    PointLight,
+    PointLightHelper,
+    Points,
+    PolarGridHelper,
+    PositionalAudio,
+    RectAreaLight,
+    RectAreaLightHelper,
+    Scene,
+    SkeletonHelper,
+    SkinnedMesh,
+    SpotLight,
+    SpotLightHelper,
+    Sprite,
+    VertexNormalsHelper,
+} from 'threejs-full-es6'
+
 import { TDataBaseManager } from '../TDataBaseManager'
 
-import { Object3D } from '../../../node_modules/threejs-full-es6/sources/core/Object3D'
-import { ImmediateRenderObject } from '../../../node_modules/threejs-full-es6/sources/objects/ImmediateRenderObject'
-import { Lensflare } from '../../../node_modules/threejs-full-es6/sources/objects/LensFlare'
-import { Bone } from '../../../node_modules/threejs-full-es6/sources/objects/Bone'
-import { LOD } from '../../../node_modules/threejs-full-es6/sources/objects/LOD'
-import { Mesh } from '../../../node_modules/threejs-full-es6/sources/objects/Mesh'
-import { SkinnedMesh } from '../../../node_modules/threejs-full-es6/sources/objects/SkinnedMesh'
-import { Group } from '../../../node_modules/threejs-full-es6/sources/objects/Group'
-import { Points } from '../../../node_modules/threejs-full-es6/sources/objects/Points'
-import { Scene } from '../../../node_modules/threejs-full-es6/sources/scenes/Scene'
-import { Sprite } from '../../../node_modules/threejs-full-es6/sources/objects/Sprite'
+import { isUndefined } from '../../validators/TUndefineValidator'
+import { isNull } from '../../validators/TNullityValidator'
 
-import { Audio } from '../../../node_modules/threejs-full-es6/sources/audio/Audio'
-import { PositionalAudio } from '../../../node_modules/threejs-full-es6/sources/audio/PositionalAudio'
-import { AudioListener } from '../../../node_modules/threejs-full-es6/sources/audio/AudioListener'
+function isNullOrUndefined ( value ) {
 
-import { Camera } from '../../../node_modules/threejs-full-es6/sources/cameras/Camera'
-import { PerspectiveCamera } from '../../../node_modules/threejs-full-es6/sources/cameras/PerspectiveCamera'
-import { ArrayCamera } from '../../../node_modules/threejs-full-es6/sources/cameras/ArrayCamera'
-import { OrthographicCamera } from '../../../node_modules/threejs-full-es6/sources/cameras/OrthographicCamera'
-import { CubeCamera } from '../../../node_modules/threejs-full-es6/sources/cameras/CubeCamera'
+    return (isNull( value ) || isUndefined( value ))
 
-import { Light } from '../../../node_modules/threejs-full-es6/sources/lights/Light'
-import { AmbientLight } from '../../../node_modules/threejs-full-es6/sources/lights/AmbientLight'
-import { DirectionalLight } from '../../../node_modules/threejs-full-es6/sources/lights/DirectionalLight'
-import { HemisphereLight } from '../../../node_modules/threejs-full-es6/sources/lights/HemisphereLight'
-import { PointLight } from '../../../node_modules/threejs-full-es6/sources/lights/PointLight'
-import { RectAreaLight } from '../../../node_modules/threejs-full-es6/sources/lights/RectAreaLight'
-import { SpotLight } from '../../../node_modules/threejs-full-es6/sources/lights/SpotLight'
-
-import { Line } from '../../../node_modules/threejs-full-es6/sources/objects/Line'
-import { LineLoop } from '../../../node_modules/threejs-full-es6/sources/objects/LineLoop'
-import { LineSegments } from '../../../node_modules/threejs-full-es6/sources/objects/LineSegments'
-
-import { ArrowHelper } from '../../../node_modules/threejs-full-es6/sources/helpers/ArrowHelper'
-import { DirectionalLightHelper } from '../../../node_modules/threejs-full-es6/sources/helpers/DirectionalLightHelper'
-import { HemisphereLightHelper } from '../../../node_modules/threejs-full-es6/sources/helpers/HemisphereLightHelper'
-import { AxesHelper } from '../../../node_modules/threejs-full-es6/sources/helpers/AxesHelper'
-import { BoxHelper } from '../../../node_modules/threejs-full-es6/sources/helpers/BoxHelper'
-import { Box3Helper } from '../../../node_modules/threejs-full-es6/sources/helpers/Box3Helper'
-import { CameraHelper } from '../../../node_modules/threejs-full-es6/sources/helpers/CameraHelper'
-import { FaceNormalsHelper } from '../../../node_modules/threejs-full-es6/sources/helpers/FaceNormalsHelper'
-import { GridHelper } from '../../../node_modules/threejs-full-es6/sources/helpers/GridHelper'
-import { PolarGridHelper } from '../../../node_modules/threejs-full-es6/sources/helpers/PolarGridHelper'
-import { SkeletonHelper } from '../../../node_modules/threejs-full-es6/sources/helpers/SkeletonHelper'
-import { VertexNormalsHelper } from '../../../node_modules/threejs-full-es6/sources/helpers/VertexNormalsHelper'
-import { PlaneHelper } from '../../../node_modules/threejs-full-es6/sources/helpers/PlaneHelper'
-import { PointLightHelper } from '../../../node_modules/threejs-full-es6/sources/helpers/PointLightHelper'
-import { RectAreaLightHelper } from '../../../node_modules/threejs-full-es6/sources/helpers/RectAreaLightHelper'
-import { SpotLightHelper } from '../../../node_modules/threejs-full-es6/sources/helpers/SpotLightHelper'
+}
 
 /**
  *
