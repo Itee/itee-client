@@ -172,28 +172,44 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
         }
 
         // Common object properties
-        object.uuid           = data.uuid
-        object.name           = data.name
-        object.type           = data.type
-        object.parent         = data.parent
-        object.children       = []
-        object.up.x           = data.up.x
-        object.up.y           = data.up.y
-        object.up.z           = data.up.z
-        object.position.x     = data.position.x
-        object.position.y     = data.position.y
-        object.position.z     = data.position.z
-        object.rotation.x     = data.rotation.x
-        object.rotation.y     = data.rotation.y
-        object.rotation.z     = data.rotation.z
-        object.rotation.order = data.rotation.order
-        object.quaternion.x   = data.quaternion.x
-        object.quaternion.y   = data.quaternion.y
-        object.quaternion.z   = data.quaternion.z
-        object.quaternion.w   = data.quaternion.w
-        object.scale.x        = data.scale.x
-        object.scale.y        = data.scale.y
-        object.scale.z        = data.scale.z
+        object.uuid     = data.uuid
+        object.name     = data.name
+        object.type     = data.type
+        object.parent   = data.parent
+        object.children = data.children
+
+        if ( !isNullOrUndefined( data.up ) ) {
+            object.up.x = data.up.x
+            object.up.y = data.up.y
+            object.up.z = data.up.z
+        }
+
+        if ( !isNullOrUndefined( data.position ) ) {
+            object.position.x = data.position.x
+            object.position.y = data.position.y
+            object.position.z = data.position.z
+        }
+
+        if ( !isNullOrUndefined( data.rotation ) ) {
+            object.rotation.x     = data.rotation.x
+            object.rotation.y     = data.rotation.y
+            object.rotation.z     = data.rotation.z
+            object.rotation.order = data.rotation.order
+        }
+
+        if ( !isNullOrUndefined( data.quaternion ) ) {
+            object.quaternion.x = data.quaternion.x
+            object.quaternion.y = data.quaternion.y
+            object.quaternion.z = data.quaternion.z
+            object.quaternion.w = data.quaternion.w
+        }
+
+        if ( !isNullOrUndefined( data.scale ) ) {
+            object.scale.x = data.scale.x
+            object.scale.y = data.scale.y
+            object.scale.z = data.scale.z
+        }
+
         object.modelViewMatrix.fromArray( data.modelViewMatrix )
         object.normalMatrix.fromArray( data.normalMatrix )
         object.matrix.fromArray( data.matrix )
@@ -236,19 +252,19 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
             object.near   = data.near
             object.far    = data.far
 
-            if ( data.focus !== undefined ) {
+            if ( !isNullOrUndefined( data.focus ) ) {
                 object.focus = data.focus
             }
-            if ( data.zoom !== undefined ) {
+            if ( !isNullOrUndefined( data.zoom ) ) {
                 object.zoom = data.zoom
             }
-            if ( data.filmGauge !== undefined ) {
+            if ( !isNullOrUndefined( data.filmGauge ) ) {
                 object.filmGauge = data.filmGauge
             }
-            if ( data.filmOffset !== undefined ) {
+            if ( !isNullOrUndefined( data.filmOffset ) ) {
                 object.filmOffset = data.filmOffset
             }
-            if ( data.view !== undefined ) {
+            if ( !isNullOrUndefined( data.view ) ) {
                 object.view = Object.assign( {}, data.view )
             }
 
@@ -262,7 +278,7 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
 
         } else if ( objectType === 'Scene' ) {
 
-            if ( data.background !== undefined ) {
+            if ( !isNullOrUndefined( data.background ) ) {
 
                 if ( Number.isInteger( data.background ) ) {
 
@@ -272,7 +288,7 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
 
             }
 
-            if ( data.fog !== undefined ) {
+            if ( !isNullOrUndefined( data.fog ) ) {
 
                 if ( data.fog.type === 'Fog' ) {
 
