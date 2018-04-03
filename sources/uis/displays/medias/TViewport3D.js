@@ -1060,12 +1060,6 @@ export default Vue.component( 'TViewport3D', {
 
     },
 
-    beforeCreate () {
-
-        console.log( 'TViewport3D: beforeCreate' )
-
-    },
-
     created () {
 
         console.log( 'TViewport3D: created' )
@@ -1079,12 +1073,6 @@ export default Vue.component( 'TViewport3D', {
         }
 
         this._repopulateTimeoutId = undefined
-
-    },
-
-    beforeMount () {
-
-        console.log( 'TViewport3D: beforeMount' )
 
     },
 
@@ -1126,18 +1114,6 @@ export default Vue.component( 'TViewport3D', {
 
         // Start rendering
         this._startLoop()
-
-    },
-
-    beforeUpdate () {
-
-        console.log( 'TViewport3D: beforeUpdate' )
-
-    },
-
-    updated () {
-
-        console.log( 'TViewport3D: updated' )
 
     },
 
