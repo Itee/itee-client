@@ -43,7 +43,7 @@
     "@fortawesome/fontawesome-free-solid": "^5.0.9",
     "@fortawesome/vue-fontawesome": "0.0.22",
     "stats.js": "^0.17.0",
-    "threejs-full-es6": "^5.0.3",
+    "threejs-full-es6": "^5.0.6",
     "vue": "^2.5.16",
     "vue-resize-directive": "^1.0.1",
     "vue-router": "^3.0.1"
