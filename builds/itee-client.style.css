@@ -102,7 +102,8 @@ body {
 .tHeader .tAppBar .tMenu .tMenuItem {
   padding: 5px 16px;
 }
-.tHeader .tAppBar .tMenu .tMenuItem:hover {
+.tHeader .tAppBar .tMenu .tMenuItem:hover,
+.tHeader .tAppBar .tMenu .tMenuItem.isActive {
   margin-bottom: -1px;
   border-bottom: 1px solid #4eaeff;
   background-color: #969696;
@@ -147,10 +148,18 @@ body {
   padding: 10px 15px;
   cursor: pointer;
 }
-.tToolBar .tToolItem:hover {
+.tToolBar .tToolItem:not(.disable):hover,
+.tToolBar .tToolItem.isActive {
   margin-bottom: -1px;
   border-bottom: 1px solid #4eaeff;
   background-color: #969696;
+}
+.tToolBar .tToolItem.disabled {
+  cursor: not-allowed;
+  background-color: #5f5f5f;
+}
+.tToolBar .tToolItem.disabled svg {
+  cursor: not-allowed;
 }
 .tToolBar .tToolItem > * {
   cursor: pointer;
