@@ -8,7 +8,7 @@
  *
  */
 
-import { Detector } from '../node_modules/threejs-full-es6/sources/helpers/Detector'
+import { Detector } from 'threejs-full-es6'
 import Vue from '../node_modules/vue/dist/vue.esm'
 import VueRouter from 'vue-router'
 import './uis/_uis'
