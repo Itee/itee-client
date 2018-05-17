@@ -41,12 +41,7 @@ TTexturesManager.prototype = Object.assign( Object.create( TDataBaseManager.prot
 
         switch ( textureType ) {
 
-            case 'Scene':
-                texture = new Scene()
-                break
-
             default:
-                texture = new Object3D()
                 break
 
         }
