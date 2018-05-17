@@ -100,6 +100,11 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
      */
     convertJsonToObject3D ( data, onError ) {
 
+        if ( !data ) {
+            onError( 'No data recieve' )
+            return null
+        }
+
         const objectType = data.type
         let object       = undefined
 
@@ -184,11 +189,28 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
         }
 
         // Common object properties
-        object.uuid     = data.uuid
-        object.name     = data.name
-        object.type     = data.type
-        object.parent   = data.parent
-        object.children = data.children
+        object._id = data._id
+
+        if ( !isNullOrUndefined( data.uuid ) ) {
+            object.uuid = data.uuid
+        }
+
+        if ( !isNullOrUndefined( data.name ) ) {
+            object.name = data.name
+        }
+
+        // IMPLICIT
+        //        if ( !isNullOrUndefined( data.type ) ) {
+        //            object.type = data.type
+        //        }
+
+        if ( !isNullOrUndefined( data.parent ) ) {
+            object.parent = data.parent
+        }
+
+        if ( isNotEmptyArray( data.children ) ) {
+            object.children = data.children
+        }
 
         if ( !isNullOrUndefined( data.up ) ) {
             object.up.x = data.up.x
@@ -217,24 +239,62 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
         }
 
         if ( !isNullOrUndefined( data.scale ) ) {
-            object.scale.x = data.scale.x
-            object.scale.y = data.scale.y
-            object.scale.z = data.scale.z
+            object.scale.x = 1 //data.scale.x
+            object.scale.y = 1 //data.scale.y
+            object.scale.z = 1 //data.scale.z
         }
 
-        object.modelViewMatrix.fromArray( data.modelViewMatrix )
-        object.normalMatrix.fromArray( data.normalMatrix )
-        object.matrix.fromArray( data.matrix )
-        object.matrixWorld.fromArray( data.matrixWorld )
-        object.matrixAutoUpdate       = data.matrixAutoUpdate
-        object.matrixWorldNeedsUpdate = data.matrixWorldNeedsUpdate
-        object.layers.mask            = data.layers
-        object.visible                = data.visible
-        object.castShadow             = data.castShadow
-        object.receiveShadow          = data.receiveShadow
-        object.frustumCulled          = data.frustumCulled
-        object.renderOrder            = 0 //data.renderOrder
-        object.userData               = {} //data.userData
+        if ( isNotEmptyArray( data.modelViewMatrix ) ) {
+            object.modelViewMatrix.fromArray( data.modelViewMatrix )
+        }
+
+        if ( isNotEmptyArray( data.normalMatrix ) ) {
+            object.normalMatrix.fromArray( data.normalMatrix )
+        }
+
+        if ( isNotEmptyArray( data.matrix ) ) {
+            object.matrix.fromArray( data.matrix )
+        }
+
+        if ( isNotEmptyArray( data.matrixWorld ) ) {
+            object.matrixWorld.fromArray( data.matrixWorld )
+        }
+
+        if ( !isNullOrUndefined( data.matrixAutoUpdate ) ) {
+            object.matrixAutoUpdate       = data.matrixAutoUpdate
+        }
+
+        if ( !isNullOrUndefined( data.matrixWorldNeedsUpdate ) ) {
+            object.matrixWorldNeedsUpdate = data.matrixWorldNeedsUpdate
+        }
+
+        if ( !isNullOrUndefined( data.layers ) ) {
+            object.layers.mask            = data.layers
+        }
+
+        if ( !isNullOrUndefined( data.visible ) ) {
+            object.visible                = data.visible
+        }
+
+        if ( !isNullOrUndefined( data.castShadow ) ) {
+            object.castShadow             = data.castShadow
+        }
+
+        if ( !isNullOrUndefined( data.receiveShadow ) ) {
+            object.receiveShadow          = data.receiveShadow
+        }
+
+        if ( !isNullOrUndefined( data.frustumCulled ) ) {
+            object.frustumCulled          = data.frustumCulled
+        }
+
+        if ( !isNullOrUndefined( data.renderOrder ) ) {
+            object.renderOrder            = data.renderOrder
+        }
+
+        if ( !isNullOrUndefined( data.userData ) ) {
+            object.userData               = data.userData
+        }
 
         if (
             objectType === 'Line' ||
