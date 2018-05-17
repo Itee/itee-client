@@ -27,3 +27,6 @@ export { default as TCheckbox } from './TInputCheckbox'
 //export { TSwitch } from './TSwitch'
 //export { TTextArea } from './TTextArea'
 //export { TTimePicker } from './TTimePicker'
+
+
+export { default as TCheckIcon } from './TCheckIcon'
