@@ -1155,6 +1155,7 @@ export default Vue.component( 'TViewport3D', {
                 return
             }
 
+
             // Decimate scene
             const cache = this._getDecimateCache()
             for ( let meshIndex = 0, numberOfMeshesToDecimate = cache.length ; meshIndex < numberOfMeshesToDecimate ; meshIndex++ ) {
@@ -1162,6 +1163,8 @@ export default Vue.component( 'TViewport3D', {
                 cache[ meshIndex ].visible = false
 
             }
+
+            this.isDecimate = true
 
         },
 
@@ -1184,6 +1187,8 @@ export default Vue.component( 'TViewport3D', {
 
                 }
 
+                this.isDecimate = false
+
             }, 250 )
 
         },
@@ -1204,7 +1209,7 @@ export default Vue.component( 'TViewport3D', {
 
                         if ( child.visible ) {
 
-                            if ( child.isGroup ) {
+                            if ( child.isGroup || child.type === 'Scene' ) {
                                 updateRaycastableChildren( child.children )
                             } else if ( child.isRaycastable ) {
                                 self._cache.raycastables.push( child )
@@ -1231,25 +1236,58 @@ export default Vue.component( 'TViewport3D', {
             // TODO: should be params
             const decimateValue = 0.9
 
-            if ( this.needCacheUpdate || this._cache.decimables.length === 0 ) {
+            if ( !this.isDecimate && (this.needCacheUpdate || this._cache.decimables.length === 0) ) {
 
-                const meshes  = []
-                //Todo: Should be able to specify the Group/Layers/whatever where decimate
-                let dataGroup = this.scene.getObjectByName( 'Données' )
-                if ( !dataGroup ) {
-                    dataGroup = this.scene.getObjectByName( 'Sites' )
-                }
-                if ( !dataGroup ) {
-                    dataGroup = this.scene
-                }
+                this._cache.decimables = []
+                const meshes           = []
 
-                dataGroup.traverse( object => {
+                updateDecimateCache( this.scene.children )
 
-                    if ( object.isMesh ) {
-                        meshes.push( object )
+                function updateDecimateCache ( children ) {
+
+                    let child = undefined
+                    for ( let i = 0, n = children.length ; i < n ; i++ ) {
+
+                        child = children[ i ]
+
+                        if ( !child.visible ) {
+                            continue
+                        }
+
+                        if ( child.isGroup ) {
+                            updateDecimateCache( child.children )
+                        }
+
+                        if ( child.type === 'Scene' ) {
+                            updateDecimateCache( child.children )
+                        }
+
+                        if ( child.isMesh ) {
+                            meshes.push( child )
+                        }
+
                     }
 
-                } )
+                }
+
+//                const meshes  = []
+//                //Todo: Should be able to specify the Group/Layers/whatever where decimate
+//                let dataGroup = this.scene.getObjectByName( 'Données' )
+//                if ( !dataGroup ) {
+//                    dataGroup = this.scene.getObjectByName( 'Sites' )
+//                }
+//                if ( !dataGroup ) {
+//                    dataGroup = this.scene
+//                }
+//
+//                dataGroup.traverse( object => {
+//
+//                    // Allow to decimate only visible meshes
+//                    if ( object.isMesh && object.visible ) {
+//                        meshes.push( object )
+//                    }
+//
+//                } )
 
                 // Store random meshes to decimate
                 const numberOfMeshes       = meshes.length
@@ -1277,6 +1315,7 @@ export default Vue.component( 'TViewport3D', {
         // Untracked private data
         this._cache = {
             decimables:   [],
+            isDecimate:   false,
             raycastables: []
         }
 
