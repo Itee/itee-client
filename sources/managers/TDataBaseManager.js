@@ -164,6 +164,7 @@ Object.defineProperties( TDataBaseManager, {
             if ( status === HttpStatusCode.NoContent ) {
 
                 TLogger.warn( 'Unable to retrieve data...' )
+                statusOk = true
 
             } else if ( status !== HttpStatusCode.Ok ) {
 
@@ -241,13 +242,15 @@ Object.defineProperties( TDataBaseManager.prototype, {
             const response     = target.response
             const responseType = target.responseType
 
+            // TODO: switch on status
             if ( !TDataBaseManager._statusOk( status ) ) { return }
-
             if ( !response ) {
-                TLogger.error( 'TDataBaseManager.onLoad: No data receive !' )
+                TLogger.warn( 'TDataBaseManager.onLoad: No data receive !' )
+                onLoadCallback()
                 return
             }
 
+            // Dispatch response to the correct handler in function of response type
             switch ( responseType ) {
 
                 case ResponseType.ArrayBuffer:
