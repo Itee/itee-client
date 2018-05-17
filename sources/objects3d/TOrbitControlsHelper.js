@@ -18,7 +18,7 @@ import {
     LineSegments,
     OrbitControls,
     VertexColors,
-} from 'threejs-full-es6'
+} from 'three-full'
 
 /**
  *

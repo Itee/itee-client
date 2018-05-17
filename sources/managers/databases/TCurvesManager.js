@@ -22,13 +22,11 @@ import {
     QuadraticBezierCurve,
     QuadraticBezierCurve3,
     SplineCurve,
-} from 'threejs-full-es6'
 
-import {
     CurvePath,
     Path,
     Shape
-} from 'threejs-full-es6'
+} from 'three-full'
 
 /**
  *

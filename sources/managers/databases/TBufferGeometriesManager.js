@@ -16,7 +16,7 @@ import {
     BufferGeometry,
     Face3,
     Vector3,
-} from 'threejs-full-es6'
+} from 'three-full'
 
 /**
  *

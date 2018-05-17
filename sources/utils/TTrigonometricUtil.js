@@ -14,7 +14,7 @@
 import {
     Vector2,
     Vector3
-} from 'threejs-full-es6'
+} from 'three-full'
 
 import { degreesToRadians } from '../maths/TMath'
 

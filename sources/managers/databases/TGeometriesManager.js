@@ -59,14 +59,16 @@ import {
     SphereGeometry,
     SphereBufferGeometry,
     WireframeGeometry,
-    InstancedBufferGeometry
-} from 'threejs-full-es6'
+    InstancedBufferGeometry,
+
+    Shape
+} from 'three-full'
 
 import {
     BufferAttribute,
     Face3,
     Vector3,
-} from 'threejs-full-es6'
+} from 'three-full'
 
 import { TDataBaseManager } from '../TDataBaseManager'
 

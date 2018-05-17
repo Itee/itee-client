@@ -8,7 +8,7 @@
  *
  */
 
-import { Detector } from 'threejs-full-es6'
+import { Detector } from 'three-full'
 import Vue from '../node_modules/vue/dist/vue.esm'
 import VueRouter from 'vue-router'
 import './uis/_uis'
@@ -116,4 +116,3 @@ export function startApp ( config ) {
 
 
 }
-

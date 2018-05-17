@@ -14,7 +14,7 @@ import {
     FaceColors,
     Mesh,
     MeshBasicMaterial
-} from 'threejs-full-es6'
+} from 'three-full'
 
 import { extend } from '../utils/TObjectUtil'
 

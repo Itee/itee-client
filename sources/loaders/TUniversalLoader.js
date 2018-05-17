@@ -25,7 +25,7 @@ import {
     Mesh,
     MeshPhongMaterial,
     ShapeBufferGeometry,
-} from 'threejs-full-es6'
+} from 'three-full'
 
 import { FBXLoader2 } from './FBXLoader2'
 import { ASCLoader } from './ASCLoader'

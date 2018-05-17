@@ -14,7 +14,7 @@ import {
     MOUSE,
     Quaternion,
     Vector3
-} from 'threejs-full-es6'
+} from 'three-full'
 
 import { Keys } from '../cores/TConstants'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'

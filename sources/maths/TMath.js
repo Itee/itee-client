@@ -10,7 +10,7 @@
 
 /* eslint-env browser */
 
-import { Vector3 } from 'threejs-full-es6'
+import { Vector3 } from 'three-full'
 
 // RANDOM
 /**

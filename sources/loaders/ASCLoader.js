@@ -33,7 +33,7 @@ import {
     Group,
     Points,
     PointsMaterial
-} from 'threejs-full-es6'
+} from 'three-full'
 
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { TBoundingBox } from '../cores/TBoundingBox'

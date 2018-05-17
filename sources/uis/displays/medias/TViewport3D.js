@@ -53,7 +53,7 @@ import {
     Group,
     Raycaster,
     Vector3,
-} from 'threejs-full-es6'
+} from 'three-full'
 
 import { default as Stats } from '../../../../node_modules/stats.js/src/Stats'
 import { TOrbitControlsHelper } from '../../../objects3d/TOrbitControlsHelper'

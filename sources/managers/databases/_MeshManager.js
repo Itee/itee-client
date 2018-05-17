@@ -26,8 +26,8 @@ import {
     Face3,
     ObjectLoader,
     TextureLoader
-} from 'threejs-full-es6'
 import { OrbitControls } from '../../../sources/third_party/three_extended/OrbitControls'
+} from 'three-full'
 
 /**
  * Store the platform endianness to make correct parsing of buffer

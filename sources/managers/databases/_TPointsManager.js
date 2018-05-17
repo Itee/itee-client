@@ -11,11 +11,11 @@
 /* eslint-env browser */
 /* global $ */
 
-import { BufferGeometry } from '../../../node_modules/threejs-full-es6/sources/core/BufferGeometry'
-import { BufferAttribute } from '../../../node_modules/threejs-full-es6/sources/core/BufferAttribute'
-import { Group } from '../../../node_modules/threejs-full-es6/sources/objects/Group'
-import { Points } from '../../../node_modules/threejs-full-es6/sources/objects/Points'
-import { PointsMaterial } from '../../../node_modules/threejs-full-es6/sources/materials/PointsMaterial'
+import { BufferGeometry } from '../../../node_modules/three-full/sources/core/BufferGeometry'
+import { BufferAttribute } from '../../../node_modules/three-full/sources/core/BufferAttribute'
+import { Group } from '../../../node_modules/three-full/sources/objects/Group'
+import { Points } from '../../../node_modules/three-full/sources/objects/Points'
+import { PointsMaterial } from '../../../node_modules/three-full/sources/materials/PointsMaterial'
 
 import { DefaultLogger as TLogger } from '../../loggers/TLogger'
 

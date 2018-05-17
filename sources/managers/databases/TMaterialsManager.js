@@ -16,7 +16,7 @@ import {
     LineBasicMaterial,
     Color,
     Vector2,
-} from 'threejs-full-es6'
+} from 'three-full'
 
 import { DefaultLogger as TLogger } from '../../loggers/TLogger'
 import { TDataBaseManager } from '../TDataBaseManager'

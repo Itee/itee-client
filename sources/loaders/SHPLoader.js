@@ -22,7 +22,7 @@ import {
     FileLoader,
     Shape,
     Vector3,
-} from 'threejs-full-es6'
+} from 'three-full'
 
 import { DefaultLogger as TLogger } from '../Loggers/TLogger'
 import {
