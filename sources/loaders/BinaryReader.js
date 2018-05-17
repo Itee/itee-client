@@ -152,6 +152,26 @@ Object.assign( BinaryReader.prototype, {
 
     },
 
+    getBoolean () {
+
+        return (( this.getUint8() & 1 ) === 1)
+
+    },
+
+    getBooleanArray ( length ) {
+
+        const array = []
+
+        for ( let i = 0 ; i < length ; i++ ) {
+
+            array.push( this.getBoolean() )
+
+        }
+
+        return array
+
+    },
+
     /**
      *
      * @return {number}
@@ -162,13 +182,41 @@ Object.assign( BinaryReader.prototype, {
 
     },
 
+    getInt8Array ( length ) {
+
+        const array = []
+
+        for ( let i = 0 ; i < length ; i++ ) {
+
+            array.push( this.getInt8() )
+
+        }
+
+        return array
+
+    },
+
     /**
      *
      * @return {number}
      */
-    getUInt8 () {
+    getUint8 () {
 
         return this._dataView.getUint8( this._getAndUpdateOffsetBy( Byte.One ) )
+
+    },
+
+    getUint8Array ( length ) {
+
+        const array = []
+
+        for ( let i = 0 ; i < length ; i++ ) {
+
+            array.push( this.getUint8() )
+
+        }
+
+        return array
 
     },
 
@@ -182,13 +230,41 @@ Object.assign( BinaryReader.prototype, {
 
     },
 
+    getInt16Array ( length ) {
+
+        const array = []
+
+        for ( let i = 0 ; i < length ; i++ ) {
+
+            array.push( this.getInt16() )
+
+        }
+
+        return array
+
+    },
+
     /**
      *
      * @return {number}
      */
-    getUInt16 () {
+    getUint16 () {
 
         return this._dataView.getUint16( this._getAndUpdateOffsetBy( Byte.Two ), this._endianness )
+
+    },
+
+    getUint16Array ( length ) {
+
+        const array = []
+
+        for ( let i = 0 ; i < length ; i++ ) {
+
+            array.push( this.getUint16() )
+
+        }
+
+        return array
 
     },
 
@@ -202,23 +278,134 @@ Object.assign( BinaryReader.prototype, {
 
     },
 
+    getInt32Array ( length ) {
+
+        const array = []
+
+        for ( let i = 0 ; i < length ; i++ ) {
+
+            array.push( this.getInt32() )
+
+        }
+
+        return array
+
+    },
+
     /**
      *
      * @return {number}
      */
-    getUInt32 () {
+    getUint32 () {
 
         return this._dataView.getUint32( this._getAndUpdateOffsetBy( Byte.Four ), this._endianness )
 
     },
 
-    /**
-     *
-     * @return {number}
-     */
-    getFloat () {
+    getUint32Array ( length ) {
 
-        return this._dataView.getFloat32( this._getAndUpdateOffsetBy( Byte.Four ), this._endianness )
+        const array = []
+
+        for ( let i = 0 ; i < length ; i++ ) {
+
+            array.push( this.getUint32() )
+
+        }
+
+        return array
+
+    },
+
+    // From THREE.FBXLoader
+    // JavaScript doesn't support 64-bit integer so attempting to calculate by ourselves.
+    // 1 << 32 will return 1 so using multiply operation instead here.
+    // There'd be a possibility that this method returns wrong value if the value
+    // is out of the range between Number.MAX_SAFE_INTEGER and Number.MIN_SAFE_INTEGER.
+    // TODO: safely handle 64-bit integer
+    getInt64 () {
+
+        let low  = undefined
+        let high = undefined
+
+        if ( this._endianness === Endianness.Little ) {
+
+            low  = this.getUint32()
+            high = this.getUint32()
+
+        } else {
+
+            high = this.getUint32()
+            low  = this.getUint32()
+
+        }
+
+        // calculate negative value
+        if ( high & 0x80000000 ) {
+
+            high = ~high & 0xFFFFFFFF
+            low  = ~low & 0xFFFFFFFF
+
+            if ( low === 0xFFFFFFFF ) {
+                high = ( high + 1 ) & 0xFFFFFFFF
+            }
+
+            low = ( low + 1 ) & 0xFFFFFFFF
+
+            return -( high * 0x100000000 + low )
+
+        }
+
+        return high * 0x100000000 + low
+
+    },
+
+    getInt64Array ( length ) {
+
+        const array = []
+
+        for ( let i = 0 ; i < length ; i++ ) {
+
+            array.push( this.getInt64() )
+
+        }
+
+        return array
+
+    },
+
+    // Note: see getInt64() comment
+    getUint64 () {
+
+        let low  = undefined
+        let high = undefined
+
+        if ( this._endianness === Endianness.Little ) {
+
+            low  = this.getUint32()
+            high = this.getUint32()
+
+        } else {
+
+            high = this.getUint32()
+            low  = this.getUint32()
+
+        }
+
+        return high * 0x100000000 + low
+
+    },
+
+    getUint64Array ( length ) {
+
+        const array = []
+
+        for ( let i = 0 ; i < length ; i++ ) {
+
+            array.push( this.getUint64() )
+
+        }
+
+        return array
 
     },
 
@@ -226,9 +413,47 @@ Object.assign( BinaryReader.prototype, {
      *
      * @return {number}
      */
-    getDouble () {
+    getFloat32 () {
+
+        return this._dataView.getFloat32( this._getAndUpdateOffsetBy( Byte.Four ), this._endianness )
+
+    },
+
+    getFloat32Array ( length ) {
+
+        const array = []
+
+        for ( let i = 0 ; i < length ; i++ ) {
+
+            array.push( this.getFloat32() )
+
+        }
+
+        return array
+
+    },
+
+    /**
+     *
+     * @return {number}
+     */
+    getFloat64 () {
 
         return this._dataView.getFloat64( this._getAndUpdateOffsetBy( Byte.Height ), this._endianness )
+
+    },
+
+    getFloat64Array ( length ) {
+
+        const array = []
+
+        for ( let i = 0 ; i < length ; i++ ) {
+
+            array.push( this.getFloat64() )
+
+        }
+
+        return array
 
     },
 
@@ -238,7 +463,7 @@ Object.assign( BinaryReader.prototype, {
      */
     getChar () {
 
-        return String.fromCharCode( this._dataView.getInt8( this._getAndUpdateOffsetBy( Byte.One ) ) )
+        return String.fromCharCode( this.getUInt8() )
 
     },
 
@@ -269,7 +494,14 @@ Object.assign( BinaryReader.prototype, {
 
         return string
 
-    }
+    },
+
+    getArrayBuffer ( size ) {
+
+        const offset = this._getAndUpdateOffsetBy( size )
+        return this._dataView.buffer.slice( offset, offset + size )
+
+    },
 
 } )
 
