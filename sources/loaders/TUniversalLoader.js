@@ -27,7 +27,6 @@ import {
     ShapeBufferGeometry,
 } from 'three-full'
 
-import { FBXLoader2 } from './FBXLoader2'
 import { ASCLoader } from './ASCLoader'
 import { SHPLoader } from './SHPLoader'
 import { DBFLoader } from './DBFLoader'
@@ -348,7 +347,7 @@ Object.assign( TUniversalLoader.prototype, {
      */
     _loadFbx ( file, onLoad, onProgress, onError ) {
 
-        const loader = new FBXLoader2( this.manager )
+        const loader = new FBXLoader( this.manager )
         loader.load(
             file.url,
             object => {
