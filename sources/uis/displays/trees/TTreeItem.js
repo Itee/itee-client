@@ -46,8 +46,7 @@ export default Vue.component( 'TTreeItem', {
 
         return {
             showChildren: false,
-            isSelected:   false,
-            isVisible:    true
+            isSelected:   false
         }
 
     },
@@ -76,12 +75,6 @@ export default Vue.component( 'TTreeItem', {
 
             return (this.showChildren) ? "chevron-circle-down" : "chevron-circle-right"
             //            return (this.showChildren) ? "chevron-down" : "chevron-right"
-
-        },
-
-        computeCheckboxClass () {
-
-            return (this.isVisible) ? "check-square" : "square"
 
         },
 
@@ -116,16 +109,6 @@ export default Vue.component( 'TTreeItem', {
         toggleChildren () {
 
             this.showChildren = !this.showChildren
-
-        },
-
-        updateCheckboxState ( onClickCallback ) {
-
-            this.isVisible = !this.isVisible
-
-            if ( onClickCallback ) {
-                onClickCallback()
-            }
 
         },
 
