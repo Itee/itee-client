@@ -56,12 +56,17 @@ import {
     Sprite,
     VertexNormalsHelper,
 
+    Color,
+    Fog,
+    FogExp2
 } from 'three-full'
 
 import { TDataBaseManager } from '../TDataBaseManager'
 
 import { isUndefined } from '../../validators/TUndefineValidator'
 import { isNull } from '../../validators/TNullityValidator'
+
+import { isNotEmptyArray } from '../../validators/TArrayValidator'
 
 function isNullOrUndefined ( value ) {
 
