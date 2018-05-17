@@ -90,10 +90,9 @@ export default Vue.component( 'TViewport3D', {
     data: function () {
 
         return {
-            _camera:   undefined,
-            _control:  undefined,
-            _effect:   undefined,
-            _renderer: undefined,
+            _camera:  undefined,
+            _control: undefined,
+            _effect:  undefined,
 
             //            _raycaster: new Raycaster(),
 
@@ -147,7 +146,7 @@ export default Vue.component( 'TViewport3D', {
 
         backgroundColor ( newBg, oldBg ) {
 
-            this._renderer.setClearColor( newBg || 0x000000 )
+            this.renderer.setClearColor( newBg || 0x000000 )
 
         },
 
@@ -582,7 +581,7 @@ export default Vue.component( 'TViewport3D', {
 
                 case 'anaglyph':
                     // ( renderer, width, height )
-                    this._effect = new AnaglyphEffect( this._renderer, this.$el.offsetWidth, this.$el.offsetHeight )
+                    this._effect = new AnaglyphEffect( this.renderer, this.$el.offsetWidth, this.$el.offsetHeight )
                     break
 
                 case 'ascii':
@@ -593,7 +592,7 @@ export default Vue.component( 'TViewport3D', {
                     //    var bAlpha = ! options[ 'alpha' ] ? false : options[ 'alpha' ]; // Transparency
                     //    var bBlock = ! options[ 'block' ] ? false : options[ 'block' ]; // blocked characters. like good O dos
                     //    var bInvert = ! options[ 'invert' ] ? false : options[ 'invert' ]; // black is white, white is black
-                    this._effect = new AsciiEffect( this._renderer )
+                    this._effect = new AsciiEffect( this.renderer )
                     break
 
                 case 'outline':
@@ -602,26 +601,26 @@ export default Vue.component( 'TViewport3D', {
                     //    var defaultColor = parameters.defaultColor !== undefined ? parameters.defaultColor : new Color( 0x000000 );
                     //    var defaultAlpha = parameters.defaultAlpha !== undefined ? parameters.defaultAlpha : 1.0;
                     //    var defaultKeepAlive = parameters.defaultKeepAlive !== undefined ? parameters.defaultKeepAlive : false;
-                    this._effect = new OutlineEffect( this._renderer )
+                    this._effect = new OutlineEffect( this.renderer )
                     break
 
                 case 'parallaxbarrier':
                     //   ( renderer )
-                    this._effect = new ParallaxBarrierEffect( this._renderer )
+                    this._effect = new ParallaxBarrierEffect( this.renderer )
                     break
 
                 case 'peppersghost':
                     //   ( renderer )
-                    this._effect = new PeppersGhostEffect( this._renderer )
+                    this._effect = new PeppersGhostEffect( this.renderer )
                     break
 
                 case 'stereo':
-                    this._effect = new StereoEffect( this._renderer )
+                    this._effect = new StereoEffect( this.renderer )
                     break
 
                 case 'vr':
                     // ( renderer, onError )
-                    this._effect = new VREffect( this._renderer, error => console.error( error ) )
+                    this._effect = new VREffect( this.renderer, error => console.error( error ) )
                     break
 
                 default:
@@ -643,41 +642,41 @@ export default Vue.component( 'TViewport3D', {
                 return
             }
 
-            this._renderer = newRenderer
-            this._renderer.setPixelRatio( window.devicePixelRatio )
-            this._renderer.setClearColor( this.backgroundColor || 0x000000 )
-            this._renderer.autoClear         = true
-            this._renderer.shadowMap.enabled = true
-            //                    this._renderer.shadowMap.type = BasicShadowMap
-            this._renderer.shadowMap.type    = PCFShadowMap
-            //                    this._renderer.shadowMap.type = PCFSoftShadowMap
+            //            this._renderer = newRenderer
+            this.renderer.setPixelRatio( window.devicePixelRatio )
+            this.renderer.setClearColor( this.backgroundColor || 0x000000 )
+            this.renderer.autoClear         = true
+            this.renderer.shadowMap.enabled = true
+            //                    this.renderer.shadowMap.type = BasicShadowMap
+            this.renderer.shadowMap.type    = PCFShadowMap
+            //                    this.renderer.shadowMap.type = PCFSoftShadowMap
 
             // Add renderer canvas
-            this._renderer.domElement.style.display = 'block'
-            this.$el.appendChild( this._renderer.domElement )
+            this.renderer.domElement.style.display = 'block'
+            this.$el.appendChild( this.renderer.domElement )
 
             //            switch ( newRenderer ) {
             //
             //                case 'none':
-            //                    this._renderer = null
+            //                    this.renderer = null
             //                    break
             //
             //                case 'webgl':
-            //                    this._renderer = new WebGLRenderer( {
+            //                    this.renderer = new WebGLRenderer( {
             //                        antialias:              true,
             //                        logarithmicDepthBuffer: true
             //                    } )
-            //                    this._renderer.setPixelRatio( window.devicePixelRatio )
-            //                    this._renderer.setClearColor( this.backgroundColor || 0x000000 )
-            //                    this._renderer.autoClear         = true
-            //                    this._renderer.shadowMap.enabled = true
-            //                    //                    this._renderer.shadowMap.type = BasicShadowMap
-            //                    this._renderer.shadowMap.type    = PCFShadowMap
-            //                    //                    this._renderer.shadowMap.type = PCFSoftShadowMap
+            //                    this.renderer.setPixelRatio( window.devicePixelRatio )
+            //                    this.renderer.setClearColor( this.backgroundColor || 0x000000 )
+            //                    this.renderer.autoClear         = true
+            //                    this.renderer.shadowMap.enabled = true
+            //                    //                    this.renderer.shadowMap.type = BasicShadowMap
+            //                    this.renderer.shadowMap.type    = PCFShadowMap
+            //                    //                    this.renderer.shadowMap.type = PCFSoftShadowMap
             //
             //                    // Add renderer canvas
-            //                    this._renderer.domElement.style.display = 'block'
-            //                    this.$el.appendChild( this._renderer.domElement )
+            //                    this.renderer.domElement.style.display = 'block'
+            //                    this.$el.appendChild( this.renderer.domElement )
             //
             //                    break
             //
@@ -701,11 +700,11 @@ export default Vue.component( 'TViewport3D', {
 
             } else if ( this._camera.type === 'CinematicCamera' ) {
 
-                this._camera.renderCinematic( this.scene, this._renderer )
+                this._camera.renderCinematic( this.scene, this.renderer )
 
             } else if ( this._camera.type === 'CubeCamera' ) {
 
-                this._camera.update( this._renderer, this.scene )
+                this._camera.update( this.renderer, this.scene )
 
             } else if ( this._camera.type === 'StereoCamera' ) {
 
@@ -850,13 +849,13 @@ export default Vue.component( 'TViewport3D', {
 
         _updateRenderer () {
 
-            if ( !this._renderer || this._effect ) {
+            if ( !this.renderer || this._effect ) {
                 return
             }
 
             const scene    = this.scene
             const camera   = this._camera
-            const renderer = this._renderer
+            const renderer = this.renderer
 
             renderer.render( scene, camera )
 
@@ -971,9 +970,9 @@ export default Vue.component( 'TViewport3D', {
 
         _resizeRenderer ( width, height ) {
 
-            if ( !this._renderer || this._effect ) { return }
+            if ( !this.renderer || this._effect ) { return }
 
-            this._renderer.setSize( width, height )
+            this.renderer.setSize( width, height )
 
         },
 
