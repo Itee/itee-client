@@ -25,8 +25,8 @@ import {
     Color,
     Face3,
     ObjectLoader,
+    OrbitControls,
     TextureLoader
-import { OrbitControls } from '../../../sources/third_party/three_extended/OrbitControls'
 } from 'three-full'
 
 /**
