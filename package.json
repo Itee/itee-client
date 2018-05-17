@@ -43,7 +43,7 @@
     "@fortawesome/fontawesome-free-solid": "^5.0.9",
     "@fortawesome/vue-fontawesome": "0.0.22",
     "stats.js": "^0.17.0",
-    "threejs-full-es6": "^5.0.6",
+    "three-full": "^6.0.0",
     "vue": "^2.5.16",
     "vue-resize-directive": "^1.0.1",
     "vue-router": "^3.0.1"
@@ -68,7 +68,7 @@
     "gulp-jsdoc3": "^2.0.0",
     "gulp-less": "^4.0.0",
     "gulp-rename": "^1.2.2",
-    "gulp-sass": "^3.2.1",
+    "gulp-sass": "^4.0.0",
     "gulp-util": "^3.0.8",
     "jquery": "^3.3.1",
     "karma": "^2.0.0",
