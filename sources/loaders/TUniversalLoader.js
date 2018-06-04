@@ -27,10 +27,16 @@ import {
     ShapeBufferGeometry,
 } from 'three-full'
 
+import {
+    isString,
+    isArray,
+    isFunction,
+    isObject
+} from 'itee-validators'
+
 import { ASCLoader } from './ASCLoader'
 import { SHPLoader } from './SHPLoader'
 import { DBFLoader } from './DBFLoader'
-import * as TValidator from '../validators/_validators'
 import { degreesToRadians } from '../maths/TMath'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { FileFormat } from '../cores/TConstants'
@@ -135,19 +141,19 @@ Object.assign( TUniversalLoader.prototype, {
             const fileUrl = URL.createObjectURL( files ) + '/' + files.name
             this.loadSingleFile( { url: fileUrl }, onLoad, onProgress, onError )
 
-        } else if ( TValidator.isObject( files ) ) {
+        } else if ( isObject( files ) ) {
 
             this.loadSingleFile( files, onLoad, onProgress, onError )
 
-        } else if ( TValidator.isFunction( files ) ) {
+        } else if ( isFunction( files ) ) {
 
             this.load( files(), onLoad, onProgress, onError )
 
-        } else if ( TValidator.isArray( files ) ) {
+        } else if ( isArray( files ) ) {
 
             // Todo: need to rework logic here and use wrapper object instead of array of object to avoid
             // Todo: array of 2 differents files.
-            if ( (files.length === 2) && (TValidator.isObject( files[ 0 ] ) && TValidator.isObject( files[ 1 ] )) ) {
+            if ( (files.length === 2) && (isObject( files[ 0 ] ) && isObject( files[ 1 ] )) ) {
 
                 this.loadAssociatedFiles( files, onLoad, onProgress, onError )
 
@@ -159,7 +165,7 @@ Object.assign( TUniversalLoader.prototype, {
 
             }
 
-        } else if ( TValidator.isString( files ) ) {
+        } else if ( isString( files ) ) {
 
             this.loadSingleFile( { url: files }, onLoad, onProgress, onError )
 
