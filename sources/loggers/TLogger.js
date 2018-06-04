@@ -15,7 +15,7 @@ import {
     isObject,
     isArrayOfString,
     isArrayOfObject
-} from '../validators/_validators'
+} from 'itee-validators'
 
 /**
  *
