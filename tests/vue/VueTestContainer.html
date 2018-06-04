@@ -2,8 +2,8 @@
 <html lang="en">
 	<head>
 		<meta charset="UTF-8">
-		<title>Vue</title>
-		<link rel="stylesheet" type="text/css" href="../../node_modules/font-awesome/css/font-awesome.css">
+		<title>TItemList</title>
+		<!--<link rel="stylesheet" type="text/css" href="../../node_modules/font-awesome/css/font-awesome.css">-->
 		<!--<link rel="stylesheet" type="text/css" href="../resources/styles/itee-client.style.css">-->
 		<style>
 			html, body {
@@ -33,53 +33,36 @@
 				display: block;
 			}
 
-			/*.container {*/
-				/*border: 1px solid purple;*/
-				/*padding: 3px;*/
-			/*}*/
-
-			/*.itemlist {*/
-				/*border: 1px solid black;*/
-			/*}*/
-
 			.stretchChildren > * {
 				flex: 1;
 			}
 
+			.itemList {
+				border: 2px inset white;
+			}
+
 			.item {
 				display: flex;
-				/*margin: 3px;*/
 			}
 
 			.itemRed {
 				min-width: 100px;
-				min-height: 100px;
+				min-height: 130px;
 				border: 1px solid black;
 				text-align: right;
+				background-color: indianred;
 			}
 
 			.itemGreen {
 				min-width: 100px;
-				min-height: 130px;
+				min-height: 100px;
 				border: 1px solid black;
-			}
-
-			.itemBlue {
-				/*min-width: 130px;*/
-				/*min-height: 100px;*/
-				border: 1px solid black;
-				font-size: 2em;
-			}
-
-			.red {
-				background-color: indianred;
-			}
-
-			.green {
 				background-color: limegreen;
 			}
 
-			.blue {
+			.itemBlue {
+				border: 1px solid black;
+				font-size: 2em;
 				background-color: dodgerblue;
 			}
 
@@ -87,11 +70,11 @@
 	</head>
 	<body>
 		<div id="root"></div>
-		<script src="./VueConfig.js"></script>
-		<script src="./VueApp.iife.js"></script>
+		<script src="../../builds/itee-client.iife.js"></script>
+		<script src="./VueConfigContainer.js"></script>
 		<script>
 
-            var app = new Itee.createSpaceCraft( config )
+            var app = new Itee.startApp( config )
 
 		</script>
 	</body>

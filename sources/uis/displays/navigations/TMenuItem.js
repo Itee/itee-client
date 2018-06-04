@@ -16,9 +16,25 @@ import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
 export default Vue.component( 'TMenuItem', {
     template: `
-        <div class="tMenuItem">
-            <TLabel :label=label :icon=icon :tooltip=tooltip :onClickHandler=onClickHandler />
+        <div v-if="onClick" :class=computedClass>
+            <TLabel :label=label :icon=icon :tooltip=tooltip :onClickHandler=onClick />
+        </div>
+        <div v-else :class=computedClass>
+            <TLabel :label=label :icon=icon :tooltip=tooltip />
         </div>
     `,
-    props:    [ 'label', 'icon', 'target', 'tooltip', 'onClickHandler' ]
+    props:    [ 'label', 'icon', 'target', 'tooltip', 'onClick', 'isActive' ],
+    computed: {
+
+        computedClass () {
+
+            if ( this.isActive ) {
+                return 'tMenuItem isActive'
+            } else {
+                return 'tMenuItem'
+            }
+
+        }
+
+    }
 } )

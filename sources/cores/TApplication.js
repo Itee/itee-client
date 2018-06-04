@@ -552,20 +552,20 @@ function TApplication ( container, parameters, onReady ) {
             //
             //                const importInput   = $( "#importInput" )
             //                const files         = importInput[ 0 ].files
-            //                const numberOfFiles = files.length
-            //                TLogger.log( "numberOfFiles: " + numberOfFiles );
-            //
-            //                const filesUrls = []
-            //                let fileUrl     = ''
-            //                let fileIndex   = undefined
-            //                let fileObject  = undefined
-            //
-            //                for ( fileIndex = 0 ; fileIndex < numberOfFiles ; ++fileIndex ) {
-            //                    fileObject = files[ fileIndex ]
-            //                    fileUrl    = URL.createObjectURL( fileObject ) + '/' + fileObject.name
-            //
-            //                    filesUrls.push( { url: fileUrl } )
-            //                }
+//                            const numberOfFiles = files.length
+//                            TLogger.log( "numberOfFiles: " + numberOfFiles );
+//
+//                            const filesUrls = []
+//                            let fileUrl     = ''
+//                            let fileIndex   = undefined
+//                            let fileObject  = undefined
+//
+//                            for ( fileIndex = 0 ; fileIndex < numberOfFiles ; ++fileIndex ) {
+//                                fileObject = files[ fileIndex ]
+//                                fileUrl    = URL.createObjectURL( fileObject ) + '/' + fileObject.name
+//
+//                                filesUrls.push( { url: fileUrl } )
+//                            }
             //
             //                self.loadObjectFromURL( filesUrls )
             //
@@ -610,7 +610,7 @@ function TApplication ( container, parameters, onReady ) {
         self.buildingsManager  = new BuildingsManager()
         self.buildingsManager.basePath = '/buildings'
 
-        self.scenesManager     = new TScenesManager()
+//        self.scenesManager     = new TScenesManager()
         self.objectsManager    = new TObjectsManager()
         self.geometriesManager = new TGeometriesManager()
         self.materialsManager  = new TMaterialsManager()
@@ -643,7 +643,7 @@ function TApplication ( container, parameters, onReady ) {
 
         if ( _parameters.fromDatabase ) {
 
-            self.pointCloudManager = new TPointsManager( this.webglViewport )
+//            self.pointCloudManager = new TPointsManager( this.webglViewport )
             self.pointCloudManager.setGlobalOffset( _parameters.globalOffset )
             if ( _parameters.samplingMin ) { self.pointCloudManager.setMinimumSamplingLimit( _parameters.samplingMin ) }
 

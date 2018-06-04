@@ -15,8 +15,11 @@
 
 /* eslint-env browser */
 
-import { FileLoader } from '../../node_modules/threejs-full-es6/sources/loaders/FileLoader'
-import { DefaultLoadingManager } from '../../node_modules/threejs-full-es6/sources/loaders/LoadingManager'
+import {
+    DefaultLoadingManager,
+    FileLoader
+} from 'three-full'
+
 import { DefaultLogger as TLogger } from '../Loggers/TLogger'
 import {
     BinaryReader,

@@ -36,7 +36,7 @@ const jsdoc    = require( 'gulp-jsdoc3' )
 const eslint   = require( 'gulp-eslint' )
 const gulpif   = require( 'gulp-if' )
 const less     = require( 'gulp-less' )
-const sass     = require( 'gulp-sass' )
+//const sass     = require( 'gulp-sass' )
 const cleanCss = require( 'gulp-clean-css' )
 const concat   = require( 'gulp-concat' )
 const del      = require( 'del' )
@@ -204,7 +204,7 @@ gulp.task( 'build-style-dev', () => {
 
     return gulp.src( styleFiles )
                .pipe( gulpif( /[.]less$/, less() ) )
-               .pipe( gulpif( /[.]scss/, sass() ) )
+//               .pipe( gulpif( /[.]scss/, sass() ) )
                .pipe( concat( 'itee-client.style.css' ) )
                .pipe( gulp.dest( './builds/' ) )
 
@@ -214,7 +214,7 @@ gulp.task( 'build-style-prod', () => {
 
     return gulp.src( styleFiles )
                .pipe( gulpif( /[.]less$/, less() ) )
-               .pipe( gulpif( /[.]scss/, sass() ) )
+//               .pipe( gulpif( /[.]scss/, sass() ) )
                .pipe( concat( 'itee-client.style.min.css' ) )
                .pipe( cleanCss( { compatibility: 'ie8' } ) )
                .pipe( gulp.dest( './builds/' ) )
@@ -249,21 +249,12 @@ gulp.task( 'build-script', ( done ) => {
     function processArguments ( processArgv ) {
         'use strict'
 
-        //        let defaultOptions = {
-        //            fileName:     'itee-client',
-        //            inputPath:    path.join( __dirname, 'sources' ),
-        //            outputPath:   path.join( __dirname, 'builds' ),
-        //            environments: [ 'development', 'production' ],
-        //            formats:      [ 'amd', 'cjs', 'es', 'iife', 'umd' ],
-        //            sourceMap:    false
-        //        }
-
         let defaultOptions = {
             fileName:     'itee-client',
             inputPath:    path.join( __dirname, 'sources' ),
             outputPath:   path.join( __dirname, 'builds' ),
-            environments: [ 'development' ],
-            formats:      [ 'iife' ],
+            environments: [ 'development', 'production' ],
+            formats:      [ 'amd', 'cjs', 'es', 'iife', 'umd' ],
             sourceMap:    false
         }
 

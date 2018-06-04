@@ -11,25 +11,32 @@
 /* eslint-env browser */
 
 import {
-    STLLoader,
-    OBJLoader,
-    OBJLoader2,
+    ColladaLoader,
     FBXLoader,
     MTLLoader,
     ObjectLoader,
+    OBJLoader,
+    OBJLoader2,
+    STLLoader,
 
     DoubleSide,
     DefaultLoadingManager,
     Group,
     Mesh,
+    MeshPhongMaterial,
     ShapeBufferGeometry,
-    MeshPhongMaterial
-} from 'threejs-full-es6'
-import { FBXLoader2 } from './FBXLoader2'
+} from 'three-full'
+
+import {
+    isString,
+    isArray,
+    isFunction,
+    isObject
+} from 'itee-validators'
+
 import { ASCLoader } from './ASCLoader'
 import { SHPLoader } from './SHPLoader'
 import { DBFLoader } from './DBFLoader'
-import * as TValidator from '../validators/_validators'
 import { degreesToRadians } from '../maths/TMath'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { FileFormat } from '../cores/TConstants'
@@ -110,19 +117,43 @@ Object.assign( TUniversalLoader.prototype, {
             return
         }
 
-        if ( TValidator.isObject( files ) ) {
+        if ( files instanceof FileList ) {
+
+            const numberOfFiles = files.length
+            TLogger.log( "numberOfFiles: " + numberOfFiles );
+
+            const filesUrls = []
+            let fileUrl     = ''
+            let fileIndex   = undefined
+            let fileObject  = undefined
+
+            for ( fileIndex = 0 ; fileIndex < numberOfFiles ; ++fileIndex ) {
+                fileObject = files[ fileIndex ]
+                fileUrl    = URL.createObjectURL( fileObject ) + '/' + fileObject.name
+
+                filesUrls.push( { url: fileUrl } )
+            }
+
+            this.load( filesUrls, onLoad, onProgress, onError )
+
+        } else if ( files instanceof File ) {
+
+            const fileUrl = URL.createObjectURL( files ) + '/' + files.name
+            this.loadSingleFile( { url: fileUrl }, onLoad, onProgress, onError )
+
+        } else if ( isObject( files ) ) {
 
             this.loadSingleFile( files, onLoad, onProgress, onError )
 
-        } else if ( TValidator.isFunction( files ) ) {
+        } else if ( isFunction( files ) ) {
 
             this.load( files(), onLoad, onProgress, onError )
 
-        } else if ( TValidator.isArray( files ) ) {
+        } else if ( isArray( files ) ) {
 
             // Todo: need to rework logic here and use wrapper object instead of array of object to avoid
             // Todo: array of 2 differents files.
-            if ( (files.length === 2) && (TValidator.isObject( files[ 0 ] ) && TValidator.isObject( files[ 1 ] )) ) {
+            if ( (files.length === 2) && (isObject( files[ 0 ] ) && isObject( files[ 1 ] )) ) {
 
                 this.loadAssociatedFiles( files, onLoad, onProgress, onError )
 
@@ -134,7 +165,7 @@ Object.assign( TUniversalLoader.prototype, {
 
             }
 
-        } else if ( TValidator.isString( files ) ) {
+        } else if ( isString( files ) ) {
 
             this.loadSingleFile( { url: files }, onLoad, onProgress, onError )
 
@@ -164,6 +195,10 @@ Object.assign( TUniversalLoader.prototype, {
 
             case FileFormat.Asc:
                 this._loadAsc( file, onLoad, onProgress, onError )
+                break
+
+            case FileFormat.Dae:
+                this._loadDae( file, onLoad, onProgress, onError )
                 break
 
             case FileFormat.Dbf:
@@ -272,6 +307,30 @@ Object.assign( TUniversalLoader.prototype, {
      * @param onError
      * @private
      */
+    _loadDae ( file, onLoad, onProgress, onError ) {
+
+        const loader = new ColladaLoader( this.manager )
+        loader.load(
+            file.url,
+            data => {
+
+                onLoad( data.scene )
+
+            },
+            onProgress,
+            onError
+        )
+
+    },
+
+    /**
+     *
+     * @param file
+     * @param onLoad
+     * @param onProgress
+     * @param onError
+     * @private
+     */
     _loadDbf ( file, onLoad, onProgress, onError ) {
 
         const loader = new DBFLoader( this.manager )
@@ -294,7 +353,7 @@ Object.assign( TUniversalLoader.prototype, {
      */
     _loadFbx ( file, onLoad, onProgress, onError ) {
 
-        const loader = new FBXLoader2( this.manager )
+        const loader = new FBXLoader( this.manager )
         loader.load(
             file.url,
             object => {
@@ -441,7 +500,7 @@ Object.assign( TUniversalLoader.prototype, {
         const mtlLoader = new MTLLoader( this.manager )
         const objLoader = new OBJLoader( this.manager )
 
-        const texturePath = mtlFile.texturePath || 'resources/models/evan/'
+        const texturePath = mtlFile.texturePath
         if ( texturePath ) {
             mtlLoader.setTexturePath( texturePath )
         }
@@ -541,12 +600,6 @@ Object.assign( TUniversalLoader.prototype, {
                 group.add( mesh )
 
             }
-
-            group.rotateX( degreesToRadians( -90 ) )
-            group.rotateZ( degreesToRadians( 180 ) )
-            group.position.z -= 159.5
-            group.position.x -= 0.6
-            group.position.y = 14
 
             onLoad( group )
 

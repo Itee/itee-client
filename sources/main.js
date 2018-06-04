@@ -8,7 +8,7 @@
  *
  */
 
-import { Detector } from '../node_modules/threejs-full-es6/sources/helpers/Detector'
+import { Detector } from 'three-full'
 import Vue from '../node_modules/vue/dist/vue.esm'
 import VueRouter from 'vue-router'
 import './uis/_uis'
@@ -34,12 +34,10 @@ export function analyseEnvironment () {
 
 export function getRawMaterial ( environment ) {
 
-    const rawMaterial = extend( extend( extend( window.TConfigParameters || {}, window.TUrlParameters || {} ), environment || {} ), {
-        //        alloy: {
-        //            Foo: { template: '<div>foo</div>' },
-        //            Bar: { template: '<div>bar</div>' }
-        //        }
-    } )
+    const tConfigParameters = window.IteeConfig || {}
+    const tUrlParameters = window.IteeExternalConfig || {}
+    const tServerParameters = extend( tConfigParameters, tUrlParameters )
+    const rawMaterial = extend( tServerParameters, environment )
 
     return rawMaterial
 
@@ -95,17 +93,26 @@ export function startApp ( config ) {
 
     }
 
-    Vue.use( VueRouter )
+    if( config.routes ) {
 
-    const router = new VueRouter( {
-        routes: config.routes
-    } )
+        Vue.use( VueRouter )
 
-    const app = new Vue( {
-        router
-    } )
+        const router = new VueRouter( {
+            routes: config.routes
+        } )
 
-    app.$mount( config.launchingSite )
+        const app = new Vue( {
+            router
+        } )
+
+        app.$mount( config.launchingSite )
+
+    } else {
+
+        const app = new Vue( config )
+
+    }
+
+
 
 }
-

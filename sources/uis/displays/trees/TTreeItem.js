@@ -13,28 +13,32 @@ import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
 export default Vue.component( 'TTreeItem', {
     template: `
-        <li class="tTreeItem">
+        <li v-if="needUpdate || !needUpdate" :class=computeTreeItemClass>
             <TContainerHorizontal class="tTreeItemContent" hAlign="start" vAlign="center">
-                <TIcon v-if="haveChildren" :iconProps=computeToggleChildrenIconClass :iconOn="{click: toggleChildren}" />
-                <!--<i v-if="haveChildren" :class=computeToggleChildrenIconClass @click="toggleChildren()"></i>-->
-                <label>{{name}}</label>
-                <span v-for="modifier in modifiers" class="tTreeItemModifiers">
-                    <TIcon v-if="modifier.type === 'checkbox'" :iconProps=computeCheckboxClass :iconOn="{click: function () { updateCheckboxState( modifier.onClick ) } }" />
-                    <input v-else-if="modifier.type === 'button'" type="button" @click="modifier.onClick">
-                    <input v-else-if="modifier.type === 'range'" type="range" @change="modifier.onChange">
-                    <input v-else-if="modifier.type === 'number'" type="number" @change="modifier.onChange">
-                    <input v-else-if="modifier.type === 'color'" type="color" @change="modifier.onChange">
+                <TIcon v-if="haveChildren()" :iconProps=computeToggleChildrenIconClass :iconOn="{click: toggleChildren}" />
+                <label @click="function () { updateSelectionState( onClick ) }">{{name}}</label>
+                <span v-for="modifier in filteredModifier" class="tTreeItemModifiers">
+                    <TIcon v-if="( !modifier.display || (modifier.display === 'select' && isSelected)) && modifier.type === 'icon'" :iconProps='modifier.icon' v-bind:iconOn="{click: modifier.onClick}" />
+                    <TCheckIcon v-else-if="modifier.type === 'checkicon'" :iconOn="modifier.iconOn" :iconOff="modifier.iconOff" :value="modifier.value" :onClick=modifier.onClick />
+                    <TButton v-else-if="modifier.type === 'button'" :label="modifier.label" :icon="modifier.icon" :onClick=modifier.onClick :messageData="modifier.value" />
+                    <input v-else-if="modifier.type === 'range'" type="range" @change="modifier.onChange" />
+                    <input v-else-if="modifier.type === 'number'" type="number" @change="modifier.onChange" />
+                    <input v-else-if="modifier.type === 'color'" type="color" @change="modifier.onChange" />
                     <label v-else>Error: Unknown modifier type !!!</label>
                 </span>
             </TContainerHorizontal>
-            <ul v-if="haveChildren" :class=computeTreeItemChildrenClass :style=computeChildrenStyle>
+            <ul v-if="haveChildren() && showChildren && (_currentDeepLevel < maxDeepLevel)" :class=computeTreeItemChildrenClass :style=computeChildrenStyle>
                 <TTreeItem
                     v-for="child in filteredChildren"
                     v-bind:key="child.id"
                     v-bind:name="child.name"
+                    v-bind:onClick="child.onClick"
                     v-bind:modifiers="child.modifiers"
                     v-bind:children="child.children"
                     v-bind:childrenFilter="childrenFilter"
+                    v-bind:needUpdate="needUpdate"
+                    v-bind:maxDeepLevel="maxDeepLevel"
+                    v-bind:_currentDeepLevel="_currentDeepLevel + 1"
                 />
             </ul>
         </li>
@@ -43,16 +47,22 @@ export default Vue.component( 'TTreeItem', {
 
         return {
             showChildren: false,
-            isVisible: true
+            isSelected:   false
         }
 
     },
-    props:    [ 'id', 'name', 'modifiers', 'children', 'childrenFilter' ],
+    props:    [ 'id', 'name', 'onClick', 'modifiers', 'children', 'childrenFilter', 'needUpdate', 'maxDeepLevel', '_currentDeepLevel' ],
     computed: {
 
-        computeTreeItemChildrenClass() {
+        computeTreeItemClass () {
 
-            if( !this.children || this.children.length === 0) {
+            return (this.isSelected) ? 'tTreeItem selected' : 'tTreeItem'
+
+        },
+
+        computeTreeItemChildrenClass () {
+
+            if ( !this.children || this.children.length === 0 ) {
                 return 'tTreeItemChildren'
             } else if ( this.children.length === 1 ) {
                 return 'tTreeItemChildren singleChild'
@@ -65,13 +75,7 @@ export default Vue.component( 'TTreeItem', {
         computeToggleChildrenIconClass () {
 
             return (this.showChildren) ? "chevron-circle-down" : "chevron-circle-right"
-//            return (this.showChildren) ? "chevron-down" : "chevron-right"
-
-        },
-
-        computeCheckboxClass () {
-
-            return (this.isVisible) ? "check-square" : "square"
+            //            return (this.showChildren) ? "chevron-down" : "chevron-right"
 
         },
 
@@ -83,38 +87,52 @@ export default Vue.component( 'TTreeItem', {
 
         },
 
-        filteredChildren() {
+        filteredChildren () {
 
-            if(!this.childrenFilter) {
+            if ( !this.childrenFilter ) {
                 return this.children
             }
 
-            return this.children.filter(this.childrenFilter)
+            return this.children.filter( this.childrenFilter )
 
         },
 
-        haveChildren() {
+        filteredModifier () {
 
-            return this.children && this.children.length > 0
+            return (this.modifiers) ? this.modifiers.filter( ( modifier ) => {
+
+                return ( !modifier.display || (modifier.display === 'select' && this.isSelected) )
+
+            } ) : []
 
         }
 
     },
-    methods: {
-        
-        toggleChildren() {
+    methods:  {
+
+        // need to be a methods in view to be rerender on every template update
+        haveChildren () {
+
+            return (this.children && this.children.length > 0)
+
+        },
+
+        toggleChildren () {
 
             this.showChildren = !this.showChildren
 
         },
 
-        updateCheckboxState( onClickCallback ) {
+        updateSelectionState ( onClickCallback ) {
 
-            this.isVisible = !this.isVisible
-            onClickCallback()
+            this.isSelected = !this.isSelected
+
+            if ( onClickCallback ) {
+                onClickCallback()
+            }
 
         }
-        
+
     }
 
 } )

@@ -32,10 +32,14 @@ class TCache {
      * @param key
      * @param file
      */
-    add ( key, file ) {
+    add ( key, data ) {
 
-        this._cache[ key ] = file
+        this._cache[ key ] = data
 
+    }
+
+    contain ( key ) {
+        return (this._cache[ key ] !== undefined)
     }
 
     /**
