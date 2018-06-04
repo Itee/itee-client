@@ -129,6 +129,14 @@ function TDataBaseManager () {
 
         _cache: {
             value: new TCache()
+        },
+
+        _waitingQueue: {
+            value: []
+        },
+
+        _idsInRequest: {
+            value: []
         }
 
     } )
@@ -484,47 +492,148 @@ Object.defineProperties( TDataBaseManager.prototype, {
         value: function _readSome ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
             const self  = this
-            let results = []
 
-            let cachedResult = undefined
-            let id           = undefined
+            // Filter requested values by cached values
+            let cachedValues = {}
+            let idsUnderRequest = []
+            let idsToRequest = []
             for ( let idIndex = 0, numberOfIds = ids.length ; idIndex < numberOfIds ; idIndex++ ) {
-                id = ids[ idIndex ]
 
-                cachedResult = this._cache.get( id )
-                if ( no(cachedResult) ) {
+                const id          = ids[ idIndex ]
+                const cachedValue = this._cache.get( id )
+
+                // Already exist
+                if ( cachedValue ) {
+                    cachedValues[id] = cachedValue
                     continue
                 }
 
-                results.push( cachedResult )
+                // In request
+                if ( cachedValue === null ) {
+                    idsUnderRequest.push( id )
+                    continue
+                }
+
+                // else request and pre-cache it
+                idsToRequest.push( id )
+                this._cache.add( id, null )
+
             }
 
-            if ( results.length === ids.length ) {
+            if ( idsToRequest.length === 0 ) {
 
-                onLoadCallback( results )
+                if ( idsUnderRequest.length === 0 ) {
 
-            } else {
+                    onLoadCallback( cachedValues )
 
-                function cacheOnLoadResult ( results ) {
+                } else {
 
-                    let result = undefined
-                    for ( let resultIndex = 0, numberOfResults = results.length ; resultIndex < numberOfResults ; resultIndex++ ) {
-                        result = results[ resultIndex ]
-                        self._cache.add( ids[ resultIndex ], result )
-                    }
-                    onLoadCallback( results )
+                    this._waitingQueue.push( {
+                        cachedValues,
+                        idsUnderRequest,
+                        idsToRequest,
+                        onLoadCallback
+                    } )
 
                 }
 
-                TDataBaseManager.requestServer(
-                    HttpVerb.Read,
-                    this.basePath,
-                    ids,
-                    this._onLoad.bind( this, cacheOnLoadResult, onProgressCallback, onErrorCallback ),
-                    this._onProgress.bind( this, onProgressCallback ),
-                    this._onError.bind( this, onErrorCallback ),
-                    this.responseType
-                )
+            } else {
+
+                this._waitingQueue.push( {
+                    cachedValues,
+                    idsUnderRequest,
+                    idsToRequest,
+                    onLoadCallback
+                } )
+
+                let idBunch = []
+                let id      = undefined
+                for ( let idIndex = 0, numberOfIds = ids.length ; idIndex < numberOfIds ; idIndex++ ) {
+                    id = ids[ idIndex ]
+
+                    idBunch.push( id )
+
+                    if ( idBunch.length === this.bunchSize || idIndex === numberOfIds - 1 ) {
+
+                        TDataBaseManager.requestServer(
+                            HttpVerb.Read,
+                            this.basePath,
+                            idBunch,
+                            this._onLoad.bind( this, cacheResults.bind( this ), onProgressCallback, onErrorCallback ),
+                            this._onProgress.bind( this, onProgressCallback ),
+                            this._onError.bind( this, onErrorCallback ),
+                            this.responseType
+                        )
+
+                        idBunch = []
+                    }
+
+                }
+
+            }
+
+            function cacheResults ( results ) {
+
+                // Add new results to cache
+                if(Array.isArray(results)) {
+
+                    for ( let resultIndex = 0, numberOfResults = results.length ; resultIndex < numberOfResults ; resultIndex++ ) {
+                        let result = results[ resultIndex ]
+                        self._cache.add(result._id, result)
+                    }
+
+                } else {
+
+                    for( let key in results ) {
+                        self._cache.add( key, results[key] )
+                    }
+
+                }
+
+                // Process newly cached values for each waiting request
+                for ( let requestIndex = self._waitingQueue.length - 1 ; requestIndex >= 0 ; requestIndex-- ) {
+
+                    const request = self._waitingQueue[ requestIndex ]
+
+                    const idsUnderRequest     = request.idsUnderRequest
+                    let restOfIdsUnderRequest = []
+                    for ( let idUnderRequestIndex = 0, numberOfIdsUnderRequest = idsUnderRequest.length ; idUnderRequestIndex < numberOfIdsUnderRequest ; idUnderRequestIndex++ ) {
+
+                        const id          = idsUnderRequest[ idUnderRequestIndex ]
+                        const cachedValue = self._cache.get( id )
+
+                        if ( cachedValue ) {
+                            request.cachedValues[id] = cachedValue
+                        } else {
+                            restOfIdsUnderRequest.push( id )
+                        }
+
+                    }
+
+                    const idsToRequest     = request.idsToRequest
+                    let restOfIdsToRequest = []
+                    for ( let idToRequestIndex = 0, numberOfIdsToRequest = idsToRequest.length ; idToRequestIndex < numberOfIdsToRequest ; idToRequestIndex++ ) {
+
+                        const id          = idsToRequest[ idToRequestIndex ]
+                        const cachedValue = self._cache.get( id )
+
+                        if ( cachedValue ) {
+                            request.cachedValues[id] = cachedValue
+                        } else {
+                            restOfIdsToRequest.push( id )
+                        }
+
+                    }
+
+                    if ( restOfIdsUnderRequest.length === 0 && restOfIdsToRequest.length === 0 ) {
+                        request.onLoadCallback( request.cachedValues )
+                        self._waitingQueue.splice( requestIndex, 1 )
+                    } else {
+                        request.idsUnderRequest = restOfIdsUnderRequest
+                        request.idsToRequest    = restOfIdsToRequest
+                    }
+
+                }
 
             }
 
@@ -548,18 +657,19 @@ Object.defineProperties( TDataBaseManager.prototype, {
             const self        = this
             const cachedValue = this._cache.get( id )
 
-            if ( cachedValue ) {
 
-                onLoadCallback( cachedValue )
+            if ( cachedValue ) { // Already exist
 
-            } else {
+                let result = {}
+                result[id] = cachedValue
+                onLoadCallback( result )
 
-                function cacheOnLoadResult ( result ) {
 
-                    self._cache.add( id, result )
-                    onLoadCallback( result )
+            } else  if ( cachedValue === null ) { // In request
 
-                }
+
+
+            } else { // else request and pre-cache it
 
                 TDataBaseManager.requestServer(
                     HttpVerb.Read,
@@ -570,6 +680,16 @@ Object.defineProperties( TDataBaseManager.prototype, {
                     this._onError.bind( this, onErrorCallback ),
                     this.responseType
                 )
+
+            }
+
+            function cacheOnLoadResult ( result ) {
+
+                self._cache.add( id, result[0] )
+
+                let _result = {}
+                _result[id] = result[0]
+                onLoadCallback( _result )
 
             }
 
