@@ -13,7 +13,7 @@
 import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
 import { DefaultLogger as TLogger } from '../../../loggers/TLogger'
-import { isString } from '../../../validators/TStringValidator'
+import { isString } from 'itee-validators'
 
 export default Vue.component( 'TContainer', {
     template: `

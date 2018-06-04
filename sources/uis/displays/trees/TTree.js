@@ -24,14 +24,18 @@ export default Vue.component( 'TTree', {
                     v-for="item in filteredItems"
                     v-bind:key="item.id"
                     v-bind:name="item.name"
+                    v-bind:onClick="item.onClick"
                     v-bind:modifiers="item.modifiers"
                     v-bind:children="item.children"
                     v-bind:childrenFilter="filter"
+                    v-bind:needUpdate="needUpdate"
+                    v-bind:maxDeepLevel="maxDeepLevel"
+                    v-bind:_currentDeepLevel="0"
                 />
             </ul>
         </TContainerVertical>
     `,
-    props:    [ 'items', 'filter' ],
+    props:    [ 'items', 'filter', 'needUpdate', 'maxDeepLevel' ],
     computed: {
 
         computeStyle () {

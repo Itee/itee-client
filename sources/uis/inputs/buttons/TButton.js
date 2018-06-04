@@ -12,8 +12,8 @@ import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
 export default Vue.component( 'TButton', {
     template: `
-        <button class="button" @click="onClick(messageData)">
-            <TIcon v-if='icon' :iconProps="icon" />
+        <button class="btn" @click="onClick(messageData)">
+            <TIcon v-if='icon' :iconProps=icon />
             {{label}}
         </button>
     `,

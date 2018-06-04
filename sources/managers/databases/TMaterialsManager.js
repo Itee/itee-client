@@ -11,9 +11,12 @@
 
 /* eslint-env browser */
 
-import { MeshPhongMaterial } from '../../../node_modules/threejs-full-es6/sources/materials/MeshPhongMaterial'
-import { LineBasicMaterial } from '../../../node_modules/threejs-full-es6/sources/materials/LineBasicMaterial'
-import { Color } from '../../../node_modules/threejs-full-es6/sources/math/Color'
+import {
+    MeshPhongMaterial,
+    LineBasicMaterial,
+    Color,
+    Vector2,
+} from 'three-full'
 
 import { DefaultLogger as TLogger } from '../../loggers/TLogger'
 import { TDataBaseManager } from '../TDataBaseManager'
@@ -29,7 +32,7 @@ function TMaterialsManager () {
 
 }
 
-TMaterialsManager.prototype = Object.assign( Object.create(TDataBaseManager.prototype), {
+TMaterialsManager.prototype = Object.assign( Object.create( TDataBaseManager.prototype ), {
 
     /**
      *
@@ -50,6 +53,7 @@ TMaterialsManager.prototype = Object.assign( Object.create(TDataBaseManager.prot
 
             case 'MeshPhongMaterial': {
                 material                     = new MeshPhongMaterial()
+                material._id                 = jsonMaterial._id
                 material.uuid                = jsonMaterial.uuid
                 material.name                = jsonMaterial.name
                 material.type                = jsonMaterial.type
@@ -83,8 +87,8 @@ TMaterialsManager.prototype = Object.assign( Object.create(TDataBaseManager.prot
                 material.premultipliedAlpha  = jsonMaterial.premultipliedAlpha
                 material.overdraw            = jsonMaterial.overdraw
                 material.visible             = jsonMaterial.visible
-                material.userData            = jsonMaterial.userData
-                material.needsUpdate         = jsonMaterial.needsUpdate
+                material.userData            = {} //jsonMaterial.userData
+                material.needsUpdate         = false//jsonMaterial.needsUpdate
                 material.color               = new Color( jsonMaterial.color.r, jsonMaterial.color.g, jsonMaterial.color.b )
                 material.specular            = new Color( jsonMaterial.specular.r, jsonMaterial.specular.g, jsonMaterial.specular.b )
                 material.shininess           = jsonMaterial.shininess
@@ -99,7 +103,7 @@ TMaterialsManager.prototype = Object.assign( Object.create(TDataBaseManager.prot
                 material.bumpMap             = jsonMaterial.bumpMap
                 material.bumpScale           = jsonMaterial.bumpScale
                 material.normalMap           = jsonMaterial.normalMap
-                material.normalScale         = jsonMaterial.normalScale
+                material.normalScale         = new Vector2( jsonMaterial.normalScale.x, jsonMaterial.normalScale.y )
                 material.displacementMap     = jsonMaterial.displacementMap
                 material.displacementScale   = jsonMaterial.displacementScale
                 material.displacementBias    = jsonMaterial.displacementBias
@@ -121,6 +125,7 @@ TMaterialsManager.prototype = Object.assign( Object.create(TDataBaseManager.prot
 
             case 'LineBasicMaterial': {
                 material       = new LineBasicMaterial();
+                material._id   = jsonMaterial._id
                 material.uuid  = jsonMaterial.uuid
                 material.name  = jsonMaterial.name
                 material.type  = jsonMaterial.type

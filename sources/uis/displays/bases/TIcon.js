@@ -13,7 +13,7 @@
 import Vue from '../../../../node_modules/vue/dist/vue.esm'
 import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
 
-import { isObject } from '../../../validators/TObjectValidator'
+import { isObject } from 'itee-validators'
 
 // Todo: implement router facility here using target instead of clickHandler !
 

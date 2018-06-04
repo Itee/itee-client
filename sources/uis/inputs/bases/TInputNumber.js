@@ -9,51 +9,36 @@
  */
 
 /* eslint-env browser */
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-import React from 'react'
+export default Vue.component( 'TInputNumber', {
+    template: `
+    <div class="input-group mb-3">
 
-let _instanceCounter = 0
+        <div v-if="label" class="input-group-prepend">
+            <label class="input-group-text">{{label}}</label>
+        </div>
+        
+        <input type="number" class="form-control" :value=value @change=_onChange>
+        
+    </div>
+    `,
+    props:    [ 'id', 'label', 'value', 'onChange' ],
+    computed: {},
+    methods: {
 
-class TInputNumber extends React.Component {
+        _onChange( event ) {
 
-    constructor ( props ) {
 
-        super( props )
-        _instanceCounter++
+            const numericalValue = parseFloat( event.target.value )
 
-    }
+            // (One data flow) Required to reset the input field before any parent update
+            event.target.value = this.value
 
-    /**
-     * React lifecycle
-     */
-    componentWillMount () {}
+            this.onChange( numericalValue )
 
-    componentDidMount () {}
-
-    componentWillUnmount () {}
-
-    componentWillReceiveProps ( /*nextProps*/ ) {}
-
-    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentWillUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentDidUpdate ( /*prevProps, prevState*/ ) {}
-
-    render () {
-
-        const { id, className } = this.props
-
-        const _id    = id || `tInputNumber_${_instanceCounter}`
-        const _style = {}
-        const _class = ( className ) ? `tInputNumber ${className}` : 'tInputNumber'
-
-        return (
-            <t-input-number ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-input-number>
-        )
+        }
 
     }
 
-}
-
-export { TInputNumber }
+} )

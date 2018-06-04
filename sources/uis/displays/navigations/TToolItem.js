@@ -16,11 +16,29 @@ import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
 export default Vue.component( 'TToolItem', {
     template: `
-        <div class="tToolItem" :title=tooltip @click=onClick(onClickData)>
+        <div v-if="onClick" :class=computedClass :title=tooltip @click=onClick(onClickData)>
+            <TIcon v-if='icon' :iconProps="icon" />
+            {{label}}
+            <slot></slot>
+        </div>
+        <div v-else :class=computedClass :title=tooltip >
             <TIcon v-if='icon' :iconProps="icon" />
             {{label}}
             <slot></slot>
         </div>
     `,
-    props:    [ 'label', 'icon', 'target', 'tooltip', 'onClick', 'onClickData' ]
+    props:    [ 'label', 'icon', 'target', 'tooltip', 'onClick', 'onClickData', 'isActive' ],
+    computed: {
+
+        computedClass () {
+
+            if ( this.isActive ) {
+                return 'tToolItem isActive'
+            } else {
+                return 'tToolItem'
+            }
+
+        }
+
+    }
 } )

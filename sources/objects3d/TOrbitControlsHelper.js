@@ -10,13 +10,15 @@
 
 /* eslint-env browser */
 
-import { VertexColors } from '../../node_modules/threejs-full-es6/sources/constants'
-import { BufferGeometry } from '../../node_modules/threejs-full-es6/sources/core/BufferGeometry'
-import { Float32BufferAttribute } from '../../node_modules/threejs-full-es6/sources/core/BufferAttribute'
-import { LineBasicMaterial } from '../../node_modules/threejs-full-es6/sources/materials/LineBasicMaterial'
-import { Color } from '../../node_modules/threejs-full-es6/sources/math/Color'
-import { OrbitControls } from '../../node_modules/threejs-full-es6/sources/controls/OrbitControls'
-import { LineSegments } from '../../node_modules/threejs-full-es6/sources/objects/LineSegments'
+import {
+    BufferGeometry,
+    Color,
+    Float32BufferAttribute,
+    LineBasicMaterial,
+    LineSegments,
+    OrbitControls,
+    VertexColors,
+} from 'three-full'
 
 /**
  *
@@ -102,31 +104,52 @@ function TOrbitControlsHelper ( orbitControls ) {
 
     }
 
-    var geometry = new BufferGeometry()
-    geometry.addAttribute( 'position', new Float32BufferAttribute( vertices, 3 ) );
-    geometry.addAttribute( 'color', new Float32BufferAttribute( colors, 3 ) );
+    const positionBufferAttribute = new Float32BufferAttribute( vertices, 3 )
+    positionBufferAttribute.name  = 'TOrbitControlsHelperPositionBufferAttribute'
 
-    var material         = new LineBasicMaterial( { vertexColors: VertexColors } );
+    const colorBufferAttribute = new Float32BufferAttribute( colors, 3 )
+    colorBufferAttribute.name  = 'TOrbitControlsHelperColorBufferAttribute'
+
+    const geometry = new BufferGeometry()
+    geometry.addAttribute( 'position', positionBufferAttribute )
+    geometry.addAttribute( 'color', colorBufferAttribute )
+    geometry.name = 'TOrbitControlsHelperGeometry'
+
+    const material       = new LineBasicMaterial( { vertexColors: VertexColors } )
     material.transparent = true
     material.opacity     = 0.0
+    material.name        = 'TOrbitControlsHelperMaterial'
 
     LineSegments.call( this, geometry, material )
 
-    this.control = orbitControls
-    this.control.addEventListener( 'start', this.startOpacityAnimation.bind( this ) )
-    this.control.addEventListener( 'change', this.updateHelperPosition.bind( this ) )
-    this.control.addEventListener( 'end', this.endOpacityAnimation.bind( this ) )
-
+    this.control    = orbitControls
     this.intervalId = undefined
+    this.impose()
 
 }
 
-TOrbitControlsHelper.prototype = Object.assign( Object.create(LineSegments.prototype), {
+TOrbitControlsHelper.prototype = Object.assign( Object.create( LineSegments.prototype ), {
 
     /**
      *
      */
     constructor: TOrbitControlsHelper,
+
+    impose () {
+
+        this.control.addEventListener( 'start', this.startOpacityAnimation.bind( this ) )
+        this.control.addEventListener( 'change', this.updateHelperPosition.bind( this ) )
+        this.control.addEventListener( 'end', this.endOpacityAnimation.bind( this ) )
+
+    },
+
+    dispose () {
+
+        this.control.removeEventListener( 'start', this.startOpacityAnimation )
+        this.control.removeEventListener( 'change', this.updateHelperPosition )
+        this.control.removeEventListener( 'end', this.endOpacityAnimation )
+
+    },
 
     /**
      *

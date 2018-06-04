@@ -10,7 +10,7 @@
 
 /* global Itee */
 
-var config = {
+var TConfigParameters = {
     el:       '#root',
     data:     {
         viewport:  {

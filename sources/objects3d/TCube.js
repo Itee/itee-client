@@ -9,11 +9,12 @@
  */
 
 /* eslint-env browser */
-
-import { FaceColors } from '../../node_modules/threejs-full-es6/sources/constants'
-import { Mesh } from '../../node_modules/threejs-full-es6/sources/objects/Mesh'
-import { BoxGeometry } from '../../node_modules/threejs-full-es6/sources/geometries/BoxGeometry'
-import { MeshBasicMaterial } from '../../node_modules/threejs-full-es6/sources/materials/MeshBasicMaterial'
+import {
+    BoxGeometry,
+    FaceColors,
+    Mesh,
+    MeshBasicMaterial
+} from 'three-full'
 
 import { extend } from '../utils/TObjectUtil'
 

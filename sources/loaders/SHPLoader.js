@@ -17,10 +17,12 @@
 
 /* eslint-env browser */
 
-import { FileLoader } from '../../node_modules/threejs-full-es6/sources/loaders/FileLoader'
-import { DefaultLoadingManager } from '../../node_modules/threejs-full-es6/sources/loaders/LoadingManager'
-import { Vector3 } from '../../node_modules/threejs-full-es6/sources/math/Vector3'
-import { Shape } from '../../node_modules/threejs-full-es6/sources/core/Shape'
+import {
+    DefaultLoadingManager,
+    FileLoader,
+    Shape,
+    Vector3,
+} from 'three-full'
 
 import { DefaultLogger as TLogger } from '../Loggers/TLogger'
 import {
@@ -97,8 +99,8 @@ function ringContainsSome ( ring, hole ) {
 function ringContains ( ring, point ) {
     var x = point[ 0 ], y = point[ 1 ], contains = -1;
     for ( var i = 0, n = ring.length, j = n - 1 ; i < n ; j = i++ ) {
-        var pi = ring[ i ], xi = pi[ 0 ], yi = pi[ 1 ],
-            pj                               = ring[ j ], xj = pj[ 0 ], yj = pj[ 1 ];
+        var pi                               = ring[ i ], xi               = pi[ 0 ], yi = pi[ 1 ],
+            pj = ring[ j ], xj = pj[ 0 ], yj = pj[ 1 ];
         if ( segmentContains( pi, pj, point ) ) {
             return 0;
         }

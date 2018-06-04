@@ -102,8 +102,7 @@ function CreateRollupConfiguration ( fileName, inputPath, outputPath, format, on
             // danger zone
             acorn:         undefined,
             context:       undefined,
-            moduleContext: {},
-            legacy:        undefined
+            moduleContext: {}
         },
         outputOptions: {
             // core options

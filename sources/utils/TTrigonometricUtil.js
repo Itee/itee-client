@@ -11,8 +11,10 @@
 /* eslint-env browser */
 /* globals $ */
 
-import { Vector2 } from '../../node_modules/threejs-full-es6/sources/math/Vector2'
-import { Vector3 } from '../../node_modules/threejs-full-es6/sources/math/Vector3'
+import {
+    Vector2,
+    Vector3
+} from 'three-full'
 
 import { degreesToRadians } from '../maths/TMath'
 

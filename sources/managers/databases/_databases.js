@@ -10,9 +10,10 @@
 
 //export { MeshManager } from './MeshManager' // Todo: Remove when merged in TObjectsManager
 
+export { TObjectsManager } from './TObjects3DManager'
+export { TCurvesManager } from './TCurvesManager'
 export { TGeometriesManager } from './TGeometriesManager'
+export { TBufferGeometriesManager } from './TBufferGeometriesManager'
 export { TMaterialsManager } from './TMaterialsManager'
-export { TObjectsManager } from './TObjectsManager'
-export { TPointsManager } from './TPointsManager'
-export { TScenesManager } from './TScenesManager'
+export { TTexturesManager } from './TTexturesManager'
 
