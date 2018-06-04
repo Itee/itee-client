@@ -373,6 +373,7 @@ TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.pr
         }
 
         // COMMON PARTS
+        bufferGeometry._id = data._id
 
         bufferGeometry.uuid = data.uuid
         bufferGeometry.name = data.name
