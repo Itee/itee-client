@@ -38,6 +38,10 @@ class TCache {
 
     }
 
+    contain ( key ) {
+        return (this._cache[ key ] !== undefined)
+    }
+
     /**
      * Return the value associated to the key.
      *
