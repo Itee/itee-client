@@ -766,31 +766,34 @@ Object.assign( TDataBaseManager.prototype, {
 
             if ( isEmptyArray(ids) ) { onError( 'TDataBaseManager.read: Array of data cannot be empty !' ) }
 
-            if ( isOneElementArray(ids) ) {
+            this._readSome( ids, onLoadCallback, onProgressCallback, onError )
 
-                this._readOne( ids[ 0 ], onLoadCallback, onProgressCallback, onError )
-
-            } else {
-
-                let idBunch = []
-                let id      = undefined
-                for ( let idIndex = 0, numberOfIds = ids.length ; idIndex < numberOfIds ; idIndex++ ) {
-                    id = ids[ idIndex ]
-
-                    idBunch.push( id )
-
-                    if ( idBunch.length === this.bunchSize || idIndex === numberOfIds - 1 ) {
-                        this._readSome( idBunch, onLoadCallback, onProgressCallback, onError )
-                        idBunch = []
-                    }
-
-                }
-
-            }
+            ////            if ( isOneElementArray(ids) ) {
+////
+////                this._readOne( ids[ 0 ], onLoadCallback, onProgressCallback, onError )
+////
+////            } else {
+//
+//                let idBunch = []
+//                let id      = undefined
+//                for ( let idIndex = 0, numberOfIds = ids.length ; idIndex < numberOfIds ; idIndex++ ) {
+//                    id = ids[ idIndex ]
+//
+//                    idBunch.push( id )
+//
+//                    if ( idBunch.length === this.bunchSize || idIndex === numberOfIds - 1 ) {
+//                        this._readSome( idBunch, onLoadCallback, onProgressCallback, onError )
+//                        idBunch = []
+//                    }
+//
+//                }
+//
+////            }
 
         } else if ( isString(ids) ) {
 
-            this._readOne( ids, onLoadCallback, onProgressCallback, onError )
+            this._readSome( [ids], onLoadCallback, onProgressCallback, onError )
+            //            this._readOne( ids, onLoadCallback, onProgressCallback, onError )
 
         } else if ( isObject(ids) ) {
 
