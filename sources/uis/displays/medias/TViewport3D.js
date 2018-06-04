@@ -53,6 +53,8 @@ import {
     Group,
     Raycaster,
     Vector3,
+    Frustum,
+    Matrix4
 } from 'three-full'
 
 import { default as Stats } from '../../../../node_modules/stats.js/src/Stats'
@@ -1023,7 +1025,7 @@ export default Vue.component( 'TViewport3D', {
                 return
             }
 
-            event.preventDefault()
+            mouseEvent.preventDefault()
 
             // calculate mouse position in normalized device coordinates
             // (-1 to +1) for both components
@@ -1043,7 +1045,8 @@ export default Vue.component( 'TViewport3D', {
             const raycastables = this._getRaycastableCache()
             const intersects   = this._raycaster.intersectObjects( raycastables, false )
             if ( intersects && intersects.length > 0 ) {
-                this.$emit( 'intersect', intersects[ 0 ] )
+                const nearestIntersect = intersects[ 0 ]
+                this.$emit( 'intersect', nearestIntersect )
             } else {
                 this.$emit( 'intersect', null )
             }
@@ -1099,7 +1102,13 @@ export default Vue.component( 'TViewport3D', {
 
             const radius  = []
             const centers = []
-            this.scene.traverse( child => {
+
+            let groupToFit = this.scene.getObjectByName( 'Sites' )
+            if( !groupToFit ) {
+                groupToFit = this.scene
+            }
+
+            groupToFit.traverse( child => {
 
                 if ( child.isMesh || child.isLineSegments ) {
 
@@ -1190,6 +1199,8 @@ export default Vue.component( 'TViewport3D', {
 
             }, 250 )
 
+            this._cache.raycastables = []
+
         },
 
         _getRaycastableCache () {
@@ -1199,24 +1210,50 @@ export default Vue.component( 'TViewport3D', {
 
                 this._cache.raycastables = []
 
-                updateRaycastableChildren( this.scene.children )
+                let raycastables = this.scene.getObjectByName( 'Données' )
+                if ( !raycastables ) {
+                    raycastables = this.scene.getObjectByName( 'Sites' )
+                }
+                if( !raycastables ) {
+                    raycastables = this.scene
+                }
+
+                const frustum                    = new Frustum();
+                const cameraViewProjectionMatrix = new Matrix4();
+
+                // every time the camera or objects change position (or every frame)
+                this._camera.updateMatrixWorld() // make sure the camera matrix is updated
+                this._camera.matrixWorldInverse.getInverse( this._camera.matrixWorld )
+                cameraViewProjectionMatrix.multiplyMatrices( this._camera.projectionMatrix, this._camera.matrixWorldInverse )
+                frustum.setFromMatrix( cameraViewProjectionMatrix )
+
+
+                updateRaycastableChildren( raycastables.children )
 
                 function updateRaycastableChildren ( children ) {
 
                     for ( let i = 0, n = children.length ; i < n ; i++ ) {
+
                         let child = children[ i ]
 
-                        if ( child.visible ) {
-
-                            if ( child.isGroup || child.type === 'Scene' ) {
-                                updateRaycastableChildren( child.children )
-                            } else if ( child.isRaycastable ) {
-                                self._cache.raycastables.push( child )
-                                updateRaycastableChildren( child.children )
-
-                            }
-
+                        if ( !child.visible ) {
+                            continue
                         }
+
+                        if ( child.isGroup || child.type === 'Scene' ) {
+                            updateRaycastableChildren( child.children )
+                        }
+
+                        if ( !child.isRaycastable ) {
+                            continue
+                        }
+
+                        if ( !frustum.intersectsObject( child ) ) {
+                            continue
+                        }
+
+                        self._cache.raycastables.push( child )
+                        updateRaycastableChildren( child.children )
 
                     }
 
@@ -1240,7 +1277,15 @@ export default Vue.component( 'TViewport3D', {
                 this._cache.decimables = []
                 const meshes           = []
 
-                updateDecimateCache( this.scene.children )
+                //Todo: Should be able to specify the Group/Layers/whatever where decimate
+                let decimables = this.scene.getObjectByName( 'Données' )
+                if ( !decimables ) {
+                    decimables = this.scene.getObjectByName( 'Sites' )
+                }
+                if( !decimables ) {
+                    decimables = this.scene
+                }
+                updateDecimateCache( decimables.children )
 
                 function updateDecimateCache ( children ) {
 
