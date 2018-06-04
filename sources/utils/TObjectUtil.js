@@ -9,9 +9,11 @@
  */
 
 /* eslint-env browser */
-import { isObject } from '../validators/TObjectValidator'
-import { isNull } from '../validators/TNullityValidator'
-import { isUndefined } from '../validators/TUndefineValidator'
+import {
+    isNull,
+    isUndefined,
+    isObject
+} from 'itee-validators'
 
 export function uniq ( a ) {
     var seen = {};
