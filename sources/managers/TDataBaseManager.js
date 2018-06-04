@@ -25,13 +25,20 @@ import {
 import { TOrchestrator } from '../cores/TOrchestrator'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { TCache } from '../cores/TCache'
-import { isArray, isEmptyArray, isOneElementArray } from '../validators/TArrayValidator'
-import { isNull } from '../validators/TNullityValidator'
-import { isObject } from '../validators/TObjectValidator'
-import { isUndefined } from '../validators/TUndefineValidator'
-import { isNumber } from '../validators/TNumberValidator'
-import { isString, isNotString, isEmptyString, isBlankString } from '../validators/TStringValidator'
-import { no } from '../validators/TVoidValidator'
+import {
+    no,
+    isNull,
+    isUndefined,
+    isNumber,
+    isString,
+    isNotString,
+    isEmptyString,
+    isBlankString,
+    isArray,
+    isEmptyArray,
+    isArrayOfSingleElement,
+    isObject
+} from 'itee-validators'
 
 /**
  *
@@ -888,7 +895,7 @@ Object.assign( TDataBaseManager.prototype, {
 
             this._readSome( ids, onLoadCallback, onProgressCallback, onError )
 
-            ////            if ( isOneElementArray(ids) ) {
+            ////            if ( isArrayOfSingleElement(ids) ) {
 ////
 ////                this._readOne( ids[ 0 ], onLoadCallback, onProgressCallback, onError )
 ////
