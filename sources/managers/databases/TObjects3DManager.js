@@ -65,16 +65,10 @@ import { TDataBaseManager } from '../TDataBaseManager'
 import { TGeometriesManager } from '../databases/TGeometriesManager'
 import { TMaterialsManager } from '../databases/TMaterialsManager'
 
-import { isUndefined } from '../../validators/TUndefineValidator'
-import { isNull } from '../../validators/TNullityValidator'
-
-import { isNotEmptyArray } from '../../validators/TArrayValidator'
-
-function isNullOrUndefined ( value ) {
-
-    return (isNull( value ) || isUndefined( value ))
-
-}
+import {
+    isNullOrUndefined,
+    isNotEmptyArray
+} from 'itee-validators'
 
 /**
  *
