@@ -244,9 +244,10 @@ Object.defineProperties( TDataBaseManager.prototype, {
 
             // TODO: switch on status
             if ( !TDataBaseManager._statusOk( status ) ) { return }
+
             if ( !response ) {
                 TLogger.warn( 'TDataBaseManager.onLoad: No data receive !' )
-                onLoadCallback()
+                onLoadCallback( null )
                 return
             }
 
