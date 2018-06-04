@@ -62,6 +62,8 @@ import {
 } from 'three-full'
 
 import { TDataBaseManager } from '../TDataBaseManager'
+import { TGeometriesManager } from '../databases/TGeometriesManager'
+import { TMaterialsManager } from '../databases/TMaterialsManager'
 
 import { isUndefined } from '../../validators/TUndefineValidator'
 import { isNull } from '../../validators/TNullityValidator'
@@ -82,6 +84,9 @@ function TObjectsManager () {
 
     TDataBaseManager.call( this )
     this.basePath = '/objects'
+
+    this._geometriesProvider = new TGeometriesManager()
+    this._materialsProvider  = new TMaterialsManager()
 
 }
 
@@ -108,6 +113,7 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
         const objectType = data.type
         let object       = undefined
 
+        // Todo: Use factory instead and allow user to register its own object type !!!
         switch ( objectType ) {
 
             case 'Scene':
@@ -261,7 +267,7 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
         }
 
         if ( !isNullOrUndefined( data.matrixAutoUpdate ) ) {
-            object.matrixAutoUpdate       = data.matrixAutoUpdate
+            object.matrixAutoUpdate = data.matrixAutoUpdate
         }
 
         if ( !isNullOrUndefined( data.matrixWorldNeedsUpdate ) ) {
@@ -269,31 +275,31 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
         }
 
         if ( !isNullOrUndefined( data.layers ) ) {
-            object.layers.mask            = data.layers
+            object.layers.mask = data.layers
         }
 
         if ( !isNullOrUndefined( data.visible ) ) {
-            object.visible                = data.visible
+            object.visible = data.visible
         }
 
         if ( !isNullOrUndefined( data.castShadow ) ) {
-            object.castShadow             = data.castShadow
+            object.castShadow = data.castShadow
         }
 
         if ( !isNullOrUndefined( data.receiveShadow ) ) {
-            object.receiveShadow          = data.receiveShadow
+            object.receiveShadow = data.receiveShadow
         }
 
         if ( !isNullOrUndefined( data.frustumCulled ) ) {
-            object.frustumCulled          = data.frustumCulled
+            object.frustumCulled = data.frustumCulled
         }
 
         if ( !isNullOrUndefined( data.renderOrder ) ) {
-            object.renderOrder            = data.renderOrder
+            object.renderOrder = data.renderOrder
         }
 
         if ( !isNullOrUndefined( data.userData ) ) {
-            object.userData               = data.userData
+            object.userData = data.userData
         }
 
         if (
@@ -381,7 +387,142 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
 
         return object
 
-    }
+    },
+
+    fillObjects3D ( objects, onSuccess, onProgress, onError ) {
+
+        const self = this
+
+        // Filter object with geometries and materials
+        const meshes = objects.filter( object => { return (
+            object.isLine ||
+            object.isLineLoop ||
+            object.isLineSegments ||
+            object.isMesh ||
+            object.isPoints ||
+            object.isSkinnedMesh ||
+            object.isSprite
+        ) } )
+
+        if(meshes.length === 0) {
+            onSuccess( objects )
+            return
+        }
+
+        // Todo: protect against only materials objects and/or no ids to provide !
+
+        // Extract geometries and materials to request
+        const geometriesIds = meshes.map( object => object.geometry ).filter( ( value, index, self ) => {
+            return self.indexOf( value ) === index
+        } )
+        let geometriesMap = undefined
+        this._geometriesProvider.read(
+            geometriesIds,
+            geometries => {
+                geometriesMap = geometries
+                checkEndOfRequests()
+            },
+            onProgress,
+            onError
+        )
+
+        const materialsArray       = meshes.map( object => object.material )
+        const concatMaterialsArray = [].concat.apply( [], materialsArray )
+        const materialsIds         = concatMaterialsArray.filter( ( value, index, self ) => {
+            return self.indexOf( value ) === index
+        } )
+        let materialsMap = undefined
+        this._materialsProvider.read(
+            materialsIds,
+            materials => {
+                materialsMap = materials
+                checkEndOfRequests()
+            },
+            self.onProgress,
+            self.onError
+        )
+
+        function checkEndOfRequests() {
+
+            if( geometriesMap === undefined || materialsMap === undefined ) {
+                return
+            }
+
+            for ( let key in meshes ) {
+                const mesh = meshes[key]
+                self.applyGeometry( mesh, geometriesMap )
+                self.applyMaterials( mesh, materialsMap )
+            }
+
+            onSuccess( meshes )
+
+        }
+
+    },
+
+    applyGeometry( object, geometries ) {
+
+        const geometryId = object.geometry
+        const geometry = geometries[ geometryId ]
+        if(!geometry) {
+            console.error('Unable to retrieve geometry !!!')
+            return null
+        }
+
+        object.geometry = geometry
+
+    },
+
+    applyMaterials( object, materials ) {
+
+        const materialIds = object.material
+
+        if ( Array.isArray( materialIds ) ) {
+
+            if ( materialIds.length === 1 ) {
+
+                const materialId = materialIds[ 0 ]
+                const material = materials[ materialId ]
+                if(!material) {
+                    console.error('Unable to retrieve material !!!')
+                    return null
+                }
+
+                object.material  = material.clone()
+
+            } else {
+
+                object.material = []
+                for ( let materialIndex = 0, numberOfMaterial = materialIds.length ; materialIndex < numberOfMaterial ; materialIndex++ ) {
+                    const materialId = materialIds[ materialIndex ]
+                    const material = materials[ materialId ]
+                    if(!material) {
+                        console.error('Unable to retrieve material !!!')
+                        return null
+                    }
+
+                    object.material  = material.clone()
+                }
+            }
+
+        } else if ( typeof materialIds === 'string' ) {
+
+            const material = materials[ materialIds ]
+            if(!material) {
+                console.error('Unable to retrieve material !!!')
+                return null
+            }
+
+            object.material  = material.clone()
+
+        } else {
+
+            console.error('Object does not contain materials ids !!!')
+            return null
+
+        }
+
+    },
 
 } )
 
@@ -409,14 +550,16 @@ Object.defineProperties( TObjectsManager.prototype, {
 
                 }
 
-                onSuccess( objects )
+                this.fillObjects3D( objects, onSuccess, onProgress, onError )
+//                onSuccess( objects )
 
             } else {
 
                 let object = this.convertJsonToObject3D( jsonData, onError )
-                onProgress( 1.0 )
+                this.fillObjects3D( [object], onSuccess, onProgress, onError )
 
-                onSuccess( object )
+//                onProgress( 1.0 )
+//                onSuccess( object )
 
             }
 
