@@ -10,9 +10,11 @@
 
 /* eslint-env browser */
 
-import { isNotEmpty } from '../validators/TEmptinessValidator'
-import { isNumber } from '../validators/TNumberValidator'
-import { isNotTemperature } from '../validators/TTemperatureValidator'
+import {
+    isNotEmpty,
+    isNumber,
+    isNotTemperature
+} from 'itee-validators'
 
 export const FAHRENHEIT_CELSIUS_COEFFICIENT = 1.8
 export const FAHRENHEIT_CELSIUS_CONSTANTE   = 32.0
