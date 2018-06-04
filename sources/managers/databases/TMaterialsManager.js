@@ -53,6 +53,7 @@ TMaterialsManager.prototype = Object.assign( Object.create( TDataBaseManager.pro
 
             case 'MeshPhongMaterial': {
                 material                     = new MeshPhongMaterial()
+                material._id                 = jsonMaterial._id
                 material.uuid                = jsonMaterial.uuid
                 material.name                = jsonMaterial.name
                 material.type                = jsonMaterial.type
@@ -124,6 +125,7 @@ TMaterialsManager.prototype = Object.assign( Object.create( TDataBaseManager.pro
 
             case 'LineBasicMaterial': {
                 material       = new LineBasicMaterial();
+                material._id   = jsonMaterial._id
                 material.uuid  = jsonMaterial.uuid
                 material.name  = jsonMaterial.name
                 material.type  = jsonMaterial.type
