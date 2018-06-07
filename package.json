@@ -21,7 +21,6 @@
   "license": "BSD-3-Clause",
   "main": "builds/itee-client.es.js",
   "scripts": {
-    "default": "gulp",
     "help": "gulp help",
     "clean": "gulp clean",
     "lint": "gulp lint",
