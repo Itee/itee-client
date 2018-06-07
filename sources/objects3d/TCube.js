@@ -16,7 +16,7 @@ import {
     MeshBasicMaterial
 } from 'three-full'
 
-import { extend } from '../utils/TObjectUtil'
+import { extend } from 'itee-utils'
 
 /**
  *
