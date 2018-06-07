@@ -34,10 +34,11 @@ import {
     isObject
 } from 'itee-validators'
 
+import { degreesToRadians } from 'itee-utils'
+
 import { ASCLoader } from './ASCLoader'
 import { SHPLoader } from './SHPLoader'
 import { DBFLoader } from './DBFLoader'
-import { degreesToRadians } from '../maths/TMath'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { FileFormat } from '../cores/TConstants'
 
@@ -443,6 +444,7 @@ Object.assign( TUniversalLoader.prototype, {
 
                 }
 
+                // Todo: make proper import system from different referentiels
                 group.rotateX( degreesToRadians( -90 ) )
 
                 onLoad( group )
