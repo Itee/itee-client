@@ -18,8 +18,8 @@ import {
 
 import { Keys } from '../cores/TConstants'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
-import { PI_2 } from '../maths/TMath'
 
+const PI_2 = Math.PI / 2
 const STATE   = {
     NONE:   -1,
     ROTATE: 0,
