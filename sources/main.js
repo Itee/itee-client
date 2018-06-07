@@ -13,14 +13,6 @@ import Vue from '../node_modules/vue/dist/vue.esm'
 import VueRouter from 'vue-router'
 import './uis/_uis'
 
-//import FontAwesomeIcon from '@fortawesome/vue-fontawesome'
-//import fontawesome from '@fortawesome/fontawesome'
-//import { faCrosshairs, faSpinner } from '@fortawesome/fontawesome-free-solid'
-//import brands from '@fortawesome/fontawesome-free-brands'
-
-import { extend } from './utils/TObjectUtil'
-
-
 export function analyseEnvironment () {
 
     // Check if webgl is available
