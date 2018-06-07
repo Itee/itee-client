@@ -26,7 +26,6 @@ import { TOrchestrator } from '../cores/TOrchestrator'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { TCache } from '../cores/TCache'
 import {
-    no,
     isNull,
     isUndefined,
     isNumber,
@@ -855,7 +854,7 @@ Object.assign( TDataBaseManager.prototype, {
         let dataArray = []
         const onError = onErrorCallback || function ( error ) { TLogger.error( error ) }
 
-        if ( no(data) ) { onError( 'TDataBaseManager.create: Data cannot be null or undefined !' ) }
+        if ( isNullOrUndefined(data) ) { onError( 'TDataBaseManager.create: Data cannot be null or undefined !' ) }
 
         if ( isArray( data ) ) {
 
@@ -887,7 +886,7 @@ Object.assign( TDataBaseManager.prototype, {
 
         const onError = onErrorCallback || function ( error ) { TLogger.error( error ) }
 
-        if ( no(ids) ) { onError( 'TDataBaseManager.read: Ids cannot be null or undefined !' ) }
+        if ( isNullOrUndefined(ids) ) { onError( 'TDataBaseManager.read: Ids cannot be null or undefined !' ) }
 
         if ( isArray( ids ) ) {
 
@@ -949,8 +948,8 @@ Object.assign( TDataBaseManager.prototype, {
 
         const onError = onErrorCallback || function ( error ) { TLogger.error( error ) }
 
-        if ( no(ids) ) { onError( 'TDataBaseManager.update: Ids cannot be null or undefined !' ) }
-        if ( no(data) ) { onError( 'TDataBaseManager.update: Data cannot be null or undefined !' ) }
+        if ( isNullOrUndefined(ids) ) { onError( 'TDataBaseManager.update: Ids cannot be null or undefined !' ) }
+        if ( isNullOrUndefined(data) ) { onError( 'TDataBaseManager.update: Data cannot be null or undefined !' ) }
 
         if ( isArray( ids ) ) {
 
@@ -982,7 +981,7 @@ Object.assign( TDataBaseManager.prototype, {
 
         const onError = onErrorCallback || function ( error ) { TLogger.error( error ) }
 
-        if ( no(ids) ) { onError( 'TDataBaseManager.delete: Ids data cannot be null or undefined !' ) }
+        if ( isNullOrUndefined(ids) ) { onError( 'TDataBaseManager.delete: Ids data cannot be null or undefined !' ) }
 
         if ( isArray( ids ) ) {
 
