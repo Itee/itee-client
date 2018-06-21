@@ -67,8 +67,14 @@ export default Vue.component( 'TTreeItem', {
 
         computeTreeItemClass () {
 
-            return (this.isSelected) ? 'tTreeItem selected' : 'tTreeItem'
+            let selectedItems = document.querySelectorAll( '.tTreeItem .selected' )
 
+            for (let i = selectedItems.length - 1; i >= 0; i--){
+                selectedItems[i].className = "tTreeItem"
+                (selectedItems[i].querySelector("[type='range']") != null) ? selectedItems[i].querySelector("[type='range']").remove() : null
+            }
+
+            return (this.isSelected) ? 'tTreeItem selected' : 'tTreeItem'
         },
 
         computeLabelStyle: function computeLabelStyle(){
