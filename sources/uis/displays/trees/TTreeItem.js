@@ -16,17 +16,19 @@ export default Vue.component( 'TTreeItem', {
         <li v-if="needUpdate || !needUpdate" :class=computeTreeItemClass>
             <TContainerHorizontal class="tTreeItemContent" hAlign="start" vAlign="center">
                 <TIcon v-if="haveChildren()" :iconProps=computeToggleChildrenIconClass :iconOn="{click: toggleChildren}" />
-                <label @click="function () { updateSelectionState( onClick ) }">{{name}}</label>
+                <label @click="function () { updateSelectionState( onClick ) }" :style=computeLabelStyle>{{name}}</label>
                 <div class="eyeCheck"></div>
-                <span v-for="modifier in filteredModifier" class="tTreeItemModifiers">
-                    <TIcon v-if="( !modifier.display || (modifier.display === 'select' && isSelected)) && modifier.type === 'icon'" :iconProps='modifier.icon' v-bind:iconOn="{click: modifier.onClick}" />
-                    <TCheckIcon v-else-if="modifier.type === 'checkicon'" :iconOn="modifier.iconOn" :iconOff="modifier.iconOff" :value="modifier.value" :onClick=modifier.onClick />
-                    <TButton v-else-if="modifier.type === 'button'" :label="modifier.label" :icon="modifier.icon" :onClick=modifier.onClick :messageData="modifier.value" />
-                    <input v-else-if="modifier.type === 'range'" type="range" @change="modifier.onChange" />
-                    <input v-else-if="modifier.type === 'number'" type="number" @change="modifier.onChange" />
-                    <input v-else-if="modifier.type === 'color'" type="color" @change="modifier.onChange" />
-                    <label v-else>Error: Unknown modifier type !!!</label>
-                </span>
+                <div class="tTreeItemModifiersContainer">
+                    <span v-for="modifier in filteredModifier" class="tTreeItemModifiers">
+                        <TIcon v-if="( !modifier.display || (modifier.display === 'select' && isSelected)) && modifier.type === 'icon'" :iconProps='modifier.icon' v-bind:iconOn="{click: modifier.onClick}" />
+                        <TCheckIcon v-else-if="modifier.type === 'checkicon'" :iconOn="modifier.iconOn" :iconOff="modifier.iconOff" :value="modifier.value" :onClick=modifier.onClick />
+                        <TButton v-else-if="modifier.type === 'button'" :label="modifier.label" :icon="modifier.icon" :onClick=modifier.onClick :messageData="modifier.value" />
+                        <input v-else-if="modifier.type === 'range'" type="range" @change="modifier.onChange" />
+                        <input v-else-if="modifier.type === 'number'" type="number" @change="modifier.onChange" />
+                        <input v-else-if="modifier.type === 'color'" type="color" @change="modifier.onChange" />
+                        <label v-else>Error: Unknown modifier type !!!</label>
+                    </span>
+                </div>
             </TContainerHorizontal>
             <ul v-if="haveChildren() && showChildren && (_currentDeepLevel < maxDeepLevel)" :class=computeTreeItemChildrenClass :style=computeChildrenStyle>
                 <TTreeItem
@@ -65,8 +67,23 @@ export default Vue.component( 'TTreeItem', {
 
         computeTreeItemClass () {
 
-            return (this.isSelected) ? 'tTreeItem selected' : 'tTreeItem'
+            let selectedItems = document.querySelectorAll( '.tTreeItem .selected' )
 
+            for (let i = selectedItems.length - 1; i >= 0; i--){
+                selectedItems[i].className = "tTreeItem"
+                (selectedItems[i].querySelector("[type='range']") != null) ? selectedItems[i].querySelector("[type='range']").remove() : null
+            }
+
+            return (this.isSelected) ? 'tTreeItem selected' : 'tTreeItem'
+        },
+
+        computeLabelStyle: function computeLabelStyle(){
+                          
+            return {
+                "overflow": "hidden",
+                "text-overflow": "ellipsis",
+                "white-space": "nowrap"
+            };
         },
 
         computeTreeItemChildrenClass () {
