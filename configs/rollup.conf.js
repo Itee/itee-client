@@ -81,7 +81,7 @@ function CreateRollupConfiguration ( fileName, inputPath, outputPath, format, on
                 commonJs( {
                     include: 'node_modules/**'
                 } ),
-                babel(require( './babel.conf' )(_onProduction)),
+                babel( require( './babel.conf' )( _onProduction ) ),
                 replace( {
                     'process.env.NODE_ENV': JSON.stringify( (_onProduction) ? 'production' : 'development' )
                 } ),
@@ -100,6 +100,7 @@ function CreateRollupConfiguration ( fileName, inputPath, outputPath, format, on
             cache:  undefined,
 
             // danger zone
+            treeshake:     false,
             acorn:         undefined,
             context:       undefined,
             moduleContext: {}
@@ -110,7 +111,7 @@ function CreateRollupConfiguration ( fileName, inputPath, outputPath, format, on
             format:  format,
             name:    'Itee',
             globals: {
-//                'three': 'THREE'
+                //                'three': 'THREE'
             },
 
             // advanced options
