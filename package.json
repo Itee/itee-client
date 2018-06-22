@@ -91,6 +91,6 @@
     "rollup-plugin-replace": "^2.0.0",
     "rollup-plugin-strip": "^1.1.1",
     "rollup-plugin-uglify-es": "0.0.1",
-    "three-full": "^6.0.0"
+    "three-full": "^8.0.0"
   }
 }
