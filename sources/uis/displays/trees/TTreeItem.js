@@ -17,6 +17,7 @@ export default Vue.component( 'TTreeItem', {
             <TContainerHorizontal class="tTreeItemContent" hAlign="start" vAlign="center">
                 <TIcon v-if="haveChildren()" :iconProps=computeToggleChildrenIconClass :iconOn="{click: toggleChildren}" />
                 <label @click="function () { updateSelectionState( onClick ) }">{{name}}</label>
+                <div class="eyeCheck"></div>
                 <span v-for="modifier in filteredModifier" class="tTreeItemModifiers">
                     <TIcon v-if="( !modifier.display || (modifier.display === 'select' && isSelected)) && modifier.type === 'icon'" :iconProps='modifier.icon' v-bind:iconOn="{click: modifier.onClick}" />
                     <TCheckIcon v-else-if="modifier.type === 'checkicon'" :iconOn="modifier.iconOn" :iconOff="modifier.iconOff" :value="modifier.value" :onClick=modifier.onClick />
@@ -43,6 +44,14 @@ export default Vue.component( 'TTreeItem', {
             </ul>
         </li>
     `,
+    mounted: function(){
+
+        // Move visibility button
+        if (this.children.length > 0) {
+          let eye = this.$el.querySelector(".tTreeItemModifiers");
+          if (eye != null) this.$el.querySelector(".eyeCheck").appendChild(eye);
+        }
+    },
     data:     function () {
 
         return {
