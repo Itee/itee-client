@@ -39,16 +39,6 @@ export default Vue.component( 'TTree', {
     props:    [ 'items', 'filter', 'sorter', 'needUpdate', 'maxDeepLevel' ],
     computed: {
 
-        computeStyle () {
-
-            return {
-                overflowY: 'auto',
-                padding:   '5px',
-                height:    '100%'
-            }
-
-        },
-
         filteredItems () {
 
             let _this = this
