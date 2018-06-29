@@ -28,6 +28,7 @@ export default Vue.component( 'TTree', {
                     v-bind:modifiers="item.modifiers"
                     v-bind:children="item.children"
                     v-bind:childrenFilter="filter"
+                    v-bind:childrenSorter="sorter"
                     v-bind:needUpdate="needUpdate"
                     v-bind:maxDeepLevel="maxDeepLevel"
                     v-bind:_currentDeepLevel="0"
@@ -35,7 +36,7 @@ export default Vue.component( 'TTree', {
             </ul>
         </TContainerVertical>
     `,
-    props:    [ 'items', 'filter', 'needUpdate', 'maxDeepLevel' ],
+    props:    [ 'items', 'filter', 'sorter' 'needUpdate', 'maxDeepLevel' ],
     computed: {
 
         computeStyle () {
@@ -50,11 +51,19 @@ export default Vue.component( 'TTree', {
 
         filteredItems () {
 
-            if(!this.filter) {
-                return this.items
+            let _this = this
+
+            if (_this.sorter) {
+            _this.sortedItems()
             }
 
-            return this.items.filter(this.filter)
+            if (!_this.filter) {
+              return this.items;
+            }
+
+            return this.items.filter(function(item){
+            return _this.filter.indexOf(item.name.toLowerCase()) === -1;
+            });
 
         },
 
@@ -64,5 +73,18 @@ export default Vue.component( 'TTree', {
 
         }
 
+    },
+    methods:  {
+        
+        sortedItems () {
+
+            this.items.sort(function(a, b){
+                if(a.name < b.name) return -1;
+                if(a.name > b.name) return 1;
+                return 0;
+            })
+
+            if (this.sorter === "desc") this.items.reverse();
+        },
     }
 } )
