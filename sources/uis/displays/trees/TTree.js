@@ -21,7 +21,7 @@ export default Vue.component( 'TTree', {
             </div>
             <ul v-if="haveItems" class="tTreeItemChildren">
                 <TTreeItem
-                    v-for="item in filteredItems"
+                    v-for="item in computedItems"
                     v-bind:key="item.id"
                     v-bind:name="item.name"
                     v-bind:onClick="item.onClick"
@@ -39,7 +39,7 @@ export default Vue.component( 'TTree', {
     props:    [ 'items', 'filter', 'sorter', 'needUpdate', 'maxDeepLevel' ],
     computed: {
 
-        filteredItems () {
+        computedItems () {
 
             let _this = this
 
