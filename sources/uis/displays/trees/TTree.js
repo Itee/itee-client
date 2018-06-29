@@ -73,6 +73,7 @@ export default Vue.component( 'TTree', {
 
         sortItems ( items ) {
 
+            // Todo: Externalize the sort function as use defined function. And implement current sort function as utility
             if ( [ 'asc', 'desc' ].indexOf( this.sorter ) === -1 ) {
                 console.error( "Invalid sorter !" )
                 return
