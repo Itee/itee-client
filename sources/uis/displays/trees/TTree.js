@@ -41,23 +41,21 @@ export default Vue.component( 'TTree', {
 
         computedItems () {
 
-            let _this = this
+            let items = this.items
 
-            if (_this.sorter) {
-            _this.sortedItems()
+            if ( this.filter ) {
+                items = this.filterItems( items )
             }
 
-            if (!_this.filter) {
-              return this.items;
+            if ( this.sorter ) {
+                items = this.sortItems( items )
             }
 
-            return this.items.filter(function(item){
-            return _this.filter.indexOf(item.name.toLowerCase()) === -1;
-            });
+            return items
 
         },
 
-        haveItems() {
+        haveItems () {
 
             return this.items && this.items.length > 0
 
@@ -65,16 +63,38 @@ export default Vue.component( 'TTree', {
 
     },
     methods:  {
-        
-        sortedItems () {
 
-            this.items.sort(function(a, b){
-                if(a.name < b.name) return -1;
-                if(a.name > b.name) return 1;
-                return 0;
-            })
+        filterItems( items ) {
 
-            if (this.sorter === "desc") this.items.reverse();
+            let self = this
+            return items.filter( item => self.filter.indexOf( item.name.toLowerCase() ) === -1 )
+
         },
+
+        sortItems ( items ) {
+
+            if ( [ 'asc', 'desc' ].indexOf( this.sorter ) === -1 ) {
+                console.error( "Invalid sorter !" )
+                return
+            }
+
+            let sortedItems = items.sort( ( a, b ) => {
+                if ( a.name < b.name ) {
+                    return -1
+                }
+                if ( a.name > b.name ) {
+                    return 1
+                }
+                return 0
+            } )
+
+            if ( this.sorter === "desc" ) {
+                sortedItems.reverse()
+            }
+
+            return sortedItems
+        },
+
+
     }
 } )
