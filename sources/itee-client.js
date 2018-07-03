@@ -19,6 +19,10 @@ import '@fortawesome/fontawesome-free-brands'
 // Export es6 Three stuff
 export * from 'three-full'
 
+// Export Itee Dependencies
+export * from 'itee-validators'
+export * from 'itee-utils'
+
 // Export Vue stuff ( should be packed in itee-ui at term ! )
 //export * as Vue from 'vue'
 //export * as VueRouter from 'vue-router'
