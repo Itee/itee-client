@@ -495,7 +495,7 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
                         return null
                     }
 
-                    object.material  = material.clone()
+                    object.material.push(material.clone())
                 }
             }
 
