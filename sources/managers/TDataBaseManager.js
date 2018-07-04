@@ -855,11 +855,17 @@ Object.assign( TDataBaseManager.prototype, {
         let dataArray = []
         const onError = onErrorCallback || function ( error ) { TLogger.error( error ) }
 
-        if ( isNullOrUndefined(data) ) { onError( 'TDataBaseManager.create: Data cannot be null or undefined !' ) }
+        if ( isNullOrUndefined( data ) ) {
+            onError( 'TDataBaseManager.create: Data cannot be null or undefined !' )
+            return
+        }
+
+        if ( isEmptyArray( data ) ) {
+            onError( 'TDataBaseManager.create: Array of data cannot be empty !' )
+            return
+        }
 
         if ( isArray( data ) ) {
-
-            if ( isEmptyArray(data) ) { onError( 'TDataBaseManager.create: Array of data cannot be empty !' ) }
 
             dataArray = data
 
@@ -887,42 +893,48 @@ Object.assign( TDataBaseManager.prototype, {
 
         const onError = onErrorCallback || function ( error ) { TLogger.error( error ) }
 
-        if ( isNullOrUndefined(ids) ) { onError( 'TDataBaseManager.read: Ids cannot be null or undefined !' ) }
+        if ( isNullOrUndefined( ids ) ) {
+            onError( 'TDataBaseManager.read: Ids cannot be null or undefined !' )
+            return
+        }
+
+        if ( isEmptyArray( ids ) ) {
+            onError( 'TDataBaseManager.read: Array of data cannot be empty !' )
+            return
+        }
 
         if ( isArray( ids ) ) {
-
-            if ( isEmptyArray(ids) ) { onError( 'TDataBaseManager.read: Array of data cannot be empty !' ) }
 
             this._readSome( ids, onLoadCallback, onProgressCallback, onError )
 
             ////            if ( isArrayOfSingleElement(ids) ) {
-////
-////                this._readOne( ids[ 0 ], onLoadCallback, onProgressCallback, onError )
-////
-////            } else {
-//
-//                let idBunch = []
-//                let id      = undefined
-//                for ( let idIndex = 0, numberOfIds = ids.length ; idIndex < numberOfIds ; idIndex++ ) {
-//                    id = ids[ idIndex ]
-//
-//                    idBunch.push( id )
-//
-//                    if ( idBunch.length === this.bunchSize || idIndex === numberOfIds - 1 ) {
-//                        this._readSome( idBunch, onLoadCallback, onProgressCallback, onError )
-//                        idBunch = []
-//                    }
-//
-//                }
-//
-////            }
+            ////
+            ////                this._readOne( ids[ 0 ], onLoadCallback, onProgressCallback, onError )
+            ////
+            ////            } else {
+            //
+            //                let idBunch = []
+            //                let id      = undefined
+            //                for ( let idIndex = 0, numberOfIds = ids.length ; idIndex < numberOfIds ; idIndex++ ) {
+            //                    id = ids[ idIndex ]
+            //
+            //                    idBunch.push( id )
+            //
+            //                    if ( idBunch.length === this.bunchSize || idIndex === numberOfIds - 1 ) {
+            //                        this._readSome( idBunch, onLoadCallback, onProgressCallback, onError )
+            //                        idBunch = []
+            //                    }
+            //
+            //                }
+            //
+            ////            }
 
-        } else if ( isString(ids) ) {
+        } else if ( isString( ids ) ) {
 
-            this._readSome( [ids], onLoadCallback, onProgressCallback, onError )
+            this._readSome( [ ids ], onLoadCallback, onProgressCallback, onError )
             //            this._readOne( ids, onLoadCallback, onProgressCallback, onError )
 
-        } else if ( isObject(ids) ) {
+        } else if ( isObject( ids ) ) {
 
             this._searchWhere( ids, onLoadCallback, onProgressCallback, onError )
 
@@ -949,8 +961,15 @@ Object.assign( TDataBaseManager.prototype, {
 
         const onError = onErrorCallback || function ( error ) { TLogger.error( error ) }
 
-        if ( isNullOrUndefined(ids) ) { onError( 'TDataBaseManager.update: Ids cannot be null or undefined !' ) }
-        if ( isNullOrUndefined(data) ) { onError( 'TDataBaseManager.update: Data cannot be null or undefined !' ) }
+        if ( isNullOrUndefined( ids ) ) {
+            onError( 'TDataBaseManager.update: Ids cannot be null or undefined !' )
+            return
+        }
+
+        if ( isNullOrUndefined( data ) ) {
+            onError( 'TDataBaseManager.update: Data cannot be null or undefined !' )
+            return
+        }
 
         if ( isArray( ids ) ) {
 
@@ -982,7 +1001,10 @@ Object.assign( TDataBaseManager.prototype, {
 
         const onError = onErrorCallback || function ( error ) { TLogger.error( error ) }
 
-        if ( isNullOrUndefined(ids) ) { onError( 'TDataBaseManager.delete: Ids data cannot be null or undefined !' ) }
+        if ( isNullOrUndefined( ids ) ) {
+            onError( 'TDataBaseManager.delete: Ids data cannot be null or undefined !' )
+            return
+        }
 
         if ( isArray( ids ) ) {
 
