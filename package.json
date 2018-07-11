@@ -1,6 +1,6 @@
 {
   "name": "itee-client",
-  "version": "4.2.1",
+  "version": "4.3.0",
   "description": "The client side of the Itee solution for 3d web, this package is design to work with an Itee server.",
   "keywords": [
     "itee",
