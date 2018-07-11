@@ -21,13 +21,14 @@ export default Vue.component( 'TTree', {
             </div>
             <ul v-if="haveItems" class="tTreeItemChildren">
                 <TTreeItem
-                    v-for="item in filteredItems"
+                    v-for="item in computedItems"
                     v-bind:key="item.id"
                     v-bind:name="item.name"
                     v-bind:onClick="item.onClick"
                     v-bind:modifiers="item.modifiers"
                     v-bind:children="item.children"
                     v-bind:childrenFilter="filter"
+                    v-bind:childrenSorter="sorter"
                     v-bind:needUpdate="needUpdate"
                     v-bind:maxDeepLevel="maxDeepLevel"
                     v-bind:_currentDeepLevel="0"
@@ -35,34 +36,66 @@ export default Vue.component( 'TTree', {
             </ul>
         </TContainerVertical>
     `,
-    props:    [ 'items', 'filter', 'needUpdate', 'maxDeepLevel' ],
+    props:    [ 'items', 'filter', 'sorter', 'needUpdate', 'maxDeepLevel' ],
     computed: {
 
-        computeStyle () {
+        computedItems () {
 
-            return {
-                overflowY: 'auto',
-                padding:   '5px',
-                height:    '100%'
+            let items = this.items
+
+            if ( this.filter ) {
+                items = this.filterItems( items )
             }
+
+            if ( this.sorter ) {
+                items = this.sortItems( items )
+            }
+
+            return items
 
         },
 
-        filteredItems () {
-
-            if(!this.filter) {
-                return this.items
-            }
-
-            return this.items.filter(this.filter)
-
-        },
-
-        haveItems() {
+        haveItems () {
 
             return this.items && this.items.length > 0
 
         }
+
+    },
+    methods:  {
+
+        filterItems( items ) {
+
+            let self = this
+            return items.filter( item => self.filter.indexOf( item.name.toLowerCase() ) === -1 )
+
+        },
+
+        sortItems ( items ) {
+
+            // Todo: Externalize the sort function as use defined function. And implement current sort function as utility
+            if ( [ 'asc', 'desc' ].indexOf( this.sorter ) === -1 ) {
+                console.error( "Invalid sorter !" )
+                return
+            }
+
+            let sortedItems = items.sort( ( a, b ) => {
+                if ( a.name < b.name ) {
+                    return -1
+                }
+                if ( a.name > b.name ) {
+                    return 1
+                }
+                return 0
+            } )
+
+            if ( this.sorter === "desc" ) {
+                sortedItems.reverse()
+            }
+
+            return sortedItems
+        },
+
 
     }
 } )

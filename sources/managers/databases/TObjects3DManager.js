@@ -448,7 +448,9 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
                 self.applyMaterials( mesh, materialsMap )
             }
 
-            onSuccess( meshes )
+            // Don't forget to return all input object to callback,
+            // else some ids won't never be considered as processed !
+            onSuccess( objects )
 
         }
 
@@ -495,7 +497,7 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
                         return null
                     }
 
-                    object.material  = material.clone()
+                    object.material.push(material.clone())
                 }
             }
 

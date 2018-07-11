@@ -28,6 +28,7 @@ import { TCache } from '../cores/TCache'
 import {
     isNull,
     isUndefined,
+    isNullOrUndefined,
     isNumber,
     isString,
     isNotString,
@@ -48,7 +49,7 @@ function TDataBaseManager () {
 
     let _basePath     = '/'
     let _responseType = ResponseType.Json
-    let _bunchSize = 500
+    let _bunchSize    = 500
 
     // Todo: progress and error manager
     this.progressManager = null
@@ -63,11 +64,11 @@ function TDataBaseManager () {
             },
             set ( basePath ) {
 
-                if ( isNull(basePath) ) {
+                if ( isNull( basePath ) ) {
                     throw new Error( 'TDataBaseManager: basePath cannot be null !' )
                 }
 
-                if ( isUndefined(basePath) ) {
+                if ( isUndefined( basePath ) ) {
                     throw new Error( 'TDataBaseManager: basePath cannot be undefined !' )
                 }
 
@@ -75,7 +76,7 @@ function TDataBaseManager () {
                     throw new Error( 'TDataBaseManager: basePath is expected to be a string !' )
                 }
 
-                if ( isEmptyString(basePath) ) {
+                if ( isEmptyString( basePath ) ) {
                     throw new Error( 'TDataBaseManager: basePath cannot be an empty string !' )
                 }
 
@@ -94,11 +95,11 @@ function TDataBaseManager () {
             },
             set ( responseType ) {
 
-                if ( isNull(responseType) ) {
+                if ( isNull( responseType ) ) {
                     throw new Error( 'TDataBaseManager: responseType cannot be null !' )
                 }
 
-                if ( isUndefined(responseType) ) {
+                if ( isUndefined( responseType ) ) {
                     throw new Error( 'TDataBaseManager: responseType cannot be undefined !' )
                 }
 
@@ -117,15 +118,15 @@ function TDataBaseManager () {
             },
             set ( bunchSize ) {
 
-                if ( isNull(bunchSize) ) {
+                if ( isNull( bunchSize ) ) {
                     throw new Error( 'TDataBaseManager: bunchSize cannot be null !' )
                 }
 
-                if ( isUndefined(bunchSize) ) {
+                if ( isUndefined( bunchSize ) ) {
                     throw new Error( 'TDataBaseManager: bunchSize cannot be undefined !' )
                 }
 
-                if ( !isNumber(bunchSize) ) {
+                if ( !isNumber( bunchSize ) ) {
                     throw new Error( 'TDataBaseManager: bunchSize is expected to be a number !' )
                 }
 
@@ -497,12 +498,12 @@ Object.defineProperties( TDataBaseManager.prototype, {
     _readSome: {
         value: function _readSome ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-            const self  = this
+            const self = this
 
             // Filter requested values by cached values
-            let cachedValues = {}
+            let cachedValues    = {}
             let idsUnderRequest = []
-            let idsToRequest = []
+            let idsToRequest    = []
             for ( let idIndex = 0, numberOfIds = ids.length ; idIndex < numberOfIds ; idIndex++ ) {
 
                 const id          = ids[ idIndex ]
@@ -510,7 +511,7 @@ Object.defineProperties( TDataBaseManager.prototype, {
 
                 // Already exist
                 if ( cachedValue ) {
-                    cachedValues[id] = cachedValue
+                    cachedValues[ id ] = cachedValue
                     continue
                 }
 
@@ -581,17 +582,17 @@ Object.defineProperties( TDataBaseManager.prototype, {
             function cacheResults ( results ) {
 
                 // Add new results to cache
-                if(Array.isArray(results)) {
+                if ( Array.isArray( results ) ) {
 
                     for ( let resultIndex = 0, numberOfResults = results.length ; resultIndex < numberOfResults ; resultIndex++ ) {
                         let result = results[ resultIndex ]
-                        self._cache.add(result._id, result)
+                        self._cache.add( result._id, result )
                     }
 
                 } else {
 
-                    for( let key in results ) {
-                        self._cache.add( key, results[key] )
+                    for ( let key in results ) {
+                        self._cache.add( key, results[ key ] )
                     }
 
                 }
@@ -609,7 +610,7 @@ Object.defineProperties( TDataBaseManager.prototype, {
                         const cachedValue = self._cache.get( id )
 
                         if ( cachedValue ) {
-                            request.cachedValues[id] = cachedValue
+                            request.cachedValues[ id ] = cachedValue
                         } else {
                             restOfIdsUnderRequest.push( id )
                         }
@@ -624,7 +625,7 @@ Object.defineProperties( TDataBaseManager.prototype, {
                         const cachedValue = self._cache.get( id )
 
                         if ( cachedValue ) {
-                            request.cachedValues[id] = cachedValue
+                            request.cachedValues[ id ] = cachedValue
                         } else {
                             restOfIdsToRequest.push( id )
                         }
@@ -663,17 +664,13 @@ Object.defineProperties( TDataBaseManager.prototype, {
             const self        = this
             const cachedValue = this._cache.get( id )
 
-
             if ( cachedValue ) { // Already exist
 
-                let result = {}
-                result[id] = cachedValue
+                let result   = {}
+                result[ id ] = cachedValue
                 onLoadCallback( result )
 
-
-            } else  if ( cachedValue === null ) { // In request
-
-
+            } else if ( cachedValue === null ) { // In request
 
             } else { // else request and pre-cache it
 
@@ -691,10 +688,10 @@ Object.defineProperties( TDataBaseManager.prototype, {
 
             function cacheOnLoadResult ( result ) {
 
-                self._cache.add( id, result[0] )
+                self._cache.add( id, result[ 0 ] )
 
-                let _result = {}
-                _result[id] = result[0]
+                let _result   = {}
+                _result[ id ] = result[ 0 ]
                 onLoadCallback( _result )
 
             }
@@ -718,7 +715,6 @@ Object.defineProperties( TDataBaseManager.prototype, {
         }
     },
 
-
     /**
      * @private
      * @function
@@ -736,8 +732,8 @@ Object.defineProperties( TDataBaseManager.prototype, {
             // Todo: could be optimized in server side about data duplicate
             const arrayData = []
             for ( let i = 0, n = ids.length ; i < n ; i++ ) {
-                let id = ids[ i ]
-                arrayData[id] = data
+                let id          = ids[ i ]
+                arrayData[ id ] = data
             }
 
             TDataBaseManager.requestServer(
@@ -854,11 +850,17 @@ Object.assign( TDataBaseManager.prototype, {
         let dataArray = []
         const onError = onErrorCallback || function ( error ) { TLogger.error( error ) }
 
-        if ( isNullOrUndefined(data) ) { onError( 'TDataBaseManager.create: Data cannot be null or undefined !' ) }
+        if ( isNullOrUndefined( data ) ) {
+            onError( 'TDataBaseManager.create: Data cannot be null or undefined !' )
+            return
+        }
+
+        if ( isEmptyArray( data ) ) {
+            onError( 'TDataBaseManager.create: Array of data cannot be empty !' )
+            return
+        }
 
         if ( isArray( data ) ) {
-
-            if ( isEmptyArray(data) ) { onError( 'TDataBaseManager.create: Array of data cannot be empty !' ) }
 
             dataArray = data
 
@@ -886,42 +888,48 @@ Object.assign( TDataBaseManager.prototype, {
 
         const onError = onErrorCallback || function ( error ) { TLogger.error( error ) }
 
-        if ( isNullOrUndefined(ids) ) { onError( 'TDataBaseManager.read: Ids cannot be null or undefined !' ) }
+        if ( isNullOrUndefined( ids ) ) {
+            onError( 'TDataBaseManager.read: Ids cannot be null or undefined !' )
+            return
+        }
+
+        if ( isEmptyArray( ids ) ) {
+            onError( 'TDataBaseManager.read: Array of data cannot be empty !' )
+            return
+        }
 
         if ( isArray( ids ) ) {
-
-            if ( isEmptyArray(ids) ) { onError( 'TDataBaseManager.read: Array of data cannot be empty !' ) }
 
             this._readSome( ids, onLoadCallback, onProgressCallback, onError )
 
             ////            if ( isArrayOfSingleElement(ids) ) {
-////
-////                this._readOne( ids[ 0 ], onLoadCallback, onProgressCallback, onError )
-////
-////            } else {
-//
-//                let idBunch = []
-//                let id      = undefined
-//                for ( let idIndex = 0, numberOfIds = ids.length ; idIndex < numberOfIds ; idIndex++ ) {
-//                    id = ids[ idIndex ]
-//
-//                    idBunch.push( id )
-//
-//                    if ( idBunch.length === this.bunchSize || idIndex === numberOfIds - 1 ) {
-//                        this._readSome( idBunch, onLoadCallback, onProgressCallback, onError )
-//                        idBunch = []
-//                    }
-//
-//                }
-//
-////            }
+            ////
+            ////                this._readOne( ids[ 0 ], onLoadCallback, onProgressCallback, onError )
+            ////
+            ////            } else {
+            //
+            //                let idBunch = []
+            //                let id      = undefined
+            //                for ( let idIndex = 0, numberOfIds = ids.length ; idIndex < numberOfIds ; idIndex++ ) {
+            //                    id = ids[ idIndex ]
+            //
+            //                    idBunch.push( id )
+            //
+            //                    if ( idBunch.length === this.bunchSize || idIndex === numberOfIds - 1 ) {
+            //                        this._readSome( idBunch, onLoadCallback, onProgressCallback, onError )
+            //                        idBunch = []
+            //                    }
+            //
+            //                }
+            //
+            ////            }
 
-        } else if ( isString(ids) ) {
+        } else if ( isString( ids ) ) {
 
-            this._readSome( [ids], onLoadCallback, onProgressCallback, onError )
+            this._readSome( [ ids ], onLoadCallback, onProgressCallback, onError )
             //            this._readOne( ids, onLoadCallback, onProgressCallback, onError )
 
-        } else if ( isObject(ids) ) {
+        } else if ( isObject( ids ) ) {
 
             this._searchWhere( ids, onLoadCallback, onProgressCallback, onError )
 
@@ -948,14 +956,21 @@ Object.assign( TDataBaseManager.prototype, {
 
         const onError = onErrorCallback || function ( error ) { TLogger.error( error ) }
 
-        if ( isNullOrUndefined(ids) ) { onError( 'TDataBaseManager.update: Ids cannot be null or undefined !' ) }
-        if ( isNullOrUndefined(data) ) { onError( 'TDataBaseManager.update: Data cannot be null or undefined !' ) }
+        if ( isNullOrUndefined( ids ) ) {
+            onError( 'TDataBaseManager.update: Ids cannot be null or undefined !' )
+            return
+        }
+
+        if ( isNullOrUndefined( data ) ) {
+            onError( 'TDataBaseManager.update: Data cannot be null or undefined !' )
+            return
+        }
 
         if ( isArray( ids ) ) {
 
             this._updateSome( ids, data, onLoadCallback, onProgressCallback, onError )
 
-        } else if ( isString(ids) ) {
+        } else if ( isString( ids ) ) {
 
             this._updateOne( ids, data, onLoadCallback, onProgressCallback, onError )
 
@@ -981,17 +996,20 @@ Object.assign( TDataBaseManager.prototype, {
 
         const onError = onErrorCallback || function ( error ) { TLogger.error( error ) }
 
-        if ( isNullOrUndefined(ids) ) { onError( 'TDataBaseManager.delete: Ids data cannot be null or undefined !' ) }
+        if ( isNullOrUndefined( ids ) ) {
+            onError( 'TDataBaseManager.delete: Ids data cannot be null or undefined !' )
+            return
+        }
 
         if ( isArray( ids ) ) {
 
             this._deleteSome( ids, onLoadCallback, onProgressCallback, onError )
 
-        } else if ( isString(ids) ) {
+        } else if ( isString( ids ) ) {
 
             this._deleteOne( ids, onLoadCallback, onProgressCallback, onError )
 
-        } else if (isObject(ids)) {
+        } else if ( isObject( ids ) ) {
 
             this._deleteSome( ids, onLoadCallback, onProgressCallback, onError )
 
