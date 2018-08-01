@@ -48,6 +48,10 @@ TMaterialsManager.prototype = Object.assign( Object.create( TDataBaseManager.pro
      */
     convert ( jsonMaterial ) {
 
+        if ( !data ) {
+            throw new Error('TMaterialsManager: Unable to convert null or undefined data !')
+        }
+
         const materialType = jsonMaterial.type
         let material       = undefined
 
@@ -200,7 +204,7 @@ TMaterialsManager.prototype = Object.assign( Object.create( TDataBaseManager.pro
                 break
 
             default:
-                TLogger.error( 'Unknown material type !' )
+                throw new Error(`TMaterialsManager: Unknown material of type: ${materialType}`)
                 break
 
         }
@@ -222,13 +226,16 @@ Object.defineProperties( TMaterialsManager.prototype, {
             // Normalize to array
             const datas   = (isObject( jsonData )) ? [ jsonData ] : jsonData
             const results = {}
-            let result    = undefined
 
             for ( let dataIndex = 0, numberOfDatas = datas.length, data = undefined ; dataIndex < numberOfDatas ; dataIndex++ ) {
 
                 data   = datas[ dataIndex ]
-                result = this.convert( data, onError )
-                if ( result ) { results[ data._id ] = result }
+
+                try {
+                    results[ data._id ] = this.convert( data )
+                } catch(err) {
+                    onError(err)
+                }
 
                 onProgress( dataIndex / numberOfDatas )
 
