@@ -13,6 +13,7 @@
 
 import {
     MeshPhongMaterial,
+    MeshLambertMaterial,
     LineBasicMaterial,
     Color,
     Vector2,
@@ -44,7 +45,7 @@ TMaterialsManager.prototype = Object.assign( Object.create( TDataBaseManager.pro
      * @param jsonMaterial
      * @return {undefined}
      */
-    convertJsonToMaterial ( jsonMaterial ) {
+    convert ( jsonMaterial ) {
 
         const materialType = jsonMaterial.type
         let material       = undefined
@@ -121,21 +122,85 @@ TMaterialsManager.prototype = Object.assign( Object.create( TDataBaseManager.pro
                 material.morphTargets        = jsonMaterial.morphTargets
                 material.morphNormals        = jsonMaterial.morphNormals
             }
-                break;
+                break
+
+            case 'MeshLambertMaterial': {
+                material                     = new MeshLambertMaterial()
+                material._id                 = jsonMaterial._id
+                material.uuid                = jsonMaterial.uuid
+                material.name                = jsonMaterial.name
+                material.type                = jsonMaterial.type
+                material.fog                 = jsonMaterial.fog
+                material.lights              = jsonMaterial.lights
+                material.blending            = jsonMaterial.blending
+                material.side                = jsonMaterial.side
+                material.flatShading         = jsonMaterial.flatShading
+                material.vertexColors        = jsonMaterial.vertexColors
+                material.opacity             = jsonMaterial.opacity
+                material.transparent         = jsonMaterial.transparent
+                material.blendSrc            = jsonMaterial.blendSrc
+                material.blendDst            = jsonMaterial.blendDst
+                material.blendEquation       = jsonMaterial.blendEquation
+                material.blendSrcAlpha       = jsonMaterial.blendSrcAlpha
+                material.blendDstAlpha       = jsonMaterial.blendDstAlpha
+                material.blendEquationAlpha  = jsonMaterial.blendEquationAlpha
+                material.depthFunc           = jsonMaterial.depthFunc
+                material.depthTest           = jsonMaterial.depthTest
+                material.depthWrite          = jsonMaterial.depthWrite
+                material.clippingPlanes      = jsonMaterial.clippingPlanes
+                material.clipIntersection    = jsonMaterial.clipIntersection
+                material.clipShadows         = jsonMaterial.clipShadows
+                material.colorWrite          = jsonMaterial.colorWrite
+                material.precision           = jsonMaterial.precision
+                material.polygonOffset       = jsonMaterial.polygonOffset
+                material.polygonOffsetFactor = jsonMaterial.polygonOffsetFactor
+                material.polygonOffsetUnits  = jsonMaterial.polygonOffsetUnits
+                material.dithering           = jsonMaterial.dithering
+                material.alphaTest           = jsonMaterial.alphaTest
+                material.premultipliedAlpha  = jsonMaterial.premultipliedAlpha
+                material.overdraw            = jsonMaterial.overdraw
+                material.visible             = jsonMaterial.visible
+                material.userData            = {} //jsonMaterial.userData
+                material.needsUpdate         = false//jsonMaterial.needsUpdate
+                // Specific to MeshLambertMaterial
+                material.color               = new Color( jsonMaterial.color.r, jsonMaterial.color.g, jsonMaterial.color.b )
+                material.map                 = jsonMaterial.map // Unknown yet
+                material.lightMap            = jsonMaterial.lightMap // Unknown yet
+                material.lightMapIntensity   = jsonMaterial.lightMapIntensity
+                material.aoMap               = jsonMaterial.aoMap // Unknown yet
+                material.aoMapIntensity      = jsonMaterial.aoMapIntensity
+                material.emissive            = jsonMaterial.emissive
+                material.emissiveIntensity   = jsonMaterial.emissiveIntensity
+                material.emissiveMap         = jsonMaterial.emissiveMap // Unknown yet
+                material.specularMap         = jsonMaterial.specularMap // Unknown yet
+                material.alphaMap            = jsonMaterial.alphaMap // Unknown yet
+                material.envMap              = jsonMaterial.envMap // Unknown yet
+                material.combine             = jsonMaterial.combine
+                material.reflectivity        = jsonMaterial.reflectivity
+                material.refractionRatio     = jsonMaterial.refractionRatio
+                material.wireframe           = jsonMaterial.wireframe
+                material.wireframeLinewidth  = jsonMaterial.wireframeLinewidth
+                material.wireframeLinecap    = jsonMaterial.wireframeLinecap
+                material.wireframeLinejoin   = jsonMaterial.wireframeLinejoin
+                material.skinning            = jsonMaterial.skinning
+                material.morphTargets        = jsonMaterial.morphTargets
+                material.morphNormals        = jsonMaterial.morphNormals
+            }
+                break
 
             case 'LineBasicMaterial': {
-                material       = new LineBasicMaterial();
+                material       = new LineBasicMaterial()
                 material._id   = jsonMaterial._id
                 material.uuid  = jsonMaterial.uuid
                 material.name  = jsonMaterial.name
                 material.type  = jsonMaterial.type
                 material.color = new Color( jsonMaterial.color.r, jsonMaterial.color.g, jsonMaterial.color.b )
             }
-                break;
+                break
 
             default:
-                TLogger.error( 'Unknown material type !' );
-                break;
+                TLogger.error( 'Unknown material type !' )
+                break
 
         }
 
@@ -153,31 +218,22 @@ Object.defineProperties( TMaterialsManager.prototype, {
     _onJson: {
         value: function _onJson ( jsonData, onSuccess, onProgress, onError ) {
 
-            let materials = {}
+            // Normalize to array
+            const datas   = (isObject( jsonData )) ? [ jsonData ] : jsonData
+            const results = {}
+            let result    = undefined
 
-            if ( Array.isArray( jsonData ) ) {
+            for ( let dataIndex = 0, numberOfDatas = datas.length, data = undefined ; dataIndex < numberOfDatas ; dataIndex++ ) {
 
-                let data     = undefined
-                let material = undefined
-                for ( let dataIndex = 0, numberOfDatas = jsonData.length ; dataIndex < numberOfDatas ; dataIndex++ ) {
+                data   = datas[ dataIndex ]
+                result = this.convert( data, onError )
+                if ( result ) { results[ data._id ] = result }
 
-                    data     = jsonData[ dataIndex ]
-                    material = this.convertJsonToMaterial( data, onError )
-
-                    if ( material ) { materials[ data._id ] = material }
-
-                    onProgress( dataIndex / numberOfDatas )
-
-                }
-
-            } else {
-
-                materials[ jsonData._id ] = this.convertJsonToMaterial( jsonData, onError )
-                onProgress( 1.0 )
+                onProgress( dataIndex / numberOfDatas )
 
             }
 
-            onSuccess( materials )
+            onSuccess( results )
 
         }
     }
