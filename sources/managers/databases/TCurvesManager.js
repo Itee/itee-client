@@ -50,11 +50,14 @@ TCurvesManager.prototype = Object.assign( Object.create( TDataBaseManager.protot
 
     /**
      *
-     * @param jsonData
-     * @param onError
+     * @param data
      * @return {*}
      */
-    convert ( data, onError ) {
+    convert ( data ) {
+
+        if ( !data ) {
+            throw new Error('TCurvesManager: Unable to convert null or undefined data !')
+        }
 
         const curveType = data.type
         let curve       = undefined
@@ -120,7 +123,7 @@ TCurvesManager.prototype = Object.assign( Object.create( TDataBaseManager.protot
                 break
 
             default:
-                onError( `Invalid curve type: ${curveType}` )
+                throw new Error(`TCurvesManager: Unknown curve of type: ${curveType}`)
                 break
 
         }
@@ -144,13 +147,16 @@ Object.defineProperties( TCurvesManager.prototype, {
             // Normalize to array
             const datas   = (isObject( jsonData )) ? [ jsonData ] : jsonData
             const results = {}
-            let result    = undefined
 
             for ( let dataIndex = 0, numberOfDatas = datas.length, data = undefined ; dataIndex < numberOfDatas ; dataIndex++ ) {
 
                 data   = datas[ dataIndex ]
-                result = this.convert( data, onError )
-                if ( result ) { results[ data._id ] = result }
+
+                try {
+                    results[ data._id ] = this.convert( data )
+                } catch(err) {
+                    onError(err)
+                }
 
                 onProgress( dataIndex / numberOfDatas )
 
