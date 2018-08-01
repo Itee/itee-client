@@ -94,15 +94,13 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
 
     /**
      *
-     * @param jsonData
-     * @param onError
+     * @param data
      * @return {*}
      */
-    convert ( data, onError ) {
+    convert ( data ) {
 
         if ( !data ) {
-            onError( 'No data recieve' )
-            return null
+            throw new Error('TObjectsManager: Unable to convert null or undefined data !')
         }
 
         const objectType = data.type
@@ -110,6 +108,10 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
 
         // Todo: Use factory instead and allow user to register its own object type !!!
         switch ( objectType ) {
+
+            case 'Object3D':
+                object = new Object3D()
+                break;
 
             case 'Scene':
                 object = new Scene()
@@ -184,7 +186,7 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
                 break
 
             default:
-                object = new Object3D()
+                throw new Error(`TObjectsManager: Unknown object of type: ${objectType}`)
                 break
 
         }
@@ -624,13 +626,16 @@ Object.defineProperties( TObjectsManager.prototype, {
             // Normalize to array
             const datas   = (isObject( jsonData )) ? [ jsonData ] : jsonData
             const results = {}
-            let result    = undefined
 
             for ( let dataIndex = 0, numberOfDatas = datas.length, data = undefined ; dataIndex < numberOfDatas ; dataIndex++ ) {
 
                 data   = datas[ dataIndex ]
-                result = this.convert( data, onError )
-                if ( result ) { results[ data._id ] = result }
+
+                try {
+                    results[ data._id ] = this.convert( data )
+                } catch(err) {
+                    onError(err)
+                }
 
                 onProgress( dataIndex / numberOfDatas )
 
