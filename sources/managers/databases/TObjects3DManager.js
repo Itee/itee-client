@@ -67,7 +67,8 @@ import { TMaterialsManager } from '../databases/TMaterialsManager'
 
 import {
     isNullOrUndefined,
-    isNotEmptyArray
+    isNotEmptyArray,
+    isObject
 } from 'itee-validators'
 
 /**
