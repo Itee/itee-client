@@ -383,138 +383,228 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
 
     },
 
-    fillObjects3D ( objects, onSuccess, onProgress, onError ) {
+    async fillObjects3D ( objects, onSuccess, onProgress, onError ) {
 
-        const self = this
-
-        // Filter object with geometries and materials
-        const meshes = objects.filter( object => { return (
-            object.isLine ||
-            object.isLineLoop ||
-            object.isLineSegments ||
-            object.isMesh ||
-            object.isPoints ||
-            object.isSkinnedMesh ||
-            object.isSprite
-        ) } )
-
-        if(meshes.length === 0) {
-            onSuccess( objects )
-            return
+        const self         = this
+        const objectsArray = []
+        for ( let id in objects ) {
+            objectsArray.push( objects[ id ] )
         }
+        //        // Filter object with geometries and materials
+        //        const meshes = objects.filter( object => { return (
+        //            object.isLine ||
+        //            object.isLineLoop ||
+        //            object.isLineSegments ||
+        //            object.isMesh ||
+        //            object.isPoints ||
+        //            object.isSkinnedMesh ||
+        //            object.isSprite
+        //        ) } )
+        //
+        //        if(meshes.length === 0) {
+        //            onSuccess( objects )
+        //            return
+        //        }
 
         // Todo: protect against only materials objects and/or no ids to provide !
 
-        // Extract geometries and materials to request
-        const geometriesIds = meshes.map( object => object.geometry ).filter( ( value, index, self ) => {
-            return self.indexOf( value ) === index
-        } )
-        let geometriesMap = undefined
-        this._geometriesProvider.read(
-            geometriesIds,
-            geometries => {
-                geometriesMap = geometries
-                checkEndOfRequests()
-            },
-            onProgress,
-            onError
-        )
+        //        let geometriesMap = await this._retrieveGeometriesOf( objectsArray )
+        //        let materialsMap = await this._retrieveMaterialsOf( objectsArray )
 
-        const materialsArray       = meshes.map( object => object.material )
-        const concatMaterialsArray = [].concat.apply( [], materialsArray )
-        const materialsIds         = concatMaterialsArray.filter( ( value, index, self ) => {
-            return self.indexOf( value ) === index
-        } )
-        let materialsMap = undefined
-        this._materialsProvider.read(
-            materialsIds,
-            materials => {
-                materialsMap = materials
-                checkEndOfRequests()
-            },
-            self.onProgress,
-            self.onError
-        )
+        const [ geometriesMap, materialsMap ] = await Promise.all( [
+            this._retrieveGeometriesOf( objectsArray ),
+            this._retrieveMaterialsOf( objectsArray )
+        ] )
 
-        function checkEndOfRequests() {
-
-            if( geometriesMap === undefined || materialsMap === undefined ) {
-                return
-            }
-
-            for ( let key in meshes ) {
-                const mesh = meshes[key]
-                self.applyGeometry( mesh, geometriesMap )
-                self.applyMaterials( mesh, materialsMap )
-            }
-
-            // Don't forget to return all input object to callback,
-            // else some ids won't never be considered as processed !
-            onSuccess( objects )
-
+        for ( let key in objects ) {
+            const mesh = objects[ key ]
+            self.applyGeometry( mesh, geometriesMap )
+            self.applyMaterials( mesh, materialsMap )
         }
+
+        // Don't forget to return all input object to callback,
+        // else some ids won't never be considered as processed !
+        onSuccess( objects )
+
+        //        function retrieveGeometriesOf ( meshes ) {
+        //
+        //                        const geometriesIds = meshes.map( object => object.geometry ).filter( ( value, index, self ) => {
+        //                            return self.indexOf( value ) === index
+        //                        } )
+        //                        this._geometriesProvider.read(
+        //                            geometriesIds,
+        //                            geometries => {
+        //                                geometriesMap = geometries
+        //                                checkEndOfRequests()
+        //                            },
+        //                            onProgress,
+        //                            onError
+        //                        )
+        //
+        //        }
+        //
+        //        function retrieveMaterialsOf ( meshes ) {
+        //
+        //            const materialsArray       = meshes.map( object => object.material )
+        //            const concatMaterialsArray = [].concat.apply( [], materialsArray )
+        //            const materialsIds         = concatMaterialsArray.filter( ( value, index, self ) => {
+        //                return self.indexOf( value ) === index
+        //            } )
+        //            this._materialsProvider.read(
+        //                materialsIds,
+        //                materials => {
+        //                    materialsMap = materials
+        //                    checkEndOfRequests()
+        //                },
+        //                self.onProgress,
+        //                self.onError
+        //            )
+        //
+        //        }
+        //
+        //        function checkEndOfRequests () {
+        //
+        //            if ( geometriesMap === undefined || materialsMap === undefined ) {
+        //                return
+        //            }
+        //
+        //            for ( let key in objects ) {
+        //                const mesh = objects[ key ]
+        //                self.applyGeometry( mesh, geometriesMap )
+        //                self.applyMaterials( mesh, materialsMap )
+        //            }
+        //
+        //            // Don't forget to return all input object to callback,
+        //            // else some ids won't never be considered as processed !
+        //            onSuccess( objects )
+        //
+        //        }
 
     },
 
-    applyGeometry( object, geometries ) {
+    _retrieveGeometriesOf ( meshes ) {
+
+        const self = this
+
+        return new Promise( function ( resolve, reject ) {
+
+            const geometriesIds = meshes.map( object => object.geometry )
+                                        .filter( ( value, index, self ) => {
+                                            return value && self.indexOf( value ) === index
+                                        } )
+
+            if ( geometriesIds.length === 0 ) {
+                resolve( {} )
+            }
+
+            self._geometriesProvider.read(
+                geometriesIds,
+                geometries => {
+                    resolve( geometries )
+                },
+                self.onProgress,
+                self.onError
+            )
+
+        } )
+
+    },
+
+    _retrieveMaterialsOf ( meshes ) {
+
+        const self = this
+
+        return new Promise( function ( resolve, reject ) {
+
+            const materialsArray       = meshes.map( object => object.material )
+            const concatMaterialsArray = [].concat.apply( [], materialsArray )
+            const materialsIds         = concatMaterialsArray.filter( ( value, index, self ) => {
+                return value && self.indexOf( value ) === index
+            } )
+
+            if ( materialsIds.length === 0 ) {
+                resolve( {} )
+            }
+
+            self._materialsProvider.read(
+                materialsIds,
+                materials => {
+                    resolve( materials )
+                },
+                self.onProgress,
+                self.onError
+            )
+
+        } )
+
+    },
+
+    applyGeometry ( object, geometries ) {
 
         const geometryId = object.geometry
+        if ( !geometryId ) {
+            return
+        }
+
         const geometry = geometries[ geometryId ]
-        if(!geometry) {
-            console.error('Unable to retrieve geometry !!!')
-            return null
+        if ( !geometry ) {
+            console.error( 'Unable to retrieve geometry !!!' )
+            return
         }
 
         object.geometry = geometry
 
     },
 
-    applyMaterials( object, materials ) {
+    applyMaterials ( object, materials ) {
 
         const materialIds = object.material
+        if ( !materialIds ) {
+            return
+        }
 
         if ( Array.isArray( materialIds ) ) {
 
             if ( materialIds.length === 1 ) {
 
                 const materialId = materialIds[ 0 ]
-                const material = materials[ materialId ]
-                if(!material) {
-                    console.error('Unable to retrieve material !!!')
+                const material   = materials[ materialId ]
+                if ( !material ) {
+                    console.error( 'Unable to retrieve material !!!' )
                     return null
                 }
 
-                object.material  = material.clone()
+                object.material = material.clone()
 
             } else {
 
                 object.material = []
                 for ( let materialIndex = 0, numberOfMaterial = materialIds.length ; materialIndex < numberOfMaterial ; materialIndex++ ) {
                     const materialId = materialIds[ materialIndex ]
-                    const material = materials[ materialId ]
-                    if(!material) {
-                        console.error('Unable to retrieve material !!!')
+                    const material   = materials[ materialId ]
+                    if ( !material ) {
+                        console.error( 'Unable to retrieve material !!!' )
                         return null
                     }
 
-                    object.material.push(material.clone())
+                    object.material.push( material.clone() )
                 }
             }
 
         } else if ( typeof materialIds === 'string' ) {
 
             const material = materials[ materialIds ]
-            if(!material) {
-                console.error('Unable to retrieve material !!!')
-                return null
+            if ( !material ) {
+                console.error( 'Unable to retrieve material !!!' )
+                return
             }
 
-            object.material  = material.clone()
+            object.material = material.clone()
 
         } else {
 
-            console.error('Object does not contain materials ids !!!')
-            return null
+            console.error( 'Invalid material ids, expected string or array of string' )
+            return
 
         }
 
