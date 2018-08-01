@@ -430,8 +430,8 @@ Object.assign( SHPLoader.prototype, {
             return null
         }
 
-        const x = this._reader.getDouble();
-        const y = this._reader.getDouble();
+        const x = this._reader.getFloat64();
+        const y = this._reader.getFloat64();
 
         return {
             shapeType,
@@ -454,10 +454,10 @@ Object.assign( SHPLoader.prototype, {
         }
 
         const boundingBox = {
-            xMin: this._reader.getDouble(),
-            yMin: this._reader.getDouble(),
-            xMax: this._reader.getDouble(),
-            yMax: this._reader.getDouble()
+            xMin: this._reader.getFloat64(),
+            yMin: this._reader.getFloat64(),
+            xMax: this._reader.getFloat64(),
+            yMax: this._reader.getFloat64()
         };
 
         const numberOfParts  = this._reader.getInt32();
@@ -471,8 +471,8 @@ Object.assign( SHPLoader.prototype, {
         const points = new Array( numberOfPoints );
         for ( let indexPoint = 0 ; indexPoint < numberOfPoints ; indexPoint++ ) {
             points[ indexPoint ] = {
-                x: this._reader.getDouble(),
-                y: this._reader.getDouble()
+                x: this._reader.getFloat64(),
+                y: this._reader.getFloat64()
             };
         }
 
@@ -500,10 +500,10 @@ Object.assign( SHPLoader.prototype, {
         }
 
         const boundingBox = {
-            xMin: this._reader.getDouble(),
-            yMin: this._reader.getDouble(),
-            xMax: this._reader.getDouble(),
-            yMax: this._reader.getDouble()
+            xMin: this._reader.getFloat64(),
+            yMin: this._reader.getFloat64(),
+            xMax: this._reader.getFloat64(),
+            yMax: this._reader.getFloat64()
         };
 
         const numberOfParts  = this._reader.getInt32();
@@ -517,8 +517,8 @@ Object.assign( SHPLoader.prototype, {
         let points = new Array( numberOfPoints );
         for ( let indexPoint = 0 ; indexPoint < numberOfPoints ; indexPoint++ ) {
             points[ indexPoint ] = {
-                x: this._reader.getDouble(),
-                y: this._reader.getDouble()
+                x: this._reader.getFloat64(),
+                y: this._reader.getFloat64()
             };
         }
 
@@ -579,10 +579,10 @@ Object.assign( SHPLoader.prototype, {
         }
 
         const boundingBox = {
-            xMin: this._reader.getDouble(),
-            xMax: this._reader.getDouble(),
-            yMin: this._reader.getDouble(),
-            yMax: this._reader.getDouble()
+            xMin: this._reader.getFloat64(),
+            xMax: this._reader.getFloat64(),
+            yMin: this._reader.getFloat64(),
+            yMax: this._reader.getFloat64()
         };
 
         const numberOfPoints = this._reader.getInt32();
@@ -590,7 +590,7 @@ Object.assign( SHPLoader.prototype, {
         const points = new Array( numberOfPoints );
 
         for ( let indexPoint = 0 ; indexPoint < numberOfPoints ; indexPoint++ ) {
-            points.push( [ this._reader.getDouble(), this._reader.getDouble() ] )
+            points.push( [ this._reader.getFloat64(), this._reader.getFloat64() ] )
         }
 
         return {
