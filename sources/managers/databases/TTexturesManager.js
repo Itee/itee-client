@@ -8,6 +8,7 @@
  *
  */
 
+import { isObject } from 'itee-validators'
 import { TDataBaseManager } from '../TDataBaseManager'
 
 /**
