@@ -212,7 +212,7 @@ Object.assign( DBFLoader.prototype, {
         }
 
         // Check terminator
-        if ( this.reader.getUInt8() !== DBFLoader.Terminator ) {
+        if ( this.reader.getUint8() !== DBFLoader.Terminator ) {
             TLogger.error( 'DBFLoader: Invalid terminator after field descriptors !!!' );
         }
 
@@ -244,7 +244,7 @@ Object.assign( DBFLoader.prototype, {
 
             name          = this.reader.getString( 11 );
             type          = this.reader.getChar();
-            length        = this.reader.getUInt8();
+            length        = this.reader.getUint8();
             memoryAddress = this.reader.getInt16();
             decimalCount  = this.reader.getInt8();
 
@@ -301,8 +301,8 @@ Object.assign( DBFLoader.prototype, {
             name          = this.reader.getString( 11 );
             type          = this.reader.getChar();
             memoryAddress = this.reader.getInt32();
-            length        = this.reader.getUInt8();
-            decimalCount  = this.reader.getUInt8();
+            length        = this.reader.getUint8();
+            decimalCount  = this.reader.getUint8();
             this.reader.skipOffsetOf( 2 ); // Reserved
             workAreaId = this.reader.getInt8();
             this.reader.skipOffsetOf( 2 ); // Reserved
@@ -371,8 +371,8 @@ Object.assign( DBFLoader.prototype, {
             name = this.reader.getString( 11 );
             type = this.reader.getChar();
             this.reader.skipOffsetOf( 4 ); // Reserved
-            length       = this.reader.getUInt8();
-            decimalCount = this.reader.getUInt8();
+            length       = this.reader.getUint8();
+            decimalCount = this.reader.getUint8();
             this.reader.skipOffsetOf( 2 ); // Reserved
             workAreaId = this.reader.getInt8();
             this.reader.skipOffsetOf( 10 ); // Reserved
@@ -443,8 +443,8 @@ Object.assign( DBFLoader.prototype, {
 
             name         = this.reader.getString( 32 );
             type         = this.reader.getChar();
-            length       = this.reader.getUInt8();
-            decimalCount = this.reader.getUInt8();
+            length       = this.reader.getUint8();
+            decimalCount = this.reader.getUint8();
             this.reader.skipOffsetOf( 2 ); // Reserved
             MDXFieldFlag = this.reader.getInt8();
             this.reader.skipOffsetOf( 2 ); // Reserved
@@ -502,7 +502,7 @@ Object.assign( DBFLoader.prototype, {
         for ( let recordIndex = 0 ; recordIndex < numberOfRecords ; recordIndex++ ) {
 
             record              = {}
-            record[ 'deleted' ] = ( this.reader.getUInt8() === DBFLoader.DeletedRecord )
+            record[ 'deleted' ] = ( this.reader.getUint8() === DBFLoader.DeletedRecord )
 
             for ( let fieldIndex = 0, numberOfFields = fields.length ; fieldIndex < numberOfFields ; fieldIndex++ ) {
 
@@ -567,7 +567,7 @@ Object.assign( DBFLoader.prototype, {
                         break;
 
                     case DataType.Double:
-                        record[ field.name ] = this.reader.getDouble()
+                        record[ field.name ] = this.reader.getFloat64()
                         break;
 
                     case DataType.OLE:
