@@ -31,11 +31,14 @@ TTexturesManager.prototype = Object.assign( Object.create( TDataBaseManager.prot
 
     /**
      *
-     * @param jsonData
-     * @param onError
+     * @param data
      * @return {*}
      */
-    convert ( data, onError ) {
+    convert ( data ) {
+
+        if ( !data ) {
+            throw new Error('TTexturesManager: Unable to convert null or undefined data !')
+        }
 
         const textureType = data.type
         let texture = undefined
@@ -43,6 +46,7 @@ TTexturesManager.prototype = Object.assign( Object.create( TDataBaseManager.prot
         switch ( textureType ) {
 
             default:
+                throw new Error(`TTexturesManager: Unknown texture of type: ${textureType}`)
                 break
 
         }
@@ -70,13 +74,16 @@ Object.defineProperties( TTexturesManager.prototype, {
             // Normalize to array
             const datas   = (isObject( jsonData )) ? [ jsonData ] : jsonData
             const results = {}
-            let result    = undefined
 
             for ( let dataIndex = 0, numberOfDatas = datas.length, data = undefined ; dataIndex < numberOfDatas ; dataIndex++ ) {
 
                 data   = datas[ dataIndex ]
-                result = this.convert( data, onError )
-                if ( result ) { results[ data._id ] = result }
+
+                try {
+                    results[ data._id ] = this.convert( data )
+                } catch(err) {
+                    onError(err)
+                }
 
                 onProgress( dataIndex / numberOfDatas )
 
