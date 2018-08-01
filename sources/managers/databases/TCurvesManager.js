@@ -28,6 +28,8 @@ import {
     Shape
 } from 'three-full'
 
+import { isObject } from 'itee-validators'
+
 /**
  *
  * @constructor
