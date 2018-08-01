@@ -96,10 +96,13 @@ TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.pr
      * @memberOf TGeometriesManager.prototype
      *
      * @param data
-     * @param onError
      * @returns {*}
      */
-    convertJsonToGeometry ( data, onError ) {
+    convert ( data ) {
+
+        if ( !data ) {
+            throw new Error('TGeometriesManager: Unable to convert null or undefined data !')
+        }
 
         let geometry = null
 
@@ -113,7 +116,7 @@ TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.pr
 
         } else {
 
-            onError( 'Unable to retrieve geometry type !!!' )
+            throw new Error('TGeometriesManager: Unable to retrieve geometry type !')
 
         }
 
@@ -128,7 +131,7 @@ TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.pr
 
     },
 
-    _convertJsonToGeometry ( data, onError ) {
+    _convertJsonToGeometry ( data ) {
 
         const geometryType = data.types
         let geometry       = null
@@ -228,7 +231,7 @@ TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.pr
                 break
 
             default:
-                onError( `Invalid geometry type: ${geometryType}` )
+                throw new Error(`TGeometriesManager: Unknown geometry of type: ${geometryType}`)
                 break
 
         }
@@ -272,7 +275,7 @@ TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.pr
 
     },
 
-    _convertJsonToBufferGeometry ( data, onError ) {
+    _convertJsonToBufferGeometry ( data ) {
 
         const bufferGeometryType = data.type
         let bufferGeometry       = undefined
@@ -369,9 +372,8 @@ TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.pr
                 break
 
             default:
-                onError( `Invalid buffer geometry type: ${bufferGeometryType}` )
+                throw new Error(`TGeometriesManager: Unknown buffer geometry of type: ${bufferGeometryType}`)
                 break
-
         }
 
         // COMMON PARTS
@@ -444,13 +446,16 @@ Object.defineProperties( TGeometriesManager.prototype, {
             // Normalize to array
             const datas   = (isObject( jsonData )) ? [ jsonData ] : jsonData
             const results = {}
-            let result    = undefined
 
             for ( let dataIndex = 0, numberOfDatas = datas.length, data = undefined ; dataIndex < numberOfDatas ; dataIndex++ ) {
 
                 data   = datas[ dataIndex ]
-                result = this.convert( data, onError )
-                if ( result ) { results[ data._id ] = result }
+
+                try {
+                    results[ data._id ] = this.convert( data )
+                } catch(err) {
+                    onError(err)
+                }
 
                 onProgress( dataIndex / numberOfDatas )
 
