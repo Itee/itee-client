@@ -34,7 +34,7 @@ TTexturesManager.prototype = Object.assign( Object.create( TDataBaseManager.prot
      * @param onError
      * @return {*}
      */
-    convertJsonToObject3D ( data, onError ) {
+    convert ( data, onError ) {
 
         const textureType = data.type
         let texture = undefined
@@ -66,33 +66,22 @@ Object.defineProperties( TTexturesManager.prototype, {
     _onJson: {
         value: function _onJson ( jsonData, onSuccess, onProgress, onError ) {
 
-            if ( Array.isArray( jsonData ) ) {
+            // Normalize to array
+            const datas   = (isObject( jsonData )) ? [ jsonData ] : jsonData
+            const results = {}
+            let result    = undefined
 
-                let objects = []
-                let object  = undefined
-                let data    = undefined
-                for ( let dataIndex = 0, numberOfDatas = jsonData.length ; dataIndex < numberOfDatas ; dataIndex++ ) {
+            for ( let dataIndex = 0, numberOfDatas = datas.length, data = undefined ; dataIndex < numberOfDatas ; dataIndex++ ) {
 
-                    data   = jsonData[ dataIndex ]
-                    object = this.convertJsonToObject3D( data, onError )
+                data   = datas[ dataIndex ]
+                result = this.convert( data, onError )
+                if ( result ) { results[ data._id ] = result }
 
-                    if ( object ) { objects.push( object ) }
-
-                    onProgress( dataIndex / numberOfDatas )
-
-                }
-
-                onSuccess( objects )
-
-            } else {
-
-                let object = this.convertJsonToObject3D( jsonData, onError )
-                onProgress( 1.0 )
-
-                onSuccess( object )
+                onProgress( dataIndex / numberOfDatas )
 
             }
 
+            onSuccess( results )
         }
     }
 
