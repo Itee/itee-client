@@ -116,8 +116,9 @@ TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.pr
 
         }
 
-        geometry.computeFaceNormals()
-        geometry.computeVertexNormals()
+        // Todo: Compute normals only if required or asked
+//        geometry.computeFaceNormals()
+//        geometry.computeVertexNormals()
 
         // TCache geometry for future use
         //        this._cache.add( data._id, geometry )
@@ -439,33 +440,22 @@ Object.defineProperties( TGeometriesManager.prototype, {
     _onJson: {
         value: function _onJson ( jsonData, onSuccess, onProgress, onError ) {
 
-            let geometries = {}
-            let geometry   = undefined
+            // Normalize to array
+            const datas   = (isObject( jsonData )) ? [ jsonData ] : jsonData
+            const results = {}
+            let result    = undefined
 
-            if ( Array.isArray( jsonData ) ) {
+            for ( let dataIndex = 0, numberOfDatas = datas.length, data = undefined ; dataIndex < numberOfDatas ; dataIndex++ ) {
 
-                let data = undefined
-                for ( let dataIndex = 0, numberOfDatas = jsonData.length ; dataIndex < numberOfDatas ; dataIndex++ ) {
+                data   = datas[ dataIndex ]
+                result = this.convert( data, onError )
+                if ( result ) { results[ data._id ] = result }
 
-                    data     = jsonData[ dataIndex ]
-                    geometry = this.convertJsonToGeometry( data, onError )
-
-                    if ( geometry ) { geometries[ data._id ] = geometry }
-
-                    onProgress( dataIndex / numberOfDatas )
-
-                }
-
-            } else {
-
-                geometry = this.convertJsonToGeometry( jsonData, onError )
-                if ( geometry ) { geometries[ jsonData._id ] = geometry }
-
-                onProgress( 1.0 )
+                onProgress( dataIndex / numberOfDatas )
 
             }
 
-            onSuccess( geometries )
+            onSuccess( results )
 
         }
     }
