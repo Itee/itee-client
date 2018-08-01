@@ -19,6 +19,7 @@ import {
     Vector2,
 } from 'three-full'
 
+import { isObject } from 'itee-validators'
 import { DefaultLogger as TLogger } from '../../loggers/TLogger'
 import { TDataBaseManager } from '../TDataBaseManager'
 
