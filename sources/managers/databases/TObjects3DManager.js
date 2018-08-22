@@ -64,8 +64,10 @@ import {
 import { TDataBaseManager } from '../TDataBaseManager'
 import { TGeometriesManager } from './TGeometriesManager'
 import { TMaterialsManager } from './TMaterialsManager'
-
+import { ResponseType } from '../../cores/TConstants'
 import {
+    isNull,
+    isUndefined,
     isNullOrUndefined,
     isNotEmptyArray,
     isObject
@@ -73,12 +75,65 @@ import {
 
 class TObjectsManager extends TDataBaseManager {
 
-    constructor ( basePath, geometriesProvider, materialsProvider ) {
+    /**
+     *
+     * @param basePath
+     * @param responseType
+     * @param bunchSize
+     * @param progressManager
+     * @param errorManager
+     * @param geometriesProvider
+     * @param materialsProvider
+     */
+    constructor ( basePath = '/objects', responseType = ResponseType.Json, bunchSize = 500, progressManager = null, errorManager = null, geometriesProvider = new TGeometriesManager(), materialsProvider = new TMaterialsManager() ) {
 
-        super()
-        this.basePath = basePath || '/objects'
-        this._geometriesProvider = geometriesProvider || new TGeometriesManager()
-        this._materialsProvider  = materialsProvider || new TMaterialsManager()
+        super( basePath, responseType, bunchSize, progressManager, errorManager )
+        this._geometriesProvider = geometriesProvider
+        this._materialsProvider  = materialsProvider
+
+    }
+
+    get geometriesProvider () {
+        return this._geometriesProvider
+    }
+
+    set geometriesProvider ( geometriesProvider ) {
+
+        if ( isNull( geometriesProvider ) ) {
+            throw new Error( 'TObjectsManager: geometriesProvider cannot be null !' )
+        }
+
+        if ( isUndefined( geometriesProvider ) ) {
+            throw new Error( 'TObjectsManager: geometriesProvider cannot be undefined !' )
+        }
+
+        if ( !(geometriesProvider instanceof TGeometriesManager) ) {
+            throw new Error( 'TObjectsManager: geometriesProvider need to be an instance of TGeometriesManager !' )
+        }
+
+        this._geometriesProvider = geometriesProvider
+
+    }
+
+    get materialsProvider () {
+        return this._materialsProvider
+    }
+
+    set materialsProvider ( materialsProvider ) {
+
+        if ( isNull( materialsProvider ) ) {
+            throw new Error( 'TObjectsManager: materialsProvider cannot be null !' )
+        }
+
+        if ( isUndefined( materialsProvider ) ) {
+            throw new Error( 'TObjectsManager: materialsProvider cannot be undefined !' )
+        }
+
+        if ( !(materialsProvider instanceof TMaterialsManager) ) {
+            throw new Error( 'TObjectsManager: materialsProvider need to be an instance of TMaterialsManager !' )
+        }
+
+        this._materialsProvider = materialsProvider
 
     }
 
@@ -294,7 +349,7 @@ class TObjectsManager extends TDataBaseManager {
 
     }
 
-    _fillBaseObjectsData( object, data ) {
+    _fillBaseObjectsData ( object, data ) {
 
         // Common object properties
         object._id = data._id
