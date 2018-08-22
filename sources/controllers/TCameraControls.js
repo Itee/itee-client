@@ -30,7 +30,7 @@ const States = Object.freeze( {
     NONE:     0,
     ROTATING: 1,
     PANNING:  2,
-    DOLLYING: 3,
+    ROLLING:  3,
     ZOOMING:  4
 } )
 
@@ -148,13 +148,13 @@ class TCameraController {
         this.panMaxSpeed     = Infinity
         this.panAcceleration = 1.0
 
-        this.canDolly          = true
-        this.dollyMinimum      = -Infinity
-        this.dollyMaximum      = -Infinity
-        this.dollyMinSpeed     = 0.0
-        this.dollySpeed        = 1.0
-        this.dollyMaxSpeed     = Infinity
-        this.dollyAcceleration = 1.0
+        this.canRoll          = true
+        this.rollMinimum      = -Infinity
+        this.rollMaximum      = -Infinity
+        this.rollMinSpeed     = 0.0
+        this.rollSpeed        = 1.0
+        this.rollMaxSpeed     = Infinity
+        this.rollAcceleration = 1.0
 
         this.canZoom          = true
         this.zoomMinimum      = -Infinity
@@ -174,8 +174,8 @@ class TCameraController {
             right:  [ Keys.D, Keys.RIGHT_ARROW ],
             rotate: [ Mouse.LEFT ],
             pan:    [ Mouse.MIDDLE ],
-            dolly:  [],
-            zoom:   [ Mouse.MIDDLE ]
+            roll:   [],
+            zoom:   [ Mouse.WHEEL ]
         }
 
         // The current internal state of controller
@@ -183,7 +183,6 @@ class TCameraController {
 
         // Impose by default on create
         this.impose()
-
 
         this.mouseQuat = {
             x: new Quaternion(),
@@ -277,9 +276,9 @@ class TCameraController {
 
             this._state = States.PANNING
 
-        } else if ( this.canDolly && actionMap.dolly.indexOf( button ) > -1 ) {
+        } else if ( this.canRoll && actionMap.roll.indexOf( button ) > -1 ) {
 
-            this._state = States.DOLLYING
+            this._state = States.ROLLING
 
         } else if ( this.canZoom && actionMap.zoom.indexOf( button ) > -1 ) {
 
@@ -316,8 +315,8 @@ class TCameraController {
                 this._pan( delta )
                 break
 
-            case States.DOLLYING:
-                this._dolly( delta )
+            case States.ROLLING:
+                this._roll( delta )
                 break
 
             case States.ZOOMING:
@@ -481,7 +480,9 @@ class TCameraController {
 
     }
 
-    _dolly ( delta ) {
+    _roll ( delta ) {
+
+        this.dispatchEvent( { type: 'roll' } )
 
     }
 
