@@ -55,7 +55,7 @@ class Movement {
 
 }
 
-class TCameraController {
+class TCameraControls extends EventDispatcher {
 
     constructor ( camera, domElement, scene ) {
 
