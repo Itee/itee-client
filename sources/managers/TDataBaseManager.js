@@ -138,6 +138,50 @@ class TDataBaseManager {
         this._bunchSize = bunchSize
     }
 
+    get progressManager () {
+        return this._progressManager
+    }
+
+    set progressManager ( progressManager ) {
+
+        if ( isNull( progressManager ) ) {
+            throw new Error( 'TDataBaseManager: progressManager cannot be null !' )
+        }
+
+        if ( isUndefined( progressManager ) ) {
+            throw new Error( 'TDataBaseManager: progressManager cannot be undefined !' )
+        }
+
+        if ( !(progressManager instanceof TProgressManager) ) {
+            throw new Error( 'TDataBaseManager: progressManager need to be an instance of TProgressManager !' )
+        }
+
+        this._progressManager = progressManager
+
+    }
+
+    get errorManager () {
+        return this._errorManager
+    }
+
+    set errorManager ( errorManager ) {
+
+        if ( isNull( errorManager ) ) {
+            throw new Error( 'TDataBaseManager: errorManager cannot be null !' )
+        }
+
+        if ( isUndefined( errorManager ) ) {
+            throw new Error( 'TDataBaseManager: errorManager cannot be undefined !' )
+        }
+
+        if ( !(errorManager instanceof TErrorManager) ) {
+            throw new Error( 'TDataBaseManager: errorManager need to be an instance of TerrorManager !' )
+        }
+
+        this._errorManager = errorManager
+
+    }
+
     /**
      * @static
      * @function
