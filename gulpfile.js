@@ -253,8 +253,10 @@ gulp.task( 'build-script', ( done ) => {
             fileName:     'itee-client',
             inputPath:    path.join( __dirname, 'sources' ),
             outputPath:   path.join( __dirname, 'builds' ),
-            environments: [ 'development', 'production' ],
-            formats:      [ 'amd', 'cjs', 'es', 'iife', 'umd' ],
+            environments: [ 'development' ],
+//            environments: [ 'development', 'production' ],
+            formats:      [ 'iife' ],
+//            formats:      [ 'amd', 'cjs', 'es', 'iife', 'umd' ],
             sourceMap:    false
         }
 
