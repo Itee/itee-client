@@ -57,19 +57,18 @@ class Movement {
 
 class TCameraControls extends EventDispatcher {
 
-    constructor ( camera, domElement, scene ) {
+    constructor ( camera, target, domElement ) {
 
-        this._scene = scene
+        super()
 
         if ( !camera ) {
             throw new Error( "Unable to create TCameraPathController with null or undefined camera !" )
         }
 
-        this._camera     = camera
-        this._domElement = ( domElement !== undefined ) ? domElement : document
+        this.camera     = camera
+        this.target     = target || new Object3D()
+        this.domElement = ( domElement !== undefined ) ? domElement : document
 
-        // "target" sets the location of focus, where the object orbits around
-        this.target = new Vector3();
 
         // Set to false to disable controls
         this.enabled = true
@@ -197,23 +196,23 @@ class TCameraControls extends EventDispatcher {
 
     impose () {
 
-        this._domElement.addEventListener( 'mousedown', this._onMouseDown.bind( this ), false )
-        this._domElement.addEventListener( 'mousemove', this._onMouseMove.bind( this ), false )
-        this._domElement.addEventListener( 'mousewheel', this._onMouseWheel.bind( this ), false )
-        this._domElement.addEventListener( 'mouseup', this._onMouseUp.bind( this ), false )
-        this._domElement.addEventListener( 'keydown', this._onKeyDown.bind( this ), false )
-        this._domElement.addEventListener( 'keyup', this._onKeyUp.bind( this ), false )
+        this.domElement.addEventListener( 'mousedown', this._onMouseDown.bind( this ), false )
+        this.domElement.addEventListener( 'mousemove', this._onMouseMove.bind( this ), false )
+        this.domElement.addEventListener( 'mousewheel', this._onMouseWheel.bind( this ), false )
+        this.domElement.addEventListener( 'mouseup', this._onMouseUp.bind( this ), false )
+        this.domElement.addEventListener( 'keydown', this._onKeyDown.bind( this ), false )
+        this.domElement.addEventListener( 'keyup', this._onKeyUp.bind( this ), false )
 
     }
 
     dispose () {
 
-        this._domElement.removeEventListener( 'mousedown', this._onMouseDown.bind( this ), false )
-        this._domElement.removeEventListener( 'mousemove', this._onMouseMove.bind( this ), false )
-        this._domElement.removeEventListener( 'mousewheel', this._onMouseWheel.bind( this ), false )
-        this._domElement.removeEventListener( 'mouseup', this._onMouseUp.bind( this ), false )
-        this._domElement.removeEventListener( 'keydown', this._onKeyDown.bind( this ), false )
-        this._domElement.removeEventListener( 'keyup', this._onKeyUp.bind( this ), false )
+        this.domElement.removeEventListener( 'mousedown', this._onMouseDown.bind( this ), false )
+        this.domElement.removeEventListener( 'mousemove', this._onMouseMove.bind( this ), false )
+        this.domElement.removeEventListener( 'mousewheel', this._onMouseWheel.bind( this ), false )
+        this.domElement.removeEventListener( 'mouseup', this._onMouseUp.bind( this ), false )
+        this.domElement.removeEventListener( 'keydown', this._onKeyDown.bind( this ), false )
+        this.domElement.removeEventListener( 'keyup', this._onKeyUp.bind( this ), false )
 
     }
 
