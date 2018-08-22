@@ -264,21 +264,26 @@ class TCameraControls extends EventDispatcher {
         if ( !this.enabled ) {
             return
         }
-        keyEvent.preventDefault()
 
         const actionMap = this.actionsMap
         const key       = keyEvent.keyCode
         if ( this.canFront && actionMap.front.indexOf( key ) > -1 ) {
+            keyEvent.preventDefault()
             this._front()
         } else if ( this.canBack && actionMap.back.indexOf( key ) > -1 ) {
+            keyEvent.preventDefault()
             this._back()
         } else if ( this.canUp && actionMap.up.indexOf( key ) > -1 ) {
+            keyEvent.preventDefault()
             this._up()
         } else if ( this.canDown && actionMap.down.indexOf( key ) > -1 ) {
+            keyEvent.preventDefault()
             this._down()
         } else if ( this.canLeft && actionMap.left.indexOf( key ) > -1 ) {
+            keyEvent.preventDefault()
             this._left()
         } else if ( this.canRight && actionMap.right.indexOf( key ) > -1 ) {
+            keyEvent.preventDefault()
             this._right()
         } else {
             // Unmapped key, just ignore it !
