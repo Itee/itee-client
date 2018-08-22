@@ -599,12 +599,12 @@ Object.defineProperties( TMaterialsManager.prototype, {
 
             for ( let dataIndex = 0, numberOfDatas = datas.length, data = undefined ; dataIndex < numberOfDatas ; dataIndex++ ) {
 
-                data   = datas[ dataIndex ]
+                data = datas[ dataIndex ]
 
                 try {
                     results[ data._id ] = this.convert( data )
-                } catch(err) {
-                    onError(err)
+                } catch ( err ) {
+                    onError( err )
                 }
 
                 onProgress( dataIndex / numberOfDatas )
