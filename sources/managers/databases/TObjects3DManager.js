@@ -62,8 +62,8 @@ import {
 } from 'three-full'
 
 import { TDataBaseManager } from '../TDataBaseManager'
-import { TGeometriesManager } from '../databases/TGeometriesManager'
-import { TMaterialsManager } from '../databases/TMaterialsManager'
+import { TGeometriesManager } from './TGeometriesManager'
+import { TMaterialsManager } from './TMaterialsManager'
 
 import {
     isNullOrUndefined,
@@ -100,7 +100,7 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
     convert ( data ) {
 
         if ( !data ) {
-            throw new Error('TObjectsManager: Unable to convert null or undefined data !')
+            throw new Error( 'TObjectsManager: Unable to convert null or undefined data !' )
         }
 
         const objectType = data.type
@@ -629,12 +629,12 @@ Object.defineProperties( TObjectsManager.prototype, {
 
             for ( let dataIndex = 0, numberOfDatas = datas.length, data = undefined ; dataIndex < numberOfDatas ; dataIndex++ ) {
 
-                data   = datas[ dataIndex ]
+                data = datas[ dataIndex ]
 
                 try {
                     results[ data._id ] = this.convert( data )
-                } catch(err) {
-                    onError(err)
+                } catch ( err ) {
+                    onError( err )
                 }
 
                 onProgress( dataIndex / numberOfDatas )
