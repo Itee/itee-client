@@ -124,7 +124,7 @@ Object.assign( MeshManager.prototype, {
 
         var self = this
 
-        self.requestServer( 'GET', `/3d/objects/${meshId}`, null, onLoad, onProgress, onError )
+        TDataBaseManager.requestServer( 'GET', `/3d/objects/${meshId}`, null, onLoad, onProgress, onError )
 
         //        self.requestServer( 'POST', '../../meshes/' + meshId, null, onLoad, onProgress, onError, 'arraybuffer' )
 
@@ -408,7 +408,7 @@ Object.assign( MeshManager.prototype, {
             formData = new FormData()
             formData.append( 'ids', JSON.stringify( idsSplit ) )
 
-            self.requestServer( 'POST', '../../meshes/all', formData, onLoad, onProgress, onError, 'arraybuffer' )
+            TDataBaseManager.requestServer( 'POST', '../../meshes/all', formData, onLoad, onProgress, onError, 'arraybuffer' )
 
         }
 
@@ -488,7 +488,7 @@ Object.assign( MeshManager.prototype, {
 
         var self = this
 
-        self.requestServer( 'POST', '/worldcells/meshes/', null, onLoad, onProgress, onError )
+        TDataBaseManager.requestServer( 'POST', '/worldcells/meshes/', null, onLoad, onProgress, onError )
 
         function onLoad ( loadEvent ) {
 
@@ -559,7 +559,7 @@ Object.assign( MeshManager.prototype, {
 
         const self = this
 
-        self.requestServer( 'POST', '/scenes', null, onLoadScene, onProgressScene, onErrorScene )
+        TDataBaseManager.requestServer( 'POST', '/scenes', null, onLoadScene, onProgressScene, onErrorScene )
 
         function onLoadScene ( loadEvent ) {
 
@@ -615,7 +615,7 @@ Object.assign( MeshManager.prototype, {
 
         const self = this
 
-        self.requestServer( 'POST', `/scenes/${sceneId}`, null, onLoadScene, onProgressScene, onErrorScene )
+        TDataBaseManager.requestServer( 'POST', `/scenes/${sceneId}`, null, onLoadScene, onProgressScene, onErrorScene )
 
         function onLoadScene ( loadEvent ) {
 
@@ -688,7 +688,7 @@ Object.assign( MeshManager.prototype, {
 
             if ( idBunch.length < bunchSize ) { continue }
 
-            self.requestServer( 'POST', '/objects', JSON.stringify( idBunch ), onLoadChildren, onProgressChildren, onErrorChildren )
+            TDataBaseManager.requestServer( 'POST', '/objects', JSON.stringify( idBunch ), onLoadChildren, onProgressChildren, onErrorChildren )
             //            self.requestServer( 'POST', '/objects', JSON.stringify( { ids: idBunch } ), onLoadChildren, onProgressChildren, onErrorChildren )
 
             idBunch = []
@@ -772,7 +772,7 @@ Object.assign( MeshManager.prototype, {
 
         for ( let childrenIndex = 0, numberOfChilds = childrenIds.length ; childrenIndex < numberOfChilds ; ++childrenIndex ) {
 
-            self.requestServer( 'POST', `/objects/${childrenIds[ childrenIndex ]}`, null, onLoadChildren, onProgressChildren, onErrorChildren )
+            TDataBaseManager.requestServer( 'POST', `/objects/${childrenIds[ childrenIndex ]}`, null, onLoadChildren, onProgressChildren, onErrorChildren )
 
         }
 
@@ -955,7 +955,7 @@ Object.assign( MeshManager.prototype, {
 
         } else {
 
-            self.requestServer( 'POST', `/geometries/${geometryId}`, null, onLoadGeometry, onProgressGeometry, onErrorGeometry )
+            TDataBaseManager.requestServer( 'POST', `/geometries/${geometryId}`, null, onLoadGeometry, onProgressGeometry, onErrorGeometry )
 
             function onLoadGeometry ( loadEvent ) {
 
@@ -1144,7 +1144,7 @@ Object.assign( MeshManager.prototype, {
 
                 } else {
 
-                    self.requestServer( 'POST', `/materials/${materialId}`, null, onLoadMultiMaterial, onProgressMaterial, onErrorMaterial )
+                    TDataBaseManager.requestServer( 'POST', `/materials/${materialId}`, null, onLoadMultiMaterial, onProgressMaterial, onErrorMaterial )
 
                 }
 
@@ -1159,7 +1159,7 @@ Object.assign( MeshManager.prototype, {
 
             } else {
 
-                self.requestServer( 'POST', `/materials/${materialIds}`, null, onLoadMaterial, onProgressMaterial, onErrorMaterial )
+                TDataBaseManager.requestServer( 'POST', `/materials/${materialIds}`, null, onLoadMaterial, onProgressMaterial, onErrorMaterial )
 
             }
 
