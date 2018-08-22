@@ -244,6 +244,20 @@ class TCameraControls extends EventDispatcher {
 
     }
 
+    setCameraPosition ( newCameraPosition ) {
+
+        this.camera.position.copy( newCameraPosition )
+        this.camera.lookAt( this.target.position )
+
+    }
+
+    setTargetPosition ( newTargetPosition ) {
+
+        this.target.position.copy( newTargetPosition )
+        this.camera.lookAt( this.target.position )
+
+    }
+
     // Handlers
     _onKeyDown ( keyEvent ) {
 
