@@ -101,7 +101,7 @@ TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.pr
     convert ( data ) {
 
         if ( !data ) {
-            throw new Error('TGeometriesManager: Unable to convert null or undefined data !')
+            throw new Error( 'TGeometriesManager: Unable to convert null or undefined data !' )
         }
 
         let geometry = null
@@ -116,13 +116,13 @@ TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.pr
 
         } else {
 
-            throw new Error('TGeometriesManager: Unable to retrieve geometry type !')
+            throw new Error( 'TGeometriesManager: Unable to retrieve geometry type !' )
 
         }
 
         // Todo: Compute normals only if required or asked
-//        geometry.computeFaceNormals()
-//        geometry.computeVertexNormals()
+        //        geometry.computeFaceNormals()
+        //        geometry.computeVertexNormals()
 
         // TCache geometry for future use
         //        this._cache.add( data._id, geometry )
@@ -231,7 +231,7 @@ TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.pr
                 break
 
             default:
-                throw new Error(`TGeometriesManager: Unknown geometry of type: ${geometryType}`)
+                throw new Error( `TGeometriesManager: Unknown geometry of type: ${geometryType}` )
                 break
 
         }
@@ -372,7 +372,7 @@ TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.pr
                 break
 
             default:
-                throw new Error(`TGeometriesManager: Unknown buffer geometry of type: ${bufferGeometryType}`)
+                throw new Error( `TGeometriesManager: Unknown buffer geometry of type: ${bufferGeometryType}` )
                 break
         }
 
@@ -449,12 +449,12 @@ Object.defineProperties( TGeometriesManager.prototype, {
 
             for ( let dataIndex = 0, numberOfDatas = datas.length, data = undefined ; dataIndex < numberOfDatas ; dataIndex++ ) {
 
-                data   = datas[ dataIndex ]
+                data = datas[ dataIndex ]
 
                 try {
                     results[ data._id ] = this.convert( data )
-                } catch(err) {
-                    onError(err)
+                } catch ( err ) {
+                    onError( err )
                 }
 
                 onProgress( dataIndex / numberOfDatas )
