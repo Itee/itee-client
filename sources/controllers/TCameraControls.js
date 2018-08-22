@@ -637,4 +637,4 @@ class TCameraControls extends EventDispatcher {
 
 }
 
-export { TCameraController }
+export { TCameraControls }
