@@ -43,173 +43,532 @@ TMaterialsManager.prototype = Object.assign( Object.create( TDataBaseManager.pro
 
     /**
      *
-     * @param jsonMaterial
+     * @param data
      * @return {undefined}
      */
-    convert ( jsonMaterial ) {
+    convert ( data ) {
 
         if ( !data ) {
-            throw new Error('TMaterialsManager: Unable to convert null or undefined data !')
+            throw new Error( 'TMaterialsManager: Unable to convert null or undefined data !' )
         }
 
-        const materialType = jsonMaterial.type
-        let material       = undefined
+        const type   = data.type
+        let material = undefined
 
-        switch ( materialType ) {
+        switch ( type ) {
 
             case 'MeshPhongMaterial': {
-                material                     = new MeshPhongMaterial()
-                material._id                 = jsonMaterial._id
-                material.uuid                = jsonMaterial.uuid
-                material.name                = jsonMaterial.name
-                material.type                = jsonMaterial.type
-                material.fog                 = jsonMaterial.fog
-                material.lights              = jsonMaterial.lights
-                material.blending            = jsonMaterial.blending
-                material.side                = jsonMaterial.side
-                material.flatShading         = jsonMaterial.flatShading
-                material.vertexColors        = jsonMaterial.vertexColors
-                material.opacity             = jsonMaterial.opacity
-                material.transparent         = jsonMaterial.transparent
-                material.blendSrc            = jsonMaterial.blendSrc
-                material.blendDst            = jsonMaterial.blendDst
-                material.blendEquation       = jsonMaterial.blendEquation
-                material.blendSrcAlpha       = jsonMaterial.blendSrcAlpha
-                material.blendDstAlpha       = jsonMaterial.blendDstAlpha
-                material.blendEquationAlpha  = jsonMaterial.blendEquationAlpha
-                material.depthFunc           = jsonMaterial.depthFunc
-                material.depthTest           = jsonMaterial.depthTest
-                material.depthWrite          = jsonMaterial.depthWrite
-                material.clippingPlanes      = jsonMaterial.clippingPlanes
-                material.clipIntersection    = jsonMaterial.clipIntersection
-                material.clipShadows         = jsonMaterial.clipShadows
-                material.colorWrite          = jsonMaterial.colorWrite
-                material.precision           = jsonMaterial.precision
-                material.polygonOffset       = jsonMaterial.polygonOffset
-                material.polygonOffsetFactor = jsonMaterial.polygonOffsetFactor
-                material.polygonOffsetUnits  = jsonMaterial.polygonOffsetUnits
-                material.dithering           = jsonMaterial.dithering
-                material.alphaTest           = jsonMaterial.alphaTest
-                material.premultipliedAlpha  = jsonMaterial.premultipliedAlpha
-                material.overdraw            = jsonMaterial.overdraw
-                material.visible             = jsonMaterial.visible
-                material.userData            = {} //jsonMaterial.userData
-                material.needsUpdate         = false//jsonMaterial.needsUpdate
-                material.color               = new Color( jsonMaterial.color.r, jsonMaterial.color.g, jsonMaterial.color.b )
-                material.specular            = new Color( jsonMaterial.specular.r, jsonMaterial.specular.g, jsonMaterial.specular.b )
-                material.shininess           = jsonMaterial.shininess
-                material.map                 = jsonMaterial.map
-                material.lightMap            = jsonMaterial.lightMap
-                material.lightMapIntensity   = jsonMaterial.lightMapIntensity
-                material.aoMap               = jsonMaterial.aoMap
-                material.aoMapIntensity      = jsonMaterial.aoMapIntensity
-                material.emissive            = new Color( jsonMaterial.emissive.r, jsonMaterial.emissive.g, jsonMaterial.emissive.b )
-                material.emissiveIntensity   = jsonMaterial.emissiveIntensity
-                material.emissiveMap         = jsonMaterial.emissiveMap
-                material.bumpMap             = jsonMaterial.bumpMap
-                material.bumpScale           = jsonMaterial.bumpScale
-                material.normalMap           = jsonMaterial.normalMap
-                material.normalScale         = new Vector2( jsonMaterial.normalScale.x, jsonMaterial.normalScale.y )
-                material.displacementMap     = jsonMaterial.displacementMap
-                material.displacementScale   = jsonMaterial.displacementScale
-                material.displacementBias    = jsonMaterial.displacementBias
-                material.specularMap         = jsonMaterial.specularMap
-                material.alphaMap            = jsonMaterial.alphaMap
-                material.envMap              = jsonMaterial.alphaMap
-                material.combine             = jsonMaterial.combine
-                material.reflectivity        = jsonMaterial.reflectivity
-                material.refractionRatio     = jsonMaterial.refractionRatio
-                material.wireframe           = jsonMaterial.wireframe
-                material.wireframeLinewidth  = jsonMaterial.wireframeLinewidth
-                material.wireframeLinecap    = jsonMaterial.wireframeLinecap
-                material.wireframeLinejoin   = jsonMaterial.wireframeLinejoin
-                material.skinning            = jsonMaterial.skinning
-                material.morphTargets        = jsonMaterial.morphTargets
-                material.morphNormals        = jsonMaterial.morphNormals
-            }
+                material = new MeshPhongMaterial()
+                this._fillBaseMaterialData( material, data )
+
+                const color = data.color
+                if ( isDefined( color ) ) {
+                    this.color = this._setColor( color )
+                }
+
+                const specular = data.specular
+                if ( isDefined( specular ) ) {
+                    this.specular = this._setColor( specular )
+                }
+
+                const shininess = data.shininess
+                if ( isDefined( shininess ) ) {
+                    this.shininess = shininess
+                }
+
+                const map = data.map
+                if ( isDefined( map ) ) {
+                    this.map = this._setTexture( map )
+                }
+
+                const lightMap = data.lightMap
+                if ( isDefined( lightMap ) ) {
+                    this.lightMap = this._setTexture( lightMap )
+                }
+
+                const lightMapIntensity = data.lightMapIntensity
+                if ( isDefined( lightMapIntensity ) ) {
+                    this.lightMapIntensity = lightMapIntensity
+                }
+
+                const aoMap = data.aoMap
+                if ( isDefined( aoMap ) ) {
+                    this.aoMap = this._setTexture( aoMap )
+                }
+
+                const aoMapIntensity = data.aoMapIntensity
+                if ( isDefined( aoMapIntensity ) ) {
+                    this.aoMapIntensity = aoMapIntensity
+                }
+
+                const emissive = data.emissive
+                if ( isDefined( emissive ) ) {
+                    this.emissive = this._setColor( emissive )
+                }
+
+                const emissiveIntensity = data.emissiveIntensity
+                if ( isDefined( emissiveIntensity ) ) {
+                    this.emissiveIntensity = emissiveIntensity
+                }
+
+                const emissiveMap = data.emissiveMap
+                if ( isDefined( emissiveMap ) ) {
+                    this.emissiveMap = this._setTexture( emissiveMap )
+                }
+
+                const bumpMap = data.bumpMap
+                if ( isDefined( bumpMap ) ) {
+                    this.bumpMap = this._setTexture( bumpMap )
+                }
+
+                const bumpScale = data.bumpScale
+                if ( isDefined( bumpScale ) ) {
+                    this.bumpScale = bumpScale
+                }
+
+                const normalMap = data.normalMap
+                if ( isDefined( normalMap ) ) {
+                    this.normalMap = this._setTexture( normalMap )
+                }
+
+                const normalScale = data.normalScale
+                if ( isDefined( normalScale ) ) {
+                    this.normalScale = this._setVector2( normalScale )
+                }
+
+                const displacementMap = data.displacementMap
+                if ( isDefined( displacementMap ) ) {
+                    this.displacementMap = this._setTexture( displacementMap )
+                }
+
+                const displacementScale = data.displacementScale
+                if ( isDefined( displacementScale ) ) {
+                    this.displacementScale = displacementScale
+                }
+
+                const displacementBias = data.displacementBias
+                if ( isDefined( displacementBias ) ) {
+                    this.displacementBias = displacementBias
+                }
+
+                const specularMap = data.specularMap
+                if ( isDefined( specularMap ) ) {
+                    this.specularMap = this._setTexture( specularMap )
+                }
+
+                const alphaMap = data.alphaMap
+                if ( isDefined( alphaMap ) ) {
+                    this.alphaMap = this._setTexture( alphaMap )
+                }
+
+                const envMap = data.envMap
+                if ( isDefined( envMap ) ) {
+                    this.envMap = this._setTexture( envMap )
+                }
+
+                const combine = data.combine
+                if ( isDefined( combine ) ) {
+                    this.combine = combine
+                }
+
+                const reflectivity = data.reflectivity
+                if ( isDefined( reflectivity ) ) {
+                    this.reflectivity = reflectivity
+                }
+
+                const refractionRatio = data.refractionRatio
+                if ( isDefined( refractionRatio ) ) {
+                    material.refractionRatio = refractionRatio
+                }
+
+                const wireframe = data.wireframe
+                if ( isDefined( wireframe ) ) {
+                    material.wireframe = wireframe
+                }
+
+                const wireframeLinewidth = data.wireframeLinewidth
+                if ( isDefined( wireframeLinewidth ) ) {
+                    material.wireframeLinewidth = wireframeLinewidth
+                }
+
+                const wireframeLinecap = data.wireframeLinecap
+                if ( isDefined( wireframeLinecap ) ) {
+                    material.wireframeLinecap = wireframeLinecap
+                }
+
+                const wireframeLinejoin = data.wireframeLinejoin
+                if ( isDefined( wireframeLinejoin ) ) {
+                    material.wireframeLinejoin = wireframeLinejoin
+                }
+
+                const skinning = data.skinning
+                if ( isDefined( skinning ) ) {
+                    material.skinning = skinning
+                }
+
+                const morphTargets = data.morphTargets
+                if ( isDefined( morphTargets ) ) {
+                    material.morphTargets = morphTargets
+                }
+
+                const morphNormals = data.morphNormals
+                if ( isDefined( morphNormals ) ) {
+                    material.morphNormals = morphNormals
+                }
+
                 break
+            }
 
             case 'MeshLambertMaterial': {
-                material                     = new MeshLambertMaterial()
-                material._id                 = jsonMaterial._id
-                material.uuid                = jsonMaterial.uuid
-                material.name                = jsonMaterial.name
-                material.type                = jsonMaterial.type
-                material.fog                 = jsonMaterial.fog
-                material.lights              = jsonMaterial.lights
-                material.blending            = jsonMaterial.blending
-                material.side                = jsonMaterial.side
-                material.flatShading         = jsonMaterial.flatShading
-                material.vertexColors        = jsonMaterial.vertexColors
-                material.opacity             = jsonMaterial.opacity
-                material.transparent         = jsonMaterial.transparent
-                material.blendSrc            = jsonMaterial.blendSrc
-                material.blendDst            = jsonMaterial.blendDst
-                material.blendEquation       = jsonMaterial.blendEquation
-                material.blendSrcAlpha       = jsonMaterial.blendSrcAlpha
-                material.blendDstAlpha       = jsonMaterial.blendDstAlpha
-                material.blendEquationAlpha  = jsonMaterial.blendEquationAlpha
-                material.depthFunc           = jsonMaterial.depthFunc
-                material.depthTest           = jsonMaterial.depthTest
-                material.depthWrite          = jsonMaterial.depthWrite
-                material.clippingPlanes      = jsonMaterial.clippingPlanes
-                material.clipIntersection    = jsonMaterial.clipIntersection
-                material.clipShadows         = jsonMaterial.clipShadows
-                material.colorWrite          = jsonMaterial.colorWrite
-                material.precision           = jsonMaterial.precision
-                material.polygonOffset       = jsonMaterial.polygonOffset
-                material.polygonOffsetFactor = jsonMaterial.polygonOffsetFactor
-                material.polygonOffsetUnits  = jsonMaterial.polygonOffsetUnits
-                material.dithering           = jsonMaterial.dithering
-                material.alphaTest           = jsonMaterial.alphaTest
-                material.premultipliedAlpha  = jsonMaterial.premultipliedAlpha
-                material.overdraw            = jsonMaterial.overdraw
-                material.visible             = jsonMaterial.visible
-                material.userData            = {} //jsonMaterial.userData
-                material.needsUpdate         = false//jsonMaterial.needsUpdate
-                // Specific to MeshLambertMaterial
-                material.color               = new Color( jsonMaterial.color.r, jsonMaterial.color.g, jsonMaterial.color.b )
-                material.map                 = jsonMaterial.map // Unknown yet
-                material.lightMap            = jsonMaterial.lightMap // Unknown yet
-                material.lightMapIntensity   = jsonMaterial.lightMapIntensity
-                material.aoMap               = jsonMaterial.aoMap // Unknown yet
-                material.aoMapIntensity      = jsonMaterial.aoMapIntensity
-                material.emissive            = jsonMaterial.emissive
-                material.emissiveIntensity   = jsonMaterial.emissiveIntensity
-                material.emissiveMap         = jsonMaterial.emissiveMap // Unknown yet
-                material.specularMap         = jsonMaterial.specularMap // Unknown yet
-                material.alphaMap            = jsonMaterial.alphaMap // Unknown yet
-                material.envMap              = jsonMaterial.envMap // Unknown yet
-                material.combine             = jsonMaterial.combine
-                material.reflectivity        = jsonMaterial.reflectivity
-                material.refractionRatio     = jsonMaterial.refractionRatio
-                material.wireframe           = jsonMaterial.wireframe
-                material.wireframeLinewidth  = jsonMaterial.wireframeLinewidth
-                material.wireframeLinecap    = jsonMaterial.wireframeLinecap
-                material.wireframeLinejoin   = jsonMaterial.wireframeLinejoin
-                material.skinning            = jsonMaterial.skinning
-                material.morphTargets        = jsonMaterial.morphTargets
-                material.morphNormals        = jsonMaterial.morphNormals
-            }
+                material = new MeshLambertMaterial()
+                this._fillBaseMaterialData( material, data )
+
+                const color = data.color
+                if ( isDefined( color ) ) {
+                    material.color = this._setColor( color )
+                }
+
+                const map = data.map
+                if ( isDefined( map ) ) {
+                    material.map = this._setTexture( map )
+                }
+
+                const lightMap = data.lightMap
+                if ( isDefined( lightMap ) ) {
+                    material.lightMap = this._setTexture( lightMap )
+                }
+
+                const lightMapIntensity = data.lightMapIntensity
+                if ( isDefined( lightMapIntensity ) ) {
+                    material.lightMapIntensity = lightMapIntensity
+                }
+
+                const aoMap = data.aoMap
+                if ( isDefined( aoMap ) ) {
+                    material.aoMap = this._setTexture( aoMap )
+                }
+
+                const aoMapIntensity = data.aoMapIntensity
+                if ( isDefined( aoMapIntensity ) ) {
+                    material.aoMapIntensity = aoMapIntensity
+                }
+
+                const emissive = data.emissive
+                if ( isDefined( emissive ) ) {
+                    material.emissive = this._setColor( emissive )
+                }
+
+                const emissiveIntensity = data.emissiveIntensity
+                if ( isDefined( emissiveIntensity ) ) {
+                    material.emissiveIntensity = emissiveIntensity
+                }
+
+                const emissiveMap = data.emissiveMap
+                if ( isDefined( emissiveMap ) ) {
+                    material.emissiveMap = this._setTexture( emissiveMap )
+                }
+
+                const specularMap = data.specularMap
+                if ( isDefined( specularMap ) ) {
+                    material.specularMap = this._setTexture( specularMap )
+                }
+
+                const alphaMap = data.alphaMap
+                if ( isDefined( alphaMap ) ) {
+                    material.alphaMap = this._setTexture( alphaMap )
+                }
+
+                const envMap = data.envMap
+                if ( isDefined( envMap ) ) {
+                    material.envMap = this._setTexture( envMap )
+                }
+
+                const combine = data.combine
+                if ( isDefined( combine ) ) {
+                    material.combine = combine
+                }
+
+                const reflectivity = data.reflectivity
+                if ( isDefined( reflectivity ) ) {
+                    material.reflectivity = reflectivity
+                }
+
+                const refractionRatio = data.refractionRatio
+                if ( isDefined( refractionRatio ) ) {
+                    material.refractionRatio = refractionRatio
+                }
+
+                const wireframe = data.wireframe
+                if ( isDefined( wireframe ) ) {
+                    material.wireframe = wireframe
+                }
+
+                const wireframeLinewidth = data.wireframeLinewidth
+                if ( isDefined( wireframeLinewidth ) ) {
+                    material.wireframeLinewidth = wireframeLinewidth
+                }
+
+                const wireframeLinecap = data.wireframeLinecap
+                if ( isDefined( wireframeLinecap ) ) {
+                    material.wireframeLinecap = wireframeLinecap
+                }
+
+                const wireframeLinejoin = data.wireframeLinejoin
+                if ( isDefined( wireframeLinejoin ) ) {
+                    material.wireframeLinejoin = wireframeLinejoin
+                }
+
+                const skinning = data.skinning
+                if ( isDefined( skinning ) ) {
+                    material.skinning = skinning
+                }
+
+                const morphTargets = data.morphTargets
+                if ( isDefined( morphTargets ) ) {
+                    material.morphTargets = morphTargets
+                }
+
+                const morphNormals = data.morphNormals
+                if ( isDefined( morphNormals ) ) {
+                    material.morphNormals = morphNormals
+                }
+
                 break
+            }
 
             case 'LineBasicMaterial': {
-                material       = new LineBasicMaterial()
-                material._id   = jsonMaterial._id
-                material.uuid  = jsonMaterial.uuid
-                material.name  = jsonMaterial.name
-                material.type  = jsonMaterial.type
-                material.color = new Color( jsonMaterial.color.r, jsonMaterial.color.g, jsonMaterial.color.b )
-            }
+                material = new LineBasicMaterial()
+                this._fillBaseMaterialData( material, data )
+
+                const color = data.color
+                if ( isDefined( color ) ) {
+                    material.color = this._setColor( color )
+                }
+
                 break
+            }
 
             default:
-                throw new Error(`TMaterialsManager: Unknown material of type: ${materialType}`)
+                throw new Error( `TMaterialsManager: Unmanaged material of type: ${type}` )
                 break
 
         }
 
         return material
+
+    },
+
+    _fillBaseMaterialData ( material, data ) {
+
+        const _id = data._id
+        if ( isDefined( _id ) && isString( _id ) ) {
+            material._id = _id
+        }
+
+        const uuid = data.uuid
+        if ( isDefined( uuid ) && isString( uuid ) ) {
+            material.uuid = uuid
+        }
+
+        const name = data.name
+        if ( isDefined( name ) && isString( name ) ) {
+            material.name = name
+        }
+
+        const fog = data.fog
+        if ( isDefined( fog ) ) {
+            material.fog = fog
+        }
+
+        const lights = data.lights
+        if ( isDefined( lights ) ) {
+            material.lights = lights
+        }
+
+        const blending = data.blending
+        if ( isDefined( blending ) ) {
+            material.blending = blending
+        }
+
+        const side = data.side
+        if ( isDefined( side ) ) {
+            material.side = side
+        }
+
+        const flatShading = data.flatShading
+        if ( isDefined( flatShading ) ) {
+            material.flatShading = flatShading
+        }
+
+        const vertexColors = data.vertexColors
+        if ( isDefined( vertexColors ) ) {
+            material.vertexColors = vertexColors
+        }
+
+        const opacity = data.opacity
+        if ( isDefined( opacity ) ) {
+            material.opacity = opacity
+        }
+
+        const transparent = data.transparent
+        if ( isDefined( transparent ) ) {
+            material.transparent = transparent
+        }
+
+        const blendSrc = data.blendSrc
+        if ( isDefined( blendSrc ) ) {
+            material.blendSrc = blendSrc
+        }
+
+        const blendDst = data.blendDst
+        if ( isDefined( blendDst ) ) {
+            material.blendDst = blendDst
+        }
+
+        const blendEquation = data.blendEquation
+        if ( isDefined( blendEquation ) ) {
+            material.blendEquation = blendEquation
+        }
+
+        const blendSrcAlpha = data.blendSrcAlpha
+        if ( isDefined( blendSrcAlpha ) ) {
+            material.blendSrcAlpha = blendSrcAlpha
+        }
+
+        const blendDstAlpha = data.blendDstAlpha
+        if ( isDefined( blendDstAlpha ) ) {
+            material.blendDstAlpha = blendDstAlpha
+        }
+
+        const blendEquationAlpha = data.blendEquationAlpha
+        if ( isDefined( blendEquationAlpha ) ) {
+            material.blendEquationAlpha = blendEquationAlpha
+        }
+
+        const depthFunc = data.depthFunc
+        if ( isDefined( depthFunc ) ) {
+            material.depthFunc = depthFunc
+        }
+
+        const depthTest = data.depthTest
+        if ( isDefined( depthTest ) ) {
+            material.depthTest = depthTest
+        }
+
+        const depthWrite = data.depthWrite
+        if ( isDefined( depthWrite ) ) {
+            material.depthWrite = depthWrite
+        }
+
+        const clippingPlanes = data.clippingPlanes
+        if ( isDefined( clippingPlanes ) ) {
+            material.clippingPlanes = clippingPlanes
+        }
+
+        const clipIntersection = data.clipIntersection
+        if ( isDefined( clipIntersection ) ) {
+            material.clipIntersection = clipIntersection
+        }
+
+        const clipShadows = data.clipShadows
+        if ( isDefined( clipShadows ) ) {
+            material.clipShadows = clipShadows
+        }
+
+        const colorWrite = data.colorWrite
+        if ( isDefined( colorWrite ) ) {
+            material.colorWrite = colorWrite
+        }
+
+        const precision = data.precision
+        if ( isDefined( precision ) ) {
+            material.precision = precision
+        }
+
+        const polygonOffset = data.polygonOffset
+        if ( isDefined( polygonOffset ) ) {
+            material.polygonOffset = polygonOffset
+        }
+
+        const polygonOffsetFactor = data.polygonOffsetFactor
+        if ( isDefined( polygonOffsetFactor ) ) {
+            material.polygonOffsetFactor = polygonOffsetFactor
+        }
+
+        const polygonOffsetUnits = data.polygonOffsetUnits
+        if ( isDefined( polygonOffsetUnits ) ) {
+            material.polygonOffsetUnits = polygonOffsetUnits
+        }
+
+        const dithering = data.dithering
+        if ( isDefined( dithering ) ) {
+            material.dithering = dithering
+        }
+
+        const alphaTest = data.alphaTest
+        if ( isDefined( alphaTest ) ) {
+            material.alphaTest = alphaTest
+        }
+
+        const premultipliedAlpha = data.premultipliedAlpha
+        if ( isDefined( premultipliedAlpha ) ) {
+            material.premultipliedAlpha = premultipliedAlpha
+        }
+
+        const overdraw = data.overdraw
+        if ( isDefined( overdraw ) ) {
+            material.overdraw = overdraw
+        }
+
+        const visible = data.visible
+        if ( isDefined( visible ) ) {
+            material.visible = visible
+        }
+
+        const userData = data.userData
+        if ( isDefined( userData ) ) {
+            material.userData = userData
+        }
+
+        const needsUpdate = data.needsUpdate
+        if ( isDefined( needsUpdate ) ) {
+            material.needsUpdate = needsUpdate
+        }
+
+    },
+
+    _setVector2 ( vec2 ) {
+
+        const x = vec2.x
+        const y = vec2.y
+        if ( isNullOrUndefined( x ) || isNullOrUndefined( y ) ) {
+            throw new Error( 'TMaterialsManager: Unable to convert null or undefined vector 2 !' )
+        }
+
+        return new Vector2( x, y )
+
+    },
+
+    _setColor ( color ) {
+
+        const r = color.r
+        const g = color.g
+        const b = color.b
+        if ( isNullOrUndefined( r ) || isNullOrUndefined( g ) || isNullOrUndefined( b ) ) {
+            throw new Error( 'TMaterialsManager: Unable to convert null or undefined color !' )
+        }
+
+        return new Color( r, g, b )
+
+    },
+
+    _setTexture ( imageName ) {
+
+        if ( isNotString( imageName ) ) {
+            throw new Error( 'TMaterialsManager: Expect map to be a string !' )
+        }
+
+        return this._textureProvider.load( `${this.texturesPath}/${imageName}` )
 
     }
 
