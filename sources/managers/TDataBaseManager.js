@@ -60,32 +60,9 @@ class TDataBaseManager {
         this._errorManager    = errorManager
 
         // Privates
-        this._orchestrator = TOrchestrator
         this._cache        = new TCache()
         this._waitingQueue = []
         this._idsInRequest = []
-        this._statusOk     = status => {
-
-            let statusOk = false
-
-            if ( status === HttpStatusCode.NoContent ) {
-
-                TLogger.warn( 'Unable to retrieve data...' )
-                statusOk = true
-
-            } else if ( status !== HttpStatusCode.Ok ) {
-
-                TLogger.error( 'An error occurs when retrieve data from database !!!' )
-
-            } else {
-
-                statusOk = true
-
-            }
-
-            return statusOk
-
-        }
 
     }
 
@@ -186,6 +163,29 @@ class TDataBaseManager {
             onError,
             responseType
         } )
+
+    }
+
+    static statusOk ( status ) {
+
+        let statusOk = false
+
+        if ( status === HttpStatusCode.NoContent ) {
+
+            TLogger.warn( 'Unable to retrieve data...' )
+            statusOk = true
+
+        } else if ( status !== HttpStatusCode.Ok ) {
+
+            TLogger.error( 'An error occurs when retrieve data from database !!!' )
+
+        } else {
+
+            statusOk = true
+
+        }
+
+        return statusOk
 
     }
 
@@ -400,7 +400,7 @@ class TDataBaseManager {
         const responseType = target.responseType
 
         // TODO: switch on status
-        if ( !TDataBaseManager._statusOk( status ) ) { return }
+        if ( !TDataBaseManager.statusOk( status ) ) { return }
 
         if ( !response ) {
             TLogger.warn( 'TDataBaseManager.onLoad: No data receive !' )
@@ -945,5 +945,7 @@ class TDataBaseManager {
 
 }
 
+// Static stuff
+TDataBaseManager._orchestrator = TOrchestrator
 
 export { TDataBaseManager }
