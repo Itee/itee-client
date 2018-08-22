@@ -399,26 +399,6 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
         for ( let id in objects ) {
             objectsArray.push( objects[ id ] )
         }
-        //        // Filter object with geometries and materials
-        //        const meshes = objects.filter( object => { return (
-        //            object.isLine ||
-        //            object.isLineLoop ||
-        //            object.isLineSegments ||
-        //            object.isMesh ||
-        //            object.isPoints ||
-        //            object.isSkinnedMesh ||
-        //            object.isSprite
-        //        ) } )
-        //
-        //        if(meshes.length === 0) {
-        //            onSuccess( objects )
-        //            return
-        //        }
-
-        // Todo: protect against only materials objects and/or no ids to provide !
-
-        //        let geometriesMap = await this._retrieveGeometriesOf( objectsArray )
-        //        let materialsMap = await this._retrieveMaterialsOf( objectsArray )
 
         const [ geometriesMap, materialsMap ] = await Promise.all( [
             this._retrieveGeometriesOf( objectsArray ),
@@ -435,60 +415,6 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
         // else some ids won't never be considered as processed !
         onSuccess( objects )
 
-        //        function retrieveGeometriesOf ( meshes ) {
-        //
-        //                        const geometriesIds = meshes.map( object => object.geometry ).filter( ( value, index, self ) => {
-        //                            return self.indexOf( value ) === index
-        //                        } )
-        //                        this._geometriesProvider.read(
-        //                            geometriesIds,
-        //                            geometries => {
-        //                                geometriesMap = geometries
-        //                                checkEndOfRequests()
-        //                            },
-        //                            onProgress,
-        //                            onError
-        //                        )
-        //
-        //        }
-        //
-        //        function retrieveMaterialsOf ( meshes ) {
-        //
-        //            const materialsArray       = meshes.map( object => object.material )
-        //            const concatMaterialsArray = [].concat.apply( [], materialsArray )
-        //            const materialsIds         = concatMaterialsArray.filter( ( value, index, self ) => {
-        //                return self.indexOf( value ) === index
-        //            } )
-        //            this._materialsProvider.read(
-        //                materialsIds,
-        //                materials => {
-        //                    materialsMap = materials
-        //                    checkEndOfRequests()
-        //                },
-        //                self.onProgress,
-        //                self.onError
-        //            )
-        //
-        //        }
-        //
-        //        function checkEndOfRequests () {
-        //
-        //            if ( geometriesMap === undefined || materialsMap === undefined ) {
-        //                return
-        //            }
-        //
-        //            for ( let key in objects ) {
-        //                const mesh = objects[ key ]
-        //                self.applyGeometry( mesh, geometriesMap )
-        //                self.applyMaterials( mesh, materialsMap )
-        //            }
-        //
-        //            // Don't forget to return all input object to callback,
-        //            // else some ids won't never be considered as processed !
-        //            onSuccess( objects )
-        //
-        //        }
-
     },
 
     _retrieveGeometriesOf ( meshes ) {
@@ -504,6 +430,7 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
 
             if ( geometriesIds.length === 0 ) {
                 resolve( {} )
+                return
             }
 
             self._geometriesProvider.read(
@@ -533,6 +460,7 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
 
             if ( materialsIds.length === 0 ) {
                 resolve( {} )
+                return
             }
 
             self._materialsProvider.read(
