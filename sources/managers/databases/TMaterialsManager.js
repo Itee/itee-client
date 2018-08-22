@@ -27,6 +27,7 @@ import {
     isDefined,
     isString,
     isNotString,
+    isNotEmptyString,
     isObject
 } from 'itee-validators'
 
@@ -117,7 +118,8 @@ class TMaterialsManager extends TDataBaseManager {
 
         }
 
-        onSuccess( results )
+        this.fillTextures( results, onSuccess, onProgress, onError )
+        //        onSuccess( results )
 
     }
 
@@ -143,117 +145,127 @@ class TMaterialsManager extends TDataBaseManager {
 
                 const color = data.color
                 if ( isDefined( color ) ) {
-                    this.color = this._setColor( color )
+                    material.color = this._setColor( color )
                 }
 
                 const specular = data.specular
                 if ( isDefined( specular ) ) {
-                    this.specular = this._setColor( specular )
+                    material.specular = this._setColor( specular )
                 }
 
                 const shininess = data.shininess
                 if ( isDefined( shininess ) ) {
-                    this.shininess = shininess
+                    material.shininess = shininess
                 }
 
                 const map = data.map
                 if ( isDefined( map ) ) {
-                    this.map = this._setTexture( map )
+                    material.map = map
+                    //                    material.map = this._setTexture( map )
                 }
 
                 const lightMap = data.lightMap
                 if ( isDefined( lightMap ) ) {
-                    this.lightMap = this._setTexture( lightMap )
+                    material.lightMap = lightMap
+                    //                    material.lightMap = this._setTexture( lightMap )
                 }
 
                 const lightMapIntensity = data.lightMapIntensity
                 if ( isDefined( lightMapIntensity ) ) {
-                    this.lightMapIntensity = lightMapIntensity
+                    material.lightMapIntensity = lightMapIntensity
                 }
 
                 const aoMap = data.aoMap
                 if ( isDefined( aoMap ) ) {
-                    this.aoMap = this._setTexture( aoMap )
+                    material.aoMap = aoMap
+                    //                    material.aoMap = this._setTexture( aoMap )
                 }
 
                 const aoMapIntensity = data.aoMapIntensity
                 if ( isDefined( aoMapIntensity ) ) {
-                    this.aoMapIntensity = aoMapIntensity
+                    material.aoMapIntensity = aoMapIntensity
                 }
 
                 const emissive = data.emissive
                 if ( isDefined( emissive ) ) {
-                    this.emissive = this._setColor( emissive )
+                    material.emissive = this._setColor( emissive )
                 }
 
                 const emissiveIntensity = data.emissiveIntensity
                 if ( isDefined( emissiveIntensity ) ) {
-                    this.emissiveIntensity = emissiveIntensity
+                    material.emissiveIntensity = emissiveIntensity
                 }
 
                 const emissiveMap = data.emissiveMap
                 if ( isDefined( emissiveMap ) ) {
-                    this.emissiveMap = this._setTexture( emissiveMap )
+                    material.emissiveMap = emissiveMap
+                    //                    material.emissiveMap = this._setTexture( emissiveMap )
                 }
 
                 const bumpMap = data.bumpMap
                 if ( isDefined( bumpMap ) ) {
-                    this.bumpMap = this._setTexture( bumpMap )
+                    material.bumpMap = bumpMap
+                    //                    material.bumpMap = this._setTexture( bumpMap )
                 }
 
                 const bumpScale = data.bumpScale
                 if ( isDefined( bumpScale ) ) {
-                    this.bumpScale = bumpScale
+                    material.bumpScale = bumpScale
                 }
 
                 const normalMap = data.normalMap
                 if ( isDefined( normalMap ) ) {
-                    this.normalMap = this._setTexture( normalMap )
+                    material.normalMap = normalMap
+                    //                    material.normalMap = this._setTexture( normalMap )
                 }
 
                 const normalScale = data.normalScale
                 if ( isDefined( normalScale ) ) {
-                    this.normalScale = this._setVector2( normalScale )
+                    material.normalScale = this._setVector2( normalScale )
                 }
 
                 const displacementMap = data.displacementMap
                 if ( isDefined( displacementMap ) ) {
-                    this.displacementMap = this._setTexture( displacementMap )
+                    material.displacementMap = displacementMap
+                    //                    tmaterialhis.displacementMap = this._setTexture( displacementMap )
                 }
 
                 const displacementScale = data.displacementScale
                 if ( isDefined( displacementScale ) ) {
-                    this.displacementScale = displacementScale
+                    material.displacementScale = displacementScale
                 }
 
                 const displacementBias = data.displacementBias
                 if ( isDefined( displacementBias ) ) {
-                    this.displacementBias = displacementBias
+                    material.displacementBias = displacementBias
                 }
 
                 const specularMap = data.specularMap
                 if ( isDefined( specularMap ) ) {
-                    this.specularMap = this._setTexture( specularMap )
+                    material.specularMap = specularMap
+                    //                    material.specularMap = this._setTexture( specularMap )
                 }
 
                 const alphaMap = data.alphaMap
                 if ( isDefined( alphaMap ) ) {
-                    this.alphaMap = this._setTexture( alphaMap )
+                    material.alphaMap = alphaMap
+                    //                    material.alphaMap = this._setTexture( alphaMap )
                 }
 
                 const envMap = data.envMap
                 if ( isDefined( envMap ) ) {
-                    this.envMap = this._setTexture( envMap )
+                    material.envMap = envMap
+                    //                    material.envMap = this._setTexture( envMap )
                 }
 
                 const combine = data.combine
                 if ( isDefined( combine ) ) {
-                    this.combine = combine
+                    material.combine = combine
                 }
 
                 const reflectivity = data.reflectivity
                 if ( isDefined( reflectivity ) ) {
-                    this.reflectivity = reflectivity
+                    material.reflectivity = reflectivity
                 }
 
                 const refractionRatio = data.refractionRatio
@@ -310,12 +322,14 @@ class TMaterialsManager extends TDataBaseManager {
 
                 const map = data.map
                 if ( isDefined( map ) ) {
-                    material.map = this._setTexture( map )
+                    material.map = map
+                    //                    material.map = this._setTexture( map )
                 }
 
                 const lightMap = data.lightMap
                 if ( isDefined( lightMap ) ) {
-                    material.lightMap = this._setTexture( lightMap )
+                    material.lightMap = lightMap
+                    //                    material.lightMap = this._setTexture( lightMap )
                 }
 
                 const lightMapIntensity = data.lightMapIntensity
@@ -325,7 +339,8 @@ class TMaterialsManager extends TDataBaseManager {
 
                 const aoMap = data.aoMap
                 if ( isDefined( aoMap ) ) {
-                    material.aoMap = this._setTexture( aoMap )
+                    material.aoMap = aoMap
+                    //                    material.aoMap = this._setTexture( aoMap )
                 }
 
                 const aoMapIntensity = data.aoMapIntensity
@@ -345,22 +360,26 @@ class TMaterialsManager extends TDataBaseManager {
 
                 const emissiveMap = data.emissiveMap
                 if ( isDefined( emissiveMap ) ) {
-                    material.emissiveMap = this._setTexture( emissiveMap )
+                    material.emissiveMap = emissiveMap
+                    //                    material.emissiveMap = this._setTexture( emissiveMap )
                 }
 
                 const specularMap = data.specularMap
                 if ( isDefined( specularMap ) ) {
-                    material.specularMap = this._setTexture( specularMap )
+                    material.specularMap = specularMap
+                    //                    material.specularMap = this._setTexture( specularMap )
                 }
 
                 const alphaMap = data.alphaMap
                 if ( isDefined( alphaMap ) ) {
-                    material.alphaMap = this._setTexture( alphaMap )
+                    material.alphaMap = alphaMap
+                    //                    material.alphaMap = this._setTexture( alphaMap )
                 }
 
                 const envMap = data.envMap
                 if ( isDefined( envMap ) ) {
-                    material.envMap = this._setTexture( envMap )
+                    material.envMap = envMap
+                    //                    material.envMap = this._setTexture( envMap )
                 }
 
                 const combine = data.combine
@@ -642,13 +661,79 @@ class TMaterialsManager extends TDataBaseManager {
 
     }
 
-    _setTexture ( imageName ) {
+    //    _setTexture ( imageName ) {
+    //
+    //        if ( isNotString( imageName ) ) {
+    //            throw new Error( 'TMaterialsManager: Expect map to be a string !' )
+    //        }
+    //
+    //        return this._texturesProvider.load( `${this._texturesPath}/${imageName}` )
+    //
+    //    }
 
-        if ( isNotString( imageName ) ) {
-            throw new Error( 'TMaterialsManager: Expect map to be a string !' )
+    fillTextures ( materials, onSuccess, onProgress, onError ) {
+
+        //        const materialsArray = []
+        //        for ( let id in materials ) {
+        //            materialsArray.push( materials[ id ] )
+        //        }
+
+        const texturesMap = this._retrieveTexturesOf( materials )
+
+        for ( let key in materials ) {
+
+            const material = materials[ key ]
+            const textures = texturesMap[ key ]
+
+            for ( let textureKey in textures ) {
+                material[ textureKey ] = textures[ textureKey ]
+            }
+
         }
 
-        return this._texturesProvider.load( `${this.texturesPath}/${imageName}` )
+        // Don't forget to return all input object to callback,
+        // else some ids won't never be considered as processed !
+        onSuccess( materials )
+
+    }
+
+    _retrieveTexturesOf ( materials ) {
+
+        const availableTextures = [ 'map', 'lightMap', 'aoMap', 'emissiveMap', 'bumpMap', 'normalMap', 'displacementMap', 'specularMap', 'alphaMap', 'envMap' ]
+        const texturesMap       = {}
+        const localCache        = {}
+
+        for ( let id in materials ) {
+
+            const material = materials[ id ]
+
+            let textures = {}
+            for ( let i = 0, numberOfAvailableTextures = availableTextures.length ; i < numberOfAvailableTextures ; i++ ) {
+                let mapType = availableTextures[ i ]
+
+                const map = material[ mapType ]
+                if ( isDefined( map ) && isString( map ) && isNotEmptyString( map ) ) {
+                    const texturePath = `${this._texturesPath}/${map}`
+
+                    // Check cache before
+                    const cachedResult = localCache[ texturePath ]
+                    if ( isDefined( cachedResult ) ) {
+                        textures[ mapType ] = cachedResult
+                    } else {
+                        const texture             = this._texturesProvider.load( texturePath )
+                        localCache[ texturePath ] = texture
+                        textures[ mapType ]       = texture
+                    }
+
+                }
+
+            }
+
+            texturesMap[ id ] = textures
+
+        }
+
+        return texturesMap
 
     }
 
