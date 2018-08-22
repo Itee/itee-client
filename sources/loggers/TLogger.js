@@ -101,8 +101,13 @@ Object.assign( TLogger.prototype, {
      * @return {string}
      * @private
      */
-    _formatObjectError ( objError ) {
-        return '<b>' + objError.title.toUpperCase() + '</b><br>' + objError.message
+    _formatObjectError ( error ) {
+
+        return `<b>${error.name}</b><br>
+                <p>${error.message} </p><br>
+                <span>in file ${error.fileName} at line n°${error.lineNumber} and column n°${error.columnNumber}</span><br>
+                <p>Stack: ${error.stack} </p>`
+
     },
 
     /**
@@ -123,7 +128,7 @@ Object.assign( TLogger.prototype, {
 
         } else if ( isObject( datas ) ) {
 
-            this.logsArray[ tmpLevel ] = _formatObjectError( datas )
+            this.logsArray[ tmpLevel ] = this._formatObjectError( datas )
 
         } else if ( isArrayOfString( datas ) ) {
 
