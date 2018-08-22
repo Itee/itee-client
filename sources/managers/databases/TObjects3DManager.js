@@ -111,85 +111,176 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
 
             case 'Object3D':
                 object = new Object3D()
-                break;
+                this._fillBaseObjectsData( object, data )
+                break
 
             case 'Scene':
                 object = new Scene()
-                break;
+                this._fillBaseObjectsData( object, data )
+                if ( !isNullOrUndefined( data.background ) ) {
+
+                    if ( Number.isInteger( data.background ) ) {
+
+                        object.background = new Color( data.background )
+
+                    }
+
+                }
+                if ( !isNullOrUndefined( data.fog ) ) {
+
+                    if ( data.fog.type === 'Fog' ) {
+
+                        object.fog = new Fog( data.fog.color, data.fog.near, data.fog.far );
+
+                    } else if ( data.fog.type === 'FogExp2' ) {
+
+                        object.fog = new FogExp2( data.fog.color, data.fog.density );
+
+                    }
+
+                }
+                object.overrideMaterial = data.overrideMaterial
+                object.autoUpdate       = data.autoUpdate
+                break
 
             case 'PerspectiveCamera':
                 object = new PerspectiveCamera()
-                break;
+                this._fillBaseObjectsData( object, data )
+                object.fov    = data.fov
+                object.aspect = data.aspect
+                object.near   = data.near
+                object.far    = data.far
+                if ( !isNullOrUndefined( data.focus ) ) {
+                    object.focus = data.focus
+                }
+                if ( !isNullOrUndefined( data.zoom ) ) {
+                    object.zoom = data.zoom
+                }
+                if ( !isNullOrUndefined( data.filmGauge ) ) {
+                    object.filmGauge = data.filmGauge
+                }
+                if ( !isNullOrUndefined( data.filmOffset ) ) {
+                    object.filmOffset = data.filmOffset
+                }
+                if ( !isNullOrUndefined( data.view ) ) {
+                    object.view = Object.assign( {}, data.view )
+                }
+                break
 
             case 'OrthographicCamera':
-                object = new OrthographicCamera( data.left, data.right, data.top, data.bottom, data.near, data.far );
-                break;
+                object = new OrthographicCamera( data.left, data.right, data.top, data.bottom, data.near, data.far )
+                this._fillBaseObjectsData( object, data )
+                break
 
             case 'AmbientLight':
-                object = new AmbientLight( data.color, data.intensity );
-                break;
+                object = new AmbientLight( data.color, data.intensity )
+                this._fillBaseObjectsData( object, data )
+                break
 
             case 'DirectionalLight':
-                object = new DirectionalLight( data.color, data.intensity );
-                break;
+                object = new DirectionalLight( data.color, data.intensity )
+                this._fillBaseObjectsData( object, data )
+                break
 
             case 'PointLight':
-                object = new PointLight( data.color, data.intensity, data.distance, data.decay );
-                break;
+                object = new PointLight( data.color, data.intensity, data.distance, data.decay )
+                this._fillBaseObjectsData( object, data )
+                break
 
             case 'RectAreaLight':
-                object = new RectAreaLight( data.color, data.intensity, data.width, data.height );
-                break;
+                object = new RectAreaLight( data.color, data.intensity, data.width, data.height )
+                this._fillBaseObjectsData( object, data )
+                break
 
             case 'SpotLight':
-                object = new SpotLight( data.color, data.intensity, data.distance, data.angle, data.penumbra, data.decay );
-                break;
+                object = new SpotLight( data.color, data.intensity, data.distance, data.angle, data.penumbra, data.decay )
+                this._fillBaseObjectsData( object, data )
+                break
 
             case 'HemisphereLight':
                 object = new HemisphereLight( data.color, data.groundColor, data.intensity )
-                break;
+                this._fillBaseObjectsData( object, data )
+                break
 
             case 'SkinnedMesh':
                 object = new SkinnedMesh()
+                this._fillBaseObjectsData( object, data )
+                object.geometry          = data.geometry
+                object.material          = data.material
+                object.drawMode          = data.drawMode
+                object.bindMode          = data.bindMode
+                object.bindMatrix        = data.bindMatrix
+                object.bindMatrixInverse = data.bindMatrixInverse
                 break
 
             case 'Mesh':
                 object = new Mesh()
-                break;
+                this._fillBaseObjectsData( object, data )
+                object.geometry = data.geometry
+                object.material = data.material
+                object.drawMode = data.drawMode
+                break
 
             case 'LOD':
                 object = new LOD()
-                break;
+                this._fillBaseObjectsData( object, data )
+                object.levels = data.levels
+                break
 
             case 'Line':
                 object = new Line()
-                break;
+                this._fillBaseObjectsData( object, data )
+                object.geometry = data.geometry
+                object.material = data.material
+                object.drawMode = data.drawMode
+                break
 
             case 'LineLoop':
                 object = new LineLoop()
-                break;
+                this._fillBaseObjectsData( object, data )
+                object.geometry = data.geometry
+                object.material = data.material
+                object.drawMode = data.drawMode
+                break
 
             case 'LineSegments':
                 object = new LineSegments()
-                break;
+                this._fillBaseObjectsData( object, data )
+                object.geometry = data.geometry
+                object.material = data.material
+                object.drawMode = data.drawMode
+                break
 
             case 'Points':
                 object = new Points()
-                break;
+                this._fillBaseObjectsData( object, data )
+                object.geometry = data.geometry
+                object.material = data.material
+                object.drawMode = data.drawMode
+                break
 
             case 'Sprite':
                 object = new Sprite()
-                break;
+                this._fillBaseObjectsData( object, data )
+                object.material = data.material
+                break
 
             case 'Group':
                 object = new Group()
+                this._fillBaseObjectsData( object, data )
                 break
 
             default:
-                throw new Error(`TObjectsManager: Unknown object of type: ${objectType}`)
+                throw new Error( `TObjectsManager: Unknown object of type: ${objectType}` )
                 break
 
         }
+        
+        return object
+
+    },
+
+    _fillBaseObjectsData( object, data ) {
 
         // Common object properties
         object._id = data._id
@@ -298,91 +389,6 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
         if ( !isNullOrUndefined( data.userData ) ) {
             object.userData = data.userData
         }
-
-        if (
-            objectType === 'Line' ||
-            objectType === 'LineLoop' ||
-            objectType === 'LineSegments' ||
-            objectType === 'Mesh' ||
-            objectType === 'Points'
-        ) {
-
-            object.geometry = data.geometry
-            object.material = data.material
-            object.drawMode = data.drawMode
-
-        } else if ( objectType === 'SkinnedMesh' ) {
-
-            object.geometry          = data.geometry
-            object.material          = data.material
-            object.drawMode          = data.drawMode
-            object.bindMode          = data.bindMode
-            object.bindMatrix        = data.bindMatrix
-            object.bindMatrixInverse = data.bindMatrixInverse
-
-        } else if ( objectType === 'PerspectiveCamera' ) {
-
-            object.fov    = data.fov
-            object.aspect = data.aspect
-            object.near   = data.near
-            object.far    = data.far
-
-            if ( !isNullOrUndefined( data.focus ) ) {
-                object.focus = data.focus
-            }
-            if ( !isNullOrUndefined( data.zoom ) ) {
-                object.zoom = data.zoom
-            }
-            if ( !isNullOrUndefined( data.filmGauge ) ) {
-                object.filmGauge = data.filmGauge
-            }
-            if ( !isNullOrUndefined( data.filmOffset ) ) {
-                object.filmOffset = data.filmOffset
-            }
-            if ( !isNullOrUndefined( data.view ) ) {
-                object.view = Object.assign( {}, data.view )
-            }
-
-        } else if ( objectType === 'LOD' ) {
-
-            object.levels = data.levels
-
-        } else if ( objectType === 'Sprite' ) {
-
-            object.material = data.material
-
-        } else if ( objectType === 'Scene' ) {
-
-            if ( !isNullOrUndefined( data.background ) ) {
-
-                if ( Number.isInteger( data.background ) ) {
-
-                    object.background = new Color( data.background )
-
-                }
-
-            }
-
-            if ( !isNullOrUndefined( data.fog ) ) {
-
-                if ( data.fog.type === 'Fog' ) {
-
-                    object.fog = new Fog( data.fog.color, data.fog.near, data.fog.far );
-
-                } else if ( data.fog.type === 'FogExp2' ) {
-
-                    object.fog = new FogExp2( data.fog.color, data.fog.density );
-
-                }
-
-            }
-
-            object.overrideMaterial = data.overrideMaterial
-            object.autoUpdate       = data.autoUpdate
-
-        }
-
-        return object
 
     },
 
