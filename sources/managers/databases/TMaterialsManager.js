@@ -17,10 +17,17 @@ import {
     LineBasicMaterial,
     Color,
     Vector2,
+    TextureLoader
 } from 'three-full'
 
-import { isObject } from 'itee-validators'
-import { DefaultLogger as TLogger } from '../../loggers/TLogger'
+import {
+    isObject,
+    isNullOrUndefined,
+    isDefined,
+    isString,
+    isNotString
+} from 'itee-validators'
+
 import { TDataBaseManager } from '../TDataBaseManager'
 
 /**
@@ -30,7 +37,11 @@ import { TDataBaseManager } from '../TDataBaseManager'
 function TMaterialsManager () {
 
     TDataBaseManager.call( this )
-    this.basePath = '/materials'
+    this.basePath     = '/materials'
+    this.texturesPath = '/resources/images/blocs/256'
+
+    this._textureProvider = new TextureLoader()
+    //    this._textureProvider = new TTexturesManager()
 
 }
 
