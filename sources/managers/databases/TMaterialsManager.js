@@ -21,25 +21,79 @@ import {
 } from 'three-full'
 
 import {
-    isObject,
+    isNull,
+    isUndefined,
     isNullOrUndefined,
     isDefined,
     isString,
-    isNotString
+    isNotString,
+    isObject
 } from 'itee-validators'
 
 import { TDataBaseManager } from '../TDataBaseManager'
+import { ResponseType } from '../../cores/TConstants'
 
 class TMaterialsManager extends TDataBaseManager {
 
-    constructor ( basePath, texturesPath ) {
+    /**
+     *
+     * @param basePath
+     * @param responseType
+     * @param bunchSize
+     * @param progressManager
+     * @param errorManager
+     * @param texturesPath
+     * @param texturesProvider
+     */
+    constructor ( basePath = '/materials', responseType = ResponseType.Json, bunchSize = 500, progressManager = null, errorManager = null, texturesPath = '/textures', texturesProvider = new TextureLoader() ) {
 
-        super()
-        this.basePath     = basePath || '/materials'
-        this.texturesPath = texturesPath || ''
+        super( basePath, responseType, bunchSize, progressManager, errorManager )
+        this._texturesPath     = texturesPath
+        this._texturesProvider = texturesProvider
 
-        this._textureProvider = new TextureLoader()
-        //    this._textureProvider = new TTexturesManager()
+    }
+
+    get texturesPath () {
+        return this._texturesPath
+    }
+
+    set texturesPath ( texturesPath ) {
+
+        if ( isNull( texturesPath ) ) {
+            throw new Error( 'TMaterialsManager: texturesPath cannot be null !' )
+        }
+
+        if ( isUndefined( texturesPath ) ) {
+            throw new Error( 'TMaterialsManager: texturesPath cannot be undefined !' )
+        }
+
+        if ( isNotString( texturesPath ) ) {
+            throw new Error( 'TMaterialsManager: texturesPath is expected to be a string !' )
+        }
+
+        this._texturesPath = texturesPath
+
+    }
+
+    get texturesProvider () {
+        return this._texturesProvider
+    }
+
+    set texturesProvider ( texturesProvider ) {
+
+        if ( isNull( texturesProvider ) ) {
+            throw new Error( 'TMaterialsManager: geometriesProvider cannot be null !' )
+        }
+
+        if ( isUndefined( texturesProvider ) ) {
+            throw new Error( 'TMaterialsManager: geometriesProvider cannot be undefined !' )
+        }
+
+        if ( !(texturesProvider instanceof TextureLoader) ) {
+            throw new Error( 'TMaterialsManager: texturesProvider need to be an instance of TextureLoader !' )
+        }
+
+        this._texturesProvider = texturesProvider
 
     }
 
@@ -594,7 +648,7 @@ class TMaterialsManager extends TDataBaseManager {
             throw new Error( 'TMaterialsManager: Expect map to be a string !' )
         }
 
-        return this._textureProvider.load( `${this.texturesPath}/${imageName}` )
+        return this._texturesProvider.load( `${this.texturesPath}/${imageName}` )
 
     }
 
