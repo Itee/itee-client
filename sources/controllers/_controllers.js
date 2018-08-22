@@ -8,4 +8,5 @@
  *
  */
 
+export { TCameraControls } from './TCameraControls'
 export { TCameraPathController } from './TCameraPathController'
