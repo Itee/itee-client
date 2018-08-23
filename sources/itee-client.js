@@ -14,6 +14,7 @@ import './third_party/polyfills.js'
 import 'babel-polyfill'
 
 // Import FontAwesome
+import '@fortawesome/fontawesome'
 import '@fortawesome/fontawesome-free-solid'
 import '@fortawesome/fontawesome-free-brands'
 
