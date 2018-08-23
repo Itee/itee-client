@@ -18,14 +18,6 @@
 /* eslint-env browser */
 
 import {
-    HttpVerb,
-    ResponseType,
-    HttpStatusCode
-} from '../cores/TConstants'
-import { TOrchestrator } from '../cores/TOrchestrator'
-import { DefaultLogger as TLogger } from '../loggers/TLogger'
-import { TCache } from '../cores/TCache'
-import {
     isNull,
     isUndefined,
     isNullOrUndefined,
@@ -39,6 +31,16 @@ import {
     isArrayOfSingleElement,
     isObject
 } from 'itee-validators'
+import {
+    HttpVerb,
+    ResponseType,
+    HttpStatusCode
+} from '../cores/TConstants'
+import { TOrchestrator } from '../cores/TOrchestrator'
+import { DefaultLogger as TLogger } from '../loggers/TLogger'
+import { TProgressManager } from './TProgressManager'
+import { TCache } from '../cores/TCache'
+
 
 class TDataBaseManager {
 
@@ -50,7 +52,7 @@ class TDataBaseManager {
      * @param progressManager
      * @param errorManager
      */
-    constructor ( basePath = '/', responseType = ResponseType.Json, bunchSize = 500, progressManager = null, errorManager = null ) {
+    constructor ( basePath = '/', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = null ) {
 
         // Publics
         this._basePath        = basePath
