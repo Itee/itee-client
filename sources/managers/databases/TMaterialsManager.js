@@ -12,6 +12,7 @@
 /* eslint-env browser */
 
 import {
+    LinearFilter,
     MeshPhongMaterial,
     MeshLambertMaterial,
     LineBasicMaterial,
@@ -52,6 +53,8 @@ class TMaterialsManager extends TDataBaseManager {
         super( basePath, responseType, bunchSize, progressManager, errorManager )
         this._texturesPath     = texturesPath
         this._texturesProvider = texturesProvider
+
+        this._generateMipmap = generateMipmap
 
     }
 
@@ -725,7 +728,13 @@ class TMaterialsManager extends TDataBaseManager {
                     if ( isDefined( cachedResult ) ) {
                         textures[ mapType ] = cachedResult
                     } else {
-                        const texture             = this._texturesProvider.load( texturePath )
+                        const texture = this._texturesProvider.load( texturePath )
+                        texture.name  = map
+                        if ( !this._generateMipmap ) {
+                            texture.generateMipmaps = false
+                            texture.magFilter       = LinearFilter
+                            texture.minFilter       = LinearFilter
+                        }
                         localCache[ texturePath ] = texture
                         textures[ mapType ]       = texture
                     }
