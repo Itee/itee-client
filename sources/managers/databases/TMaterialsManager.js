@@ -33,6 +33,7 @@ import {
 } from 'itee-validators'
 
 import { TDataBaseManager } from '../TDataBaseManager'
+import { TTexturesManager } from './TTexturesManager'
 import { TProgressManager } from '../TProgressManager'
 import { ResponseType } from '../../cores/TConstants'
 
@@ -94,9 +95,9 @@ class TMaterialsManager extends TDataBaseManager {
             throw new Error( 'TMaterialsManager: geometriesProvider cannot be undefined !' )
         }
 
-        if ( !(texturesProvider instanceof TextureLoader) ) {
-            throw new Error( 'TMaterialsManager: texturesProvider need to be an instance of TextureLoader !' )
-        }
+        //        if ( !(texturesProvider instanceof TTexturesManager) ) {
+        //            throw new Error( 'TMaterialsManager: texturesProvider need to be an instance of TTexturesManager !' )
+        //        }
 
         this._texturesProvider = texturesProvider
 
