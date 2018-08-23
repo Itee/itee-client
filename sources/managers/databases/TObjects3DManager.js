@@ -156,7 +156,7 @@ class TObjectsManager extends TDataBaseManager {
 
             onProgress( new ProgressEvent( 'TGeometriesManager', {
                 lengthComputable: true,
-                loaded:           dataIndex,
+                loaded:           dataIndex + 1,
                 total:            numberOfDatas
             } ) )
 

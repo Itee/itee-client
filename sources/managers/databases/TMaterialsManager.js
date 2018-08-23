@@ -121,7 +121,7 @@ class TMaterialsManager extends TDataBaseManager {
 
             onProgress( new ProgressEvent( 'TMaterialsManager', {
                 lengthComputable: true,
-                loaded:           dataIndex,
+                loaded:           dataIndex + 1,
                 total:            numberOfDatas
             } ) )
 
