@@ -128,7 +128,6 @@ class TMaterialsManager extends TDataBaseManager {
         }
 
         this.fillTextures( results, onSuccess, onProgress, onError )
-        //        onSuccess( results )
 
     }
 
@@ -170,13 +169,11 @@ class TMaterialsManager extends TDataBaseManager {
                 const map = data.map
                 if ( isDefined( map ) ) {
                     material.map = map
-                    //                    material.map = this._setTexture( map )
                 }
 
                 const lightMap = data.lightMap
                 if ( isDefined( lightMap ) ) {
                     material.lightMap = lightMap
-                    //                    material.lightMap = this._setTexture( lightMap )
                 }
 
                 const lightMapIntensity = data.lightMapIntensity
@@ -187,7 +184,6 @@ class TMaterialsManager extends TDataBaseManager {
                 const aoMap = data.aoMap
                 if ( isDefined( aoMap ) ) {
                     material.aoMap = aoMap
-                    //                    material.aoMap = this._setTexture( aoMap )
                 }
 
                 const aoMapIntensity = data.aoMapIntensity
@@ -208,13 +204,11 @@ class TMaterialsManager extends TDataBaseManager {
                 const emissiveMap = data.emissiveMap
                 if ( isDefined( emissiveMap ) ) {
                     material.emissiveMap = emissiveMap
-                    //                    material.emissiveMap = this._setTexture( emissiveMap )
                 }
 
                 const bumpMap = data.bumpMap
                 if ( isDefined( bumpMap ) ) {
                     material.bumpMap = bumpMap
-                    //                    material.bumpMap = this._setTexture( bumpMap )
                 }
 
                 const bumpScale = data.bumpScale
@@ -225,7 +219,6 @@ class TMaterialsManager extends TDataBaseManager {
                 const normalMap = data.normalMap
                 if ( isDefined( normalMap ) ) {
                     material.normalMap = normalMap
-                    //                    material.normalMap = this._setTexture( normalMap )
                 }
 
                 const normalScale = data.normalScale
@@ -236,7 +229,6 @@ class TMaterialsManager extends TDataBaseManager {
                 const displacementMap = data.displacementMap
                 if ( isDefined( displacementMap ) ) {
                     material.displacementMap = displacementMap
-                    //                    tmaterialhis.displacementMap = this._setTexture( displacementMap )
                 }
 
                 const displacementScale = data.displacementScale
@@ -252,19 +244,16 @@ class TMaterialsManager extends TDataBaseManager {
                 const specularMap = data.specularMap
                 if ( isDefined( specularMap ) ) {
                     material.specularMap = specularMap
-                    //                    material.specularMap = this._setTexture( specularMap )
                 }
 
                 const alphaMap = data.alphaMap
                 if ( isDefined( alphaMap ) ) {
                     material.alphaMap = alphaMap
-                    //                    material.alphaMap = this._setTexture( alphaMap )
                 }
 
                 const envMap = data.envMap
                 if ( isDefined( envMap ) ) {
                     material.envMap = envMap
-                    //                    material.envMap = this._setTexture( envMap )
                 }
 
                 const combine = data.combine
@@ -332,13 +321,11 @@ class TMaterialsManager extends TDataBaseManager {
                 const map = data.map
                 if ( isDefined( map ) ) {
                     material.map = map
-                    //                    material.map = this._setTexture( map )
                 }
 
                 const lightMap = data.lightMap
                 if ( isDefined( lightMap ) ) {
                     material.lightMap = lightMap
-                    //                    material.lightMap = this._setTexture( lightMap )
                 }
 
                 const lightMapIntensity = data.lightMapIntensity
@@ -349,7 +336,6 @@ class TMaterialsManager extends TDataBaseManager {
                 const aoMap = data.aoMap
                 if ( isDefined( aoMap ) ) {
                     material.aoMap = aoMap
-                    //                    material.aoMap = this._setTexture( aoMap )
                 }
 
                 const aoMapIntensity = data.aoMapIntensity
@@ -370,25 +356,21 @@ class TMaterialsManager extends TDataBaseManager {
                 const emissiveMap = data.emissiveMap
                 if ( isDefined( emissiveMap ) ) {
                     material.emissiveMap = emissiveMap
-                    //                    material.emissiveMap = this._setTexture( emissiveMap )
                 }
 
                 const specularMap = data.specularMap
                 if ( isDefined( specularMap ) ) {
                     material.specularMap = specularMap
-                    //                    material.specularMap = this._setTexture( specularMap )
                 }
 
                 const alphaMap = data.alphaMap
                 if ( isDefined( alphaMap ) ) {
                     material.alphaMap = alphaMap
-                    //                    material.alphaMap = this._setTexture( alphaMap )
                 }
 
                 const envMap = data.envMap
                 if ( isDefined( envMap ) ) {
                     material.envMap = envMap
-                    //                    material.envMap = this._setTexture( envMap )
                 }
 
                 const combine = data.combine
@@ -670,22 +652,7 @@ class TMaterialsManager extends TDataBaseManager {
 
     }
 
-    //    _setTexture ( imageName ) {
-    //
-    //        if ( isNotString( imageName ) ) {
-    //            throw new Error( 'TMaterialsManager: Expect map to be a string !' )
-    //        }
-    //
-    //        return this._texturesProvider.load( `${this._texturesPath}/${imageName}` )
-    //
-    //    }
-
     fillTextures ( materials, onSuccess, onProgress, onError ) {
-
-        //        const materialsArray = []
-        //        for ( let id in materials ) {
-        //            materialsArray.push( materials[ id ] )
-        //        }
 
         const texturesMap = this._retrieveTexturesOf( materials )
 
