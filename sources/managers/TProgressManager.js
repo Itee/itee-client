@@ -10,11 +10,28 @@
 
 /* eslint-env browser */
 
-/**
- *
- * @constructor
- */
-function TProgressManager () {
+class TProgressManager {
+
+    constructor () {}
+
+    update ( onProgressCallback, progressEvent ) {
+
+        if ( progressEvent.lengthComputable ) {
+
+            const type        = progressEvent.type
+            const loaded      = progressEvent.loaded
+            const total       = progressEvent.total
+            const advancement = loaded / total
+            const message     = `${type}: ${advancement} [${loaded}/${total}]`
+            console.log( message )
+
+        }
+
+        if ( onProgressCallback ) {
+            onProgressCallback( progressEvent )
+        }
+
+    }
 
 }
 
