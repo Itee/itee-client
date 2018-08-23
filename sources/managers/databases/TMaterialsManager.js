@@ -32,6 +32,7 @@ import {
 } from 'itee-validators'
 
 import { TDataBaseManager } from '../TDataBaseManager'
+import { TProgressManager } from '../TProgressManager'
 import { ResponseType } from '../../cores/TConstants'
 
 class TMaterialsManager extends TDataBaseManager {
@@ -46,7 +47,7 @@ class TMaterialsManager extends TDataBaseManager {
      * @param texturesPath
      * @param texturesProvider
      */
-    constructor ( basePath = '/materials', responseType = ResponseType.Json, bunchSize = 500, progressManager = null, errorManager = null, texturesPath = '/textures', texturesProvider = new TextureLoader() ) {
+    constructor ( basePath = '/materials', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = null, texturesPath = '/textures', texturesProvider = new TextureLoader(), generateMipmap = false ) {
 
         super( basePath, responseType, bunchSize, progressManager, errorManager )
         this._texturesPath     = texturesPath
@@ -114,7 +115,11 @@ class TMaterialsManager extends TDataBaseManager {
                 onError( err )
             }
 
-            onProgress( dataIndex / numberOfDatas )
+            onProgress( new ProgressEvent( 'TMaterialsManager', {
+                lengthComputable: true,
+                loaded:           dataIndex,
+                total:            numberOfDatas
+            } ) )
 
         }
 
