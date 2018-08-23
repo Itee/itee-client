@@ -249,15 +249,14 @@ class TDataBaseManager {
     create ( data, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         let dataArray = []
-        const onError = onErrorCallback || function ( error ) { TLogger.error( error ) }
 
         if ( isNullOrUndefined( data ) ) {
-            onError( 'TDataBaseManager.create: Data cannot be null or undefined !' )
+            onErrorCallback( 'TDataBaseManager.create: Data cannot be null or undefined !' )
             return
         }
 
         if ( isEmptyArray( data ) ) {
-            onError( 'TDataBaseManager.create: Array of data cannot be empty !' )
+            onErrorCallback( 'TDataBaseManager.create: Array of data cannot be empty !' )
             return
         }
 
@@ -271,7 +270,7 @@ class TDataBaseManager {
 
         }
 
-        this._create( dataArray, onLoadCallback, onProgressCallback, onError )
+        this._create( dataArray, onLoadCallback, onProgressCallback, onErrorCallback )
 
     }
 
@@ -287,21 +286,19 @@ class TDataBaseManager {
      */
     read ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        const onError = onErrorCallback || function ( error ) { TLogger.error( error ) }
-
         if ( isNullOrUndefined( ids ) ) {
-            onError( 'TDataBaseManager.read: Ids cannot be null or undefined !' )
+            onErrorCallback( 'TDataBaseManager.read: Ids cannot be null or undefined !' )
             return
         }
 
         if ( isEmptyArray( ids ) ) {
-            onError( 'TDataBaseManager.read: Array of data cannot be empty !' )
+            onErrorCallback( 'TDataBaseManager.read: Array of data cannot be empty !' )
             return
         }
 
         if ( isArray( ids ) ) {
 
-            this._readSome( ids, onLoadCallback, onProgressCallback, onError )
+            this._readSome( ids, onLoadCallback, onProgressCallback, onErrorCallback )
 
             ////            if ( isArrayOfSingleElement(ids) ) {
             ////
@@ -327,16 +324,16 @@ class TDataBaseManager {
 
         } else if ( isString( ids ) ) {
 
-            this._readSome( [ ids ], onLoadCallback, onProgressCallback, onError )
+            this._readSome( [ ids ], onLoadCallback, onProgressCallback, onErrorCallback )
             //            this._readOne( ids, onLoadCallback, onProgressCallback, onError )
 
         } else if ( isObject( ids ) ) {
 
-            this._searchWhere( ids, onLoadCallback, onProgressCallback, onError )
+            this._searchWhere( ids, onLoadCallback, onProgressCallback, onErrorCallback )
 
         } else {
 
-            onError( 'TDataBaseManager.read: Expected string id or array of string id !' )
+            onErrorCallback( 'TDataBaseManager.read: Expected string id or array of string id !' )
 
         }
 
@@ -355,29 +352,27 @@ class TDataBaseManager {
      */
     update ( ids, data, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        const onError = onErrorCallback || function ( error ) { TLogger.error( error ) }
-
         if ( isNullOrUndefined( ids ) ) {
-            onError( 'TDataBaseManager.update: Ids cannot be null or undefined !' )
+            onErrorCallback( 'TDataBaseManager.update: Ids cannot be null or undefined !' )
             return
         }
 
         if ( isNullOrUndefined( data ) ) {
-            onError( 'TDataBaseManager.update: Data cannot be null or undefined !' )
+            onErrorCallback( 'TDataBaseManager.update: Data cannot be null or undefined !' )
             return
         }
 
         if ( isArray( ids ) ) {
 
-            this._updateSome( ids, data, onLoadCallback, onProgressCallback, onError )
+            this._updateSome( ids, data, onLoadCallback, onProgressCallback, onErrorCallback )
 
         } else if ( isString( ids ) ) {
 
-            this._updateOne( ids, data, onLoadCallback, onProgressCallback, onError )
+            this._updateOne( ids, data, onLoadCallback, onProgressCallback, onErrorCallback )
 
         } else {
 
-            onError( 'TDataBaseManager.update: Expected string id or array of string id !' )
+            onErrorCallback( 'TDataBaseManager.update: Expected string id or array of string id !' )
 
         }
 
@@ -395,28 +390,26 @@ class TDataBaseManager {
      */
     delete ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        const onError = onErrorCallback || function ( error ) { TLogger.error( error ) }
-
         if ( isNullOrUndefined( ids ) ) {
-            onError( 'TDataBaseManager.delete: Ids data cannot be null or undefined !' )
+            onErrorCallback( 'TDataBaseManager.delete: Ids data cannot be null or undefined !' )
             return
         }
 
         if ( isArray( ids ) ) {
 
-            this._deleteSome( ids, onLoadCallback, onProgressCallback, onError )
+            this._deleteSome( ids, onLoadCallback, onProgressCallback, onErrorCallback )
 
         } else if ( isString( ids ) ) {
 
-            this._deleteOne( ids, onLoadCallback, onProgressCallback, onError )
+            this._deleteOne( ids, onLoadCallback, onProgressCallback, onErrorCallback )
 
         } else if ( isObject( ids ) ) {
 
-            this._deleteSome( ids, onLoadCallback, onProgressCallback, onError )
+            this._deleteSome( ids, onLoadCallback, onProgressCallback, onErrorCallback )
 
         } else {
 
-            onError( 'TDataBaseManager.delete: Expected string id or array of string id !' )
+            onErrorCallback( 'TDataBaseManager.delete: Expected string id or array of string id !' )
 
         }
 
