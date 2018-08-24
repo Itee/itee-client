@@ -551,9 +551,9 @@ class TDataBaseManager {
      */
     _onError ( onErrorCallback, errorEvent ) {
 
-        if ( this.errorManager ) {
+        if ( this._errorManager ) {
 
-            this.errorManager.update( onErrorCallback, errorEvent )
+            this._errorManager.update( onErrorCallback, errorEvent )
 
         } else if ( onErrorCallback ) {
 
