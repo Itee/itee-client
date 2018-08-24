@@ -28,7 +28,9 @@ import {
     isDefined,
     isString,
     isNotString,
+    isEmptyString,
     isNotEmptyString,
+    isBlankString,
     isObject
 } from 'itee-validators'
 
@@ -63,21 +65,29 @@ class TMaterialsManager extends TDataBaseManager {
         return this._texturesPath
     }
 
-    set texturesPath ( texturesPath ) {
+    set texturesPath ( input ) {
 
-        if ( isNull( texturesPath ) ) {
-            throw new Error( 'TMaterialsManager: texturesPath cannot be null !' )
+        if ( isNull( input ) ) {
+            throw new TypeError( 'Textures path cannot be null ! Expect a non empty string.' )
         }
 
-        if ( isUndefined( texturesPath ) ) {
-            throw new Error( 'TMaterialsManager: texturesPath cannot be undefined !' )
+        if ( isUndefined( input ) ) {
+            throw new TypeError( 'Textures path cannot be undefined ! Expect a non empty string.' )
         }
 
-        if ( isNotString( texturesPath ) ) {
-            throw new Error( 'TMaterialsManager: texturesPath is expected to be a string !' )
+        if ( isNotString( input ) ) {
+            throw new TypeError( `Textures path cannot be an instance of ${input.constructor.name} ! Expect a non empty string.` )
         }
 
-        this._texturesPath = texturesPath
+        if ( isEmptyString( input ) ) {
+            throw new TypeError( 'Textures path cannot be empty ! Expect a non empty string.' )
+        }
+
+        if ( isBlankString( input ) ) {
+            throw new TypeError( 'Textures path cannot contain only whitespace ! Expect a non empty string.' )
+        }
+
+        this._texturesPath = input
 
     }
 
@@ -85,21 +95,21 @@ class TMaterialsManager extends TDataBaseManager {
         return this._texturesProvider
     }
 
-    set texturesProvider ( texturesProvider ) {
+    set texturesProvider ( input ) {
 
-        if ( isNull( texturesProvider ) ) {
-            throw new Error( 'TMaterialsManager: geometriesProvider cannot be null !' )
+        if ( isNull( input ) ) {
+            throw new TypeError( 'Textures provider cannot be null ! Expect an instance of TextureLoader.' )
         }
 
-        if ( isUndefined( texturesProvider ) ) {
-            throw new Error( 'TMaterialsManager: geometriesProvider cannot be undefined !' )
+        if ( isUndefined( input ) ) {
+            throw new TypeError( 'Textures provider cannot be undefined ! Expect an instance of TextureLoader.' )
         }
 
-        //        if ( !(texturesProvider instanceof TTexturesManager) ) {
-        //            throw new Error( 'TMaterialsManager: texturesProvider need to be an instance of TTexturesManager !' )
-        //        }
+        if ( !(input instanceof TTexturesManager) ) {
+            throw new TypeError( `Textures provider cannot be an instance of ${input.constructor.name} ! Expect an instance of TTexturesManager.` )
+        }
 
-        this._texturesProvider = texturesProvider
+        this._texturesProvider = input
 
     }
 
