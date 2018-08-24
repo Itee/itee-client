@@ -42,7 +42,6 @@ import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { TProgressManager } from './TProgressManager'
 import { TCache } from '../cores/TCache'
 
-
 class TDataBaseManager {
 
     /**
