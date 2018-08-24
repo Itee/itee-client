@@ -98,21 +98,21 @@ class TObjectsManager extends TDataBaseManager {
         return this._geometriesProvider
     }
 
-    set geometriesProvider ( geometriesProvider ) {
+    set geometriesProvider ( input ) {
 
-        if ( isNull( geometriesProvider ) ) {
-            throw new Error( 'TObjectsManager: geometriesProvider cannot be null !' )
+        if ( isNull( input ) ) {
+            throw new TypeError( 'Geometries provider cannot be null ! Expect an instance of TGeometriesManager.' )
         }
 
-        if ( isUndefined( geometriesProvider ) ) {
-            throw new Error( 'TObjectsManager: geometriesProvider cannot be undefined !' )
+        if ( isUndefined( input ) ) {
+            throw new TypeError( 'Geometries provider cannot be undefined ! Expect an instance of TGeometriesManager.' )
         }
 
-        if ( !(geometriesProvider instanceof TGeometriesManager) ) {
-            throw new Error( 'TObjectsManager: geometriesProvider need to be an instance of TGeometriesManager !' )
+        if ( !(input instanceof TGeometriesManager) ) {
+            throw new TypeError( `Geometries provider cannot be an instance of ${input.constructor.name} ! Expect an instance of TGeometriesManager.` )
         }
 
-        this._geometriesProvider = geometriesProvider
+        this._geometriesProvider = input
 
     }
 
@@ -120,21 +120,21 @@ class TObjectsManager extends TDataBaseManager {
         return this._materialsProvider
     }
 
-    set materialsProvider ( materialsProvider ) {
+    set materialsProvider ( input ) {
 
-        if ( isNull( materialsProvider ) ) {
-            throw new Error( 'TObjectsManager: materialsProvider cannot be null !' )
+        if ( isNull( input ) ) {
+            throw new TypeError( 'Materials provider cannot be null ! Expect an instance of TMaterialsManager.' )
         }
 
-        if ( isUndefined( materialsProvider ) ) {
-            throw new Error( 'TObjectsManager: materialsProvider cannot be undefined !' )
+        if ( isUndefined( input ) ) {
+            throw new TypeError( 'Materials provider cannot be undefined ! Expect an instance of TMaterialsManager.' )
         }
 
-        if ( !(materialsProvider instanceof TMaterialsManager) ) {
-            throw new Error( 'TObjectsManager: materialsProvider need to be an instance of TMaterialsManager !' )
+        if ( !(input instanceof TMaterialsManager) ) {
+            throw new TypeError( `Materials provider cannot be an instance of ${input.constructor.name} ! Expect an instance of TMaterialsManager.` )
         }
 
-        this._materialsProvider = materialsProvider
+        this._materialsProvider = input
 
     }
 
