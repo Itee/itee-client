@@ -26,11 +26,15 @@ import {
     isString,
     isNotString,
     isEmptyString,
+    isNotEmptyString,
     isBlankString,
+    isNotBlankString,
     isArray,
     isEmptyArray,
+    isNotEmptyArray,
     isArrayOfSingleElement,
-    isObject
+    isObject,
+    isNotObject
 } from 'itee-validators'
 import {
     HttpVerb,
@@ -41,6 +45,7 @@ import { TOrchestrator } from '../cores/TOrchestrator'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { TProgressManager } from './TProgressManager'
 import { TCache } from '../cores/TCache'
+import { isNotEmptyObject } from '../../builds/itee-client.es'
 
 class TDataBaseManager {
 
@@ -265,29 +270,19 @@ class TDataBaseManager {
      */
     create ( data, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        let dataArray = []
+        if ( isArray( data ) && isNotEmptyArray( data ) ) {
 
-        if ( isNullOrUndefined( data ) ) {
-            onErrorCallback( 'TDataBaseManager.create: Data cannot be null or undefined !' )
-            return
-        }
+            this._createMany( data, onLoadCallback, onProgressCallback, onErrorCallback )
 
-        if ( isEmptyArray( data ) ) {
-            onErrorCallback( 'TDataBaseManager.create: Array of data cannot be empty !' )
-            return
-        }
+        } else if ( isObject( data ) && isNotEmptyObject( data ) ) {
 
-        if ( isArray( data ) ) {
-
-            dataArray = data
+            this._createOne( data, onLoadCallback, onProgressCallback, onErrorCallback )
 
         } else {
 
-            dataArray.push( data )
+            onErrorCallback( 'TDataBaseManager.create: Invalid data type, expect object or array of objects.' )
 
         }
-
-        this._create( dataArray, onLoadCallback, onProgressCallback, onErrorCallback )
 
     }
 
@@ -296,61 +291,32 @@ class TDataBaseManager {
      * @memberOf TDataBaseManager.prototype
      * @description The read method allow to retrieve data from the server, using a single id or an array of them.
      *
-     * @param {string|array.<string>} ids - The ids of objects to retrieve.
+     * @param {string|array.<string>} condition - The ids of objects to retrieve.
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      */
-    read ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    read ( condition, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        if ( isNullOrUndefined( ids ) ) {
-            onErrorCallback( 'TDataBaseManager.read: Ids cannot be null or undefined !' )
-            return
-        }
+        if ( isNull( condition ) ) {
 
-        if ( isEmptyArray( ids ) ) {
-            onErrorCallback( 'TDataBaseManager.read: Array of data cannot be empty !' )
-            return
-        }
+            this._readAll( projection, onLoadCallback, onProgressCallback, onErrorCallback )
 
-        if ( isArray( ids ) ) {
+        } else if ( isString( condition ) && isNotEmptyString( condition ) && isNotBlankString( condition ) ) {
 
-            this._readSome( ids, onLoadCallback, onProgressCallback, onErrorCallback )
+            this._readOne( condition, projection, onLoadCallback, onProgressCallback, onErrorCallback )
 
-            ////            if ( isArrayOfSingleElement(ids) ) {
-            ////
-            ////                this._readOne( ids[ 0 ], onLoadCallback, onProgressCallback, onError )
-            ////
-            ////            } else {
-            //
-            //                let idBunch = []
-            //                let id      = undefined
-            //                for ( let idIndex = 0, numberOfIds = ids.length ; idIndex < numberOfIds ; idIndex++ ) {
-            //                    id = ids[ idIndex ]
-            //
-            //                    idBunch.push( id )
-            //
-            //                    if ( idBunch.length === this.bunchSize || idIndex === numberOfIds - 1 ) {
-            //                        this._readSome( idBunch, onLoadCallback, onProgressCallback, onError )
-            //                        idBunch = []
-            //                    }
-            //
-            //                }
-            //
-            ////            }
+        } else if ( isArray( condition ) && isNotEmptyArray( condition ) ) {
 
-        } else if ( isString( ids ) ) {
+            this._readMany( condition, projection, onLoadCallback, onProgressCallback, onErrorCallback )
 
-            this._readSome( [ ids ], onLoadCallback, onProgressCallback, onErrorCallback )
-            //            this._readOne( ids, onLoadCallback, onProgressCallback, onError )
+        } else if ( isObject( condition ) && isNotEmptyObject( condition ) ) {
 
-        } else if ( isObject( ids ) ) {
-
-            this._searchWhere( ids, onLoadCallback, onProgressCallback, onErrorCallback )
+            this._readWhere( condition, projection, onLoadCallback, onProgressCallback, onErrorCallback )
 
         } else {
 
-            onErrorCallback( 'TDataBaseManager.read: Expected string id or array of string id !' )
+            onErrorCallback( 'TDataBaseManager.create: Invalid data type, expect null, string, object or array of objects.' )
 
         }
 
@@ -361,35 +327,43 @@ class TDataBaseManager {
      * @memberOf TDataBaseManager.prototype
      * @description The update method allow to update data on the server, using a single id or an array of them, and a corresponding object about the data to update.
      *
-     * @param {string|array.<string>} ids - The ids of objects to update.
-     * @param {object} data - The update data ( need to match the related database schema ! ). In case of multiple ids they will be updated with the same given data.
+     * @param {string|array.<string>} condition - The ids of objects to update.
+     * @param {object} update - The update data ( need to match the related database schema ! ). In case of multiple ids they will be updated with the same given data.
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      */
-    update ( ids, data, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    update ( condition, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        if ( isNullOrUndefined( ids ) ) {
-            onErrorCallback( 'TDataBaseManager.update: Ids cannot be null or undefined !' )
+        if ( isNullOrUndefined( update ) ) {
+            onErrorCallback( 'TDataBaseManager.update: Update data cannot be null or undefined !' )
             return
         }
 
-        if ( isNullOrUndefined( data ) ) {
-            onErrorCallback( 'TDataBaseManager.update: Data cannot be null or undefined !' )
+        if ( isNotObject( update ) ) {
+            onErrorCallback( 'TDataBaseManager.update: Invalid update data type. Expect an object.' )
             return
         }
 
-        if ( isArray( ids ) ) {
+        if ( isNull( condition ) ) {
 
-            this._updateSome( ids, data, onLoadCallback, onProgressCallback, onErrorCallback )
+            this._updateAll( update, onLoadCallback, onProgressCallback, onErrorCallback )
 
-        } else if ( isString( ids ) ) {
+        } else if ( isString( condition ) && isNotEmptyString( condition ) && isNotBlankString( condition ) ) {
 
-            this._updateOne( ids, data, onLoadCallback, onProgressCallback, onErrorCallback )
+            this._updateOne( condition, update, onLoadCallback, onProgressCallback, onErrorCallback )
+
+        } else if ( isArray( condition ) && isNotEmptyArray( condition ) ) {
+
+            this._updateMany( condition, update, onLoadCallback, onProgressCallback, onErrorCallback )
+
+        } else if ( isObject( condition ) && isNotEmptyObject( condition ) ) {
+
+            this._updateWhere( condition, update, onLoadCallback, onProgressCallback, onErrorCallback )
 
         } else {
 
-            onErrorCallback( 'TDataBaseManager.update: Expected string id or array of string id !' )
+            onErrorCallback( 'TDataBaseManager.update: Invalid data type, expect null, string, object or array of objects.' )
 
         }
 
@@ -400,33 +374,32 @@ class TDataBaseManager {
      * @memberOf TDataBaseManager.prototype
      * @description The delete method allow to remove data from the server, using a single id or an array of them.
      *
-     * @param {string|array.<string>} ids - The ids of objects to delete.
+     * @param {string|array.<string>|object|null} condition - The ids of objects to delete.
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      */
-    delete ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    delete ( condition, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        if ( isNullOrUndefined( ids ) ) {
-            onErrorCallback( 'TDataBaseManager.delete: Ids data cannot be null or undefined !' )
-            return
-        }
+        if ( isNull( condition ) ) {
 
-        if ( isArray( ids ) ) {
+            this._deleteAll( onLoadCallback, onProgressCallback, onErrorCallback )
 
-            this._deleteSome( ids, onLoadCallback, onProgressCallback, onErrorCallback )
+        } else if ( isString( condition ) && isNotEmptyString( condition ) && isNotBlankString( condition ) ) {
 
-        } else if ( isString( ids ) ) {
+            this._deleteOne( condition, onLoadCallback, onProgressCallback, onErrorCallback )
 
-            this._deleteOne( ids, onLoadCallback, onProgressCallback, onErrorCallback )
+        } else if ( isArray( condition ) && isNotEmptyArray( condition ) ) {
 
-        } else if ( isObject( ids ) ) {
+            this._deleteMany( condition, onLoadCallback, onProgressCallback, onErrorCallback )
 
-            this._deleteSome( ids, onLoadCallback, onProgressCallback, onErrorCallback )
+        } else if ( isObject( condition ) && isNotEmptyObject( condition ) ) {
+
+            this._deleteWhere( condition, onLoadCallback, onProgressCallback, onErrorCallback )
 
         } else {
 
-            onErrorCallback( 'TDataBaseManager.delete: Expected string id or array of string id !' )
+            onErrorCallback( 'TDataBaseManager.delete: Invalid data type, expect null, string, object or array of objects.' )
 
         }
 
@@ -653,16 +626,30 @@ class TDataBaseManager {
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      */
-    _create ( data, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _createOne ( data, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
             HttpVerb.Create,
-            this.basePath,
+            this._basePath,
             data,
             this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
             this._onProgress.bind( this, onProgressCallback ),
             this._onError.bind( this, onErrorCallback ),
-            this.responseType
+            this._responseType
+        )
+
+    }
+
+    _createMany ( datas, onLoadCallback, onProgressCallback, onErrorCallback ) {
+
+        TDataBaseManager.requestServer(
+            HttpVerb.Create,
+            this._basePath,
+            datas,
+            this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
+            this._onProgress.bind( this, onProgressCallback ),
+            this._onError.bind( this, onErrorCallback ),
+            this._responseType
         )
 
     }
@@ -671,14 +658,66 @@ class TDataBaseManager {
      * @private
      * @function
      * @memberOf TDataBaseManager.prototype
-     * @description The private _readSome method will format a server request to get objects with id in the ids array.
+     * @description The private _updateOne method will format a server request to get a single object with the given id.
+     *
+     * @param {string} id - The object's id of the object to retrieve.
+     * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
+     * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
+     * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
+     */
+    _readOne ( id, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
+
+        const self        = this
+        const cachedValue = this._cache.get( id )
+
+        if ( cachedValue ) { // Already exist
+
+            let result   = {}
+            result[ id ] = cachedValue
+            onLoadCallback( result )
+
+        } else if ( cachedValue === null ) { // In request
+
+        } else { // else request and pre-cache it
+
+            TDataBaseManager.requestServer(
+                HttpVerb.Read,
+                `${this._basePath}/${id}`,
+                {
+                    projection
+                },
+                this._onLoad.bind( this, cacheOnLoadResult, onProgressCallback, onErrorCallback ),
+                this._onProgress.bind( this, onProgressCallback ),
+                this._onError.bind( this, onErrorCallback ),
+                this._responseType
+            )
+
+        }
+
+        function cacheOnLoadResult ( result ) {
+
+            self._cache.add( id, result[ 0 ] )
+
+            let _result   = {}
+            _result[ id ] = result[ 0 ]
+            onLoadCallback( _result )
+
+        }
+
+    }
+
+    /**
+     * @private
+     * @function
+     * @memberOf TDataBaseManager.prototype
+     * @description The private _readMany method will format a server request to get objects with id in the ids array.
      *
      * @param {array.<string>} ids - The ids of objects to retrieve.
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      */
-    _readSome ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _readMany ( ids, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         const self = this
 
@@ -742,16 +781,19 @@ class TDataBaseManager {
 
                 idBunch.push( id )
 
-                if ( idBunch.length === this.bunchSize || idIndex === numberOfIds - 1 ) {
+                if ( idBunch.length === this._bunchSize || idIndex === numberOfIds - 1 ) {
 
                     TDataBaseManager.requestServer(
                         HttpVerb.Read,
-                        this.basePath,
-                        idBunch,
+                        this._basePath,
+                        {
+                            ids:        idBunch,
+                            projection: projection
+                        },
                         this._onLoad.bind( this, cacheResults.bind( this ), onProgressCallback, onErrorCallback ),
                         this._onProgress.bind( this, onProgressCallback ),
                         this._onError.bind( this, onErrorCallback ),
-                        this.responseType
+                        this._responseType
                     )
 
                     idBunch = []
@@ -828,98 +870,35 @@ class TDataBaseManager {
 
     }
 
-    /**
-     * @private
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The private _updateOne method will format a server request to get a single object with the given id.
-     *
-     * @param {string} id - The object's id of the object to retrieve.
-     * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
-     * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
-     * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
-     */
-    _readOne ( id, onLoadCallback, onProgressCallback, onErrorCallback ) {
-
-        const self        = this
-        const cachedValue = this._cache.get( id )
-
-        if ( cachedValue ) { // Already exist
-
-            let result   = {}
-            result[ id ] = cachedValue
-            onLoadCallback( result )
-
-        } else if ( cachedValue === null ) { // In request
-
-        } else { // else request and pre-cache it
-
-            TDataBaseManager.requestServer(
-                HttpVerb.Read,
-                `${this.basePath}/${id}`,
-                null,
-                this._onLoad.bind( this, cacheOnLoadResult, onProgressCallback, onErrorCallback ),
-                this._onProgress.bind( this, onProgressCallback ),
-                this._onError.bind( this, onErrorCallback ),
-                this.responseType
-            )
-
-        }
-
-        function cacheOnLoadResult ( result ) {
-
-            self._cache.add( id, result[ 0 ] )
-
-            let _result   = {}
-            _result[ id ] = result[ 0 ]
-            onLoadCallback( _result )
-
-        }
-
-    }
-
-    _searchWhere ( query, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _readWhere ( query, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
             HttpVerb.Read,
-            this.basePath,
-            query,
+            this._basePath,
+            {
+                query,
+                projection
+            },
             this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
             this._onProgress.bind( this, onProgressCallback ),
             this._onError.bind( this, onErrorCallback ),
-            this.responseType
+            this._responseType
         )
 
     }
 
-    /**
-     * @private
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The private _updateSome method will format a server request to update objects with id in the ids array.
-     *
-     * @param {array.<string>} ids - The ids of objects to update.
-     * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
-     * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
-     * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
-     */
-    _updateSome ( ids, data, onLoadCallback, onProgressCallback, onErrorCallback ) {
-
-        // Todo: could be optimized in server side about data duplicate
-        const arrayData = []
-        for ( let i = 0, n = ids.length ; i < n ; i++ ) {
-            let id          = ids[ i ]
-            arrayData[ id ] = data
-        }
+    _readAll ( projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
-            HttpVerb.Update,
-            this.basePath,
-            arrayData,
+            HttpVerb.Read,
+            this._basePath,
+            {
+                projection
+            },
             this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
             this._onProgress.bind( this, onProgressCallback ),
             this._onError.bind( this, onErrorCallback ),
-            this.responseType
+            this._responseType
         )
 
     }
@@ -935,16 +914,18 @@ class TDataBaseManager {
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      */
-    _updateOne ( id, data, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _updateOne ( id, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
             HttpVerb.Update,
-            `${this.basePath}/${id}`,
-            data,
+            `${this._basePath}/${id}`,
+            {
+                update
+            },
             this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
             this._onProgress.bind( this, onProgressCallback ),
             this._onError.bind( this, onErrorCallback ),
-            this.responseType
+            this._responseType
         )
 
     }
@@ -953,23 +934,66 @@ class TDataBaseManager {
      * @private
      * @function
      * @memberOf TDataBaseManager.prototype
-     * @description The private _deleteSome method will format a server request to delete objects with id in the ids array.
+     * @description The private _updateMany method will format a server request to update objects with id in the ids array.
      *
-     * @param {array.<string>} ids - The ids of objects to delete.
+     * @param {array.<string>} ids - The ids of objects to update.
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      */
-    _deleteSome ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _updateMany ( ids, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
+
+        // Todo: could be optimized in server side about data duplicate/ think about and array of differents updates
+        //        const arrayData = []
+        //        for ( let i = 0, n = ids.length ; i < n ; i++ ) {
+        //            let id          = ids[ i ]
+        //            arrayData[ id ] = update
+        //        }
 
         TDataBaseManager.requestServer(
-            HttpVerb.Delete,
-            this.basePath,
-            ids,
+            HttpVerb.Update,
+            this._basePath,
+            {
+                ids,
+                update
+            },
             this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
             this._onProgress.bind( this, onProgressCallback ),
             this._onError.bind( this, onErrorCallback ),
-            this.responseType
+            this._responseType
+        )
+
+    }
+
+    _updateWhere ( query, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
+
+        TDataBaseManager.requestServer(
+            HttpVerb.Update,
+            this._basePath,
+            {
+                query,
+                update
+            },
+            this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
+            this._onProgress.bind( this, onProgressCallback ),
+            this._onError.bind( this, onErrorCallback ),
+            this._responseType
+        )
+
+    }
+
+    _updateAll ( update, onLoadCallback, onProgressCallback, onErrorCallback ) {
+
+        TDataBaseManager.requestServer(
+            HttpVerb.Update,
+            this._basePath,
+            {
+                update
+            },
+            this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
+            this._onProgress.bind( this, onProgressCallback ),
+            this._onError.bind( this, onErrorCallback ),
+            this._responseType
         )
 
     }
@@ -989,12 +1013,69 @@ class TDataBaseManager {
 
         TDataBaseManager.requestServer(
             HttpVerb.Delete,
-            `${this.basePath}/${id}`,
+            `${this._basePath}/${id}`,
             null,
             this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
             this._onProgress.bind( this, onProgressCallback ),
             this._onError.bind( this, onErrorCallback ),
-            this.responseType
+            this._responseType
+        )
+
+    }
+
+    /**
+     * @private
+     * @function
+     * @memberOf TDataBaseManager.prototype
+     * @description The private _deleteMany method will format a server request to delete objects with id in the ids array.
+     *
+     * @param {array.<string>} ids - The ids of objects to delete.
+     * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
+     * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
+     * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
+     */
+    _deleteMany ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
+
+        TDataBaseManager.requestServer(
+            HttpVerb.Delete,
+            this._basePath,
+            {
+                ids
+            },
+            this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
+            this._onProgress.bind( this, onProgressCallback ),
+            this._onError.bind( this, onErrorCallback ),
+            this._responseType
+        )
+
+    }
+
+    _deleteWhere ( query, onLoadCallback, onProgressCallback, onErrorCallback ) {
+
+        TDataBaseManager.requestServer(
+            HttpVerb.Delete,
+            this._basePath,
+            {
+                query
+            },
+            this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
+            this._onProgress.bind( this, onProgressCallback ),
+            this._onError.bind( this, onErrorCallback ),
+            this._responseType
+        )
+
+    }
+
+    _deleteAll ( onLoadCallback, onProgressCallback, onErrorCallback ) {
+
+        TDataBaseManager.requestServer(
+            HttpVerb.Delete,
+            this._basePath,
+            null,
+            this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
+            this._onProgress.bind( this, onProgressCallback ),
+            this._onError.bind( this, onErrorCallback ),
+            this._responseType
         )
 
     }
