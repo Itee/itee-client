@@ -19,25 +19,23 @@ import {
 
 class TOrchestrator {
 
-    constructor () {
+    constructor ( numberOfConcurrentRequestsAllowed = 6 ) {
 
         // Public
-        this._minSimultaneousRequest = 3
-        this._maxSimultaneousRequest = 6
+        this._numberOfConcurrentRequestsAllowed = numberOfConcurrentRequestsAllowed
 
         // Private
-        this._requestQueue = []
-        this._processQueue = []
+        this._requestQueue           = []
+        this._processQueue           = []
         this._numberOfRunningRequest = 0
-        this._inProcessing = false
 
     }
 
-    get minSimultaneousRequest () {
-        return this._minSimultaneousRequest
+    get numberOfConcurrentRequestsAllowed () {
+        return this._numberOfConcurrentRequestsAllowed
     }
 
-    set minSimultaneousRequest ( input ) {
+    set numberOfConcurrentRequestsAllowed ( input ) {
 
         if ( isNull( input ) ) {
             throw new TypeError( 'Minimum of simultaneous request cannot be null ! Expect a positive number.' )
@@ -55,41 +53,7 @@ class TOrchestrator {
             throw new TypeError( 'Minimum of simultaneous request cannot be lower or equal to zero ! Expect a positive number.' )
         }
 
-        if( input > this._maxSimultaneousRequest ) {
-            throw new TypeError( 'Minimum of simultaneous request cannot be higher than maximum of simultaneouse request ! Expect a positive number.' )
-        }
-
-        this._minSimultaneousRequest = input
-
-    }
-
-    get maxSimultaneousRequest () {
-        return this._maxSimultaneousRequest
-    }
-
-    set maxSimultaneousRequest ( input ) {
-
-        if ( isNull( input ) ) {
-            throw new TypeError( 'Maximum of simultaneous request cannot be null ! Expect a positive number.' )
-        }
-
-        if ( isUndefined( input ) ) {
-            throw new TypeError( 'Maximum of simultaneous request cannot be undefined ! Expect a positive number.' )
-        }
-
-        if ( isNotNumber( input ) ) {
-            throw new TypeError( `Maximum of simultaneous request cannot be an instance of ${input.constructor.name} ! Expect a positive number.` )
-        }
-
-        if ( isNumberPositive( input ) ) {
-            throw new TypeError( 'Maximum of simultaneous request cannot be lower or equal to zero ! Expect a positive number.' )
-        }
-
-        if( input < this._minSimultaneousRequest ) {
-            throw new TypeError( 'Maximum of simultaneous request cannot be lower than minimum of simultaneouse request ! Expect a positive number.' )
-        }
-
-        this._maxSimultaneousRequest = input
+        this._numberOfConcurrentRequestsAllowed = input
 
     }
 
@@ -99,47 +63,17 @@ class TOrchestrator {
      */
     processQueue () {
 
-        const self = this
+        while ( this._requestQueue.length > 0 ) {
 
-        let request
-        let requestSkull
-        this._inProcessing = true
+            if ( this._numberOfRunningRequest >= this._numberOfConcurrentRequestsAllowed ) { break }
 
-        while ( self._requestQueue.length > 0 ) {
+            const requestSkull = this._requestQueue.pop()
+            this._processQueue.push( requestSkull )
 
-            if ( self._numberOfRunningRequest >= self._maxSimultaneousRequest ) { break }
-
-            requestSkull = self._requestQueue.pop()
-
-            self._processQueue.push( requestSkull )
-
-            request = new XMLHttpRequest()
-
-            request.onload = (function closureEndRequest () {
-
-                const _reqSkull = requestSkull
-
-                return function _checkEndRequest ( loadEvent ) {
-
-                    const processedRequestIndex = self._processQueue.indexOf( _reqSkull )
-                    if ( processedRequestIndex > -1 ) {
-                        self._processQueue.splice( processedRequestIndex, 1 );
-                    }
-
-                    self._numberOfRunningRequest--
-                    _reqSkull.onLoad( loadEvent )
-
-                    if ( self._numberOfRunningRequest <= self._minSimultaneousRequest ) {
-                        self.processQueue()
-                    }
-
-                }
-
-            })()
-
+            const request      = new XMLHttpRequest()
+            request.onload     = this._onLoad( requestSkull )
             request.onprogress = requestSkull.onProgress
             request.onerror    = requestSkull.onError
-
             request.open( requestSkull.method, requestSkull.url, true )
             request.setRequestHeader( "Content-Type", "application/json" )
             request.responseType = requestSkull.responseType
@@ -147,11 +81,30 @@ class TOrchestrator {
             const dataToSend = (requestSkull.data && requestSkull.responseType === 'json') ? JSON.stringify( requestSkull.data ) : requestSkull.data
             request.send( dataToSend )
 
-            self._numberOfRunningRequest++
+            this._numberOfRunningRequest++
 
         }
 
-        self._inProcessing = false
+    }
+
+    _onLoad ( requestSkull ) {
+
+        const self      = this
+        const _reqSkull = requestSkull
+
+        return function _checkEndRequest ( loadEvent ) {
+
+            const processedRequestIndex = self._processQueue.indexOf( _reqSkull )
+            if ( processedRequestIndex > -1 ) {
+                self._processQueue.splice( processedRequestIndex, 1 );
+            }
+
+            _reqSkull.onLoad( loadEvent )
+
+            self._numberOfRunningRequest--
+            self.processQueue()
+
+        }
 
     }
 
@@ -231,7 +184,7 @@ class TOrchestrator {
 
         this._requestQueue.push( newRequest )
 
-        if ( !this._inProcessing ) { this.processQueue() }
+        this.processQueue()
 
     }
 
