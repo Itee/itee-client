@@ -10,29 +10,94 @@
 
 /* eslint-env browser */
 
-/**
- *
- * @constructor
- */
-function TOrchestrator () {
+import {
+    isNull,
+    isUndefined,
+    isNotNumber,
+    isNumberPositive
+} from 'itee-validators'
 
-    this.requestQueue           = []
-    this.minSimultaneousRequest = 3
-    this.maxSimultaneousRequest = 6
+class TOrchestrator {
 
-    this._numberOfRunningRequest = 0
-    this._processQueue           = []
-    this._inProcessing           = false
+    constructor () {
 
-}
+        // Public
+        this._minSimultaneousRequest = 3
+        this._maxSimultaneousRequest = 6
 
-Object.assign( TOrchestrator.prototype, {
+        // Private
+        this._requestQueue = []
+        this._processQueue = []
+        this._numberOfRunningRequest = 0
+        this._inProcessing = false
+
+    }
+
+    get minSimultaneousRequest () {
+        return this._minSimultaneousRequest
+    }
+
+    set minSimultaneousRequest ( input ) {
+
+        if ( isNull( input ) ) {
+            throw new TypeError( 'Minimum of simultaneous request cannot be null ! Expect a positive number.' )
+        }
+
+        if ( isUndefined( input ) ) {
+            throw new TypeError( 'Minimum of simultaneous request cannot be undefined ! Expect a positive number.' )
+        }
+
+        if ( isNotNumber( input ) ) {
+            throw new TypeError( `Minimum of simultaneous request cannot be an instance of ${input.constructor.name} ! Expect a positive number.` )
+        }
+
+        if ( isNumberPositive( input ) ) {
+            throw new TypeError( 'Minimum of simultaneous request cannot be lower or equal to zero ! Expect a positive number.' )
+        }
+
+        if( input > this._maxSimultaneousRequest ) {
+            throw new TypeError( 'Minimum of simultaneous request cannot be higher than maximum of simultaneouse request ! Expect a positive number.' )
+        }
+
+        this._minSimultaneousRequest = input
+
+    }
+
+    get maxSimultaneousRequest () {
+        return this._maxSimultaneousRequest
+    }
+
+    set maxSimultaneousRequest ( input ) {
+
+        if ( isNull( input ) ) {
+            throw new TypeError( 'Maximum of simultaneous request cannot be null ! Expect a positive number.' )
+        }
+
+        if ( isUndefined( input ) ) {
+            throw new TypeError( 'Maximum of simultaneous request cannot be undefined ! Expect a positive number.' )
+        }
+
+        if ( isNotNumber( input ) ) {
+            throw new TypeError( `Maximum of simultaneous request cannot be an instance of ${input.constructor.name} ! Expect a positive number.` )
+        }
+
+        if ( isNumberPositive( input ) ) {
+            throw new TypeError( 'Maximum of simultaneous request cannot be lower or equal to zero ! Expect a positive number.' )
+        }
+
+        if( input < this._minSimultaneousRequest ) {
+            throw new TypeError( 'Maximum of simultaneous request cannot be lower than minimum of simultaneouse request ! Expect a positive number.' )
+        }
+
+        this._maxSimultaneousRequest = input
+
+    }
 
     /**
      * @public
      * @memberOf TOrchestrator.prototype
      */
-    processQueue: function processQueue () {
+    processQueue () {
 
         const self = this
 
@@ -40,11 +105,11 @@ Object.assign( TOrchestrator.prototype, {
         let requestSkull
         this._inProcessing = true
 
-        while ( self.requestQueue.length > 0 ) {
+        while ( self._requestQueue.length > 0 ) {
 
-            if ( self._numberOfRunningRequest >= self.maxSimultaneousRequest ) { break }
+            if ( self._numberOfRunningRequest >= self._maxSimultaneousRequest ) { break }
 
-            requestSkull = self.requestQueue.pop()
+            requestSkull = self._requestQueue.pop()
 
             self._processQueue.push( requestSkull )
 
@@ -64,7 +129,7 @@ Object.assign( TOrchestrator.prototype, {
                     self._numberOfRunningRequest--
                     _reqSkull.onLoad( loadEvent )
 
-                    if ( self._numberOfRunningRequest <= self.minSimultaneousRequest ) {
+                    if ( self._numberOfRunningRequest <= self._minSimultaneousRequest ) {
                         self.processQueue()
                     }
 
@@ -79,7 +144,7 @@ Object.assign( TOrchestrator.prototype, {
             request.setRequestHeader( "Content-Type", "application/json" )
             request.responseType = requestSkull.responseType
 
-            var dataToSend = (requestSkull.data && requestSkull.responseType === 'json') ? JSON.stringify( requestSkull.data ) : requestSkull.data
+            const dataToSend = (requestSkull.data && requestSkull.responseType === 'json') ? JSON.stringify( requestSkull.data ) : requestSkull.data
             request.send( dataToSend )
 
             self._numberOfRunningRequest++
@@ -88,7 +153,7 @@ Object.assign( TOrchestrator.prototype, {
 
         self._inProcessing = false
 
-    },
+    }
 
     /**
      *
@@ -96,13 +161,13 @@ Object.assign( TOrchestrator.prototype, {
      * @function
      * @param newRequest
      */
-    queue: function queue ( newRequest ) {
+    queue ( newRequest ) {
 
         // Check if request for same url already exist
         let skipNewRequest = false
-        for ( let requestIndex = 0, numberOfRequest = this.requestQueue.length ; requestIndex < numberOfRequest ; requestIndex++ ) {
+        for ( let requestIndex = 0, numberOfRequest = this._requestQueue.length ; requestIndex < numberOfRequest ; requestIndex++ ) {
 
-            const request = this.requestQueue[ requestIndex ]
+            const request = this._requestQueue[ requestIndex ]
 
             if ( request.method !== newRequest.method ) { continue }
             if ( request.url !== newRequest.url ) { continue }
@@ -164,18 +229,21 @@ Object.assign( TOrchestrator.prototype, {
 
         if ( skipNewRequest ) { return }
 
-        this.requestQueue.push( newRequest )
+        this._requestQueue.push( newRequest )
 
         if ( !this._inProcessing ) { this.processQueue() }
 
     }
 
-} )
+}
 
 /**
  *
  * @type {TOrchestrator}
  */
-let singletonInstance = new TOrchestrator()
+let singletonInstance = null
+if ( !singletonInstance ) {
+    singletonInstance = new TOrchestrator()
+}
 
 export { singletonInstance as TOrchestrator }
