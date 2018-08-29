@@ -30,9 +30,10 @@ function CreateBabelConfiguration ( onProduction ) {
         plugins: [
             "external-helpers",
             [
-                "babel-plugin-transform-builtin-extend", {
-                globals: [ "Error" ]
-            }
+                "babel-plugin-transform-builtin-extend",
+                {
+                    globals: [ "Error" ]
+                }
             ]
         ],
         compact: onProduction
