@@ -34,6 +34,7 @@ import {
     isNotEmptyArray,
     isArrayOfSingleElement,
     isObject,
+    isNotEmptyObject,
     isNotObject
 } from 'itee-validators'
 import {
@@ -45,7 +46,6 @@ import { TOrchestrator } from '../cores/TOrchestrator'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { TProgressManager } from './TProgressManager'
 import { TCache } from '../cores/TCache'
-import { isNotEmptyObject } from '../../builds/itee-client.es'
 
 class TDataBaseManager {
 
