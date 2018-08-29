@@ -480,8 +480,8 @@ class TObjectsManager extends TDataBaseManager {
         }
 
         const [ geometriesMap, materialsMap ] = await Promise.all( [
-            this._retrieveGeometriesOf( objectsArray ),
-            this._retrieveMaterialsOf( objectsArray )
+            this._retrieveGeometriesOf( objectsArray, onProgress, onError ),
+            this._retrieveMaterialsOf( objectsArray, onProgress, onError )
         ] )
 
         for ( let key in objects ) {
@@ -496,7 +496,7 @@ class TObjectsManager extends TDataBaseManager {
 
     }
 
-    _retrieveGeometriesOf ( meshes ) {
+    _retrieveGeometriesOf ( meshes, onProgress, onError ) {
 
         const self = this
 
@@ -514,18 +514,19 @@ class TObjectsManager extends TDataBaseManager {
 
             self._geometriesProvider.read(
                 geometriesIds,
+                null,
                 geometries => {
                     resolve( geometries )
                 },
-                self.onProgress,
-                self.onError
+                onProgress,
+                onError
             )
 
         } )
 
     }
 
-    _retrieveMaterialsOf ( meshes ) {
+    _retrieveMaterialsOf ( meshes, onProgress, onError ) {
 
         const self = this
 
@@ -544,11 +545,12 @@ class TObjectsManager extends TDataBaseManager {
 
             self._materialsProvider.read(
                 materialsIds,
+                null,
                 materials => {
                     resolve( materials )
                 },
-                self.onProgress,
-                self.onError
+                onProgress,
+                onError
             )
 
         } )
