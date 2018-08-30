@@ -26,6 +26,7 @@ import {
     isUndefined,
     isNullOrUndefined,
     isDefined,
+    isNotBoolean,
     isString,
     isNotString,
     isEmptyString,
@@ -52,12 +53,11 @@ class TMaterialsManager extends TDataBaseManager {
      * @param texturesProvider
      */
     constructor ( basePath = '/materials', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = null, texturesPath = '/textures', texturesProvider = new TextureLoader(), generateMipmap = false ) {
-
         super( basePath, responseType, bunchSize, progressManager, errorManager )
-        this._texturesPath     = texturesPath
-        this._texturesProvider = texturesProvider
 
-        this._generateMipmap = generateMipmap
+        this.texturesPath     = texturesPath
+        this.texturesProvider = texturesProvider
+        this.generateMipmap   = generateMipmap
 
     }
 
@@ -65,29 +65,22 @@ class TMaterialsManager extends TDataBaseManager {
         return this._texturesPath
     }
 
-    set texturesPath ( input ) {
+    set texturesPath ( value ) {
 
-        if ( isNull( input ) ) {
-            throw new TypeError( 'Textures path cannot be null ! Expect a non empty string.' )
-        }
+        if ( isNull( value ) ) { throw new TypeError( 'Textures path cannot be null ! Expect a non empty string.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Textures path cannot be undefined ! Expect a non empty string.' ) }
+        if ( isNotString( value ) ) { throw new TypeError( `Textures path cannot be an instance of ${value.constructor.name} ! Expect a non empty string.` ) }
+        if ( isEmptyString( value ) ) { throw new TypeError( 'Textures path cannot be empty ! Expect a non empty string.' ) }
+        if ( isBlankString( value ) ) { throw new TypeError( 'Textures path cannot contain only whitespace ! Expect a non empty string.' ) }
 
-        if ( isUndefined( input ) ) {
-            throw new TypeError( 'Textures path cannot be undefined ! Expect a non empty string.' )
-        }
+        this._texturesPath = value
 
-        if ( isNotString( input ) ) {
-            throw new TypeError( `Textures path cannot be an instance of ${input.constructor.name} ! Expect a non empty string.` )
-        }
+    }
 
-        if ( isEmptyString( input ) ) {
-            throw new TypeError( 'Textures path cannot be empty ! Expect a non empty string.' )
-        }
+    setTexturesPath ( value ) {
 
-        if ( isBlankString( input ) ) {
-            throw new TypeError( 'Textures path cannot contain only whitespace ! Expect a non empty string.' )
-        }
-
-        this._texturesPath = input
+        this.texturesPath = value
+        return this
 
     }
 
@@ -95,23 +88,44 @@ class TMaterialsManager extends TDataBaseManager {
         return this._texturesProvider
     }
 
-    set texturesProvider ( input ) {
+    set texturesProvider ( value ) {
 
-        if ( isNull( input ) ) {
-            throw new TypeError( 'Textures provider cannot be null ! Expect an instance of TextureLoader.' )
-        }
+        if ( isNull( value ) ) { throw new TypeError( 'Textures provider cannot be null ! Expect an instance of TextureLoader.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Textures provider cannot be undefined ! Expect an instance of TextureLoader.' ) }
+        if ( !(value instanceof TTexturesManager) ) { throw new TypeError( `Textures provider cannot be an instance of ${value.constructor.name} ! Expect an instance of TTexturesManager.` ) }
 
-        if ( isUndefined( input ) ) {
-            throw new TypeError( 'Textures provider cannot be undefined ! Expect an instance of TextureLoader.' )
-        }
-
-        if ( !(input instanceof TTexturesManager) ) {
-            throw new TypeError( `Textures provider cannot be an instance of ${input.constructor.name} ! Expect an instance of TTexturesManager.` )
-        }
-
-        this._texturesProvider = input
+        this._texturesProvider = value
 
     }
+
+    setTexturesProvider ( value ) {
+
+        this.texturesProvider = value
+        return this
+
+    }
+
+    get generateMipmap () {
+        return this._generateMipmap
+    }
+
+    set generateMipmap ( value ) {
+
+        if ( isNull( value ) ) { throw new TypeError( 'Generate mipmap cannot be null ! Expect a boolean.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Generate mipmap cannot be undefined ! Expect a boolean.' ) }
+        if ( isNotBoolean( value ) ) { throw new TypeError( `Generate mipmap cannot be an instance of ${value.constructor.name} ! Expect a boolean.` ) }
+
+        this._generateMipmap = value
+    }
+
+    setGenerateMipmap ( value ) {
+
+        this.generateMipmap = value
+        return this
+
+    }
+
+    //// Methods
 
     _onJson ( jsonData, onSuccess, onProgress, onError ) {
 
