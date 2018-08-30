@@ -9,5 +9,5 @@
 /* eslint-env browser */
 //export { TApplication } from './TApplication'
 export * from './TConstants'
-export { TCache } from './TCache'
+export { TStore } from './TStore'
 export { TOrchestrator } from './TOrchestrator'

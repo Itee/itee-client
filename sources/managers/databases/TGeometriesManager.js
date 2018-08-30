@@ -152,7 +152,7 @@ class TGeometriesManager extends TDataBaseManager {
         //        geometry.computeFaceNormals()
         //        geometry.computeVertexNormals()
 
-        // TCache geometry for future use
+        // TStore geometry for future use
         //        this._cache.add( data._id, geometry )
 
         return geometry

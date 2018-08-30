@@ -9,7 +9,7 @@
  * @requires {@link ResponseType}
  * @requires {@link HttpStatusCode}
  * @requires {@link TOrchestrator}
- * @requires {@link TCache}
+ * @requires {@link TStore}
  *
  * @example Todo
  *
@@ -45,7 +45,7 @@ import {
 import { TOrchestrator } from '../cores/TOrchestrator'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { TProgressManager } from './TProgressManager'
-import { TCache } from '../cores/TCache'
+import { TStore } from '../cores/TStore'
 
 class TDataBaseManager {
 
@@ -67,9 +67,9 @@ class TDataBaseManager {
         this._errorManager    = errorManager
 
         // Privates
-        this._cache        = new TCache()
         this._waitingQueue = []
         this._idsInRequest = []
+        this._cache          = new TStore()
 
     }
 
