@@ -8,8 +8,9 @@
 
 /* eslint-env browser */
 //export { TApplication } from './TApplication'
-export { TCache } from './TCache'
 export * from './TConstants'
-export { TFile } from './TFile'
+export { TStore } from './TStore'
 export { TOrchestrator } from './TOrchestrator'
-//export { TViewport } from './TViewport'
+export { TAbtractFactory } from './TAbtractFactory'
+export { TCloningFactory } from './TCloningFactory'
+export { TInstancingFactory } from './TInstancingFactory'

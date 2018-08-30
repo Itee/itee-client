@@ -463,7 +463,7 @@ Object.assign( BinaryReader.prototype, {
      */
     getChar () {
 
-        return String.fromCharCode( this.getUInt8() )
+        return String.fromCharCode( this.getUint8() )
 
     },
 
@@ -479,7 +479,7 @@ Object.assign( BinaryReader.prototype, {
         let charCode = undefined
 
         for ( let i = 0 ; i < length ; i++ ) {
-            charCode = this.getUInt8()
+            charCode = this.getUint8()
 
             if ( charCode === 0 ) {
                 continue

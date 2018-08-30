@@ -14,8 +14,6 @@
  *
  * @constructor
  */
-function TErrorManager () {
-
-}
+class TErrorManager {}
 
 export { TErrorManager }

@@ -45,13 +45,16 @@ export default Vue.component( 'TTreeItem', {
             </ul>
         </li>
     `,
-    mounted: function(){
+    mounted:  function () {
 
         // Move visibility button
-        if (this.children.length > 0) {
-          let eye = this.$el.querySelector(".tTreeItemModifiers");
-          if (eye != null) this.$el.querySelector(".eyeCheck").appendChild(eye);
+        if ( this.children.length > 0 ) {
+            let eye = this.$el.querySelector( ".tTreeItemModifiers" )
+            if ( eye !== null ) {
+                this.$el.querySelector( ".eyeCheck" ).appendChild( eye )
+            }
         }
+
     },
     data:     function () {
 
@@ -101,17 +104,17 @@ export default Vue.component( 'TTreeItem', {
 
             let _this = this
 
-            if (_this.childrenSorter) {
-              _this.sortedChildren()
+            if ( _this.childrenSorter ) {
+                _this.sortedChildren()
             }
 
-            if (!_this.childrenFilter) {
-              return this.children;
+            if ( !_this.childrenFilter ) {
+                return this.children;
             }
 
-            return this.children.filter(function(item){
-            return _this.childrenFilter.indexOf(item.name.toLowerCase()) === -1;
-            });
+            return this.children.filter( function ( item ) {
+                return _this.childrenFilter.indexOf( item.name.toLowerCase() ) === -1;
+            } );
 
         },
 
@@ -143,13 +146,19 @@ export default Vue.component( 'TTreeItem', {
 
         sortedChildren () {
 
-            this.children.sort(function(a, b){
-                if(a.name < b.name) return -1;
-                if(a.name > b.name) return 1;
+            this.children.sort( function ( a, b ) {
+                if ( a.name < b.name ) {
+                    return -1;
+                }
+                if ( a.name > b.name ) {
+                    return 1;
+                }
                 return 0;
-            })
+            } )
 
-            if (this.sorter === "desc") this.items.reverse();
+            if ( this.sorter === "desc" ) {
+                this.items.reverse();
+            }
 
         },
 
@@ -159,19 +168,19 @@ export default Vue.component( 'TTreeItem', {
 
             let selectedItems = document.querySelectorAll( '.selected' )
 
-            for (let i = selectedItems.length - 1; i >= 0; i--){
-                selectedItems[i].className = "tTreeItemContent tContainer tContainerHorizontal";
-                (selectedItems[i].querySelector("[type='range']") != null) ? selectedItems[i].querySelector("[type='range']").parentElement.remove() : null
+            for ( let i = selectedItems.length - 1 ; i >= 0 ; i-- ) {
+                selectedItems[ i ].className = "tTreeItemContent tContainer tContainerHorizontal";
+                (selectedItems[ i ].querySelector( "[type='range']" ) != null) ? selectedItems[ i ].querySelector( "[type='range']" ).parentElement.remove() : null
             }
 
-            if (this.isSelected) {
-                this.$el.querySelector('.tContainerHorizontal').className = "tTreeItemContent tContainer tContainerHorizontal selected"
+            if ( this.isSelected ) {
+                this.$el.querySelector( '.tContainerHorizontal' ).className = "tTreeItemContent tContainer tContainerHorizontal selected"
             }
-            else{
-                this.$el.querySelector('.tContainerHorizontal').className = "tTreeItemContent tContainer tContainerHorizontal"                            
+            else {
+                this.$el.querySelector( '.tContainerHorizontal' ).className = "tTreeItemContent tContainer tContainerHorizontal"
             }
 
-            if (onClickCallback) {
+            if ( onClickCallback ) {
                 onClickCallback();
             }
 
