@@ -116,7 +116,7 @@ gulp.task( 'lint', () => {
     const filesToLint = [
         'gulpfile.js',
         'scripts/**/*.js',
-        'sources/**/*',
+        'sources/**/*.js',
         'tests/**/*.js'
     ]
 
