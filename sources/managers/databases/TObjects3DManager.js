@@ -89,8 +89,9 @@ class TObjectsManager extends TDataBaseManager {
     constructor ( basePath = '/objects', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = null, geometriesProvider = new TGeometriesManager(), materialsProvider = new TMaterialsManager() ) {
 
         super( basePath, responseType, bunchSize, progressManager, errorManager )
-        this._geometriesProvider = geometriesProvider
-        this._materialsProvider  = materialsProvider
+
+        this.geometriesProvider = geometriesProvider
+        this.materialsProvider  = materialsProvider
 
     }
 
@@ -98,21 +99,20 @@ class TObjectsManager extends TDataBaseManager {
         return this._geometriesProvider
     }
 
-    set geometriesProvider ( input ) {
+    set geometriesProvider ( value ) {
 
-        if ( isNull( input ) ) {
-            throw new TypeError( 'Geometries provider cannot be null ! Expect an instance of TGeometriesManager.' )
-        }
+        if ( isNull( value ) ) { throw new TypeError( 'Geometries provider cannot be null ! Expect an instance of TGeometriesManager.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Geometries provider cannot be undefined ! Expect an instance of TGeometriesManager.' ) }
+        if ( !(value instanceof TGeometriesManager) ) { throw new TypeError( `Geometries provider cannot be an instance of ${value.constructor.name} ! Expect an instance of TGeometriesManager.` ) }
 
-        if ( isUndefined( input ) ) {
-            throw new TypeError( 'Geometries provider cannot be undefined ! Expect an instance of TGeometriesManager.' )
-        }
+        this._geometriesProvider = value
 
-        if ( !(input instanceof TGeometriesManager) ) {
-            throw new TypeError( `Geometries provider cannot be an instance of ${input.constructor.name} ! Expect an instance of TGeometriesManager.` )
-        }
+    }
 
-        this._geometriesProvider = input
+    setGeometriesProvider ( value ) {
+
+        this.geometriesProvider = value
+        return this
 
     }
 
@@ -120,23 +120,24 @@ class TObjectsManager extends TDataBaseManager {
         return this._materialsProvider
     }
 
-    set materialsProvider ( input ) {
+    set materialsProvider ( value ) {
 
-        if ( isNull( input ) ) {
-            throw new TypeError( 'Materials provider cannot be null ! Expect an instance of TMaterialsManager.' )
-        }
+        if ( isNull( value ) ) { throw new TypeError( 'Materials provider cannot be null ! Expect an instance of TMaterialsManager.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Materials provider cannot be undefined ! Expect an instance of TMaterialsManager.' ) }
+        if ( !(value instanceof TMaterialsManager) ) { throw new TypeError( `Materials provider cannot be an instance of ${value.constructor.name} ! Expect an instance of TMaterialsManager.` ) }
 
-        if ( isUndefined( input ) ) {
-            throw new TypeError( 'Materials provider cannot be undefined ! Expect an instance of TMaterialsManager.' )
-        }
-
-        if ( !(input instanceof TMaterialsManager) ) {
-            throw new TypeError( `Materials provider cannot be an instance of ${input.constructor.name} ! Expect an instance of TMaterialsManager.` )
-        }
-
-        this._materialsProvider = input
+        this._materialsProvider = value
 
     }
+
+    setMaterialsProvider ( value ) {
+
+        this.materialsProvider = value
+        return this
+
+    }
+
+    //// Methods
 
     _onJson ( jsonData, onSuccess, onProgress, onError ) {
 
