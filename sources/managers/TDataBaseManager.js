@@ -45,6 +45,7 @@ import {
 import { TOrchestrator } from '../cores/TOrchestrator'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { TProgressManager } from './TProgressManager'
+import { TErrorManager } from './TErrorManager'
 import { TStore } from '../cores/TStore'
 
 class TDataBaseManager {
@@ -57,19 +58,16 @@ class TDataBaseManager {
      * @param progressManager
      * @param errorManager
      */
-    constructor ( basePath = '/', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = null ) {
+    constructor ( basePath = '/', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = new TErrorManager() ) {
 
-        // Publics
-        this._basePath        = basePath
-        this._responseType    = responseType
-        this._bunchSize       = bunchSize
-        this._progressManager = progressManager
-        this._errorManager    = errorManager
-
-        // Privates
-        this._waitingQueue = []
-        this._idsInRequest = []
+        this.basePath        = basePath
+        this.responseType    = responseType
+        this.bunchSize       = bunchSize
+        this.progressManager = progressManager
+        this.errorManager    = errorManager
         this._cache          = new TStore()
+        this._waitingQueue   = []
+        this._idsInRequest   = []
 
     }
 
@@ -77,29 +75,22 @@ class TDataBaseManager {
         return this._basePath
     }
 
-    set basePath ( input ) {
+    set basePath ( value ) {
 
-        if ( isNull( input ) ) {
-            throw new TypeError( 'Base path cannot be null ! Expect a non empty string.' )
-        }
+        if ( isNull( value ) ) { throw new TypeError( 'Base path cannot be null ! Expect a non empty string.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Base path cannot be undefined ! Expect a non empty string.' ) }
+        if ( isNotString( value ) ) { throw new TypeError( `Base path cannot be an instance of ${value.constructor.name} ! Expect a non empty string.` ) }
+        if ( isEmptyString( value ) ) { throw new TypeError( 'Base path cannot be empty ! Expect a non empty string.' ) }
+        if ( isBlankString( value ) ) { throw new TypeError( 'Base path cannot contain only whitespace ! Expect a non empty string.' ) }
 
-        if ( isUndefined( input ) ) {
-            throw new TypeError( 'Base path cannot be undefined ! Expect a non empty string.' )
-        }
+        this._basePath = value
 
-        if ( isNotString( input ) ) {
-            throw new TypeError( `Base path cannot be an instance of ${input.constructor.name} ! Expect a non empty string.` )
-        }
+    }
 
-        if ( isEmptyString( input ) ) {
-            throw new TypeError( 'Base path cannot be empty ! Expect a non empty string.' )
-        }
+    setBasePath ( value ) {
 
-        if ( isBlankString( input ) ) {
-            throw new TypeError( 'Base path cannot contain only whitespace ! Expect a non empty string.' )
-        }
-
-        this._basePath = input
+        this.basePath = value
+        return this
 
     }
 
@@ -107,33 +98,23 @@ class TDataBaseManager {
         return this._responseType
     }
 
-    set responseType ( input ) {
+    set responseType ( value ) {
 
-        if ( isNull( input ) ) {
-            throw new Error( 'TDataBaseManager: responseType cannot be null !' )
-        }
+        if ( isNull( value ) ) { throw new Error( 'TDataBaseManager: responseType cannot be null !' ) }
+        if ( isNull( value ) ) { throw new TypeError( 'Response type cannot be null ! Expect a non empty string.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Response type cannot be undefined ! Expect a non empty string.' ) }
+        if ( isNotString( value ) ) { throw new TypeError( `Response type cannot be an instance of ${value.constructor.name} ! Expect a value from ResponseType enum.` ) }
+        if ( isEmptyString( value ) ) { throw new TypeError( 'Response type cannot be empty ! Expect a non empty string.' ) }
+        if ( isBlankString( value ) ) { throw new TypeError( 'Response type cannot contain only whitespace ! Expect a non empty string.' ) }
 
-        if ( isNull( input ) ) {
-            throw new TypeError( 'Response type cannot be null ! Expect a non empty string.' )
-        }
+        this._responseType = value
 
-        if ( isUndefined( input ) ) {
-            throw new TypeError( 'Response type cannot be undefined ! Expect a non empty string.' )
-        }
+    }
 
-        if ( isNotString( input ) ) {
-            throw new TypeError( `Response type cannot be an instance of ${input.constructor.name} ! Expect a value from ResponseType enum.` )
-        }
+    setResponseType ( value ) {
 
-        if ( isEmptyString( input ) ) {
-            throw new TypeError( 'Response type cannot be empty ! Expect a non empty string.' )
-        }
-
-        if ( isBlankString( input ) ) {
-            throw new TypeError( 'Response type cannot contain only whitespace ! Expect a non empty string.' )
-        }
-
-        this._responseType = input
+        this.responseType = value
+        return this
 
     }
 
@@ -141,24 +122,21 @@ class TDataBaseManager {
         return this._bunchSize
     }
 
-    set bunchSize ( input ) {
+    set bunchSize ( value ) {
 
-        if ( isNull( input ) ) {
-            throw new TypeError( 'Bunch size cannot be null ! Expect a positive number.' )
-        }
+        if ( isNull( value ) ) { throw new TypeError( 'Bunch size cannot be null ! Expect a positive number.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Bunch size cannot be undefined ! Expect a positive number.' ) }
+        if ( isNotNumber( value ) ) { throw new TypeError( `Bunch size cannot be an instance of ${value.constructor.name} ! Expect a positive number.` ) }
+        if ( !isNumberPositive( value ) ) { throw new TypeError( `Bunch size cannot be lower or equal to zero ! Expect a positive number.` ) }
 
-        if ( isUndefined( input ) ) {
-            throw new TypeError( 'Bunch size cannot be undefined ! Expect a positive number.' )
-        }
+        this._bunchSize = value
 
-        if ( isNotNumber( input ) ) {
-            throw new TypeError( `Bunch size cannot be an instance of ${input.constructor.name} ! Expect a positive number.` )
-        }
-        if ( !isNumberPositive( input ) ) {
-            throw new TypeError( `Bunch size cannot be lower or equal to zero ! Expect a positive number.` )
-        }
+    }
 
-        this._bunchSize = input
+    setBunchSize ( value ) {
+
+        this.bunchSize = value
+        return this
 
     }
 
@@ -166,21 +144,20 @@ class TDataBaseManager {
         return this._progressManager
     }
 
-    set progressManager ( input ) {
+    set progressManager ( value ) {
 
-        if ( isNull( input ) ) {
-            throw new TypeError( 'Progress manager cannot be null ! Expect an instance of TProgressManager.' )
-        }
+        if ( isNull( value ) ) { throw new TypeError( 'Progress manager cannot be null ! Expect an instance of TProgressManager.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Progress manager cannot be undefined ! Expect an instance of TProgressManager.' ) }
+        if ( !(value instanceof TProgressManager) ) { throw new TypeError( `Progress manager cannot be an instance of ${value.constructor.name} ! Expect an instance of TProgressManager.` ) }
 
-        if ( isUndefined( input ) ) {
-            throw new TypeError( 'Progress manager cannot be undefined ! Expect an instance of TProgressManager.' )
-        }
+        this._progressManager = value
 
-        if ( !(input instanceof TProgressManager) ) {
-            throw new TypeError( `Progress manager cannot be an instance of ${input.constructor.name} ! Expect an instance of TProgressManager.` )
-        }
+    }
 
-        this._progressManager = input
+    setProgressManager ( value ) {
+
+        this.progressManager = value
+        return this
 
     }
 
@@ -188,21 +165,20 @@ class TDataBaseManager {
         return this._errorManager
     }
 
-    set errorManager ( errorManager ) {
+    set errorManager ( value ) {
 
-        if ( isNull( input ) ) {
-            throw new TypeError( 'Error manager cannot be null ! Expect an instance of TErrorManager.' )
-        }
+        if ( isNull( value ) ) { throw new TypeError( 'Error manager cannot be null ! Expect an instance of TErrorManager.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Error manager cannot be undefined ! Expect an instance of TErrorManager.' ) }
+        if ( !(value instanceof TErrorManager) ) { throw new TypeError( `Error manager cannot be an instance of ${value.constructor.name} ! Expect an instance of TErrorManager.` ) }
 
-        if ( isUndefined( input ) ) {
-            throw new TypeError( 'Error manager cannot be undefined ! Expect an instance of TErrorManager.' )
-        }
+        this._errorManager = value
 
-        if ( !(input instanceof TErrorManager) ) {
-            throw new TypeError( `Error manager cannot be an instance of ${input.constructor.name} ! Expect an instance of TErrorManager.` )
-        }
+    }
 
-        this._errorManager = errorManager
+    setErrorManager( value ) {
+
+        this.errorManager = value
+        return this
 
     }
 
