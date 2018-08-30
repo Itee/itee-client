@@ -8,6 +8,7 @@
  *
  */
 
+import { isObject } from 'itee-validators'
 import { TDataBaseManager } from '../TDataBaseManager'
 
 /**
@@ -30,11 +31,14 @@ TTexturesManager.prototype = Object.assign( Object.create( TDataBaseManager.prot
 
     /**
      *
-     * @param jsonData
-     * @param onError
+     * @param data
      * @return {*}
      */
-    convertJsonToObject3D ( data, onError ) {
+    convert ( data ) {
+
+        if ( !data ) {
+            throw new Error('TTexturesManager: Unable to convert null or undefined data !')
+        }
 
         const textureType = data.type
         let texture = undefined
@@ -42,6 +46,7 @@ TTexturesManager.prototype = Object.assign( Object.create( TDataBaseManager.prot
         switch ( textureType ) {
 
             default:
+                throw new Error(`TTexturesManager: Unknown texture of type: ${textureType}`)
                 break
 
         }
@@ -66,33 +71,25 @@ Object.defineProperties( TTexturesManager.prototype, {
     _onJson: {
         value: function _onJson ( jsonData, onSuccess, onProgress, onError ) {
 
-            if ( Array.isArray( jsonData ) ) {
+            // Normalize to array
+            const datas   = (isObject( jsonData )) ? [ jsonData ] : jsonData
+            const results = {}
 
-                let objects = []
-                let object  = undefined
-                let data    = undefined
-                for ( let dataIndex = 0, numberOfDatas = jsonData.length ; dataIndex < numberOfDatas ; dataIndex++ ) {
+            for ( let dataIndex = 0, numberOfDatas = datas.length, data = undefined ; dataIndex < numberOfDatas ; dataIndex++ ) {
 
-                    data   = jsonData[ dataIndex ]
-                    object = this.convertJsonToObject3D( data, onError )
+                data   = datas[ dataIndex ]
 
-                    if ( object ) { objects.push( object ) }
-
-                    onProgress( dataIndex / numberOfDatas )
-
+                try {
+                    results[ data._id ] = this.convert( data )
+                } catch(err) {
+                    onError(err)
                 }
 
-                onSuccess( objects )
-
-            } else {
-
-                let object = this.convertJsonToObject3D( jsonData, onError )
-                onProgress( 1.0 )
-
-                onSuccess( object )
+                onProgress( dataIndex / numberOfDatas )
 
             }
 
+            onSuccess( results )
         }
     }
 

@@ -28,6 +28,8 @@ import {
     Shape
 } from 'three-full'
 
+import { isObject } from 'itee-validators'
+
 /**
  *
  * @constructor
@@ -48,11 +50,14 @@ TCurvesManager.prototype = Object.assign( Object.create( TDataBaseManager.protot
 
     /**
      *
-     * @param jsonData
-     * @param onError
+     * @param data
      * @return {*}
      */
-    convertJsonToObject3D ( data, onError ) {
+    convert ( data ) {
+
+        if ( !data ) {
+            throw new Error('TCurvesManager: Unable to convert null or undefined data !')
+        }
 
         const curveType = data.type
         let curve       = undefined
@@ -118,7 +123,7 @@ TCurvesManager.prototype = Object.assign( Object.create( TDataBaseManager.protot
                 break
 
             default:
-                onError( `Invalid curve type: ${curveType}` )
+                throw new Error(`TCurvesManager: Unknown curve of type: ${curveType}`)
                 break
 
         }
@@ -139,32 +144,25 @@ Object.defineProperties( TCurvesManager.prototype, {
     _onJson: {
         value: function _onJson ( jsonData, onSuccess, onProgress, onError ) {
 
-            if ( Array.isArray( jsonData ) ) {
+            // Normalize to array
+            const datas   = (isObject( jsonData )) ? [ jsonData ] : jsonData
+            const results = {}
 
-                let objects = []
-                let object  = undefined
-                let data    = undefined
-                for ( let dataIndex = 0, numberOfDatas = jsonData.length ; dataIndex < numberOfDatas ; dataIndex++ ) {
+            for ( let dataIndex = 0, numberOfDatas = datas.length, data = undefined ; dataIndex < numberOfDatas ; dataIndex++ ) {
 
-                    data = jsonData[ dataIndex ]
-                    object = this.convertJsonToObject3D( data, onError )
+                data   = datas[ dataIndex ]
 
-                    if ( object ) { objects.push( object ) }
-
-                    onProgress( dataIndex / numberOfDatas )
-
+                try {
+                    results[ data._id ] = this.convert( data )
+                } catch(err) {
+                    onError(err)
                 }
 
-                onSuccess( objects )
-
-            } else {
-
-                let object = this.convertJsonToObject3D( jsonData, onError )
-                onProgress( 1.0 )
-
-                onSuccess( object )
+                onProgress( dataIndex / numberOfDatas )
 
             }
+
+            onSuccess( results )
 
         }
     }

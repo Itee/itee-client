@@ -70,35 +70,67 @@ import {
     Vector3,
 } from 'three-full'
 
+import { isObject } from 'itee-validators'
 import { TDataBaseManager } from '../TDataBaseManager'
+import { TProgressManager } from '../TProgressManager'
+import { ResponseType } from '../../cores/TConstants'
 
-/**
- *
- * @constructor
- */
-function TGeometriesManager () {
-
-    TDataBaseManager.call( this )
-    this.basePath = '/geometries'
-
-}
-
-TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.prototype ), {
+class TGeometriesManager extends TDataBaseManager {
 
     /**
      *
+     * @param basePath
+     * @param responseType
+     * @param bunchSize
+     * @param progressManager
+     * @param errorManager
      */
-    constructor: TGeometriesManager,
+    constructor ( basePath = '/geometries', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = null ) {
+
+        super( basePath, responseType, bunchSize, progressManager, errorManager )
+
+    }
+
+    _onJson ( jsonData, onSuccess, onProgress, onError ) {
+
+        // Normalize to array
+        const datas   = (isObject( jsonData )) ? [ jsonData ] : jsonData
+        const results = {}
+
+        for ( let dataIndex = 0, numberOfDatas = datas.length, data = undefined ; dataIndex < numberOfDatas ; dataIndex++ ) {
+
+            data = datas[ dataIndex ]
+
+            try {
+                results[ data._id ] = this.convert( data )
+            } catch ( err ) {
+                onError( err )
+            }
+
+            onProgress( new ProgressEvent( 'TGeometriesManager', {
+                lengthComputable: true,
+                loaded:           dataIndex + 1,
+                total:            numberOfDatas
+            } ) )
+
+        }
+
+        onSuccess( results )
+
+    }
 
     /**
      * @public
      * @memberOf TGeometriesManager.prototype
      *
      * @param data
-     * @param onError
      * @returns {*}
      */
-    convertJsonToGeometry ( data, onError ) {
+    convert ( data ) {
+
+        if ( !data ) {
+            throw new Error( 'TGeometriesManager: Unable to convert null or undefined data !' )
+        }
 
         let geometry = null
 
@@ -112,21 +144,22 @@ TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.pr
 
         } else {
 
-            onError( 'Unable to retrieve geometry type !!!' )
+            throw new Error( 'TGeometriesManager: Unable to retrieve geometry type !' )
 
         }
 
-        geometry.computeFaceNormals()
-        geometry.computeVertexNormals()
+        // Todo: Compute normals only if required or asked
+        //        geometry.computeFaceNormals()
+        //        geometry.computeVertexNormals()
 
-        // TCache geometry for future use
+        // TStore geometry for future use
         //        this._cache.add( data._id, geometry )
 
         return geometry
 
-    },
+    }
 
-    _convertJsonToGeometry ( data, onError ) {
+    _convertJsonToGeometry ( data ) {
 
         const geometryType = data.types
         let geometry       = null
@@ -226,7 +259,7 @@ TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.pr
                 break
 
             default:
-                onError( `Invalid geometry type: ${geometryType}` )
+                throw new Error( `TGeometriesManager: Unknown geometry of type: ${geometryType}` )
                 break
 
         }
@@ -268,9 +301,9 @@ TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.pr
         geometry.lineDistancesNeedUpdate = true //data.lineDistancesNeedUpdate
         geometry.groupsNeedUpdate        = true //data.groupsNeedUpdate
 
-    },
+    }
 
-    _convertJsonToBufferGeometry ( data, onError ) {
+    _convertJsonToBufferGeometry ( data ) {
 
         const bufferGeometryType = data.type
         let bufferGeometry       = undefined
@@ -367,9 +400,8 @@ TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.pr
                 break
 
             default:
-                onError( `Invalid buffer geometry type: ${bufferGeometryType}` )
+                throw new Error( `TGeometriesManager: Unknown buffer geometry of type: ${bufferGeometryType}` )
                 break
-
         }
 
         // COMMON PARTS
@@ -394,12 +426,26 @@ TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.pr
             // TODO: using loop instead !!
             const positionAttributes = dataAttributes.position
             if ( positionAttributes ) {
-                attributes[ 'position' ] = new BufferAttribute( new Float32Array( positionAttributes.array ), positionAttributes.itemSize, positionAttributes.normalized )
+
+                const positionArray = positionAttributes.array
+                const zbackpos      = []
+                for ( let pi = 0, numPos = positionArray.length ; pi < numPos ; pi += 3 ) {
+                    zbackpos.push( positionArray[ pi ] / 1000, positionArray[ pi + 2 ] / 1000, -positionArray[ pi + 1 ] / 1000 )
+                }
+
+                attributes[ 'position' ] = new BufferAttribute( new Float32Array( zbackpos ), positionAttributes.itemSize, positionAttributes.normalized )
             }
 
             const normalAttributes = dataAttributes.normal
             if ( normalAttributes ) {
-                attributes[ 'normal' ] = new BufferAttribute( new Float32Array( normalAttributes.array ), normalAttributes.itemSize, normalAttributes.normalized )
+
+                const array        = normalAttributes.array
+                const rotatedDatas = []
+                for ( let i = 0, numPos = array.length ; i < numPos ; i += 3 ) {
+                    rotatedDatas.push( array[ i ], array[ i + 2 ], -array[ i + 1 ] )
+                }
+
+                attributes[ 'normal' ] = new BufferAttribute( new Float32Array( rotatedDatas ), normalAttributes.itemSize, normalAttributes.normalized )
             }
 
             const uvAttributes = dataAttributes.uv
@@ -429,47 +475,6 @@ TGeometriesManager.prototype = Object.assign( Object.create( TDataBaseManager.pr
 
     }
 
-} )
-
-Object.defineProperties( TGeometriesManager.prototype, {
-
-    /**
-     *
-     */
-    _onJson: {
-        value: function _onJson ( jsonData, onSuccess, onProgress, onError ) {
-
-            let geometries = {}
-            let geometry   = undefined
-
-            if ( Array.isArray( jsonData ) ) {
-
-                let data = undefined
-                for ( let dataIndex = 0, numberOfDatas = jsonData.length ; dataIndex < numberOfDatas ; dataIndex++ ) {
-
-                    data     = jsonData[ dataIndex ]
-                    geometry = this.convertJsonToGeometry( data, onError )
-
-                    if ( geometry ) { geometries[ data._id ] = geometry }
-
-                    onProgress( dataIndex / numberOfDatas )
-
-                }
-
-            } else {
-
-                geometry = this.convertJsonToGeometry( jsonData, onError )
-                if ( geometry ) { geometries[ jsonData._id ] = geometry }
-
-                onProgress( 1.0 )
-
-            }
-
-            onSuccess( geometries )
-
-        }
-    }
-
-} )
+}
 
 export { TGeometriesManager }

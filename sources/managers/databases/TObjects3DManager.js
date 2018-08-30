@@ -62,46 +62,120 @@ import {
 } from 'three-full'
 
 import { TDataBaseManager } from '../TDataBaseManager'
-import { TGeometriesManager } from '../databases/TGeometriesManager'
-import { TMaterialsManager } from '../databases/TMaterialsManager'
-
+import { TGeometriesManager } from './TGeometriesManager'
+import { TMaterialsManager } from './TMaterialsManager'
+import { TProgressManager } from '../TProgressManager'
+import { ResponseType } from '../../cores/TConstants'
 import {
+    isNull,
+    isUndefined,
     isNullOrUndefined,
-    isNotEmptyArray
+    isNotEmptyArray,
+    isObject
 } from 'itee-validators'
 
-/**
- *
- * @constructor
- */
-function TObjectsManager () {
-
-    TDataBaseManager.call( this )
-    this.basePath = '/objects'
-
-    this._geometriesProvider = new TGeometriesManager()
-    this._materialsProvider  = new TMaterialsManager()
-
-}
-
-TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.prototype ), {
+class TObjectsManager extends TDataBaseManager {
 
     /**
      *
+     * @param basePath
+     * @param responseType
+     * @param bunchSize
+     * @param progressManager
+     * @param errorManager
+     * @param geometriesProvider
+     * @param materialsProvider
      */
-    constructor: TObjectsManager,
+    constructor ( basePath = '/objects', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = null, geometriesProvider = new TGeometriesManager(), materialsProvider = new TMaterialsManager() ) {
+
+        super( basePath, responseType, bunchSize, progressManager, errorManager )
+
+        this.geometriesProvider = geometriesProvider
+        this.materialsProvider  = materialsProvider
+
+    }
+
+    get geometriesProvider () {
+        return this._geometriesProvider
+    }
+
+    set geometriesProvider ( value ) {
+
+        if ( isNull( value ) ) { throw new TypeError( 'Geometries provider cannot be null ! Expect an instance of TGeometriesManager.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Geometries provider cannot be undefined ! Expect an instance of TGeometriesManager.' ) }
+        if ( !(value instanceof TGeometriesManager) ) { throw new TypeError( `Geometries provider cannot be an instance of ${value.constructor.name} ! Expect an instance of TGeometriesManager.` ) }
+
+        this._geometriesProvider = value
+
+    }
+
+    setGeometriesProvider ( value ) {
+
+        this.geometriesProvider = value
+        return this
+
+    }
+
+    get materialsProvider () {
+        return this._materialsProvider
+    }
+
+    set materialsProvider ( value ) {
+
+        if ( isNull( value ) ) { throw new TypeError( 'Materials provider cannot be null ! Expect an instance of TMaterialsManager.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Materials provider cannot be undefined ! Expect an instance of TMaterialsManager.' ) }
+        if ( !(value instanceof TMaterialsManager) ) { throw new TypeError( `Materials provider cannot be an instance of ${value.constructor.name} ! Expect an instance of TMaterialsManager.` ) }
+
+        this._materialsProvider = value
+
+    }
+
+    setMaterialsProvider ( value ) {
+
+        this.materialsProvider = value
+        return this
+
+    }
+
+    //// Methods
+
+    _onJson ( jsonData, onSuccess, onProgress, onError ) {
+
+        // Normalize to array
+        const datas   = (isObject( jsonData )) ? [ jsonData ] : jsonData
+        const results = {}
+
+        for ( let dataIndex = 0, numberOfDatas = datas.length, data = undefined ; dataIndex < numberOfDatas ; dataIndex++ ) {
+
+            data = datas[ dataIndex ]
+
+            try {
+                results[ data._id ] = this.convert( data )
+            } catch ( err ) {
+                onError( err )
+            }
+
+            onProgress( new ProgressEvent( 'TObjectsManager', {
+                lengthComputable: true,
+                loaded:           dataIndex + 1,
+                total:            numberOfDatas
+            } ) )
+
+        }
+
+        this.fillObjects3D( results, onSuccess, onProgress, onError )
+
+    }
 
     /**
      *
-     * @param jsonData
-     * @param onError
+     * @param data
      * @return {*}
      */
-    convertJsonToObject3D ( data, onError ) {
+    convert ( data ) {
 
         if ( !data ) {
-            onError( 'No data recieve' )
-            return null
+            throw new Error( 'TObjectsManager: Unable to convert null or undefined data !' )
         }
 
         const objectType = data.type
@@ -110,83 +184,178 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
         // Todo: Use factory instead and allow user to register its own object type !!!
         switch ( objectType ) {
 
+            case 'Object3D':
+                object = new Object3D()
+                this._fillBaseObjectsData( object, data )
+                break
+
             case 'Scene':
                 object = new Scene()
-                break;
+                this._fillBaseObjectsData( object, data )
+                if ( !isNullOrUndefined( data.background ) ) {
+
+                    if ( Number.isInteger( data.background ) ) {
+
+                        object.background = new Color( data.background )
+
+                    }
+
+                }
+                if ( !isNullOrUndefined( data.fog ) ) {
+
+                    if ( data.fog.type === 'Fog' ) {
+
+                        object.fog = new Fog( data.fog.color, data.fog.near, data.fog.far );
+
+                    } else if ( data.fog.type === 'FogExp2' ) {
+
+                        object.fog = new FogExp2( data.fog.color, data.fog.density );
+
+                    }
+
+                }
+                object.overrideMaterial = data.overrideMaterial
+                object.autoUpdate       = data.autoUpdate
+                break
 
             case 'PerspectiveCamera':
                 object = new PerspectiveCamera()
-                break;
+                this._fillBaseObjectsData( object, data )
+                object.fov    = data.fov
+                object.aspect = data.aspect
+                object.near   = data.near
+                object.far    = data.far
+                if ( !isNullOrUndefined( data.focus ) ) {
+                    object.focus = data.focus
+                }
+                if ( !isNullOrUndefined( data.zoom ) ) {
+                    object.zoom = data.zoom
+                }
+                if ( !isNullOrUndefined( data.filmGauge ) ) {
+                    object.filmGauge = data.filmGauge
+                }
+                if ( !isNullOrUndefined( data.filmOffset ) ) {
+                    object.filmOffset = data.filmOffset
+                }
+                if ( !isNullOrUndefined( data.view ) ) {
+                    object.view = Object.assign( {}, data.view )
+                }
+                break
 
             case 'OrthographicCamera':
-                object = new OrthographicCamera( data.left, data.right, data.top, data.bottom, data.near, data.far );
-                break;
+                object = new OrthographicCamera( data.left, data.right, data.top, data.bottom, data.near, data.far )
+                this._fillBaseObjectsData( object, data )
+                break
 
             case 'AmbientLight':
-                object = new AmbientLight( data.color, data.intensity );
-                break;
+                object = new AmbientLight( data.color, data.intensity )
+                this._fillBaseObjectsData( object, data )
+                break
 
             case 'DirectionalLight':
-                object = new DirectionalLight( data.color, data.intensity );
-                break;
+                object = new DirectionalLight( data.color, data.intensity )
+                this._fillBaseObjectsData( object, data )
+                break
 
             case 'PointLight':
-                object = new PointLight( data.color, data.intensity, data.distance, data.decay );
-                break;
+                object = new PointLight( data.color, data.intensity, data.distance, data.decay )
+                this._fillBaseObjectsData( object, data )
+                break
 
             case 'RectAreaLight':
-                object = new RectAreaLight( data.color, data.intensity, data.width, data.height );
-                break;
+                object = new RectAreaLight( data.color, data.intensity, data.width, data.height )
+                this._fillBaseObjectsData( object, data )
+                break
 
             case 'SpotLight':
-                object = new SpotLight( data.color, data.intensity, data.distance, data.angle, data.penumbra, data.decay );
-                break;
+                object = new SpotLight( data.color, data.intensity, data.distance, data.angle, data.penumbra, data.decay )
+                this._fillBaseObjectsData( object, data )
+                break
 
             case 'HemisphereLight':
                 object = new HemisphereLight( data.color, data.groundColor, data.intensity )
-                break;
+                this._fillBaseObjectsData( object, data )
+                break
 
             case 'SkinnedMesh':
                 object = new SkinnedMesh()
+                this._fillBaseObjectsData( object, data )
+                object.geometry          = data.geometry
+                object.material          = data.material
+                object.drawMode          = data.drawMode
+                object.bindMode          = data.bindMode
+                object.bindMatrix        = data.bindMatrix
+                object.bindMatrixInverse = data.bindMatrixInverse
                 break
 
             case 'Mesh':
                 object = new Mesh()
-                break;
+                this._fillBaseObjectsData( object, data )
+                object.geometry = data.geometry
+                object.material = data.material
+                object.drawMode = data.drawMode
+                break
 
             case 'LOD':
                 object = new LOD()
-                break;
+                this._fillBaseObjectsData( object, data )
+                object.levels = data.levels
+                break
 
             case 'Line':
                 object = new Line()
-                break;
+                this._fillBaseObjectsData( object, data )
+                object.geometry = data.geometry
+                object.material = data.material
+                object.drawMode = data.drawMode
+                break
 
             case 'LineLoop':
                 object = new LineLoop()
-                break;
+                this._fillBaseObjectsData( object, data )
+                object.geometry = data.geometry
+                object.material = data.material
+                object.drawMode = data.drawMode
+                break
 
             case 'LineSegments':
                 object = new LineSegments()
-                break;
+                this._fillBaseObjectsData( object, data )
+                object.geometry = data.geometry
+                object.material = data.material
+                object.drawMode = data.drawMode
+                break
 
             case 'Points':
                 object = new Points()
-                break;
+                this._fillBaseObjectsData( object, data )
+                object.geometry = data.geometry
+                object.material = data.material
+                object.drawMode = data.drawMode
+                break
 
             case 'Sprite':
                 object = new Sprite()
-                break;
+                this._fillBaseObjectsData( object, data )
+                object.material = data.material
+                break
 
             case 'Group':
                 object = new Group()
+                this._fillBaseObjectsData( object, data )
                 break
 
             default:
-                object = new Object3D()
+                throw new Error( `TObjectsManager: Unknown object of type: ${objectType}` )
                 break
 
         }
+
+        return object
+
+    }
+
+    _fillBaseObjectsData ( object, data ) {
 
         // Common object properties
         object._id = data._id
@@ -219,9 +388,14 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
         }
 
         if ( !isNullOrUndefined( data.position ) ) {
-            object.position.x = data.position.x
-            object.position.y = data.position.y
-            object.position.z = data.position.z
+
+            object.position.x = data.position.x / 1000
+            object.position.y = data.position.z / 1000
+            object.position.z = -data.position.y / 1000
+
+            //            object.position.x = data.position.x
+            //            object.position.y = data.position.y
+            //            object.position.z = data.position.z
         }
 
         if ( !isNullOrUndefined( data.rotation ) ) {
@@ -296,272 +470,165 @@ TObjectsManager.prototype = Object.assign( Object.create( TDataBaseManager.proto
             object.userData = data.userData
         }
 
-        if (
-            objectType === 'Line' ||
-            objectType === 'LineLoop' ||
-            objectType === 'LineSegments' ||
-            objectType === 'Mesh' ||
-            objectType === 'Points'
-        ) {
+    }
 
-            object.geometry = data.geometry
-            object.material = data.material
-            object.drawMode = data.drawMode
+    async fillObjects3D ( objects, onSuccess, onProgress, onError ) {
 
-        } else if ( objectType === 'SkinnedMesh' ) {
-
-            object.geometry          = data.geometry
-            object.material          = data.material
-            object.drawMode          = data.drawMode
-            object.bindMode          = data.bindMode
-            object.bindMatrix        = data.bindMatrix
-            object.bindMatrixInverse = data.bindMatrixInverse
-
-        } else if ( objectType === 'PerspectiveCamera' ) {
-
-            object.fov    = data.fov
-            object.aspect = data.aspect
-            object.near   = data.near
-            object.far    = data.far
-
-            if ( !isNullOrUndefined( data.focus ) ) {
-                object.focus = data.focus
-            }
-            if ( !isNullOrUndefined( data.zoom ) ) {
-                object.zoom = data.zoom
-            }
-            if ( !isNullOrUndefined( data.filmGauge ) ) {
-                object.filmGauge = data.filmGauge
-            }
-            if ( !isNullOrUndefined( data.filmOffset ) ) {
-                object.filmOffset = data.filmOffset
-            }
-            if ( !isNullOrUndefined( data.view ) ) {
-                object.view = Object.assign( {}, data.view )
-            }
-
-        } else if ( objectType === 'LOD' ) {
-
-            object.levels = data.levels
-
-        } else if ( objectType === 'Sprite' ) {
-
-            object.material = data.material
-
-        } else if ( objectType === 'Scene' ) {
-
-            if ( !isNullOrUndefined( data.background ) ) {
-
-                if ( Number.isInteger( data.background ) ) {
-
-                    object.background = new Color( data.background )
-
-                }
-
-            }
-
-            if ( !isNullOrUndefined( data.fog ) ) {
-
-                if ( data.fog.type === 'Fog' ) {
-
-                    object.fog = new Fog( data.fog.color, data.fog.near, data.fog.far );
-
-                } else if ( data.fog.type === 'FogExp2' ) {
-
-                    object.fog = new FogExp2( data.fog.color, data.fog.density );
-
-                }
-
-            }
-
-            object.overrideMaterial = data.overrideMaterial
-            object.autoUpdate       = data.autoUpdate
-
+        const self         = this
+        const objectsArray = []
+        for ( let id in objects ) {
+            objectsArray.push( objects[ id ] )
         }
 
-        return object
+        const [ geometriesMap, materialsMap ] = await Promise.all( [
+            this._retrieveGeometriesOf( objectsArray, onProgress, onError ),
+            this._retrieveMaterialsOf( objectsArray, onProgress, onError )
+        ] )
 
-    },
+        for ( let key in objects ) {
+            const mesh = objects[ key ]
+            self.applyGeometry( mesh, geometriesMap )
+            self.applyMaterials( mesh, materialsMap )
+        }
 
-    fillObjects3D ( objects, onSuccess, onProgress, onError ) {
+        // Don't forget to return all input object to callback,
+        // else some ids won't never be considered as processed !
+        onSuccess( objects )
+
+    }
+
+    _retrieveGeometriesOf ( meshes, onProgress, onError ) {
 
         const self = this
 
-        // Filter object with geometries and materials
-        const meshes = objects.filter( object => { return (
-            object.isLine ||
-            object.isLineLoop ||
-            object.isLineSegments ||
-            object.isMesh ||
-            object.isPoints ||
-            object.isSkinnedMesh ||
-            object.isSprite
-        ) } )
+        return new Promise( function ( resolve, reject ) {
 
-        if(meshes.length === 0) {
-            onSuccess( objects )
-            return
-        }
+            const geometriesIds = meshes.map( object => object.geometry )
+                                        .filter( ( value, index, self ) => {
+                                            return value && self.indexOf( value ) === index
+                                        } )
 
-        // Todo: protect against only materials objects and/or no ids to provide !
-
-        // Extract geometries and materials to request
-        const geometriesIds = meshes.map( object => object.geometry ).filter( ( value, index, self ) => {
-            return self.indexOf( value ) === index
-        } )
-        let geometriesMap = undefined
-        this._geometriesProvider.read(
-            geometriesIds,
-            geometries => {
-                geometriesMap = geometries
-                checkEndOfRequests()
-            },
-            onProgress,
-            onError
-        )
-
-        const materialsArray       = meshes.map( object => object.material )
-        const concatMaterialsArray = [].concat.apply( [], materialsArray )
-        const materialsIds         = concatMaterialsArray.filter( ( value, index, self ) => {
-            return self.indexOf( value ) === index
-        } )
-        let materialsMap = undefined
-        this._materialsProvider.read(
-            materialsIds,
-            materials => {
-                materialsMap = materials
-                checkEndOfRequests()
-            },
-            self.onProgress,
-            self.onError
-        )
-
-        function checkEndOfRequests() {
-
-            if( geometriesMap === undefined || materialsMap === undefined ) {
+            if ( geometriesIds.length === 0 ) {
+                resolve( {} )
                 return
             }
 
-            for ( let key in meshes ) {
-                const mesh = meshes[key]
-                self.applyGeometry( mesh, geometriesMap )
-                self.applyMaterials( mesh, materialsMap )
+            self._geometriesProvider.read(
+                geometriesIds,
+                null,
+                geometries => {
+                    resolve( geometries )
+                },
+                onProgress,
+                onError
+            )
+
+        } )
+
+    }
+
+    _retrieveMaterialsOf ( meshes, onProgress, onError ) {
+
+        const self = this
+
+        return new Promise( function ( resolve, reject ) {
+
+            const materialsArray       = meshes.map( object => object.material )
+            const concatMaterialsArray = [].concat.apply( [], materialsArray )
+            const materialsIds         = concatMaterialsArray.filter( ( value, index, self ) => {
+                return value && self.indexOf( value ) === index
+            } )
+
+            if ( materialsIds.length === 0 ) {
+                resolve( {} )
+                return
             }
 
-            // Don't forget to return all input object to callback,
-            // else some ids won't never be considered as processed !
-            onSuccess( objects )
+            self._materialsProvider.read(
+                materialsIds,
+                null,
+                materials => {
+                    resolve( materials )
+                },
+                onProgress,
+                onError
+            )
 
-        }
+        } )
 
-    },
+    }
 
-    applyGeometry( object, geometries ) {
+    applyGeometry ( object, geometries ) {
 
         const geometryId = object.geometry
+        if ( !geometryId ) {
+            return
+        }
+
         const geometry = geometries[ geometryId ]
-        if(!geometry) {
-            console.error('Unable to retrieve geometry !!!')
-            return null
+        if ( !geometry ) {
+            console.error( 'Unable to retrieve geometry !!!' )
+            return
         }
 
         object.geometry = geometry
 
-    },
+    }
 
-    applyMaterials( object, materials ) {
+    applyMaterials ( object, materials ) {
 
         const materialIds = object.material
+        if ( !materialIds ) {
+            return
+        }
 
         if ( Array.isArray( materialIds ) ) {
 
             if ( materialIds.length === 1 ) {
 
                 const materialId = materialIds[ 0 ]
-                const material = materials[ materialId ]
-                if(!material) {
-                    console.error('Unable to retrieve material !!!')
+                const material   = materials[ materialId ]
+                if ( !material ) {
+                    console.error( 'Unable to retrieve material !!!' )
                     return null
                 }
 
-                object.material  = material.clone()
+                object.material = material.clone()
 
             } else {
 
                 object.material = []
                 for ( let materialIndex = 0, numberOfMaterial = materialIds.length ; materialIndex < numberOfMaterial ; materialIndex++ ) {
                     const materialId = materialIds[ materialIndex ]
-                    const material = materials[ materialId ]
-                    if(!material) {
-                        console.error('Unable to retrieve material !!!')
+                    const material   = materials[ materialId ]
+                    if ( !material ) {
+                        console.error( 'Unable to retrieve material !!!' )
                         return null
                     }
 
-                    object.material.push(material.clone())
+                    object.material.push( material.clone() )
                 }
             }
 
         } else if ( typeof materialIds === 'string' ) {
 
             const material = materials[ materialIds ]
-            if(!material) {
-                console.error('Unable to retrieve material !!!')
-                return null
+            if ( !material ) {
+                console.error( 'Unable to retrieve material !!!' )
+                return
             }
 
-            object.material  = material.clone()
+            object.material = material.clone()
 
         } else {
 
-            console.error('Object does not contain materials ids !!!')
-            return null
+            console.error( 'Invalid material ids, expected string or array of string' )
+            return
 
         }
 
-    },
-
-} )
-
-Object.defineProperties( TObjectsManager.prototype, {
-
-    /**
-     *
-     */
-    _onJson: {
-        value: function _onJson ( jsonData, onSuccess, onProgress, onError ) {
-
-            if ( Array.isArray( jsonData ) ) {
-
-                let objects = []
-                let object  = undefined
-                let data    = undefined
-                for ( let dataIndex = 0, numberOfDatas = jsonData.length ; dataIndex < numberOfDatas ; dataIndex++ ) {
-
-                    data   = jsonData[ dataIndex ]
-                    object = this.convertJsonToObject3D( data, onError )
-
-                    if ( object ) { objects.push( object ) }
-
-                    onProgress( dataIndex / numberOfDatas )
-
-                }
-
-                this.fillObjects3D( objects, onSuccess, onProgress, onError )
-//                onSuccess( objects )
-
-            } else {
-
-                let object = this.convertJsonToObject3D( jsonData, onError )
-                this.fillObjects3D( [object], onSuccess, onProgress, onError )
-
-//                onProgress( 1.0 )
-//                onSuccess( object )
-
-            }
-
-        }
     }
 
-} )
+}
 
 export { TObjectsManager }
