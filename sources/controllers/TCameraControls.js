@@ -9,22 +9,30 @@
  */
 
 import {
+    PI_2,
+    degreesToRadians
+} from 'itee-utils'
+import {
+    isNull,
+    isUndefined
+} from 'itee-validators'
+import {
     Quaternion,
     Vector2,
     Vector3,
     Spherical,
     ArrowHelper,
     EventDispatcher,
+    Camera,
+    PerspectiveCamera,
+    OrthographicCamera,
     Object3D
 } from 'three-full'
 import {
     Keys,
     Mouse
 } from '../cores/TConstants'
-import {
-    PI_2,
-    degreesToRadians
-} from 'itee-utils'
+import { Enum } from 'enumify'
 
 const FRONT = new Vector3( 0, 0, -1 )
 const BACK  = new Vector3( 0, 0, 1 )
@@ -33,58 +41,24 @@ const DOWN  = new Vector3( 0, -1, 0 )
 const RIGHT = new Vector3( 1, 0, 0 )
 const LEFT  = new Vector3( -1, 0, 0 )
 
-const States = Object.freeze( {
-    NONE:     0,
-    ROTATING: 1,
-    PANNING:  2,
-    ROLLING:  3,
-    ZOOMING:  4
-} )
+class State extends Enum {}
+State.initEnum( [ 'None', 'Rotating', 'Panning', 'Rolling', 'Zooming' ] )
 
-//const accelerations = {
-//    Linear: function( speed ) {
-//        return speed + acceleration
-//    }
-//}
-
-class Movement {
-
-    constructor ( min, max, minSpeed, currentSpeed, maxSpeed, acceleration ) {
-
-        this.minimum      = -Infinity
-        this.maximum      = -Infinity
-        this.minSpeed     = 0.0
-        this.speed        = 1.0
-        this.maxSpeed     = Infinity
-        this.acceleration = 1.0
-
-    }
-
-}
-
-const ControlMode = Object.freeze( {
-    FirstPerson: 0,
-    Orbit:       1,
-    Fly:         2,
-    Path:        3
-} )
+class ControlMode extends Enum {}
+ControlMode.initEnum( [ 'FirstPerson', 'Orbit', 'Fly', 'Path' ] )
 
 class TCameraControls extends EventDispatcher {
 
-    constructor ( camera, target, domElement ) {
+    constructor ( camera, target = new Object3D(), mode = ControlMode.Orbit, domElement = document ) {
 
         super()
 
-        if ( !camera ) {
-            throw new Error( "Unable to create TCameraPathController with null or undefined camera !" )
-        }
-
         this.camera     = camera
-        this.target     = target || new Object3D()
-        this.domElement = ( domElement !== undefined ) ? domElement : document
+        this.target     = target
+        this.domElement = domElement
+        this.mode       = mode
 
         // Set the displacement mode of the camera
-        this.mode = ControlMode.Orbit
 
         // Set to false to disable controls
         this.enabled = true
@@ -202,7 +176,7 @@ class TCameraControls extends EventDispatcher {
         }
 
         // The current internal state of controller
-        this._state = States.NONE
+        this._state = State.None
 
         // Impose by default on create
         this.impose()
@@ -216,27 +190,119 @@ class TCameraControls extends EventDispatcher {
             x: 0,
             y: 0
         }
+
     }
+
+    get camera () {
+
+        return this._camera
+
+    }
+
+    set camera ( value ) {
+
+        if ( isNull( value ) ) { throw new Error( "Camera cannot be null ! Expect an instance of Camera" ) }
+        if ( isUndefined( value ) ) { throw new Error( "Camera cannot be undefined ! Expect an instance of Camera" ) }
+        if ( !(value instanceof Camera) ) { throw new Error( `Camera cannot be an instance of ${value.constructor.name}. Expect an instance of Camera.` ) }
+
+        this._camera = value
+
+    }
+
+    setCamera ( value ) {
+
+        this.camera = value
+        return this
+
+    }
+
+    get target () {
+
+        return this._target
+
+    }
+
+    set target ( value ) {
+
+        if ( isNull( value ) ) { throw new Error( "Target cannot be null ! Expect an instance of Object3D." ) }
+        if ( isUndefined( value ) ) { throw new Error( "Target cannot be undefined ! Expect an instance of Object3D." ) }
+        if ( !(value instanceof Object3D) ) { throw new Error( `Target cannot be an instance of ${value.constructor.name}. Expect an instance of Object3D.` ) }
+
+        this._target = value
+
+    }
+
+    setTarget ( value ) {
+
+        this.target = value
+        return this
+
+    }
+
+    get domElement () {
+
+        return this._target
+
+    }
+
+    set domElement ( value ) {
+
+        if ( isNull( value ) ) { throw new Error( "DomElement cannot be null ! Expect an instance of HTMLDocument." ) }
+        if ( isUndefined( value ) ) { throw new Error( "DomElement cannot be undefined ! Expect an instance of HTMLDocument." ) }
+        if ( !(value instanceof HTMLDocument) ) { throw new Error( `Target cannot be an instance of ${value.constructor.name}. Expect an instance of HTMLDocument.` ) }
+
+        this._target = value
+
+    }
+
+    setDomElement ( value ) {
+
+        this.domElement = value
+        return this
+
+    }
+
+    get mode () {
+        return this._mode
+    }
+
+    set mode ( value ) {
+
+        if ( isNull( value ) ) { throw new Error( "Mode cannot be null ! Expect a value from ControlMode enum." ) }
+        if ( isUndefined( value ) ) { throw new Error( "Mode cannot be undefined ! Expect a value from ControlMode enum." ) }
+        if ( !(value instanceof ControlMode) ) { throw new Error( `Mode cannot be an instance of ${value.constructor.name}. Expect a value from ControlMode enum.` ) }
+
+        this._mode = value
+    }
+
+    setMode ( value ) {
+
+        this.mode = value
+        return this
+
+    }
+
+    ///////////////
 
     impose () {
 
-        this.domElement.addEventListener( 'mousedown', this._onMouseDown.bind( this ), false )
-        this.domElement.addEventListener( 'mousemove', this._onMouseMove.bind( this ), false )
-        this.domElement.addEventListener( 'mousewheel', this._onMouseWheel.bind( this ), false )
-        this.domElement.addEventListener( 'mouseup', this._onMouseUp.bind( this ), false )
-        this.domElement.addEventListener( 'keydown', this._onKeyDown.bind( this ), false )
-        this.domElement.addEventListener( 'keyup', this._onKeyUp.bind( this ), false )
+        this._domElement.addEventListener( 'mousedown', this._onMouseDown.bind( this ), false )
+        this._domElement.addEventListener( 'mousemove', this._onMouseMove.bind( this ), false )
+        this._domElement.addEventListener( 'mousewheel', this._onMouseWheel.bind( this ), false )
+        this._domElement.addEventListener( 'mouseup', this._onMouseUp.bind( this ), false )
+        this._domElement.addEventListener( 'keydown', this._onKeyDown.bind( this ), false )
+        this._domElement.addEventListener( 'keyup', this._onKeyUp.bind( this ), false )
 
     }
 
     dispose () {
 
-        this.domElement.removeEventListener( 'mousedown', this._onMouseDown.bind( this ), false )
-        this.domElement.removeEventListener( 'mousemove', this._onMouseMove.bind( this ), false )
-        this.domElement.removeEventListener( 'mousewheel', this._onMouseWheel.bind( this ), false )
-        this.domElement.removeEventListener( 'mouseup', this._onMouseUp.bind( this ), false )
-        this.domElement.removeEventListener( 'keydown', this._onKeyDown.bind( this ), false )
-        this.domElement.removeEventListener( 'keyup', this._onKeyUp.bind( this ), false )
+        this._domElement.removeEventListener( 'mousedown', this._onMouseDown.bind( this ), false )
+        this._domElement.removeEventListener( 'mousemove', this._onMouseMove.bind( this ), false )
+        this._domElement.removeEventListener( 'mousewheel', this._onMouseWheel.bind( this ), false )
+        this._domElement.removeEventListener( 'mouseup', this._onMouseUp.bind( this ), false )
+        this._domElement.removeEventListener( 'keydown', this._onKeyDown.bind( this ), false )
+        this._domElement.removeEventListener( 'keyup', this._onKeyUp.bind( this ), false )
 
     }
 
@@ -246,15 +312,15 @@ class TCameraControls extends EventDispatcher {
 
     setCameraPosition ( newCameraPosition ) {
 
-        this.camera.position.copy( newCameraPosition )
-        this.camera.lookAt( this.target.position )
+        this._camera.position.copy( newCameraPosition )
+        this._camera.lookAt( this._target.position )
 
     }
 
     setTargetPosition ( newTargetPosition ) {
 
-        this.target.position.copy( newTargetPosition )
-        this.camera.lookAt( this.target.position )
+        this._target.position.copy( newTargetPosition )
+        this._camera.lookAt( this._target.position )
 
     }
 
@@ -312,23 +378,23 @@ class TCameraControls extends EventDispatcher {
 
         if ( this.canRotate && actionMap.rotate.indexOf( button ) > -1 ) {
 
-            this._state = States.ROTATING
+            this._state = State.Rotating
 
         } else if ( this.canPan && actionMap.pan.indexOf( button ) > -1 ) {
 
-            this._state = States.PANNING
+            this._state = State.Panning
 
         } else if ( this.canRoll && actionMap.roll.indexOf( button ) > -1 ) {
 
-            this._state = States.ROLLING
+            this._state = State.Rolling
 
         } else if ( this.canZoom && actionMap.zoom.indexOf( button ) > -1 ) {
 
-            this._state = States.ZOOMING
+            this._state = State.Zooming
 
         } else {
 
-            this._state = States.NONE
+            this._state = State.None
 
         }
 
@@ -336,7 +402,7 @@ class TCameraControls extends EventDispatcher {
 
     _onMouseMove ( mouseEvent ) {
 
-        if ( !this.enabled || this._state === States.NONE ) {
+        if ( !this.enabled || this._state === State.None ) {
             return
         }
         mouseEvent.preventDefault()
@@ -349,19 +415,19 @@ class TCameraControls extends EventDispatcher {
 
         switch ( state ) {
 
-            case States.ROTATING:
+            case State.Rotating:
                 this._rotate( delta )
                 break
 
-            case States.PANNING:
+            case State.Panning:
                 this._pan( delta )
                 break
 
-            case States.ROLLING:
+            case State.Rolling:
                 this._roll( delta )
                 break
 
-            case States.ZOOMING:
+            case State.Zooming:
                 this._zoom( delta )
                 break
 
@@ -387,7 +453,7 @@ class TCameraControls extends EventDispatcher {
         }
 
         mouseEvent.preventDefault()
-        this._state = States.NONE
+        this._state = State.None
 
     }
 
@@ -395,11 +461,11 @@ class TCameraControls extends EventDispatcher {
     _front () {
 
         const displacement = FRONT.clone()
-                                  .applyQuaternion( this.camera.quaternion )
+                                  .applyQuaternion( this._camera.quaternion )
                                   .multiplyScalar( this.frontSpeed )
 
-        this.camera.position.add( displacement )
-        this.target.position.add( displacement )
+        this._camera.position.add( displacement )
+        this._target.position.add( displacement )
 
         this.dispatchEvent( { type: 'move' } )
 
@@ -408,11 +474,11 @@ class TCameraControls extends EventDispatcher {
     _back () {
 
         const displacement = BACK.clone()
-                                 .applyQuaternion( this.camera.quaternion )
+                                 .applyQuaternion( this._camera.quaternion )
                                  .multiplyScalar( this.backSpeed )
 
-        this.camera.position.add( displacement )
-        this.target.position.add( displacement )
+        this._camera.position.add( displacement )
+        this._target.position.add( displacement )
 
         this.dispatchEvent( { type: 'move' } )
 
@@ -421,11 +487,11 @@ class TCameraControls extends EventDispatcher {
     _up () {
 
         const displacement = UP.clone()
-                               .applyQuaternion( this.camera.quaternion )
+                               .applyQuaternion( this._camera.quaternion )
                                .multiplyScalar( this.upSpeed )
 
-        this.camera.position.add( displacement )
-        this.target.position.add( displacement )
+        this._camera.position.add( displacement )
+        this._target.position.add( displacement )
 
         this.dispatchEvent( { type: 'move' } )
 
@@ -434,11 +500,11 @@ class TCameraControls extends EventDispatcher {
     _down () {
 
         const displacement = DOWN.clone()
-                                 .applyQuaternion( this.camera.quaternion )
+                                 .applyQuaternion( this._camera.quaternion )
                                  .multiplyScalar( this.downSpeed )
 
-        this.camera.position.add( displacement )
-        this.target.position.add( displacement )
+        this._camera.position.add( displacement )
+        this._target.position.add( displacement )
 
         this.dispatchEvent( { type: 'move' } )
 
@@ -447,11 +513,11 @@ class TCameraControls extends EventDispatcher {
     _left () {
 
         const displacement = LEFT.clone()
-                                 .applyQuaternion( this.camera.quaternion )
+                                 .applyQuaternion( this._camera.quaternion )
                                  .multiplyScalar( this.leftSpeed )
 
-        this.camera.position.add( displacement )
-        this.target.position.add( displacement )
+        this._camera.position.add( displacement )
+        this._target.position.add( displacement )
 
         this.dispatchEvent( { type: 'move' } )
 
@@ -460,11 +526,11 @@ class TCameraControls extends EventDispatcher {
     _right () {
 
         const displacement = RIGHT.clone()
-                                  .applyQuaternion( this.camera.quaternion )
+                                  .applyQuaternion( this._camera.quaternion )
                                   .multiplyScalar( this.rightSpeed )
 
-        this.camera.position.add( displacement )
-        this.target.position.add( displacement )
+        this._camera.position.add( displacement )
+        this._target.position.add( displacement )
 
         this.dispatchEvent( { type: 'move' } )
 
@@ -472,22 +538,22 @@ class TCameraControls extends EventDispatcher {
 
     _rotate ( delta ) {
 
-        switch ( this.mode ) {
+        switch ( this._mode ) {
 
             case ControlMode.FirstPerson:
 
-                //        const normalizedX = (delta.x / this.domElement.clientWidth) - 1.0
-                //        const normalizedY = (delta.y / this.domElement.clientHeight) - 1.0
+                //        const normalizedX = (delta.x / this._domElement.clientWidth) - 1.0
+                //        const normalizedY = (delta.y / this._domElement.clientHeight) - 1.0
                 const normalizedX = delta.x
                 const normalizedY = delta.y
 
                 const newTargetPosition = new Vector3( -normalizedX, normalizedY, 0 )
-                    .applyQuaternion( this.camera.quaternion )
+                    .applyQuaternion( this._camera.quaternion )
                     .multiplyScalar( this.rotateSpeed )
-                    .add( this.target.position )
+                    .add( this._target.position )
 
                 // Protect against owl head
-                const cameraToTargetDirection = new Vector3().subVectors( newTargetPosition, this.camera.position ).normalize()
+                const cameraToTargetDirection = new Vector3().subVectors( newTargetPosition, this._camera.position ).normalize()
                 const dotProductUp            = UP.clone().dot( cameraToTargetDirection )
                 const dotProductRight         = RIGHT.clone().dot( cameraToTargetDirection )
 
@@ -502,8 +568,8 @@ class TCameraControls extends EventDispatcher {
 
             case ControlMode.Orbit:
 
-                const cameraUp       = this.camera.up
-                const targetToCamera = new Vector3().subVectors( this.camera.position, this.target.position )
+                const cameraUp       = this._camera.up
+                const targetToCamera = new Vector3().subVectors( this._camera.position, this._target.position )
                 const spherical      = new Spherical().setFromVector3( targetToCamera )
 
                 if ( cameraUp.equals( UP ) ) {
@@ -522,12 +588,12 @@ class TCameraControls extends EventDispatcher {
                 } else if ( cameraUp.equals( BACK ) ) {
 
                     // restrict theta to be between desired limits
-//                    spherical.theta += degreesToRadians( -delta.x ) * this.rotateSpeed
-//                    spherical.theta = Math.max( this.minPolarAngle, Math.min( this.maxPolarAngle, spherical.theta ) )
+                    //                    spherical.theta += degreesToRadians( -delta.x ) * this.rotateSpeed
+                    //                    spherical.theta = Math.max( this.minPolarAngle, Math.min( this.maxPolarAngle, spherical.theta ) )
 
                     // restrict phi to be between desired limits
                     spherical.phi += degreesToRadians( -delta.y ) * this.rotateSpeed
-//                    spherical.phi = Math.max( this.minAzimuthAngle, Math.min( this.maxAzimuthAngle, spherical.phi ) )
+                    //                    spherical.phi = Math.max( this.minAzimuthAngle, Math.min( this.maxAzimuthAngle, spherical.phi ) )
 
                     const newPosition = new Vector3().setFromSpherical( spherical )
                     this.setCameraPosition( newPosition )
@@ -536,14 +602,14 @@ class TCameraControls extends EventDispatcher {
 
                 } else {
 
-                    console.warn('Unknown/Unmanaged world axis orientation !')
+                    console.warn( 'Unknown/Unmanaged world axis orientation !' )
 
                 }
 
                 break
 
             default:
-                throw new RangeError( `Invalid camera control mode parameter: ${this.mode}` )
+                throw new RangeError( `Invalid camera control _mode parameter: ${this._mode}` )
                 break
 
         }
@@ -555,14 +621,14 @@ class TCameraControls extends EventDispatcher {
     _pan ( delta ) {
 
         // Take into account the distance between the camera and his target
-        const cameraPosition                 = this.camera.position
-        const targetPosition                 = this.target.position
+        const cameraPosition                 = this._camera.position
+        const targetPosition                 = this._target.position
         const distanceBetweenCameraAndTarget = cameraPosition.distanceTo( targetPosition )
-        const displacement                   = new Vector3( -delta.x, delta.y, 0 ).applyQuaternion( this.camera.quaternion )
+        const displacement                   = new Vector3( -delta.x, delta.y, 0 ).applyQuaternion( this._camera.quaternion )
                                                                                   .multiplyScalar( this.panSpeed * distanceBetweenCameraAndTarget )
 
-        this.camera.position.add( displacement )
-        this.target.position.add( displacement )
+        this._camera.position.add( displacement )
+        this._target.position.add( displacement )
 
         this.dispatchEvent( { type: 'pan' } )
 
@@ -576,27 +642,27 @@ class TCameraControls extends EventDispatcher {
 
     _zoom ( delta ) {
 
-        switch ( this.mode ) {
+        switch ( this._mode ) {
 
             case ControlMode.FirstPerson:
 
                 if ( delta > 0 ) {
-                    this.camera.fov++
+                    this._camera.fov++
                 } else {
-                    this.camera.fov--
+                    this._camera.fov--
                 }
 
-                this.camera.updateProjectionMatrix()
+                this._camera.updateProjectionMatrix()
 
                 break
 
             case ControlMode.Orbit:
 
-                const cameraPosition                 = this.camera.position
-                const targetPosition                 = this.target.position
+                const cameraPosition                 = this._camera.position
+                const targetPosition                 = this._target.position
                 const distanceBetweenCameraAndTarget = cameraPosition.distanceTo( targetPosition )
                 const displacement                   = FRONT.clone()
-                                                            .applyQuaternion( this.camera.quaternion )
+                                                            .applyQuaternion( this._camera.quaternion )
                                                             .multiplyScalar( delta * this.zoomSpeed * distanceBetweenCameraAndTarget )
 
                 let cameraNextPosition                   = cameraPosition.clone().add( displacement )
@@ -615,12 +681,12 @@ class TCameraControls extends EventDispatcher {
 
                 }
 
-                this.camera.position.copy( cameraNextPosition )
+                this._camera.position.copy( cameraNextPosition )
 
                 break
 
             default:
-                throw new RangeError( `Invalid camera control mode parameter: ${this.mode}` )
+                throw new RangeError( `Invalid camera control mode parameter: ${this._mode}` )
                 break
 
         }
@@ -638,3 +704,242 @@ class TCameraControls extends EventDispatcher {
 }
 
 export { TCameraControls }
+
+//// Extra work
+
+//
+//// t: current time, b: begInnIng value, c: change In value, d: duration
+//const ease = {
+//    def:              'easeOutQuad',
+//    easeInQuad:       function ( x, t, b, c, d ) {
+//        return c * (t /= d) * t + b;
+//    },
+//    easeOutQuad:      function ( x, t, b, c, d ) {
+//        return -c * (t /= d) * (t - 2) + b;
+//    },
+//    easeInOutQuad:    function ( x, t, b, c, d ) {
+//        if ( (t /= d / 2) < 1 ) {
+//            return c / 2 * t * t + b;
+//        }
+//        return -c / 2 * ((--t) * (t - 2) - 1) + b;
+//    },
+//    easeInCubic:      function ( x, t, b, c, d ) {
+//        return c * (t /= d) * t * t + b;
+//    },
+//    easeOutCubic:     function ( x, t, b, c, d ) {
+//        return c * ((t = t / d - 1) * t * t + 1) + b;
+//    },
+//    easeInOutCubic:   function ( x, t, b, c, d ) {
+//        if ( (t /= d / 2) < 1 ) {
+//            return c / 2 * t * t * t + b;
+//        }
+//        return c / 2 * ((t -= 2) * t * t + 2) + b;
+//    },
+//    easeInQuart:      function ( x, t, b, c, d ) {
+//        return c * (t /= d) * t * t * t + b;
+//    },
+//    easeOutQuart:     function ( x, t, b, c, d ) {
+//        return -c * ((t = t / d - 1) * t * t * t - 1) + b;
+//    },
+//    easeInOutQuart:   function ( x, t, b, c, d ) {
+//        if ( (t /= d / 2) < 1 ) {
+//            return c / 2 * t * t * t * t + b;
+//        }
+//        return -c / 2 * ((t -= 2) * t * t * t - 2) + b;
+//    },
+//    easeInQuint:      function ( x, t, b, c, d ) {
+//        return c * (t /= d) * t * t * t * t + b;
+//    },
+//    easeOutQuint:     function ( x, t, b, c, d ) {
+//        return c * ((t = t / d - 1) * t * t * t * t + 1) + b;
+//    },
+//    easeInOutQuint:   function ( x, t, b, c, d ) {
+//        if ( (t /= d / 2) < 1 ) {
+//            return c / 2 * t * t * t * t * t + b;
+//        }
+//        return c / 2 * ((t -= 2) * t * t * t * t + 2) + b;
+//    },
+//    easeInSine:       function ( x, t, b, c, d ) {
+//        return -c * Math.cos( t / d * (Math.PI / 2) ) + c + b;
+//    },
+//    easeOutSine:      function ( x, t, b, c, d ) {
+//        return c * Math.sin( t / d * (Math.PI / 2) ) + b;
+//    },
+//    easeInOutSine:    function ( x, t, b, c, d ) {
+//        return -c / 2 * (Math.cos( Math.PI * t / d ) - 1) + b;
+//    },
+//    easeInExpo:       function ( x, t, b, c, d ) {
+//        return (t == 0) ? b : c * Math.pow( 2, 10 * (t / d - 1) ) + b;
+//    },
+//    easeOutExpo:      function ( x, t, b, c, d ) {
+//        return (t == d) ? b + c : c * (-Math.pow( 2, -10 * t / d ) + 1) + b;
+//    },
+//    easeInOutExpo:    function ( x, t, b, c, d ) {
+//        if ( t == 0 ) {
+//            return b;
+//        }
+//        if ( t == d ) {
+//            return b + c;
+//        }
+//        if ( (t /= d / 2) < 1 ) {
+//            return c / 2 * Math.pow( 2, 10 * (t - 1) ) + b;
+//        }
+//        return c / 2 * (-Math.pow( 2, -10 * --t ) + 2) + b;
+//    },
+//    easeInCirc:       function ( x, t, b, c, d ) {
+//        return -c * (Math.sqrt( 1 - (t /= d) * t ) - 1) + b;
+//    },
+//    easeOutCirc:      function ( x, t, b, c, d ) {
+//        return c * Math.sqrt( 1 - (t = t / d - 1) * t ) + b;
+//    },
+//    easeInOutCirc:    function ( x, t, b, c, d ) {
+//        if ( (t /= d / 2) < 1 ) {
+//            return -c / 2 * (Math.sqrt( 1 - t * t ) - 1) + b;
+//        }
+//        return c / 2 * (Math.sqrt( 1 - (t -= 2) * t ) + 1) + b;
+//    },
+//    easeInElastic:    function ( x, t, b, c, d ) {
+//        var s = 1.70158;
+//        var p = 0;
+//        var a = c;
+//        if ( t == 0 ) {
+//            return b;
+//        }
+//        if ( (t /= d) == 1 ) {
+//            return b + c;
+//        }
+//        if ( !p ) {
+//            p = d * .3;
+//        }
+//        if ( a < Math.abs( c ) ) {
+//            a     = c;
+//            var s = p / 4;
+//        }
+//        else {
+//            var s = p / (2 * Math.PI) * Math.asin( c / a );
+//        }
+//        return -(a * Math.pow( 2, 10 * (t -= 1) ) * Math.sin( (t * d - s) * (2 * Math.PI) / p )) + b;
+//    },
+//    easeOutElastic:   function ( x, t, b, c, d ) {
+//        var s = 1.70158;
+//        var p = 0;
+//        var a = c;
+//        if ( t == 0 ) {
+//            return b;
+//        }
+//        if ( (t /= d) == 1 ) {
+//            return b + c;
+//        }
+//        if ( !p ) {
+//            p = d * .3;
+//        }
+//        if ( a < Math.abs( c ) ) {
+//            a     = c;
+//            var s = p / 4;
+//        }
+//        else {
+//            var s = p / (2 * Math.PI) * Math.asin( c / a );
+//        }
+//        return a * Math.pow( 2, -10 * t ) * Math.sin( (t * d - s) * (2 * Math.PI) / p ) + c + b;
+//    },
+//    easeInOutElastic: function ( x, t, b, c, d ) {
+//        var s = 1.70158;
+//        var p = 0;
+//        var a = c;
+//        if ( t == 0 ) {
+//            return b;
+//        }
+//        if ( (t /= d / 2) == 2 ) {
+//            return b + c;
+//        }
+//        if ( !p ) {
+//            p = d * (.3 * 1.5);
+//        }
+//        if ( a < Math.abs( c ) ) {
+//            a     = c;
+//            var s = p / 4;
+//        }
+//        else {
+//            var s = p / (2 * Math.PI) * Math.asin( c / a );
+//        }
+//        if ( t < 1 ) {
+//            return -.5 * (a * Math.pow( 2, 10 * (t -= 1) ) * Math.sin( (t * d - s) * (2 * Math.PI) / p )) + b;
+//        }
+//        return a * Math.pow( 2, -10 * (t -= 1) ) * Math.sin( (t * d - s) * (2 * Math.PI) / p ) * .5 + c + b;
+//    },
+//    easeInBack:       function ( x, t, b, c, d, s ) {
+//        if ( s == undefined ) {
+//            s = 1.70158;
+//        }
+//        return c * (t /= d) * t * ((s + 1) * t - s) + b;
+//    },
+//    easeOutBack:      function ( x, t, b, c, d, s ) {
+//        if ( s == undefined ) {
+//            s = 1.70158;
+//        }
+//        return c * ((t = t / d - 1) * t * ((s + 1) * t + s) + 1) + b;
+//    },
+//    easeInOutBack:    function ( x, t, b, c, d, s ) {
+//        if ( s == undefined ) {
+//            s = 1.70158;
+//        }
+//        if ( (t /= d / 2) < 1 ) {
+//            return c / 2 * (t * t * (((s *= (1.525)) + 1) * t - s)) + b;
+//        }
+//        return c / 2 * ((t -= 2) * t * (((s *= (1.525)) + 1) * t + s) + 2) + b;
+//    },
+//    easeInBounce:     function ( x, t, b, c, d ) {
+//        return c - jQuery.easing.easeOutBounce( x, d - t, 0, c, d ) + b;
+//    },
+//    easeOutBounce:    function ( x, t, b, c, d ) {
+//        if ( (t /= d) < (1 / 2.75) ) {
+//            return c * (7.5625 * t * t) + b;
+//        } else if ( t < (2 / 2.75) ) {
+//            return c * (7.5625 * (t -= (1.5 / 2.75)) * t + .75) + b;
+//        } else if ( t < (2.5 / 2.75) ) {
+//            return c * (7.5625 * (t -= (2.25 / 2.75)) * t + .9375) + b;
+//        } else {
+//            return c * (7.5625 * (t -= (2.625 / 2.75)) * t + .984375) + b;
+//        }
+//    },
+//    easeInOutBounce:  function ( x, t, b, c, d ) {
+//        if ( t < d / 2 ) {
+//            return jQuery.easing.easeInBounce( x, t * 2, 0, c, d ) * .5 + b;
+//        }
+//        return jQuery.easing.easeOutBounce( x, t * 2 - d, 0, c, d ) * .5 + c * .5 + b;
+//    }
+//}
+//
+////const accelerations = {
+////    Linear: function( speed ) {
+////        return speed + acceleration
+////    }
+////}
+//
+//class Movement {
+//
+//    constructor ( min, max, minSpeed, currentSpeed, maxSpeed, acceleration ) {
+//
+//        this.bounds   = {
+//            min: -Infinity,
+//            max: Infinity
+//        }
+//        this.speed    = {
+//            min:     0,
+//            current: 1.0,
+//            max:     Infinity
+//        }
+//        this.minSpeed = 0.0
+//        this.speed    = 1.0
+//        this.maxSpeed = Infinity
+//
+//        this.acceleration = function ( timer ) {
+//            return speed += 0.1
+//        }
+//
+//        this.deceleration = function ( timer, speed ) {
+//            return speed -= 0.1
+//        }
+//    }
+//
+//}
