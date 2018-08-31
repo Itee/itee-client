@@ -7,9 +7,6 @@
  * @example Todo...
  *
  */
-
-/* eslint-env browser */
-
 /**
  * A freezed javascript object used like an enum.
  * @typedef {object} Enum
@@ -21,46 +18,25 @@
  * } )
  */
 
-/**
- * @typedef {Enum} HttpVerb
- * @property {string} Create="PUT" - Corresponding to the create http verb for an itee server, namely "PUT".
- * @property {string} Read="POST" - Corresponding to the read http verb for an itee server, namely "POST".
- * @property {string} Update="PATCH" - Corresponding to the update http verb for an itee server, namely "PATCH".
- * @property {string} Delete="DELETE" - Corresponding to the delete http verb for an itee server, namely "DELETE".
- *
- * @constant
- * @type {HttpVerb}
- * @description HttpVerb contains the CRUD actions with corresponding http verb to request an itee server.
- * @see {@link https://en.wikipedia.org/wiki/Create,_read,_update_and_delete} for further information.
- */
-export const HttpVerb = Object.freeze( {
-    Create: "PUT",
-    Read:   "POST",
-    Update: "PATCH",
-    Delete: "DELETE"
-} )
+/* eslint-env browser */
+
+import { Enum } from 'enumify'
 
 /**
- * @typedef {Enum} ResponseType
- * @property {string} ArrayBuffer="arraybuffer" - The "arraybuffer" server response type.
- * @property {string} Blob="blob" - The "blob" server response type.
- * @property {string} Document="document" - The "document" server response type.
- * @property {string} Json="json" - The "json" server response type.
- * @property {string} DOMString="text" - The "text" server response type.
- * @property {string} Default="text" - The "" server response type ( equivalent to DOMString ).
  *
- * @constant
- * @type {ResponseType}
- * @description ResponseType allow to filter wich type of response is recieved from the server.
- * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType} for further information.
+ * @type {Enum} FileFormat
  */
-export const ResponseType = Object.freeze( {
-    ArrayBuffer: 'arraybuffer',
-    Blob:        'blob',
-    Document:    'document',
-    Json:        'json',
-    DOMString:   'text',
-    Default:     ''
+class FileFormat extends Enum {}
+FileFormat.initEnum( {
+    Asc:  { value: 'asc' },
+    Dae:  { value: 'dae' },
+    Dbf:  { value: 'dbf' },
+    Fbx:  { value: 'fbx' },
+    Mtl:  { value: 'mtl' },
+    Json: { value: 'json' },
+    Obj:  { value: 'obj' },
+    Shp:  { value: 'shp' },
+    Stl:  { value: 'stl' },
 } )
 
 /**
@@ -155,239 +131,274 @@ export const ResponseType = Object.freeze( {
  * @description HttpStatusCode contains all http status code available to check and process correctly server response.
  * @see {@link https://en.wikipedia.org/wiki/List_of_HTTP_status_codes} for further information.
  */
-export const HttpStatusCode = Object.freeze( {
+class HttpStatusCode extends Enum {}
+HttpStatusCode.initEnum( {
 
     // 100
-    Continue:           100,
-    SwitchingProtocols: 101,
-    Processing:         102,
+    Continue:           { value: 100 },
+    SwitchingProtocols: { value: 101 },
+    Processing:         { value: 102 },
 
     // 200
-    Ok:                          200,
-    Created:                     201,
-    Accepted:                    202,
-    NonAuthoritativeInformation: 203,
-    NoContent:                   204,
-    ResetContent:                205,
-    PartialContent:              206,
-    MultiStatus:                 207,
-    AlreadyReported:             208,
-    ContentDifferent:            210,
-    IMUsed:                      226,
+    Ok:                          { value: 200 },
+    Created:                     { value: 201 },
+    Accepted:                    { value: 202 },
+    NonAuthoritativeInformation: { value: 203 },
+    NoContent:                   { value: 204 },
+    ResetContent:                { value: 205 },
+    PartialContent:              { value: 206 },
+    MultiStatus:                 { value: 207 },
+    AlreadyReported:             { value: 208 },
+    ContentDifferent:            { value: 210 },
+    IMUsed:                      { value: 226 },
 
     // 300
-    MultipleChoices:   300,
-    MovedPermanently:  301,
-    Found:             302,
-    SeeOther:          303,
-    NotModified:       304,
-    UseProxy:          305,
-    Unused:            306,
-    TemporaryRedirect: 307,
-    PermanentRedirect: 308,
-    TooManyRedirects:  310,
+    MultipleChoices:   { value: 300 },
+    MovedPermanently:  { value: 301 },
+    Found:             { value: 302 },
+    SeeOther:          { value: 303 },
+    NotModified:       { value: 304 },
+    UseProxy:          { value: 305 },
+    Unused:            { value: 306 },
+    TemporaryRedirect: { value: 307 },
+    PermanentRedirect: { value: 308 },
+    TooManyRedirects:  { value: 310 },
 
     // 400
-    BadRequest:                       400,
-    Unauthorized:                     401,
-    PaymentRequired:                  402,
-    Forbidden:                        403,
-    NotFound:                         404,
-    MethodNotAllowed:                 405,
-    NotAcceptable:                    406,
-    ProxyAuthenticationRequired:      407,
-    RequestTimeOut:                   408,
-    Conflict:                         409,
-    Gone:                             410,
-    LengthRequired:                   411,
-    PreconditionFailed:               412,
-    RequestEntityTooLarge:            413,
-    RequestRangeUnsatisfiable:        416,
-    ExpectationFailed:                417,
-    ImATeapot:                        418,
-    BadMapping:                       421,
-    UnprocessableEntity:              422,
-    Locked:                           423,
-    MethodFailure:                    424,
-    UnorderedCollection:              425,
-    UpgradeRequired:                  426,
-    PreconditionRequired:             428,
-    TooManyRequests:                  429,
-    RequestHeaderFieldsTooLarge:      431,
-    NoResponse:                       444,
-    RetryWith:                        449,
-    BlockedByWindowsParentalControls: 450,
-    UnavailableForLegalReasons:       451,
-    UnrecoverableError:               456,
-    SSLCertificateError:              495,
-    SSLCertificateRequired:           496,
-    HTTPRequestSentToHTTPSPort:       497,
-    ClientClosedRequest:              499,
+    BadRequest:                       { value: 400 },
+    Unauthorized:                     { value: 401 },
+    PaymentRequired:                  { value: 402 },
+    Forbidden:                        { value: 403 },
+    NotFound:                         { value: 404 },
+    MethodNotAllowed:                 { value: 405 },
+    NotAcceptable:                    { value: 406 },
+    ProxyAuthenticationRequired:      { value: 407 },
+    RequestTimeOut:                   { value: 408 },
+    Conflict:                         { value: 409 },
+    Gone:                             { value: 410 },
+    LengthRequired:                   { value: 411 },
+    PreconditionFailed:               { value: 412 },
+    RequestEntityTooLarge:            { value: 413 },
+    RequestRangeUnsatisfiable:        { value: 416 },
+    ExpectationFailed:                { value: 417 },
+    ImATeapot:                        { value: 418 },
+    BadMapping:                       { value: 421 },
+    UnprocessableEntity:              { value: 422 },
+    Locked:                           { value: 423 },
+    MethodFailure:                    { value: 424 },
+    UnorderedCollection:              { value: 425 },
+    UpgradeRequired:                  { value: 426 },
+    PreconditionRequired:             { value: 428 },
+    TooManyRequests:                  { value: 429 },
+    RequestHeaderFieldsTooLarge:      { value: 431 },
+    NoResponse:                       { value: 444 },
+    RetryWith:                        { value: 449 },
+    BlockedByWindowsParentalControls: { value: 450 },
+    UnavailableForLegalReasons:       { value: 451 },
+    UnrecoverableError:               { value: 456 },
+    SSLCertificateError:              { value: 495 },
+    SSLCertificateRequired:           { value: 496 },
+    HTTPRequestSentToHTTPSPort:       { value: 497 },
+    ClientClosedRequest:              { value: 499 },
 
     // 500
-    InternalServerError:           500,
-    NotImplemented:                501,
-    BadGateway:                    502,
-    ServiceUnavailable:            503,
-    GatewayTimeOut:                504,
-    HTTPVersionNotSupported:       505,
-    VariantAlsoNegotiates:         506,
-    InsufficientStorage:           507,
-    LoopDetected:                  508,
-    BandwidthLimitExceeded:        509,
-    NotExtended:                   510,
-    NetworkAuthenticationRequired: 511,
-    UnknownError:                  520,
-    WebServerIsDown:               521,
-    ConnectionTimedOut:            522,
-    OriginIsUnreachable:           523,
-    ATimeoutOccured:               524,
-    SSLHandshakeFailed:            525,
-    InvalidSSLCertificate:         526,
-    RailgunError:                  527
+    InternalServerError:           { value: 500 },
+    NotImplemented:                { value: 501 },
+    BadGateway:                    { value: 502 },
+    ServiceUnavailable:            { value: 503 },
+    GatewayTimeOut:                { value: 504 },
+    HTTPVersionNotSupported:       { value: 505 },
+    VariantAlsoNegotiates:         { value: 506 },
+    InsufficientStorage:           { value: 507 },
+    LoopDetected:                  { value: 508 },
+    BandwidthLimitExceeded:        { value: 509 },
+    NotExtended:                   { value: 510 },
+    NetworkAuthenticationRequired: { value: 511 },
+    UnknownError:                  { value: 520 },
+    WebServerIsDown:               { value: 521 },
+    ConnectionTimedOut:            { value: 522 },
+    OriginIsUnreachable:           { value: 523 },
+    ATimeoutOccured:               { value: 524 },
+    SSLHandshakeFailed:            { value: 525 },
+    InvalidSSLCertificate:         { value: 526 },
+    RailgunError:                  { value: 527 }
 
+} )
+
+/**
+ * @typedef {Enum} HttpVerb
+ * @property {string} Create="PUT" - Corresponding to the create http verb for an itee server, namely "PUT".
+ * @property {string} Read="POST" - Corresponding to the read http verb for an itee server, namely "POST".
+ * @property {string} Update="PATCH" - Corresponding to the update http verb for an itee server, namely "PATCH".
+ * @property {string} Delete="DELETE" - Corresponding to the delete http verb for an itee server, namely "DELETE".
+ *
+ * @constant
+ * @type {HttpVerb}
+ * @description HttpVerb contains the CRUD actions with corresponding http verb to request an itee server.
+ * @see {@link https://en.wikipedia.org/wiki/Create,_read,_update_and_delete} for further information.
+ */
+class HttpVerb extends Enum {}
+HttpVerb.initEnum( {
+    Create: { value: "PUT" },
+    Read:   { value: "POST" },
+    Update: { value: "PATCH" },
+    Delete: { value: "DELETE" }
 } )
 
 /**
  *
  * @type {Enum} Keys
  */
-export const Keys = Object.freeze( {
-    BACKSPACE:            8,
-    TAB:                  9,
-    ENTER:                13,
-    SHIFT:                16,
-    CTRL:                 17,
-    ALT:                  18,
-    PAUSE:                19,
-    CAPS_LOCK:            20,
-    ESCAPE:               27,
-    SPACE:                32,
-    PAGE_UP:              33,
-    PAGE_DOWN:            34,
-    END:                  35,
-    HOME:                 36,
-    LEFT_ARROW:           37,
-    UP_ARROW:             38,
-    RIGHT_ARROW:          39,
-    DOWN_ARROW:           40,
-    INSERT:               45,
-    DELETE:               46,
-    ZERO:                 48,
-    ONE:                  49,
-    TWO:                  50,
-    THREE:                51,
-    FOUR:                 52,
-    FIVE:                 53,
-    SIX:                  54,
-    SEVEN:                55,
-    HEIGHT:               56,
-    NINE:                 57,
-    A:                    65,
-    B:                    66,
-    C:                    67,
-    D:                    68,
-    E:                    69,
-    F:                    70,
-    G:                    71,
-    H:                    72,
-    I:                    73,
-    J:                    74,
-    K:                    75,
-    L:                    76,
-    M:                    77,
-    N:                    78,
-    O:                    79,
-    P:                    80,
-    Q:                    81,
-    R:                    82,
-    S:                    83,
-    T:                    84,
-    U:                    85,
-    V:                    86,
-    W:                    87,
-    X:                    88,
-    Y:                    89,
-    Z:                    90,
-    LEFT_WINDOW_KEY:      91,
-    RIGHT_WINDOW_KEY:     92,
-    SELECT_KEY:           93,
-    NUMPAD_0:             96,
-    NUMPAD_1:             97,
-    NUMPAD_2:             98,
-    NUMPAD_3:             99,
-    NUMPAD_4:             100,
-    NUMPAD_5:             101,
-    NUMPAD_6:             102,
-    NUMPAD_7:             103,
-    NUMPAD_8:             104,
-    NUMPAD_9:             105,
-    MULTIPLY:             106,
-    ADD:                  107,
-    SUBSTRACT:            109,
-    DECIMAL_POINT:        110,
-    DIVIDE:               111,
-    F1:                   112,
-    F2:                   113,
-    F3:                   114,
-    F4:                   115,
-    F5:                   116,
-    F6:                   117,
-    F7:                   118,
-    F8:                   119,
-    F9:                   120,
-    F10:                  121,
-    F11:                  122,
-    F12:                  123,
-    NUM_LOCK:             144,
-    SCROLL_LOCK:          145,
-    SEMICOLON:            186,
-    EQUAL:                187,
-    COMMA:                188,
-    DASH:                 189,
-    PERIODE:              190,
-    SLASH:                191,
-    GRAVE_ACCENT:         192,
-    OPEN_SQUARE_BRACKET:  219,
-    BACKSLASH:            220,
-    CLOSE_SQUARE_BRACKET: 221,
-    SINGLE_QUOTE:         222
+class Keys extends Enum {}
+Keys.initEnum( {
+    BACKSPACE:            { value: 8 },
+    TAB:                  { value: 9 },
+    ENTER:                { value: 13 },
+    SHIFT:                { value: 16 },
+    CTRL:                 { value: 17 },
+    ALT:                  { value: 18 },
+    PAUSE:                { value: 19 },
+    CAPS_LOCK:            { value: 20 },
+    ESCAPE:               { value: 27 },
+    SPACE:                { value: 32 },
+    PAGE_UP:              { value: 33 },
+    PAGE_DOWN:            { value: 34 },
+    END:                  { value: 35 },
+    HOME:                 { value: 36 },
+    LEFT_ARROW:           { value: 37 },
+    UP_ARROW:             { value: 38 },
+    RIGHT_ARROW:          { value: 39 },
+    DOWN_ARROW:           { value: 40 },
+    INSERT:               { value: 45 },
+    DELETE:               { value: 46 },
+    ZERO:                 { value: 48 },
+    ONE:                  { value: 49 },
+    TWO:                  { value: 50 },
+    THREE:                { value: 51 },
+    FOUR:                 { value: 52 },
+    FIVE:                 { value: 53 },
+    SIX:                  { value: 54 },
+    SEVEN:                { value: 55 },
+    HEIGHT:               { value: 56 },
+    NINE:                 { value: 57 },
+    A:                    { value: 65 },
+    B:                    { value: 66 },
+    C:                    { value: 67 },
+    D:                    { value: 68 },
+    E:                    { value: 69 },
+    F:                    { value: 70 },
+    G:                    { value: 71 },
+    H:                    { value: 72 },
+    I:                    { value: 73 },
+    J:                    { value: 74 },
+    K:                    { value: 75 },
+    L:                    { value: 76 },
+    M:                    { value: 77 },
+    N:                    { value: 78 },
+    O:                    { value: 79 },
+    P:                    { value: 80 },
+    Q:                    { value: 81 },
+    R:                    { value: 82 },
+    S:                    { value: 83 },
+    T:                    { value: 84 },
+    U:                    { value: 85 },
+    V:                    { value: 86 },
+    W:                    { value: 87 },
+    X:                    { value: 88 },
+    Y:                    { value: 89 },
+    Z:                    { value: 90 },
+    LEFT_WINDOW_KEY:      { value: 91 },
+    RIGHT_WINDOW_KEY:     { value: 92 },
+    SELECT_KEY:           { value: 93 },
+    NUMPAD_0:             { value: 96 },
+    NUMPAD_1:             { value: 97 },
+    NUMPAD_2:             { value: 98 },
+    NUMPAD_3:             { value: 99 },
+    NUMPAD_4:             { value: 100 },
+    NUMPAD_5:             { value: 101 },
+    NUMPAD_6:             { value: 102 },
+    NUMPAD_7:             { value: 103 },
+    NUMPAD_8:             { value: 104 },
+    NUMPAD_9:             { value: 105 },
+    MULTIPLY:             { value: 106 },
+    ADD:                  { value: 107 },
+    SUBSTRACT:            { value: 109 },
+    DECIMAL_POINT:        { value: 110 },
+    DIVIDE:               { value: 111 },
+    F1:                   { value: 112 },
+    F2:                   { value: 113 },
+    F3:                   { value: 114 },
+    F4:                   { value: 115 },
+    F5:                   { value: 116 },
+    F6:                   { value: 117 },
+    F7:                   { value: 118 },
+    F8:                   { value: 119 },
+    F9:                   { value: 120 },
+    F10:                  { value: 121 },
+    F11:                  { value: 122 },
+    F12:                  { value: 123 },
+    NUM_LOCK:             { value: 144 },
+    SCROLL_LOCK:          { value: 145 },
+    SEMICOLON:            { value: 186 },
+    EQUAL:                { value: 187 },
+    COMMA:                { value: 188 },
+    DASH:                 { value: 189 },
+    PERIODE:              { value: 190 },
+    SLASH:                { value: 191 },
+    GRAVE_ACCENT:         { value: 192 },
+    OPEN_SQUARE_BRACKET:  { value: 219 },
+    BACKSLASH:            { value: 220 },
+    CLOSE_SQUARE_BRACKET: { value: 221 },
+    SINGLE_QUOTE:         { value: 222 },
 } )
+
+// Todo
+class MimeType extends Enum {}
+//MimeType.Font
+//MimeType.initEnum( {} )
 
 /**
  *
  * @type {Enum} Mouse
  */
-export const Mouse = Object.freeze({
-    WHEEL: -1,
-    LEFT: 0,
-    MIDDLE: 1,
-    RIGHT: 2,
-})
+class Mouse extends Enum {}
+Mouse.initEnum( {
+    WHEEL:  { value: -1 },
+    LEFT:   { value: 0 },
+    MIDDLE: { value: 1 },
+    RIGHT:  { value: 2 },
+} )
 
 /**
+ * @typedef {Enum} ResponseType
+ * @property {string} ArrayBuffer="arraybuffer" - The "arraybuffer" server response type.
+ * @property {string} Blob="blob" - The "blob" server response type.
+ * @property {string} Document="document" - The "document" server response type.
+ * @property {string} Json="json" - The "json" server response type.
+ * @property {string} DOMString="text" - The "text" server response type.
+ * @property {string} Default="text" - The "" server response type ( equivalent to DOMString ).
  *
- * @type {Enum} FileFormat
+ * @constant
+ * @type {ResponseType}
+ * @description ResponseType allow to filter wich type of response is recieved from the server.
+ * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType} for further information.
  */
-export const FileFormat = Object.freeze( {
-    Asc:  'asc',
-    Dae:  'dae',
-    Dbf:  'dbf',
-    Fbx:  'fbx',
-    Mtl:  'mtl',
-    Json: 'json',
-    Obj:  'obj',
-    Shp:  'shp',
-    Stl:  'stl',
-
-    toString () {
-
-        const formats = Object.values( this )
-        let result    = ''
-        for ( let index = 0, numberOfFormats = formats.length ; index < numberOfFormats ; index++ ) {
-            result += formats[ index ]
-            result += ((index === numberOfFormats - 1) ? ', ' : '.')
-        }
-        return result
-    }
+class ResponseType extends Enum {}
+ResponseType.initEnum( {
+    ArrayBuffer: { value: 'arraybuffer' },
+    Blob:        { value: 'blob' },
+    Document:    { value: 'document' },
+    Json:        { value: 'json' },
+    DOMString:   { value: 'text' },
+    Default:     { value: '' }
 } )
+
+export {
+    FileFormat,
+    HttpStatusCode,
+    HttpVerb,
+    Keys,
+    MimeType,
+    Mouse,
+    ResponseType
+}

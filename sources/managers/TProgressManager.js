@@ -14,7 +14,7 @@ class TProgressManager {
 
     constructor () {}
 
-    update ( onProgressCallback, progressEvent ) {
+    update ( progressEvent, onProgressCallback ) {
 
         if ( progressEvent.lengthComputable ) {
 

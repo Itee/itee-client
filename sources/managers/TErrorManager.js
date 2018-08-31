@@ -14,6 +14,20 @@
  *
  * @constructor
  */
-class TErrorManager {}
+class TErrorManager {
+
+    constructor () {}
+
+    update ( errorEvent, onErrorCallback ) {
+
+        console.error( errorEvent )
+
+        if ( onErrorCallback ) {
+            onErrorCallback( errorEvent )
+        }
+
+    }
+
+}
 
 export { TErrorManager }

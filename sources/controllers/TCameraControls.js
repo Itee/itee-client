@@ -163,16 +163,16 @@ class TCameraControls extends EventDispatcher {
 
         // The actions map about input events
         this.actionsMap = {
-            front:  [ Keys.Z, Keys.UP_ARROW ],
-            back:   [ Keys.S, Keys.DOWN_ARROW ],
-            up:     [ Keys.A, Keys.PAGE_UP ],
-            down:   [ Keys.E, Keys.PAGE_DOWN ],
-            left:   [ Keys.Q, Keys.LEFT_ARROW ],
-            right:  [ Keys.D, Keys.RIGHT_ARROW ],
-            rotate: [ Mouse.LEFT ],
-            pan:    [ Mouse.MIDDLE ],
+            front:  [ Keys.Z.value, Keys.UP_ARROW.value ],
+            back:   [ Keys.S.value, Keys.DOWN_ARROW.value ],
+            up:     [ Keys.A.value, Keys.PAGE_UP.value ],
+            down:   [ Keys.E.value, Keys.PAGE_DOWN.value ],
+            left:   [ Keys.Q.value, Keys.LEFT_ARROW.value ],
+            right:  [ Keys.D.value, Keys.RIGHT_ARROW.value ],
+            rotate: [ Mouse.LEFT.value ],
+            pan:    [ Mouse.MIDDLE.value ],
             roll:   [],
-            zoom:   [ Mouse.WHEEL ]
+            zoom:   [ Mouse.WHEEL.value ]
         }
 
         // The current internal state of controller
@@ -241,7 +241,7 @@ class TCameraControls extends EventDispatcher {
 
     get domElement () {
 
-        return this._target
+        return this._domElement
 
     }
 
@@ -251,7 +251,7 @@ class TCameraControls extends EventDispatcher {
         if ( isUndefined( value ) ) { throw new Error( "DomElement cannot be undefined ! Expect an instance of HTMLDocument." ) }
         if ( !(value instanceof HTMLDocument) ) { throw new Error( `Target cannot be an instance of ${value.constructor.name}. Expect an instance of HTMLDocument.` ) }
 
-        this._target = value
+        this._domElement = value
 
     }
 
@@ -402,9 +402,8 @@ class TCameraControls extends EventDispatcher {
 
     _onMouseMove ( mouseEvent ) {
 
-        if ( !this.enabled || this._state === State.None ) {
-            return
-        }
+        if ( !this.enabled || this._state === State.None ) { return }
+
         mouseEvent.preventDefault()
 
         const state = this._state
@@ -440,6 +439,8 @@ class TCameraControls extends EventDispatcher {
     }
 
     _onMouseWheel ( mouseEvent ) {
+
+        if ( !this.canZoom ) { return }
 
         const delta = mouseEvent.wheelDelta
         this._zoom( delta )

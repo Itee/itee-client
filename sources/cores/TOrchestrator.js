@@ -17,6 +17,8 @@ import {
     isNumberPositive
 } from 'itee-validators'
 
+import { ResponseType } from './TConstants'
+
 class TOrchestrator {
 
     constructor ( numberOfConcurrentRequestsAllowed = 6 ) {
@@ -76,9 +78,10 @@ class TOrchestrator {
             request.onerror    = requestSkull.onError
             request.open( requestSkull.method, requestSkull.url, true )
             request.setRequestHeader( "Content-Type", "application/json" )
-            request.responseType = requestSkull.responseType
+            request.setRequestHeader( "Accept", "application/json" )
+            request.responseType = requestSkull.responseType.value
 
-            const dataToSend = (requestSkull.data && requestSkull.responseType === 'json') ? JSON.stringify( requestSkull.data ) : requestSkull.data
+            const dataToSend = (requestSkull.data && requestSkull.responseType === ResponseType.Json) ? JSON.stringify( requestSkull.data ) : requestSkull.data
             request.send( dataToSend )
 
             this._numberOfRunningRequest++

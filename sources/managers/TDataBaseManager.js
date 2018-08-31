@@ -21,6 +21,7 @@ import {
     isNull,
     isUndefined,
     isNullOrUndefined,
+    isDefined,
     isNotNumber,
     isNumberPositive,
     isString,
@@ -103,9 +104,7 @@ class TDataBaseManager {
         if ( isNull( value ) ) { throw new Error( 'TDataBaseManager: responseType cannot be null !' ) }
         if ( isNull( value ) ) { throw new TypeError( 'Response type cannot be null ! Expect a non empty string.' ) }
         if ( isUndefined( value ) ) { throw new TypeError( 'Response type cannot be undefined ! Expect a non empty string.' ) }
-        if ( isNotString( value ) ) { throw new TypeError( `Response type cannot be an instance of ${value.constructor.name} ! Expect a value from ResponseType enum.` ) }
-        if ( isEmptyString( value ) ) { throw new TypeError( 'Response type cannot be empty ! Expect a non empty string.' ) }
-        if ( isBlankString( value ) ) { throw new TypeError( 'Response type cannot contain only whitespace ! Expect a non empty string.' ) }
+        if ( !( value instanceof ResponseType ) ) { throw new TypeError( `Response type cannot be an instance of ${value.constructor.name} ! Expect a value from ResponseType enum.` ) }
 
         this._responseType = value
 
@@ -175,7 +174,7 @@ class TDataBaseManager {
 
     }
 
-    setErrorManager( value ) {
+    setErrorManager ( value ) {
 
         this.errorManager = value
         return this
@@ -214,12 +213,12 @@ class TDataBaseManager {
 
         let statusOk = false
 
-        if ( status === HttpStatusCode.NoContent ) {
+        if ( status === HttpStatusCode.NoContent.value ) {
 
             TLogger.warn( 'Unable to retrieve data...' )
             statusOk = true
 
-        } else if ( status !== HttpStatusCode.Ok ) {
+        } else if ( status !== HttpStatusCode.Ok.value ) {
 
             TLogger.error( 'An error occurs when retrieve data from database !!!' )
 
@@ -292,7 +291,7 @@ class TDataBaseManager {
 
         } else {
 
-            onErrorCallback( 'TDataBaseManager.create: Invalid data type, expect null, string, object or array of objects.' )
+            onErrorCallback( 'TDataBaseManager.read: Invalid data type, expect null, string, object or array of objects.' )
 
         }
 
@@ -407,7 +406,7 @@ class TDataBaseManager {
         // TODO: switch on status
         if ( !TDataBaseManager.statusOk( status ) ) { return }
 
-        if ( !response ) {
+        if ( isNullOrUndefined( response ) ) {
             TLogger.warn( 'TDataBaseManager.onLoad: No data receive !' )
             onLoadCallback( null )
             return
@@ -416,7 +415,7 @@ class TDataBaseManager {
         // Dispatch response to the correct handler in function of response type
         switch ( responseType ) {
 
-            case ResponseType.ArrayBuffer:
+            case ResponseType.ArrayBuffer.value:
                 this._onArrayBuffer(
                     response,
                     onLoadCallback,
@@ -425,7 +424,7 @@ class TDataBaseManager {
                 )
                 break;
 
-            case ResponseType.Blob:
+            case ResponseType.Blob.value:
                 this._onBlob(
                     response,
                     onLoadCallback,
@@ -434,7 +433,7 @@ class TDataBaseManager {
                 )
                 break;
 
-            case ResponseType.Json:
+            case ResponseType.Json.value:
                 this._onJson(
                     response,
                     onLoadCallback,
@@ -443,8 +442,8 @@ class TDataBaseManager {
                 )
                 break;
 
-            case ResponseType.DOMString:
-            case ResponseType.Default:
+            case ResponseType.DOMString.value:
+            case ResponseType.Default.value:
                 this._onText(
                     response,
                     onLoadCallback,
@@ -472,11 +471,11 @@ class TDataBaseManager {
      */
     _onProgress ( onProgressCallback, progressEvent ) {
 
-        if ( this.progressManager ) {
+        if ( isDefined( this._progressManager ) ) {
 
-            this.progressManager.update( onProgressCallback, progressEvent )
+            this._progressManager.update( progressEvent, onProgressCallback )
 
-        } else if ( onProgressCallback ) {
+        } else if ( isDefined( onProgressCallback ) ) {
 
             onProgressCallback( progressEvent )
 
@@ -499,11 +498,11 @@ class TDataBaseManager {
      */
     _onError ( onErrorCallback, errorEvent ) {
 
-        if ( this._errorManager ) {
+        if ( isDefined( this._errorManager ) ) {
 
-            this._errorManager.update( onErrorCallback, errorEvent )
+            this._errorManager.update( errorEvent, onErrorCallback )
 
-        } else if ( onErrorCallback ) {
+        } else if ( isDefined( onErrorCallback ) ) {
 
             onErrorCallback( errorEvent )
 
@@ -530,11 +529,7 @@ class TDataBaseManager {
      * @param {function} onProgress - The onProgress callback, which is call during the parsing.
      * @param {function} onError - The onError callback, which is call when parser throw an error during parsing.
      */
-    _onArrayBuffer ( data, onSuccess, onProgress, onError ) {
-        onProgress( 1 )
-        onSuccess( data )
-        onError( 'TDataBaseManager: _onArrayBuffer methods must be reimplemented !' )
-    }
+    _onArrayBuffer ( data, onSuccess, onProgress, onError ) {}
 
     /**
      * @private
@@ -548,11 +543,7 @@ class TDataBaseManager {
      * @param {function} onProgress - The onProgress callback, which is call during the parsing.
      * @param {function} onError - The onError callback, which is call when parser throw an error during parsing.
      */
-    _onBlob ( data, onSuccess, onProgress, onError ) {
-        onProgress( 1 )
-        onSuccess( data )
-        onError( 'TDataBaseManager: _onBlob methods must be reimplemented !' )
-    }
+    _onBlob ( data, onSuccess, onProgress, onError ) {}
 
     /**
      * @private
@@ -566,11 +557,7 @@ class TDataBaseManager {
      * @param {function} onProgress - The onProgress callback, which is call during the parsing.
      * @param {function} onError - The onError callback, which is call when parser throw an error during parsing.
      */
-    _onJson ( data, onSuccess, onProgress, onError ) {
-        onProgress( 1 )
-        onSuccess( data )
-        onError( 'TDataBaseManager: _onJson methods must be reimplemented !' )
-    }
+    _onJson ( data, onSuccess, onProgress, onError ) {}
 
     /**
      * @private
@@ -584,11 +571,7 @@ class TDataBaseManager {
      * @param {function} onProgress - The onProgress callback, which is call during the parsing.
      * @param {function} onError - The onError callback, which is call when parser throw an error during parsing.
      */
-    _onText ( data, onSuccess, onProgress, onError ) {
-        onProgress( 1 )
-        onSuccess( data )
-        onError( 'TDataBaseManager: _onText methods must be reimplemented !' )
-    }
+    _onText ( data, onSuccess, onProgress, onError ) {}
 
     // REST Api calls
     /**
@@ -605,7 +588,7 @@ class TDataBaseManager {
     _createOne ( data, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
-            HttpVerb.Create,
+            HttpVerb.Create.value,
             this._basePath,
             data,
             this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
@@ -619,7 +602,7 @@ class TDataBaseManager {
     _createMany ( datas, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
-            HttpVerb.Create,
+            HttpVerb.Create.value,
             this._basePath,
             datas,
             this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
@@ -643,21 +626,23 @@ class TDataBaseManager {
      */
     _readOne ( id, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        const self        = this
-        const cachedValue = this._cache.get( id )
+        const self = this
 
-        if ( cachedValue ) { // Already exist
+        try {
 
-            let result   = {}
-            result[ id ] = cachedValue
-            onLoadCallback( result )
+            const cachedValue = this._cache.get( id )
+            if ( isDefined( cachedValue ) ) { // Already exist
 
-        } else if ( cachedValue === null ) { // In request
+                let result   = {}
+                result[ id ] = cachedValue
+                onLoadCallback( result )
 
-        } else { // else request and pre-cache it
+            }
+
+        } catch ( error ) {
 
             TDataBaseManager.requestServer(
-                HttpVerb.Read,
+                HttpVerb.Read.value,
                 `${this._basePath}/${id}`,
                 {
                     projection
@@ -703,24 +688,30 @@ class TDataBaseManager {
         let idsToRequest    = []
         for ( let idIndex = 0, numberOfIds = ids.length ; idIndex < numberOfIds ; idIndex++ ) {
 
-            const id          = ids[ idIndex ]
-            const cachedValue = this._cache.get( id )
+            const id = ids[ idIndex ]
 
-            // Already exist
-            if ( cachedValue ) {
-                cachedValues[ id ] = cachedValue
-                continue
+            try {
+
+                const cachedValue = this._cache.get( id )
+
+                // Already exist
+                if ( isDefined( cachedValue ) ) {
+                    cachedValues[ id ] = cachedValue
+                    continue
+                }
+
+                // In request
+                if ( isNull( cachedValue ) ) {
+                    idsUnderRequest.push( id )
+                    continue
+                }
+
+            } catch ( error ) { // else request and pre-cache it
+
+                idsToRequest.push( id )
+                this._cache.add( id, null )
+
             }
-
-            // In request
-            if ( cachedValue === null ) {
-                idsUnderRequest.push( id )
-                continue
-            }
-
-            // else request and pre-cache it
-            idsToRequest.push( id )
-            this._cache.add( id, null )
 
         }
 
@@ -760,7 +751,7 @@ class TDataBaseManager {
                 if ( idBunch.length === this._bunchSize || idIndex === numberOfIds - 1 ) {
 
                     TDataBaseManager.requestServer(
-                        HttpVerb.Read,
+                        HttpVerb.Read.value,
                         this._basePath,
                         {
                             ids:        idBunch,
@@ -782,17 +773,25 @@ class TDataBaseManager {
         function cacheResults ( results ) {
 
             // Add new results to cache
-            if ( Array.isArray( results ) ) {
+            if ( isArray( results ) ) {
 
                 for ( let resultIndex = 0, numberOfResults = results.length ; resultIndex < numberOfResults ; resultIndex++ ) {
                     let result = results[ resultIndex ]
-                    self._cache.add( result._id, result )
+                    try {
+                        self._cache.add( result._id, result )
+                    } catch ( error ) {
+                        console.error( error )
+                    }
                 }
 
             } else {
 
                 for ( let key in results ) {
-                    self._cache.add( key, results[ key ] )
+                    try {
+                        self._cache.add( key, results[ key ] )
+                    } catch ( error ) {
+                        console.error( error )
+                    }
                 }
 
             }
@@ -806,12 +805,16 @@ class TDataBaseManager {
                 let restOfIdsUnderRequest = []
                 for ( let idUnderRequestIndex = 0, numberOfIdsUnderRequest = idsUnderRequest.length ; idUnderRequestIndex < numberOfIdsUnderRequest ; idUnderRequestIndex++ ) {
 
-                    const id          = idsUnderRequest[ idUnderRequestIndex ]
-                    const cachedValue = self._cache.get( id )
+                    const id = idsUnderRequest[ idUnderRequestIndex ]
 
-                    if ( cachedValue ) {
-                        request.cachedValues[ id ] = cachedValue
-                    } else {
+                    try {
+                        const cachedValue = self._cache.get( id )
+                        if ( isDefined( cachedValue ) ) {
+                            request.cachedValues[ id ] = cachedValue
+                        } else {
+                            restOfIdsUnderRequest.push( id )
+                        }
+                    } catch ( error ) {
                         restOfIdsUnderRequest.push( id )
                     }
 
@@ -821,12 +824,18 @@ class TDataBaseManager {
                 let restOfIdsToRequest = []
                 for ( let idToRequestIndex = 0, numberOfIdsToRequest = idsToRequest.length ; idToRequestIndex < numberOfIdsToRequest ; idToRequestIndex++ ) {
 
-                    const id          = idsToRequest[ idToRequestIndex ]
-                    const cachedValue = self._cache.get( id )
+                    const id = idsToRequest[ idToRequestIndex ]
 
-                    if ( cachedValue ) {
-                        request.cachedValues[ id ] = cachedValue
-                    } else {
+                    try {
+
+                        const cachedValue = self._cache.get( id )
+                        if ( isDefined( cachedValue ) ) {
+                            request.cachedValues[ id ] = cachedValue
+                        } else {
+                            restOfIdsToRequest.push( id )
+                        }
+
+                    } catch ( error ) {
                         restOfIdsToRequest.push( id )
                     }
 
@@ -849,7 +858,7 @@ class TDataBaseManager {
     _readWhere ( query, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
-            HttpVerb.Read,
+            HttpVerb.Read.value,
             this._basePath,
             {
                 query,
@@ -866,7 +875,7 @@ class TDataBaseManager {
     _readAll ( projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
-            HttpVerb.Read,
+            HttpVerb.Read.value,
             this._basePath,
             {
                 projection
@@ -893,7 +902,7 @@ class TDataBaseManager {
     _updateOne ( id, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
-            HttpVerb.Update,
+            HttpVerb.Update.value,
             `${this._basePath}/${id}`,
             {
                 update
@@ -919,15 +928,8 @@ class TDataBaseManager {
      */
     _updateMany ( ids, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        // Todo: could be optimized in server side about data duplicate/ think about and array of differents updates
-        //        const arrayData = []
-        //        for ( let i = 0, n = ids.length ; i < n ; i++ ) {
-        //            let id          = ids[ i ]
-        //            arrayData[ id ] = update
-        //        }
-
         TDataBaseManager.requestServer(
-            HttpVerb.Update,
+            HttpVerb.Update.value,
             this._basePath,
             {
                 ids,
@@ -944,7 +946,7 @@ class TDataBaseManager {
     _updateWhere ( query, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
-            HttpVerb.Update,
+            HttpVerb.Update.value,
             this._basePath,
             {
                 query,
@@ -961,7 +963,7 @@ class TDataBaseManager {
     _updateAll ( update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
-            HttpVerb.Update,
+            HttpVerb.Update.value,
             this._basePath,
             {
                 update
@@ -988,7 +990,7 @@ class TDataBaseManager {
     _deleteOne ( id, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
-            HttpVerb.Delete,
+            HttpVerb.Delete.value,
             `${this._basePath}/${id}`,
             null,
             this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
@@ -1013,7 +1015,7 @@ class TDataBaseManager {
     _deleteMany ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
-            HttpVerb.Delete,
+            HttpVerb.Delete.value,
             this._basePath,
             {
                 ids
@@ -1029,7 +1031,7 @@ class TDataBaseManager {
     _deleteWhere ( query, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
-            HttpVerb.Delete,
+            HttpVerb.Delete.value,
             this._basePath,
             {
                 query
@@ -1045,7 +1047,7 @@ class TDataBaseManager {
     _deleteAll ( onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
-            HttpVerb.Delete,
+            HttpVerb.Delete.value,
             this._basePath,
             null,
             this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),

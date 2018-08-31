@@ -38,6 +38,7 @@ import {
 import { TDataBaseManager } from '../TDataBaseManager'
 import { TTexturesManager } from './TTexturesManager'
 import { TProgressManager } from '../TProgressManager'
+import { TErrorManager } from '../TErrorManager'
 import { ResponseType } from '../../cores/TConstants'
 
 class TMaterialsManager extends TDataBaseManager {
@@ -52,7 +53,7 @@ class TMaterialsManager extends TDataBaseManager {
      * @param texturesPath
      * @param texturesProvider
      */
-    constructor ( basePath = '/materials', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = null, texturesPath = '/textures', texturesProvider = new TextureLoader(), generateMipmap = false ) {
+    constructor ( basePath = '/materials', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = new TErrorManager(), texturesPath = '/textures', texturesProvider = new TextureLoader(), generateMipmap = false ) {
         super( basePath, responseType, bunchSize, progressManager, errorManager )
 
         this.texturesPath     = texturesPath
@@ -92,7 +93,7 @@ class TMaterialsManager extends TDataBaseManager {
 
         if ( isNull( value ) ) { throw new TypeError( 'Textures provider cannot be null ! Expect an instance of TextureLoader.' ) }
         if ( isUndefined( value ) ) { throw new TypeError( 'Textures provider cannot be undefined ! Expect an instance of TextureLoader.' ) }
-        if ( !(value instanceof TTexturesManager) ) { throw new TypeError( `Textures provider cannot be an instance of ${value.constructor.name} ! Expect an instance of TTexturesManager.` ) }
+        if ( !(value instanceof TTexturesManager) && !(value instanceof TextureLoader) ) { throw new TypeError( `Textures provider cannot be an instance of ${value.constructor.name} ! Expect an instance of TTexturesManager.` ) }
 
         this._texturesProvider = value
 

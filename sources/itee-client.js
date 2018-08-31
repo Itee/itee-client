@@ -11,7 +11,7 @@
 // Import browser fix
 //import './third_party/dock-spawn.js'
 //import './third_party/polyfills.js'
-import 'babel-polyfill'
+import '@babel/polyfill'
 
 // Import FontAwesome
 import '@fortawesome/fontawesome'
