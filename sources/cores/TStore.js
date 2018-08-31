@@ -36,6 +36,22 @@ class TStore {
 
     }
 
+    get keys() {
+
+        const keys       = []
+        const collection = this._collection
+
+        for ( let key in collection ) {
+            if ( !collection.hasOwnProperty( key ) ) {
+                continue
+            }
+            keys.push( key )
+        }
+
+        return keys
+
+    }
+
     /**
      * Allow to add new key value pair, the key cannot be null, undefined, or an empty string.
      * In case the key already exist, the value will be overwritten.
@@ -73,22 +89,6 @@ class TStore {
         }
 
         return this._collection[ key ]
-
-    }
-
-    getKeys () {
-
-        const keys       = []
-        const collection = this._collection
-
-        for ( let key in collection ) {
-            if ( !collection.hasOwnProperty( key ) ) {
-                continue
-            }
-            keys.push( key )
-        }
-
-        return keys
 
     }
 
