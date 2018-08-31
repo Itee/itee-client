@@ -290,7 +290,7 @@ class TDataBaseManager {
 
         } else {
 
-            onErrorCallback( 'TDataBaseManager.create: Invalid data type, expect null, string, object or array of objects.' )
+            onErrorCallback( 'TDataBaseManager.read: Invalid data type, expect null, string, object or array of objects.' )
 
         }
 
