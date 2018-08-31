@@ -642,18 +642,20 @@ class TDataBaseManager {
      */
     _readOne ( id, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        const self        = this
-        const cachedValue = this._cache.get( id )
+        const self = this
 
+        try {
+
+            const cachedValue = this._cache.get( id )
             if ( isDefined( cachedValue ) ) { // Already exist
 
-            let result   = {}
-            result[ id ] = cachedValue
-            onLoadCallback( result )
+                let result   = {}
+                result[ id ] = cachedValue
+                onLoadCallback( result )
 
-        } else if ( cachedValue === null ) { // In request
+            }
 
-        } else { // else request and pre-cache it
+        } catch ( error ) {
 
             TDataBaseManager.requestServer(
                 HttpVerb.Read.value,
@@ -702,24 +704,30 @@ class TDataBaseManager {
         let idsToRequest    = []
         for ( let idIndex = 0, numberOfIds = ids.length ; idIndex < numberOfIds ; idIndex++ ) {
 
-            const id          = ids[ idIndex ]
-            const cachedValue = this._cache.get( id )
+            const id = ids[ idIndex ]
 
-            // Already exist
-            if ( cachedValue ) {
-                cachedValues[ id ] = cachedValue
-                continue
+            try {
+
+                const cachedValue = this._cache.get( id )
+
+                // Already exist
+                if ( isDefined( cachedValue ) ) {
+                    cachedValues[ id ] = cachedValue
+                    continue
+                }
+
+                // In request
+                if ( isNull( cachedValue ) ) {
+                    idsUnderRequest.push( id )
+                    continue
+                }
+
+            } catch ( error ) { // else request and pre-cache it
+
+                idsToRequest.push( id )
+                this._cache.add( id, null )
+
             }
-
-            // In request
-            if ( cachedValue === null ) {
-                idsUnderRequest.push( id )
-                continue
-            }
-
-            // else request and pre-cache it
-            idsToRequest.push( id )
-            this._cache.add( id, null )
 
         }
 
@@ -785,13 +793,21 @@ class TDataBaseManager {
 
                 for ( let resultIndex = 0, numberOfResults = results.length ; resultIndex < numberOfResults ; resultIndex++ ) {
                     let result = results[ resultIndex ]
-                    self._cache.add( result._id, result )
+                    try {
+                        self._cache.add( result._id, result )
+                    } catch ( error ) {
+                        console.error( error )
+                    }
                 }
 
             } else {
 
                 for ( let key in results ) {
-                    self._cache.add( key, results[ key ] )
+                    try {
+                        self._cache.add( key, results[ key ] )
+                    } catch ( error ) {
+                        console.error( error )
+                    }
                 }
 
             }
@@ -805,12 +821,16 @@ class TDataBaseManager {
                 let restOfIdsUnderRequest = []
                 for ( let idUnderRequestIndex = 0, numberOfIdsUnderRequest = idsUnderRequest.length ; idUnderRequestIndex < numberOfIdsUnderRequest ; idUnderRequestIndex++ ) {
 
-                    const id          = idsUnderRequest[ idUnderRequestIndex ]
-                    const cachedValue = self._cache.get( id )
+                    const id = idsUnderRequest[ idUnderRequestIndex ]
 
-                    if ( cachedValue ) {
-                        request.cachedValues[ id ] = cachedValue
-                    } else {
+                    try {
+                        const cachedValue = self._cache.get( id )
+                        if ( isDefined( cachedValue ) ) {
+                            request.cachedValues[ id ] = cachedValue
+                        } else {
+                            restOfIdsUnderRequest.push( id )
+                        }
+                    } catch ( error ) {
                         restOfIdsUnderRequest.push( id )
                     }
 
@@ -820,12 +840,18 @@ class TDataBaseManager {
                 let restOfIdsToRequest = []
                 for ( let idToRequestIndex = 0, numberOfIdsToRequest = idsToRequest.length ; idToRequestIndex < numberOfIdsToRequest ; idToRequestIndex++ ) {
 
-                    const id          = idsToRequest[ idToRequestIndex ]
-                    const cachedValue = self._cache.get( id )
+                    const id = idsToRequest[ idToRequestIndex ]
 
-                    if ( cachedValue ) {
-                        request.cachedValues[ id ] = cachedValue
-                    } else {
+                    try {
+
+                        const cachedValue = self._cache.get( id )
+                        if ( isDefined( cachedValue ) ) {
+                            request.cachedValues[ id ] = cachedValue
+                        } else {
+                            restOfIdsToRequest.push( id )
+                        }
+
+                    } catch ( error ) {
                         restOfIdsToRequest.push( id )
                     }
 
