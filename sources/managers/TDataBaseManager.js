@@ -21,6 +21,7 @@ import {
     isNull,
     isUndefined,
     isNullOrUndefined,
+    isDefined,
     isNotNumber,
     isNumberPositive,
     isString,
@@ -405,7 +406,7 @@ class TDataBaseManager {
         // TODO: switch on status
         if ( !TDataBaseManager.statusOk( status ) ) { return }
 
-        if ( !response ) {
+        if ( isNullOrUndefined( response ) ) {
             TLogger.warn( 'TDataBaseManager.onLoad: No data receive !' )
             onLoadCallback( null )
             return
@@ -470,11 +471,11 @@ class TDataBaseManager {
      */
     _onProgress ( onProgressCallback, progressEvent ) {
 
-        if ( this.progressManager ) {
+        if ( isDefined( this._progressManager ) ) {
 
             this.progressManager.update( onProgressCallback, progressEvent )
 
-        } else if ( onProgressCallback ) {
+        } else if ( isDefined( onProgressCallback ) ) {
 
             onProgressCallback( progressEvent )
 
@@ -497,11 +498,11 @@ class TDataBaseManager {
      */
     _onError ( onErrorCallback, errorEvent ) {
 
-        if ( this._errorManager ) {
+        if ( isDefined( this._errorManager ) ) {
 
             this._errorManager.update( onErrorCallback, errorEvent )
 
-        } else if ( onErrorCallback ) {
+        } else if ( isDefined( onErrorCallback ) ) {
 
             onErrorCallback( errorEvent )
 
@@ -644,7 +645,7 @@ class TDataBaseManager {
         const self        = this
         const cachedValue = this._cache.get( id )
 
-        if ( cachedValue ) { // Already exist
+            if ( isDefined( cachedValue ) ) { // Already exist
 
             let result   = {}
             result[ id ] = cachedValue
@@ -780,7 +781,7 @@ class TDataBaseManager {
         function cacheResults ( results ) {
 
             // Add new results to cache
-            if ( Array.isArray( results ) ) {
+            if ( isArray( results ) ) {
 
                 for ( let resultIndex = 0, numberOfResults = results.length ; resultIndex < numberOfResults ; resultIndex++ ) {
                     let result = results[ resultIndex ]
