@@ -93,7 +93,7 @@ class TMaterialsManager extends TDataBaseManager {
 
         if ( isNull( value ) ) { throw new TypeError( 'Textures provider cannot be null ! Expect an instance of TextureLoader.' ) }
         if ( isUndefined( value ) ) { throw new TypeError( 'Textures provider cannot be undefined ! Expect an instance of TextureLoader.' ) }
-        if ( !(value instanceof TTexturesManager) ) { throw new TypeError( `Textures provider cannot be an instance of ${value.constructor.name} ! Expect an instance of TTexturesManager.` ) }
+        if ( !(value instanceof TTexturesManager) && !(value instanceof TextureLoader) ) { throw new TypeError( `Textures provider cannot be an instance of ${value.constructor.name} ! Expect an instance of TTexturesManager.` ) }
 
         this._texturesProvider = value
 
