@@ -73,6 +73,7 @@ import {
 import { isObject } from 'itee-validators'
 import { TDataBaseManager } from '../TDataBaseManager'
 import { TProgressManager } from '../TProgressManager'
+import { TErrorManager } from '../TErrorManager'
 import { ResponseType } from '../../cores/TConstants'
 
 class TGeometriesManager extends TDataBaseManager {
@@ -85,7 +86,7 @@ class TGeometriesManager extends TDataBaseManager {
      * @param progressManager
      * @param errorManager
      */
-    constructor ( basePath = '/geometries', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = null ) {
+    constructor ( basePath = '/geometries', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = new TErrorManager() ) {
 
         super( basePath, responseType, bunchSize, progressManager, errorManager )
 
