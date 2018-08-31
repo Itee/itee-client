@@ -163,16 +163,16 @@ class TCameraControls extends EventDispatcher {
 
         // The actions map about input events
         this.actionsMap = {
-            front:  [ Keys.Z, Keys.UP_ARROW ],
-            back:   [ Keys.S, Keys.DOWN_ARROW ],
-            up:     [ Keys.A, Keys.PAGE_UP ],
-            down:   [ Keys.E, Keys.PAGE_DOWN ],
-            left:   [ Keys.Q, Keys.LEFT_ARROW ],
-            right:  [ Keys.D, Keys.RIGHT_ARROW ],
-            rotate: [ Mouse.LEFT ],
-            pan:    [ Mouse.MIDDLE ],
+            front:  [ Keys.Z.value, Keys.UP_ARROW.value ],
+            back:   [ Keys.S.value, Keys.DOWN_ARROW.value ],
+            up:     [ Keys.A.value, Keys.PAGE_UP.value ],
+            down:   [ Keys.E.value, Keys.PAGE_DOWN.value ],
+            left:   [ Keys.Q.value, Keys.LEFT_ARROW.value ],
+            right:  [ Keys.D.value, Keys.RIGHT_ARROW.value ],
+            rotate: [ Mouse.LEFT.value ],
+            pan:    [ Mouse.MIDDLE.value ],
             roll:   [],
-            zoom:   [ Mouse.WHEEL ]
+            zoom:   [ Mouse.WHEEL.value ]
         }
 
         // The current internal state of controller
