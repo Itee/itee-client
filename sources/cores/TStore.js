@@ -66,7 +66,7 @@ class TStore {
      * @param key
      * @returns {*}
      */
-    getItem ( key ) {
+    get ( key ) {
 
         if ( !this.contain( key ) ) {
             throw new ReferenceError( `The item for key (${key}) does not exist.` )
