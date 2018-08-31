@@ -402,9 +402,8 @@ class TCameraControls extends EventDispatcher {
 
     _onMouseMove ( mouseEvent ) {
 
-        if ( !this.enabled || this._state === State.None ) {
-            return
-        }
+        if ( !this.enabled || this._state === State.None ) { return }
+
         mouseEvent.preventDefault()
 
         const state = this._state
