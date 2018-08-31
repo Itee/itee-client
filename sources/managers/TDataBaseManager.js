@@ -529,11 +529,7 @@ class TDataBaseManager {
      * @param {function} onProgress - The onProgress callback, which is call during the parsing.
      * @param {function} onError - The onError callback, which is call when parser throw an error during parsing.
      */
-    _onArrayBuffer ( data, onSuccess, onProgress, onError ) {
-        onProgress( 1 )
-        onSuccess( data )
-        onError( 'TDataBaseManager: _onArrayBuffer methods must be reimplemented !' )
-    }
+    _onArrayBuffer ( data, onSuccess, onProgress, onError ) {}
 
     /**
      * @private
@@ -547,11 +543,7 @@ class TDataBaseManager {
      * @param {function} onProgress - The onProgress callback, which is call during the parsing.
      * @param {function} onError - The onError callback, which is call when parser throw an error during parsing.
      */
-    _onBlob ( data, onSuccess, onProgress, onError ) {
-        onProgress( 1 )
-        onSuccess( data )
-        onError( 'TDataBaseManager: _onBlob methods must be reimplemented !' )
-    }
+    _onBlob ( data, onSuccess, onProgress, onError ) {}
 
     /**
      * @private
@@ -565,11 +557,7 @@ class TDataBaseManager {
      * @param {function} onProgress - The onProgress callback, which is call during the parsing.
      * @param {function} onError - The onError callback, which is call when parser throw an error during parsing.
      */
-    _onJson ( data, onSuccess, onProgress, onError ) {
-        onProgress( 1 )
-        onSuccess( data )
-        onError( 'TDataBaseManager: _onJson methods must be reimplemented !' )
-    }
+    _onJson ( data, onSuccess, onProgress, onError ) {}
 
     /**
      * @private
@@ -583,11 +571,7 @@ class TDataBaseManager {
      * @param {function} onProgress - The onProgress callback, which is call during the parsing.
      * @param {function} onError - The onError callback, which is call when parser throw an error during parsing.
      */
-    _onText ( data, onSuccess, onProgress, onError ) {
-        onProgress( 1 )
-        onSuccess( data )
-        onError( 'TDataBaseManager: _onText methods must be reimplemented !' )
-    }
+    _onText ( data, onSuccess, onProgress, onError ) {}
 
     // REST Api calls
     /**
