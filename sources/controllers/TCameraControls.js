@@ -241,7 +241,7 @@ class TCameraControls extends EventDispatcher {
 
     get domElement () {
 
-        return this._target
+        return this._domElement
 
     }
 
@@ -251,7 +251,7 @@ class TCameraControls extends EventDispatcher {
         if ( isUndefined( value ) ) { throw new Error( "DomElement cannot be undefined ! Expect an instance of HTMLDocument." ) }
         if ( !(value instanceof HTMLDocument) ) { throw new Error( `Target cannot be an instance of ${value.constructor.name}. Expect an instance of HTMLDocument.` ) }
 
-        this._target = value
+        this._domElement = value
 
     }
 
