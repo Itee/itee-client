@@ -473,7 +473,7 @@ class TDataBaseManager {
 
         if ( isDefined( this._progressManager ) ) {
 
-            this.progressManager.update( onProgressCallback, progressEvent )
+            this._progressManager.update( progressEvent, onProgressCallback )
 
         } else if ( isDefined( onProgressCallback ) ) {
 
@@ -500,7 +500,7 @@ class TDataBaseManager {
 
         if ( isDefined( this._errorManager ) ) {
 
-            this._errorManager.update( onErrorCallback, errorEvent )
+            this._errorManager.update( errorEvent, onErrorCallback )
 
         } else if ( isDefined( onErrorCallback ) ) {
 
