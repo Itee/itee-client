@@ -94,10 +94,10 @@ body {
 }
 .tHeader .tAppBar .tBrand {
   margin-left: 10px;
-  font-size: 2.0em;
+  font-size: 2em;
 }
 .tHeader .tAppBar .tMenu {
-  font-size: 2.0em;
+  font-size: 2em;
 }
 .tHeader .tAppBar .tMenu .tMenuItem {
   padding: 5px 16px;
@@ -321,8 +321,8 @@ body {
   right: 0;
   bottom: 0;
   background-color: #cccccc;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 .slider:before {
   position: absolute;
@@ -332,8 +332,8 @@ body {
   left: 4px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 input:checked + .slider {
   background-color: #2196f3;
