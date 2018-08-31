@@ -174,7 +174,7 @@ class TDataBaseManager {
 
     }
 
-    setErrorManager( value ) {
+    setErrorManager ( value ) {
 
         this.errorManager = value
         return this
@@ -927,13 +927,6 @@ class TDataBaseManager {
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      */
     _updateMany ( ids, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
-
-        // Todo: could be optimized in server side about data duplicate/ think about and array of differents updates
-        //        const arrayData = []
-        //        for ( let i = 0, n = ids.length ; i < n ; i++ ) {
-        //            let id          = ids[ i ]
-        //            arrayData[ id ] = update
-        //        }
 
         TDataBaseManager.requestServer(
             HttpVerb.Update.value,
