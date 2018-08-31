@@ -212,12 +212,12 @@ class TDataBaseManager {
 
         let statusOk = false
 
-        if ( status === HttpStatusCode.NoContent ) {
+        if ( status === HttpStatusCode.NoContent.value ) {
 
             TLogger.warn( 'Unable to retrieve data...' )
             statusOk = true
 
-        } else if ( status !== HttpStatusCode.Ok ) {
+        } else if ( status !== HttpStatusCode.Ok.value ) {
 
             TLogger.error( 'An error occurs when retrieve data from database !!!' )
 
@@ -414,7 +414,7 @@ class TDataBaseManager {
         // Dispatch response to the correct handler in function of response type
         switch ( responseType ) {
 
-            case ResponseType.ArrayBuffer:
+            case ResponseType.ArrayBuffer.value:
                 this._onArrayBuffer(
                     response,
                     onLoadCallback,
@@ -423,7 +423,7 @@ class TDataBaseManager {
                 )
                 break;
 
-            case ResponseType.Blob:
+            case ResponseType.Blob.value:
                 this._onBlob(
                     response,
                     onLoadCallback,
@@ -432,7 +432,7 @@ class TDataBaseManager {
                 )
                 break;
 
-            case ResponseType.Json:
+            case ResponseType.Json.value:
                 this._onJson(
                     response,
                     onLoadCallback,
@@ -441,8 +441,8 @@ class TDataBaseManager {
                 )
                 break;
 
-            case ResponseType.DOMString:
-            case ResponseType.Default:
+            case ResponseType.DOMString.value:
+            case ResponseType.Default.value:
                 this._onText(
                     response,
                     onLoadCallback,
@@ -603,7 +603,7 @@ class TDataBaseManager {
     _createOne ( data, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
-            HttpVerb.Create,
+            HttpVerb.Create.value,
             this._basePath,
             data,
             this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
@@ -617,7 +617,7 @@ class TDataBaseManager {
     _createMany ( datas, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
-            HttpVerb.Create,
+            HttpVerb.Create.value,
             this._basePath,
             datas,
             this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
@@ -655,7 +655,7 @@ class TDataBaseManager {
         } else { // else request and pre-cache it
 
             TDataBaseManager.requestServer(
-                HttpVerb.Read,
+                HttpVerb.Read.value,
                 `${this._basePath}/${id}`,
                 {
                     projection
@@ -758,7 +758,7 @@ class TDataBaseManager {
                 if ( idBunch.length === this._bunchSize || idIndex === numberOfIds - 1 ) {
 
                     TDataBaseManager.requestServer(
-                        HttpVerb.Read,
+                        HttpVerb.Read.value,
                         this._basePath,
                         {
                             ids:        idBunch,
@@ -847,7 +847,7 @@ class TDataBaseManager {
     _readWhere ( query, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
-            HttpVerb.Read,
+            HttpVerb.Read.value,
             this._basePath,
             {
                 query,
@@ -864,7 +864,7 @@ class TDataBaseManager {
     _readAll ( projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
-            HttpVerb.Read,
+            HttpVerb.Read.value,
             this._basePath,
             {
                 projection
@@ -891,7 +891,7 @@ class TDataBaseManager {
     _updateOne ( id, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
-            HttpVerb.Update,
+            HttpVerb.Update.value,
             `${this._basePath}/${id}`,
             {
                 update
@@ -925,7 +925,7 @@ class TDataBaseManager {
         //        }
 
         TDataBaseManager.requestServer(
-            HttpVerb.Update,
+            HttpVerb.Update.value,
             this._basePath,
             {
                 ids,
@@ -942,7 +942,7 @@ class TDataBaseManager {
     _updateWhere ( query, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
-            HttpVerb.Update,
+            HttpVerb.Update.value,
             this._basePath,
             {
                 query,
@@ -959,7 +959,7 @@ class TDataBaseManager {
     _updateAll ( update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
-            HttpVerb.Update,
+            HttpVerb.Update.value,
             this._basePath,
             {
                 update
@@ -986,7 +986,7 @@ class TDataBaseManager {
     _deleteOne ( id, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
-            HttpVerb.Delete,
+            HttpVerb.Delete.value,
             `${this._basePath}/${id}`,
             null,
             this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
@@ -1011,7 +1011,7 @@ class TDataBaseManager {
     _deleteMany ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
-            HttpVerb.Delete,
+            HttpVerb.Delete.value,
             this._basePath,
             {
                 ids
@@ -1027,7 +1027,7 @@ class TDataBaseManager {
     _deleteWhere ( query, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
-            HttpVerb.Delete,
+            HttpVerb.Delete.value,
             this._basePath,
             {
                 query
@@ -1043,7 +1043,7 @@ class TDataBaseManager {
     _deleteAll ( onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         TDataBaseManager.requestServer(
-            HttpVerb.Delete,
+            HttpVerb.Delete.value,
             this._basePath,
             null,
             this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
