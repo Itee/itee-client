@@ -255,7 +255,7 @@ gulp.task( 'build-script', ( done ) => {
             outputPath:   path.join( __dirname, 'builds' ),
             environments: [ 'development', 'production' ],
             formats:      [ 'amd', 'cjs', 'es', 'iife', 'umd' ],
-            sourceMap:    false
+            sourceMap:    true
         }
 
         const argv = processArgv.slice( 3 ) // Ignore nodejs, script paths and gulp params
