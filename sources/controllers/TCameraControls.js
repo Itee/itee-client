@@ -441,6 +441,8 @@ class TCameraControls extends EventDispatcher {
 
     _onMouseWheel ( mouseEvent ) {
 
+        if ( !this.canZoom ) { return }
+
         const delta = mouseEvent.wheelDelta
         this._zoom( delta )
 
