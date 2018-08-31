@@ -65,6 +65,7 @@ import { TDataBaseManager } from '../TDataBaseManager'
 import { TGeometriesManager } from './TGeometriesManager'
 import { TMaterialsManager } from './TMaterialsManager'
 import { TProgressManager } from '../TProgressManager'
+import { TErrorManager } from '../TErrorManager'
 import { ResponseType } from '../../cores/TConstants'
 import {
     isNull,
@@ -86,7 +87,7 @@ class TObjectsManager extends TDataBaseManager {
      * @param geometriesProvider
      * @param materialsProvider
      */
-    constructor ( basePath = '/objects', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = null, geometriesProvider = new TGeometriesManager(), materialsProvider = new TMaterialsManager() ) {
+    constructor ( basePath = '/objects', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = new TErrorManager(), geometriesProvider = new TGeometriesManager(), materialsProvider = new TMaterialsManager() ) {
 
         super( basePath, responseType, bunchSize, progressManager, errorManager )
 
