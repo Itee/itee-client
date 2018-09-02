@@ -194,35 +194,35 @@ Object.assign( TUniversalLoader.prototype, {
 
         switch ( fileExtension ) {
 
-            case FileFormat.Asc:
+            case FileFormat.Asc.value:
                 this._loadAsc( file, onLoad, onProgress, onError )
                 break
 
-            case FileFormat.Dae:
+            case FileFormat.Dae.value:
                 this._loadDae( file, onLoad, onProgress, onError )
                 break
 
-            case FileFormat.Dbf:
+            case FileFormat.Dbf.value:
                 this._loadDbf( file, onLoad, onProgress, onError )
                 break
 
-            case FileFormat.Fbx:
+            case FileFormat.Fbx.value:
                 this._loadFbx( file, onLoad, onProgress, onError )
                 break
 
-            case FileFormat.Json:
+            case FileFormat.Json.value:
                 this._loadJson( file, onLoad, onProgress, onError )
                 break
 
-            case FileFormat.Obj:
+            case FileFormat.Obj.value:
                 this._loadObj( file, onLoad, onProgress, onError )
                 break
 
-            case FileFormat.Shp:
+            case FileFormat.Shp.value:
                 this._loadShp( file, onLoad, onProgress, onError )
                 break
 
-            case FileFormat.Stl:
+            case FileFormat.Stl.value:
                 this._loadStl( file, onLoad, onProgress, onError )
                 break
 
@@ -255,19 +255,19 @@ Object.assign( TUniversalLoader.prototype, {
         const secondFileExtension = getFileExtension( secondFileName )
         secondFile.url            = computeUrl( secondUrl )
 
-        if ( firstFileExtension === FileFormat.Mtl && secondFileExtension === FileFormat.Obj ) {
+        if ( firstFileExtension === FileFormat.Mtl.value && secondFileExtension === FileFormat.Obj.value ) {
 
             this._loadObjMtlCouple( secondFile, firstFile, onLoad, onProgress, onError )
 
-        } else if ( firstFileExtension === FileFormat.Obj && secondFileExtension === FileFormat.Mtl ) {
+        } else if ( firstFileExtension === FileFormat.Obj.value&& secondFileExtension === FileFormat.Mtl.value ) {
 
             this._loadObjMtlCouple( firstFile, secondFile, onLoad, onProgress, onError )
 
-        } else if ( firstFileExtension === FileFormat.Shp && secondFileExtension === FileFormat.Dbf ) {
+        } else if ( firstFileExtension === FileFormat.Shp.value && secondFileExtension === FileFormat.Dbf.value ) {
 
             this._loadShpDbfCouple( firstFile, secondFile, onLoad, onProgress, onError )
 
-        } else if ( firstFileExtension === FileFormat.Dbf && secondFileExtension === FileFormat.Shp ) {
+        } else if ( firstFileExtension === FileFormat.Dbf.value && secondFileExtension === FileFormat.Shp.value ) {
 
             this._loadShpDbfCouple( secondFile, firstFile, onLoad, onProgress, onError )
 
