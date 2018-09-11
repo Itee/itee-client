@@ -349,12 +349,14 @@ gulp.task( 'build-script', ( done ) => {
               .then( ( bundle ) => {
 
                   bundle.write( config.outputOptions )
+                        .then( () => {
+                            done()
+                        } )
                         .catch( ( error ) => {
                             log( red( error ) )
                             done()
                         } )
 
-                  done()
               } )
               .catch( ( error ) => {
                   log( red( error ) )
