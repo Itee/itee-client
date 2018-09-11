@@ -33,7 +33,6 @@ import {
     PointerLockControls,
     TrackballControls,
     TransformControls,
-    VRControls,
     // Effects
     AnaglyphEffect,
     AsciiEffect,
@@ -41,7 +40,6 @@ import {
     ParallaxBarrierEffect,
     PeppersGhostEffect,
     StereoEffect,
-    VREffect,
     // Renderers
     CSS2DRenderer,
     CSS3DRenderer,
@@ -622,8 +620,8 @@ export default Vue.component( 'TViewport3D', {
 
                 case 'vr':
                     // ( renderer, onError )
-                    this._effect = new VREffect( this.renderer, error => console.error( error ) )
-                    break
+//                    this._effect = new VREffect( this.renderer, error => console.error( error ) )
+//                    break
 
                 default:
                     throw new RangeError( `Invalid effect parameter: ${newEffect}`, 'TViewport3D' )
@@ -864,8 +862,8 @@ export default Vue.component( 'TViewport3D', {
                 this._effect.render( this.scene, this._camera )
 
             } else if (
-                this._effect instanceof OutlineEffect ||
-                this._effect instanceof VREffect
+                this._effect instanceof OutlineEffect
+//                || this._effect instanceof VREffect
             ) {
 
                 // ( scene, camera, renderTarget, forceClear )
@@ -988,10 +986,10 @@ export default Vue.component( 'TViewport3D', {
                 // ( width, height )
                 this._effect.setSize( width, height )
 
-            } else if ( this._effect instanceof VREffect ) {
-
-                // ( width, height )
-                this._effect.setSize( width, height )
+//            } else if ( this._effect instanceof VREffect ) {
+//
+//                // ( width, height )
+//                this._effect.setSize( width, height )
 
             } else {
 

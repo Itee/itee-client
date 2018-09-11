@@ -46,7 +46,7 @@
     "itee-validators": "^2.1.0",
     "stats.js": "^0.17.0",
     "vue": "^2.5.17",
-    "vue-resize-directive": "^1.0.1",
+    "vue-resize-directive": "^1.1.1",
     "vue-router": "^3.0.1"
   },
   "devDependencies": {
@@ -88,13 +88,13 @@
     "karma-safari-launcher": "^1.0.0",
     "mocha": "^5.2.0",
     "mochawesome": "^3.0.3",
-    "rollup": "^0.65.0",
-    "rollup-plugin-babel": "^4.0.2",
+    "rollup": "^0.65.2",
+    "rollup-plugin-babel": "^4.0.3",
     "rollup-plugin-commonjs": "^9.1.6",
-    "rollup-plugin-node-resolve": "^3.3.0",
+    "rollup-plugin-node-resolve": "^3.4.0",
     "rollup-plugin-replace": "^2.0.0",
     "rollup-plugin-strip": "^1.1.1",
     "rollup-plugin-uglify-es": "0.0.1",
-    "three-full": "^8.0.0"
+    "three-full": "^11.2.0"
   }
 }
