@@ -66,8 +66,8 @@ export default Vue.component( 'TTree', {
 
         filterItems( items ) {
 
-            let self = this
-            return items.filter( item => self.filter.indexOf( item.name.toLowerCase() ) === -1 )
+            const filters = this.filter
+            return items.filter( item => filters.includes( item.name ) )
 
         },
 
