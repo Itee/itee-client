@@ -41,6 +41,9 @@ export { Utils }
 import { default as Vue } from '../node_modules/vue/dist/vue.esm'
 export { Vue }
 
+import VueRouter from 'vue-router'
+export { VueRouter }
+
 //export * as VueRouter from 'vue-router'
 
 // Export Itee stuff
