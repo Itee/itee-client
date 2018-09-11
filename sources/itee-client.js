@@ -44,8 +44,6 @@ export { Vue }
 import VueRouter from 'vue-router'
 export { VueRouter }
 
-//export * as VueRouter from 'vue-router'
-
 // Export Itee stuff
 export * from './controllers/_controllers'
 export * from './cores/_cores'
