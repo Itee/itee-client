@@ -2,10 +2,11 @@
 /* CSS - Cascading Style Sheet */
 /* Palette color codes */
 /* Palette URL: http://paletton.com/#uid=23x0I0kl2lDhZ2F2ymTONTbT5tV */
+
+/* Main Primary color */
 .color-primary-0 {
   color: #2b516f;
 }
-/* Main Primary color */
 .color-primary-1 {
   color: #060b0e;
 }
@@ -34,6 +35,12 @@
 .color-complement-4 {
   color: #ee8800;
 }
+
+/* Utils */
+.margin-left-5px {
+  margin-left: 5px;
+}
+
 html,
 body {
   font-family: 'Arial';

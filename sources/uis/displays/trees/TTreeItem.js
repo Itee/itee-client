@@ -16,11 +16,10 @@ export default Vue.component( 'TTreeItem', {
         <li v-if="needUpdate || !needUpdate" :class=computeTreeItemClass>
             <TContainerHorizontal class="tTreeItemContent" hAlign="start" vAlign="center">
                 <TIcon v-if="haveChildren()" :iconProps=computeToggleChildrenIconClass :iconOn="{click: toggleChildren}" />
-                <div class="eyeCheck"></div>
+                <TCheckIcon class="margin-left-5px" v-if="eyeCheckModifier" :iconOn="eyeCheckModifier.iconOn" :iconOff="eyeCheckModifier.iconOff" :value="eyeCheckModifier.value" :onClick=eyeCheckModifier.onClick />
                 <label @click="function () { updateSelectionState( onClick ) }">{{name}}</label>
                 <span v-for="modifier in filteredModifier" class="tTreeItemModifiers">
                     <TIcon v-if="( !modifier.display || (modifier.display === 'select' && isSelected)) && modifier.type === 'icon'" :iconProps='modifier.icon' v-bind:iconOn="{click: modifier.onClick}" />
-                    <TCheckIcon v-else-if="modifier.type === 'checkicon'" :iconOn="modifier.iconOn" :iconOff="modifier.iconOff" :value="modifier.value" :onClick=modifier.onClick />
                     <TButton v-else-if="modifier.type === 'button'" :label="modifier.label" :icon="modifier.icon" :onClick=modifier.onClick :messageData="modifier.value" />
                     <input v-else-if="modifier.type === 'range'" type="range" value="100" max="100" @input="modifier.onInput" />
                     <input v-else-if="modifier.type === 'number'" type="number" @change="modifier.onChange" />
@@ -45,17 +44,6 @@ export default Vue.component( 'TTreeItem', {
             </ul>
         </li>
     `,
-    mounted:  function () {
-
-        // Move visibility button
-        if ( this.children.length > 0 ) {
-            let eye = this.$el.querySelector( ".tTreeItemModifiers" )
-            if ( eye !== null ) {
-                this.$el.querySelector( ".eyeCheck" ).appendChild( eye )
-            }
-        }
-
-    },
     data:     function () {
 
         return {
@@ -118,6 +106,14 @@ export default Vue.component( 'TTreeItem', {
 
         },
 
+        eyeCheckModifier () {
+
+            return ( this.modifiers != undefined ) ? this.modifiers.find(function (modifier) {
+                return modifier.type === 'checkicon'
+            }) : null;
+
+        },
+
         filteredModifier () {
 
             return (this.modifiers) ? this.modifiers.filter( ( modifier ) => {
@@ -164,24 +160,17 @@ export default Vue.component( 'TTreeItem', {
 
         updateSelectionState ( onClickCallback ) {
 
+            // Deselect
+            let selectedItem = document.querySelector( '.selected' )
+            if ( !isNullOrUndefined(selectedItem) ) {
+              selectedItem.__vue__.isSelected = false
+            }
+            
+            // Select
             this.isSelected = !this.isSelected;
 
-            let selectedItems = document.querySelectorAll( '.selected' )
-
-            for ( let i = selectedItems.length - 1 ; i >= 0 ; i-- ) {
-                selectedItems[ i ].className = "tTreeItemContent tContainer tContainerHorizontal";
-                (selectedItems[ i ].querySelector( "[type='range']" ) != null) ? selectedItems[ i ].querySelector( "[type='range']" ).parentElement.remove() : null
-            }
-
-            if ( this.isSelected ) {
-                this.$el.querySelector( '.tContainerHorizontal' ).className = "tTreeItemContent tContainer tContainerHorizontal selected"
-            }
-            else {
-                this.$el.querySelector( '.tContainerHorizontal' ).className = "tTreeItemContent tContainer tContainerHorizontal"
-            }
-
-            if ( onClickCallback ) {
-                onClickCallback();
+            if (onClickCallback) {
+              onClickCallback();
             }
 
         }
