@@ -657,11 +657,8 @@ class TDataBaseManager {
 
         function cacheOnLoadResult ( result ) {
 
-            self._cache.add( id, result[ 0 ] )
-
-            let _result   = {}
-            _result[ id ] = result[ 0 ]
-            onLoadCallback( _result )
+            self._cache.add(id, result[id]);
+            onLoadCallback(result);
 
         }
 
