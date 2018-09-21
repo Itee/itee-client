@@ -90,7 +90,54 @@ class TGeometriesManager extends TDataBaseManager {
 
         super( basePath, responseType, bunchSize, projectionSystem, globalScale, progressManager, errorManager ) 
 
+        this.projectionSystem   = projectionSystem
+        this.globalScale        = globalScale
+
     }
+
+    //// Getter/Setter
+    
+    get projectionSystem () {
+        return this._projectionSystem
+    }
+
+    set projectionSystem ( value ) {
+
+        if ( isNull( value ) ) { throw new TypeError( 'Projection system cannot be null ! Expect a positive number.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Projection system cannot be undefined ! Expect a positive number.' ) }
+
+        this._projectionSystem = value
+
+    }
+
+    setProjectionSystem ( value ) {
+
+        this.projectionSystem = value
+        return this
+
+    }
+
+    get globalScale () {
+        return this._globalScale
+    }
+
+    set globalScale ( value ) {
+
+        if ( isNull( value ) ) { throw new TypeError( 'Global scale cannot be null ! Expect a positive number.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Global scale cannot be undefined ! Expect a positive number.' ) }
+
+        this._globalScale = value
+
+    }
+
+    setGlobalScale ( value ) {
+
+        this.globalScale = value
+        return this
+
+    }
+
+    //// Methods
 
     _onJson ( jsonData, onSuccess, onProgress, onError ) {
 

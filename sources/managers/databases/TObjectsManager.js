@@ -89,12 +89,17 @@ class TObjectsManager extends TDataBaseManager {
      */
     constructor ( basePath = '/objects', responseType = ResponseType.Json, bunchSize = 500, projectionSystem = "zBack", globalScale = 1, progressManager = new TProgressManager(), errorManager = new TErrorManager(), geometriesProvider = new TGeometriesManager(), materialsProvider = new TMaterialsManager() ) {
 
-        super( basePath, responseType, bunchSize, projectionSystem, globalScale, progressManager, errorManager )
+        super( basePath, responseType, bunchSize, progressManager, errorManager )
 
         this.geometriesProvider = geometriesProvider
         this.materialsProvider  = materialsProvider
+        this.projectionSystem   = projectionSystem
+        this.globalScale        = globalScale
 
+    
     }
+
+    //// Getter/Setter
 
     get geometriesProvider () {
         return this._geometriesProvider
@@ -134,6 +139,46 @@ class TObjectsManager extends TDataBaseManager {
     setMaterialsProvider ( value ) {
 
         this.materialsProvider = value
+        return this
+
+    }
+
+    get projectionSystem () {
+        return this._projectionSystem
+    }
+
+    set projectionSystem ( value ) {
+
+        if ( isNull( value ) ) { throw new TypeError( 'Projection system cannot be null ! Expect a positive number.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Projection system cannot be undefined ! Expect a positive number.' ) }
+
+        this._projectionSystem = value
+
+    }
+
+    setProjectionSystem ( value ) {
+
+        this.projectionSystem = value
+        return this
+
+    }
+
+    get globalScale () {
+        return this._globalScale
+    }
+
+    set globalScale ( value ) {
+
+        if ( isNull( value ) ) { throw new TypeError( 'Global scale cannot be null ! Expect a positive number.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Global scale cannot be undefined ! Expect a positive number.' ) }
+
+        this._globalScale = value
+
+    }
+
+    setGlobalScale ( value ) {
+
+        this.globalScale = value
         return this
 
     }
