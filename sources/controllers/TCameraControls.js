@@ -376,7 +376,7 @@ class TCameraControls extends EventDispatcher {
         mouseEvent.preventDefault()
 
         const actionMap = this.actionsMap
-        const button    = event.button
+        const button    = mouseEvent.button
 
         if ( this.canRotate && actionMap.rotate.indexOf( button ) > -1 ) {
 
