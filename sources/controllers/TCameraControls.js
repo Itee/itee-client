@@ -289,6 +289,7 @@ class TCameraControls extends EventDispatcher {
         this._domElement.addEventListener( 'mousedown', this._onMouseDown.bind( this ), false )
         this._domElement.addEventListener( 'mousemove', this._onMouseMove.bind( this ), false )
         this._domElement.addEventListener( 'mousewheel', this._onMouseWheel.bind( this ), false )
+        this._domElement.addEventListener( 'wheel', this._onMouseWheel.bind( this ), false )
         this._domElement.addEventListener( 'mouseup', this._onMouseUp.bind( this ), false )
         this._domElement.addEventListener( 'keydown', this._onKeyDown.bind( this ), false )
         this._domElement.addEventListener( 'keyup', this._onKeyUp.bind( this ), false )
@@ -300,6 +301,7 @@ class TCameraControls extends EventDispatcher {
         this._domElement.removeEventListener( 'mousedown', this._onMouseDown.bind( this ), false )
         this._domElement.removeEventListener( 'mousemove', this._onMouseMove.bind( this ), false )
         this._domElement.removeEventListener( 'mousewheel', this._onMouseWheel.bind( this ), false )
+        this._domElement.removeEventListener( 'wheel', this._onMouseWheel.bind( this ), false )
         this._domElement.removeEventListener( 'mouseup', this._onMouseUp.bind( this ), false )
         this._domElement.removeEventListener( 'keydown', this._onKeyDown.bind( this ), false )
         this._domElement.removeEventListener( 'keyup', this._onKeyUp.bind( this ), false )
@@ -442,7 +444,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.canZoom ) { return }
 
-        const delta = mouseEvent.wheelDelta
+        const delta = mouseEvent.wheelDelta || mouseEvent.deltaY
         this._zoom( delta )
 
     }
