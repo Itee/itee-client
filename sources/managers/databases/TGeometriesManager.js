@@ -86,9 +86,9 @@ class TGeometriesManager extends TDataBaseManager {
      * @param progressManager
      * @param errorManager
      */
-    constructor ( basePath = '/geometries', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = new TErrorManager() ) {
+    constructor ( basePath = '/geometries', responseType = ResponseType.Json, bunchSize = 500, projectionSystem = "zBack", globalScale = 1, progressManager = new TProgressManager(), errorManager = new TErrorManager() ) {
 
-        super( basePath, responseType, bunchSize, progressManager, errorManager )
+        super( basePath, responseType, bunchSize, projectionSystem, globalScale, progressManager, errorManager ) 
 
     }
 
@@ -430,8 +430,15 @@ class TGeometriesManager extends TDataBaseManager {
 
                 const positionArray = positionAttributes.array
                 const zbackpos      = []
-                for ( let pi = 0, numPos = positionArray.length ; pi < numPos ; pi += 3 ) {
-                    zbackpos.push( positionArray[ pi ] / 1000, positionArray[ pi + 2 ] / 1000, -positionArray[ pi + 1 ] / 1000 )
+
+                if (this._projectionSystem === "zBack") {}
+                    for ( let pi = 0, numPos = positionArray.length ; pi < numPos ; pi += 3 ) {
+                        zbackpos.push( positionArray[ pi ] / this._globalScale, positionArray[ pi + 2 ] / this._globalScale, -positionArray[ pi + 1 ] / this._globalScale )
+                    }
+                else {
+                    for ( let pi = 0, numPos = positionArray.length ; pi < numPos ; pi += 3 ) {
+                        zbackpos.push( positionArray[ pi ] / this._globalScale, positionArray[ pi + 1 ] / this._globalScale, -positionArray[ pi + 2 ] / this._globalScale )
+                    }
                 }
 
                 attributes[ 'position' ] = new BufferAttribute( new Float32Array( zbackpos ), positionAttributes.itemSize, positionAttributes.normalized )

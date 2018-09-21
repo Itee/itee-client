@@ -59,16 +59,18 @@ class TDataBaseManager {
      * @param progressManager
      * @param errorManager
      */
-    constructor ( basePath = '/', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = new TErrorManager() ) {
+    constructor ( basePath = '/', responseType = ResponseType.Json, bunchSize = 500, projectionSystem = "zBack", globalScale = 1, progressManager = new TProgressManager(), errorManager = new TErrorManager() ) {
 
-        this.basePath        = basePath
-        this.responseType    = responseType
-        this.bunchSize       = bunchSize
-        this.progressManager = progressManager
-        this.errorManager    = errorManager
-        this._cache          = new TStore()
-        this._waitingQueue   = []
-        this._idsInRequest   = []
+        this.basePath         = basePath
+        this.responseType     = responseType
+        this.bunchSize        = bunchSize
+        this.projectionSystem = projectionSystem
+        this.globalScale      = globalScale
+        this.progressManager  = progressManager
+        this.errorManager     = errorManager
+        this._cache           = new TStore()
+        this._waitingQueue    = []
+        this._idsInRequest    = []
 
     }
 
@@ -138,6 +140,49 @@ class TDataBaseManager {
         return this
 
     }
+
+
+    get projectionSystem () {
+        return this._projectionSystem
+    }
+
+    set projectionSystem ( value ) {
+
+        if ( isNull( value ) ) { throw new TypeError( 'Bunch size cannot be null ! Expect a positive number.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Bunch size cannot be undefined ! Expect a positive number.' ) }
+
+        this._projectionSystem = value
+
+    }
+
+    setProjectionSystem ( value ) {
+
+        this.projectionSystem = value
+        return this
+
+    }
+
+
+    get globalScale () {
+        return this._globalScale
+    }
+
+    set globalScale ( value ) {
+
+        if ( isNull( value ) ) { throw new TypeError( 'Bunch size cannot be null ! Expect a positive number.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Bunch size cannot be undefined ! Expect a positive number.' ) }
+
+        this._globalScale = value
+
+    }
+
+    setGlobalScale ( value ) {
+
+        this.globalScale = value
+        return this
+
+    }
+
 
     get progressManager () {
         return this._progressManager
@@ -657,8 +702,8 @@ class TDataBaseManager {
 
         function cacheOnLoadResult ( result ) {
 
-            self._cache.add(id, result[id]);
-            onLoadCallback(result);
+            self._cache.add( id, result[id] )
+            onLoadCallback( result )
 
         }
 

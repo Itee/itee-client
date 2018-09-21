@@ -87,9 +87,9 @@ class TObjectsManager extends TDataBaseManager {
      * @param geometriesProvider
      * @param materialsProvider
      */
-    constructor ( basePath = '/objects', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = new TErrorManager(), geometriesProvider = new TGeometriesManager(), materialsProvider = new TMaterialsManager() ) {
+    constructor ( basePath = '/objects', responseType = ResponseType.Json, bunchSize = 500, projectionSystem = "zBack", globalScale = 1, progressManager = new TProgressManager(), errorManager = new TErrorManager(), geometriesProvider = new TGeometriesManager(), materialsProvider = new TMaterialsManager() ) {
 
-        super( basePath, responseType, bunchSize, progressManager, errorManager )
+        super( basePath, responseType, bunchSize, projectionSystem, globalScale, progressManager, errorManager )
 
         this.geometriesProvider = geometriesProvider
         this.materialsProvider  = materialsProvider
@@ -390,13 +390,20 @@ class TObjectsManager extends TDataBaseManager {
 
         if ( !isNullOrUndefined( data.position ) ) {
 
-            object.position.x = data.position.x / 1000
-            object.position.y = data.position.z / 1000
-            object.position.z = -data.position.y / 1000
+            if (this._projectionSystem === "zBack") {
+            
+                object.position.x = data.position.x / this._globalScale
+                object.position.y = data.position.z / this._globalScale
+                object.position.z = -data.position.y / this._globalScale
+            
+            } else {
 
-            //            object.position.x = data.position.x
-            //            object.position.y = data.position.y
-            //            object.position.z = data.position.z
+               object.position.x = data.position.x / this._globalScale
+               object.position.y = data.position.y / this._globalScale
+               object.position.z = data.position.z / this._globalScale
+            
+            }
+
         }
 
         if ( !isNullOrUndefined( data.rotation ) ) {
