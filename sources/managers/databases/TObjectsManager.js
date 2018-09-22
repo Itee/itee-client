@@ -87,14 +87,19 @@ class TObjectsManager extends TDataBaseManager {
      * @param geometriesProvider
      * @param materialsProvider
      */
-    constructor ( basePath = '/objects', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = new TErrorManager(), geometriesProvider = new TGeometriesManager(), materialsProvider = new TMaterialsManager() ) {
+    constructor ( basePath = '/objects', responseType = ResponseType.Json, bunchSize = 500, projectionSystem = "zBack", globalScale = 1, progressManager = new TProgressManager(), errorManager = new TErrorManager(), geometriesProvider = new TGeometriesManager(), materialsProvider = new TMaterialsManager() ) {
 
         super( basePath, responseType, bunchSize, progressManager, errorManager )
 
         this.geometriesProvider = geometriesProvider
         this.materialsProvider  = materialsProvider
+        this.projectionSystem   = projectionSystem
+        this.globalScale        = globalScale
 
+    
     }
+
+    //// Getter/Setter
 
     get geometriesProvider () {
         return this._geometriesProvider
@@ -134,6 +139,46 @@ class TObjectsManager extends TDataBaseManager {
     setMaterialsProvider ( value ) {
 
         this.materialsProvider = value
+        return this
+
+    }
+
+    get projectionSystem () {
+        return this._projectionSystem
+    }
+
+    set projectionSystem ( value ) {
+
+        if ( isNull( value ) ) { throw new TypeError( 'Projection system cannot be null ! Expect a positive number.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Projection system cannot be undefined ! Expect a positive number.' ) }
+
+        this._projectionSystem = value
+
+    }
+
+    setProjectionSystem ( value ) {
+
+        this.projectionSystem = value
+        return this
+
+    }
+
+    get globalScale () {
+        return this._globalScale
+    }
+
+    set globalScale ( value ) {
+
+        if ( isNull( value ) ) { throw new TypeError( 'Global scale cannot be null ! Expect a positive number.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Global scale cannot be undefined ! Expect a positive number.' ) }
+
+        this._globalScale = value
+
+    }
+
+    setGlobalScale ( value ) {
+
+        this.globalScale = value
         return this
 
     }
@@ -390,13 +435,20 @@ class TObjectsManager extends TDataBaseManager {
 
         if ( !isNullOrUndefined( data.position ) ) {
 
-            object.position.x = data.position.x / 1000
-            object.position.y = data.position.z / 1000
-            object.position.z = -data.position.y / 1000
+            if (this._projectionSystem === "zBack") {
+            
+                object.position.x = data.position.x / this._globalScale
+                object.position.y = data.position.z / this._globalScale
+                object.position.z = -data.position.y / this._globalScale
+            
+            } else {
 
-            //            object.position.x = data.position.x
-            //            object.position.y = data.position.y
-            //            object.position.z = data.position.z
+               object.position.x = data.position.x / this._globalScale
+               object.position.y = data.position.y / this._globalScale
+               object.position.z = data.position.z / this._globalScale
+            
+            }
+
         }
 
         if ( !isNullOrUndefined( data.rotation ) ) {

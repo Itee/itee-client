@@ -61,14 +61,16 @@ class TDataBaseManager {
      */
     constructor ( basePath = '/', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = new TErrorManager() ) {
 
-        this.basePath        = basePath
-        this.responseType    = responseType
-        this.bunchSize       = bunchSize
-        this.progressManager = progressManager
-        this.errorManager    = errorManager
-        this._cache          = new TStore()
-        this._waitingQueue   = []
-        this._idsInRequest   = []
+        this.basePath         = basePath
+        this.responseType     = responseType
+        this.bunchSize        = bunchSize
+        this.projectionSystem = projectionSystem
+        this.globalScale      = globalScale
+        this.progressManager  = progressManager
+        this.errorManager     = errorManager
+        this._cache           = new TStore()
+        this._waitingQueue    = []
+        this._idsInRequest    = []
 
     }
 
@@ -657,11 +659,8 @@ class TDataBaseManager {
 
         function cacheOnLoadResult ( result ) {
 
-            self._cache.add( id, result[ 0 ] )
-
-            let _result   = {}
-            _result[ id ] = result[ 0 ]
-            onLoadCallback( _result )
+            self._cache.add( id, result[id] )
+            onLoadCallback( result )
 
         }
 
