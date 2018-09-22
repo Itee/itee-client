@@ -65,7 +65,7 @@ import resize from 'vue-resize-directive'
 export default Vue.component( 'TViewport3D', {
 
     template: `
-        <div class="tViewport3D" v-resize:debounce="_resize" @click.left="_select" @click.right="_deselect"></div>
+        <div class="tViewport3D" v-resize:debounce="_resize" @click.left="_select" @click.right="_deselect" tabindex="-1"></div>
     `,
 
     props: [
