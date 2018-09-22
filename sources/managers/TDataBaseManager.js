@@ -64,8 +64,6 @@ class TDataBaseManager {
         this.basePath         = basePath
         this.responseType     = responseType
         this.bunchSize        = bunchSize
-        this.projectionSystem = projectionSystem
-        this.globalScale      = globalScale
         this.progressManager  = progressManager
         this.errorManager     = errorManager
         this._cache           = new TStore()
