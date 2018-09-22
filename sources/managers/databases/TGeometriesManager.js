@@ -88,7 +88,7 @@ class TGeometriesManager extends TDataBaseManager {
      */
     constructor ( basePath = '/geometries', responseType = ResponseType.Json, bunchSize = 500, projectionSystem = "zBack", globalScale = 1, progressManager = new TProgressManager(), errorManager = new TErrorManager() ) {
 
-        super( basePath, responseType, bunchSize, projectionSystem, globalScale, progressManager, errorManager ) 
+        super( basePath, responseType, bunchSize, progressManager, errorManager )
 
         this.projectionSystem   = projectionSystem
         this.globalScale        = globalScale
@@ -489,7 +489,7 @@ class TGeometriesManager extends TDataBaseManager {
                     for ( let pi = 0, numPos = positionArray.length ; pi < numPos ; pi += 3 ) {
                         zbackpos.push( positionArray[ pi ] / this._globalScale, positionArray[ pi + 1 ] / this._globalScale, -positionArray[ pi + 2 ] / this._globalScale )
                     }
-                    
+
                 }
 
                 attributes[ 'position' ] = new BufferAttribute( new Float32Array( zbackpos ), positionAttributes.itemSize, positionAttributes.normalized )
