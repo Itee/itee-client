@@ -8,5 +8,5 @@
  *
  */
 
-export { TCameraControls } from './TCameraControls'
-export { TCameraPathController } from './TCameraPathController'
+export * from './TCameraControls'
+export * from './TCameraPathController'
