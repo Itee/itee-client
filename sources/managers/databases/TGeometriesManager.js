@@ -70,7 +70,7 @@ import {
     Vector3,
 } from 'three-full'
 
-import { isObject } from 'itee-validators'
+import { isNull, isUndefined, isObject } from 'itee-validators'
 import { TDataBaseManager } from '../TDataBaseManager'
 import { TProgressManager } from '../TProgressManager'
 import { TErrorManager } from '../TErrorManager'
