@@ -9,7 +9,8 @@
  */
 
 /* eslint-env browser */
-import Vue from '../../../../node_modules/vue/dist/vue.esm'
+import Vue                              from '../../../../node_modules/vue/dist/vue.esm'
+import { isDefined } from 'itee-validators'
 
 export default Vue.component( 'TTreeItem', {
     template: `
