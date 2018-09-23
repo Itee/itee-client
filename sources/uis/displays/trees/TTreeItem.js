@@ -17,7 +17,7 @@ export default Vue.component( 'TTreeItem', {
         <li v-if="needUpdate || !needUpdate" :class=computeTreeItemClass>
             <TContainerHorizontal :class=computeTreeItemContentClass hAlign="start" vAlign="center">
                 <TIcon v-if="haveChildren()" :iconProps=computeToggleChildrenIconClass :iconOn="{click: toggleChildren}" />
-                <TCheckIcon class="margin-left-5px" v-if="eyeCheckModifier" :iconOn="eyeCheckModifier.iconOn" :iconOff="eyeCheckModifier.iconOff" :value="eyeCheckModifier.value" :onClick=eyeCheckModifier.onClick />
+                <TCheckIcon v-if="eyeCheckModifier" :iconOn="eyeCheckModifier.iconOn" :iconOff="eyeCheckModifier.iconOff" :value="eyeCheckModifier.value" :onClick=eyeCheckModifier.onClick />
                 <label @click="function () { updateSelectionState( onClick ) }">{{name}}</label>
                 <span v-for="modifier in filteredModifier" class="tTreeItemModifiers">
                     <TIcon v-if="( !modifier.display || (modifier.display === 'select' && isSelected)) && modifier.type === 'icon'" :iconProps='modifier.icon' v-bind:iconOn="{click: modifier.onClick}" />
