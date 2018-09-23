@@ -98,19 +98,17 @@ export default Vue.component( 'TTreeItem', {
 
         computedChildren () {
 
-            let _this = this
+            let children = this.children
 
-            if ( _this.childrenSorter ) {
-                _this.sortedChildren()
+            if ( isDefined( this.filters ) ) {
+                children = this.filterItems( children )
             }
 
-            if ( !_this.childrenFilter ) {
-                return this.children;
+            if ( isDefined( this.sort ) ) {
+                children = this.sortItems( children )
             }
 
-            return this.children.filter( function ( item ) {
-                return _this.childrenFilter.indexOf( item.name.toLowerCase() ) === -1;
-            } );
+            return children
 
         },
 
