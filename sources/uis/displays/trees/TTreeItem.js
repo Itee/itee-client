@@ -30,7 +30,7 @@ export default Vue.component( 'TTreeItem', {
             </TContainerHorizontal>
             <ul v-if="haveChildren() && showChildren && (_currentDeepLevel < maxDeepLevel)" :class=computeTreeItemChildrenClass :style=computeChildrenStyle>
                 <TTreeItem
-                    v-for="child in filteredChildren"
+                    v-for="child in computedChildren"
                     v-bind:key="child.id"
                     v-bind:name="child.name"
                     v-bind:onClick="child.onClick"
@@ -96,7 +96,7 @@ export default Vue.component( 'TTreeItem', {
 
         },
 
-        filteredChildren () {
+        computedChildren () {
 
             let _this = this
 
