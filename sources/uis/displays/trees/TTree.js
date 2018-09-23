@@ -30,6 +30,7 @@ export default Vue.component( 'TTree', {
                     v-bind:filters="filters"
                     v-bind:sort="sort"
                     v-bind:deepSelect="deepSelect"
+                    v-bind:multiSelect="multiSelect"
                     v-bind:needUpdate="needUpdate"
                     v-bind:maxDeepLevel="maxDeepLevel"
                     v-bind:_currentDeepLevel="0"
@@ -37,7 +38,7 @@ export default Vue.component( 'TTree', {
             </ul>
         </TContainerVertical>
     `,
-    props:    [ 'items', 'filters', 'sort', 'deepSelect', 'needUpdate', 'maxDeepLevel' ],
+    props:    [ 'items', 'filters', 'sort', 'deepSelect', 'multiSelect', 'needUpdate', 'maxDeepLevel' ],
     computed: {
 
         computedItems () {

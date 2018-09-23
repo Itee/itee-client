@@ -39,6 +39,7 @@ export default Vue.component( 'TTreeItem', {
                     v-bind:filters="filters"
                     v-bind:sort="sort"
                     v-bind:deepSelect="deepSelect"
+                    v-bind:multiSelect="multiSelect"
                     v-bind:needUpdate="needUpdate"
                     v-bind:maxDeepLevel="maxDeepLevel"
                     v-bind:_currentDeepLevel="_currentDeepLevel + 1"
@@ -54,7 +55,7 @@ export default Vue.component( 'TTreeItem', {
         }
 
     },
-    props:    [ 'id', 'name', 'onClick', 'modifiers', 'children', 'filters', 'sort', 'deepSelect', 'needUpdate', 'maxDeepLevel', '_currentDeepLevel' ],
+    props:    [ 'id', 'name', 'onClick', 'modifiers', 'children', 'filters', 'sort', 'deepSelect', 'multiSelect', 'needUpdate', 'maxDeepLevel', '_currentDeepLevel' ],
     computed: {
 
         computeTreeItemClass () {
@@ -183,11 +184,15 @@ export default Vue.component( 'TTreeItem', {
         updateSelectionState ( onClickCallback ) {
 
             // Deselect
-            let selectedItem = document.querySelector( '.selected' )
-            if ( !isNullOrUndefined(selectedItem) ) {
-              selectedItem.__vue__.isSelected = false
+            if( !this.multiSelect ) {
+
+                let selectedItem = document.querySelector( '.selected' )
+                if ( isDefined( selectedItem ) ) {
+                    selectedItem.__vue__.isSelected = false
+                }
+
             }
-            
+
             // Select
             this.isSelected = !this.isSelected
 
