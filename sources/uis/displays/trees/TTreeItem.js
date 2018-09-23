@@ -101,11 +101,11 @@ export default Vue.component( 'TTreeItem', {
             let children = this.children
 
             if ( isDefined( this.filters ) ) {
-                children = this.filterItems( children )
+                children = this.filterChildren( children )
             }
 
             if ( isDefined( this.sort ) ) {
-                children = this.sortItems( children )
+                children = this.sortChildren( children )
             }
 
             return children
