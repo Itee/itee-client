@@ -184,11 +184,20 @@ export default Vue.component( 'TTreeItem', {
         updateSelectionState ( onClickCallback ) {
 
             // Deselect
-            if( !this.multiSelect ) {
+            if ( this.multiSelect === false ) {
 
-                let selectedItem = document.querySelector( '.selected' )
+                const selectedItem = document.querySelector( '.selected' )
                 if ( isDefined( selectedItem ) ) {
-                    selectedItem.__vue__.isSelected = false
+
+                    const ttreeItem = ( this.deepSelect ) ? selectedItem.__vue__ : selectedItem.__vue__.$parent.$parent
+
+                    // In case the multiselect if false but the deepSelect is true we need to check if the selectedItem is not the child of this instance
+                    if( this._uid !== ttreeItem._uid ) {
+                        
+                        ttreeItem.isSelected = false
+
+                    }
+
                 }
 
             }
