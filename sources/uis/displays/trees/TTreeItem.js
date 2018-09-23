@@ -144,9 +144,21 @@ export default Vue.component( 'TTreeItem', {
 
         },
 
-        sortedChildren () {
+        filterChildren( children ) {
 
-            this.children.sort( ( a, b ) => {
+            return children.filter( child => !this.filters.includes( child.name ) )
+
+        },
+
+        sortChildren ( children ) {
+
+            // Todo: Externalize the sort function as use defined function. And implement current sort function as utility
+            if ( ![ 'asc', 'desc' ].includes( this.sort ) ) {
+                console.error( "Invalid sorter !" )
+                return
+            }
+
+            let sortedChildren = children.sort( ( a, b ) => {
 
                 if ( a.name < b.name ) {
                     return -1
@@ -161,8 +173,10 @@ export default Vue.component( 'TTreeItem', {
             } )
 
             if ( this.sort === 'desc' ) {
-                this.items.reverse()
+                sortedChildren.reverse()
             }
+
+            return sortedChildren
 
         },
 
