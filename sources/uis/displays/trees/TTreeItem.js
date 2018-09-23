@@ -17,15 +17,24 @@ export default Vue.component( 'TTreeItem', {
         <li v-if="needUpdate || !needUpdate" :class=computeTreeItemClass>
             <TContainerHorizontal :class=computeTreeItemContentClass hAlign="start" vAlign="center">
                 <TIcon v-if="haveChildren()" :iconProps=computeToggleChildrenIconClass :iconOn="{click: toggleChildren}" />
-                <TCheckIcon v-if="eyeCheckModifier" :iconOn="eyeCheckModifier.iconOn" :iconOff="eyeCheckModifier.iconOff" :value="eyeCheckModifier.value" :onClick=eyeCheckModifier.onClick />
-                <label @click="function () { updateSelectionState( onClick ) }">{{name}}</label>
-                <span v-for="modifier in filteredModifier" class="tTreeItemModifiers">
-                    <TIcon v-if="( !modifier.display || (modifier.display === 'select' && isSelected)) && modifier.type === 'icon'" :iconProps='modifier.icon' v-bind:iconOn="{click: modifier.onClick}" />
+                <span v-for="modifier in filteredAntelabelModifier" class="tTreeItemModifiers">
+                    <TIcon v-if="modifier.type === 'icon'" :iconProps='modifier.icon' v-bind:iconOn="{click: modifier.onClick}" />
+                    <TCheckIcon v-else-if="modifier.type === 'checkicon'" :iconOn="modifier.iconOn" :iconOff="modifier.iconOff" :value="modifier.value" :onClick=modifier.onClick />
                     <TButton v-else-if="modifier.type === 'button'" :label="modifier.label" :icon="modifier.icon" :onClick=modifier.onClick :messageData="modifier.value" />
                     <input v-else-if="modifier.type === 'range'" type="range" value="100" max="100" @input="modifier.onInput" />
                     <input v-else-if="modifier.type === 'number'" type="number" @change="modifier.onChange" />
                     <input v-else-if="modifier.type === 'color'" type="color" @change="modifier.onChange" />
-                    <label v-else>Error: Unknown modifier type !!!</label>
+                    <label v-else>Error: Unknown modifier of type "{{modifier.type}}" !!!</label>
+                </span>
+                <label @click="function () { updateSelectionState( onClick ) }">{{name}}</label>
+                <span v-for="modifier in filteredPostlabelModifier" class="tTreeItemModifiers">
+                    <TIcon v-if="modifier.type === 'icon'" :iconProps='modifier.icon' v-bind:iconOn="{click: modifier.onClick}" />
+                    <TCheckIcon v-else-if="modifier.type === 'checkicon'" :iconOn="modifier.iconOn" :iconOff="modifier.iconOff" :value="modifier.value" :onClick=modifier.onClick />
+                    <TButton v-else-if="modifier.type === 'button'" :label="modifier.label" :icon="modifier.icon" :onClick=modifier.onClick :messageData="modifier.value" />
+                    <input v-else-if="modifier.type === 'range'" type="range" value="100" max="100" @input="modifier.onInput" />
+                    <input v-else-if="modifier.type === 'number'" type="number" @change="modifier.onChange" />
+                    <input v-else-if="modifier.type === 'color'" type="color" @change="modifier.onChange" />
+                    <label v-else>Error: Unknown modifier of type "{{modifier.type}}" !!!</label>
                 </span>
             </TContainerHorizontal>
             <ul v-if="haveChildren() && showChildren && (_currentDeepLevel < maxDeepLevel)" :class=computeTreeItemChildrenClass :style=computeChildrenStyle>
@@ -112,22 +121,26 @@ export default Vue.component( 'TTreeItem', {
             return children
 
         },
-
-        eyeCheckModifier () {
-
-            return (isDefined( this.modifiers )) ? this.modifiers.find( modifier => modifier.type === 'checkicon' ) : null
-
-        },
-
-        filteredModifier () {
+        
+        filteredAntelabelModifier () {
 
             return (isDefined( this.modifiers )) ? this.modifiers.filter( ( modifier ) => {
 
-                return (!modifier.display || (modifier.display === 'select' && this.isSelected))
+                return modifier.position === "antelabel" && ( modifier.display === undefined || (modifier.display === 'onSelect' && this.isSelected) )
 
             } ) : []
 
-        }
+        },
+
+        filteredPostlabelModifier () {
+
+            return (isDefined( this.modifiers )) ? this.modifiers.filter( ( modifier ) => {
+
+                return modifier.position === "postlabel" && ( modifier.display === undefined || (modifier.display === 'onSelect' && this.isSelected) )
+
+            } ) : []
+
+        },
 
     },
     methods:  {
@@ -193,7 +206,7 @@ export default Vue.component( 'TTreeItem', {
 
                     // In case the multiselect if false but the deepSelect is true we need to check if the selectedItem is not the child of this instance
                     if( this._uid !== ttreeItem._uid ) {
-                        
+
                         ttreeItem.isSelected = false
 
                     }
