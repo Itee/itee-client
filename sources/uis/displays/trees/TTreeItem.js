@@ -36,8 +36,9 @@ export default Vue.component( 'TTreeItem', {
                     v-bind:onClick="child.onClick"
                     v-bind:modifiers="child.modifiers"
                     v-bind:children="child.children"
-                    v-bind:childrenFilter="childrenFilter"
-                    v-bind:childrenSorter="childrenSorter"
+                    v-bind:filters="filters"
+                    v-bind:sort="sort"
+                    v-bind:deepSelect="deepSelect"
                     v-bind:needUpdate="needUpdate"
                     v-bind:maxDeepLevel="maxDeepLevel"
                     v-bind:_currentDeepLevel="_currentDeepLevel + 1"
@@ -53,7 +54,7 @@ export default Vue.component( 'TTreeItem', {
         }
 
     },
-    props:    [ 'id', 'name', 'onClick', 'modifiers', 'children', 'childrenFilter', 'childrenSorter', 'needUpdate', 'maxDeepLevel', '_currentDeepLevel' ],
+    props:    [ 'id', 'name', 'onClick', 'modifiers', 'children', 'filters', 'sort', 'deepSelect', 'needUpdate', 'maxDeepLevel', '_currentDeepLevel' ],
     computed: {
 
         computeTreeItemClass () {
@@ -153,8 +154,8 @@ export default Vue.component( 'TTreeItem', {
                 return 0;
             } )
 
-            if ( this.sorter === "desc" ) {
-                this.items.reverse();
+            if ( this.sort === 'desc' ) {
+                this.items.reverse()
             }
 
         },
