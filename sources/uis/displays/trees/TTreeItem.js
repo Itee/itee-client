@@ -83,15 +83,15 @@ export default Vue.component( 'TTreeItem', {
 
         computeToggleChildrenIconClass () {
 
-            return (this.showChildren) ? "chevron-circle-down" : "chevron-circle-right"
-            //            return (this.showChildren) ? "chevron-down" : "chevron-right"
+            // Todo: Make them props
+            return (this.showChildren) ? 'chevron-circle-down' : 'chevron-circle-right'
 
         },
 
         computeChildrenStyle () {
 
             return {
-                display: ( this.showChildren ) ? "block" : "none"
+                display: (this.showChildren) ? 'block' : 'none'
             }
 
         },
@@ -116,17 +116,15 @@ export default Vue.component( 'TTreeItem', {
 
         eyeCheckModifier () {
 
-            return ( this.modifiers != undefined ) ? this.modifiers.find(function (modifier) {
-                return modifier.type === 'checkicon'
-            }) : null;
+            return (isDefined( this.modifiers )) ? this.modifiers.find( modifier => modifier.type === 'checkicon' ) : null
 
         },
 
         filteredModifier () {
 
-            return (this.modifiers) ? this.modifiers.filter( ( modifier ) => {
+            return (isDefined( this.modifiers )) ? this.modifiers.filter( ( modifier ) => {
 
-                return ( !modifier.display || (modifier.display === 'select' && this.isSelected) )
+                return (!modifier.display || (modifier.display === 'select' && this.isSelected))
 
             } ) : []
 
@@ -150,14 +148,18 @@ export default Vue.component( 'TTreeItem', {
 
         sortedChildren () {
 
-            this.children.sort( function ( a, b ) {
+            this.children.sort( ( a, b ) => {
+
                 if ( a.name < b.name ) {
-                    return -1;
+                    return -1
                 }
+
                 if ( a.name > b.name ) {
-                    return 1;
+                    return 1
                 }
-                return 0;
+
+                return 0
+
             } )
 
             if ( this.sort === 'desc' ) {
@@ -175,10 +177,10 @@ export default Vue.component( 'TTreeItem', {
             }
             
             // Select
-            this.isSelected = !this.isSelected;
+            this.isSelected = !this.isSelected
 
-            if (onClickCallback) {
-              onClickCallback();
+            if ( onClickCallback ) {
+                onClickCallback()
             }
 
         }
