@@ -639,6 +639,12 @@ class TDataBaseManager {
 
             }
 
+            if( isNull(cachedValue) ) {
+
+                console.warn('Try to get again an element under request.')
+
+            }
+
         } catch ( error ) {
 
             TDataBaseManager.requestServer(
