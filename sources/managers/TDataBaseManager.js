@@ -657,7 +657,12 @@ class TDataBaseManager {
 
         function cacheOnLoadResult ( result ) {
 
-            self._cache.add( id, result[id] )
+            try {
+                self._cache.add( id, result[id] )
+            } catch(error) {
+                console.error(error)
+            }
+
             onLoadCallback( result )
 
         }
@@ -706,7 +711,12 @@ class TDataBaseManager {
             } catch ( error ) { // else request and pre-cache it
 
                 idsToRequest.push( id )
-                this._cache.add( id, null )
+
+                try {
+                    this._cache.add( id, null )
+                } catch(error) {
+                    console.error(error)
+                }
 
             }
 
