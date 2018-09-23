@@ -15,7 +15,7 @@ import { isDefined } from 'itee-validators'
 export default Vue.component( 'TTreeItem', {
     template: `
         <li v-if="needUpdate || !needUpdate" :class=computeTreeItemClass>
-            <TContainerHorizontal class="tTreeItemContent" hAlign="start" vAlign="center">
+            <TContainerHorizontal :class=computeTreeItemContentClass hAlign="start" vAlign="center">
                 <TIcon v-if="haveChildren()" :iconProps=computeToggleChildrenIconClass :iconOn="{click: toggleChildren}" />
                 <TCheckIcon class="margin-left-5px" v-if="eyeCheckModifier" :iconOn="eyeCheckModifier.iconOn" :iconOff="eyeCheckModifier.iconOff" :value="eyeCheckModifier.value" :onClick=eyeCheckModifier.onClick />
                 <label @click="function () { updateSelectionState( onClick ) }">{{name}}</label>
@@ -59,7 +59,13 @@ export default Vue.component( 'TTreeItem', {
 
         computeTreeItemClass () {
 
-            return (this.isSelected) ? 'tTreeItem selected' : 'tTreeItem'
+            return (this.isSelected && this.deepSelect) ? 'tTreeItem selected' : 'tTreeItem'
+
+        },
+
+        computeTreeItemContentClass () {
+
+            return (this.isSelected && !this.deepSelect) ? 'tTreeItemContent selected' : 'tTreeItemContent'
 
         },
 
