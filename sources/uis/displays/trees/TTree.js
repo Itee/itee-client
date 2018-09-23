@@ -67,7 +67,7 @@ export default Vue.component( 'TTree', {
 
         filterItems( items ) {
 
-            return items.filter( item => this.filters.includes( item.name ) )
+            return items.filter( item => !this.filters.includes( item.name ) )
 
         },
 
