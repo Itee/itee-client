@@ -681,12 +681,19 @@ class TCameraControls extends EventDispatcher {
                 const dotProductUp            = UP.clone().dot( cameraToTargetDirection )
                 const dotProductRight         = RIGHT.clone().dot( cameraToTargetDirection )
 
-                const max = 0.95
+                const max = 0.97
                 if ( dotProductUp < -max || dotProductUp > max || dotProductRight < -2 || dotProductRight > 2 ) {
                     return
                 }
 
-                this.setTargetPosition( newTargetPosition )
+                // Care the target distance will change the sensitivity of mouse move
+                // and
+                // We need to set target at pre-defined distance of camera
+                // because if we use newTargetPosition the distance between
+                // camera and target will increase silently over the time
+                const lockedTargetPostion = cameraToTargetDirection.multiplyScalar( 1.0 ) // Todo: option
+                                                                   .add(this._camera.position)
+                this.setTargetPosition( lockedTargetPostion )
 
                 break
 
