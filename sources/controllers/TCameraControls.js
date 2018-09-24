@@ -207,16 +207,6 @@ class TCameraControls extends EventDispatcher {
         // The current internal state of controller
         this._state = State.None
 
-        this.mouseQuat = {
-            x: new Quaternion(),
-            y: new Quaternion()
-        }
-
-        this.orientation = {
-            x: 0,
-            y: 0
-        }
-
     }
 
     get camera () {
