@@ -308,7 +308,7 @@ class TCameraControls extends EventDispatcher {
 
     }
 
-    setPath( value ) {
+    setPaths( value ) {
 
         this.paths = value
         return this
