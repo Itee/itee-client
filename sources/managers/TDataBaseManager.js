@@ -20,7 +20,7 @@
 import {
     isNull,
     isUndefined,
-    isNullOrUndefined,
+    isNotDefined,
     isDefined,
     isNotNumber,
     isNumberPositive,
@@ -310,7 +310,7 @@ class TDataBaseManager {
      */
     update ( condition, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        if ( isNullOrUndefined( update ) ) {
+        if ( isNotDefined( update ) ) {
             onErrorCallback( 'TDataBaseManager.update: Update data cannot be null or undefined !' )
             return
         }
@@ -406,7 +406,7 @@ class TDataBaseManager {
         // TODO: switch on status
         if ( !TDataBaseManager.statusOk( status ) ) { return }
 
-        if ( isNullOrUndefined( response ) ) {
+        if ( isNotDefined( response ) ) {
             TLogger.warn( 'TDataBaseManager.onLoad: No data receive !' )
             onLoadCallback( null )
             return
