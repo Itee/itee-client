@@ -15,6 +15,8 @@ import {
 import {
     isNull,
     isUndefined,
+    isNotDefined,
+    isEmptyArray,
     isNotBoolean
 } from 'itee-validators'
 import {
@@ -81,7 +83,7 @@ class TCameraControls extends EventDispatcher {
         // Set to false to disable controls
         this.enabled = true
 
-        this._paths               = null
+        this._paths               = []
         this._trackPath           = false
         this._cameraJump          = 0.1 // = 1 / path.getLength()
         this._currentPathPosition = null
@@ -288,19 +290,18 @@ class TCameraControls extends EventDispatcher {
 
         this._paths = value
 
-        if( this._paths ) {
-
-            this._currentPathIndex    = 0
-            this._currentPathOffset = 0
-            this._currentPath         = this._paths[ 0 ]
-
-        }
-
     }
 
     setPaths( value ) {
 
         this.paths = value
+        return this
+
+    }
+
+    addPath( value ) {
+
+        this._paths.push( value )
         return this
 
     }
@@ -838,7 +839,19 @@ class TCameraControls extends EventDispatcher {
         //todo: project on closest path position
         //todo: move on path in the FRONT camera direction
 
-        this._currentPathOffset   = 0
+        if( isEmptyArray( this._paths ) ) {
+            console.warn('Try to init path displacement without any paths')
+            return
+        }
+
+        if( isNotDefined(this._currentPath) ) {
+
+            this._currentPathIndex  = 0
+            this._currentPathOffset = 0
+            this._currentPath       = this._paths[ 0 ]
+
+        }
+
         this._currentPathPosition = this._currentPath.getPointAt( this._currentPathOffset )
 
         switch ( this._mode ) {
