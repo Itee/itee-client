@@ -487,7 +487,7 @@ class TGeometriesManager extends TDataBaseManager {
                 } else {
 
                     for ( let pi = 0, numPos = positionArray.length ; pi < numPos ; pi += 3 ) {
-                        zbackpos.push( positionArray[ pi ] / this._globalScale, positionArray[ pi + 1 ] / this._globalScale, -positionArray[ pi + 2 ] / this._globalScale )
+                        zbackpos.push( positionArray[ pi ] / this._globalScale, positionArray[ pi + 1 ] / this._globalScale, positionArray[ pi + 2 ] / this._globalScale )
                     }
 
                 }
