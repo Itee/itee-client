@@ -340,7 +340,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( isNull( value ) ) { throw new Error( "DomElement cannot be null ! Expect an instance of HTMLDocument." ) }
         if ( isUndefined( value ) ) { throw new Error( "DomElement cannot be undefined ! Expect an instance of HTMLDocument." ) }
-        if ( !((value instanceof Window) || (value instanceof HTMLDocument) || (value instanceof HTMLDivElement)) ) { throw new Error( `Target cannot be an instance of ${value.constructor.name}. Expect an instance of Window, HTMLDocument or HTMLDivElement.` ) }
+        if ( !((value instanceof Window) || (value instanceof HTMLDocument) || (value instanceof HTMLDivElement) || (value instanceof HTMLCanvasElement)) ) { throw new Error( `Target cannot be an instance of ${value.constructor.name}. Expect an instance of Window, HTMLDocument or HTMLDivElement.` ) }
 
         // Clear previous element
         if( this._domElement ) {
