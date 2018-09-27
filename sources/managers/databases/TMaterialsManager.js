@@ -24,7 +24,7 @@ import {
 import {
     isNull,
     isUndefined,
-    isNullOrUndefined,
+    isNotDefined,
     isDefined,
     isNotBoolean,
     isString,
@@ -656,7 +656,7 @@ class TMaterialsManager extends TDataBaseManager {
 
         const x = vec2.x
         const y = vec2.y
-        if ( isNullOrUndefined( x ) || isNullOrUndefined( y ) ) {
+        if ( isNotDefined( x ) || isNotDefined( y ) ) {
             throw new Error( 'TMaterialsManager: Unable to convert null or undefined vector 2 !' )
         }
 
@@ -669,7 +669,7 @@ class TMaterialsManager extends TDataBaseManager {
         const r = color.r
         const g = color.g
         const b = color.b
-        if ( isNullOrUndefined( r ) || isNullOrUndefined( g ) || isNullOrUndefined( b ) ) {
+        if ( isNotDefined( r ) || isNotDefined( g ) || isNotDefined( b ) ) {
             throw new Error( 'TMaterialsManager: Unable to convert null or undefined color !' )
         }
 

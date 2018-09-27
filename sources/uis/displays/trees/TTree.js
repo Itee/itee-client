@@ -27,8 +27,10 @@ export default Vue.component( 'TTree', {
                     v-bind:onClick="item.onClick"
                     v-bind:modifiers="item.modifiers"
                     v-bind:children="item.children"
-                    v-bind:childrenFilter="filter"
-                    v-bind:childrenSorter="sorter"
+                    v-bind:filters="filters"
+                    v-bind:sort="sort"
+                    v-bind:deepSelect="deepSelect"
+                    v-bind:multiSelect="multiSelect"
                     v-bind:needUpdate="needUpdate"
                     v-bind:maxDeepLevel="maxDeepLevel"
                     v-bind:_currentDeepLevel="0"
@@ -36,18 +38,18 @@ export default Vue.component( 'TTree', {
             </ul>
         </TContainerVertical>
     `,
-    props:    [ 'items', 'filter', 'sorter', 'needUpdate', 'maxDeepLevel' ],
+    props:    [ 'items', 'filters', 'sort', 'deepSelect', 'multiSelect', 'needUpdate', 'maxDeepLevel' ],
     computed: {
 
         computedItems () {
 
             let items = this.items
 
-            if ( this.filter ) {
+            if ( this.filters ) {
                 items = this.filterItems( items )
             }
 
-            if ( this.sorter ) {
+            if ( this.sort ) {
                 items = this.sortItems( items )
             }
 
@@ -66,30 +68,33 @@ export default Vue.component( 'TTree', {
 
         filterItems( items ) {
 
-            const filters = this.filter
-            return items.filter( item => filters.includes( item.name ) )
+            return items.filter( item => !this.filters.includes( item.name ) )
 
         },
 
         sortItems ( items ) {
 
             // Todo: Externalize the sort function as use defined function. And implement current sort function as utility
-            if ( [ 'asc', 'desc' ].indexOf( this.sorter ) === -1 ) {
+            if ( ![ 'asc', 'desc' ].includes( this.sort ) ) {
                 console.error( "Invalid sorter !" )
                 return
             }
 
             let sortedItems = items.sort( ( a, b ) => {
+
                 if ( a.name < b.name ) {
                     return -1
                 }
+
                 if ( a.name > b.name ) {
                     return 1
                 }
+
                 return 0
+
             } )
 
-            if ( this.sorter === "desc" ) {
+            if ( this.sort === "desc" ) {
                 sortedItems.reverse()
             }
 

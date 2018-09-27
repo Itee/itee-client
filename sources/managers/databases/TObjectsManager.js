@@ -70,7 +70,7 @@ import { ResponseType } from '../../cores/TConstants'
 import {
     isNull,
     isUndefined,
-    isNullOrUndefined,
+    isNotDefined,
     isNotEmptyArray,
     isObject
 } from 'itee-validators'
@@ -87,14 +87,19 @@ class TObjectsManager extends TDataBaseManager {
      * @param geometriesProvider
      * @param materialsProvider
      */
-    constructor ( basePath = '/objects', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = new TErrorManager(), geometriesProvider = new TGeometriesManager(), materialsProvider = new TMaterialsManager() ) {
+    constructor ( basePath = '/objects', responseType = ResponseType.Json, bunchSize = 500, projectionSystem = "zBack", globalScale = 1, progressManager = new TProgressManager(), errorManager = new TErrorManager(), geometriesProvider = new TGeometriesManager(), materialsProvider = new TMaterialsManager() ) {
 
         super( basePath, responseType, bunchSize, progressManager, errorManager )
 
         this.geometriesProvider = geometriesProvider
         this.materialsProvider  = materialsProvider
+        this.projectionSystem   = projectionSystem
+        this.globalScale        = globalScale
 
+    
     }
+
+    //// Getter/Setter
 
     get geometriesProvider () {
         return this._geometriesProvider
@@ -134,6 +139,46 @@ class TObjectsManager extends TDataBaseManager {
     setMaterialsProvider ( value ) {
 
         this.materialsProvider = value
+        return this
+
+    }
+
+    get projectionSystem () {
+        return this._projectionSystem
+    }
+
+    set projectionSystem ( value ) {
+
+        if ( isNull( value ) ) { throw new TypeError( 'Projection system cannot be null ! Expect a positive number.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Projection system cannot be undefined ! Expect a positive number.' ) }
+
+        this._projectionSystem = value
+
+    }
+
+    setProjectionSystem ( value ) {
+
+        this.projectionSystem = value
+        return this
+
+    }
+
+    get globalScale () {
+        return this._globalScale
+    }
+
+    set globalScale ( value ) {
+
+        if ( isNull( value ) ) { throw new TypeError( 'Global scale cannot be null ! Expect a positive number.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Global scale cannot be undefined ! Expect a positive number.' ) }
+
+        this._globalScale = value
+
+    }
+
+    setGlobalScale ( value ) {
+
+        this.globalScale = value
         return this
 
     }
@@ -193,7 +238,7 @@ class TObjectsManager extends TDataBaseManager {
             case 'Scene':
                 object = new Scene()
                 this._fillBaseObjectsData( object, data )
-                if ( !isNullOrUndefined( data.background ) ) {
+                if ( !isNotDefined( data.background ) ) {
 
                     if ( Number.isInteger( data.background ) ) {
 
@@ -202,7 +247,7 @@ class TObjectsManager extends TDataBaseManager {
                     }
 
                 }
-                if ( !isNullOrUndefined( data.fog ) ) {
+                if ( !isNotDefined( data.fog ) ) {
 
                     if ( data.fog.type === 'Fog' ) {
 
@@ -226,19 +271,19 @@ class TObjectsManager extends TDataBaseManager {
                 object.aspect = data.aspect
                 object.near   = data.near
                 object.far    = data.far
-                if ( !isNullOrUndefined( data.focus ) ) {
+                if ( !isNotDefined( data.focus ) ) {
                     object.focus = data.focus
                 }
-                if ( !isNullOrUndefined( data.zoom ) ) {
+                if ( !isNotDefined( data.zoom ) ) {
                     object.zoom = data.zoom
                 }
-                if ( !isNullOrUndefined( data.filmGauge ) ) {
+                if ( !isNotDefined( data.filmGauge ) ) {
                     object.filmGauge = data.filmGauge
                 }
-                if ( !isNullOrUndefined( data.filmOffset ) ) {
+                if ( !isNotDefined( data.filmOffset ) ) {
                     object.filmOffset = data.filmOffset
                 }
-                if ( !isNullOrUndefined( data.view ) ) {
+                if ( !isNotDefined( data.view ) ) {
                     object.view = Object.assign( {}, data.view )
                 }
                 break
@@ -361,20 +406,20 @@ class TObjectsManager extends TDataBaseManager {
         // Common object properties
         object._id = data._id
 
-        if ( !isNullOrUndefined( data.uuid ) ) {
+        if ( !isNotDefined( data.uuid ) ) {
             object.uuid = data.uuid
         }
 
-        if ( !isNullOrUndefined( data.name ) ) {
+        if ( !isNotDefined( data.name ) ) {
             object.name = data.name
         }
 
         // IMPLICIT
-        //        if ( !isNullOrUndefined( data.type ) ) {
+        //        if ( !isNotDefined( data.type ) ) {
         //            object.type = data.type
         //        }
 
-        if ( !isNullOrUndefined( data.parent ) ) {
+        if ( !isNotDefined( data.parent ) ) {
             object.parent = data.parent
         }
 
@@ -382,38 +427,45 @@ class TObjectsManager extends TDataBaseManager {
             object.children = data.children
         }
 
-        if ( !isNullOrUndefined( data.up ) ) {
+        if ( !isNotDefined( data.up ) ) {
             object.up.x = data.up.x
             object.up.y = data.up.y
             object.up.z = data.up.z
         }
 
-        if ( !isNullOrUndefined( data.position ) ) {
+        if ( !isNotDefined( data.position ) ) {
 
-            object.position.x = data.position.x / 1000
-            object.position.y = data.position.z / 1000
-            object.position.z = -data.position.y / 1000
+            if (this._projectionSystem === "zBack") {
+            
+                object.position.x = data.position.x / this._globalScale
+                object.position.y = data.position.z / this._globalScale
+                object.position.z = -data.position.y / this._globalScale
+            
+            } else {
 
-            //            object.position.x = data.position.x
-            //            object.position.y = data.position.y
-            //            object.position.z = data.position.z
+               object.position.x = data.position.x / this._globalScale
+               object.position.y = data.position.y / this._globalScale
+               object.position.z = data.position.z / this._globalScale
+            
+            }
+
         }
 
-        if ( !isNullOrUndefined( data.rotation ) ) {
+        if ( !isNotDefined( data.rotation ) ) {
             object.rotation.x     = data.rotation.x
             object.rotation.y     = data.rotation.y
             object.rotation.z     = data.rotation.z
             object.rotation.order = data.rotation.order
         }
 
-        if ( !isNullOrUndefined( data.quaternion ) ) {
+        if ( !isNotDefined( data.quaternion ) ) {
             object.quaternion.x = data.quaternion.x
             object.quaternion.y = data.quaternion.y
             object.quaternion.z = data.quaternion.z
             object.quaternion.w = data.quaternion.w
         }
 
-        if ( !isNullOrUndefined( data.scale ) ) {
+        if ( !isNotDefined( data.scale ) ) {
             object.scale.x = 1 //data.scale.x
             object.scale.y = 1 //data.scale.y
             object.scale.z = 1 //data.scale.z
@@ -435,39 +487,39 @@ class TObjectsManager extends TDataBaseManager {
             object.matrixWorld.fromArray( data.matrixWorld )
         }
 
-        if ( !isNullOrUndefined( data.matrixAutoUpdate ) ) {
+        if ( !isNotDefined( data.matrixAutoUpdate ) ) {
             object.matrixAutoUpdate = data.matrixAutoUpdate
         }
 
-        if ( !isNullOrUndefined( data.matrixWorldNeedsUpdate ) ) {
+        if ( !isNotDefined( data.matrixWorldNeedsUpdate ) ) {
             object.matrixWorldNeedsUpdate = data.matrixWorldNeedsUpdate
         }
 
-        if ( !isNullOrUndefined( data.layers ) ) {
+        if ( !isNotDefined( data.layers ) ) {
             object.layers.mask = data.layers
         }
 
-        if ( !isNullOrUndefined( data.visible ) ) {
+        if ( !isNotDefined( data.visible ) ) {
             object.visible = data.visible
         }
 
-        if ( !isNullOrUndefined( data.castShadow ) ) {
+        if ( !isNotDefined( data.castShadow ) ) {
             object.castShadow = data.castShadow
         }
 
-        if ( !isNullOrUndefined( data.receiveShadow ) ) {
+        if ( !isNotDefined( data.receiveShadow ) ) {
             object.receiveShadow = data.receiveShadow
         }
 
-        if ( !isNullOrUndefined( data.frustumCulled ) ) {
+        if ( !isNotDefined( data.frustumCulled ) ) {
             object.frustumCulled = data.frustumCulled
         }
 
-        if ( !isNullOrUndefined( data.renderOrder ) ) {
+        if ( !isNotDefined( data.renderOrder ) ) {
             object.renderOrder = data.renderOrder
         }
 
-        if ( !isNullOrUndefined( data.userData ) ) {
+        if ( !isNotDefined( data.userData ) ) {
             object.userData = data.userData
         }
 

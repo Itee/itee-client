@@ -20,7 +20,7 @@
 import {
     isNull,
     isUndefined,
-    isNullOrUndefined,
+    isNotDefined,
     isDefined,
     isNotNumber,
     isNumberPositive,
@@ -61,14 +61,14 @@ class TDataBaseManager {
      */
     constructor ( basePath = '/', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = new TErrorManager() ) {
 
-        this.basePath        = basePath
-        this.responseType    = responseType
-        this.bunchSize       = bunchSize
-        this.progressManager = progressManager
-        this.errorManager    = errorManager
-        this._cache          = new TStore()
-        this._waitingQueue   = []
-        this._idsInRequest   = []
+        this.basePath         = basePath
+        this.responseType     = responseType
+        this.bunchSize        = bunchSize
+        this.progressManager  = progressManager
+        this.errorManager     = errorManager
+        this._cache           = new TStore()
+        this._waitingQueue    = []
+        this._idsInRequest    = []
 
     }
 
@@ -310,7 +310,7 @@ class TDataBaseManager {
      */
     update ( condition, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        if ( isNullOrUndefined( update ) ) {
+        if ( isNotDefined( update ) ) {
             onErrorCallback( 'TDataBaseManager.update: Update data cannot be null or undefined !' )
             return
         }
@@ -406,7 +406,7 @@ class TDataBaseManager {
         // TODO: switch on status
         if ( !TDataBaseManager.statusOk( status ) ) { return }
 
-        if ( isNullOrUndefined( response ) ) {
+        if ( isNotDefined( response ) ) {
             TLogger.warn( 'TDataBaseManager.onLoad: No data receive !' )
             onLoadCallback( null )
             return
@@ -639,6 +639,12 @@ class TDataBaseManager {
 
             }
 
+            if( isNull(cachedValue) ) {
+
+                console.warn('Try to get again an element under request.')
+
+            }
+
         } catch ( error ) {
 
             TDataBaseManager.requestServer(
@@ -657,11 +663,13 @@ class TDataBaseManager {
 
         function cacheOnLoadResult ( result ) {
 
-            self._cache.add( id, result[ 0 ] )
+            try {
+                self._cache.add( id, result[id] )
+            } catch(error) {
+                console.error(error)
+            }
 
-            let _result   = {}
-            _result[ id ] = result[ 0 ]
-            onLoadCallback( _result )
+            onLoadCallback( result )
 
         }
 
@@ -709,7 +717,12 @@ class TDataBaseManager {
             } catch ( error ) { // else request and pre-cache it
 
                 idsToRequest.push( id )
-                this._cache.add( id, null )
+
+                try {
+                    this._cache.add( id, null )
+                } catch(error) {
+                    console.error(error)
+                }
 
             }
 

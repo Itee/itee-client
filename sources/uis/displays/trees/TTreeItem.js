@@ -9,35 +9,46 @@
  */
 
 /* eslint-env browser */
-import Vue from '../../../../node_modules/vue/dist/vue.esm'
+import Vue                              from '../../../../node_modules/vue/dist/vue.esm'
+import { isDefined } from 'itee-validators'
 
 export default Vue.component( 'TTreeItem', {
     template: `
         <li v-if="needUpdate || !needUpdate" :class=computeTreeItemClass>
-            <TContainerHorizontal class="tTreeItemContent" hAlign="start" vAlign="center">
-                <TIcon v-if="haveChildren()" :iconProps=computeToggleChildrenIconClass :iconOn="{click: toggleChildren}" />
-                <div class="eyeCheck"></div>
-                <label @click="function () { updateSelectionState( onClick ) }">{{name}}</label>
-                <span v-for="modifier in filteredModifier" class="tTreeItemModifiers">
-                    <TIcon v-if="( !modifier.display || (modifier.display === 'select' && isSelected)) && modifier.type === 'icon'" :iconProps='modifier.icon' v-bind:iconOn="{click: modifier.onClick}" />
+            <TContainerHorizontal :class=computeTreeItemContentClass hAlign="start" vAlign="center">
+                <TIcon v-if="haveChildren() && canShowChildren" :iconProps=computeToggleChildrenIconClass :iconOn="{click: toggleChildren}" />
+                <span v-for="modifier in filteredAntelabelModifier" class="tTreeItemModifiers">
+                    <TIcon v-if="modifier.type === 'icon'" :iconProps='modifier.icon' v-bind:iconOn="{click: modifier.onClick}" />
                     <TCheckIcon v-else-if="modifier.type === 'checkicon'" :iconOn="modifier.iconOn" :iconOff="modifier.iconOff" :value="modifier.value" :onClick=modifier.onClick />
                     <TButton v-else-if="modifier.type === 'button'" :label="modifier.label" :icon="modifier.icon" :onClick=modifier.onClick :messageData="modifier.value" />
-                    <input v-else-if="modifier.type === 'range'" type="range" value="100" max="100" @input="modifier.onInput" />
+                    <input v-else-if="modifier.type === 'range'" class="tInputRange form-control" type="range" value="100" max="100" @input="modifier.onInput" />
                     <input v-else-if="modifier.type === 'number'" type="number" @change="modifier.onChange" />
                     <input v-else-if="modifier.type === 'color'" type="color" @change="modifier.onChange" />
-                    <label v-else>Error: Unknown modifier type !!!</label>
+                    <label v-else>Error: Unknown modifier of type "{{modifier.type}}" !!!</label>
+                </span>
+                <label @click="function () { updateSelectionState( onClick ) }">{{name}}</label>
+                <span v-for="modifier in filteredPostlabelModifier" class="tTreeItemModifiers">
+                    <TIcon v-if="modifier.type === 'icon'" :iconProps='modifier.icon' v-bind:iconOn="{click: modifier.onClick}" />
+                    <TCheckIcon v-else-if="modifier.type === 'checkicon'" :iconOn="modifier.iconOn" :iconOff="modifier.iconOff" :value="modifier.value" :onClick=modifier.onClick />
+                    <TButton v-else-if="modifier.type === 'button'" :label="modifier.label" :icon="modifier.icon" :onClick=modifier.onClick :messageData="modifier.value" />
+                    <input v-else-if="modifier.type === 'range'" class="tInputRange form-control" type="range" value="100" max="100" @input="modifier.onInput" />
+                    <input v-else-if="modifier.type === 'number'" type="number" @change="modifier.onChange" />
+                    <input v-else-if="modifier.type === 'color'" type="color" @change="modifier.onChange" />
+                    <label v-else>Error: Unknown modifier of type "{{modifier.type}}" !!!</label>
                 </span>
             </TContainerHorizontal>
-            <ul v-if="haveChildren() && showChildren && (_currentDeepLevel < maxDeepLevel)" :class=computeTreeItemChildrenClass :style=computeChildrenStyle>
+            <ul v-if="haveChildren() && canShowChildren && showChildren" :class=computeTreeItemChildrenClass :style=computeChildrenStyle>
                 <TTreeItem
-                    v-for="child in filteredChildren"
+                    v-for="child in computedChildren"
                     v-bind:key="child.id"
                     v-bind:name="child.name"
                     v-bind:onClick="child.onClick"
                     v-bind:modifiers="child.modifiers"
                     v-bind:children="child.children"
-                    v-bind:childrenFilter="childrenFilter"
-                    v-bind:childrenSorter="childrenSorter"
+                    v-bind:filters="filters"
+                    v-bind:sort="sort"
+                    v-bind:deepSelect="deepSelect"
+                    v-bind:multiSelect="multiSelect"
                     v-bind:needUpdate="needUpdate"
                     v-bind:maxDeepLevel="maxDeepLevel"
                     v-bind:_currentDeepLevel="_currentDeepLevel + 1"
@@ -45,17 +56,6 @@ export default Vue.component( 'TTreeItem', {
             </ul>
         </li>
     `,
-    mounted:  function () {
-
-        // Move visibility button
-        if ( this.children.length > 0 ) {
-            let eye = this.$el.querySelector( ".tTreeItemModifiers" )
-            if ( eye !== null ) {
-                this.$el.querySelector( ".eyeCheck" ).appendChild( eye )
-            }
-        }
-
-    },
     data:     function () {
 
         return {
@@ -64,12 +64,18 @@ export default Vue.component( 'TTreeItem', {
         }
 
     },
-    props:    [ 'id', 'name', 'onClick', 'modifiers', 'children', 'childrenFilter', 'childrenSorter', 'needUpdate', 'maxDeepLevel', '_currentDeepLevel' ],
+    props:    [ 'id', 'name', 'onClick', 'modifiers', 'children', 'filters', 'sort', 'deepSelect', 'multiSelect', 'needUpdate', 'maxDeepLevel', '_currentDeepLevel' ],
     computed: {
 
         computeTreeItemClass () {
 
-            return (this.isSelected) ? 'tTreeItem selected' : 'tTreeItem'
+            return (this.isSelected && this.deepSelect) ? 'tTreeItem selected' : 'tTreeItem'
+
+        },
+
+        computeTreeItemContentClass () {
+
+            return (this.isSelected && !this.deepSelect) ? 'tTreeItemContent selected' : 'tTreeItemContent'
 
         },
 
@@ -87,44 +93,58 @@ export default Vue.component( 'TTreeItem', {
 
         computeToggleChildrenIconClass () {
 
-            return (this.showChildren) ? "chevron-circle-down" : "chevron-circle-right"
-            //            return (this.showChildren) ? "chevron-down" : "chevron-right"
+            // Todo: Make them props
+            return (this.showChildren) ? 'chevron-circle-down' : 'chevron-circle-right'
 
         },
 
         computeChildrenStyle () {
 
             return {
-                display: ( this.showChildren ) ? "block" : "none"
+                display: (this.showChildren) ? 'block' : 'none'
             }
 
         },
 
-        filteredChildren () {
+        computedChildren () {
 
-            let _this = this
+            let children = this.children
 
-            if ( _this.childrenSorter ) {
-                _this.sortedChildren()
+            if ( isDefined( this.filters ) ) {
+                children = this.filterChildren( children )
             }
 
-            if ( !_this.childrenFilter ) {
-                return this.children;
+            if ( isDefined( this.sort ) ) {
+                children = this.sortChildren( children )
             }
 
-            return this.children.filter( function ( item ) {
-                return _this.childrenFilter.indexOf( item.name.toLowerCase() ) === -1;
-            } );
+            return children
 
         },
+        
+        filteredAntelabelModifier () {
 
-        filteredModifier () {
+            return (isDefined( this.modifiers )) ? this.modifiers.filter( ( modifier ) => {
 
-            return (this.modifiers) ? this.modifiers.filter( ( modifier ) => {
-
-                return ( !modifier.display || (modifier.display === 'select' && this.isSelected) )
+                return modifier.position === "antelabel" && ( modifier.display === undefined || (modifier.display === 'onSelect' && this.isSelected) )
 
             } ) : []
+
+        },
+
+        filteredPostlabelModifier () {
+
+            return (isDefined( this.modifiers )) ? this.modifiers.filter( ( modifier ) => {
+
+                return modifier.position === "postlabel" && ( modifier.display === undefined || (modifier.display === 'onSelect' && this.isSelected) )
+
+            } ) : []
+
+        },
+
+        canShowChildren() {
+
+            return (this._currentDeepLevel < this.maxDeepLevel)
 
         }
 
@@ -144,44 +164,68 @@ export default Vue.component( 'TTreeItem', {
 
         },
 
-        sortedChildren () {
+        filterChildren( children ) {
 
-            this.children.sort( function ( a, b ) {
+            return children.filter( child => !this.filters.includes( child.name ) )
+
+        },
+
+        sortChildren ( children ) {
+
+            // Todo: Externalize the sort function as use defined function. And implement current sort function as utility
+            if ( ![ 'asc', 'desc' ].includes( this.sort ) ) {
+                console.error( "Invalid sorter !" )
+                return
+            }
+
+            let sortedChildren = children.sort( ( a, b ) => {
+
                 if ( a.name < b.name ) {
-                    return -1;
+                    return -1
                 }
+
                 if ( a.name > b.name ) {
-                    return 1;
+                    return 1
                 }
-                return 0;
+
+                return 0
+
             } )
 
-            if ( this.sorter === "desc" ) {
-                this.items.reverse();
+            if ( this.sort === 'desc' ) {
+                sortedChildren.reverse()
             }
+
+            return sortedChildren
 
         },
 
         updateSelectionState ( onClickCallback ) {
 
-            this.isSelected = !this.isSelected;
+            // Deselect
+            if ( this.multiSelect === false ) {
 
-            let selectedItems = document.querySelectorAll( '.selected' )
+                const selectedItem = document.querySelector( '.selected' )
+                if ( isDefined( selectedItem ) ) {
 
-            for ( let i = selectedItems.length - 1 ; i >= 0 ; i-- ) {
-                selectedItems[ i ].className = "tTreeItemContent tContainer tContainerHorizontal";
-                (selectedItems[ i ].querySelector( "[type='range']" ) != null) ? selectedItems[ i ].querySelector( "[type='range']" ).parentElement.remove() : null
+                    const ttreeItem = ( this.deepSelect ) ? selectedItem.__vue__ : selectedItem.__vue__.$parent.$parent
+
+                    // In case the multiselect if false but the deepSelect is true we need to check if the selectedItem is not the child of this instance
+                    if( this._uid !== ttreeItem._uid ) {
+
+                        ttreeItem.isSelected = false
+
+                    }
+
+                }
+
             }
 
-            if ( this.isSelected ) {
-                this.$el.querySelector( '.tContainerHorizontal' ).className = "tTreeItemContent tContainer tContainerHorizontal selected"
-            }
-            else {
-                this.$el.querySelector( '.tContainerHorizontal' ).className = "tTreeItemContent tContainer tContainerHorizontal"
-            }
+            // Select
+            this.isSelected = !this.isSelected
 
             if ( onClickCallback ) {
-                onClickCallback();
+                onClickCallback()
             }
 
         }
