@@ -64,6 +64,7 @@ class TCameraControls extends EventDispatcher {
             onMouseMove:   this._onMouseMove.bind( this ),
             onMouseWheel:  this._onMouseWheel.bind( this ),
             onMouseUp:     this._onMouseUp.bind( this ),
+            onDblClick:    this._onDblClick.bind( this ),
             onTouchStart:  this._onTouchStart.bind( this ),
             onTouchEnd:    this._onTouchEnd.bind( this ),
             onTouchCancel: this._onTouchCancel.bind( this ),
@@ -371,6 +372,7 @@ class TCameraControls extends EventDispatcher {
         this._domElement.addEventListener( 'mousewheel', this._handlers.onMouseWheel, false )
         this._domElement.addEventListener( 'wheel', this._handlers.onMouseWheel, false )
         this._domElement.addEventListener( 'mouseup', this._handlers.onMouseUp, false )
+        this._domElement.addEventListener( 'dblclick', this._handlers.onDblClick, false )
         this._domElement.addEventListener( 'touchstart', this._handlers.onTouchStart, false )
         this._domElement.addEventListener( 'touchend', this._handlers.onTouchEnd, false )
         this._domElement.addEventListener( 'touchcancel', this._handlers.onTouchCancel, false )
@@ -387,6 +389,7 @@ class TCameraControls extends EventDispatcher {
         this._domElement.removeEventListener( 'mousemove', this._handlers.onMouseMove, false )
         this._domElement.removeEventListener( 'mousewheel', this._handlers.onMouseWheel, false )
         this._domElement.removeEventListener( 'wheel', this._handlers.onMouseWheel, false )
+        this._domElement.removeEventListener( 'dblclick', this._handlers.onDblClick, false )
         this._domElement.removeEventListener( 'touchstart', this._handlers.onTouchStart, false )
         this._domElement.removeEventListener( 'touchend', this._handlers.onTouchEnd, false )
         this._domElement.removeEventListener( 'touchcancel', this._handlers.onTouchCancel, false )
@@ -592,6 +595,11 @@ class TCameraControls extends EventDispatcher {
         mouseEvent.preventDefault()
         this._state = State.None
 
+    }
+
+    _onDblClick ( mouseEvent ) {
+        //todo...
+        console.warn('Double click events is not implemented yet, sorry for the disagreement.')
     }
 
     // Positional methods
