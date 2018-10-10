@@ -83,6 +83,8 @@ class TGeometriesManager extends TDataBaseManager {
      * @param basePath
      * @param responseType
      * @param bunchSize
+     * @param projectionSystem
+     * @param globalScale
      * @param progressManager
      * @param errorManager
      */
