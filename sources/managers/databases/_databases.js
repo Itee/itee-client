@@ -10,10 +10,14 @@
 
 //export { MeshManager } from './MeshManager' // Todo: Remove when merged in TObjectsManager
 
+// MongoDB
 export { TObjectsManager } from './TObjectsManager'
 export { TCurvesManager } from './TCurvesManager'
 export { TGeometriesManager } from './TGeometriesManager'
 export { TBufferGeometriesManager } from './TBufferGeometriesManager'
 export { TMaterialsManager } from './TMaterialsManager'
 export { TTexturesManager } from './TTexturesManager'
+
+// PostgreSQL
+export { TFilaireManager } from './TFilaireManager'
 
