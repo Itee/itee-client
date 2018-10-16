@@ -15,7 +15,7 @@ import {
     LineBasicMaterial,
     Float32BufferAttribute,
     SphereBufferGeometry,
-    MeshBasicMaterial,
+    MeshPhongMaterial,
     Mesh
 } from 'three-full'
 
@@ -164,8 +164,8 @@ class TFilaireManager extends TDataBaseManager {
 
         let geometry = new SphereBufferGeometry( parseFloat(data.attribut), 50, 50, 0, Math.PI * 2, 0, Math.PI * 2 )
         geometry.computeVertexNormals()
-        
-        let material = new MeshBasicMaterial( { color: color } )
+
+        let material = new MeshPhongMaterial( { color: color } )
         let object   = new Mesh( geometry, material )
 
         object.position.set( positions["0"], positions["1"], positions["2"] )
