@@ -53,3 +53,27 @@ export * from './loggers/_loggers'
 export * from './managers/_managers'
 export * from './objects3d/_objects3d'
 export * from './uis/_uis'
+
+export function startApp ( config ) {
+
+    if ( !config ) { return null }
+
+    if ( config.routes ) {
+
+        Vue.use( VueRouter )
+
+        const router = new VueRouter( {
+            routes: config.routes
+        } )
+
+        return new Vue( {
+            router
+        } ).$mount( config.launchingSite )
+
+    } else {
+
+        return new Vue( config )
+
+    }
+
+}
