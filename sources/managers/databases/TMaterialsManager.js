@@ -18,7 +18,8 @@ import {
     LineBasicMaterial,
     Color,
     Vector2,
-    TextureLoader
+    TextureLoader,
+    ImageLoader
 } from 'three-full'
 
 import {
@@ -41,6 +42,8 @@ import { TProgressManager } from '../TProgressManager'
 import { TErrorManager } from '../TErrorManager'
 import { ResponseType } from '../../cores/TConstants'
 
+const DEFAULT_IMAGE = new ImageLoader().load( 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAB3RJTUUH4gkKDRoGpGNegQAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAAMSURBVAjXY/j//z8ABf4C/tzMWecAAAAASUVORK5CYII=' )
+
 class TMaterialsManager extends TDataBaseManager {
 
     /**
@@ -59,6 +62,7 @@ class TMaterialsManager extends TDataBaseManager {
         this.texturesPath     = texturesPath
         this.texturesProvider = texturesProvider
         this.generateMipmap   = generateMipmap
+
 
     }
 
@@ -714,22 +718,40 @@ class TMaterialsManager extends TDataBaseManager {
 
                 const map = material[ mapType ]
                 if ( isDefined( map ) && isString( map ) && isNotEmptyString( map ) ) {
-                    const texturePath = `${this._texturesPath}/${map}`
 
-                    // Check cache before
+                    const texturePath = `${this._texturesPath}/${map}`
                     const cachedResult = localCache[ texturePath ]
+
                     if ( isDefined( cachedResult ) ) {
+
                         textures[ mapType ] = cachedResult
+
                     } else {
-                        const texture = this._texturesProvider.load( texturePath )
+
+                        const texture = this._texturesProvider.load(
+                            texturePath,
+                            () => {},
+                            () => {},
+                            () => {
+
+                                if( !texture.image ) {
+                                    texture.image = DEFAULT_IMAGE
+                                    texture.needsUpdate = true
+                                }
+
+                            }
+                        )
                         texture.name  = map
+
                         if ( !this._generateMipmap ) {
                             texture.generateMipmaps = false
                             texture.magFilter       = LinearFilter
                             texture.minFilter       = LinearFilter
                         }
+
                         localCache[ texturePath ] = texture
                         textures[ mapType ]       = texture
+
                     }
 
                 }
