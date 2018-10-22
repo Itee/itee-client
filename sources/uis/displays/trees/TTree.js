@@ -99,6 +99,7 @@ export default Vue.component( 'TTree', {
             }
 
             return sortedItems
+
         },
 
 
