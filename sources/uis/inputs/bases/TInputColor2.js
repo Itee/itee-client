@@ -34,6 +34,7 @@ export default Vue.component( 'TInputColor2', {
     `,
     props:    [ 'label', 'color', 'displayTextInput', 'onChange' ],
     data() {
+
 		return {
 			colors: {
 				hex: this.color,
@@ -41,16 +42,22 @@ export default Vue.component( 'TInputColor2', {
 			colorValue: this.color,
 			displayPicker: false,
 		}
+		
 	},
 	mounted() {
 		this.setColor(this.color || '#000000');
 	},
 	methods: {
+
 		setColor(color) {
+
 			this.updateColors(color)
 			this.colorValue = color
+
 		},
+
 		updateColors(color) {
+
 			if(color.slice(0, 1) == '#') {
 				this.colors = {
 					hex: color
@@ -64,22 +71,33 @@ export default Vue.component( 'TInputColor2', {
 					a: rgba[3],
 				}
 			}
+
 			this.onChange( this.colors.hex )
+
 		},
+
 		showPicker() {
+
 			document.addEventListener('click', this.documentClick)
 			this.displayPicker = true
+
 		},
+
 		hidePicker() {
+
 			document.removeEventListener('click', this.documentClick)
 			this.displayPicker = false
+
 		},
+
 		togglePicker() {
 			this.displayPicker ? this.hidePicker() : this.showPicker()
 		},
+
 		updateFromInput() {
 			this.updateColors( this.colorValue )
 		},
+
 		updateFromPicker(color) {
 
 			this.colors = color
@@ -90,6 +108,7 @@ export default Vue.component( 'TInputColor2', {
 				this.colorValue = 'rgba(' + color.rgba.r + ', ' + color.rgba.g + ', ' + color.rgba.b + ', ' + color.rgba.a + ')'
 			}
 		},
+
 		documentClick(e) {
 
 			let el 		= this.$refs.colorpicker
@@ -102,12 +121,14 @@ export default Vue.component( 'TInputColor2', {
 		}
 	},
 	watch: {
+
 		colorValue(val) {
 			if(val) {
 				this.updateColors(val);
 				this.$emit('input', val);
 			}
 		}
+
 	},
 } )
 
