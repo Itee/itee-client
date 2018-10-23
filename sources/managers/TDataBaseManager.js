@@ -56,19 +56,23 @@ class TDataBaseManager {
      * @param basePath
      * @param responseType
      * @param bunchSize
+     * @param requestsConcurrency
      * @param progressManager
      * @param errorManager
      */
-    constructor ( basePath = '/', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = new TErrorManager() ) {
+    constructor ( basePath = '/', responseType = ResponseType.Json, bunchSize = 500, requestsConcurrency = 6, progressManager = new TProgressManager(), errorManager = new TErrorManager() ) {
 
         this.basePath         = basePath
         this.responseType     = responseType
         this.bunchSize        = bunchSize
+        this.requestsConcurrency = requestsConcurrency
         this.progressManager  = progressManager
         this.errorManager     = errorManager
+
         this._cache           = new TStore()
         this._waitingQueue    = []
         this._idsInRequest    = []
+        this._numberOfRunningRequest = 0
 
     }
 
@@ -135,6 +139,39 @@ class TDataBaseManager {
     setBunchSize ( value ) {
 
         this.bunchSize = value
+        return this
+
+    }
+
+    get requestsConcurrency () {
+        return this._numberOfConcurrentRequestsAllowed
+    }
+
+    set requestsConcurrency ( value ) {
+
+        if ( isNull( value ) ) {
+            throw new TypeError( 'Minimum of simultaneous request cannot be null ! Expect a positive number.' )
+        }
+
+        if ( isUndefined( value ) ) {
+            throw new TypeError( 'Minimum of simultaneous request cannot be undefined ! Expect a positive number.' )
+        }
+
+        if ( isNotNumber( value ) ) {
+            throw new TypeError( `Minimum of simultaneous request cannot be an instance of ${value.constructor.name} ! Expect a positive number.` )
+        }
+
+        if ( isNumberPositive( value ) ) {
+            throw new TypeError( 'Minimum of simultaneous request cannot be lower or equal to zero ! Expect a positive number.' )
+        }
+
+        this._requestsConcurrency = value
+
+    }
+
+    setRequestsConcurrency( value ) {
+
+        this.requestsConcurrency = value
         return this
 
     }
