@@ -112,7 +112,7 @@ class TOrchestrator {
      */
     queue ( newRequest ) {
 
-        // Check if request for same url already exist
+        // Check if request for same url already exist in request queue
         let skipNewRequest = false
         for ( let requestIndex = 0, numberOfRequest = this._requestQueue.length ; requestIndex < numberOfRequest ; requestIndex++ ) {
 
@@ -145,6 +145,7 @@ class TOrchestrator {
 
         }
 
+        // Check if request for same url already exist in process queue
         for ( let requestIndex = 0, numberOfRequest = this._processQueue.length ; requestIndex < numberOfRequest ; requestIndex++ ) {
 
             const request = this._processQueue[ requestIndex ]
