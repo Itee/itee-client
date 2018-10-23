@@ -430,63 +430,30 @@ class TDataBaseManager {
      */
     _onLoad ( onLoadCallback, onProgressCallback, onErrorCallback, loadEvent ) {
 
-        const target       = loadEvent.target
-        const status       = target.status
-        const response     = target.response
+        const target      = loadEvent.target
+        const status      = target.status
+        const response    = target.response
+//        const contentType = target.getResponseHeader( 'content-type' )
         const responseType = target.responseType
 
         // TODO: switch on status
-        if ( !TDataBaseManager.statusOk( status ) ) { return }
 
-        if ( isNotDefined( response ) ) {
-            TLogger.warn( 'TDataBaseManager.onLoad: No data receive !' )
-            onLoadCallback( null )
-            return
-        }
+        switch (status) {
 
-        // Dispatch response to the correct handler in function of response type
-        switch ( responseType ) {
+            case HttpStatusCode.Ok.value:
+                this._dispatchResponse( response, responseType, onLoadCallback, onProgressCallback, onErrorCallback )
+                break
 
-            case ResponseType.ArrayBuffer.value:
-                this._onArrayBuffer(
-                    response,
-                    onLoadCallback,
-                    this._onProgress.bind( this, onProgressCallback ),
-                    this._onError.bind( this, onErrorCallback )
-                )
-                break;
+            case HttpStatusCode.NoContent.value:
+                onErrorCallback( 'Unable to retrieve data...' )
+                break
 
-            case ResponseType.Blob.value:
-                this._onBlob(
-                    response,
-                    onLoadCallback,
-                    this._onProgress.bind( this, onProgressCallback ),
-                    this._onError.bind( this, onErrorCallback )
-                )
-                break;
+            case HttpStatusCode.RequestRangeUnsatisfiable.value:
+                onErrorCallback( response.errors )
+                this._dispatchResponse( response.datas, responseType, onLoadCallback, onProgressCallback, onErrorCallback )
+                break
 
-            case ResponseType.Json.value:
-                this._onJson(
-                    response,
-                    onLoadCallback,
-                    this._onProgress.bind( this, onProgressCallback ),
-                    this._onError.bind( this, onErrorCallback )
-                )
-                break;
-
-            case ResponseType.DOMString.value:
-            case ResponseType.Default.value:
-                this._onText(
-                    response,
-                    onLoadCallback,
-                    this._onProgress.bind( this, onProgressCallback ),
-                    this._onError.bind( this, onErrorCallback )
-                )
-                break;
-
-            default:
-                throw new Error( `Unknown response type: ${responseType}` )
-                break;
+            default: throw new RangeError(`Invalid HttpStatusCode parameter: ${status}` )
 
         }
 
@@ -548,6 +515,54 @@ class TDataBaseManager {
 
     //// Data parsing
     // Expect that methods were reimplemented when TDataBaseManager is inherited
+
+    // Dispatch response to the correct handler in function of response type
+    _dispatchResponse( response, responseType, onLoadCallback, onProgressCallback, onErrorCallback ) {
+
+        switch ( responseType ) {
+
+            case ResponseType.ArrayBuffer.value:
+                this._onArrayBuffer(
+                    response,
+                    onLoadCallback,
+                    this._onProgress.bind( this, onProgressCallback ),
+                    this._onError.bind( this, onErrorCallback )
+                )
+                break;
+
+            case ResponseType.Blob.value:
+                this._onBlob(
+                    response,
+                    onLoadCallback,
+                    this._onProgress.bind( this, onProgressCallback ),
+                    this._onError.bind( this, onErrorCallback )
+                )
+                break;
+
+            case ResponseType.Json.value:
+                this._onJson(
+                    response,
+                    onLoadCallback,
+                    this._onProgress.bind( this, onProgressCallback ),
+                    this._onError.bind( this, onErrorCallback )
+                )
+                break;
+
+            case ResponseType.DOMString.value:
+            case ResponseType.Default.value:
+                this._onText(
+                    response,
+                    onLoadCallback,
+                    this._onProgress.bind( this, onProgressCallback ),
+                    this._onError.bind( this, onErrorCallback )
+                )
+                break;
+
+            default: throw new Error( `Unknown response type: ${responseType}` )
+
+        }
+
+    }
 
     /**
      * @private
