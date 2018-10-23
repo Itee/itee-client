@@ -73,7 +73,7 @@ class TOrchestrator {
             this._processQueue.push( requestSkull )
 
             const request      = new XMLHttpRequest()
-            request.onload     = this._onLoad( requestSkull )
+            request.onload     = this._onLoad.bind( this, requestSkull )
             request.onprogress = requestSkull.onProgress
             request.onerror    = requestSkull.onError
             request.open( requestSkull.method, requestSkull.url, true )
@@ -90,24 +90,17 @@ class TOrchestrator {
 
     }
 
-    _onLoad ( requestSkull ) {
+    _onLoad ( requestSkull, loadEvent ) {
 
-        const self      = this
-        const _reqSkull = requestSkull
-
-        return function _checkEndRequest ( loadEvent ) {
-
-            const processedRequestIndex = self._processQueue.indexOf( _reqSkull )
-            if ( processedRequestIndex > -1 ) {
-                self._processQueue.splice( processedRequestIndex, 1 );
-            }
-
-            _reqSkull.onLoad( loadEvent )
-
-            self._numberOfRunningRequest--
-            self.processQueue()
-
+        const processedRequestIndex = this._processQueue.indexOf( requestSkull )
+        if ( processedRequestIndex > -1 ) {
+            this._processQueue.splice( processedRequestIndex, 1 );
         }
+
+        requestSkull.onLoad( loadEvent )
+
+        this._numberOfRunningRequest--
+        this.processQueue()
 
     }
 
