@@ -678,7 +678,9 @@ class TDataBaseManager {
         try {
 
             const cachedValue = this._cache.get( id )
-            if ( isDefined( cachedValue ) ) { // Already exist
+
+            // Already exist
+            if ( isDefined( cachedValue ) ) {
 
                 let result   = {}
                 result[ id ] = cachedValue
@@ -686,6 +688,7 @@ class TDataBaseManager {
 
             }
 
+            // Under request
             if( isNull(cachedValue) ) {
 
                 console.warn('Try to get again an element under request.')
@@ -775,6 +778,10 @@ class TDataBaseManager {
             }
 
         }
+
+        // retrieveLocalStorageValues...
+
+        // getDatabaseValues()
 
         if ( idsToRequest.length === 0 ) {
 
