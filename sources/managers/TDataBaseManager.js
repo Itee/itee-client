@@ -247,7 +247,15 @@ class TDataBaseManager {
 
         if ( isArray( data ) && isNotEmptyArray( data ) ) {
 
-            this._createMany( data, onLoadCallback, onProgressCallback, onErrorCallback )
+            if ( isArrayOfSingleElement( condition )) {
+
+                this._createOne( data[0], onLoadCallback, onProgressCallback, onErrorCallback )
+
+            } else {
+
+                this._createMany( data, onLoadCallback, onProgressCallback, onErrorCallback )
+
+            }
 
         } else if ( isObject( data ) && isNotEmptyObject( data ) ) {
 
@@ -283,7 +291,15 @@ class TDataBaseManager {
 
         } else if ( isArray( condition ) && isNotEmptyArray( condition ) ) {
 
-            this._readMany( condition, projection, onLoadCallback, onProgressCallback, onErrorCallback )
+            if ( isArrayOfSingleElement( condition )) {
+
+                this._readOne( condition[0], projection, onLoadCallback, onProgressCallback, onErrorCallback )
+
+            } else {
+
+                this._readMany( condition, projection, onLoadCallback, onProgressCallback, onErrorCallback )
+
+            }
 
         } else if ( isObject( condition ) && isNotEmptyObject( condition ) ) {
 
@@ -330,7 +346,15 @@ class TDataBaseManager {
 
         } else if ( isArray( condition ) && isNotEmptyArray( condition ) ) {
 
-            this._updateMany( condition, update, onLoadCallback, onProgressCallback, onErrorCallback )
+            if ( isArrayOfSingleElement( condition )) {
+
+                this._updateOne( condition[0], update, onLoadCallback, onProgressCallback, onErrorCallback )
+
+            } else {
+
+                this._updateMany( condition, update, onLoadCallback, onProgressCallback, onErrorCallback )
+
+            }
 
         } else if ( isObject( condition ) && isNotEmptyObject( condition ) ) {
 
@@ -366,7 +390,15 @@ class TDataBaseManager {
 
         } else if ( isArray( condition ) && isNotEmptyArray( condition ) ) {
 
-            this._deleteMany( condition, onLoadCallback, onProgressCallback, onErrorCallback )
+            if ( isArrayOfSingleElement( condition )) {
+
+                this._deleteOne( condition[0], onLoadCallback, onProgressCallback, onErrorCallback )
+
+            } else {
+
+                this._deleteMany( condition, onLoadCallback, onProgressCallback, onErrorCallback )
+
+            }
 
         } else if ( isObject( condition ) && isNotEmptyObject( condition ) ) {
 
