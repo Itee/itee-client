@@ -741,34 +741,35 @@ class TDataBaseManager {
         let cachedValues    = {}
         let idsUnderRequest = []
         let idsToRequest    = []
-        for ( let idIndex = 0, numberOfIds = ids.length ; idIndex < numberOfIds ; idIndex++ ) {
 
-            const id = ids[ idIndex ]
+        retrieveCachedValues( cachedValues, idsUnderRequest, idsToRequest )
 
-            try {
+        function retrieveCachedValues( ids, cachedValues, idsUnderRequest, idsToRequest ) {
 
-                const cachedValue = this._cache.get( id )
+            for ( let idIndex = 0, numberOfIds = ids.length ; idIndex < numberOfIds ; idIndex++ ) {
 
-                // Already exist
-                if ( isDefined( cachedValue ) ) {
-                    cachedValues[ id ] = cachedValue
-                    continue
-                }
-
-                // In request
-                if ( isNull( cachedValue ) ) {
-                    idsUnderRequest.push( id )
-                    continue
-                }
-
-            } catch ( error ) { // else request and pre-cache it
-
-                idsToRequest.push( id )
+                const id = ids[ idIndex ]
 
                 try {
-                    this._cache.add( id, null )
-                } catch(error) {
-                    console.error(error)
+
+                    const cachedValue = this._cache.get( id )
+
+                    // Already exist
+                    if ( isDefined( cachedValue ) ) {
+                        cachedValues[ id ] = cachedValue
+                        continue
+                    }
+
+                    // In request
+                    if ( isNull( cachedValue ) ) {
+                        idsUnderRequest.push( id )
+                        continue
+                    }
+
+                } catch ( error ) { // else request and pre-cache it
+
+                    idsToRequest.push( id )
+
                 }
 
             }
@@ -805,6 +806,13 @@ class TDataBaseManager {
             let id      = undefined
             for ( let idIndex = 0, numberOfIds = ids.length ; idIndex < numberOfIds ; idIndex++ ) {
                 id = ids[ idIndex ]
+
+                // Prepare entry for id to request
+                try {
+                    this._cache.add( id, null )
+                } catch(error) {
+                    console.error(error)
+                }
 
                 idBunch.push( id )
 
