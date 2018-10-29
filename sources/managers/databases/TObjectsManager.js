@@ -526,7 +526,105 @@ class TObjectsManager extends TDataBaseManager {
 
     }
 
-    async fillObjects3D ( objects, onSuccess, onProgress, onError ) {
+    //// Callback
+
+    fillObjects3D ( objects, onSuccess, onProgress, onError ) {
+
+        const self         = this
+        const objectsArray = []
+        for ( let id in objects ) {
+
+            const object = objects[ id ]
+            if ( object.geometry || object.material ) {
+                objectsArray.push( objects[ id ] )
+            }
+
+        }
+
+        if ( objectsArray.length === 0 ) {
+            onSuccess( objects )
+            return
+        }
+
+        let geometriesMap = undefined
+        this._retrieveGeometriesOf( objectsArray, ( geometries ) => {
+            geometriesMap = geometries
+            onEndDataFetching()
+        }, onProgress, onError )
+
+        let materialsMap = undefined
+        this._retrieveMaterialsOf( objectsArray, ( materials ) => {
+            materialsMap = materials
+            onEndDataFetching()
+        }, onProgress, onError )
+
+        function onEndDataFetching () {
+
+            if ( !geometriesMap || !materialsMap ) { return }
+
+            for ( let key in objects ) {
+                const mesh = objects[ key ]
+                self.applyGeometry( mesh, geometriesMap )
+                self.applyMaterials( mesh, materialsMap )
+            }
+
+            // Don't forget to return all input object to callback,
+            // else some ids won't never be considered as processed !
+            onSuccess( objects )
+
+        }
+
+    }
+
+    _retrieveGeometriesOf ( meshes, onSucess, onProgress, onError ) {
+
+        const geometriesIds = meshes.map( object => object.geometry )
+                                    .filter( ( value, index, self ) => {
+                                        return value && self.indexOf( value ) === index
+                                    } )
+
+        if ( geometriesIds.length === 0 ) {
+            onSucess( {} )
+            return
+        }
+
+        this._geometriesProvider.read(
+            geometriesIds,
+            null,
+            onSucess,
+            onProgress,
+            onError
+        )
+
+    }
+
+    _retrieveMaterialsOf ( meshes, onSucess, onProgress, onError ) {
+
+        const materialsArray       = meshes.map( object => object.material )
+        const concatMaterialsArray = [].concat.apply( [], materialsArray )
+        const materialsIds         = concatMaterialsArray.filter( ( value, index, self ) => {
+            return value && self.indexOf( value ) === index
+        } )
+
+        if ( materialsIds.length === 0 ) {
+            onSucess( {} )
+            return
+        }
+
+        this._materialsProvider.read(
+            materialsIds,
+            null,
+            onSucess,
+            onProgress,
+            onError
+        )
+
+    }
+
+    /*
+    ///// PROMISE
+
+    async fillObjects3DByPromises ( objects, onSuccess, onProgress, onError ) {
 
         const self         = this
         const objectsArray = []
@@ -535,8 +633,8 @@ class TObjectsManager extends TDataBaseManager {
         }
 
         const [ geometriesMap, materialsMap ] = await Promise.all( [
-            this._retrieveGeometriesOf( objectsArray, onProgress, onError ),
-            this._retrieveMaterialsOf( objectsArray, onProgress, onError )
+            this._getGeometriesPromiseOf( objectsArray, onProgress, onError ),
+            this._getMaterialsPromiseOf( objectsArray, onProgress, onError )
         ] )
 
         for ( let key in objects ) {
@@ -551,7 +649,7 @@ class TObjectsManager extends TDataBaseManager {
 
     }
 
-    _retrieveGeometriesOf ( meshes, onProgress, onError ) {
+    _getGeometriesPromiseOf ( meshes, onProgress, onError ) {
 
         const self = this
 
@@ -581,7 +679,7 @@ class TObjectsManager extends TDataBaseManager {
 
     }
 
-    _retrieveMaterialsOf ( meshes, onProgress, onError ) {
+    _getMaterialsPromiseOf ( meshes, onProgress, onError ) {
 
         const self = this
 
@@ -611,6 +709,104 @@ class TObjectsManager extends TDataBaseManager {
         } )
 
     }
+
+    ///// ASYNC
+
+    async fillObjects3D ( objects, onSuccess, onProgress, onError ) {
+
+        const self         = this
+        const objectsArray = []
+        for ( let id in objects ) {
+
+            const object = objects[ id ]
+            if ( object.geometry || object.material ) {
+                objectsArray.push( objects[ id ] )
+            }
+
+        }
+
+        if ( objectsArray.length === 0 ) {
+            onSuccess( objects )
+            return
+        }
+
+        let geometriesMap = undefined
+        this._retrieveGeometriesOf( objectsArray, ( geometries ) => {
+            geometriesMap = geometries
+            onEndDataFetching()
+        }, onProgress, onError )
+
+        let materialsMap = undefined
+        this._retrieveMaterialsOf( objectsArray, ( materials ) => {
+            materialsMap = materials
+            onEndDataFetching()
+        }, onProgress, onError )
+
+        function onEndDataFetching () {
+
+            if ( !geometriesMap || !materialsMap ) { return }
+
+            for ( let key in objects ) {
+                const mesh = objects[ key ]
+                self.applyGeometry( mesh, geometriesMap )
+                self.applyMaterials( mesh, materialsMap )
+            }
+
+            // Don't forget to return all input object to callback,
+            // else some ids won't never be considered as processed !
+            onSuccess( objects )
+
+        }
+
+    }
+
+    _retrieveGeometriesOf ( meshes, onSucess, onProgress, onError ) {
+
+        const geometriesIds = meshes.map( object => object.geometry )
+                                    .filter( ( value, index, self ) => {
+                                        return value && self.indexOf( value ) === index
+                                    } )
+
+        if ( geometriesIds.length === 0 ) {
+            onSucess( {} )
+            return
+        }
+
+        this._geometriesProvider.read(
+            geometriesIds,
+            null,
+            onSucess,
+            onProgress,
+            onError
+        )
+
+    }
+
+    _retrieveMaterialsOf ( meshes, onSucess, onProgress, onError ) {
+
+        const materialsArray       = meshes.map( object => object.material )
+        const concatMaterialsArray = [].concat.apply( [], materialsArray )
+        const materialsIds         = concatMaterialsArray.filter( ( value, index, self ) => {
+            return value && self.indexOf( value ) === index
+        } )
+
+        if ( materialsIds.length === 0 ) {
+            onSucess( {} )
+            return
+        }
+
+        this._materialsProvider.read(
+            materialsIds,
+            null,
+            onSucess,
+            onProgress,
+            onError
+        )
+
+    }
+
+    /////////////
+    */
 
     applyGeometry ( object, geometries ) {
 
