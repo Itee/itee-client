@@ -23,7 +23,9 @@ import {
     isNotDefined,
     isDefined,
     isNotNumber,
+    isZero,
     isNumberPositive,
+    isNumberNegative,
     isString,
     isNotString,
     isEmptyString,
@@ -37,19 +39,39 @@ import {
     isObject,
     isNotEmptyObject,
     isNotObject
-} from 'itee-validators'
+}                                   from 'itee-validators'
 import {
     HttpVerb,
     ResponseType,
     HttpStatusCode
-} from '../cores/TConstants'
-import { TOrchestrator } from '../cores/TOrchestrator'
+}                                   from '../cores/TConstants'
+import { TOrchestrator }            from '../cores/TOrchestrator'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
-import { TProgressManager } from './TProgressManager'
-import { TErrorManager } from './TErrorManager'
-import { TStore } from '../cores/TStore'
+import { TProgressManager }         from './TProgressManager'
+import { TErrorManager }            from './TErrorManager'
+import { TStore }                   from '../cores/TStore'
+
+class IdGenerator {
+
+    constructor () {
+        this._id = 0
+    }
+
+    get id () {
+        this._id += 1
+        return this._id
+    }
+
+}
+
+const Generate = new IdGenerator()
 
 class TDataBaseManager {
+
+    static get requestId () {
+        TDataBaseManager._requestId++
+        return TDataBaseManager._requestId
+    }
 
     /**
      *
@@ -62,17 +84,17 @@ class TDataBaseManager {
      */
     constructor ( basePath = '/', responseType = ResponseType.Json, bunchSize = 500, requestsConcurrency = 6, progressManager = new TProgressManager(), errorManager = new TErrorManager() ) {
 
-        this.basePath         = basePath
-        this.responseType     = responseType
-        this.bunchSize        = bunchSize
+        this.basePath            = basePath
+        this.responseType        = responseType
+        this.bunchSize           = bunchSize
         this.requestsConcurrency = requestsConcurrency
-        this.progressManager  = progressManager
-        this.errorManager     = errorManager
+        this.progressManager     = progressManager
+        this.errorManager        = errorManager
 
-        this._cache           = new TStore()
-        this._waitingQueue    = []
-        this._idsInRequest    = []
-        this._numberOfRunningRequest = 0
+        this._cache        = new TStore()
+        this._waitingQueue = []
+        this._requestQueue = []
+        this._processQueue = []
 
     }
 
@@ -108,7 +130,7 @@ class TDataBaseManager {
         if ( isNull( value ) ) { throw new Error( 'TDataBaseManager: responseType cannot be null !' ) }
         if ( isNull( value ) ) { throw new TypeError( 'Response type cannot be null ! Expect a non empty string.' ) }
         if ( isUndefined( value ) ) { throw new TypeError( 'Response type cannot be undefined ! Expect a non empty string.' ) }
-        if ( !( value instanceof ResponseType ) ) { throw new TypeError( `Response type cannot be an instance of ${value.constructor.name} ! Expect a value from ResponseType enum.` ) }
+        if ( !(value instanceof ResponseType) ) { throw new TypeError( `Response type cannot be an instance of ${value.constructor.name} ! Expect a value from ResponseType enum.` ) }
 
         this._responseType = value
 
@@ -161,7 +183,7 @@ class TDataBaseManager {
             throw new TypeError( `Minimum of simultaneous request cannot be an instance of ${value.constructor.name} ! Expect a positive number.` )
         }
 
-        if ( isNumberPositive( value ) ) {
+        if ( isZero( value ) || isNumberNegative( value ) ) {
             throw new TypeError( 'Minimum of simultaneous request cannot be lower or equal to zero ! Expect a positive number.' )
         }
 
@@ -169,7 +191,7 @@ class TDataBaseManager {
 
     }
 
-    setRequestsConcurrency( value ) {
+    setRequestsConcurrency ( value ) {
 
         this.requestsConcurrency = value
         return this
@@ -218,54 +240,26 @@ class TDataBaseManager {
 
     }
 
-    /**
-     * @static
-     * @function
-     * @memberOf TDataBaseManager
-     * @description Will queue an XMLHttpRequest to the orchestrator binding the callbacks to the server response.
-     *
-     * @param {HttpVerb} method - The method to use for this request.
-     * @param {string} url - The URL to call.
-     * @param {object} data - The data to sent to the server.
-     * @param {function} onLoad - The onLoad callback, which is call when server respond with success to the request.
-     * @param {function} onProgress - The onProgress callback, which is call during the response incoming.
-     * @param {function} onError - The onError callback, which is call when server respond with an error to the request.
-     * @param {ResponseType} responseType - Allow to set the expected response type.
-     */
-    static requestServer ( method, url, data, onLoad, onProgress, onError, responseType ) {
+    processQueue () {
 
-        TDataBaseManager._orchestrator.queue( {
-            method,
-            url,
-            data,
-            onLoad,
-            onProgress,
-            onError,
-            responseType
-        } )
+        while ( this._requestQueue.length > 0 && this._processQueue.length < this._requestsConcurrency ) {
 
-    }
+            const requestSkull = this._requestQueue.pop()
+            this._processQueue.push( requestSkull )
 
-    static statusOk ( status ) {
+            const request      = new XMLHttpRequest()
+            request.onload     = this._onLoad.bind( this, requestSkull, requestSkull.onLoad, this._onProgress.bind( this, requestSkull.onProgress ), this._onError.bind( this, requestSkull.onError ) )
+            request.onprogress = this._onProgress.bind( this, requestSkull.onProgress )
+            request.onerror    = this._onError.bind( this, requestSkull.onError )
+            request.open( requestSkull.method, requestSkull.url, true )
+            request.setRequestHeader( 'Content-Type', 'application/json' )
+            request.setRequestHeader( 'Accept', 'application/json' )
+            request.responseType = requestSkull.responseType.value
 
-        let statusOk = false
-
-        if ( status === HttpStatusCode.NoContent.value ) {
-
-            TLogger.warn( 'Unable to retrieve data...' )
-            statusOk = true
-
-        } else if ( status !== HttpStatusCode.Ok.value ) {
-
-            TLogger.error( 'An error occurs when retrieve data from database !!!' )
-
-        } else {
-
-            statusOk = true
+            const dataToSend = (requestSkull.data && requestSkull.responseType === ResponseType.Json) ? JSON.stringify( requestSkull.data ) : requestSkull.data
+            request.send( dataToSend )
 
         }
-
-        return statusOk
 
     }
 
@@ -284,9 +278,9 @@ class TDataBaseManager {
 
         if ( isArray( data ) && isNotEmptyArray( data ) ) {
 
-            if ( isArrayOfSingleElement( condition )) {
+            if ( isArrayOfSingleElement( condition ) ) {
 
-                this._createOne( data[0], onLoadCallback, onProgressCallback, onErrorCallback )
+                this._createOne( data[ 0 ], onLoadCallback, onProgressCallback, onErrorCallback )
 
             } else {
 
@@ -328,9 +322,9 @@ class TDataBaseManager {
 
         } else if ( isArray( condition ) && isNotEmptyArray( condition ) ) {
 
-            if ( isArrayOfSingleElement( condition )) {
+            if ( isArrayOfSingleElement( condition ) ) {
 
-                this._readOne( condition[0], projection, onLoadCallback, onProgressCallback, onErrorCallback )
+                this._readOne( condition[ 0 ], projection, onLoadCallback, onProgressCallback, onErrorCallback )
 
             } else {
 
@@ -383,9 +377,9 @@ class TDataBaseManager {
 
         } else if ( isArray( condition ) && isNotEmptyArray( condition ) ) {
 
-            if ( isArrayOfSingleElement( condition )) {
+            if ( isArrayOfSingleElement( condition ) ) {
 
-                this._updateOne( condition[0], update, onLoadCallback, onProgressCallback, onErrorCallback )
+                this._updateOne( condition[ 0 ], update, onLoadCallback, onProgressCallback, onErrorCallback )
 
             } else {
 
@@ -427,9 +421,9 @@ class TDataBaseManager {
 
         } else if ( isArray( condition ) && isNotEmptyArray( condition ) ) {
 
-            if ( isArrayOfSingleElement( condition )) {
+            if ( isArrayOfSingleElement( condition ) ) {
 
-                this._deleteOne( condition[0], onLoadCallback, onProgressCallback, onErrorCallback )
+                this._deleteOne( condition[ 0 ], onLoadCallback, onProgressCallback, onErrorCallback )
 
             } else {
 
@@ -465,32 +459,53 @@ class TDataBaseManager {
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      * @param {object} loadEvent - The server response object to parse.
      */
-    _onLoad ( onLoadCallback, onProgressCallback, onErrorCallback, loadEvent ) {
+    _onLoad ( request, onLoadCallback, onProgressCallback, onErrorCallback, loadEvent ) {
 
-        const target      = loadEvent.target
-        const status      = target.status
-        const response    = target.response
-//        const contentType = target.getResponseHeader( 'content-type' )
+        const target       = loadEvent.target
+        const status       = target.status
+        const response     = target.response
         const responseType = target.responseType
 
-        // TODO: switch on status
-
-        switch (status) {
+        switch ( status ) {
 
             case HttpStatusCode.Ok.value:
-                this._dispatchResponse( response, responseType, onLoadCallback, onProgressCallback, onErrorCallback )
+                this._dispatchResponse( response, responseType, closeRequest.bind( this, onLoadCallback, request ), onProgressCallback, onErrorCallback )
                 break
 
             case HttpStatusCode.NoContent.value:
-                onErrorCallback( 'Unable to retrieve data...' )
+                onErrorCallback( 'Empty data !' )
+                closeRequest.call( this, null, request )
+                break
+
+            case HttpStatusCode.NotFound.value:
+                onErrorCallback( 'Data not found !' )
+                closeRequest.call( this, null, request )
                 break
 
             case HttpStatusCode.RequestRangeUnsatisfiable.value:
                 onErrorCallback( response.errors )
-                this._dispatchResponse( response.datas, responseType, onLoadCallback, onProgressCallback, onErrorCallback )
+                this._dispatchResponse( response.datas, responseType, closeRequest.bind( this, onLoadCallback, request ), onProgressCallback, onErrorCallback )
                 break
 
-            default: throw new RangeError(`Invalid HttpStatusCode parameter: ${status}` )
+            default:
+                throw new RangeError( `Invalid HttpStatusCode parameter: ${status}` )
+
+        }
+
+        function closeRequest ( callback, request, result ) {
+
+            this._processQueue.splice( this._processQueue.indexOf( request ), 1 )
+            if ( callback ) { callback( result ) }
+
+            console.log( '====================' )
+            const diff = new Date().valueOf() - request._timeStart.valueOf()
+            console.log( `Request [${request.id}] take ${diff}ms` )
+            console.log( '====================' )
+            console.log( 'Waiting queue: ', this._waitingQueue.length )
+            console.log( 'Request queue: ', this._requestQueue.length )
+            console.log( 'Process queue: ', this._processQueue.length )
+
+            this.processQueue()
 
         }
 
@@ -554,7 +569,7 @@ class TDataBaseManager {
     // Expect that methods were reimplemented when TDataBaseManager is inherited
 
     // Dispatch response to the correct handler in function of response type
-    _dispatchResponse( response, responseType, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _dispatchResponse ( response, responseType, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         switch ( responseType ) {
 
@@ -562,40 +577,41 @@ class TDataBaseManager {
                 this._onArrayBuffer(
                     response,
                     onLoadCallback,
-                    this._onProgress.bind( this, onProgressCallback ),
-                    this._onError.bind( this, onErrorCallback )
+                    onProgressCallback,
+                    onErrorCallback
                 )
-                break;
+                break
 
             case ResponseType.Blob.value:
                 this._onBlob(
                     response,
                     onLoadCallback,
-                    this._onProgress.bind( this, onProgressCallback ),
-                    this._onError.bind( this, onErrorCallback )
+                    onProgressCallback,
+                    onErrorCallback
                 )
-                break;
+                break
 
             case ResponseType.Json.value:
                 this._onJson(
                     response,
                     onLoadCallback,
-                    this._onProgress.bind( this, onProgressCallback ),
-                    this._onError.bind( this, onErrorCallback )
+                    onProgressCallback,
+                    onErrorCallback
                 )
-                break;
+                break
 
             case ResponseType.DOMString.value:
             case ResponseType.Default.value:
                 this._onText(
                     response,
                     onLoadCallback,
-                    this._onProgress.bind( this, onProgressCallback ),
-                    this._onError.bind( this, onErrorCallback )
+                    onProgressCallback,
+                    onErrorCallback
                 )
-                break;
+                break
 
-            default: throw new Error( `Unknown response type: ${responseType}` )
+            default:
+                throw new Error( `Unknown response type: ${responseType}` )
 
         }
 
@@ -671,7 +687,7 @@ class TDataBaseManager {
      */
     _createOne ( data, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        TDataBaseManager.requestServer(
+        this.queue(
             HttpVerb.Create.value,
             this._basePath,
             data,
@@ -685,7 +701,7 @@ class TDataBaseManager {
 
     _createMany ( datas, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        TDataBaseManager.requestServer(
+        this.queue(
             HttpVerb.Create.value,
             this._basePath,
             datas,
@@ -710,53 +726,54 @@ class TDataBaseManager {
      */
     _readOne ( id, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        const self = this
+        // Filter requested values by cached values
+        const datas = this._retrieveCachedValues( [ id ] )
 
-        try {
+        // retrieveLocalStorageValues...
 
-            const cachedValue = this._cache.get( id )
+        // getDatabaseValues()
 
-            // Already exist
-            if ( isDefined( cachedValue ) ) {
+        if ( datas.toRequest.length === 0 ) {
 
-                let result   = {}
-                result[ id ] = cachedValue
-                onLoadCallback( result )
+            if ( datas.underRequest.length === 0 ) {
 
-            }
+                onLoadCallback( datas.results )
 
-            // Under request
-            if( isNull(cachedValue) ) {
+            } else {
 
-                console.warn('Try to get again an element under request.')
+                datas[ 'onLoadCallback' ] = onLoadCallback
+                this._waitingQueue.push( datas )
 
             }
 
-        } catch ( error ) {
+        } else {
 
-            TDataBaseManager.requestServer(
-                HttpVerb.Read.value,
-                `${this._basePath}/${id}`,
-                {
-                    projection
-                },
-                this._onLoad.bind( this, cacheOnLoadResult, onProgressCallback, onErrorCallback ),
-                this._onProgress.bind( this, onProgressCallback ),
-                this._onError.bind( this, onErrorCallback ),
-                this._responseType
-            )
-
-        }
-
-        function cacheOnLoadResult ( result ) {
+            datas[ 'onLoadCallback' ] = onLoadCallback
+            this._waitingQueue.push( datas )
 
             try {
-                self._cache.add( id, result[id] )
-            } catch(error) {
-                console.error(error)
+                this._cache.add( id, null )
+                datas.underRequest.push( id )
+                datas.toRequest.splice( datas.toRequest.indexOf( id ), 1 )
+            } catch ( error ) {
+                console.error( error )
             }
 
-            onLoadCallback( result )
+            this._requestQueue.push( {
+                id:           `readOne_${Generate.id}`,
+                _timeStart:   new Date(),
+                method:       HttpVerb.Read.value,
+                url:          `${this._basePath}/${id}`,
+                data:         {
+                    projection
+                },
+                onLoad:       this._updateCache.bind( this ),
+                onProgress:   onProgressCallback,
+                onError:      onErrorCallback,
+                responseType: this._responseType
+            } )
+
+            this.processQueue()
 
         }
 
@@ -775,193 +792,72 @@ class TDataBaseManager {
      */
     _readMany ( ids, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        const self = this
-
         // Filter requested values by cached values
-        let cachedValues    = {}
-        let idsUnderRequest = []
-        let idsToRequest    = []
-
-        retrieveCachedValues( cachedValues, idsUnderRequest, idsToRequest )
-
-        function retrieveCachedValues( ids, cachedValues, idsUnderRequest, idsToRequest ) {
-
-            for ( let idIndex = 0, numberOfIds = ids.length ; idIndex < numberOfIds ; idIndex++ ) {
-
-                const id = ids[ idIndex ]
-
-                try {
-
-                    const cachedValue = this._cache.get( id )
-
-                    // Already exist
-                    if ( isDefined( cachedValue ) ) {
-                        cachedValues[ id ] = cachedValue
-                        continue
-                    }
-
-                    // In request
-                    if ( isNull( cachedValue ) ) {
-                        idsUnderRequest.push( id )
-                        continue
-                    }
-
-                } catch ( error ) { // else request and pre-cache it
-
-                    idsToRequest.push( id )
-
-                }
-
-            }
-
-        }
+        const datas = this._retrieveCachedValues( ids )
 
         // retrieveLocalStorageValues...
 
         // getDatabaseValues()
 
-        if ( idsToRequest.length === 0 ) {
+        if ( datas.toRequest.length === 0 ) {
 
-            if ( idsUnderRequest.length === 0 ) {
+            if ( datas.underRequest.length === 0 ) {
 
-                onLoadCallback( cachedValues )
+                onLoadCallback( datas.results )
 
             } else {
 
-                this._waitingQueue.push( {
-                    cachedValues,
-                    idsUnderRequest,
-                    idsToRequest,
-                    onLoadCallback
-                } )
+                datas[ 'onLoadCallback' ] = onLoadCallback
+                this._waitingQueue.push( datas )
 
             }
 
         } else {
 
-            this._waitingQueue.push( {
-                cachedValues,
-                idsUnderRequest,
-                idsToRequest,
-                onLoadCallback
-            } )
+            datas[ 'onLoadCallback' ] = onLoadCallback
+            this._waitingQueue.push( datas )
 
-            let idBunch = []
-            let id      = undefined
-            for ( let idIndex = 0, numberOfIds = ids.length ; idIndex < numberOfIds ; idIndex++ ) {
-                id = ids[ idIndex ]
+            const datasToRequest = datas.toRequest
+            let idBunch          = []
+            let id               = undefined
+            for ( let idIndex = datasToRequest.length - 1 ; idIndex >= 0 ; idIndex-- ) {
+
+                id = datasToRequest[ idIndex ]
 
                 // Prepare entry for id to request
                 try {
                     this._cache.add( id, null )
-                } catch(error) {
-                    console.error(error)
+                    datas.underRequest.push( id )
+                    datas.toRequest.splice( datas.toRequest.indexOf( id ), 1 )
+                } catch ( error ) {
+                    console.error( error )
                 }
 
                 idBunch.push( id )
 
-                if ( idBunch.length === this._bunchSize || idIndex === numberOfIds - 1 ) {
+                if ( idBunch.length === this._bunchSize || idIndex === 0 ) {
 
-                    TDataBaseManager.requestServer(
-                        HttpVerb.Read.value,
-                        this._basePath,
-                        {
+                    this._requestQueue.push( {
+                        id:           `readMany_${Generate.id}`,
+                        _timeStart:   new Date(),
+                        method:       HttpVerb.Read.value,
+                        url:          this._basePath,
+                        data:         {
                             ids:        idBunch,
                             projection: projection
                         },
-                        this._onLoad.bind( this, cacheResults.bind( this ), onProgressCallback, onErrorCallback ),
-                        this._onProgress.bind( this, onProgressCallback ),
-                        this._onError.bind( this, onErrorCallback ),
-                        this._responseType
-                    )
+                        onLoad:       this._updateCache.bind( this ),
+                        onProgress:   onProgressCallback,
+                        onError:      onErrorCallback,
+                        responseType: this._responseType
+                    } )
 
                     idBunch = []
                 }
 
             }
 
-        }
-
-        function cacheResults ( results ) {
-
-            // Add new results to cache
-            if ( isArray( results ) ) {
-
-                for ( let resultIndex = 0, numberOfResults = results.length ; resultIndex < numberOfResults ; resultIndex++ ) {
-                    let result = results[ resultIndex ]
-                    try {
-                        self._cache.add( result._id, result )
-                    } catch ( error ) {
-                        console.error( error )
-                    }
-                }
-
-            } else {
-
-                for ( let key in results ) {
-                    try {
-                        self._cache.add( key, results[ key ] )
-                    } catch ( error ) {
-                        console.error( error )
-                    }
-                }
-
-            }
-
-            // Process newly cached values for each waiting request
-            for ( let requestIndex = self._waitingQueue.length - 1 ; requestIndex >= 0 ; requestIndex-- ) {
-
-                const request = self._waitingQueue[ requestIndex ]
-
-                const idsUnderRequest     = request.idsUnderRequest
-                let restOfIdsUnderRequest = []
-                for ( let idUnderRequestIndex = 0, numberOfIdsUnderRequest = idsUnderRequest.length ; idUnderRequestIndex < numberOfIdsUnderRequest ; idUnderRequestIndex++ ) {
-
-                    const id = idsUnderRequest[ idUnderRequestIndex ]
-
-                    try {
-                        const cachedValue = self._cache.get( id )
-                        if ( isDefined( cachedValue ) ) {
-                            request.cachedValues[ id ] = cachedValue
-                        } else {
-                            restOfIdsUnderRequest.push( id )
-                        }
-                    } catch ( error ) {
-                        restOfIdsUnderRequest.push( id )
-                    }
-
-                }
-
-                const idsToRequest     = request.idsToRequest
-                let restOfIdsToRequest = []
-                for ( let idToRequestIndex = 0, numberOfIdsToRequest = idsToRequest.length ; idToRequestIndex < numberOfIdsToRequest ; idToRequestIndex++ ) {
-
-                    const id = idsToRequest[ idToRequestIndex ]
-
-                    try {
-
-                        const cachedValue = self._cache.get( id )
-                        if ( isDefined( cachedValue ) ) {
-                            request.cachedValues[ id ] = cachedValue
-                        } else {
-                            restOfIdsToRequest.push( id )
-                        }
-
-                    } catch ( error ) {
-                        restOfIdsToRequest.push( id )
-                    }
-
-                }
-
-                if ( restOfIdsUnderRequest.length === 0 && restOfIdsToRequest.length === 0 ) {
-                    request.onLoadCallback( request.cachedValues )
-                    self._waitingQueue.splice( requestIndex, 1 )
-                } else {
-                    request.idsUnderRequest = restOfIdsUnderRequest
-                    request.idsToRequest    = restOfIdsToRequest
-                }
-
-            }
+            this.processQueue()
 
         }
 
@@ -969,11 +865,42 @@ class TDataBaseManager {
 
     _readWhere ( query, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        TDataBaseManager.requestServer(
+        //        // Filter requested values by cached values
+        //        const datas = {
+        //            results: {},
+        //            underRequest: [],
+        //            toRequest: []
+        //        }
+        //
+        //        datas[ 'onLoadCallback' ] = onLoadCallback
+        //        this._waitingQueue.push( datas )
+
+        this._requestQueue.push( {
+            id:           `readWhere_${Generate.id}`,
+            _timeStart:   new Date(),
+            method:       HttpVerb.Read.value,
+            url:          this._basePath,
+            data:         {
+                query,
+                projection
+            },
+            onLoad:       onLoadCallback,
+            //            onLoad:       this._updateCache.bind( this ),
+            onProgress:   onProgressCallback,
+            onError:      onErrorCallback,
+            responseType: this._responseType
+        } )
+
+        this.processQueue()
+
+    }
+
+    _readAll ( projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
+
+        this.queue(
             HttpVerb.Read.value,
             this._basePath,
             {
-                query,
                 projection
             },
             this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
@@ -984,19 +911,101 @@ class TDataBaseManager {
 
     }
 
-    _readAll ( projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _retrieveCachedValues ( ids ) {
 
-        TDataBaseManager.requestServer(
-            HttpVerb.Read.value,
-            this._basePath,
-            {
-                projection
-            },
-            this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
-            this._onProgress.bind( this, onProgressCallback ),
-            this._onError.bind( this, onErrorCallback ),
-            this._responseType
-        )
+        let results      = {}
+        let underRequest = []
+        let toRequest    = []
+
+        for ( let idIndex = 0, numberOfIds = ids.length ; idIndex < numberOfIds ; idIndex++ ) {
+
+            const id          = ids[ idIndex ]
+            const cachedValue = this._cache.get( id )
+
+            if ( isDefined( cachedValue ) ) {
+                results[ id ] = cachedValue
+            } else if ( isNull( cachedValue ) ) { // In request
+                underRequest.push( id )
+            } else {
+                toRequest.push( id )
+            }
+
+        }
+
+        return {
+            results,
+            underRequest,
+            toRequest
+        }
+
+    }
+
+    _updateCache ( results ) {
+        //    _updateCache ( onLoadCallback, results ) {
+
+        // Add new results to cache
+        for ( let key in results ) {
+
+            const cachedResult = this._cache.get( key )
+            const result       = results[ key ]
+
+            if ( isNull( cachedResult ) ) {
+                this._cache.add( key, result, true )
+            } else if ( isUndefined( cachedResult ) ) {
+                console.warn( 'Cache was not setted with nulll value' )
+                this._cache.add( key, result )
+            } else {
+                console.error( 'Cached value already exist !!!' )
+            }
+
+        }
+
+        // Update demand under request
+        for ( let requestIndex = this._waitingQueue.length - 1 ; requestIndex >= 0 ; requestIndex-- ) {
+
+            const demand = this._waitingQueue[ requestIndex ]
+
+            for ( let dataIndex = demand.underRequest.length - 1 ; dataIndex >= 0 ; dataIndex-- ) {
+
+                const id           = demand.underRequest[ dataIndex ]
+                const cachedResult = this._cache.get( id )
+
+                if ( isNotDefined( cachedResult ) ) { continue }
+
+                demand.results[ id ] = cachedResult
+                demand.underRequest.splice( demand.underRequest.indexOf( id ), 1 )
+
+            }
+
+        }
+
+        // Process newly cached values for each waiting request
+        for ( let requestIndex = this._waitingQueue.length - 1 ; requestIndex >= 0 ; requestIndex-- ) {
+
+            // If no running or stacked request and current waiting request have still under request id then in error
+            const demand                 = this._waitingQueue[ requestIndex ]
+            const demandIsComplet        = (demand.underRequest.length === 0)
+            const haveNoRequestToProcess = (this._requestQueue.length === 0 && this._processQueue.length === 0)
+            if ( demandIsComplet ) {
+
+                this._waitingQueue.splice( requestIndex, 1 )
+                //                onLoadCallback( demand.results )
+                demand.onLoadCallback( demand.results )
+
+            } else if ( !demandIsComplet && haveNoRequestToProcess /* && haveTryAgainManyTimesButFail */ ) {
+
+                console.warn( 'Incomplet demand but empty request/process queue' )
+                this._waitingQueue.splice( requestIndex, 1 )
+                //                onLoadCallback( demand.results )
+                demand.onLoadCallback( demand.results )
+
+            } else {
+
+                // Wait next response
+
+            }
+
+        }
 
     }
 
@@ -1013,7 +1022,7 @@ class TDataBaseManager {
      */
     _updateOne ( id, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        TDataBaseManager.requestServer(
+        this.queue(
             HttpVerb.Update.value,
             `${this._basePath}/${id}`,
             {
@@ -1040,7 +1049,7 @@ class TDataBaseManager {
      */
     _updateMany ( ids, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        TDataBaseManager.requestServer(
+        this.queue(
             HttpVerb.Update.value,
             this._basePath,
             {
@@ -1057,7 +1066,7 @@ class TDataBaseManager {
 
     _updateWhere ( query, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        TDataBaseManager.requestServer(
+        this.queue(
             HttpVerb.Update.value,
             this._basePath,
             {
@@ -1074,7 +1083,7 @@ class TDataBaseManager {
 
     _updateAll ( update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        TDataBaseManager.requestServer(
+        this.queue(
             HttpVerb.Update.value,
             this._basePath,
             {
@@ -1101,7 +1110,7 @@ class TDataBaseManager {
      */
     _deleteOne ( id, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        TDataBaseManager.requestServer(
+        this.queue(
             HttpVerb.Delete.value,
             `${this._basePath}/${id}`,
             null,
@@ -1126,7 +1135,7 @@ class TDataBaseManager {
      */
     _deleteMany ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        TDataBaseManager.requestServer(
+        this.queue(
             HttpVerb.Delete.value,
             this._basePath,
             {
@@ -1142,7 +1151,7 @@ class TDataBaseManager {
 
     _deleteWhere ( query, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        TDataBaseManager.requestServer(
+        this.queue(
             HttpVerb.Delete.value,
             this._basePath,
             {
@@ -1158,7 +1167,7 @@ class TDataBaseManager {
 
     _deleteAll ( onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        TDataBaseManager.requestServer(
+        this.queue(
             HttpVerb.Delete.value,
             this._basePath,
             null,
@@ -1173,6 +1182,30 @@ class TDataBaseManager {
 }
 
 // Static stuff
-TDataBaseManager._orchestrator = TOrchestrator
+
+TDataBaseManager._requestId = 0
+
+TDataBaseManager._requests = {
+    waitingQueue: {},
+    toProcess:    {
+        create: {},
+        read:   {},
+        update: {},
+        delete: {}
+    },
+    underProcess: {
+        create: {},
+        read:   {},
+        update: {},
+        delete: {}
+    },
+    processed:    {
+        create: {},
+        read:   {},
+        update: {},
+        delete: {}
+    }
+}
+//TDataBaseManager._orchestrator = TOrchestrator
 
 export { TDataBaseManager }
