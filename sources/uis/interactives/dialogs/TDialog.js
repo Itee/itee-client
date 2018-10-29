@@ -10,50 +10,46 @@
 
 /* eslint-env browser */
 
-import React from 'react'
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-let _instanceCounter = 0
+export default Vue.component( 'TDialog', {
+    template: `
+        <div :id="id" :class=computeClass :style=computeStyle tabindex="-1" role="dialog" v-on:click="toggleVisibility()" >
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div v-on:click.stop class="modal-content">
+                    <slot></slot>
+                </div>
+            </div>
+        </div>
+    `,
+    props:    [ 'id', 'isVisible', 'toggleVisibility' ],
+    computed: {
 
-class TDialog extends React.Component {
+        computeClass () {
 
-    constructor ( props ) {
+            return ( this.isVisible ) ? 'modal fade show' : 'modal fade'
 
-        super( props )
-        _instanceCounter++
+        },
 
-    }
+        computeStyle () {
 
-    /**
-     * React lifecycle
-     */
-    componentWillMount () {}
+            return {
+                display:  ( this.isVisible ) ? 'block' : 'none'
+            }
 
-    componentDidMount () {}
+        },
 
-    componentWillUnmount () {}
+    },
+//    methods: {
+//
+//        _toggleVisibility( event ) {
+//
+//            const isVisible = !this.isVisible
+//
+//            this.toggleVisibility( isVisible )
+//
+//        },
+//
+//    }
 
-    componentWillReceiveProps ( /*nextProps*/ ) {}
-
-    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentWillUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentDidUpdate ( /*prevProps, prevState*/ ) {}
-
-    render () {
-
-        const { id, className } = this.props
-
-        const _id    = id || `tDialog_${_instanceCounter}`
-        const _style = {}
-        const _class = ( className ) ? `tDialog ${className}` : 'tDialog'
-
-        return (
-            <t-dialog ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-dialog>
-        )
-
-    }
-
-}
-
-export { TDialog }
+} )

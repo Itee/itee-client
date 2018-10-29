@@ -39,7 +39,7 @@ export default Vue.component( 'TInputColor', {
             const color = event.target.value
 
             // (One data flow) Required to reset the input field before any parent update
-            event.target.value = this.value
+            event.target.value = '#000000' //this.value
 
             this.onChange( color )
 
@@ -50,7 +50,7 @@ export default Vue.component( 'TInputColor', {
             const color = event.target.value
 
             // (One data flow) Required to reset the input field before any parent update
-            event.target.value = this.value
+            event.target.value = '#000000' //this.value
 
             this.onChange( color )
 

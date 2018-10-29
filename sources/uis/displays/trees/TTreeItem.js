@@ -14,9 +14,9 @@ import { isDefined } from 'itee-validators'
 
 export default Vue.component( 'TTreeItem', {
     template: `
-        <li v-if="needUpdate || !needUpdate" :class=computeTreeItemClass>
+        <li v-if="forceUpdate" :class=computeTreeItemClass>
             <TContainerHorizontal :class=computeTreeItemContentClass hAlign="start" vAlign="center">
-                <TIcon v-if="haveChildren() && canShowChildren" :iconProps=computeToggleChildrenIconClass :iconOn="{click: toggleChildren}" />
+                <TIcon v-if="haveChildren() && acceptableDeepLevel" :iconProps=computeToggleChildrenIconClass :iconOn="{click: toggleChildren}" />
                 <span v-for="modifier in filteredAntelabelModifier" class="tTreeItemModifiers">
                     <TIcon v-if="modifier.type === 'icon'" :iconProps='modifier.icon' v-bind:iconOn="{click: modifier.onClick}" />
                     <TCheckIcon v-else-if="modifier.type === 'checkicon'" :iconOn="modifier.iconOn" :iconOff="modifier.iconOff" :value="modifier.value" :onClick=modifier.onClick />
@@ -37,7 +37,7 @@ export default Vue.component( 'TTreeItem', {
                     <label v-else>Error: Unknown modifier of type "{{modifier.type}}" !!!</label>
                 </span>
             </TContainerHorizontal>
-            <ul v-if="haveChildren() && canShowChildren && showChildren" :class=computeTreeItemChildrenClass :style=computeChildrenStyle>
+            <ul v-if="haveChildren() && acceptableDeepLevel && showChildren" :class=computeTreeItemChildrenClass :style=computeChildrenStyle>
                 <TTreeItem
                     v-for="child in computedChildren"
                     v-bind:key="child.id"
@@ -142,16 +142,23 @@ export default Vue.component( 'TTreeItem', {
 
         },
 
-        canShowChildren() {
+
+        acceptableDeepLevel() {
 
             return (this._currentDeepLevel < this.maxDeepLevel)
 
-        }
+        },
+
+        forceUpdate() {
+
+            if (this.needUpdate || !this.needUpdate)
+                return true
+
+        },
 
     },
     methods:  {
 
-        // need to be a methods in view to be rerender on every template update
         haveChildren () {
 
             return (this.children && this.children.length > 0)
