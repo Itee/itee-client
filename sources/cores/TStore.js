@@ -81,9 +81,9 @@ class TStore {
      * @param key
      * @param item
      */
-    add ( key, item ) {
+    add ( key, item, force = false ) {
 
-        if ( !this._allowOverride && this.contain( key ) ) {
+        if ( this.contain( key ) && (!this._allowOverride && !force) ) {
             throw new TypeError( `Item with key (${key}) already exist in collection !` )
         }
 
