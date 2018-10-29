@@ -187,23 +187,22 @@ class TGeometriesManager extends TDataBaseManager {
         if ( data.isGeometry ) {
 
             geometry = this._convertJsonToGeometry( data )
+            if( true /* todo: computeNormals */ ) {
+                geometry.computeFaceNormals()
+            }
 
         } else if ( data.isBufferGeometry ) {
 
             geometry = this._convertJsonToBufferGeometry( data )
+            if( true /* todo: computeNormals */ ) {
+                geometry.computeVertexNormals()
+            }
 
         } else {
 
             throw new Error( 'TGeometriesManager: Unable to retrieve geometry type !' )
 
         }
-
-        // Todo: Compute normals only if required or asked
-        //        geometry.computeFaceNormals()
-        //        geometry.computeVertexNormals()
-
-        // TStore geometry for future use
-        //        this._cache.add( data._id, geometry )
 
         return geometry
 
