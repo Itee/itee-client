@@ -369,8 +369,8 @@ class TCameraControls extends EventDispatcher {
 
         this._domElement.addEventListener( 'mousedown', this._handlers.onMouseDown, false )
         this._domElement.addEventListener( 'mousemove', this._handlers.onMouseMove, false )
-        this._domElement.addEventListener( 'mousewheel', this._handlers.onMouseWheel, false )
-        this._domElement.addEventListener( 'wheel', this._handlers.onMouseWheel, false )
+        this._domElement.addEventListener( 'mousewheel', this._handlers.onMouseWheel, true )
+        this._domElement.addEventListener( 'wheel', this._handlers.onMouseWheel, true )
         this._domElement.addEventListener( 'mouseup', this._handlers.onMouseUp, false )
         this._domElement.addEventListener( 'dblclick', this._handlers.onDblClick, false )
         this._domElement.addEventListener( 'touchstart', this._handlers.onTouchStart, false )
@@ -380,6 +380,8 @@ class TCameraControls extends EventDispatcher {
         this._domElement.addEventListener( 'touchmove', this._handlers.onTouchMove, false )
         this._domElement.addEventListener( 'keydown', this._handlers.onKeyDown, false )
         this._domElement.addEventListener( 'keyup', this._handlers.onKeyUp, false )
+
+        this.dispatchEvent( { type: 'impose' } )
 
     }
 
@@ -398,6 +400,8 @@ class TCameraControls extends EventDispatcher {
         this._domElement.removeEventListener( 'mouseup', this._handlers.onMouseUp, false )
         this._domElement.removeEventListener( 'keydown', this._handlers.onKeyDown, false )
         this._domElement.removeEventListener( 'keyup', this._handlers.onKeyUp, false )
+
+        this.dispatchEvent( { type: 'dispose' } )
 
     }
 
@@ -464,26 +468,41 @@ class TCameraControls extends EventDispatcher {
     _onTouchStart ( touchEvent ) {
         //todo...
         console.warn('Touch events are not implemented yet, sorry for the disagreement.')
+        console.log( touchEvent )
+        touchEvent.preventDefault()
+
     }
     
     _onTouchEnd ( touchEvent ) {
         //todo...
         console.warn('Touch events are not implemented yet, sorry for the disagreement.')
+        console.log( touchEvent )
+        touchEvent.preventDefault()
+
     }
     
     _onTouchCancel ( touchEvent ) {
         //todo...
         console.warn('Touch events are not implemented yet, sorry for the disagreement.')
+        console.log( touchEvent )
+        touchEvent.preventDefault()
+
     }
     
     _onTouchLeave ( touchEvent ) {
         //todo...
         console.warn('Touch events are not implemented yet, sorry for the disagreement.')
+        console.log( touchEvent )
+        touchEvent.preventDefault()
+
     }
     
     _onTouchMove ( touchEvent ) {
         //todo...
         console.warn('Touch events are not implemented yet, sorry for the disagreement.')
+        console.log( touchEvent )
+        touchEvent.preventDefault()
+
     }
     
     _onMouseEnter ( mouseEvent ) {
@@ -600,6 +619,9 @@ class TCameraControls extends EventDispatcher {
     _onDblClick ( mouseEvent ) {
         //todo...
         console.warn('Double click events is not implemented yet, sorry for the disagreement.')
+        console.log( mouseEvent )
+        mouseEvent.preventDefault()
+
     }
 
     // Positional methods
@@ -612,6 +634,7 @@ class TCameraControls extends EventDispatcher {
         this._target.position.add( displacement )
 
         this.dispatchEvent( { type: 'move' } )
+        this.dispatchEvent( { type: 'change' } )
 
     }
 
@@ -624,6 +647,7 @@ class TCameraControls extends EventDispatcher {
         this._target.position.add( displacement )
 
         this.dispatchEvent( { type: 'move' } )
+        this.dispatchEvent( { type: 'change' } )
 
     }
 
@@ -637,6 +661,7 @@ class TCameraControls extends EventDispatcher {
         this._target.position.add( displacement )
 
         this.dispatchEvent( { type: 'move' } )
+        this.dispatchEvent( { type: 'change' } )
 
     }
 
@@ -650,6 +675,7 @@ class TCameraControls extends EventDispatcher {
         this._target.position.add( displacement )
 
         this.dispatchEvent( { type: 'move' } )
+        this.dispatchEvent( { type: 'change' } )
 
     }
 
@@ -663,6 +689,7 @@ class TCameraControls extends EventDispatcher {
         this._target.position.add( displacement )
 
         this.dispatchEvent( { type: 'move' } )
+        this.dispatchEvent( { type: 'change' } )
 
     }
 
@@ -676,6 +703,7 @@ class TCameraControls extends EventDispatcher {
         this._target.position.add( displacement )
 
         this.dispatchEvent( { type: 'move' } )
+        this.dispatchEvent( { type: 'change' } )
 
     }
 
@@ -759,12 +787,13 @@ class TCameraControls extends EventDispatcher {
                 break
 
             default:
-                throw new RangeError( `Invalid camera control _mode parameter: ${this._mode}` )
+                throw new RangeError( `Unamanaged rotation for camera mode ${this._mode}` )
                 break
 
         }
 
         this.dispatchEvent( { type: 'rotate' } )
+        this.dispatchEvent( { type: 'change' } )
 
     }
 
@@ -781,12 +810,14 @@ class TCameraControls extends EventDispatcher {
         this._target.position.add( displacement )
 
         this.dispatchEvent( { type: 'pan' } )
+        this.dispatchEvent( { type: 'change' } )
 
     }
 
     _roll ( delta ) {
 
         this.dispatchEvent( { type: 'roll' } )
+        this.dispatchEvent( { type: 'change' } )
 
     }
 
@@ -841,13 +872,8 @@ class TCameraControls extends EventDispatcher {
 
         }
 
-        this.dispatchEvent( {
-            type: 'zoom',
-            //            cameraNextPosition:                 cameraNextPosition,
-            //            currentCameraToNextCameraDirection: currentCameraToNextCameraDirection,
-            //            targetToCurrentCameraDirection:     targetToCurrentCameraDirection,
-            //            targetToNextCameraDirection:        targetToNextCameraDirection
-        } )
+        this.dispatchEvent( { type: 'zoom' } )
+        this.dispatchEvent( { type: 'change' } )
 
     }
 
