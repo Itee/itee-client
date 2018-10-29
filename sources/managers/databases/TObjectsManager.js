@@ -61,19 +61,19 @@ import {
     FogExp2
 } from 'three-full'
 
-import { TDataBaseManager } from '../TDataBaseManager'
+import { TDataBaseManager }   from '../TDataBaseManager'
 import { TGeometriesManager } from './TGeometriesManager'
-import { TMaterialsManager } from './TMaterialsManager'
-import { TProgressManager } from '../TProgressManager'
-import { TErrorManager } from '../TErrorManager'
-import { ResponseType } from '../../cores/TConstants'
+import { TMaterialsManager }  from './TMaterialsManager'
+import { TProgressManager }   from '../TProgressManager'
+import { TErrorManager }      from '../TErrorManager'
+import { ResponseType }       from '../../cores/TConstants'
 import {
     isNull,
     isUndefined,
     isNotDefined,
     isNotEmptyArray,
     isObject
-} from 'itee-validators'
+}                             from 'itee-validators'
 
 class TObjectsManager extends TDataBaseManager {
 
@@ -188,7 +188,7 @@ class TObjectsManager extends TDataBaseManager {
 
     _onJson ( jsonData, onSuccess, onProgress, onError ) {
 
-        // Normalize to array
+        // Normalize single element to array
         const datas   = (isObject( jsonData )) ? [ jsonData ] : jsonData
         const results = {}
 
@@ -252,11 +252,11 @@ class TObjectsManager extends TDataBaseManager {
 
                     if ( data.fog.type === 'Fog' ) {
 
-                        object.fog = new Fog( data.fog.color, data.fog.near, data.fog.far );
+                        object.fog = new Fog( data.fog.color, data.fog.near, data.fog.far )
 
                     } else if ( data.fog.type === 'FogExp2' ) {
 
-                        object.fog = new FogExp2( data.fog.color, data.fog.density );
+                        object.fog = new FogExp2( data.fog.color, data.fog.density )
 
                     }
 
@@ -436,18 +436,18 @@ class TObjectsManager extends TDataBaseManager {
 
         if ( !isNotDefined( data.position ) ) {
 
-            if (this._projectionSystem === "zBack") {
-            
+            if ( this._projectionSystem === 'zBack' ) {
+
                 object.position.x = data.position.x / this._globalScale
                 object.position.y = data.position.z / this._globalScale
                 object.position.z = -data.position.y / this._globalScale
-            
+
             } else {
 
-               object.position.x = data.position.x / this._globalScale
-               object.position.y = data.position.y / this._globalScale
-               object.position.z = data.position.z / this._globalScale
-            
+                object.position.x = data.position.x / this._globalScale
+                object.position.y = data.position.y / this._globalScale
+                object.position.z = data.position.z / this._globalScale
+
             }
 
         }
