@@ -41,9 +41,9 @@ class TFilaireManager extends TDataBaseManager {
      * @param progressManager
      * @param errorManager
      */
-    constructor ( basePath = '/', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = new TErrorManager()) {
+    constructor ( basePath = '/', responseType = ResponseType.Json, bunchSize = 500, requestsConcurrency, progressManager = new TProgressManager(), errorManager = new TErrorManager()) {
 
-        super( basePath, responseType, bunchSize, progressManager, errorManager )
+        super( basePath, responseType, bunchSize, requestsConcurrency, progressManager, errorManager )
         
     }
 
