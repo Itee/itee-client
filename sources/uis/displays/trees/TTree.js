@@ -19,7 +19,8 @@ export default Vue.component( 'TTree', {
             <div class="tTreeHeader">
                 <slot name="header"></slot>
             </div>
-            <ul v-if="haveItems" class="tTreeItemChildren">
+            <ul v-if="haveItems()" class="tTreeItemChildren">
+            <!--<ul v-if="forceUpdate || haveItems" class="tTreeItemChildren">-->
                 <TTreeItem
                     v-for="item in computedItems"
                     v-bind:key="item.id"
@@ -39,11 +40,23 @@ export default Vue.component( 'TTree', {
         </TContainerVertical>
     `,
     props:    [ 'items', 'filters', 'sort', 'deepSelect', 'multiSelect', 'needUpdate', 'maxDeepLevel' ],
+//    data () {
+//
+//        return {
+//            forceUpdate: false
+//        }
+//
+//    },
     computed: {
 
         computedItems () {
 
-            let items = this.items
+            // force update
+//            if ( this.forceUpdate ) {
+//                this.forceUpdate = false
+//            }
+
+            let items = this.items || []
 
             if ( this.filters ) {
                 items = this.filterItems( items )
@@ -57,16 +70,30 @@ export default Vue.component( 'TTree', {
 
         },
 
-        haveItems () {
+//        haveItems () {
+//
+//            return this.items && this.items.length > 0
+//
+//        },
 
-            return this.items && this.items.length > 0
-
-        }
+//        forceUpdate () {
+//
+//            if ( this.needUpdate || !this.needUpdate ) {
+//                this.forceUpdate = true
+//            }
+//
+//        }
 
     },
     methods:  {
 
-        filterItems( items ) {
+        haveItems () {
+
+            return this.items && this.items.length > 0
+
+        },
+
+        filterItems ( items ) {
 
             return items.filter( item => !this.filters.includes( item.name ) )
 
@@ -76,7 +103,7 @@ export default Vue.component( 'TTree', {
 
             // Todo: Externalize the sort function as use defined function. And implement current sort function as utility
             if ( ![ 'asc', 'desc' ].includes( this.sort ) ) {
-                console.error( "Invalid sorter !" )
+                console.error( 'Invalid sorter !' )
                 return
             }
 
@@ -94,14 +121,13 @@ export default Vue.component( 'TTree', {
 
             } )
 
-            if ( this.sort === "desc" ) {
+            if ( this.sort === 'desc' ) {
                 sortedItems.reverse()
             }
 
             return sortedItems
 
-        },
-
+        }
 
     }
 } )
