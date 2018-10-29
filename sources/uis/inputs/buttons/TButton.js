@@ -9,14 +9,149 @@
  */
 
 import Vue from '../../../../node_modules/vue/dist/vue.esm'
+import { isDefined } from 'itee-validators'
+
+let buttonId = 0
+class IdGenerator {
+
+    constructor () {
+        this._id = 0
+    }
+
+    get id() {
+        this._id += 1
+        return this._id
+    }
+
+}
+
+const idGenerator = new IdGenerator()
 
 export default Vue.component( 'TButton', {
     template: `
-        <button class="btn" @click="onClick(messageData)">
-            <TIcon v-if='icon' :iconProps=icon />
-            {{label}}
+        <button :id="id" :class=computeClass type="button" :disabled="isDisabled" :aria-pressed="isActive" :aria-disabled="isDisabled">
+            <span v-for="decorator in preDecorators">
+                <TIcon v-if="decorator.type === 'icon'" :iconProps='decorator.icon' />
+                <label v-else>Error: Unknown/unallowed decorator of type "{{decorator.type}}" !!!</label>
+            </span>
+            <slot></slot>{{label}}
+            <span v-for="decorator in postDecorators">
+                <TIcon v-if="decorator.type === 'icon'" :iconProps='decorator.icon' />
+                <label v-else>Error: Unknown/unallowed decorator of type "{{decorator.type}}" !!!</label>
+            </span>
         </button>
     `,
-    props:    [ 'label', 'icon', 'onClick', 'messageData' ]
+//    props:    [ 'id', 'label', 'decorators', 'size', 'type', 'isOutlined', 'isBlock', 'isActive', 'isDisabled' ],
+    props:    {
+        id: {
+            type:    String,
+            default: `button-${idGenerator.id}`
+        },
+        label: {
+            type:    String,
+            default: ''
+        },
+        decorators: Array,
+        size: {
+            type: String,
+            validator: ( value ) => { return [ 'sm', 'lg' ].includes( value ) }
+        },
+        type: {
+            type: String,
+            validator: ( value ) => { return [ 'primary', 'secondary', 'success', 'info', 'warning', 'danger', 'light', 'dark', 'link' ].includes( value ) }
+        },
+        isOutlined: {
+            type: Boolean,
+            default: false
+        },
+        isBlock: {
+            type: Boolean,
+            default: false
+        },
+        isActive: {
+            type: Boolean,
+            default: false
+        },
+        isDisabled: {
+            type: Boolean,
+            default: false
+        }
+
+    },
+    computed: {
+
+        computeClass () {
+
+            const size         = this.size
+            const type         = this.type
+            const isOutlined   = this.isOutlined
+            const isBlock      = this.isBlock
+            const isActive     = this.isActive
+            const isDisabled   = this.isDisabled
+            let result         = 'btn'
+
+            // Compute button size
+            if ( size ) {
+
+                result += ` btn-${size}`
+
+            }
+
+            // Compute button type and outline
+            if ( type ) {
+
+                if ( isOutlined ) {
+
+                    if ( type === 'link' ) { console.warn( 'TButton: button type link cannot be outlined !' ) }
+
+                    result += ` btn-outline-${type}`
+
+                } else {
+                    result += ` btn-${type}`
+                }
+
+            }
+
+            // Compute block property
+            if ( isBlock ) {
+
+                result += ` btn-block`
+
+            }
+
+            // Compute active property
+            if ( isActive === true ) {
+
+                if ( isDisabled === true ) { console.warn( `TButton: Button is active but marked as disabled.` ) }
+
+                result += ` active`
+
+            }
+
+            return result
+
+        },
+
+        preDecorators () {
+
+            return (isDefined( this.decorators )) ? this.decorators.filter( ( decorator ) => {
+
+                return ( decorator.position === undefined || decorator.position === "pre" ) && ( decorator.display === undefined || decorator.display === true )
+
+            } ) : []
+
+        },
+
+        postDecorators () {
+
+            return (isDefined( this.decorators )) ? this.decorators.filter( ( decorator ) => {
+
+                return decorator.position === "post" && ( decorator.display === undefined || decorator.display === true )
+
+            } ) : []
+
+        },
+
+    }
 } )
 
