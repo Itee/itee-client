@@ -56,8 +56,8 @@ class TMaterialsManager extends TDataBaseManager {
      * @param texturesPath
      * @param texturesProvider
      */
-    constructor ( basePath = '/materials', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = new TErrorManager(), texturesPath = '/textures', texturesProvider = new TextureLoader(), generateMipmap = false ) {
-        super( basePath, responseType, bunchSize, progressManager, errorManager )
+    constructor ( basePath = '/materials', responseType = ResponseType.Json, bunchSize = 500, requestsConcurrency = 6, progressManager = new TProgressManager(), errorManager = new TErrorManager(), texturesPath = '/textures', texturesProvider = new TextureLoader(), generateMipmap = false ) {
+        super( basePath, responseType, bunchSize, requestsConcurrency, progressManager, errorManager )
 
         this.texturesPath     = texturesPath
         this.texturesProvider = texturesProvider
