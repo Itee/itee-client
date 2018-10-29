@@ -14,7 +14,7 @@
 /* eslint-env browser */
 
 import {
-    isDefined,
+    isNotUndefined,
     isString,
     isFunction
 } from 'itee-validators'
@@ -58,7 +58,7 @@ class TStore {
 
     }
 
-    get keys() {
+    get keys () {
 
         const keys       = []
         const collection = this._collection
@@ -97,7 +97,7 @@ class TStore {
 
     contain ( key ) {
 
-        return isDefined( this._collection[ key ] )
+        return isNotUndefined( this._collection[ key ] )
 
     }
 
@@ -108,10 +108,6 @@ class TStore {
      * @returns {*}
      */
     get ( key ) {
-
-        if ( !this.contain( key ) ) {
-            throw new ReferenceError( `The item for key (${key}) does not exist.` )
-        }
 
         return this._collection[ key ]
 
