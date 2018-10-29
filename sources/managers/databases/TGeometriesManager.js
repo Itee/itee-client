@@ -88,9 +88,9 @@ class TGeometriesManager extends TDataBaseManager {
      * @param progressManager
      * @param errorManager
      */
-    constructor ( basePath = '/geometries', responseType = ResponseType.Json, bunchSize = 500, projectionSystem = "zBack", globalScale = 1, progressManager = new TProgressManager(), errorManager = new TErrorManager() ) {
+    constructor ( basePath = '/geometries', responseType = ResponseType.Json, bunchSize = 500, requestsConcurrency = 6, projectionSystem = "zBack", globalScale = 1, progressManager = new TProgressManager(), errorManager = new TErrorManager() ) {
 
-        super( basePath, responseType, bunchSize, progressManager, errorManager )
+        super( basePath, responseType, bunchSize, requestsConcurrency, progressManager, errorManager )
 
         this.projectionSystem   = projectionSystem
         this.globalScale        = globalScale
