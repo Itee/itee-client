@@ -9,6 +9,8 @@
 /* eslint-env browser */
 
 export { default as TButton } from './TButton'
+export { default as TButtonGroup } from './TButtonGroup'
+export { default as TButtonToolbar } from './TButtonToolbar'
 //export { TButtonGroup } from './TButtonGroup'
 //export { TLogingButton } from './TLoginButton'
 //export { TRadioButton } from './TRadioButton'
