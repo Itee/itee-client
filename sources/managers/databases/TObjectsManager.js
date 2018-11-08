@@ -493,9 +493,9 @@ class TObjectsManager extends TDataBaseManager {
         }
 
         if ( !isNotDefined( data.scale ) ) {
-            object.scale.x = 1 //data.scale.x
-            object.scale.y = 1 //data.scale.y
-            object.scale.z = 1 //data.scale.z
+            object.scale.x = data.scale.x
+            object.scale.y = data.scale.y
+            object.scale.z = data.scale.z
         }
 
         if ( isNotEmptyArray( data.modelViewMatrix ) ) {
