@@ -8,24 +8,11 @@
  *
  */
 
-import Vue from '../../../../node_modules/vue/dist/vue.esm'
-import { isDefined } from 'itee-validators'
+import Vue                            from '../../../../node_modules/vue/dist/vue.esm'
+import { isDefined }                  from 'itee-validators'
+import { TIdFactory, TIdFactoryType } from '../../../utils/TIdFactory'
 
-let buttonId = 0
-class IdGenerator {
-
-    constructor () {
-        this._id = 0
-    }
-
-    get id() {
-        this._id += 1
-        return this._id
-    }
-
-}
-
-const idGenerator = new IdGenerator()
+const IdFactory = new TIdFactory( TIdFactoryType.String, 't-button-' )
 
 export default Vue.component( 'TButton', {
     template: `
@@ -41,39 +28,38 @@ export default Vue.component( 'TButton', {
             </span>
         </button>
     `,
-//    props:    [ 'id', 'label', 'decorators', 'size', 'type', 'isOutlined', 'isBlock', 'isActive', 'isDisabled' ],
     props:    {
-        id: {
+        id:         {
             type:    String,
-            default: `button-${idGenerator.id}`
+            default: IdFactory.createId()
         },
-        label: {
+        label:      {
             type:    String,
             default: ''
         },
         decorators: Array,
-        size: {
-            type: String,
+        size:       {
+            type:      String,
             validator: ( value ) => { return [ 'sm', 'lg' ].includes( value ) }
         },
-        type: {
-            type: String,
+        type:       {
+            type:      String,
             validator: ( value ) => { return [ 'primary', 'secondary', 'success', 'info', 'warning', 'danger', 'light', 'dark', 'link' ].includes( value ) }
         },
         isOutlined: {
-            type: Boolean,
+            type:    Boolean,
             default: false
         },
-        isBlock: {
-            type: Boolean,
+        isBlock:    {
+            type:    Boolean,
             default: false
         },
-        isActive: {
-            type: Boolean,
+        isActive:   {
+            type:    Boolean,
             default: false
         },
         isDisabled: {
-            type: Boolean,
+            type:    Boolean,
             default: false
         }
 
@@ -82,20 +68,13 @@ export default Vue.component( 'TButton', {
 
         computeClass () {
 
-            const size         = this.size
-            const type         = this.type
-            const isOutlined   = this.isOutlined
-            const isBlock      = this.isBlock
-            const isActive     = this.isActive
-            const isDisabled   = this.isDisabled
-            let result         = 'btn'
-
-            // Compute button size
-            if ( size ) {
-
-                result += ` btn-${size}`
-
-            }
+            const type       = this.type
+            const size       = this.size
+            const isOutlined = this.isOutlined
+            const isBlock    = this.isBlock
+            const isActive   = this.isActive
+            const isDisabled = this.isDisabled
+            let result       = 'btn'
 
             // Compute button type and outline
             if ( type ) {
@@ -109,6 +88,13 @@ export default Vue.component( 'TButton', {
                 } else {
                     result += ` btn-${type}`
                 }
+
+            }
+
+            // Compute button size
+            if ( size ) {
+
+                result += ` btn-${size}`
 
             }
 
@@ -136,7 +122,7 @@ export default Vue.component( 'TButton', {
 
             return (isDefined( this.decorators )) ? this.decorators.filter( ( decorator ) => {
 
-                return ( decorator.position === undefined || decorator.position === "pre" ) && ( decorator.display === undefined || decorator.display === true )
+                return (decorator.position === undefined || decorator.position === 'pre') && (decorator.display === undefined || decorator.display === true)
 
             } ) : []
 
@@ -146,11 +132,11 @@ export default Vue.component( 'TButton', {
 
             return (isDefined( this.decorators )) ? this.decorators.filter( ( decorator ) => {
 
-                return decorator.position === "post" && ( decorator.display === undefined || decorator.display === true )
+                return decorator.position === 'post' && (decorator.display === undefined || decorator.display === true)
 
             } ) : []
 
-        },
+        }
 
     }
 } )

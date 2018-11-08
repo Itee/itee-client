@@ -40,16 +40,22 @@ export default Vue.component( 'TDialog', {
         },
 
     },
-//    methods: {
-//
-//        _toggleVisibility( event ) {
-//
-//            const isVisible = !this.isVisible
-//
-//            this.toggleVisibility( isVisible )
-//
-//        },
-//
-//    }
+    created () {
+        document.body.addEventListener('wheel', this.handleWheel, true)
+        document.body.addEventListener('mousewheel', this.handleWheel, true)
+    },
+    destroyed () {
+        document.body.removeEventListener('wheel', this.handleWheel, true)
+        document.body.removeEventListener('mousewheel', this.handleWheel, true)
+    },
+    methods: {
+
+        handleWheel ( wheelEvent ) {
+            console.log('wheeling')
+            wheelEvent.preventDefault()
+            wheelEvent.stopPropagation()
+        }
+
+    }
 
 } )
