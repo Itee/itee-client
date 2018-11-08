@@ -53,6 +53,7 @@ export * from './loggers/_loggers'
 export * from './managers/_managers'
 export * from './objects3d/_objects3d'
 export * from './uis/_uis'
+export * from './utils/_utils'
 
 export function startApp ( config ) {
 
