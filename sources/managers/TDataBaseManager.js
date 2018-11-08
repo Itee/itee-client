@@ -897,17 +897,21 @@ class TDataBaseManager {
 
     _readAll ( projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        this.queue(
-            HttpVerb.Read.value,
-            this._basePath,
-            {
+        this._requestQueue.push( {
+            id:           `readAll_${Generate.id}`,
+            _timeStart:   new Date(),
+            method:       HttpVerb.Read.value,
+            url:          this._basePath,
+            data:         {
                 projection
             },
-            this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
-            this._onProgress.bind( this, onProgressCallback ),
-            this._onError.bind( this, onErrorCallback ),
-            this._responseType
-        )
+            onLoad:       onLoadCallback,
+            onProgress:   onProgressCallback,
+            onError:      onErrorCallback,
+            responseType: this._responseType
+        } )
+
+        this.processQueue()
 
     }
 
