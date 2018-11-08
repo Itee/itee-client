@@ -14,34 +14,42 @@
 import '@babel/polyfill'
 
 // Import FontAwesome
-import '@fortawesome/fontawesome'
-import '@fortawesome/fontawesome-free-solid'
-import '@fortawesome/fontawesome-free-brands'
+import { library } from '@fortawesome/fontawesome-svg-core'
+import { fab } from '@fortawesome/free-brands-svg-icons'
+import { far } from '@fortawesome/free-regular-svg-icons'
+import { fas } from '@fortawesome/free-solid-svg-icons'
+
+library.add( fab, far, fas )
 
 // Export es6 Three stuff
 //export * from 'three-full'
 //export * as Three from 'three-full'
 import * as Three from 'three-full'
+
 export { Three }
 
 // Export Itee Dependencies
 //export * from 'itee-validators'
 //export * as Validator from 'itee-validators'
 import * as Validator from 'itee-validators'
+
 export { Validator }
 
 //export * from 'itee-utils'
 //export * as Utils from 'itee-utils'
 import * as Utils from 'itee-utils'
+
 export { Utils }
 
 // Export Vue stuff ( should be packed in itee-ui at term ! )
 //export * from 'vue'
 //export * as Vue from 'vue'
 import { default as Vue } from '../node_modules/vue/dist/vue.esm'
+
 export { Vue }
 
 import VueRouter from 'vue-router'
+
 export { VueRouter }
 
 // Export Itee stuff

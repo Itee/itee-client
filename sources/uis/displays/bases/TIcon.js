@@ -11,10 +11,9 @@
 /* eslint-env browser */
 
 import Vue from '../../../../node_modules/vue/dist/vue.esm'
-import FontAwesome from '@fortawesome/vue-fontawesome'
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { isObject } from 'itee-validators'
 
-const FontAwesomeIcon = FontAwesome.FontAwesomeIcon
 // Todo: implement router facility here using target instead of clickHandler !
 
 export default Vue.component( 'TIcon', {
