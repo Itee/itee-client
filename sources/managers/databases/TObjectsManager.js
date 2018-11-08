@@ -453,17 +453,43 @@ class TObjectsManager extends TDataBaseManager {
         }
 
         if ( !isNotDefined( data.rotation ) ) {
-            object.rotation.x     = data.rotation.x
-            object.rotation.y     = data.rotation.y
-            object.rotation.z     = data.rotation.z
-            object.rotation.order = data.rotation.order
+
+            if ( this._projectionSystem === 'zBack' ) {
+
+                object.rotation.x     = data.rotation.x
+                object.rotation.y     = data.rotation.z
+                object.rotation.z     = -data.rotation.y
+                object.rotation.order = data.rotation.order
+
+            } else {
+
+                object.rotation.x     = data.rotation.x
+                object.rotation.y     = data.rotation.y
+                object.rotation.z     = data.rotation.z
+                object.rotation.order = data.rotation.order
+
+            }
+
         }
 
         if ( !isNotDefined( data.quaternion ) ) {
-            object.quaternion.x = data.quaternion.x
-            object.quaternion.y = data.quaternion.y
-            object.quaternion.z = data.quaternion.z
-            object.quaternion.w = data.quaternion.w
+
+            if ( this._projectionSystem === 'zBack' ) {
+
+                object.quaternion.x = data.quaternion.x
+                object.quaternion.y = data.quaternion.z
+                object.quaternion.z = -data.quaternion.y
+                object.quaternion.w = data.quaternion.w
+
+            } else {
+
+                object.quaternion.x = data.quaternion.x
+                object.quaternion.y = data.quaternion.y
+                object.quaternion.z = data.quaternion.z
+                object.quaternion.w = data.quaternion.w
+
+            }
+
         }
 
         if ( !isNotDefined( data.scale ) ) {
