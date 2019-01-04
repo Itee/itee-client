@@ -93,7 +93,7 @@ body {
   height: 60px;
 }
 .tHeader .tAppBar .tBrand {
-  margin-left: 10px;
+  padding-left: 10px;
   font-size: 2em;
 }
 .tHeader .tAppBar .tMenu {
