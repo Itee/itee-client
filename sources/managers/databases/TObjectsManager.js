@@ -61,19 +61,21 @@ import {
     FogExp2
 } from 'three-full'
 
-import { TDataBaseManager } from '../TDataBaseManager'
+import { TDataBaseManager }   from '../TDataBaseManager'
 import { TGeometriesManager } from './TGeometriesManager'
-import { TMaterialsManager } from './TMaterialsManager'
-import { TProgressManager } from '../TProgressManager'
-import { TErrorManager } from '../TErrorManager'
-import { ResponseType } from '../../cores/TConstants'
+import { TMaterialsManager }  from './TMaterialsManager'
+import { TProgressManager }   from '../TProgressManager'
+import { TErrorManager }      from '../TErrorManager'
+import { ResponseType }       from '../../cores/TConstants'
 import {
     isNull,
     isUndefined,
     isNotDefined,
+    isDefined,
+    isNotBoolean,
     isNotEmptyArray,
     isObject
-} from 'itee-validators'
+}                             from 'itee-validators'
 
 class TObjectsManager extends TDataBaseManager {
 
@@ -82,21 +84,23 @@ class TObjectsManager extends TDataBaseManager {
      * @param basePath
      * @param responseType
      * @param bunchSize
+     * @param projectionSystem
+     * @param globalScale
      * @param progressManager
      * @param errorManager
      * @param geometriesProvider
      * @param materialsProvider
      */
-    constructor ( basePath = '/objects', responseType = ResponseType.Json, bunchSize = 500, projectionSystem = "zBack", globalScale = 1, progressManager = new TProgressManager(), errorManager = new TErrorManager(), geometriesProvider = new TGeometriesManager(), materialsProvider = new TMaterialsManager() ) {
+    constructor ( basePath = '/objects', responseType = ResponseType.Json, bunchSize = 500, requestsConcurrency = 6, projectionSystem = 'zBack', globalScale = 1, progressManager = new TProgressManager(), errorManager = new TErrorManager(), geometriesProvider = new TGeometriesManager(), materialsProvider = new TMaterialsManager(), autoFillObjects3D = true ) {
 
-        super( basePath, responseType, bunchSize, progressManager, errorManager )
+        super( basePath, responseType, bunchSize, requestsConcurrency, progressManager, errorManager )
 
         this.geometriesProvider = geometriesProvider
         this.materialsProvider  = materialsProvider
         this.projectionSystem   = projectionSystem
         this.globalScale        = globalScale
+        this.autoFillObjects3D  = autoFillObjects3D
 
-    
     }
 
     //// Getter/Setter
@@ -183,11 +187,32 @@ class TObjectsManager extends TDataBaseManager {
 
     }
 
+    get autoFillObjects3D () {
+        return this._autoFillObjects3D
+    }
+
+    set autoFillObjects3D ( value ) {
+
+        if ( isNull( value ) ) { throw new TypeError( 'Global scale cannot be null ! Expect a boolean.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Global scale cannot be undefined ! Expect a positive number.' ) }
+        if ( isNotBoolean( value ) ) { throw new TypeError( 'Global scale cannot be null ! Expect a boolean.' ) }
+
+        this._autoFillObjects3D = value
+
+    }
+
+    setAutoFillObjects3D ( value ) {
+
+        this.autoFillObjects3D = value
+        return this
+
+    }
+
     //// Methods
 
     _onJson ( jsonData, onSuccess, onProgress, onError ) {
 
-        // Normalize to array
+        // Normalize single element to array
         const datas   = (isObject( jsonData )) ? [ jsonData ] : jsonData
         const results = {}
 
@@ -209,7 +234,7 @@ class TObjectsManager extends TDataBaseManager {
 
         }
 
-        this.fillObjects3D( results, onSuccess, onProgress, onError )
+        if ( this._autoFillObjects3D ) { this.fillObjects3D( results, onSuccess, onProgress, onError ) }
 
     }
 
@@ -238,7 +263,7 @@ class TObjectsManager extends TDataBaseManager {
             case 'Scene':
                 object = new Scene()
                 this._fillBaseObjectsData( object, data )
-                if ( !isNotDefined( data.background ) ) {
+                if ( isDefined( data.background ) ) {
 
                     if ( Number.isInteger( data.background ) ) {
 
@@ -247,15 +272,15 @@ class TObjectsManager extends TDataBaseManager {
                     }
 
                 }
-                if ( !isNotDefined( data.fog ) ) {
+                if ( isDefined( data.fog ) ) {
 
                     if ( data.fog.type === 'Fog' ) {
 
-                        object.fog = new Fog( data.fog.color, data.fog.near, data.fog.far );
+                        object.fog = new Fog( data.fog.color, data.fog.near, data.fog.far )
 
                     } else if ( data.fog.type === 'FogExp2' ) {
 
-                        object.fog = new FogExp2( data.fog.color, data.fog.density );
+                        object.fog = new FogExp2( data.fog.color, data.fog.density )
 
                     }
 
@@ -271,19 +296,19 @@ class TObjectsManager extends TDataBaseManager {
                 object.aspect = data.aspect
                 object.near   = data.near
                 object.far    = data.far
-                if ( !isNotDefined( data.focus ) ) {
+                if ( isDefined( data.focus ) ) {
                     object.focus = data.focus
                 }
-                if ( !isNotDefined( data.zoom ) ) {
+                if ( isDefined( data.zoom ) ) {
                     object.zoom = data.zoom
                 }
-                if ( !isNotDefined( data.filmGauge ) ) {
+                if ( isDefined( data.filmGauge ) ) {
                     object.filmGauge = data.filmGauge
                 }
-                if ( !isNotDefined( data.filmOffset ) ) {
+                if ( isDefined( data.filmOffset ) ) {
                     object.filmOffset = data.filmOffset
                 }
-                if ( !isNotDefined( data.view ) ) {
+                if ( isDefined( data.view ) ) {
                     object.view = Object.assign( {}, data.view )
                 }
                 break
@@ -406,20 +431,20 @@ class TObjectsManager extends TDataBaseManager {
         // Common object properties
         object._id = data._id
 
-        if ( !isNotDefined( data.uuid ) ) {
+        if ( isDefined( data.uuid ) ) {
             object.uuid = data.uuid
         }
 
-        if ( !isNotDefined( data.name ) ) {
+        if ( isDefined( data.name ) ) {
             object.name = data.name
         }
 
         // IMPLICIT
-        //        if ( !isNotDefined( data.type ) ) {
+        //        if ( isDefined( data.type ) ) {
         //            object.type = data.type
         //        }
 
-        if ( !isNotDefined( data.parent ) ) {
+        if ( isDefined( data.parent ) ) {
             object.parent = data.parent
         }
 
@@ -427,48 +452,74 @@ class TObjectsManager extends TDataBaseManager {
             object.children = data.children
         }
 
-        if ( !isNotDefined( data.up ) ) {
+        if ( isDefined( data.up ) ) {
             object.up.x = data.up.x
             object.up.y = data.up.y
             object.up.z = data.up.z
         }
 
-        if ( !isNotDefined( data.position ) ) {
+        if ( isDefined( data.position ) ) {
 
-            if (this._projectionSystem === "zBack") {
-            
+            if ( this._projectionSystem === 'zBack' ) {
+
                 object.position.x = data.position.x / this._globalScale
                 object.position.y = data.position.z / this._globalScale
                 object.position.z = -data.position.y / this._globalScale
-            
+
             } else {
 
-               object.position.x = data.position.x / this._globalScale
-               object.position.y = data.position.y / this._globalScale
-               object.position.z = data.position.z / this._globalScale
-            
+                object.position.x = data.position.x / this._globalScale
+                object.position.y = data.position.y / this._globalScale
+                object.position.z = data.position.z / this._globalScale
+
             }
 
         }
 
-        if ( !isNotDefined( data.rotation ) ) {
-            object.rotation.x     = data.rotation.x
-            object.rotation.y     = data.rotation.y
-            object.rotation.z     = data.rotation.z
-            object.rotation.order = data.rotation.order
+        if ( isDefined( data.rotation ) ) {
+
+            if ( this._projectionSystem === 'zBack' ) {
+
+                object.rotation.x     = data.rotation.x
+                object.rotation.y     = data.rotation.z
+                object.rotation.z     = -data.rotation.y
+                object.rotation.order = data.rotation.order
+
+            } else {
+
+                object.rotation.x     = data.rotation.x
+                object.rotation.y     = data.rotation.y
+                object.rotation.z     = data.rotation.z
+                object.rotation.order = data.rotation.order
+
+            }
+
         }
 
-        if ( !isNotDefined( data.quaternion ) ) {
-            object.quaternion.x = data.quaternion.x
-            object.quaternion.y = data.quaternion.y
-            object.quaternion.z = data.quaternion.z
-            object.quaternion.w = data.quaternion.w
+        if ( isDefined( data.quaternion ) ) {
+
+            if ( this._projectionSystem === 'zBack' ) {
+
+                object.quaternion.x = data.quaternion.x
+                object.quaternion.y = data.quaternion.z
+                object.quaternion.z = -data.quaternion.y
+                object.quaternion.w = data.quaternion.w
+
+            } else {
+
+                object.quaternion.x = data.quaternion.x
+                object.quaternion.y = data.quaternion.y
+                object.quaternion.z = data.quaternion.z
+                object.quaternion.w = data.quaternion.w
+
+            }
+
         }
 
-        if ( !isNotDefined( data.scale ) ) {
-            object.scale.x = 1 //data.scale.x
-            object.scale.y = 1 //data.scale.y
-            object.scale.z = 1 //data.scale.z
+        if ( isDefined( data.scale ) ) {
+            object.scale.x = data.scale.x
+            object.scale.y = data.scale.y
+            object.scale.z = data.scale.z
         }
 
         if ( isNotEmptyArray( data.modelViewMatrix ) ) {
@@ -487,129 +538,325 @@ class TObjectsManager extends TDataBaseManager {
             object.matrixWorld.fromArray( data.matrixWorld )
         }
 
-        if ( !isNotDefined( data.matrixAutoUpdate ) ) {
+        if ( isDefined( data.matrixAutoUpdate ) ) {
             object.matrixAutoUpdate = data.matrixAutoUpdate
         }
 
-        if ( !isNotDefined( data.matrixWorldNeedsUpdate ) ) {
+        if ( isDefined( data.matrixWorldNeedsUpdate ) ) {
             object.matrixWorldNeedsUpdate = data.matrixWorldNeedsUpdate
         }
 
-        if ( !isNotDefined( data.layers ) ) {
+        if ( isDefined( data.layers ) ) {
             object.layers.mask = data.layers
         }
 
-        if ( !isNotDefined( data.visible ) ) {
+        if ( isDefined( data.visible ) ) {
             object.visible = data.visible
         }
 
-        if ( !isNotDefined( data.castShadow ) ) {
+        if ( isDefined( data.castShadow ) ) {
             object.castShadow = data.castShadow
         }
 
-        if ( !isNotDefined( data.receiveShadow ) ) {
+        if ( isDefined( data.receiveShadow ) ) {
             object.receiveShadow = data.receiveShadow
         }
 
-        if ( !isNotDefined( data.frustumCulled ) ) {
+        if ( isDefined( data.frustumCulled ) ) {
             object.frustumCulled = data.frustumCulled
         }
 
-        if ( !isNotDefined( data.renderOrder ) ) {
+        if ( isDefined( data.renderOrder ) ) {
             object.renderOrder = data.renderOrder
         }
 
-        if ( !isNotDefined( data.userData ) ) {
+        if ( isDefined( data.userData ) ) {
             object.userData = data.userData
         }
 
     }
 
-    async fillObjects3D ( objects, onSuccess, onProgress, onError ) {
+    //// Callback
+
+    fillObjects3D ( objects, onSuccess, onProgress, onError ) {
 
         const self         = this
         const objectsArray = []
         for ( let id in objects ) {
-            objectsArray.push( objects[ id ] )
-        }
 
-        const [ geometriesMap, materialsMap ] = await Promise.all( [
-            this._retrieveGeometriesOf( objectsArray, onProgress, onError ),
-            this._retrieveMaterialsOf( objectsArray, onProgress, onError )
-        ] )
-
-        for ( let key in objects ) {
-            const mesh = objects[ key ]
-            self.applyGeometry( mesh, geometriesMap )
-            self.applyMaterials( mesh, materialsMap )
-        }
-
-        // Don't forget to return all input object to callback,
-        // else some ids won't never be considered as processed !
-        onSuccess( objects )
-
-    }
-
-    _retrieveGeometriesOf ( meshes, onProgress, onError ) {
-
-        const self = this
-
-        return new Promise( function ( resolve, reject ) {
-
-            const geometriesIds = meshes.map( object => object.geometry )
-                                        .filter( ( value, index, self ) => {
-                                            return value && self.indexOf( value ) === index
-                                        } )
-
-            if ( geometriesIds.length === 0 ) {
-                resolve( {} )
-                return
+            const object = objects[ id ]
+            if ( object.geometry || object.material ) {
+                objectsArray.push( objects[ id ] )
             }
 
-            self._geometriesProvider.read(
-                geometriesIds,
-                null,
-                geometries => {
-                    resolve( geometries )
-                },
-                onProgress,
-                onError
-            )
+        }
 
-        } )
+        if ( objectsArray.length === 0 ) {
+            onSuccess( objects )
+            return
+        }
 
-    }
+        let geometriesMap = undefined
+        this._retrieveGeometriesOf( objectsArray, ( geometries ) => {
+            geometriesMap = geometries
+            onEndDataFetching()
+        }, onProgress, onError )
 
-    _retrieveMaterialsOf ( meshes, onProgress, onError ) {
+        let materialsMap = undefined
+        this._retrieveMaterialsOf( objectsArray, ( materials ) => {
+            materialsMap = materials
+            onEndDataFetching()
+        }, onProgress, onError )
 
-        const self = this
+        function onEndDataFetching () {
 
-        return new Promise( function ( resolve, reject ) {
+            if ( !geometriesMap || !materialsMap ) { return }
 
-            const materialsArray       = meshes.map( object => object.material )
-            const concatMaterialsArray = [].concat.apply( [], materialsArray )
-            const materialsIds         = concatMaterialsArray.filter( ( value, index, self ) => {
-                return value && self.indexOf( value ) === index
-            } )
-
-            if ( materialsIds.length === 0 ) {
-                resolve( {} )
-                return
+            for ( let key in objects ) {
+                const mesh = objects[ key ]
+                self.applyGeometry( mesh, geometriesMap )
+                self.applyMaterials( mesh, materialsMap )
             }
 
-            self._materialsProvider.read(
-                materialsIds,
-                null,
-                materials => {
-                    resolve( materials )
-                },
-                onProgress,
-                onError
-            )
+            // Don't forget to return all input object to callback,
+            // else some ids won't never be considered as processed !
+            onSuccess( objects )
 
-        } )
+        }
 
     }
+
+    _retrieveGeometriesOf ( meshes, onSucess, onProgress, onError ) {
+
+        const geometriesIds = meshes.map( object => object.geometry )
+                                    .filter( ( value, index, self ) => {
+                                        return value && self.indexOf( value ) === index
+                                    } )
+
+        if ( geometriesIds.length === 0 ) {
+            onSucess( {} )
+            return
+        }
+
+        this._geometriesProvider.read(
+            geometriesIds,
+            null,
+            onSucess,
+            onProgress,
+            onError
+        )
+
+    }
+
+    _retrieveMaterialsOf ( meshes, onSucess, onProgress, onError ) {
+
+        const materialsArray       = meshes.map( object => object.material )
+        const concatMaterialsArray = [].concat.apply( [], materialsArray )
+        const materialsIds         = concatMaterialsArray.filter( ( value, index, self ) => {
+            return value && self.indexOf( value ) === index
+        } )
+
+        if ( materialsIds.length === 0 ) {
+            onSucess( {} )
+            return
+        }
+
+        this._materialsProvider.read(
+            materialsIds,
+            null,
+            onSucess,
+            onProgress,
+            onError
+        )
+
+    }
+
+    /*
+     ///// PROMISE
+
+     async fillObjects3DByPromises ( objects, onSuccess, onProgress, onError ) {
+
+     const self         = this
+     const objectsArray = []
+     for ( let id in objects ) {
+     objectsArray.push( objects[ id ] )
+     }
+
+     const [ geometriesMap, materialsMap ] = await Promise.all( [
+     this._getGeometriesPromiseOf( objectsArray, onProgress, onError ),
+     this._getMaterialsPromiseOf( objectsArray, onProgress, onError )
+     ] )
+
+     for ( let key in objects ) {
+     const mesh = objects[ key ]
+     self.applyGeometry( mesh, geometriesMap )
+     self.applyMaterials( mesh, materialsMap )
+     }
+
+     // Don't forget to return all input object to callback,
+     // else some ids won't never be considered as processed !
+     onSuccess( objects )
+
+     }
+
+     _getGeometriesPromiseOf ( meshes, onProgress, onError ) {
+
+     const self = this
+
+     return new Promise( function ( resolve, reject ) {
+
+     const geometriesIds = meshes.map( object => object.geometry )
+     .filter( ( value, index, self ) => {
+     return value && self.indexOf( value ) === index
+     } )
+
+     if ( geometriesIds.length === 0 ) {
+     resolve( {} )
+     return
+     }
+
+     self._geometriesProvider.read(
+     geometriesIds,
+     null,
+     geometries => {
+     resolve( geometries )
+     },
+     onProgress,
+     onError
+     )
+
+     } )
+
+     }
+
+     _getMaterialsPromiseOf ( meshes, onProgress, onError ) {
+
+     const self = this
+
+     return new Promise( function ( resolve, reject ) {
+
+     const materialsArray       = meshes.map( object => object.material )
+     const concatMaterialsArray = [].concat.apply( [], materialsArray )
+     const materialsIds         = concatMaterialsArray.filter( ( value, index, self ) => {
+     return value && self.indexOf( value ) === index
+     } )
+
+     if ( materialsIds.length === 0 ) {
+     resolve( {} )
+     return
+     }
+
+     self._materialsProvider.read(
+     materialsIds,
+     null,
+     materials => {
+     resolve( materials )
+     },
+     onProgress,
+     onError
+     )
+
+     } )
+
+     }
+
+     ///// ASYNC
+
+     async fillObjects3D ( objects, onSuccess, onProgress, onError ) {
+
+     const self         = this
+     const objectsArray = []
+     for ( let id in objects ) {
+
+     const object = objects[ id ]
+     if ( object.geometry || object.material ) {
+     objectsArray.push( objects[ id ] )
+     }
+
+     }
+
+     if ( objectsArray.length === 0 ) {
+     onSuccess( objects )
+     return
+     }
+
+     let geometriesMap = undefined
+     this._retrieveGeometriesOf( objectsArray, ( geometries ) => {
+     geometriesMap = geometries
+     onEndDataFetching()
+     }, onProgress, onError )
+
+     let materialsMap = undefined
+     this._retrieveMaterialsOf( objectsArray, ( materials ) => {
+     materialsMap = materials
+     onEndDataFetching()
+     }, onProgress, onError )
+
+     function onEndDataFetching () {
+
+     if ( !geometriesMap || !materialsMap ) { return }
+
+     for ( let key in objects ) {
+     const mesh = objects[ key ]
+     self.applyGeometry( mesh, geometriesMap )
+     self.applyMaterials( mesh, materialsMap )
+     }
+
+     // Don't forget to return all input object to callback,
+     // else some ids won't never be considered as processed !
+     onSuccess( objects )
+
+     }
+
+     }
+
+     _retrieveGeometriesOf ( meshes, onSucess, onProgress, onError ) {
+
+     const geometriesIds = meshes.map( object => object.geometry )
+     .filter( ( value, index, self ) => {
+     return value && self.indexOf( value ) === index
+     } )
+
+     if ( geometriesIds.length === 0 ) {
+     onSucess( {} )
+     return
+     }
+
+     this._geometriesProvider.read(
+     geometriesIds,
+     null,
+     onSucess,
+     onProgress,
+     onError
+     )
+
+     }
+
+     _retrieveMaterialsOf ( meshes, onSucess, onProgress, onError ) {
+
+     const materialsArray       = meshes.map( object => object.material )
+     const concatMaterialsArray = [].concat.apply( [], materialsArray )
+     const materialsIds         = concatMaterialsArray.filter( ( value, index, self ) => {
+     return value && self.indexOf( value ) === index
+     } )
+
+     if ( materialsIds.length === 0 ) {
+     onSucess( {} )
+     return
+     }
+
+     this._materialsProvider.read(
+     materialsIds,
+     null,
+     onSucess,
+     onProgress,
+     onError
+     )
+
+     }
+
+     /////////////
+     */
 
     applyGeometry ( object, geometries ) {
 

@@ -83,12 +83,14 @@ class TGeometriesManager extends TDataBaseManager {
      * @param basePath
      * @param responseType
      * @param bunchSize
+     * @param projectionSystem
+     * @param globalScale
      * @param progressManager
      * @param errorManager
      */
-    constructor ( basePath = '/geometries', responseType = ResponseType.Json, bunchSize = 500, projectionSystem = "zBack", globalScale = 1, progressManager = new TProgressManager(), errorManager = new TErrorManager() ) {
+    constructor ( basePath = '/geometries', responseType = ResponseType.Json, bunchSize = 500, requestsConcurrency = 6, projectionSystem = "zBack", globalScale = 1, progressManager = new TProgressManager(), errorManager = new TErrorManager() ) {
 
-        super( basePath, responseType, bunchSize, progressManager, errorManager )
+        super( basePath, responseType, bunchSize, requestsConcurrency, progressManager, errorManager )
 
         this.projectionSystem   = projectionSystem
         this.globalScale        = globalScale
@@ -185,23 +187,22 @@ class TGeometriesManager extends TDataBaseManager {
         if ( data.isGeometry ) {
 
             geometry = this._convertJsonToGeometry( data )
+            if( true /* todo: computeNormals */ ) {
+                geometry.computeFaceNormals()
+            }
 
         } else if ( data.isBufferGeometry ) {
 
             geometry = this._convertJsonToBufferGeometry( data )
+            if( true /* todo: computeNormals */ ) {
+                geometry.computeVertexNormals()
+            }
 
         } else {
 
             throw new Error( 'TGeometriesManager: Unable to retrieve geometry type !' )
 
         }
-
-        // Todo: Compute normals only if required or asked
-        //        geometry.computeFaceNormals()
-        //        geometry.computeVertexNormals()
-
-        // TStore geometry for future use
-        //        this._cache.add( data._id, geometry )
 
         return geometry
 

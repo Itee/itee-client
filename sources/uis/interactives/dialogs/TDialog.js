@@ -10,50 +10,68 @@
 
 /* eslint-env browser */
 
-import React from 'react'
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-let _instanceCounter = 0
+import { TIdFactory, TIdFactoryType } from '../../../utils/TIdFactory'
+const IdFactory = new TIdFactory( TIdFactoryType.String, 't-dialog-' )
 
-class TDialog extends React.Component {
+export default Vue.component( 'TDialog', {
+    template: `
+        <div ref="bgModal" :id="id" :class=computeClass :style=computeStyle tabindex="-1" role="dialog" v-on:click="$emit('close')" >
+            <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
+                <div v-on:click.stop class="modal-content">
+                    <slot></slot>
+                </div>
+            </div>
+        </div>
+    `,
+    props:    {
+        id:         {
+            type:    String,
+            default: IdFactory.createId()
+        },
+        isVisible: {
+            type:    Boolean,
+            default: false
+        }
+    },
+    computed: {
 
-    constructor ( props ) {
+        computeClass () {
 
-        super( props )
-        _instanceCounter++
+            return ( this.isVisible ) ? 'modal fade show' : 'modal fade'
+
+        },
+
+        computeStyle () {
+
+            return {
+                display:  ( this.isVisible ) ? 'block' : 'none'
+            }
+
+        },
+
+    },
+    mounted () {
+
+        this.$el.addEventListener('wheel', this.handleWheel, true)
+        this.$el.addEventListener('mousewheel', this.handleWheel, true)
+
+    },
+    destroyed () {
+
+        this.$el.removeEventListener('wheel', this.handleWheel, true)
+        this.$el.removeEventListener('mousewheel', this.handleWheel, true)
+
+    },
+    methods: {
+
+        handleWheel ( wheelEvent ) {
+            console.log('wheeling')
+            wheelEvent.preventDefault()
+            wheelEvent.stopPropagation()
+        }
 
     }
 
-    /**
-     * React lifecycle
-     */
-    componentWillMount () {}
-
-    componentDidMount () {}
-
-    componentWillUnmount () {}
-
-    componentWillReceiveProps ( /*nextProps*/ ) {}
-
-    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentWillUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentDidUpdate ( /*prevProps, prevState*/ ) {}
-
-    render () {
-
-        const { id, className } = this.props
-
-        const _id    = id || `tDialog_${_instanceCounter}`
-        const _style = {}
-        const _class = ( className ) ? `tDialog ${className}` : 'tDialog'
-
-        return (
-            <t-dialog ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-dialog>
-        )
-
-    }
-
-}
-
-export { TDialog }
+} )

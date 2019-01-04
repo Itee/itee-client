@@ -16,10 +16,16 @@ import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
 export default Vue.component( 'TToolItem', {
     template: `
-        <div v-if="onClick" :class=computedClass :title=tooltip @click=onClick(onClickData)>
-            <TIcon v-if='icon' :iconProps="icon" />
-            {{label}}
-            <slot></slot>
+        <div v-if="onClick" :class=computedClass :title=tooltip >
+            <span @click=onClick(onClickData)>
+              <TIcon v-if='icon' :iconProps="icon" />
+              {{label}}
+              <slot></slot>
+            </span>
+            <span v-if='isCheckableItem'>
+              <TIcon v-if=computedState iconProps="check-square"  v-bind:iconOn="{click: _onClickCheckBox}"/>
+              <TIcon v-else iconProps="square" v-bind:iconOn="{click: _onClickCheckBox}"/>
+            </span>
         </div>
         <div v-else :class=computedClass :title=tooltip >
             <TIcon v-if='icon' :iconProps="icon" />
@@ -27,7 +33,7 @@ export default Vue.component( 'TToolItem', {
             <slot></slot>
         </div>
     `,
-    props:    [ 'label', 'icon', 'target', 'tooltip', 'onClick', 'onClickData', 'isActive' ],
+    props:    [ 'label', 'icon', 'target', 'tooltip', 'onClick', 'onClickData', 'isActive', 'isCheckableItem', 'onClickCheckBox', 'onClickCheckBoxData', 'isCheckBoxActive' ],
     computed: {
 
         computedClass () {
@@ -36,6 +42,25 @@ export default Vue.component( 'TToolItem', {
                 return 'tToolItem isActive'
             } else {
                 return 'tToolItem'
+            }
+
+        },
+
+        computedState: function computedState() {
+            
+            return ( this.isActive && this.isCheckBoxActive )
+
+        }
+
+    },
+    methods: {
+
+        _onClickCheckBox( event ) {
+
+            if ( this.isActive ) {
+
+                this.onClickCheckBox( this.onClickCheckBoxData )
+
             }
 
         }

@@ -10,6 +10,12 @@
 
 /* eslint-env browser */
 
+const OutputType = Object.freeze( {
+    Console:  0,
+    HTML:     1,
+    Database: 2
+} )
+
 class TProgressManager {
 
     constructor () {}
@@ -18,10 +24,11 @@ class TProgressManager {
 
         if ( progressEvent.lengthComputable ) {
 
+            const target      = progressEvent.target
             const type        = progressEvent.type
             const loaded      = progressEvent.loaded
             const total       = progressEvent.total
-            const advancement = Math.round((loaded / total) * 10000) / 100
+            const advancement = Math.round( (loaded / total) * 10000 ) / 100
             const message     = `${type}: ${advancement}% [${loaded}/${total}]`
             console.log( message )
 

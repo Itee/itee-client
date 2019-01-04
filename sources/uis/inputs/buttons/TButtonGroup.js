@@ -8,38 +8,54 @@
  *
  */
 
-/* eslint-env browser */
+import Vue                            from '../../../../node_modules/vue/dist/vue.esm'
+import { isDefined }                  from 'itee-validators'
+import { TIdFactory, TIdFactoryType } from '../../../utils/TIdFactory'
 
-import React from 'react'
+const IdFactory = new TIdFactory( TIdFactoryType.String, 't-button-' )
 
-class TButtonGroup extends React.Component {
+export default Vue.component( 'TButtonGroup', {
+    template: `
+        <div :class=computeClass role="group">
+            <slot v-if="isBlock" style="border: #6f42c1 2px solid;">block</slot>
+            <slot v-else >notblock</slot>
+        </div>
+    `,
+    props:    {
+        size:       {
+            type:      String,
+            validator: ( value ) => { return [ 'sm', 'lg' ].includes( value ) }
+        },
+        isVertical: {
+            type:    Boolean,
+            default: false
+        },
+        isBlock:    {
+            type:    Boolean,
+            default: false
+        },
+    },
+    computed: {
 
-    constructor ( props ) {
+        computeClass () {
 
-        super( props )
+            const isVertical = this.isVertical
+            let result       = (isVertical) ? 'btn-group-vertical' : 'btn-group'
 
-    }
+            const size = this.size
+            if ( size ) {
+                result += ` btn-group-${size}`
+            }
 
-    render () {
+            const isBlock = this.isBlock
+            if(isBlock) {
+                result += ' d-flex'
+            }
 
-        const props = this.props
+            return result
 
-        const buttonGroupStyle = {
-            listStyleType: 'none',
-            display:       'flex',
-            alignItems:    'center',
-            margin:        0,
-            padding:       0
         }
 
-        return (
-            <ul style={buttonGroupStyle}>
-                {props.children}
-            </ul>
-        )
-
     }
+} )
 
-}
-
-export { TButtonGroup }

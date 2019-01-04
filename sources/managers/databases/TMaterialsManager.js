@@ -18,7 +18,8 @@ import {
     LineBasicMaterial,
     Color,
     Vector2,
-    TextureLoader
+    TextureLoader,
+    ImageLoader
 } from 'three-full'
 
 import {
@@ -38,8 +39,10 @@ import {
 import { TDataBaseManager } from '../TDataBaseManager'
 import { TTexturesManager } from './TTexturesManager'
 import { TProgressManager } from '../TProgressManager'
-import { TErrorManager } from '../TErrorManager'
-import { ResponseType } from '../../cores/TConstants'
+import { TErrorManager }    from '../TErrorManager'
+import { ResponseType }     from '../../cores/TConstants'
+
+const DEFAULT_IMAGE = new ImageLoader().load( 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAB3RJTUUH4gkKDRoGpGNegQAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAAMSURBVAjXY/j//z8ABf4C/tzMWecAAAAASUVORK5CYII=' )
 
 class TMaterialsManager extends TDataBaseManager {
 
@@ -53,12 +56,13 @@ class TMaterialsManager extends TDataBaseManager {
      * @param texturesPath
      * @param texturesProvider
      */
-    constructor ( basePath = '/materials', responseType = ResponseType.Json, bunchSize = 500, progressManager = new TProgressManager(), errorManager = new TErrorManager(), texturesPath = '/textures', texturesProvider = new TextureLoader(), generateMipmap = false ) {
-        super( basePath, responseType, bunchSize, progressManager, errorManager )
+    constructor ( basePath = '/materials', responseType = ResponseType.Json, bunchSize = 500, requestsConcurrency = 6, progressManager = new TProgressManager(), errorManager = new TErrorManager(), texturesPath = '/textures', texturesProvider = new TextureLoader(), generateMipmap = false, autoFillTextures = true ) {
+        super( basePath, responseType, bunchSize, requestsConcurrency, progressManager, errorManager )
 
         this.texturesPath     = texturesPath
         this.texturesProvider = texturesProvider
         this.generateMipmap   = generateMipmap
+        this.autoFillTextures = autoFillTextures
 
     }
 
@@ -126,6 +130,27 @@ class TMaterialsManager extends TDataBaseManager {
 
     }
 
+    get autoFillTextures () {
+        return this._autoFillTextures
+    }
+
+    set autoFillTextures ( value ) {
+
+        if ( isNull( value ) ) { throw new TypeError( 'Global scale cannot be null ! Expect a boolean.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Global scale cannot be undefined ! Expect a positive number.' ) }
+        if ( isNotBoolean( value ) ) { throw new TypeError( 'Global scale cannot be null ! Expect a boolean.' ) }
+
+        this._autoFillTextures = value
+
+    }
+
+    setAutoFillTextures ( value ) {
+
+        this.autoFillTextures = value
+        return this
+
+    }
+
     //// Methods
 
     _onJson ( jsonData, onSuccess, onProgress, onError ) {
@@ -152,7 +177,7 @@ class TMaterialsManager extends TDataBaseManager {
 
         }
 
-        this.fillTextures( results, onSuccess, onProgress, onError )
+        if ( this._autoFillTextures ) { this.fillTextures( results, onSuccess, onProgress, onError ) }
 
     }
 
@@ -714,22 +739,40 @@ class TMaterialsManager extends TDataBaseManager {
 
                 const map = material[ mapType ]
                 if ( isDefined( map ) && isString( map ) && isNotEmptyString( map ) ) {
-                    const texturePath = `${this._texturesPath}/${map}`
 
-                    // Check cache before
+                    const texturePath  = `${this._texturesPath}/${map}`
                     const cachedResult = localCache[ texturePath ]
+
                     if ( isDefined( cachedResult ) ) {
+
                         textures[ mapType ] = cachedResult
+
                     } else {
-                        const texture = this._texturesProvider.load( texturePath )
+
+                        const texture = this._texturesProvider.load(
+                            texturePath,
+                            () => {},
+                            () => {},
+                            () => {
+
+                                if ( !texture.image ) {
+                                    texture.image       = DEFAULT_IMAGE
+                                    texture.needsUpdate = true
+                                }
+
+                            }
+                        )
                         texture.name  = map
+
                         if ( !this._generateMipmap ) {
                             texture.generateMipmaps = false
                             texture.magFilter       = LinearFilter
                             texture.minFilter       = LinearFilter
                         }
+
                         localCache[ texturePath ] = texture
                         textures[ mapType ]       = texture
+
                     }
 
                 }
