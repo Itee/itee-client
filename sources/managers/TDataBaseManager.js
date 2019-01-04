@@ -166,7 +166,7 @@ class TDataBaseManager {
     }
 
     get requestsConcurrency () {
-        return this._numberOfConcurrentRequestsAllowed
+        return this._requestsConcurrency
     }
 
     set requestsConcurrency ( value ) {
