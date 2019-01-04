@@ -16,7 +16,7 @@ const IdFactory = new TIdFactory( TIdFactoryType.String, 't-button-' )
 
 export default Vue.component( 'TButton', {
     template: `
-        <button :id="id" :class=computeClass type="button" :disabled="isDisabled" :aria-pressed="isActive" :aria-disabled="isDisabled">
+        <button :id="id" :class=computeClass type="button" :disabled="isDisabled" :aria-pressed="isActive" :aria-disabled="isDisabled" v-on:click="$emit('click')">
             <span v-for="decorator in preDecorators">
                 <TIcon v-if="decorator.type === 'icon'" :iconProps='decorator.icon' />
                 <label v-else>Error: Unknown/unallowed decorator of type "{{decorator.type}}" !!!</label>
