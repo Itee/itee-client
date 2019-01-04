@@ -468,6 +468,9 @@ class TDataBaseManager {
 
         switch ( status ) {
 
+            // 100
+
+            // 200
             case HttpStatusCode.Ok.value:
                 this._dispatchResponse( response, responseType, closeRequest.bind( this, onLoadCallback, request ), onProgressCallback, onErrorCallback )
                 break
@@ -477,14 +480,73 @@ class TDataBaseManager {
                 closeRequest.call( this, null, request )
                 break
 
+            // 400
+            case HttpStatusCode.BadRequest.value:
+            case HttpStatusCode.Unauthorized.value:
+            case HttpStatusCode.PaymentRequired.value:
+            case HttpStatusCode.Forbidden.value:
             case HttpStatusCode.NotFound.value:
-                onErrorCallback( 'Data not found !' )
+            case HttpStatusCode.MethodNotAllowed.value:
+            case HttpStatusCode.NotAcceptable.value:
+            case HttpStatusCode.ProxyAuthenticationRequired.value:
+            case HttpStatusCode.RequestTimeOut.value:
+            case HttpStatusCode.Conflict.value:
+            case HttpStatusCode.Gone.value:
+            case HttpStatusCode.LengthRequired.value:
+            case HttpStatusCode.PreconditionFailed.value:
+            case HttpStatusCode.RequestEntityTooLarge.value:
+            case HttpStatusCode.ExpectationFailed.value:
+            case HttpStatusCode.ImATeapot.value:
+            case HttpStatusCode.BadMapping.value:
+            case HttpStatusCode.UnprocessableEntity.value:
+            case HttpStatusCode.Locked.value:
+            case HttpStatusCode.MethodFailure.value:
+            case HttpStatusCode.UnorderedCollection.value:
+            case HttpStatusCode.UpgradeRequired.value:
+            case HttpStatusCode.PreconditionRequired.value:
+            case HttpStatusCode.TooManyRequests.value:
+            case HttpStatusCode.RequestHeaderFieldsTooLarge.value:
+            case HttpStatusCode.NoResponse.value:
+            case HttpStatusCode.RetryWith.value:
+            case HttpStatusCode.BlockedByWindowsParentalControls.value:
+            case HttpStatusCode.UnavailableForLegalReasons.value:
+            case HttpStatusCode.UnrecoverableError.value:
+            case HttpStatusCode.SSLCertificateError.value:
+            case HttpStatusCode.SSLCertificateRequired.value:
+            case HttpStatusCode.HTTPRequestSentToHTTPSPort.value:
+            case HttpStatusCode.ClientClosedRequest.value:
+                onErrorCallback( response )
                 closeRequest.call( this, null, request )
                 break
 
             case HttpStatusCode.RequestRangeUnsatisfiable.value:
                 onErrorCallback( response.errors )
                 this._dispatchResponse( response.datas, responseType, closeRequest.bind( this, onLoadCallback, request ), onProgressCallback, onErrorCallback )
+                break
+
+            // 500
+            case HttpStatusCode.InternalServerError.value:
+            case HttpStatusCode.NotImplemented.value:
+            case HttpStatusCode.BadGateway.value:
+            case HttpStatusCode.ServiceUnavailable.value:
+            case HttpStatusCode.GatewayTimeOut.value:
+            case HttpStatusCode.HTTPVersionNotSupported.value:
+            case HttpStatusCode.VariantAlsoNegotiates.value:
+            case HttpStatusCode.InsufficientStorage.value:
+            case HttpStatusCode.LoopDetected.value:
+            case HttpStatusCode.BandwidthLimitExceeded.value:
+            case HttpStatusCode.NotExtended.value:
+            case HttpStatusCode.NetworkAuthenticationRequired.value:
+            case HttpStatusCode.UnknownError.value:
+            case HttpStatusCode.WebServerIsDown.value:
+            case HttpStatusCode.ConnectionTimedOut.value:
+            case HttpStatusCode.OriginIsUnreachable.value:
+            case HttpStatusCode.ATimeoutOccured.value:
+            case HttpStatusCode.SSLHandshakeFailed.value:
+            case HttpStatusCode.InvalidSSLCertificate.value:
+            case HttpStatusCode.RailgunError.value:
+                onErrorCallback( response )
+                closeRequest.call( this, null, request )
                 break
 
             default:
