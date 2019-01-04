@@ -581,6 +581,8 @@ class TObjectsManager extends TDataBaseManager {
     fillObjects3D ( objects, onSuccess, onProgress, onError ) {
 
         const self         = this
+
+        // Get objects that need geometry or materials
         const objectsArray = []
         for ( let id in objects ) {
 
@@ -591,11 +593,13 @@ class TObjectsManager extends TDataBaseManager {
 
         }
 
+        // In case no objects need to be filled return result
         if ( objectsArray.length === 0 ) {
             onSuccess( objects )
             return
         }
 
+        // Else fill geometries and materials for filtered objects
         let geometriesMap = undefined
         this._retrieveGeometriesOf( objectsArray, ( geometries ) => {
             geometriesMap = geometries
@@ -626,7 +630,7 @@ class TObjectsManager extends TDataBaseManager {
 
     }
 
-    _retrieveGeometriesOf ( meshes, onSucess, onProgress, onError ) {
+    _retrieveGeometriesOf ( meshes, onSuccess, onProgress, onError ) {
 
         const geometriesIds = meshes.map( object => object.geometry )
                                     .filter( ( value, index, self ) => {
@@ -634,21 +638,21 @@ class TObjectsManager extends TDataBaseManager {
                                     } )
 
         if ( geometriesIds.length === 0 ) {
-            onSucess( {} )
+            onSuccess( {} )
             return
         }
 
         this._geometriesProvider.read(
             geometriesIds,
             null,
-            onSucess,
+            onSuccess,
             onProgress,
             onError
         )
 
     }
 
-    _retrieveMaterialsOf ( meshes, onSucess, onProgress, onError ) {
+    _retrieveMaterialsOf ( meshes, onSuccess, onProgress, onError ) {
 
         const materialsArray       = meshes.map( object => object.material )
         const concatMaterialsArray = [].concat.apply( [], materialsArray )
@@ -657,14 +661,14 @@ class TObjectsManager extends TDataBaseManager {
         } )
 
         if ( materialsIds.length === 0 ) {
-            onSucess( {} )
+            onSuccess( {} )
             return
         }
 
         this._materialsProvider.read(
             materialsIds,
             null,
-            onSucess,
+            onSuccess,
             onProgress,
             onError
         )
