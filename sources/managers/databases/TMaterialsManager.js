@@ -56,13 +56,13 @@ class TMaterialsManager extends TDataBaseManager {
      * @param texturesPath
      * @param texturesProvider
      */
-    constructor ( basePath = '/materials', responseType = ResponseType.Json, bunchSize = 500, requestsConcurrency = 6, progressManager = new TProgressManager(), errorManager = new TErrorManager(), texturesPath = '/textures', texturesProvider = new TextureLoader(), generateMipmap = false ) {
+    constructor ( basePath = '/materials', responseType = ResponseType.Json, bunchSize = 500, requestsConcurrency = 6, progressManager = new TProgressManager(), errorManager = new TErrorManager(), texturesPath = '/textures', texturesProvider = new TextureLoader(), generateMipmap = false, autoFillTextures = true ) {
         super( basePath, responseType, bunchSize, requestsConcurrency, progressManager, errorManager )
 
         this.texturesPath     = texturesPath
         this.texturesProvider = texturesProvider
         this.generateMipmap   = generateMipmap
-
+        this.autoFillTextures = autoFillTextures
 
     }
 
@@ -130,6 +130,27 @@ class TMaterialsManager extends TDataBaseManager {
 
     }
 
+    get autoFillTextures () {
+        return this._autoFillTextures
+    }
+
+    set autoFillTextures ( value ) {
+
+        if ( isNull( value ) ) { throw new TypeError( 'Global scale cannot be null ! Expect a boolean.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Global scale cannot be undefined ! Expect a positive number.' ) }
+        if ( isNotBoolean( value ) ) { throw new TypeError( 'Global scale cannot be null ! Expect a boolean.' ) }
+
+        this._autoFillTextures = value
+
+    }
+
+    setAutoFillTextures ( value ) {
+
+        this.autoFillTextures = value
+        return this
+
+    }
+
     //// Methods
 
     _onJson ( jsonData, onSuccess, onProgress, onError ) {
@@ -156,7 +177,7 @@ class TMaterialsManager extends TDataBaseManager {
 
         }
 
-        this.fillTextures( results, onSuccess, onProgress, onError )
+        if ( this._autoFillTextures ) { this.fillTextures( results, onSuccess, onProgress, onError ) }
 
     }
 
