@@ -956,7 +956,7 @@ class TDataBaseManager {
             if ( isNull( cachedResult ) ) {
                 this._cache.add( key, result, true )
             } else if ( isUndefined( cachedResult ) ) {
-                console.warn( 'Cache was not setted with nulll value' )
+                console.warn( 'Cache was not setted with null value' )
                 this._cache.add( key, result )
             } else {
                 console.error( 'Cached value already exist !!!' )
