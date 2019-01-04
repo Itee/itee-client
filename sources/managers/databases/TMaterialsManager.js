@@ -39,8 +39,8 @@ import {
 import { TDataBaseManager } from '../TDataBaseManager'
 import { TTexturesManager } from './TTexturesManager'
 import { TProgressManager } from '../TProgressManager'
-import { TErrorManager } from '../TErrorManager'
-import { ResponseType } from '../../cores/TConstants'
+import { TErrorManager }    from '../TErrorManager'
+import { ResponseType }     from '../../cores/TConstants'
 
 const DEFAULT_IMAGE = new ImageLoader().load( 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAB3RJTUUH4gkKDRoGpGNegQAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAAMSURBVAjXY/j//z8ABf4C/tzMWecAAAAASUVORK5CYII=' )
 
@@ -740,7 +740,7 @@ class TMaterialsManager extends TDataBaseManager {
                 const map = material[ mapType ]
                 if ( isDefined( map ) && isString( map ) && isNotEmptyString( map ) ) {
 
-                    const texturePath = `${this._texturesPath}/${map}`
+                    const texturePath  = `${this._texturesPath}/${map}`
                     const cachedResult = localCache[ texturePath ]
 
                     if ( isDefined( cachedResult ) ) {
@@ -755,8 +755,8 @@ class TMaterialsManager extends TDataBaseManager {
                             () => {},
                             () => {
 
-                                if( !texture.image ) {
-                                    texture.image = DEFAULT_IMAGE
+                                if ( !texture.image ) {
+                                    texture.image       = DEFAULT_IMAGE
                                     texture.needsUpdate = true
                                 }
 
