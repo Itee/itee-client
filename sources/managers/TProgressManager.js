@@ -10,6 +10,12 @@
 
 /* eslint-env browser */
 
+const OutputType = Object.freeze( {
+    Console:  0,
+    HTML:     1,
+    Database: 2
+} )
+
 class TProgressManager {
 
     constructor () {}
