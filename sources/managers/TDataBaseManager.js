@@ -749,29 +749,37 @@ class TDataBaseManager {
      */
     _createOne ( data, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        this.queue(
-            HttpVerb.Create.value,
-            this._basePath,
-            data,
-            this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
-            this._onProgress.bind( this, onProgressCallback ),
-            this._onError.bind( this, onErrorCallback ),
-            this._responseType
-        )
+        this._requestQueue.push( {
+            id:           `createOne_${Generate.id}`,
+            _timeStart:   new Date(),
+            method:       HttpVerb.Create.value,
+            url:          this._basePath,
+            data:         data,
+            onLoad:       onLoadCallback,
+            onProgress:   onProgressCallback,
+            onError:      onErrorCallback,
+            responseType: this._responseType
+        } )
+
+        this.processQueue()
 
     }
 
     _createMany ( datas, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        this.queue(
-            HttpVerb.Create.value,
-            this._basePath,
-            datas,
-            this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
-            this._onProgress.bind( this, onProgressCallback ),
-            this._onError.bind( this, onErrorCallback ),
-            this._responseType
-        )
+        this._requestQueue.push( {
+            id:           `createMany_${Generate.id}`,
+            _timeStart:   new Date(),
+            method:       HttpVerb.Create.value,
+            url:          this._basePath,
+            data:         datas,
+            onLoad:       onLoadCallback,
+            onProgress:   onProgressCallback,
+            onError:      onErrorCallback,
+            responseType: this._responseType
+        } )
+
+        this.processQueue()
 
     }
 
@@ -947,7 +955,6 @@ class TDataBaseManager {
                 projection
             },
             onLoad:       onLoadCallback,
-            //            onLoad:       this._updateCache.bind( this ),
             onProgress:   onProgressCallback,
             onError:      onErrorCallback,
             responseType: this._responseType
