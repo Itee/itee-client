@@ -61,12 +61,12 @@ import {
     FogExp2
 } from 'three-full'
 
-import { TDataBaseManager } from '../TDataBaseManager'
+import { TDataBaseManager }   from '../TDataBaseManager'
 import { TGeometriesManager } from './TGeometriesManager'
-import { TMaterialsManager } from './TMaterialsManager'
-import { TProgressManager } from '../TProgressManager'
-import { TErrorManager } from '../TErrorManager'
-import { ResponseType } from '../../cores/TConstants'
+import { TMaterialsManager }  from './TMaterialsManager'
+import { TProgressManager }   from '../TProgressManager'
+import { TErrorManager }      from '../TErrorManager'
+import { ResponseType }       from '../../cores/TConstants'
 import {
     isNull,
     isUndefined,
@@ -75,7 +75,7 @@ import {
     isNotBoolean,
     isNotEmptyArray,
     isObject
-} from 'itee-validators'
+}                             from 'itee-validators'
 
 class TObjectsManager extends TDataBaseManager {
 
