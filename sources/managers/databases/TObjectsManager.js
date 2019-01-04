@@ -89,7 +89,7 @@ class TObjectsManager extends TDataBaseManager {
      * @param geometriesProvider
      * @param materialsProvider
      */
-    constructor ( basePath = '/objects', responseType = ResponseType.Json, bunchSize = 500, requestsConcurrency = 6, projectionSystem = 'zBack', globalScale = 1, progressManager = new TProgressManager(), errorManager = new TErrorManager(), geometriesProvider = new TGeometriesManager(), materialsProvider = new TMaterialsManager() ) {
+    constructor ( basePath = '/objects', responseType = ResponseType.Json, bunchSize = 500, requestsConcurrency = 6, projectionSystem = 'zBack', globalScale = 1, progressManager = new TProgressManager(), errorManager = new TErrorManager(), geometriesProvider = new TGeometriesManager(), materialsProvider = new TMaterialsManager(), autoFillObjects3D = true ) {
 
         super( basePath, responseType, bunchSize, requestsConcurrency, progressManager, errorManager )
 
@@ -97,6 +97,7 @@ class TObjectsManager extends TDataBaseManager {
         this.materialsProvider  = materialsProvider
         this.projectionSystem   = projectionSystem
         this.globalScale        = globalScale
+        this.autoFillObjects3D  = autoFillObjects3D
 
     }
 
@@ -184,6 +185,27 @@ class TObjectsManager extends TDataBaseManager {
 
     }
 
+    get autoFillObjects3D () {
+        return this._autoFillObjects3D
+    }
+
+    set autoFillObjects3D ( value ) {
+
+        if ( isNull( value ) ) { throw new TypeError( 'Global scale cannot be null ! Expect a boolean.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Global scale cannot be undefined ! Expect a positive number.' ) }
+        if ( isNotBoolean( value ) ) { throw new TypeError( 'Global scale cannot be null ! Expect a boolean.' ) }
+
+        this._autoFillObjects3D = value
+
+    }
+
+    setAutoFillObjects3D ( value ) {
+
+        this.autoFillObjects3D = value
+        return this
+
+    }
+
     //// Methods
 
     _onJson ( jsonData, onSuccess, onProgress, onError ) {
@@ -210,7 +232,7 @@ class TObjectsManager extends TDataBaseManager {
 
         }
 
-        this.fillObjects3D( results, onSuccess, onProgress, onError )
+        if ( this._autoFillObjects3D ) { this.fillObjects3D( results, onSuccess, onProgress, onError ) }
 
     }
 
