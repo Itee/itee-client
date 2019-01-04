@@ -71,6 +71,8 @@ import {
     isNull,
     isUndefined,
     isNotDefined,
+    isDefined,
+    isNotBoolean,
     isNotEmptyArray,
     isObject
 } from 'itee-validators'
@@ -261,7 +263,7 @@ class TObjectsManager extends TDataBaseManager {
             case 'Scene':
                 object = new Scene()
                 this._fillBaseObjectsData( object, data )
-                if ( !isNotDefined( data.background ) ) {
+                if ( isDefined( data.background ) ) {
 
                     if ( Number.isInteger( data.background ) ) {
 
@@ -270,7 +272,7 @@ class TObjectsManager extends TDataBaseManager {
                     }
 
                 }
-                if ( !isNotDefined( data.fog ) ) {
+                if ( isDefined( data.fog ) ) {
 
                     if ( data.fog.type === 'Fog' ) {
 
@@ -294,19 +296,19 @@ class TObjectsManager extends TDataBaseManager {
                 object.aspect = data.aspect
                 object.near   = data.near
                 object.far    = data.far
-                if ( !isNotDefined( data.focus ) ) {
+                if ( isDefined( data.focus ) ) {
                     object.focus = data.focus
                 }
-                if ( !isNotDefined( data.zoom ) ) {
+                if ( isDefined( data.zoom ) ) {
                     object.zoom = data.zoom
                 }
-                if ( !isNotDefined( data.filmGauge ) ) {
+                if ( isDefined( data.filmGauge ) ) {
                     object.filmGauge = data.filmGauge
                 }
-                if ( !isNotDefined( data.filmOffset ) ) {
+                if ( isDefined( data.filmOffset ) ) {
                     object.filmOffset = data.filmOffset
                 }
-                if ( !isNotDefined( data.view ) ) {
+                if ( isDefined( data.view ) ) {
                     object.view = Object.assign( {}, data.view )
                 }
                 break
@@ -429,20 +431,20 @@ class TObjectsManager extends TDataBaseManager {
         // Common object properties
         object._id = data._id
 
-        if ( !isNotDefined( data.uuid ) ) {
+        if ( isDefined( data.uuid ) ) {
             object.uuid = data.uuid
         }
 
-        if ( !isNotDefined( data.name ) ) {
+        if ( isDefined( data.name ) ) {
             object.name = data.name
         }
 
         // IMPLICIT
-        //        if ( !isNotDefined( data.type ) ) {
+        //        if ( isDefined( data.type ) ) {
         //            object.type = data.type
         //        }
 
-        if ( !isNotDefined( data.parent ) ) {
+        if ( isDefined( data.parent ) ) {
             object.parent = data.parent
         }
 
@@ -450,13 +452,13 @@ class TObjectsManager extends TDataBaseManager {
             object.children = data.children
         }
 
-        if ( !isNotDefined( data.up ) ) {
+        if ( isDefined( data.up ) ) {
             object.up.x = data.up.x
             object.up.y = data.up.y
             object.up.z = data.up.z
         }
 
-        if ( !isNotDefined( data.position ) ) {
+        if ( isDefined( data.position ) ) {
 
             if ( this._projectionSystem === 'zBack' ) {
 
@@ -474,7 +476,7 @@ class TObjectsManager extends TDataBaseManager {
 
         }
 
-        if ( !isNotDefined( data.rotation ) ) {
+        if ( isDefined( data.rotation ) ) {
 
             if ( this._projectionSystem === 'zBack' ) {
 
@@ -494,7 +496,7 @@ class TObjectsManager extends TDataBaseManager {
 
         }
 
-        if ( !isNotDefined( data.quaternion ) ) {
+        if ( isDefined( data.quaternion ) ) {
 
             if ( this._projectionSystem === 'zBack' ) {
 
@@ -514,7 +516,7 @@ class TObjectsManager extends TDataBaseManager {
 
         }
 
-        if ( !isNotDefined( data.scale ) ) {
+        if ( isDefined( data.scale ) ) {
             object.scale.x = data.scale.x
             object.scale.y = data.scale.y
             object.scale.z = data.scale.z
@@ -536,39 +538,39 @@ class TObjectsManager extends TDataBaseManager {
             object.matrixWorld.fromArray( data.matrixWorld )
         }
 
-        if ( !isNotDefined( data.matrixAutoUpdate ) ) {
+        if ( isDefined( data.matrixAutoUpdate ) ) {
             object.matrixAutoUpdate = data.matrixAutoUpdate
         }
 
-        if ( !isNotDefined( data.matrixWorldNeedsUpdate ) ) {
+        if ( isDefined( data.matrixWorldNeedsUpdate ) ) {
             object.matrixWorldNeedsUpdate = data.matrixWorldNeedsUpdate
         }
 
-        if ( !isNotDefined( data.layers ) ) {
+        if ( isDefined( data.layers ) ) {
             object.layers.mask = data.layers
         }
 
-        if ( !isNotDefined( data.visible ) ) {
+        if ( isDefined( data.visible ) ) {
             object.visible = data.visible
         }
 
-        if ( !isNotDefined( data.castShadow ) ) {
+        if ( isDefined( data.castShadow ) ) {
             object.castShadow = data.castShadow
         }
 
-        if ( !isNotDefined( data.receiveShadow ) ) {
+        if ( isDefined( data.receiveShadow ) ) {
             object.receiveShadow = data.receiveShadow
         }
 
-        if ( !isNotDefined( data.frustumCulled ) ) {
+        if ( isDefined( data.frustumCulled ) ) {
             object.frustumCulled = data.frustumCulled
         }
 
-        if ( !isNotDefined( data.renderOrder ) ) {
+        if ( isDefined( data.renderOrder ) ) {
             object.renderOrder = data.renderOrder
         }
 
-        if ( !isNotDefined( data.userData ) ) {
+        if ( isDefined( data.userData ) ) {
             object.userData = data.userData
         }
 
