@@ -12,6 +12,9 @@
 
 import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
+import { TIdFactory, TIdFactoryType } from '../../../utils/TIdFactory'
+const IdFactory = new TIdFactory( TIdFactoryType.String, 't-dialog-' )
+
 export default Vue.component( 'TDialog', {
     template: `
         <div :id="id" :class=computeClass :style=computeStyle tabindex="-1" role="dialog" v-on:click="toggleVisibility()" >
@@ -22,7 +25,16 @@ export default Vue.component( 'TDialog', {
             </div>
         </div>
     `,
-    props:    [ 'id', 'isVisible', 'toggleVisibility' ],
+    props:    {
+        id:         {
+            type:    String,
+            default: IdFactory.createId()
+        },
+        isVisible: {
+            type:    Boolean,
+            default: false
+        }
+    },
     computed: {
 
         computeClass () {
