@@ -463,7 +463,16 @@ class TGeometriesManager extends TDataBaseManager {
         // Extract index
         const dataIndexes = data.index
         if ( dataIndexes && dataIndexes.array && dataIndexes.array.length > 0 ) {
-            bufferGeometry.index = new BufferAttribute( new Uint32Array( dataIndexes.array ), dataIndexes.itemSize, dataIndexes.normalized )
+
+            const arrayBuffer = this.__convertBase64ToArrayBuffer( dataIndexes.array )
+            const dataView    = new DataView( arrayBuffer )
+            const uint16Array = new Uint16Array( arrayBuffer.byteLength / 2 )
+            for ( let index = 0, offset = 0, numberOfBytes = dataView.byteLength ; offset < numberOfBytes ; index++, offset += 2 ) {
+                uint16Array[ index ] = dataView.getUint16( offset )
+            }
+
+            bufferGeometry.index = new BufferAttribute( uint16Array, dataIndexes.itemSize, dataIndexes.normalized )
+
         }
 
         // Extract attributes
@@ -476,41 +485,77 @@ class TGeometriesManager extends TDataBaseManager {
             const positionAttributes = dataAttributes.position
             if ( positionAttributes ) {
 
-                const positionArray = positionAttributes.array
-                const zbackpos      = []
+                //Float32Array from base64 but should be int16
+                const arrayBuffer  = this.__convertBase64ToArrayBuffer( positionAttributes.array )
+                const dataView     = new DataView( arrayBuffer )
+                const float32Array = new Float32Array( arrayBuffer.byteLength / 4 )
+                const globalScale  = this._globalScale
 
                 if ( this._projectionSystem === 'zBack' ) {
 
-                    for ( let pi = 0, numPos = positionArray.length ; pi < numPos ; pi += 3 ) {
-                        zbackpos.push( positionArray[ pi ] / this._globalScale, positionArray[ pi + 2 ] / this._globalScale, -positionArray[ pi + 1 ] / this._globalScale )
+                    for ( let index = 0, offset = 0, numberOfBytes = dataView.byteLength ; offset < numberOfBytes ; index += 3, offset += 4 * 3 ) {
+                        float32Array[ index ]     = dataView.getFloat32( offset ) / globalScale
+                        float32Array[ index + 1 ] = dataView.getFloat32( offset + 8 ) / globalScale
+                        float32Array[ index + 2 ] = -(dataView.getFloat32( offset + 4 ) / globalScale)
                     }
 
                 } else {
 
-                    for ( let pi = 0, numPos = positionArray.length ; pi < numPos ; pi += 3 ) {
-                        zbackpos.push( positionArray[ pi ] / this._globalScale, positionArray[ pi + 1 ] / this._globalScale, positionArray[ pi + 2 ] / this._globalScale )
+                    for ( let index = 0, offset = 0, numberOfBytes = dataView.byteLength ; offset < numberOfBytes ; index += 3, offset += 4 * 3 ) {
+                        float32Array[ index ]     = dataView.getFloat32( offset ) / globalScale
+                        float32Array[ index + 1 ] = dataView.getFloat32( offset + 4 ) / globalScale
+                        float32Array[ index + 2 ] = dataView.getFloat32( offset + 8 ) / globalScale
                     }
 
                 }
 
-                attributes[ 'position' ] = new BufferAttribute( new Float32Array( zbackpos ), positionAttributes.itemSize, positionAttributes.normalized )
+                attributes[ 'position' ] = new BufferAttribute( float32Array, positionAttributes.itemSize, positionAttributes.normalized )
+
             }
 
             const normalAttributes = dataAttributes.normal
             if ( normalAttributes ) {
 
-                const array        = normalAttributes.array
-                const rotatedDatas = []
-                for ( let i = 0, numPos = array.length ; i < numPos ; i += 3 ) {
-                    rotatedDatas.push( array[ i ], array[ i + 2 ], -array[ i + 1 ] )
+                //Float32Array from base64 but should be int16
+                const arrayBuffer  = this.__convertBase64ToArrayBuffer( normalAttributes.array )
+                const dataView     = new DataView( arrayBuffer )
+                const float32Array = new Float32Array( arrayBuffer.byteLength / 4 )
+
+                if ( this._projectionSystem === 'zBack' ) {
+
+                    for ( let index = 0, offset = 0, numberOfBytes = dataView.byteLength ; offset < numberOfBytes ; index += 3, offset += 4 * 3 ) {
+                        float32Array[ index ]     = dataView.getFloat32( offset )
+                        float32Array[ index + 1 ] = dataView.getFloat32( offset + 8 )
+                        float32Array[ index + 2 ] = -dataView.getFloat32( offset + 4 )
+                    }
+
+                } else {
+
+                    for ( let index = 0, offset = 0, numberOfBytes = dataView.byteLength ; offset < numberOfBytes ; index += 3, offset += 4 * 3 ) {
+                        float32Array[ index ]     = dataView.getFloat32( offset )
+                        float32Array[ index + 1 ] = dataView.getFloat32( offset + 4 )
+                        float32Array[ index + 2 ] = dataView.getFloat32( offset + 8 )
+                    }
+
                 }
 
-                attributes[ 'normal' ] = new BufferAttribute( new Float32Array( rotatedDatas ), normalAttributes.itemSize, normalAttributes.normalized )
+                attributes[ 'normal' ] = new BufferAttribute( float32Array, normalAttributes.itemSize, normalAttributes.normalized )
+
             }
 
             const uvAttributes = dataAttributes.uv
             if ( uvAttributes ) {
-                attributes[ 'uv' ] = new BufferAttribute( new Float32Array( uvAttributes.array ), uvAttributes.itemSize, uvAttributes.normalized )
+
+                //Float32Array from base64 but should be int16
+                const arrayBuffer  = this.__convertBase64ToArrayBuffer( uvAttributes.array )
+                const dataView     = new DataView( arrayBuffer )
+                const float32Array = new Float32Array( arrayBuffer.byteLength / 4 )
+                for ( let index = 0, offset = 0, numberOfBytes = dataView.byteLength ; offset < numberOfBytes ; index++, offset += 4 ) {
+                    float32Array[ index ] = dataView.getFloat32( offset )
+                }
+
+                attributes[ 'uv' ] = new BufferAttribute( float32Array, uvAttributes.itemSize, uvAttributes.normalized )
+
             }
 
             bufferGeometry.attributes = attributes
@@ -533,6 +578,47 @@ class TGeometriesManager extends TDataBaseManager {
 
         return bufferGeometry
 
+    }
+
+    __convertBase64ToArrayBuffer ( base64 ) {
+
+        const chars  = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/'
+        const lookup = new Uint8Array( 256 )
+        for ( let i = 0 ; i < chars.length ; i++ ) {
+            lookup[ chars.charCodeAt( i ) ] = i
+        }
+
+        ////////
+
+        const base64Length = base64.length
+
+        let bufferLength = base64Length * 0.75
+        if ( base64[ base64Length - 1 ] === '=' ) {
+            bufferLength--
+            if ( base64[ base64Length - 2 ] === '=' ) {
+                bufferLength--
+            }
+        }
+
+        let arraybuffer = new ArrayBuffer( bufferLength )
+        let bytes       = new Uint8Array( arraybuffer )
+        let encoded1    = undefined
+        let encoded2    = undefined
+        let encoded3    = undefined
+        let encoded4    = undefined
+
+        for ( let i = 0, pointer = 0 ; i < base64Length ; i += 4 ) {
+            encoded1 = lookup[ base64.charCodeAt( i ) ]
+            encoded2 = lookup[ base64.charCodeAt( i + 1 ) ]
+            encoded3 = lookup[ base64.charCodeAt( i + 2 ) ]
+            encoded4 = lookup[ base64.charCodeAt( i + 3 ) ]
+
+            bytes[ pointer++ ] = (encoded1 << 2) | (encoded2 >> 4)
+            bytes[ pointer++ ] = ((encoded2 & 15) << 4) | (encoded3 >> 2)
+            bytes[ pointer++ ] = ((encoded3 & 3) << 6) | (encoded4 & 63)
+        }
+
+        return arraybuffer
     }
 
 }
