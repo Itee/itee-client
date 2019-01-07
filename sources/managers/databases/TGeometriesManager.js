@@ -13,68 +13,63 @@
  *
  */
 
+import { isNull, isObject, isUndefined } from 'itee-validators'
+
 /* eslint-env browser */
 import {
-    Geometry,
-    BufferGeometry,
-    BoxGeometry,
     BoxBufferGeometry,
-    CircleGeometry,
-    CircleBufferGeometry,
-    CylinderGeometry,
-    CylinderBufferGeometry,
-    ConeGeometry,
-    ConeBufferGeometry,
-    EdgesGeometry,
-    DodecahedronGeometry,
-    DodecahedronBufferGeometry,
-    ExtrudeGeometry,
-    ExtrudeBufferGeometry,
-    IcosahedronGeometry,
-    IcosahedronBufferGeometry,
-    LatheGeometry,
-    LatheBufferGeometry,
-    OctahedronGeometry,
-    OctahedronBufferGeometry,
-    ParametricGeometry,
-    ParametricBufferGeometry,
-    PlaneGeometry,
-    PlaneBufferGeometry,
-    PolyhedronGeometry,
-    PolyhedronBufferGeometry,
-    RingGeometry,
-    RingBufferGeometry,
-    ShapeGeometry,
-    ShapeBufferGeometry,
-    TetrahedronGeometry,
-    TetrahedronBufferGeometry,
-    TextGeometry,
-    TextBufferGeometry,
-    TorusGeometry,
-    TorusBufferGeometry,
-    TorusKnotGeometry,
-    TorusKnotBufferGeometry,
-    TubeGeometry,
-    TubeBufferGeometry,
-    SphereGeometry,
-    SphereBufferGeometry,
-    WireframeGeometry,
-    InstancedBufferGeometry,
-
-    Shape
-} from 'three-full'
-
-import {
+    BoxGeometry,
     BufferAttribute,
+    BufferGeometry,
+    CircleBufferGeometry,
+    CircleGeometry,
+    ConeBufferGeometry,
+    ConeGeometry,
+    CylinderBufferGeometry,
+    CylinderGeometry,
+    DodecahedronBufferGeometry,
+    DodecahedronGeometry,
+    EdgesGeometry,
+    ExtrudeBufferGeometry,
+    ExtrudeGeometry,
     Face3,
+    Geometry,
+    IcosahedronBufferGeometry,
+    IcosahedronGeometry,
+    InstancedBufferGeometry,
+    LatheBufferGeometry,
+    LatheGeometry,
+    OctahedronBufferGeometry,
+    OctahedronGeometry,
+    ParametricBufferGeometry,
+    ParametricGeometry,
+    PlaneBufferGeometry,
+    PlaneGeometry,
+    PolyhedronBufferGeometry,
+    PolyhedronGeometry,
+    RingBufferGeometry,
+    RingGeometry,
+    Shape,
+    ShapeGeometry,
+    SphereBufferGeometry,
+    SphereGeometry,
+    TetrahedronBufferGeometry,
+    TetrahedronGeometry,
+    TextBufferGeometry,
+    TextGeometry,
+    TorusBufferGeometry,
+    TorusGeometry,
+    TorusKnotBufferGeometry,
+    TorusKnotGeometry,
+    TubeBufferGeometry,
+    TubeGeometry,
     Vector3,
-} from 'three-full'
-
-import { isNull, isUndefined, isObject } from 'itee-validators'
-import { TDataBaseManager } from '../TDataBaseManager'
-import { TProgressManager } from '../TProgressManager'
-import { TErrorManager } from '../TErrorManager'
-import { ResponseType } from '../../cores/TConstants'
+    WireframeGeometry
+}                                        from 'three-full'
+import { ResponseType }                  from '../../cores/TConstants'
+import { TDataBaseManager }              from '../TDataBaseManager'
+import { TErrorManager }                 from '../TErrorManager'
+import { TProgressManager }              from '../TProgressManager'
 
 class TGeometriesManager extends TDataBaseManager {
 
@@ -88,17 +83,17 @@ class TGeometriesManager extends TDataBaseManager {
      * @param progressManager
      * @param errorManager
      */
-    constructor ( basePath = '/geometries', responseType = ResponseType.Json, bunchSize = 500, requestsConcurrency = 6, projectionSystem = "zBack", globalScale = 1, progressManager = new TProgressManager(), errorManager = new TErrorManager() ) {
+    constructor ( basePath = '/geometries', responseType = ResponseType.Json, bunchSize = 500, requestsConcurrency = 6, projectionSystem = 'zBack', globalScale = 1, progressManager = new TProgressManager(), errorManager = new TErrorManager() ) {
 
         super( basePath, responseType, bunchSize, requestsConcurrency, progressManager, errorManager )
 
-        this.projectionSystem   = projectionSystem
-        this.globalScale        = globalScale
+        this.projectionSystem = projectionSystem
+        this.globalScale      = globalScale
 
     }
 
     //// Getter/Setter
-    
+
     get projectionSystem () {
         return this._projectionSystem
     }
@@ -187,14 +182,14 @@ class TGeometriesManager extends TDataBaseManager {
         if ( data.isGeometry ) {
 
             geometry = this._convertJsonToGeometry( data )
-            if( true /* todo: computeNormals */ ) {
+            if ( true /* todo: computeNormals */ ) {
                 geometry.computeFaceNormals()
             }
 
         } else if ( data.isBufferGeometry ) {
 
             geometry = this._convertJsonToBufferGeometry( data )
-            if( true /* todo: computeNormals */ ) {
+            if ( true /* todo: computeNormals */ ) {
                 geometry.computeVertexNormals()
             }
 
