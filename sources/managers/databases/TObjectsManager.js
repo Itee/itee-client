@@ -522,19 +522,19 @@ class TObjectsManager extends TDataBaseManager {
             object.scale.z = data.scale.z
         }
 
-        if ( isNotEmptyArray( data.modelViewMatrix ) ) {
+        if ( isDefined(data.modelViewMatrix) && isNotEmptyArray( data.modelViewMatrix ) ) {
             object.modelViewMatrix.fromArray( data.modelViewMatrix )
         }
 
-        if ( isNotEmptyArray( data.normalMatrix ) ) {
+        if ( isDefined(data.normalMatrix) &&  isNotEmptyArray( data.normalMatrix ) ) {
             object.normalMatrix.fromArray( data.normalMatrix )
         }
 
-        if ( isNotEmptyArray( data.matrix ) ) {
+        if ( isDefined(data.matrix) &&  isNotEmptyArray( data.matrix ) ) {
             object.matrix.fromArray( data.matrix )
         }
 
-        if ( isNotEmptyArray( data.matrixWorld ) ) {
+        if ( isDefined(data.matrixWorld) &&  isNotEmptyArray( data.matrixWorld ) ) {
             object.matrixWorld.fromArray( data.matrixWorld )
         }
 
