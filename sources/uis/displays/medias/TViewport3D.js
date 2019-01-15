@@ -354,6 +354,8 @@ export default Vue.component( 'TViewport3D', {
 
             if ( !this.control ) { return }
             if ( !this.control.update ) { return }
+            if ( !this.$data ) { return }
+            if ( !this.$data._timer ) { return }
 
             this.control.update( this.$data._timer.getDelta() )
 
