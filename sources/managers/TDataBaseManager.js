@@ -33,23 +33,24 @@ import {
     isBlankString,
     isNotBlankString,
     isArray,
+    isNotArray,
     isEmptyArray,
     isNotEmptyArray,
     isArrayOfSingleElement,
     isObject,
     isNotEmptyObject,
     isNotObject
-} from 'itee-validators'
+}                                   from 'itee-validators'
 import {
     HttpVerb,
     ResponseType,
     HttpStatusCode
-} from '../cores/TConstants'
-import { TOrchestrator } from '../cores/TOrchestrator'
+}                                   from '../cores/TConstants'
+import { TOrchestrator }            from '../cores/TOrchestrator'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
-import { TProgressManager } from './TProgressManager'
-import { TErrorManager } from './TErrorManager'
-import { TStore } from '../cores/TStore'
+import { TProgressManager }         from './TProgressManager'
+import { TErrorManager }            from './TErrorManager'
+import { TStore }                   from '../cores/TStore'
 
 class IdGenerator {
 
