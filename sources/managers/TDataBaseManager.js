@@ -1156,17 +1156,21 @@ class TDataBaseManager {
      */
     _updateOne ( id, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        this.queue(
-            HttpVerb.Update.value,
-            `${this._basePath}/${id}`,
-            {
+        this._requestQueue.push( {
+            id:           `updateOne_${Generate.id}`,
+            _timeStart:   new Date(),
+            method:       HttpVerb.Update.value,
+            url:          `${this._basePath}/${id}`,
+            data:         {
                 update
             },
-            this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
-            this._onProgress.bind( this, onProgressCallback ),
-            this._onError.bind( this, onErrorCallback ),
-            this._responseType
-        )
+            onLoad:       onLoadCallback,
+            onProgress:   onProgressCallback,
+            onError:      onErrorCallback,
+            responseType: this._responseType
+        } )
+
+        this.processQueue()
 
     }
 
@@ -1183,51 +1187,63 @@ class TDataBaseManager {
      */
     _updateMany ( ids, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        this.queue(
-            HttpVerb.Update.value,
-            this._basePath,
-            {
+        this._requestQueue.push( {
+            id:           `updateMany_${Generate.id}`,
+            _timeStart:   new Date(),
+            method:       HttpVerb.Update.value,
+            url:          this._basePath,
+            data:         {
                 ids,
                 update
             },
-            this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
-            this._onProgress.bind( this, onProgressCallback ),
-            this._onError.bind( this, onErrorCallback ),
-            this._responseType
-        )
+            onLoad:       onLoadCallback,
+            onProgress:   onProgressCallback,
+            onError:      onErrorCallback,
+            responseType: this._responseType
+        } )
+
+        this.processQueue()
 
     }
 
     _updateWhere ( query, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        this.queue(
-            HttpVerb.Update.value,
-            this._basePath,
-            {
+        this._requestQueue.push( {
+            id:           `updateWhere_${Generate.id}`,
+            _timeStart:   new Date(),
+            method:       HttpVerb.Update.value,
+            url:          this._basePath,
+            data:         {
                 query,
                 update
             },
-            this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
-            this._onProgress.bind( this, onProgressCallback ),
-            this._onError.bind( this, onErrorCallback ),
-            this._responseType
-        )
+            onLoad:       onLoadCallback,
+            onProgress:   onProgressCallback,
+            onError:      onErrorCallback,
+            responseType: this._responseType
+        } )
+
+        this.processQueue()
 
     }
 
     _updateAll ( update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        this.queue(
-            HttpVerb.Update.value,
-            this._basePath,
-            {
+        this._requestQueue.push( {
+            id:           `updateAll_${Generate.id}`,
+            _timeStart:   new Date(),
+            method:       HttpVerb.Update.value,
+            url:          this._basePath,
+            data:         {
                 update
             },
-            this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
-            this._onProgress.bind( this, onProgressCallback ),
-            this._onError.bind( this, onErrorCallback ),
-            this._responseType
-        )
+            onLoad:       onLoadCallback,
+            onProgress:   onProgressCallback,
+            onError:      onErrorCallback,
+            responseType: this._responseType
+        } )
+
+        this.processQueue()
 
     }
 
@@ -1244,15 +1260,19 @@ class TDataBaseManager {
      */
     _deleteOne ( id, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        this.queue(
-            HttpVerb.Delete.value,
-            `${this._basePath}/${id}`,
-            null,
-            this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
-            this._onProgress.bind( this, onProgressCallback ),
-            this._onError.bind( this, onErrorCallback ),
-            this._responseType
-        )
+        this._requestQueue.push( {
+            id:           `deleteOne_${Generate.id}`,
+            _timeStart:   new Date(),
+            method:       HttpVerb.Delete.value,
+            url:          `${this._basePath}/${id}`,
+            data:         null,
+            onLoad:       onLoadCallback,
+            onProgress:   onProgressCallback,
+            onError:      onErrorCallback,
+            responseType: this._responseType
+        } )
+
+        this.processQueue()
 
     }
 
@@ -1269,47 +1289,61 @@ class TDataBaseManager {
      */
     _deleteMany ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        this.queue(
-            HttpVerb.Delete.value,
-            this._basePath,
-            {
+        this._requestQueue.push( {
+            id:           `deleteMany_${Generate.id}`,
+            _timeStart:   new Date(),
+            method:       HttpVerb.Delete.value,
+            url:          this._basePath,
+            data:         {
                 ids
             },
-            this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
-            this._onProgress.bind( this, onProgressCallback ),
-            this._onError.bind( this, onErrorCallback ),
-            this._responseType
-        )
+            onLoad:       onLoadCallback,
+            onProgress:   onProgressCallback,
+            onError:      onErrorCallback,
+            responseType: this._responseType
+        } )
+
+        this.processQueue()
 
     }
 
     _deleteWhere ( query, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        this.queue(
-            HttpVerb.Delete.value,
-            this._basePath,
-            {
+        this._requestQueue.push( {
+            id:           `deleteWhere_${Generate.id}`,
+            _timeStart:   new Date(),
+            method:       HttpVerb.Delete.value,
+            url:          this._basePath,
+            data:         {
                 query
             },
-            this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
-            this._onProgress.bind( this, onProgressCallback ),
-            this._onError.bind( this, onErrorCallback ),
-            this._responseType
-        )
+            onLoad:       onLoadCallback,
+            onProgress:   onProgressCallback,
+            onError:      onErrorCallback,
+            responseType: this._responseType
+        } )
+
+        this.processQueue()
 
     }
 
     _deleteAll ( onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        this.queue(
-            HttpVerb.Delete.value,
-            this._basePath,
-            null,
-            this._onLoad.bind( this, onLoadCallback, onProgressCallback, onErrorCallback ),
-            this._onProgress.bind( this, onProgressCallback ),
-            this._onError.bind( this, onErrorCallback ),
-            this._responseType
-        )
+        this._requestQueue.push( {
+            id:           `deleteAll_${Generate.id}`,
+            _timeStart:   new Date(),
+            method:       HttpVerb.Delete.value,
+            url:          this._basePath,
+            data:         {
+                query
+            },
+            onLoad:       onLoadCallback,
+            onProgress:   onProgressCallback,
+            onError:      onErrorCallback,
+            responseType: this._responseType
+        } )
+
+        this.processQueue()
 
     }
 
