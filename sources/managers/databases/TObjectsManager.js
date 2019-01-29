@@ -212,13 +212,11 @@ class TObjectsManager extends TDataBaseManager {
 
     _onJson ( jsonData, onSuccess, onProgress, onError ) {
 
-        // Normalize single element to array
-        const datas   = (isObject( jsonData )) ? [ jsonData ] : jsonData
+        // Convert data from db to instanced object and add them into a map
         const results = {}
+        for ( let dataIndex = 0, numberOfDatas = jsonData.length, data = undefined ; dataIndex < numberOfDatas ; dataIndex++ ) {
 
-        for ( let dataIndex = 0, numberOfDatas = datas.length, data = undefined ; dataIndex < numberOfDatas ; dataIndex++ ) {
-
-            data = datas[ dataIndex ]
+            data = jsonData[ dataIndex ]
 
             try {
                 results[ data._id ] = this.convert( data )
@@ -234,7 +232,12 @@ class TObjectsManager extends TDataBaseManager {
 
         }
 
-        if ( this._autoFillObjects3D ) { this.fillObjects3D( results, onSuccess, onProgress, onError ) }
+        // In case autoFill is true query materials and geometry
+        if ( this._autoFillObjects3D ) {
+            this.fillObjects3D( results, onSuccess, onProgress, onError )
+        } else {
+            onSuccess( results )
+        }
 
     }
 
