@@ -234,7 +234,12 @@ class TObjectsManager extends TDataBaseManager {
 
         }
 
-        if ( this._autoFillObjects3D ) { this.fillObjects3D( results, onSuccess, onProgress, onError ) }
+        // In case autoFill is true query materials and geometry
+        if ( this._autoFillObjects3D ) {
+            this.fillObjects3D( results, onSuccess, onProgress, onError )
+        } else {
+            onSuccess( results )
+        }
 
     }
 
