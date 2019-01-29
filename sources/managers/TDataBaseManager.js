@@ -469,16 +469,38 @@ class TDataBaseManager {
         switch ( status ) {
 
             // 100
+            //            case HttpStatusCode.Continue.value:
+            //            case HttpStatusCode.SwitchingProtocols.value:
+            //            case HttpStatusCode.Processing.value:
 
             // 200
             case HttpStatusCode.Ok.value:
-                this._dispatchResponse( response, responseType, closeRequest.bind( this, onLoadCallback, request ), onProgressCallback, onErrorCallback )
+                this._dispatchResponse( response, responseType, onLoadCallback, onProgressCallback, onErrorCallback )
                 break
-
+            //            case HttpStatusCode.Created.value:
+            //            case HttpStatusCode.Accepted.value:
+            //            case HttpStatusCode.NonAuthoritativeInformation.value:
             case HttpStatusCode.NoContent.value:
                 onErrorCallback( 'Empty data !' )
-                closeRequest.call( this, null, request )
                 break
+            //            case HttpStatusCode.ResetContent.value:
+            //            case HttpStatusCode.PartialContent.value:
+            //            case HttpStatusCode.MultiStatus.value:
+            //            case HttpStatusCode.AlreadyReported.value:
+            //            case HttpStatusCode.ContentDifferent.value:
+            //            case HttpStatusCode.IMUsed.value:
+
+            // 300
+            //            case HttpStatusCode.MultipleChoices.value:
+            //            case HttpStatusCode.MovedPermanently.value:
+            //            case HttpStatusCode.Found.value:
+            //            case HttpStatusCode.SeeOther.value:
+            //            case HttpStatusCode.NotModified.value:
+            //            case HttpStatusCode.UseProxy.value:
+            //            case HttpStatusCode.Unused.value:
+            //            case HttpStatusCode.TemporaryRedirect.value:
+            //            case HttpStatusCode.PermanentRedirect.value:
+            //            case HttpStatusCode.TooManyRedirects.value:
 
             // 400
             case HttpStatusCode.BadRequest.value:
@@ -495,6 +517,7 @@ class TDataBaseManager {
             case HttpStatusCode.LengthRequired.value:
             case HttpStatusCode.PreconditionFailed.value:
             case HttpStatusCode.RequestEntityTooLarge.value:
+            case HttpStatusCode.RequestRangeUnsatisfiable.value:
             case HttpStatusCode.ExpectationFailed.value:
             case HttpStatusCode.ImATeapot.value:
             case HttpStatusCode.BadMapping.value:
@@ -516,12 +539,6 @@ class TDataBaseManager {
             case HttpStatusCode.HTTPRequestSentToHTTPSPort.value:
             case HttpStatusCode.ClientClosedRequest.value:
                 onErrorCallback( response )
-                closeRequest.call( this, null, request )
-                break
-
-            case HttpStatusCode.RequestRangeUnsatisfiable.value:
-                onErrorCallback( response.errors )
-                this._dispatchResponse( response.datas, responseType, closeRequest.bind( this, onLoadCallback, request ), onProgressCallback, onErrorCallback )
                 break
 
             // 500
@@ -546,11 +563,10 @@ class TDataBaseManager {
             case HttpStatusCode.InvalidSSLCertificate.value:
             case HttpStatusCode.RailgunError.value:
                 onErrorCallback( response )
-                closeRequest.call( this, null, request )
                 break
 
             default:
-                throw new RangeError( `Invalid HttpStatusCode parameter: ${status}` )
+                throw new RangeError( `Unmanaged HttpStatusCode: ${status}` )
 
         }
 
