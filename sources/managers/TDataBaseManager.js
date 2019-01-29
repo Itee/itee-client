@@ -570,11 +570,11 @@ class TDataBaseManager {
 
         }
 
-        function closeRequest ( callback, request, result ) {
+        this._closeRequest( request, response )
+        this.processQueue()
 
-            this._processQueue.splice( this._processQueue.indexOf( request ), 1 )
-            if ( callback ) { callback( result ) }
-
+        const debug = false
+        if ( debug ) {
             console.log( '====================' )
             const diff = new Date().valueOf() - request._timeStart.valueOf()
             console.log( `Request [${request.id}] take ${diff}ms` )
@@ -582,9 +582,6 @@ class TDataBaseManager {
             console.log( 'Waiting queue: ', this._waitingQueue.length )
             console.log( 'Request queue: ', this._requestQueue.length )
             console.log( 'Process queue: ', this._processQueue.length )
-
-            this.processQueue()
-
         }
 
     }
@@ -690,6 +687,128 @@ class TDataBaseManager {
 
             default:
                 throw new Error( `Unknown response type: ${responseType}` )
+
+        }
+
+    }
+
+    /**
+     * Will remove the request from the process queue
+     * @param request
+     * @private
+     */
+    _closeRequest ( request ) {
+
+        this._processQueue.splice( this._processQueue.indexOf( request ), 1 )
+
+    }
+
+    _retrieveCachedValues ( ids ) {
+
+        let results      = {}
+        let underRequest = []
+        let toRequest    = []
+
+        for ( let idIndex = 0, numberOfIds = ids.length ; idIndex < numberOfIds ; idIndex++ ) {
+
+            const id          = ids[ idIndex ]
+            const cachedValue = this._cache.get( id )
+
+            if ( isDefined( cachedValue ) ) {
+                results[ id ] = cachedValue
+            } else if ( isNull( cachedValue ) ) { // In request
+                underRequest.push( id )
+            } else {
+                toRequest.push( id )
+            }
+
+        }
+
+        return {
+            results,
+            underRequest,
+            toRequest
+        }
+
+    }
+
+    _updateCache ( datas ) {
+
+        if ( isNull( datas ) ) { throw new TypeError( 'Data cannot be null ! Expect an array of object.' ) }
+        if ( isUndefined( datas ) ) { throw new TypeError( 'Data cannot be undefined ! Expect an array of object.' ) }
+
+        let _datas = {}
+        if ( isArray( datas ) ) {
+
+            for ( let key in datas ) {
+                _datas[ datas[ key ]._id ] = datas[ key ]
+            }
+
+        } else {
+
+            _datas = datas
+
+        }
+
+        for ( let [ id, data ] of Object.entries( _datas ) ) {
+
+            const cachedResult = this._cache.get( id )
+
+            if ( isNull( cachedResult ) ) {
+                this._cache.add( id, data, true )
+            } else if ( isUndefined( cachedResult ) ) {
+                console.warn( 'Cache was not pre-allocated with null value.' )
+                this._cache.add( id, data )
+            } else {
+                console.error( 'Cached value already exist !' )
+            }
+
+        }
+
+    }
+
+    _updateWaitingQueue () {
+
+        const haveNoRequestToProcess = (this._requestQueue.length === 0 && this._processQueue.length === 0)
+
+        for ( let requestIndex = this._waitingQueue.length - 1 ; requestIndex >= 0 ; requestIndex-- ) {
+
+            const demand = this._waitingQueue[ requestIndex ]
+
+            // Update requested datas
+            for ( let dataIndex = demand.underRequest.length - 1 ; dataIndex >= 0 ; dataIndex-- ) {
+
+                const id           = demand.underRequest[ dataIndex ]
+                const cachedResult = this._cache.get( id )
+
+                if ( isNotDefined( cachedResult ) ) { continue }
+
+                // Assign the cached value
+                demand.results[ id ] = cachedResult
+
+                // Remove the requested object that is now added
+                demand.underRequest.splice( demand.underRequest.indexOf( id ), 1 )
+
+            }
+
+            // Check if request is now fullfilled
+            const demandIsComplet = (demand.underRequest.length === 0)
+            if ( demandIsComplet ) {
+
+                this._waitingQueue.splice( requestIndex, 1 )
+                demand.onLoadCallback( demand.results )
+
+            } else if ( !demandIsComplet && haveNoRequestToProcess /* && haveTryAgainManyTimesButFail */ ) {
+
+                console.warn( 'Incomplet demand but empty request/process queue' )
+                this._waitingQueue.splice( requestIndex, 1 )
+                demand.onLoadCallback( demand.results )
+
+            } else {
+
+                // Wait next response
+
+            }
 
         }
 
@@ -853,7 +972,10 @@ class TDataBaseManager {
                 data:         {
                     projection
                 },
-                onLoad:       this._updateCache.bind( this ),
+                onLoad:       ( datas ) => {
+                    this._updateCache( datas )
+                    this._updateWaitingQueue()
+                },
                 onProgress:   onProgressCallback,
                 onError:      onErrorCallback,
                 responseType: this._responseType
@@ -932,7 +1054,10 @@ class TDataBaseManager {
                             ids:        idBunch,
                             projection: projection
                         },
-                        onLoad:       this._updateCache.bind( this ),
+                        onLoad:       ( datas ) => {
+                            this._updateCache( datas )
+                            this._updateWaitingQueue()
+                        },
                         onProgress:   onProgressCallback,
                         onError:      onErrorCallback,
                         responseType: this._responseType
@@ -952,11 +1077,11 @@ class TDataBaseManager {
     _readWhere ( query, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         //        // Filter requested values by cached values
-        //        const datas = {
-        //            results: {},
-        //            underRequest: [],
-        //            toRequest: []
-        //        }
+        //                const datas = {
+        //                    results: {},
+        //                    underRequest: [],
+        //                    toRequest: []
+        //                }
         //
         //        datas[ 'onLoadCallback' ] = onLoadCallback
         //        this._waitingQueue.push( datas )
@@ -970,7 +1095,11 @@ class TDataBaseManager {
                 query,
                 projection
             },
-            onLoad:       onLoadCallback,
+            onLoad:       ( datas ) => {
+                this._updateCache( datas )
+                this._updateWaitingQueue()
+                onLoadCallback( datas )
+            },
             onProgress:   onProgressCallback,
             onError:      onErrorCallback,
             responseType: this._responseType
@@ -982,6 +1111,15 @@ class TDataBaseManager {
 
     _readAll ( projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
+        //        const datas = {
+        //            results: {},
+        //            underRequest: [],
+        //            toRequest: []
+        //        }
+        //
+        //        datas[ 'onLoadCallback' ] = onLoadCallback
+        //        this._waitingQueue.push( datas )
+
         this._requestQueue.push( {
             id:           `readAll_${Generate.id}`,
             _timeStart:   new Date(),
@@ -990,111 +1128,17 @@ class TDataBaseManager {
             data:         {
                 projection
             },
-            onLoad:       onLoadCallback,
+            onLoad:       ( datas ) => {
+                this._updateCache( datas )
+                this._updateWaitingQueue()
+                onLoadCallback( datas )
+            },
             onProgress:   onProgressCallback,
             onError:      onErrorCallback,
             responseType: this._responseType
         } )
 
         this.processQueue()
-
-    }
-
-    _retrieveCachedValues ( ids ) {
-
-        let results      = {}
-        let underRequest = []
-        let toRequest    = []
-
-        for ( let idIndex = 0, numberOfIds = ids.length ; idIndex < numberOfIds ; idIndex++ ) {
-
-            const id          = ids[ idIndex ]
-            const cachedValue = this._cache.get( id )
-
-            if ( isDefined( cachedValue ) ) {
-                results[ id ] = cachedValue
-            } else if ( isNull( cachedValue ) ) { // In request
-                underRequest.push( id )
-            } else {
-                toRequest.push( id )
-            }
-
-        }
-
-        return {
-            results,
-            underRequest,
-            toRequest
-        }
-
-    }
-
-    _updateCache ( results ) {
-        //    _updateCache ( onLoadCallback, results ) {
-
-        // Add new results to cache
-        for ( let key in results ) {
-
-            const cachedResult = this._cache.get( key )
-            const result       = results[ key ]
-
-            if ( isNull( cachedResult ) ) {
-                this._cache.add( key, result, true )
-            } else if ( isUndefined( cachedResult ) ) {
-                console.warn( 'Cache was not setted with null value' )
-                this._cache.add( key, result )
-            } else {
-                console.error( 'Cached value already exist !!!' )
-            }
-
-        }
-
-        // Update demand under request
-        for ( let requestIndex = this._waitingQueue.length - 1 ; requestIndex >= 0 ; requestIndex-- ) {
-
-            const demand = this._waitingQueue[ requestIndex ]
-
-            for ( let dataIndex = demand.underRequest.length - 1 ; dataIndex >= 0 ; dataIndex-- ) {
-
-                const id           = demand.underRequest[ dataIndex ]
-                const cachedResult = this._cache.get( id )
-
-                if ( isNotDefined( cachedResult ) ) { continue }
-
-                demand.results[ id ] = cachedResult
-                demand.underRequest.splice( demand.underRequest.indexOf( id ), 1 )
-
-            }
-
-        }
-
-        // Process newly cached values for each waiting request
-        for ( let requestIndex = this._waitingQueue.length - 1 ; requestIndex >= 0 ; requestIndex-- ) {
-
-            // If no running or stacked request and current waiting request have still under request id then in error
-            const demand                 = this._waitingQueue[ requestIndex ]
-            const demandIsComplet        = (demand.underRequest.length === 0)
-            const haveNoRequestToProcess = (this._requestQueue.length === 0 && this._processQueue.length === 0)
-            if ( demandIsComplet ) {
-
-                this._waitingQueue.splice( requestIndex, 1 )
-                //                onLoadCallback( demand.results )
-                demand.onLoadCallback( demand.results )
-
-            } else if ( !demandIsComplet && haveNoRequestToProcess /* && haveTryAgainManyTimesButFail */ ) {
-
-                console.warn( 'Incomplet demand but empty request/process queue' )
-                this._waitingQueue.splice( requestIndex, 1 )
-                //                onLoadCallback( demand.results )
-                demand.onLoadCallback( demand.results )
-
-            } else {
-
-                // Wait next response
-
-            }
-
-        }
 
     }
 
