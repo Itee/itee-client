@@ -177,16 +177,18 @@ class TGeometriesManager extends TDataBaseManager {
             throw new Error( 'TGeometriesManager: Unable to convert null or undefined data !' )
         }
 
+        const geometryType = data.type
         let geometry = null
 
-        if ( data.isGeometry ) {
+        // Keep backward compat to next Major release
+        if ( data.isGeometry || geometryType === "Geometry") {
 
             geometry = this._convertJsonToGeometry( data )
             if ( true /* todo: computeNormals */ ) {
                 geometry.computeFaceNormals()
             }
 
-        } else if ( data.isBufferGeometry ) {
+        } else if ( data.isBufferGeometry || geometryType === "BufferGeometry") {
 
             geometry = this._convertJsonToBufferGeometry( data )
             if ( true /* todo: computeNormals */ ) {
@@ -195,7 +197,7 @@ class TGeometriesManager extends TDataBaseManager {
 
         } else {
 
-            throw new Error( 'TGeometriesManager: Unable to retrieve geometry type !' )
+            throw new Error( `TGeometriesManager: Unable to retrieve geometry of type ${geometryType} !` )
 
         }
 
