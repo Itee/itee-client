@@ -177,7 +177,11 @@ class TMaterialsManager extends TDataBaseManager {
 
         }
 
-        if ( this._autoFillTextures ) { this.fillTextures( results, onSuccess, onProgress, onError ) }
+        if ( this._autoFillTextures ) {
+            this.fillTextures( results, onSuccess, onProgress, onError )
+        } else {
+            onSuccess( results )
+        }
 
     }
 
