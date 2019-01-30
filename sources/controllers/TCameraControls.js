@@ -431,26 +431,21 @@ class TCameraControls extends EventDispatcher {
         if ( !this.enabled ) {
             return
         }
+        keyEvent.preventDefault()
 
         const actionMap = this.actionsMap
         const key       = keyEvent.keyCode
-        if ( this.canFront && actionMap.front.indexOf( key ) > -1 ) {
-            keyEvent.preventDefault()
+        if ( actionMap.front.indexOf( key ) > -1 ) {
             this._front()
-        } else if ( this.canBack && actionMap.back.indexOf( key ) > -1 ) {
-            keyEvent.preventDefault()
+        } else if ( actionMap.back.indexOf( key ) > -1 ) {
             this._back()
-        } else if ( this.canUp && actionMap.up.indexOf( key ) > -1 ) {
-            keyEvent.preventDefault()
+        } else if ( actionMap.up.indexOf( key ) > -1 ) {
             this._up()
-        } else if ( this.canDown && actionMap.down.indexOf( key ) > -1 ) {
-            keyEvent.preventDefault()
+        } else if ( actionMap.down.indexOf( key ) > -1 ) {
             this._down()
-        } else if ( this.canLeft && actionMap.left.indexOf( key ) > -1 ) {
-            keyEvent.preventDefault()
+        } else if ( actionMap.left.indexOf( key ) > -1 ) {
             this._left()
-        } else if ( this.canRight && actionMap.right.indexOf( key ) > -1 ) {
-            keyEvent.preventDefault()
+        } else if ( actionMap.right.indexOf( key ) > -1 ) {
             this._right()
         } else {
             // Unmapped key, just ignore it !
@@ -536,21 +531,24 @@ class TCameraControls extends EventDispatcher {
         const actionMap = this.actionsMap
         const button    = mouseEvent.button
 
-        if ( this.canRotate && actionMap.rotate.indexOf( button ) > -1 ) {
+        if ( actionMap.rotate.indexOf( button ) > -1 ) {
 
             this._state = State.Rotating
 
-        } else if ( this.canPan && actionMap.pan.indexOf( button ) > -1 ) {
+        } else if ( actionMap.pan.indexOf( button ) > -1 ) {
 
             this._state = State.Panning
 
-        } else if ( this.canRoll && actionMap.roll.indexOf( button ) > -1 ) {
+        } else if ( actionMap.roll.indexOf( button ) > -1 ) {
 
             this._state = State.Rolling
 
-        } else if ( this.canZoom && actionMap.zoom.indexOf( button ) > -1 ) {
+        } else if ( actionMap.zoom.indexOf( button ) > -1 ) {
 
             this._state = State.Zooming
+
+            //todo
+            //        } else if ( this.canMove && actionMap.move.indexOf( button ) > -1 ) {
 
         } else {
 
@@ -598,9 +596,8 @@ class TCameraControls extends EventDispatcher {
 
     }
 
+    //todo allow other displacement from wheel
     _onMouseWheel ( mouseEvent ) {
-
-        if ( !this.canZoom ) { return }
 
         const delta = mouseEvent.wheelDelta || mouseEvent.deltaY
         this._zoom( delta )
@@ -629,6 +626,10 @@ class TCameraControls extends EventDispatcher {
     // Positional methods
     _front () {
 
+        if ( !this.canMove || !this.canFront ) {
+            return
+        }
+
         const cameraDirection = FRONT.clone().applyQuaternion( this._camera.quaternion )
         const displacement    = (this._trackPath) ? this._getPathDisplacement( cameraDirection ) : cameraDirection.multiplyScalar( this.frontSpeed )
 
@@ -642,6 +643,10 @@ class TCameraControls extends EventDispatcher {
 
     _back () {
 
+        if ( !this.canMove || !this.canBack ) {
+            return
+        }
+
         const cameraDirection = BACK.clone().applyQuaternion( this._camera.quaternion )
         const displacement    = (this._trackPath) ? this._getPathDisplacement( cameraDirection ) : cameraDirection.multiplyScalar( this.backSpeed )
 
@@ -654,6 +659,10 @@ class TCameraControls extends EventDispatcher {
     }
 
     _up () {
+
+        if ( !this.canMove || !this.canUp ) {
+            return
+        }
 
         const displacement = UP.clone()
                                .applyQuaternion( this._camera.quaternion )
@@ -669,6 +678,10 @@ class TCameraControls extends EventDispatcher {
 
     _down () {
 
+        if ( !this.canMove || !this.canDown ) {
+            return
+        }
+
         const displacement = DOWN.clone()
                                  .applyQuaternion( this._camera.quaternion )
                                  .multiplyScalar( this.downSpeed )
@@ -682,6 +695,10 @@ class TCameraControls extends EventDispatcher {
     }
 
     _left () {
+
+        if ( !this.canMove || !this.canLeft ) {
+            return
+        }
 
         const displacement = LEFT.clone()
                                  .applyQuaternion( this._camera.quaternion )
@@ -697,6 +714,10 @@ class TCameraControls extends EventDispatcher {
 
     _right () {
 
+        if ( !this.canMove || !this.canRight ) {
+            return
+        }
+
         const displacement = RIGHT.clone()
                                   .applyQuaternion( this._camera.quaternion )
                                   .multiplyScalar( this.rightSpeed )
@@ -710,6 +731,10 @@ class TCameraControls extends EventDispatcher {
     }
 
     _rotate ( delta ) {
+
+        if ( !this.canRotate ) {
+            return
+        }
 
         switch ( this._mode ) {
 
@@ -801,6 +826,10 @@ class TCameraControls extends EventDispatcher {
 
     _pan ( delta ) {
 
+        if ( !this.canPan ) {
+            return
+        }
+
         // Take into account the distance between the camera and his target
         const cameraPosition                 = this._camera.position
         const targetPosition                 = this._target.position
@@ -818,12 +847,20 @@ class TCameraControls extends EventDispatcher {
 
     _roll ( delta ) {
 
+        if ( !this.canRoll ) {
+            return
+        }
+
         this.dispatchEvent( { type: 'roll' } )
         this.dispatchEvent( { type: 'change' } )
 
     }
 
     _zoom ( delta ) {
+
+        if ( !this.canZoom ) {
+            return
+        }
 
         switch ( this._mode ) {
 
