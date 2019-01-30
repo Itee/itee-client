@@ -11,14 +11,14 @@
 import {
     PI_2,
     degreesToRadians
-} from 'itee-utils'
+}               from 'itee-utils'
 import {
     isNull,
     isUndefined,
     isNotDefined,
     isEmptyArray,
     isNotBoolean
-} from 'itee-validators'
+}               from 'itee-validators'
 import {
     Quaternion,
     Vector2,
@@ -30,11 +30,11 @@ import {
     PerspectiveCamera,
     OrthographicCamera,
     Object3D
-} from 'three-full'
+}               from 'three-full'
 import {
     Keys,
     Mouse
-} from '../cores/TConstants'
+}               from '../cores/TConstants'
 import { Enum } from 'enumify'
 
 const FRONT = new Vector3( 0, 0, -1 )
@@ -45,9 +45,11 @@ const RIGHT = new Vector3( 1, 0, 0 )
 const LEFT  = new Vector3( -1, 0, 0 )
 
 class State extends Enum {}
-State.initEnum( [ 'None', 'Rotating', 'Panning', 'Rolling', 'Zooming' ] )
+
+State.initEnum( [ 'None', 'Rotating', 'Panning', 'Rolling', 'Zooming', 'Moving' ] )
 
 class TCameraControlMode extends Enum {}
+
 TCameraControlMode.initEnum( [ 'FirstPerson', 'Orbit', 'Fly', 'Path' ] )
 
 class TCameraControls extends EventDispatcher {
@@ -94,6 +96,9 @@ class TCameraControls extends EventDispatcher {
         this._maxJump             = 1.0
 
         this._lockedTarget = true
+
+        // Touches events specific
+        this.previousTouches = []
 
         // Set to false to disable all/specific displacement
         this.canMove   = true
@@ -161,7 +166,7 @@ class TCameraControls extends EventDispatcher {
          * If set, must be a sub-interval of the interval [ - Math.PI, Math.PI ].
          * @type {number} angle in radians
          */
-        this.maxPolarAngle = Math.PI - 0.001
+        this.maxPolarAngle      = (Math.PI - 0.001)
         this.minAzimuthAngle    = -Infinity
         this.maxAzimuthAngle    = Infinity
         this.rotateMinSpeed     = 0.0
@@ -220,8 +225,8 @@ class TCameraControls extends EventDispatcher {
 
     set camera ( value ) {
 
-        if ( isNull( value ) ) { throw new Error( "Camera cannot be null ! Expect an instance of Camera" ) }
-        if ( isUndefined( value ) ) { throw new Error( "Camera cannot be undefined ! Expect an instance of Camera" ) }
+        if ( isNull( value ) ) { throw new Error( 'Camera cannot be null ! Expect an instance of Camera' ) }
+        if ( isUndefined( value ) ) { throw new Error( 'Camera cannot be undefined ! Expect an instance of Camera' ) }
         if ( !(value instanceof Camera) ) { throw new Error( `Camera cannot be an instance of ${value.constructor.name}. Expect an instance of Camera.` ) }
 
         this._camera = value
@@ -243,8 +248,8 @@ class TCameraControls extends EventDispatcher {
 
     set target ( value ) {
 
-        if ( isNull( value ) ) { throw new Error( "Target cannot be null ! Expect an instance of Object3D." ) }
-        if ( isUndefined( value ) ) { throw new Error( "Target cannot be undefined ! Expect an instance of Object3D." ) }
+        if ( isNull( value ) ) { throw new Error( 'Target cannot be null ! Expect an instance of Object3D.' ) }
+        if ( isUndefined( value ) ) { throw new Error( 'Target cannot be undefined ! Expect an instance of Object3D.' ) }
         if ( !(value instanceof Object3D) ) { throw new Error( `Target cannot be an instance of ${value.constructor.name}. Expect an instance of Object3D.` ) }
 
         this._target = value
@@ -264,8 +269,8 @@ class TCameraControls extends EventDispatcher {
 
     set mode ( value ) {
 
-        if ( isNull( value ) ) { throw new Error( "Mode cannot be null ! Expect a value from TCameraControlMode enum." ) }
-        if ( isUndefined( value ) ) { throw new Error( "Mode cannot be undefined ! Expect a value from TCameraControlMode enum." ) }
+        if ( isNull( value ) ) { throw new Error( 'Mode cannot be null ! Expect a value from TCameraControlMode enum.' ) }
+        if ( isUndefined( value ) ) { throw new Error( 'Mode cannot be undefined ! Expect a value from TCameraControlMode enum.' ) }
         if ( !(value instanceof TCameraControlMode) ) { throw new Error( `Mode cannot be an instance of ${value.constructor.name}. Expect a value from TCameraControlMode enum.` ) }
 
         this._mode = value
@@ -293,14 +298,14 @@ class TCameraControls extends EventDispatcher {
 
     }
 
-    setPaths( value ) {
+    setPaths ( value ) {
 
         this.paths = value
         return this
 
     }
 
-    addPath( value ) {
+    addPath ( value ) {
 
         this._paths.push( value )
         return this
@@ -323,7 +328,7 @@ class TCameraControls extends EventDispatcher {
 
     }
 
-    setTrackPath( value ) {
+    setTrackPath ( value ) {
 
         this.trackPath = value
         return this
@@ -338,12 +343,12 @@ class TCameraControls extends EventDispatcher {
 
     set domElement ( value ) {
 
-        if ( isNull( value ) ) { throw new Error( "DomElement cannot be null ! Expect an instance of HTMLDocument." ) }
-        if ( isUndefined( value ) ) { throw new Error( "DomElement cannot be undefined ! Expect an instance of HTMLDocument." ) }
+        if ( isNull( value ) ) { throw new Error( 'DomElement cannot be null ! Expect an instance of HTMLDocument.' ) }
+        if ( isUndefined( value ) ) { throw new Error( 'DomElement cannot be undefined ! Expect an instance of HTMLDocument.' ) }
         if ( !((value instanceof Window) || (value instanceof HTMLDocument) || (value instanceof HTMLDivElement) || (value instanceof HTMLCanvasElement)) ) { throw new Error( `Target cannot be an instance of ${value.constructor.name}. Expect an instance of Window, HTMLDocument or HTMLDivElement.` ) }
 
         // Clear previous element
-        if( this._domElement ) {
+        if ( this._domElement ) {
             this._domElement.removeEventListener( 'mouseenter', this._handlers.onMouseEnter, false )
             this._domElement.removeEventListener( 'mouseleave', this._handlers.onMouseLeave, false )
             this.dispose()
@@ -429,27 +434,31 @@ class TCameraControls extends EventDispatcher {
         if ( !this.enabled ) {
             return
         }
+        keyEvent.preventDefault()
 
         const actionMap = this.actionsMap
         const key       = keyEvent.keyCode
-        if ( this.canFront && actionMap.front.indexOf( key ) > -1 ) {
-            keyEvent.preventDefault()
+
+        if ( actionMap.front.indexOf( key ) > -1 ) {
             this._front()
-        } else if ( this.canBack && actionMap.back.indexOf( key ) > -1 ) {
-            keyEvent.preventDefault()
+        } else if ( actionMap.back.indexOf( key ) > -1 ) {
             this._back()
-        } else if ( this.canUp && actionMap.up.indexOf( key ) > -1 ) {
-            keyEvent.preventDefault()
+        } else if ( actionMap.up.indexOf( key ) > -1 ) {
             this._up()
-        } else if ( this.canDown && actionMap.down.indexOf( key ) > -1 ) {
-            keyEvent.preventDefault()
+        } else if ( actionMap.down.indexOf( key ) > -1 ) {
             this._down()
-        } else if ( this.canLeft && actionMap.left.indexOf( key ) > -1 ) {
-            keyEvent.preventDefault()
+        } else if ( actionMap.left.indexOf( key ) > -1 ) {
             this._left()
-        } else if ( this.canRight && actionMap.right.indexOf( key ) > -1 ) {
-            keyEvent.preventDefault()
+        } else if ( actionMap.right.indexOf( key ) > -1 ) {
             this._right()
+        } else if ( actionMap.rotate.indexOf( key ) > -1 ) {
+            this._rotate( 1.0 )
+        } else if ( actionMap.pan.indexOf( key ) > -1 ) {
+            this._pan( 1.0 )
+        } else if ( actionMap.roll.indexOf( key ) > -1 ) {
+            this._roll( 1.0 )
+        } else if ( actionMap.zoom.indexOf( key ) > -1 ) {
+            this._zoom( 1.0 )
         } else {
             // Unmapped key, just ignore it !
         }
@@ -466,49 +475,115 @@ class TCameraControls extends EventDispatcher {
     }
 
     _onTouchStart ( touchEvent ) {
-        //todo...
-        console.warn('Touch events are not implemented yet, sorry for the disagreement.')
-        console.log( touchEvent )
+
+        if ( !this.enabled ) {
+            return
+        }
         touchEvent.preventDefault()
 
+        this.previousTouches = touchEvent.touches
+
+        //todo...
+        //        console.warn( 'Touch events are not implemented yet, sorry for the disagreement.' )
+        //        console.log( touchEvent )
+
     }
-    
+
     _onTouchEnd ( touchEvent ) {
-        //todo...
-        console.warn('Touch events are not implemented yet, sorry for the disagreement.')
-        console.log( touchEvent )
+
+        if ( !this.enabled ) {
+            return
+        }
         touchEvent.preventDefault()
 
+        this.previousTouches = []
+        this._state          = State.None
+
+        //todo...
+        //        console.warn( 'Touch events are not implemented yet, sorry for the disagreement.' )
+        //        console.log( touchEvent )
+
     }
-    
+
     _onTouchCancel ( touchEvent ) {
-        //todo...
-        console.warn('Touch events are not implemented yet, sorry for the disagreement.')
-        console.log( touchEvent )
-        touchEvent.preventDefault()
+
+        if ( !this.enabled ) {
+            return
+        }
+
+        this.previousTouches = []
+        this._state          = State.None
 
     }
-    
+
     _onTouchLeave ( touchEvent ) {
-        //todo...
-        console.warn('Touch events are not implemented yet, sorry for the disagreement.')
-        console.log( touchEvent )
-        touchEvent.preventDefault()
+
+        if ( !this.enabled ) {
+            return
+        }
+
+        this.previousTouches = []
+        this._state          = State.None
 
     }
-    
+
     _onTouchMove ( touchEvent ) {
-        //todo...
-        console.warn('Touch events are not implemented yet, sorry for the disagreement.')
-        console.log( touchEvent )
+
+        if ( !this.enabled ) {
+            return
+        }
         touchEvent.preventDefault()
 
+        const previousTouches         = this.previousTouches
+        const currentTouches          = touchEvent.changedTouches
+        const numberOfPreviousTouches = previousTouches.length
+        const numberOfCurrentTouches  = currentTouches.length
+
+        if ( numberOfPreviousTouches === 2 && numberOfCurrentTouches === 2 ) {
+
+            const previousTouchA    = new Vector2( previousTouches[ 0 ].clientX, previousTouches[ 0 ].clientY )
+            const previousTouchB    = new Vector2( previousTouches[ 1 ].clientX, previousTouches[ 1 ].clientY )
+            const previousGap       = previousTouchA.distanceTo( previousTouchB )
+            const previousCenter    = new Vector2().addVectors( previousTouchA, previousTouchB ).divideScalar( 2 )
+            const previousDirection = new Vector2().subVectors( previousTouchA, previousTouchB ).normalize()
+
+            const currentTouchA    = new Vector2( currentTouches[ 0 ].clientX, currentTouches[ 0 ].clientY )
+            const currentTouchB    = new Vector2( currentTouches[ 1 ].clientX, currentTouches[ 1 ].clientY )
+            const currentGap       = currentTouchA.distanceTo( currentTouchB )
+            const currentCenter    = new Vector2().addVectors( currentTouchA, currentTouchB ).divideScalar( 2 )
+            const currentDirection = new Vector2().subVectors( previousTouchA, previousTouchB ).normalize()
+
+            const deltaPan  = new Vector2().subVectors( currentCenter, previousCenter )
+            const deltaZoom = currentGap - previousGap
+            const deltaRoll = currentDirection.dot( previousDirection )
+
+            this._pan( deltaPan )
+            this._zoom( deltaZoom )
+            this._roll( deltaRoll )
+
+        } else if ( numberOfPreviousTouches === 1 && numberOfCurrentTouches === 1 ) {
+
+            const deltaRotate = new Vector2(
+                currentTouches[ 0 ].clientX - previousTouches[ 0 ].clientX,
+                currentTouches[ 0 ].clientY - previousTouches[ 0 ].clientY
+            ).divideScalar( 10 ) //todo: to high sensibility else !!!
+
+            this._rotate( deltaRotate )
+
+        } else {
+
+            console.warn( 'Ignoring inconsistent touches event.' )
+
+        }
+
+        this.previousTouches = currentTouches
+
     }
-    
+
     _onMouseEnter ( mouseEvent ) {
 
         this.impose()
-        if( mouseEvent.target.constructor !== HTMLDocument ) {
+        if ( mouseEvent.target.constructor !== HTMLDocument ) {
             this._domElement.focus()
         }
 
@@ -516,7 +591,7 @@ class TCameraControls extends EventDispatcher {
 
     _onMouseLeave ( mouseEvent ) {
 
-        if( mouseEvent.target.constructor !== HTMLDocument ) {
+        if ( mouseEvent.target.constructor !== HTMLDocument ) {
             this._domElement.blur()
         }
         this.dispose()
@@ -534,26 +609,34 @@ class TCameraControls extends EventDispatcher {
         const actionMap = this.actionsMap
         const button    = mouseEvent.button
 
-        if ( this.canRotate && actionMap.rotate.indexOf( button ) > -1 ) {
-
+        if ( actionMap.front.indexOf( button ) > -1 ) {
+            this._state = State.Moving
+            this._front()
+        } else if ( actionMap.back.indexOf( button ) > -1 ) {
+            this._state = State.Moving
+            this._back()
+        } else if ( actionMap.up.indexOf( button ) > -1 ) {
+            this._state = State.Moving
+            this._up()
+        } else if ( actionMap.down.indexOf( button ) > -1 ) {
+            this._state = State.Moving
+            this._down()
+        } else if ( actionMap.left.indexOf( button ) > -1 ) {
+            this._state = State.Moving
+            this._left()
+        } else if ( actionMap.right.indexOf( button ) > -1 ) {
+            this._state = State.Moving
+            this._right()
+        } else if ( actionMap.rotate.indexOf( button ) > -1 ) {
             this._state = State.Rotating
-
-        } else if ( this.canPan && actionMap.pan.indexOf( button ) > -1 ) {
-
+        } else if ( actionMap.pan.indexOf( button ) > -1 ) {
             this._state = State.Panning
-
-        } else if ( this.canRoll && actionMap.roll.indexOf( button ) > -1 ) {
-
+        } else if ( actionMap.roll.indexOf( button ) > -1 ) {
             this._state = State.Rolling
-
-        } else if ( this.canZoom && actionMap.zoom.indexOf( button ) > -1 ) {
-
+        } else if ( actionMap.zoom.indexOf( button ) > -1 ) {
             this._state = State.Zooming
-
         } else {
-
             this._state = State.None
-
         }
 
     }
@@ -571,6 +654,9 @@ class TCameraControls extends EventDispatcher {
         }
 
         switch ( state ) {
+
+            case State.Moving:
+                break
 
             case State.Rotating:
                 this._rotate( delta )
@@ -596,9 +682,8 @@ class TCameraControls extends EventDispatcher {
 
     }
 
+    //todo allow other displacement from wheel
     _onMouseWheel ( mouseEvent ) {
-
-        if ( !this.canZoom ) { return }
 
         const delta = mouseEvent.wheelDelta || mouseEvent.deltaY
         this._zoom( delta )
@@ -618,7 +703,7 @@ class TCameraControls extends EventDispatcher {
 
     _onDblClick ( mouseEvent ) {
         //todo...
-        console.warn('Double click events is not implemented yet, sorry for the disagreement.')
+        console.warn( 'Double click events is not implemented yet, sorry for the disagreement.' )
         console.log( mouseEvent )
         mouseEvent.preventDefault()
 
@@ -626,6 +711,10 @@ class TCameraControls extends EventDispatcher {
 
     // Positional methods
     _front () {
+
+        if ( !this.canMove || !this.canFront ) {
+            return
+        }
 
         const cameraDirection = FRONT.clone().applyQuaternion( this._camera.quaternion )
         const displacement    = (this._trackPath) ? this._getPathDisplacement( cameraDirection ) : cameraDirection.multiplyScalar( this.frontSpeed )
@@ -640,6 +729,10 @@ class TCameraControls extends EventDispatcher {
 
     _back () {
 
+        if ( !this.canMove || !this.canBack ) {
+            return
+        }
+
         const cameraDirection = BACK.clone().applyQuaternion( this._camera.quaternion )
         const displacement    = (this._trackPath) ? this._getPathDisplacement( cameraDirection ) : cameraDirection.multiplyScalar( this.backSpeed )
 
@@ -652,6 +745,10 @@ class TCameraControls extends EventDispatcher {
     }
 
     _up () {
+
+        if ( !this.canMove || !this.canUp ) {
+            return
+        }
 
         const displacement = UP.clone()
                                .applyQuaternion( this._camera.quaternion )
@@ -667,6 +764,10 @@ class TCameraControls extends EventDispatcher {
 
     _down () {
 
+        if ( !this.canMove || !this.canDown ) {
+            return
+        }
+
         const displacement = DOWN.clone()
                                  .applyQuaternion( this._camera.quaternion )
                                  .multiplyScalar( this.downSpeed )
@@ -680,6 +781,10 @@ class TCameraControls extends EventDispatcher {
     }
 
     _left () {
+
+        if ( !this.canMove || !this.canLeft ) {
+            return
+        }
 
         const displacement = LEFT.clone()
                                  .applyQuaternion( this._camera.quaternion )
@@ -695,6 +800,10 @@ class TCameraControls extends EventDispatcher {
 
     _right () {
 
+        if ( !this.canMove || !this.canRight ) {
+            return
+        }
+
         const displacement = RIGHT.clone()
                                   .applyQuaternion( this._camera.quaternion )
                                   .multiplyScalar( this.rightSpeed )
@@ -708,6 +817,10 @@ class TCameraControls extends EventDispatcher {
     }
 
     _rotate ( delta ) {
+
+        if ( !this.canRotate ) {
+            return
+        }
 
         switch ( this._mode ) {
 
@@ -739,7 +852,7 @@ class TCameraControls extends EventDispatcher {
                 // because if we use newTargetPosition the distance between
                 // camera and target will increase silently over the time
                 const lockedTargetPostion = cameraToTargetDirection.multiplyScalar( 1.0 ) // Todo: option
-                                                                   .add(this._camera.position)
+                                                                   .add( this._camera.position )
                 this.setTargetPosition( lockedTargetPostion )
 
                 break
@@ -799,6 +912,10 @@ class TCameraControls extends EventDispatcher {
 
     _pan ( delta ) {
 
+        if ( !this.canPan ) {
+            return
+        }
+
         // Take into account the distance between the camera and his target
         const cameraPosition                 = this._camera.position
         const targetPosition                 = this._target.position
@@ -816,12 +933,20 @@ class TCameraControls extends EventDispatcher {
 
     _roll ( delta ) {
 
+        if ( !this.canRoll ) {
+            return
+        }
+
         this.dispatchEvent( { type: 'roll' } )
         this.dispatchEvent( { type: 'change' } )
 
     }
 
     _zoom ( delta ) {
+
+        if ( !this.canZoom ) {
+            return
+        }
 
         switch ( this._mode ) {
 
@@ -878,17 +1003,17 @@ class TCameraControls extends EventDispatcher {
     }
 
     // Helpers
-    _initPathDisplacement() {
+    _initPathDisplacement () {
 
         //todo: project on closest path position
         //todo: move on path in the FRONT camera direction
 
-        if( isEmptyArray( this._paths ) ) {
-            console.warn('Try to init path displacement without any paths')
+        if ( isEmptyArray( this._paths ) ) {
+            console.warn( 'Try to init path displacement without any paths' )
             return
         }
 
-        if( isNotDefined(this._currentPath) ) {
+        if ( isNotDefined( this._currentPath ) ) {
 
             this._currentPathIndex  = 0
             this._currentPathOffset = 0
@@ -940,7 +1065,7 @@ class TCameraControls extends EventDispatcher {
 
     }
 
-    _getPathDisplacement( cameraDirection ) {
+    _getPathDisplacement ( cameraDirection ) {
 
         let displacement = undefined
 
@@ -970,71 +1095,70 @@ class TCameraControls extends EventDispatcher {
             let indexOfBestPath  = undefined
             let bestDisplacement = undefined
             let bestDotProduct   = -1
-            let isFromStart = undefined
+            let isFromStart      = undefined
             pathExtremityMap.forEach( ( pathExtremity ) => {
 
                 const pathIndex = pathExtremity.index
 
                 const startDisplacement = pathExtremity.startDisplacement
-                if( startDisplacement ) {
+                if ( startDisplacement ) {
 
-                    const startDirection    = startDisplacement.clone().normalize()
-                    const startDot          = cameraDirection.dot( startDirection )
+                    const startDirection = startDisplacement.clone().normalize()
+                    const startDot       = cameraDirection.dot( startDirection )
 
                     if ( startDot > bestDotProduct ) {
 
                         indexOfBestPath  = pathIndex
                         bestDisplacement = startDisplacement
                         bestDotProduct   = startDot
-                        isFromStart = true
+                        isFromStart      = true
 
                     }
 
                 }
 
-
                 const endDisplacement = pathExtremity.endDisplacement
-                if( endDisplacement ) {
+                if ( endDisplacement ) {
 
-                    const endDirection    = endDisplacement.clone().normalize()
-                    const endDot          = cameraDirection.dot( endDirection )
+                    const endDirection = endDisplacement.clone().normalize()
+                    const endDot       = cameraDirection.dot( endDirection )
 
                     if ( endDot > bestDotProduct ) {
                         indexOfBestPath  = pathIndex
                         bestDisplacement = endDisplacement
                         bestDotProduct   = endDot
-                        isFromStart = false
+                        isFromStart      = false
                     }
 
                 }
 
             } )
 
-            if( indexOfBestPath !== undefined ) {
+            if ( indexOfBestPath !== undefined ) {
 
-                this._currentPathIndex = indexOfBestPath
-                this._currentPath = this._paths[ this._currentPathIndex ]
-                this._currentPathOffset = (isFromStart) ? this._cameraJump : 1 - this._cameraJump
+                this._currentPathIndex    = indexOfBestPath
+                this._currentPath         = this._paths[ this._currentPathIndex ]
+                this._currentPathOffset   = (isFromStart) ? this._cameraJump : 1 - this._cameraJump
                 this._currentPathPosition = this._currentPath.getPointAt( this._currentPathOffset )
-                displacement = bestDisplacement
+                displacement              = bestDisplacement
 
             } else {
 
-                console.warn('Reach path end.')
+                console.warn( 'Reach path end.' )
                 displacement = new Vector3()
 
             }
 
-        } else if( positiveDot > 0 && negativeDot <= 0 ) {
+        } else if ( positiveDot > 0 && negativeDot <= 0 ) {
 
-            displacement = positiveDisplacement
-            this._currentPathOffset = positiveOffset
+            displacement              = positiveDisplacement
+            this._currentPathOffset   = positiveOffset
             this._currentPathPosition = positivePathPosition
 
         } else if ( positiveDot <= 0 && negativeDot > 0 ) {
 
-            displacement = negativeDisplacement
-            this._currentPathOffset = negativeOffset
+            displacement              = negativeDisplacement
+            this._currentPathOffset   = negativeOffset
             this._currentPathPosition = negativePathPosition
 
         } else if ( positiveDot < 0 && negativeDot === 0 ) {
@@ -1045,80 +1169,79 @@ class TCameraControls extends EventDispatcher {
             let indexOfBestPath  = undefined
             let bestDisplacement = undefined
             let bestDotProduct   = -1
-            let isFromStart = undefined
+            let isFromStart      = undefined
             pathExtremityMap.forEach( ( pathExtremity ) => {
 
                 const pathIndex = pathExtremity.index
 
                 const startDisplacement = pathExtremity.startDisplacement
-                if( startDisplacement ) {
+                if ( startDisplacement ) {
 
-                    const startDirection    = startDisplacement.clone().normalize()
-                    const startDot          = cameraDirection.dot( startDirection )
+                    const startDirection = startDisplacement.clone().normalize()
+                    const startDot       = cameraDirection.dot( startDirection )
 
                     if ( startDot > bestDotProduct ) {
 
                         indexOfBestPath  = pathIndex
                         bestDisplacement = startDisplacement
                         bestDotProduct   = startDot
-                        isFromStart = true
+                        isFromStart      = true
 
                     }
 
                 }
 
-
                 const endDisplacement = pathExtremity.endDisplacement
-                if( endDisplacement ) {
+                if ( endDisplacement ) {
 
-                    const endDirection    = endDisplacement.clone().normalize()
-                    const endDot          = cameraDirection.dot( endDirection )
+                    const endDirection = endDisplacement.clone().normalize()
+                    const endDot       = cameraDirection.dot( endDirection )
 
                     if ( endDot > bestDotProduct ) {
                         indexOfBestPath  = pathIndex
                         bestDisplacement = endDisplacement
                         bestDotProduct   = endDot
-                        isFromStart = false
+                        isFromStart      = false
                     }
 
                 }
 
             } )
 
-            if( indexOfBestPath !== undefined ) {
+            if ( indexOfBestPath !== undefined ) {
 
-                this._currentPathIndex = indexOfBestPath
-                this._currentPath = this._paths[ this._currentPathIndex ]
-                this._currentPathOffset = (isFromStart) ? this._cameraJump : 1 - this._cameraJump
+                this._currentPathIndex    = indexOfBestPath
+                this._currentPath         = this._paths[ this._currentPathIndex ]
+                this._currentPathOffset   = (isFromStart) ? this._cameraJump : 1 - this._cameraJump
                 this._currentPathPosition = this._currentPath.getPointAt( this._currentPathOffset )
-                displacement = bestDisplacement
+                displacement              = bestDisplacement
 
             } else {
 
-                console.warn('Reach path start.')
+                console.warn( 'Reach path start.' )
                 displacement = new Vector3()
 
             }
 
-        } else if (( positiveDot < 0 && negativeDot < 0 ) || ( positiveDot > 0 && negativeDot > 0 )) { // Could occurs in high sharp curve with big move step
+        } else if ( (positiveDot < 0 && negativeDot < 0) || (positiveDot > 0 && negativeDot > 0) ) { // Could occurs in high sharp curve with big move step
 
-            if( positiveDot > negativeDot ) {
+            if ( positiveDot > negativeDot ) {
 
-                displacement = positiveDisplacement
-                this._currentPathOffset = positiveOffset
+                displacement              = positiveDisplacement
+                this._currentPathOffset   = positiveOffset
                 this._currentPathPosition = positivePathPosition
 
             } else {
 
-                displacement = negativeDisplacement
-                this._currentPathOffset = negativeOffset
+                displacement              = negativeDisplacement
+                this._currentPathOffset   = negativeOffset
                 this._currentPathPosition = negativePathPosition
 
             }
 
         } else {
 
-            console.warn('Unable to find correct next path position.')
+            console.warn( 'Unable to find correct next path position.' )
             displacement = new Vector3()
 
         }
