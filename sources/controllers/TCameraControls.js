@@ -435,6 +435,7 @@ class TCameraControls extends EventDispatcher {
 
         const actionMap = this.actionsMap
         const key       = keyEvent.keyCode
+
         if ( actionMap.front.indexOf( key ) > -1 ) {
             this._front()
         } else if ( actionMap.back.indexOf( key ) > -1 ) {
@@ -447,6 +448,14 @@ class TCameraControls extends EventDispatcher {
             this._left()
         } else if ( actionMap.right.indexOf( key ) > -1 ) {
             this._right()
+        } else if ( actionMap.rotate.indexOf( key ) > -1 ) {
+            this._rotate(1.0)
+        } else if ( actionMap.pan.indexOf( key ) > -1 ) {
+            this._pan(1.0)
+        } else if ( actionMap.roll.indexOf( key ) > -1 ) {
+            this._roll(1.0)
+        } else if ( actionMap.zoom.indexOf( key ) > -1 ) {
+            this._zoom(1.0)
         } else {
             // Unmapped key, just ignore it !
         }
@@ -531,29 +540,34 @@ class TCameraControls extends EventDispatcher {
         const actionMap = this.actionsMap
         const button    = mouseEvent.button
 
-        if ( actionMap.rotate.indexOf( button ) > -1 ) {
-
+        if ( actionMap.front.indexOf( button ) > -1 ) {
+            this._state = State.Moving
+            this._front()
+        } else if ( actionMap.back.indexOf( button ) > -1 ) {
+            this._state = State.Moving
+            this._back()
+        } else if ( actionMap.up.indexOf( button ) > -1 ) {
+            this._state = State.Moving
+            this._up()
+        } else if ( actionMap.down.indexOf( button ) > -1 ) {
+            this._state = State.Moving
+            this._down()
+        } else if ( actionMap.left.indexOf( button ) > -1 ) {
+            this._state = State.Moving
+            this._left()
+        } else if ( actionMap.right.indexOf( button ) > -1 ) {
+            this._state = State.Moving
+            this._right()
+        } else if ( actionMap.rotate.indexOf( button ) > -1 ) {
             this._state = State.Rotating
-
         } else if ( actionMap.pan.indexOf( button ) > -1 ) {
-
             this._state = State.Panning
-
         } else if ( actionMap.roll.indexOf( button ) > -1 ) {
-
             this._state = State.Rolling
-
         } else if ( actionMap.zoom.indexOf( button ) > -1 ) {
-
             this._state = State.Zooming
-
-            //todo
-            //        } else if ( this.canMove && actionMap.move.indexOf( button ) > -1 ) {
-
         } else {
-
             this._state = State.None
-
         }
 
     }
@@ -571,6 +585,9 @@ class TCameraControls extends EventDispatcher {
         }
 
         switch ( state ) {
+
+            case State.Moving:
+                break
 
             case State.Rotating:
                 this._rotate( delta )
