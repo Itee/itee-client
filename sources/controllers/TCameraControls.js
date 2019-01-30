@@ -452,13 +452,13 @@ class TCameraControls extends EventDispatcher {
         } else if ( actionMap.right.indexOf( key ) > -1 ) {
             this._right()
         } else if ( actionMap.rotate.indexOf( key ) > -1 ) {
-            this._rotate(1.0)
+            this._rotate( 1.0 )
         } else if ( actionMap.pan.indexOf( key ) > -1 ) {
-            this._pan(1.0)
+            this._pan( 1.0 )
         } else if ( actionMap.roll.indexOf( key ) > -1 ) {
-            this._roll(1.0)
+            this._roll( 1.0 )
         } else if ( actionMap.zoom.indexOf( key ) > -1 ) {
-            this._zoom(1.0)
+            this._zoom( 1.0 )
         } else {
             // Unmapped key, just ignore it !
         }
@@ -583,7 +583,7 @@ class TCameraControls extends EventDispatcher {
     _onMouseEnter ( mouseEvent ) {
 
         this.impose()
-        if( mouseEvent.target.constructor !== HTMLDocument ) {
+        if ( mouseEvent.target.constructor !== HTMLDocument ) {
             this._domElement.focus()
         }
 
