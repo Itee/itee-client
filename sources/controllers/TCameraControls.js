@@ -97,6 +97,9 @@ class TCameraControls extends EventDispatcher {
 
         this._lockedTarget = true
 
+        // Touches events specific
+        this.previousTouches = []
+
         // Set to false to disable all/specific displacement
         this.canMove   = true
         this.moveSpeed = 1.0
@@ -472,45 +475,111 @@ class TCameraControls extends EventDispatcher {
     }
 
     _onTouchStart ( touchEvent ) {
-        //todo...
-        console.warn('Touch events are not implemented yet, sorry for the disagreement.')
-        console.log( touchEvent )
+
+        if ( !this.enabled ) {
+            return
+        }
         touchEvent.preventDefault()
 
+        this.previousTouches = touchEvent.touches
+
+        //todo...
+        //        console.warn( 'Touch events are not implemented yet, sorry for the disagreement.' )
+        //        console.log( touchEvent )
+
     }
-    
+
     _onTouchEnd ( touchEvent ) {
-        //todo...
-        console.warn('Touch events are not implemented yet, sorry for the disagreement.')
-        console.log( touchEvent )
+
+        if ( !this.enabled ) {
+            return
+        }
         touchEvent.preventDefault()
 
+        this.previousTouches = []
+        this._state          = State.None
+
+        //todo...
+        //        console.warn( 'Touch events are not implemented yet, sorry for the disagreement.' )
+        //        console.log( touchEvent )
+
     }
-    
+
     _onTouchCancel ( touchEvent ) {
-        //todo...
-        console.warn('Touch events are not implemented yet, sorry for the disagreement.')
-        console.log( touchEvent )
-        touchEvent.preventDefault()
+
+        if ( !this.enabled ) {
+            return
+        }
+
+        this.previousTouches = []
+        this._state          = State.None
 
     }
-    
+
     _onTouchLeave ( touchEvent ) {
-        //todo...
-        console.warn('Touch events are not implemented yet, sorry for the disagreement.')
-        console.log( touchEvent )
-        touchEvent.preventDefault()
+
+        if ( !this.enabled ) {
+            return
+        }
+
+        this.previousTouches = []
+        this._state          = State.None
 
     }
-    
+
     _onTouchMove ( touchEvent ) {
-        //todo...
-        console.warn('Touch events are not implemented yet, sorry for the disagreement.')
-        console.log( touchEvent )
+
+        if ( !this.enabled ) {
+            return
+        }
         touchEvent.preventDefault()
 
+        const previousTouches         = this.previousTouches
+        const currentTouches          = touchEvent.changedTouches
+        const numberOfPreviousTouches = previousTouches.length
+        const numberOfCurrentTouches  = currentTouches.length
+
+        if ( numberOfPreviousTouches === 2 && numberOfCurrentTouches === 2 ) {
+
+            const previousTouchA    = new Vector2( previousTouches[ 0 ].clientX, previousTouches[ 0 ].clientY )
+            const previousTouchB    = new Vector2( previousTouches[ 1 ].clientX, previousTouches[ 1 ].clientY )
+            const previousGap       = previousTouchA.distanceTo( previousTouchB )
+            const previousCenter    = new Vector2().addVectors( previousTouchA, previousTouchB ).divideScalar( 2 )
+            const previousDirection = new Vector2().subVectors( previousTouchA, previousTouchB ).normalize()
+
+            const currentTouchA    = new Vector2( currentTouches[ 0 ].clientX, currentTouches[ 0 ].clientY )
+            const currentTouchB    = new Vector2( currentTouches[ 1 ].clientX, currentTouches[ 1 ].clientY )
+            const currentGap       = currentTouchA.distanceTo( currentTouchB )
+            const currentCenter    = new Vector2().addVectors( currentTouchA, currentTouchB ).divideScalar( 2 )
+            const currentDirection = new Vector2().subVectors( previousTouchA, previousTouchB ).normalize()
+
+            const deltaPan  = new Vector2().subVectors( currentCenter, previousCenter )
+            const deltaZoom = currentGap - previousGap
+            const deltaRoll = currentDirection.dot( previousDirection )
+
+            this._pan( deltaPan )
+            this._zoom( deltaZoom )
+            this._roll( deltaRoll )
+
+        } else if ( numberOfPreviousTouches === 1 && numberOfCurrentTouches === 1 ) {
+
+            const deltaRotate = new Vector2(
+                currentTouches[ 0 ].clientX - previousTouches[ 0 ].clientX,
+                currentTouches[ 0 ].clientY - previousTouches[ 0 ].clientY
+            ).divideScalar( 10 ) //todo: to high sensibility else !!!
+
+            this._rotate( deltaRotate )
+
+        } else {
+
+            console.warn( 'Ignoring inconsistent touches event.' )
+
+        }
+
+        this.previousTouches = currentTouches
+
     }
-    
+
     _onMouseEnter ( mouseEvent ) {
 
         this.impose()
