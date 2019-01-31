@@ -1,5 +1,5 @@
 /**
- * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @author [Ahmed DCHAR]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  *
  * @file Todo
@@ -9,51 +9,92 @@
  */
 
 /* eslint-env browser */
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-import React from 'react'
+export default Vue.component('TTable', {
+    template: `
+      <table class="ttable">
+          <thead>
+            <tr class="tfiligrane-title">
+              <th colspan="2">
+                <h4 v-if="item" class="float-left"> {{ item.name }} </h4>
+                <h4 v-else class="float-left"> {{ label }} </h4>
+                <div class="ttable-toolbar">
+                  <span class="ttable-close" @click=onClose()> 
+                    <TIcon iconProps="times" iconClass="ttable-close" />
+                  </span>
+                  <span :class="dragClass">
+                    <TIcon iconProps="arrows-alt" />
+                  </span>
+                </div>
+              </th>
+            </tr>
+            <tr v-if="item !== undefined && displayColumnName">
+              <th v-for="key in columns">
+                {{ key }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-if="item === undefined">
+              <td>
+                <h6> {{message}} </h6>
+              </td>
+            </tr>
+            <tr v-for="data in filteredData" v-else>
+              <td v-for="key in columns>
+                {{ data[key] }}
+              </td>
+            </tr>
+          </tbody>
+      </table>
+    `,
+    data: function data() {
 
-let _instanceCounter = 0
+      return {
+        items: [],
+        showChildren: false,
+        message: 'Aucune information n\'a été trouvée'
+      };
 
-class TTable extends React.Component {
+    },
+    props: ['id', 'label', 'item', 'columns', 'filter', 'displayColumnName', 'onChange', 'dragClass', 'onClose'],
+    computed: {
 
-    constructor ( props ) {
+      computeToggleChildrenIconClass: function computeToggleChildrenIconClass() {
+        return this.showChildren ? 'chevron-circle-down' : 'chevron-circle-right';
+      },
 
-        super( props )
-        _instanceCounter++
+      filteredData: function filteredData() {
 
+        if ( !this.filter ) {
+            return this.item
+        }
+
+        const filteredProperties = {}
+        const value              = this.item
+        const filter             = this.filter
+
+        Object.keys( value )
+              .forEach( key => {
+
+                  const property = value[ key ]
+
+                  if ( filter( key, property ) ) {
+                      filteredProperties[ key ] = property
+                  }
+
+              } )
+
+        return filteredProperties
+      }
+
+    },
+    methods: {
+
+      toggleChildren: function toggleChildren() {
+        this.showChildren = !this.showChildren;
+      }
+      
     }
-
-    /**
-     * React lifecycle
-     */
-    componentWillMount () {}
-
-    componentDidMount () {}
-
-    componentWillUnmount () {}
-
-    componentWillReceiveProps ( /*nextProps*/ ) {}
-
-    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentWillUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentDidUpdate ( /*prevProps, prevState*/ ) {}
-
-    render () {
-
-        const { id, className } = this.props
-
-        const _id    = id || `tTable_${_instanceCounter}`
-        const _style = {}
-        const _class = ( className ) ? `tTable ${className}` : 'tTable'
-
-        return (
-            <t-table ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-table>
-        )
-
-    }
-
-}
-
-export { TTable }
+  })
