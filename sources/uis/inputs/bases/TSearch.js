@@ -19,11 +19,14 @@ export default Vue.component('TSearch', {
                         <label class="input-group-text">{{label}}</label>
                     </div>
                     
-                    <input type="text" class="form-control" @change=_onChange>
+                    <input type="text" class="form-control" :placeholder="placeholder" @change=_onChange>
 
                     <ul v-if=" isAutoCompleteEnabled && (items.length > 0 || message !== '') " class="autocomplete-list" >
                       <h6 v-if="message !== ''"> {{message}} </h6>
-                      <li v-for="item in items" @click=_onClick(item)> {{ item.name }} <small>[{{item.uuid}}]</small> </li>
+                      <li v-for="(item, index) in items" @click=_onClick(item)> 
+                        <span v-if="autoCompleteFirstValue"> {{ computeFirstValue[index] }} </span>
+                        <small v-if="autoCompleteSecondaryValue" > [{{ computeSecondValue[index] }}] </small> 
+                      </li>
                     </ul>
 
                     <div class="input-group-append tsearch-toolbar">
@@ -45,7 +48,24 @@ export default Vue.component('TSearch', {
         }
 
     },
-    props:    [ 'id', 'label', 'isAutoCompleteEnabled', 'autoCompleteList', 'onChange', 'dragClass', 'onClose' ],
+    props:    [ 'id', 'label', 'placeholder', 'isAutoCompleteEnabled', 'autoCompleteList', 'autoCompleteFirstValue', 'autoCompleteSecondaryValue', 'onChange', 'dragClass', 'onClose' ],
+    computed: {
+
+        computeFirstValue (  ) {
+            let me = this
+            return this.items.map(function(item) {
+                return item[ me.autoCompleteFirstValue ]
+            });
+        },
+
+        computeSecondValue ( item ) {
+            let me = this
+            return this.items.map(function(item) {
+                return item[ me.autoCompleteSecondaryValue ]
+            });
+        }
+
+    },
     methods: {
 
         _onChange( event ) {
@@ -84,5 +104,6 @@ export default Vue.component('TSearch', {
 
           this._searchParentIds( parent.parentId, parentIdsList )
         }
+        
     }
 } )
