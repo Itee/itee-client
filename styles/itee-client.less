@@ -620,3 +620,66 @@ label {
     background-color: #000;
     cursor: pointer;
 }
+
+
+
+/***********/
+/* TSearch */
+/***********/
+
+.tsearch-toolbar{
+  border-radius: 4px;
+  padding: 5px;
+  background-color: #e9ecef;
+  color: #7f8c8d;
+}
+
+.tsearch-close{
+  cursor: pointer;
+  padding-top: 2px;
+  padding-left: 5px;
+}
+
+.tsearch-drag-handle{
+  cursor: move;
+  padding-top: 2px;
+  padding-left: 7px;
+  padding-right: 5px;
+}
+
+.autocomplete-list {
+  position: absolute;
+  overflow: auto;
+  top: 45px;                    
+  max-height: 600px;
+  width: 500px;
+  background: #ecf0f1;
+  color: #34495e;
+  list-style-type: none;
+  padding: 0;
+  border-bottom: 4px solid rgba(52, 73, 94, 0.1);
+
+    h6 {
+      text-align: left;
+      padding: 15px; 
+      margin: 0;
+    }
+
+    li {
+      padding-top: 5px;
+      padding-bottom: 5px;
+      padding-right: 15px;
+      padding-left: 15px; 
+      border-bottom: 1px solid rgba(52, 73, 94, 0.2)
+    }
+
+    li:hover {
+      background-color: rgba(52, 73, 94, 0.2);
+      cursor: pointer;
+    }
+
+    li small {
+      color: #c0392b;                             
+    }
+
+}
