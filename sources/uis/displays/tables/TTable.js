@@ -15,7 +15,7 @@ export default Vue.component('TTable', {
     template: `
       <table class="ttable">
           <thead>
-            <tr class="tfiligrane-title">
+            <tr class="ttable-title">
               <th colspan="2">
                 <h4 v-if="item" class="float-left"> {{ item.name }} </h4>
                 <h4 v-else class="float-left"> {{ label }} </h4>
