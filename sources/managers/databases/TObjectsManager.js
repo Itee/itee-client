@@ -520,9 +520,15 @@ class TObjectsManager extends TDataBaseManager {
         }
 
         if ( isDefined( data.scale ) ) {
-            object.scale.x = data.scale.x
-            object.scale.y = data.scale.y
-            object.scale.z = data.scale.z
+
+            if( data.scale.x !== 0 && data.scale.y !== 0 && data.scale.z !== 0 ) {
+                object.scale.x = data.scale.x
+                object.scale.y = data.scale.y
+                object.scale.z = data.scale.z
+            } else {
+                console.warn('Try to assign null scale !')
+            }
+
         }
 
         if ( isDefined(data.modelViewMatrix) && isNotEmptyArray( data.modelViewMatrix ) ) {
