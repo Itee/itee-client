@@ -30,7 +30,7 @@ export default Vue.component('TTable', {
               </th>
             </tr>
             <tr v-if="item !== undefined && displayColumnName">
-              <th v-for="key in columns">
+              <th v-for="key in computedColumns">
                 {{ key }}
               </th>
             </tr>
@@ -42,7 +42,7 @@ export default Vue.component('TTable', {
               </td>
             </tr>
             <tr v-for="data in filteredData" v-else>
-              <td v-for="key in columns>
+              <td v-for="key in computedColumns">
                 {{ data[key] }}
               </td>
             </tr>
@@ -54,6 +54,7 @@ export default Vue.component('TTable', {
       return {
         items: [],
         showChildren: false,
+        propertyColumns: [ 'Nom', 'Valeur' ],
         message: 'Aucune information n\'a été trouvée'
       };
 
@@ -61,39 +62,82 @@ export default Vue.component('TTable', {
     props: ['id', 'label', 'item', 'columns', 'filter', 'displayColumnName', 'onChange', 'dragClass', 'onClose'],
     computed: {
 
-      computeToggleChildrenIconClass: function computeToggleChildrenIconClass() {
-        return this.showChildren ? 'chevron-circle-down' : 'chevron-circle-right';
+      computedColumns: function computedColumns() {
+
+        return ( typeof this.item === 'object' ) ? this.propertyColumns : this.columns
       },
 
       filteredData: function filteredData() {
 
-        if ( !this.filter ) {
-            return this.item
-        }
+        if ( !this.filter )
+          return this.item
 
-        const filteredProperties = {}
-        const value              = this.item
-        const filter             = this.filter
+        const value  = this.item
+        const filter = this.filter
 
-        Object.keys( value )
-              .forEach( key => {
-
-                  const property = value[ key ]
-
-                  if ( filter( key, property ) ) {
-                      filteredProperties[ key ] = property
-                  }
-
-              } )
-
-        return filteredProperties
+        return ( typeof value === 'object' ) ? this._formatAsProperty( value, filter ) : this._formatAsList( value, filter )
       }
 
     },
     methods: {
 
-      toggleChildren: function toggleChildren() {
-        this.showChildren = !this.showChildren;
+      _formatAsProperty: function _formatAsProperty( data, filter ) {
+
+        let me         = this
+        let resultProp = []
+
+        Object.keys( data )
+              .forEach( key => {
+
+                  const property = data[ key ]
+                  let prop       = {}
+
+                  if ( filter( key, property ) ) {
+                    
+                    if ( typeof property === 'object' && property !== null ){
+                      me._formatAsCategory( key, property, resultProp)
+                      return
+                    }
+
+                    prop[ me.propertyColumns[0] ] = key
+                    prop[ me.propertyColumns[1] ] = property
+                    resultProp.push( prop )
+                  }
+
+              } )
+
+        return resultProp
+      },
+
+      _formatAsCategory: function _formatAsCategory( catKey, value, result ) {
+        
+        let me = this
+
+        Object.keys( value )
+              .forEach( key => {
+
+                  const property = value[ key ]
+                  let prop       = {}
+
+                  // TODO : Category styling
+
+                  prop[ me.propertyColumns[0] ] = key
+                  prop[ me.propertyColumns[1] ] = property
+                  result.push( prop )
+
+              } )
+      },
+
+      _formatAsList: function _formatAsList( data, filter ) {
+
+        let resultProp = []
+
+        Object.keys( data )
+              .forEach( key => {
+                resultProp.push( data[ key ] )                  
+              } )
+
+        return resultProp
       }
       
     }

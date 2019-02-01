@@ -663,10 +663,6 @@ label {
       border-bottom: 4px solid rgba(52, 73, 94, 0.1);
     }
 
-    tbody tr td{
-      padding: 10px;
-    }
-
     thead tr {
       color: #7f8c8d;
       padding: 8px;
@@ -676,4 +672,33 @@ label {
       padding: 8px;
       padding-bottom: 3px;
     }
+
+    tbody{
+      padding: 10px;
+    }
+
+    tbody tr td{
+      padding: 6px;
+      font-size: 13px;
+      border-bottom: 2px solid rgba(52, 73, 94, 0.1);
+    }
+
+    tbody tr td:first-child{
+      background-color: rgba(255, 255, 255, 0.8);
+      width: 200px;
+      color: #7f8c8d;
+      text-transform: capitalize;
+      border-right: 4px solid rgba(52, 73, 94, 0.2);
+    }
+
+    tbody tr td:last-child{
+      background-color: rgba(255, 255, 255, 0.6);
+      color: #2c3e50
+    }
+
+    tbody tr td h6{
+      text-transform: none;
+      padding: 10px;
+    }
+
 }
