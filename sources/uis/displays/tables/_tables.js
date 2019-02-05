@@ -8,7 +8,7 @@
 
 /* eslint-env browser */
 
-export { TColumn } from './TColumn'
-export { TRow } from './TRow'
+// export { TColumn } from './TColumn'
+// export { TRow } from './TRow'
 export { TTable } from './TTable'
-export { TTableHeader } from './TTableHeader'
+// export { TTableHeader } from './TTableHeader'
