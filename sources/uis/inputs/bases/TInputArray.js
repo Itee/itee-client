@@ -21,7 +21,7 @@ export default Vue.component( 'TInputArray', {
             <div v-if="!isCollapsed" class="card-body bg-transparent">
 
                 <div v-for="(value, index) in value" class="input-group mb-2">
-                    <input type="text" class="form-control" :value=value v-on:change.prevent.stop="function(event){_onChange(index, event)}" />
+                    <TInput :data="{label: index, value: value}" :onChange="function(event){_onChange(index, event)}" />
                     <div class="input-group-append">
                         <button class="btn btn-danger" v-on:click.prevent.stop="_onRemove( index )">X</button>
                     </div>
