@@ -30,7 +30,7 @@ class TProgressManager {
             const total       = progressEvent.total
             const advancement = Math.round( (loaded / total) * 10000 ) / 100
             const message     = `${type}: ${advancement}% [${loaded}/${total}]`
-            console.log( message )
+            //console.log( message )
 
         }
 
