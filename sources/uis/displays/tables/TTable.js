@@ -1,5 +1,5 @@
 /**
- * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @author [Ahmed DCHAR]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  *
  * @file Todo
@@ -9,51 +9,136 @@
  */
 
 /* eslint-env browser */
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-import React from 'react'
+export default Vue.component('TTable', {
+    template: `
+      <table class="ttable">
+          <thead>
+            <tr class="ttable-title">
+              <th colspan="2">
+                <h4 v-if="item" class="float-left"> {{ item.name }} </h4>
+                <h4 v-else class="float-left"> {{ label }} </h4>
+                <div class="ttable-toolbar">
+                  <span class="ttable-close" @click=onClose()> 
+                    <TIcon iconProps="times" iconClass="ttable-close" />
+                  </span>
+                  <span :class="dragClass">
+                    <TIcon iconProps="arrows-alt" />
+                  </span>
+                </div>
+              </th>
+            </tr>
+            <tr v-if="item !== undefined && displayColumnName">
+              <th v-for="key in computedColumns">
+                {{ key }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-if="item === undefined">
+              <td>
+                <h6> {{message}} </h6>
+              </td>
+            </tr>
+            <tr v-for="data in filteredData" v-else>
+              <td v-for="key in computedColumns">
+                {{ data[key] }}
+              </td>
+            </tr>
+          </tbody>
+      </table>
+    `,
+    data: function data() {
 
-let _instanceCounter = 0
+      return {
+        items: [],
+        showChildren: false,
+        propertyColumns: [ 'Nom', 'Valeur' ],
+        message: 'Aucune information n\'a été trouvée'
+      };
 
-class TTable extends React.Component {
+    },
+    props: ['id', 'label', 'item', 'columns', 'filter', 'displayColumnName', 'onChange', 'dragClass', 'onClose'],
+    computed: {
 
-    constructor ( props ) {
+      computedColumns: function computedColumns() {
 
-        super( props )
-        _instanceCounter++
+        return ( typeof this.item === 'object' ) ? this.propertyColumns : this.columns
+      },
 
+      filteredData: function filteredData() {
+
+        if ( !this.filter )
+          return this.item
+
+        const value  = this.item
+        const filter = this.filter
+
+        return ( typeof value === 'object' ) ? this._formatAsProperty( value, filter ) : this._formatAsList( value, filter )
+      }
+
+    },
+    methods: {
+
+      _formatAsProperty: function _formatAsProperty( data, filter ) {
+
+        let me         = this
+        let resultProp = []
+
+        Object.keys( data )
+              .forEach( key => {
+
+                  const property = data[ key ]
+                  let prop       = {}
+
+                  if ( filter( key, property ) ) {
+                    
+                    if ( typeof property === 'object' && property !== null ){
+                      me._formatAsCategory( key, property, resultProp)
+                      return
+                    }
+
+                    prop[ me.propertyColumns[0] ] = key
+                    prop[ me.propertyColumns[1] ] = property
+                    resultProp.push( prop )
+                  }
+
+              } )
+
+        return resultProp
+      },
+
+      _formatAsCategory: function _formatAsCategory( catKey, value, result ) {
+        
+        let me = this
+
+        Object.keys( value )
+              .forEach( key => {
+
+                  const property = value[ key ]
+                  let prop       = {}
+
+                  // TODO : Category styling
+
+                  prop[ me.propertyColumns[0] ] = key
+                  prop[ me.propertyColumns[1] ] = property
+                  result.push( prop )
+
+              } )
+      },
+
+      _formatAsList: function _formatAsList( data, filter ) {
+
+        let resultProp = []
+
+        Object.keys( data )
+              .forEach( key => {
+                resultProp.push( data[ key ] )                  
+              } )
+
+        return resultProp
+      }
+      
     }
-
-    /**
-     * React lifecycle
-     */
-    componentWillMount () {}
-
-    componentDidMount () {}
-
-    componentWillUnmount () {}
-
-    componentWillReceiveProps ( /*nextProps*/ ) {}
-
-    //shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentWillUpdate ( /*nextProps, nextState*/ ) {}
-
-    componentDidUpdate ( /*prevProps, prevState*/ ) {}
-
-    render () {
-
-        const { id, className } = this.props
-
-        const _id    = id || `tTable_${_instanceCounter}`
-        const _style = {}
-        const _class = ( className ) ? `tTable ${className}` : 'tTable'
-
-        return (
-            <t-table ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-table>
-        )
-
-    }
-
-}
-
-export { TTable }
+  })
