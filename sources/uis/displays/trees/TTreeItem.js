@@ -232,7 +232,7 @@ export default Vue.component( 'TTreeItem', {
             this.isSelected = !this.isSelected
 
             if ( onClickCallback ) {
-                onClickCallback()
+                onClickCallback( this.isSelected )
             }
 
         }
