@@ -38,6 +38,7 @@ import {
     isNotEmptyArray,
     isArrayOfSingleElement,
     isObject,
+    isEmptyObject,
     isNotEmptyObject,
     isNotObject
 }                                   from 'itee-validators'
@@ -298,7 +299,7 @@ class TDataBaseManager {
 
         if ( isArray( data ) && isNotEmptyArray( data ) ) {
 
-            if ( isArrayOfSingleElement( condition ) ) {
+            if ( isArrayOfSingleElement( data ) ) {
 
                 this._createOne( data[ 0 ], onLoadCallback, onProgressCallback, onErrorCallback )
 
@@ -332,11 +333,7 @@ class TDataBaseManager {
      */
     read ( condition, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        if ( isNull( condition ) ) {
-
-            this._readAll( projection, onLoadCallback, onProgressCallback, onErrorCallback )
-
-        } else if ( isString( condition ) && isNotEmptyString( condition ) && isNotBlankString( condition ) ) {
+        if ( isString( condition ) && isNotEmptyString( condition ) && isNotBlankString( condition ) ) {
 
             this._readOne( condition, projection, onLoadCallback, onProgressCallback, onErrorCallback )
 
@@ -352,13 +349,21 @@ class TDataBaseManager {
 
             }
 
-        } else if ( isObject( condition ) && isNotEmptyObject( condition ) ) {
+        } else if ( isObject( condition ) ) {
 
-            this._readWhere( condition, projection, onLoadCallback, onProgressCallback, onErrorCallback )
+            if ( isEmptyObject( condition ) ) {
+
+                this._readAll( projection, onLoadCallback, onProgressCallback, onErrorCallback )
+
+            } else {
+
+                this._readWhere( condition, projection, onLoadCallback, onProgressCallback, onErrorCallback )
+
+            }
 
         } else {
 
-            onErrorCallback( 'TDataBaseManager.read: Invalid data type, expect null, string, object or array of objects.' )
+            onErrorCallback( 'TDataBaseManager.read: Invalid data type, expect string, object or array of objects.' )
 
         }
 
@@ -387,11 +392,7 @@ class TDataBaseManager {
             return
         }
 
-        if ( isNull( condition ) ) {
-
-            this._updateAll( update, onLoadCallback, onProgressCallback, onErrorCallback )
-
-        } else if ( isString( condition ) && isNotEmptyString( condition ) && isNotBlankString( condition ) ) {
+        if ( isString( condition ) && isNotEmptyString( condition ) && isNotBlankString( condition ) ) {
 
             this._updateOne( condition, update, onLoadCallback, onProgressCallback, onErrorCallback )
 
@@ -407,13 +408,21 @@ class TDataBaseManager {
 
             }
 
-        } else if ( isObject( condition ) && isNotEmptyObject( condition ) ) {
+        } else if ( isObject( condition ) ) {
 
-            this._updateWhere( condition, update, onLoadCallback, onProgressCallback, onErrorCallback )
+            if ( isEmptyObject( condition ) ) {
+
+                this._updateAll( update, onLoadCallback, onProgressCallback, onErrorCallback )
+
+            } else {
+
+                this._updateWhere( condition, update, onLoadCallback, onProgressCallback, onErrorCallback )
+
+            }
 
         } else {
 
-            onErrorCallback( 'TDataBaseManager.update: Invalid data type, expect null, string, object or array of objects.' )
+            onErrorCallback( 'TDataBaseManager.update: Invalid data type, expect string, object or array of objects.' )
 
         }
 
@@ -431,11 +440,7 @@ class TDataBaseManager {
      */
     delete ( condition, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        if ( isNull( condition ) ) {
-
-            this._deleteAll( onLoadCallback, onProgressCallback, onErrorCallback )
-
-        } else if ( isString( condition ) && isNotEmptyString( condition ) && isNotBlankString( condition ) ) {
+        if ( isString( condition ) && isNotEmptyString( condition ) && isNotBlankString( condition ) ) {
 
             this._deleteOne( condition, onLoadCallback, onProgressCallback, onErrorCallback )
 
@@ -453,7 +458,15 @@ class TDataBaseManager {
 
         } else if ( isObject( condition ) && isNotEmptyObject( condition ) ) {
 
-            this._deleteWhere( condition, onLoadCallback, onProgressCallback, onErrorCallback )
+            if ( isEmptyObject( condition ) ) {
+
+                this._deleteAll( onLoadCallback, onProgressCallback, onErrorCallback )
+
+            } else {
+
+                this._deleteWhere( condition, onLoadCallback, onProgressCallback, onErrorCallback )
+
+            }
 
         } else {
 
