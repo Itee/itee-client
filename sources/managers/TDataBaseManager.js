@@ -456,7 +456,7 @@ class TDataBaseManager {
 
             }
 
-        } else if ( isObject( condition ) && isNotEmptyObject( condition ) ) {
+        } else if ( isObject( condition ) ) {
 
             if ( isEmptyObject( condition ) ) {
 
