@@ -8,6 +8,6 @@
 
 /* eslint-env browser */
 
-export { default as TAppBar } from './TAppBar'
+export { default as TAppBar }    from './TAppBar'
 export { default as TStatusBar } from './TStatusBar'
-export { default as TTitleBar } from './TTitleBar'
+export { default as TTitleBar }  from './TTitleBar'

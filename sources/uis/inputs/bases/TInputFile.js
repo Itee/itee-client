@@ -26,7 +26,7 @@ export default Vue.component( 'TInputFile', {
             
         </div>
     `,
-    data: function () {
+    data:     function () {
         return {
             filesNames: undefined
         }
@@ -34,22 +34,22 @@ export default Vue.component( 'TInputFile', {
     props:    [ 'label', 'placeholder', 'onChange' ],
     computed: {
 
-        _computePlaceholder() {
+        _computePlaceholder () {
 
             return (this.filesNames) ? this.filesNames.toString() : this.placeholder
 
         }
 
     },
-    methods: {
+    methods:  {
 
-        _onChange( event ) {
+        _onChange ( event ) {
 
             const files = event.target.files
 
             // Update local state
-            const filesNames = Array.from(files).map(file=>file.name)
-            this.filesNames = (filesNames.length > 0) ? filesNames : undefined
+            const filesNames = Array.from( files ).map( file => file.name )
+            this.filesNames  = (filesNames.length > 0) ? filesNames : undefined
 
             this.onChange( files )
 

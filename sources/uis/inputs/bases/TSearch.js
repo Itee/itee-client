@@ -11,7 +11,7 @@
 /* eslint-env browser */
 import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-export default Vue.component('TSearch', {
+export default Vue.component( 'TSearch', {
     template: `
             <div id="tsearch" class="input-group mb-3">
 
@@ -43,7 +43,7 @@ export default Vue.component('TSearch', {
     data:     function () {
 
         return {
-            items: [],
+            items:   [],
             message: ''
         }
 
@@ -51,59 +51,61 @@ export default Vue.component('TSearch', {
     props:    [ 'id', 'label', 'placeholder', 'isAutoCompleteEnabled', 'autoCompleteList', 'autoCompleteFirstValue', 'autoCompleteSecondaryValue', 'onChange', 'dragClass', 'onClose' ],
     computed: {
 
-        computeFirstValue (  ) {
+        computeFirstValue () {
             let me = this
-            return this.items.map(function(item) {
+            return this.items.map( function ( item ) {
                 return item[ me.autoCompleteFirstValue ]
-            });
+            } )
         },
 
         computeSecondValue ( item ) {
             let me = this
-            return this.items.map(function(item) {
+            return this.items.map( function ( item ) {
                 return item[ me.autoCompleteSecondaryValue ]
-            });
+            } )
         }
 
     },
-    methods: {
+    methods:  {
 
-        _onChange( event ) {
+        _onChange ( event ) {
 
             let searchValue = event.target.value.toLowerCase()
-            this.message    = ""
+            this.message    = ''
 
-            if ( searchValue === "" ) {
-              this.message = "" 
-              this.items   = []
-              return
+            if ( searchValue === '' ) {
+                this.message = ''
+                this.items   = []
+                return
             }
 
             this.items = this.autoCompleteList.filter( item => item.name.toLowerCase().includes( searchValue ) )
-            
-            if ( this.items.length === 0  )
-              this.message = "Aucun résultat trouvé" 
+
+            if ( this.items.length === 0 ) {
+                this.message = 'Aucun résultat trouvé'
+            }
         },
 
-        _onClick( item ) {
+        _onClick ( item ) {
 
-          let parentIdsList = []
+            let parentIdsList = []
 
-          this._searchParentIds( item.parentId, parentIdsList )
+            this._searchParentIds( item.parentId, parentIdsList )
 
-          this.onChange( item, parentIdsList )
+            this.onChange( item, parentIdsList )
         },
 
-        _searchParentIds( parentId, parentIdsList ) {
+        _searchParentIds ( parentId, parentIdsList ) {
 
-          let parent = this.autoCompleteList.find( item => item.id === parentId )
-          parentIdsList.push( parent.id )
+            let parent = this.autoCompleteList.find( item => item.id === parentId )
+            parentIdsList.push( parent.id )
 
-          if( parent.parentId === undefined )
-            return
+            if ( parent.parentId === undefined ) {
+                return
+            }
 
-          this._searchParentIds( parent.parentId, parentIdsList )
+            this._searchParentIds( parent.parentId, parentIdsList )
         }
-        
+
     }
 } )

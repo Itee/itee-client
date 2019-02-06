@@ -46,7 +46,7 @@ class TGraph extends React.Component {
 
         const _id    = id || `tGraph_${_instanceCounter}`
         const _style = {}
-        const _class = ( className ) ? `tGraph ${className}` : 'tGraph'
+        const _class = (className) ? `tGraph ${className}` : 'tGraph'
 
         return (
             <t-graph ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-graph>

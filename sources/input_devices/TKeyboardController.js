@@ -23,7 +23,7 @@
 /* eslint-env browser */
 
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
-import { Keys } from '../cores/TConstants'
+import { Keys }                     from '../cores/TConstants'
 
 /**
  *
@@ -31,8 +31,8 @@ import { Keys } from '../cores/TConstants'
  */
 function TKeyboardState () {
     // bind keyEvents
-    document.addEventListener( "keydown", TKeyboardState.onKeyDown, false );
-    document.addEventListener( "keyup", TKeyboardState.onKeyUp, false );
+    document.addEventListener( 'keydown', TKeyboardState.onKeyDown, false )
+    document.addEventListener( 'keyup', TKeyboardState.onKeyUp, false )
 }
 
 Object.assign( TKeyboardState, {
@@ -53,9 +53,9 @@ Object.assign( TKeyboardState, {
      * @return {string}
      */
     keyName ( keyCode ) {
-        return ( TKeyboardState.k[ keyCode ] !== null ) ?
+        return (TKeyboardState.k[ keyCode ] !== null) ?
             TKeyboardState.k[ keyCode ] :
-            String.fromCharCode( keyCode );
+            String.fromCharCode( keyCode )
     },
 
     /**
@@ -63,9 +63,9 @@ Object.assign( TKeyboardState, {
      * @param event
      */
     onKeyUp ( event ) {
-        var key = TKeyboardState.keyName( event.keyCode );
+        var key = TKeyboardState.keyName( event.keyCode )
         if ( TKeyboardState.status[ key ] ) {
-            TKeyboardState.status[ key ].pressed = false;
+            TKeyboardState.status[ key ].pressed = false
         }
     },
 
@@ -74,14 +74,14 @@ Object.assign( TKeyboardState, {
      * @param event
      */
     onKeyDown ( event ) {
-        var key = TKeyboardState.keyName( event.keyCode );
+        var key = TKeyboardState.keyName( event.keyCode )
         if ( !TKeyboardState.status[ key ] ) {
             TKeyboardState.status[ key ] = {
                 down:              false,
                 pressed:           false,
                 up:                false,
                 updatedPreviously: false
-            };
+            }
         }
     }
 
@@ -96,24 +96,24 @@ Object.assign( TKeyboardState.prototype, {
         for ( var key in TKeyboardState.status ) {
             // insure that every keypress has "down" status exactly once
             if ( !TKeyboardState.status[ key ].updatedPreviously ) {
-                TKeyboardState.status[ key ].down              = true;
-                TKeyboardState.status[ key ].pressed           = true;
-                TKeyboardState.status[ key ].updatedPreviously = true;
+                TKeyboardState.status[ key ].down              = true
+                TKeyboardState.status[ key ].pressed           = true
+                TKeyboardState.status[ key ].updatedPreviously = true
             }
             else // updated previously
             {
-                TKeyboardState.status[ key ].down = false;
+                TKeyboardState.status[ key ].down = false
             }
 
             // key has been flagged as "up" since last update
             if ( TKeyboardState.status[ key ].up ) {
-                delete TKeyboardState.status[ key ];
-                continue; // move on to next key
+                delete TKeyboardState.status[ key ]
+                continue // move on to next key
             }
 
             if ( !TKeyboardState.status[ key ].pressed ) // key released
             {
-                TKeyboardState.status[ key ].up = true;
+                TKeyboardState.status[ key ].up = true
             }
         }
     },
@@ -124,7 +124,7 @@ Object.assign( TKeyboardState.prototype, {
      * @return {*}
      */
     down ( keyName ) {
-        return (TKeyboardState.status[ keyName ] && TKeyboardState.status[ keyName ].down);
+        return (TKeyboardState.status[ keyName ] && TKeyboardState.status[ keyName ].down)
     },
 
     /**
@@ -133,7 +133,7 @@ Object.assign( TKeyboardState.prototype, {
      * @return {*|pressed|boolean}
      */
     pressed ( keyName ) {
-        return (TKeyboardState.status[ keyName ] && TKeyboardState.status[ keyName ].pressed);
+        return (TKeyboardState.status[ keyName ] && TKeyboardState.status[ keyName ].pressed)
     },
 
     /**
@@ -142,18 +142,18 @@ Object.assign( TKeyboardState.prototype, {
      * @return {*}
      */
     up ( keyName ) {
-        return (TKeyboardState.status[ keyName ] && TKeyboardState.status[ keyName ].up);
+        return (TKeyboardState.status[ keyName ] && TKeyboardState.status[ keyName ].up)
     },
 
     /**
      *
      */
     debug () {
-        var list = "Keys active: ";
+        var list = 'Keys active: '
         for ( var arg in TKeyboardState.status ) {
-            list += " " + arg
+            list += ' ' + arg
         }
-        TLogger.log( list );
+        TLogger.log( list )
     }
 
 } )

@@ -13,7 +13,7 @@
 import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
 import { DefaultLogger as TLogger } from '../../../loggers/TLogger'
-import { isString } from 'itee-validators'
+import { isString }                 from 'itee-validators'
 
 export default Vue.component( 'TContainer', {
     template: `
@@ -22,14 +22,14 @@ export default Vue.component( 'TContainer', {
         </div>
     `,
     props:    [ 'height', 'width', 'orientation', 'expand', 'wrapContent', 'vAlign', 'hAlign', 'wAlign', 'overflow', 'overflowX', 'overflowY' ],
-    watch: {
+    watch:    {
         // whenever question changes, this function will run
         width: function ( newValue, oldValue ) {
-            console.log('TContainer: Width change from ' + oldValue + ' to ' + newValue)
+            console.log( 'TContainer: Width change from ' + oldValue + ' to ' + newValue )
         },
 
         height: function ( newValue, oldValue ) {
-            console.log('TContainer: Height change from ' + oldValue + ' to ' + newValue)
+            console.log( 'TContainer: Height change from ' + oldValue + ' to ' + newValue )
         }
 
     },
@@ -77,27 +77,27 @@ export default Vue.component( 'TContainer', {
 
             if ( this.overflow ) {
                 style.overflow = this.overflow
-            } else if( this.overflowX ) {
+            } else if ( this.overflowX ) {
                 style.overflowX = this.overflowX
-            } else if( this.overflowY ) {
+            } else if ( this.overflowY ) {
                 style.overflowY = this.overflowY
             }
 
             if ( this.expand && this.width && this.height ) {
 
                 TLogger.warn( `TContainer: Conflict between expand, width and height ! Defaulting to width and height.` )
-                style.width  = isString(this.width) ? this.width : `${this.width }px`
-                style.height = isString(this.height) ? this.height : `${this.height }px`
+                style.width  = isString( this.width ) ? this.width : `${this.width }px`
+                style.height = isString( this.height ) ? this.height : `${this.height }px`
 
             } else if ( this.expand && this.width ) {
 
                 TLogger.warn( `TContainer: Conflict between expand and width ! Defaulting to width.` )
-                style.width = isString(this.width) ? this.width : `${this.width }px`
+                style.width = isString( this.width ) ? this.width : `${this.width }px`
 
             } else if ( this.expand && this.height ) {
 
                 TLogger.warn( `TContainer: Conflict between expand and height ! Defaulting to height.` )
-                style.height = isString(this.height) ? this.height : `${this.height }px`
+                style.height = isString( this.height ) ? this.height : `${this.height }px`
 
             } else if ( this.expand ) {
 
@@ -105,16 +105,16 @@ export default Vue.component( 'TContainer', {
 
             } else if ( this.width && this.height ) {
 
-                style.width  = isString(this.width) ? this.width : `${this.width }px`
-                style.height = isString(this.height) ? this.height : `${this.height }px`
+                style.width  = isString( this.width ) ? this.width : `${this.width }px`
+                style.height = isString( this.height ) ? this.height : `${this.height }px`
 
             } else if ( this.width ) {
 
-                style.width = isString(this.width) ? this.width : `${this.width }px`
+                style.width = isString( this.width ) ? this.width : `${this.width }px`
 
             } else if ( this.height ) {
 
-                style.height = isString(this.height) ? this.height : `${this.height }px`
+                style.height = isString( this.height ) ? this.height : `${this.height }px`
 
             } else {
 
@@ -129,72 +129,72 @@ export default Vue.component( 'TContainer', {
                 switch ( this.vAlign ) {
 
                     case 'start':
-                        style.justifyContent = 'flex-start';
-                        break;
+                        style.justifyContent = 'flex-start'
+                        break
 
                     case 'end':
-                        style.justifyContent = 'flex-end';
-                        break;
+                        style.justifyContent = 'flex-end'
+                        break
 
                     case 'center':
-                        style.justifyContent = 'center';
-                        break;
+                        style.justifyContent = 'center'
+                        break
 
                     case 'spaced':
-                        style.justifyContent = 'space-between';
-                        break;
+                        style.justifyContent = 'space-between'
+                        break
 
                     case 'justified':
-                        style.justifyContent = 'space-around';
-                        break;
+                        style.justifyContent = 'space-around'
+                        break
 
                     case 'stretch':
                         TLogger.warn( 'TContainer: Unable to stretch content in a vertical container !' )
-                        break;
+                        break
 
                     case 'baseline':
                         TLogger.warn( 'TContainer: Unable to align content on a horizontal baseline in a vertical container !' )
-                        break;
+                        break
 
                     default:
                         TLogger.error( `TContainer: Unknown vertical alignement: ${this.vAlign} !!!` )
-                        break;
+                        break
 
                 }
 
                 switch ( this.hAlign ) {
 
                     case 'start':
-                        style.alignItems = 'flex-start';
-                        break;
+                        style.alignItems = 'flex-start'
+                        break
 
                     case 'end':
-                        style.alignItems = 'flex-end';
-                        break;
+                        style.alignItems = 'flex-end'
+                        break
 
                     case 'center':
-                        style.alignItems = 'center';
-                        break;
+                        style.alignItems = 'center'
+                        break
 
                     case 'spaced':
                         TLogger.warn( 'TContainer: Unable to space content in a vertical container !' )
-                        break;
+                        break
 
                     case 'justified':
                         TLogger.warn( 'TContainer: Unable to justify content in a vertical container !' )
-                        break;
+                        break
 
                     case 'baseline':
-                        style.alignItems = 'baseline';
-                        break;
+                        style.alignItems = 'baseline'
+                        break
 
                     case 'stretch':
-                        style.alignItems = 'stretch';
-                        break;
+                        style.alignItems = 'stretch'
+                        break
 
                     default:
                         TLogger.error( `TContainer: Unknown horizontal alignement: ${this.hAlign} !!!` )
-                        break;
+                        break
 
                 }
 
@@ -205,72 +205,72 @@ export default Vue.component( 'TContainer', {
                 switch ( this.vAlign ) {
 
                     case 'start':
-                        style.alignItems = 'flex-start';
-                        break;
+                        style.alignItems = 'flex-start'
+                        break
 
                     case 'end':
-                        style.alignItems = 'flex-end';
-                        break;
+                        style.alignItems = 'flex-end'
+                        break
 
                     case 'center':
-                        style.alignItems = 'center';
-                        break;
+                        style.alignItems = 'center'
+                        break
 
                     case 'spaced':
                         TLogger.warn( 'TContainer: Unable to space content in a horizontal container !' )
-                        break;
+                        break
 
                     case 'justified':
                         TLogger.warn( 'TContainer: Unable to justify content in a horizontal container !' )
-                        break;
+                        break
 
                     case 'stretch':
-                        style.alignItems = 'stretch';
-                        break;
+                        style.alignItems = 'stretch'
+                        break
 
                     case 'baseline':
-                        style.alignItems = 'baseline';
-                        break;
+                        style.alignItems = 'baseline'
+                        break
 
                     default:
                         TLogger.error( `TContainer: Unknown vertical alignement: ${this.vAlign} !!!` )
-                        break;
+                        break
 
                 }
 
                 switch ( this.hAlign ) {
 
                     case 'start':
-                        style.justifyContent = 'flex-start';
-                        break;
+                        style.justifyContent = 'flex-start'
+                        break
 
                     case 'end':
-                        style.justifyContent = 'flex-end';
-                        break;
+                        style.justifyContent = 'flex-end'
+                        break
 
                     case 'center':
-                        style.justifyContent = 'center';
-                        break;
+                        style.justifyContent = 'center'
+                        break
 
                     case 'spaced':
-                        style.justifyContent = 'space-between';
-                        break;
+                        style.justifyContent = 'space-between'
+                        break
 
                     case 'justified':
-                        style.justifyContent = 'space-around';
-                        break;
+                        style.justifyContent = 'space-around'
+                        break
 
                     case 'stretch':
                         TLogger.warn( 'TContainer: Unable to stretch content in a horizontal container !' )
-                        break;
+                        break
 
                     case 'baseline':
                         TLogger.warn( 'TContainer: Unable to align content on a horizontal baseline in a horizontal container !' )
-                        break;
+                        break
 
                     default:
                         TLogger.error( `TContainer: Unknown horizontal alignement: ${this.hAlign} !!!` )
-                        break;
+                        break
 
                 }
 
@@ -283,32 +283,32 @@ export default Vue.component( 'TContainer', {
                 switch ( this.wAlign ) {
 
                     case 'start':
-                        style.alignContent = 'flex-start';
-                        break;
+                        style.alignContent = 'flex-start'
+                        break
 
                     case 'end':
-                        style.alignContent = 'flex-end';
-                        break;
+                        style.alignContent = 'flex-end'
+                        break
 
                     case 'center':
-                        style.alignContent = 'center';
-                        break;
+                        style.alignContent = 'center'
+                        break
 
                     case 'spaced':
-                        style.alignContent = 'space-between';
-                        break;
+                        style.alignContent = 'space-between'
+                        break
 
                     case 'justified':
-                        style.alignContent = 'space-around';
-                        break;
+                        style.alignContent = 'space-around'
+                        break
 
                     case 'stretch':
-                        style.alignContent = 'stretch';
-                        break;
+                        style.alignContent = 'stretch'
+                        break
 
                     default:
                         TLogger.error( `TContainer: Unknown horizontal alignement: ${this.wAlign} !!!` )
-                        break;
+                        break
                 }
 
             } else {

@@ -46,16 +46,16 @@ export default Vue.component( 'TToolItem', {
 
         },
 
-        computedState: function computedState() {
-            
-            return ( this.isActive && this.isCheckBoxActive )
+        computedState: function computedState () {
+
+            return (this.isActive && this.isCheckBoxActive)
 
         }
 
     },
-    methods: {
+    methods:  {
 
-        _onClickCheckBox( event ) {
+        _onClickCheckBox ( event ) {
 
             if ( this.isActive ) {
 

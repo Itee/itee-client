@@ -88,7 +88,7 @@ export default Vue.component( 'TViewport3D', {
     data () {
 
         return {
-            _effect: undefined,
+            _effect:   undefined,
             _selected: undefined,
             _frameId:  undefined,
             _timer:    new Clock( true ),
@@ -253,7 +253,7 @@ export default Vue.component( 'TViewport3D', {
         _resizeControl ( width, height ) {
 
             if ( !this.control ) { return }
-            if( !this.control.resize ) { return }
+            if ( !this.control.resize ) { return }
 
             this.control.resize( width, height )
 
@@ -393,7 +393,6 @@ export default Vue.component( 'TViewport3D', {
 
         },
 
-
         // Utils
 
         // Todo: dispatch mouse/keyboard events in differents methods to be handler with intersected object
@@ -441,7 +440,7 @@ export default Vue.component( 'TViewport3D', {
                 return
             }
 
-            event.preventDefault()
+            mouseEvent.preventDefault()
 
             // calculate mouse position in normalized device coordinates
             // (-1 to +1) for both components
@@ -465,13 +464,13 @@ export default Vue.component( 'TViewport3D', {
             }
         },
 
-        _deselect () {
+        _deselect ( mouseEvent ) {
 
             if ( !this.isRaycastable ) {
                 return
             }
 
-            event.preventDefault()
+            mouseEvent.preventDefault()
 
             this.$emit( 'deselect' )
 
@@ -489,7 +488,7 @@ export default Vue.component( 'TViewport3D', {
             const cache = this._getDecimateCache()
             for ( let meshIndex = 0, numberOfMeshesToDecimate = cache.length ; meshIndex < numberOfMeshesToDecimate ; meshIndex++ ) {
 
-                cache[ meshIndex ].layers.set(10)
+                cache[ meshIndex ].layers.set( 10 )
 
             }
 
@@ -506,7 +505,7 @@ export default Vue.component( 'TViewport3D', {
             const decimables = this._cache.decimables
             for ( let meshIndex = 0, numberOfMeshesToDecimate = decimables.length ; meshIndex < numberOfMeshesToDecimate ; meshIndex++ ) {
 
-                decimables[ meshIndex ].layers.set(0)
+                decimables[ meshIndex ].layers.set( 0 )
 
             }
 
@@ -573,7 +572,7 @@ export default Vue.component( 'TViewport3D', {
                 }
 
                 this._cache.raycastables.push( child )
-                this._updateRaycastableChildren.call( this,child.children, frustum )
+                this._updateRaycastableChildren.call( this, child.children, frustum )
 
             }
 

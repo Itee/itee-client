@@ -46,7 +46,7 @@ class TTag extends React.Component {
 
         const _id    = id || `tTag_${_instanceCounter}`
         const _style = {}
-        const _class = ( className ) ? `tTag ${className}` : 'tTag'
+        const _class = (className) ? `tTag ${className}` : 'tTag'
 
         return (
             <t-tag ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-tag>

@@ -46,7 +46,7 @@ class TPassword extends React.Component {
 
         const _id    = id || `tPassword_${_instanceCounter}`
         const _style = {}
-        const _class = ( className ) ? `tPassword ${className}` : 'tPassword'
+        const _class = (className) ? `tPassword ${className}` : 'tPassword'
 
         return (
             <t-password ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-password>

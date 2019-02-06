@@ -46,7 +46,7 @@ class TMessageNotification extends React.Component {
 
         const _id    = id || `tMessageNotification_${_instanceCounter}`
         const _style = {}
-        const _class = ( className ) ? `tMessageNotification ${className}` : 'tMessageNotification'
+        const _class = (className) ? `tMessageNotification ${className}` : 'tMessageNotification'
 
         return (
             <t-message-notification ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-message-notification>

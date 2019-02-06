@@ -27,6 +27,7 @@ import { Enum } from 'enumify'
  * @type {Enum} FileFormat
  */
 class FileFormat extends Enum {}
+
 FileFormat.initEnum( {
     Asc:  { value: 'asc' },
     Dae:  { value: 'dae' },
@@ -36,7 +37,7 @@ FileFormat.initEnum( {
     Json: { value: 'json' },
     Obj:  { value: 'obj' },
     Shp:  { value: 'shp' },
-    Stl:  { value: 'stl' },
+    Stl:  { value: 'stl' }
 } )
 
 /**
@@ -132,6 +133,7 @@ FileFormat.initEnum( {
  * @see {@link https://en.wikipedia.org/wiki/List_of_HTTP_status_codes} for further information.
  */
 class HttpStatusCode extends Enum {}
+
 HttpStatusCode.initEnum( {
 
     // 100
@@ -238,11 +240,12 @@ HttpStatusCode.initEnum( {
  * @see {@link https://en.wikipedia.org/wiki/Create,_read,_update_and_delete} for further information.
  */
 class HttpVerb extends Enum {}
+
 HttpVerb.initEnum( {
-    Create: { value: "PUT" },
-    Read:   { value: "POST" },
-    Update: { value: "PATCH" },
-    Delete: { value: "DELETE" }
+    Create: { value: 'PUT' },
+    Read:   { value: 'POST' },
+    Update: { value: 'PATCH' },
+    Delete: { value: 'DELETE' }
 } )
 
 /**
@@ -250,6 +253,7 @@ HttpVerb.initEnum( {
  * @type {Enum} Keys
  */
 class Keys extends Enum {}
+
 Keys.initEnum( {
     BACKSPACE:            { value: 8 },
     TAB:                  { value: 9 },
@@ -349,11 +353,12 @@ Keys.initEnum( {
     OPEN_SQUARE_BRACKET:  { value: 219 },
     BACKSLASH:            { value: 220 },
     CLOSE_SQUARE_BRACKET: { value: 221 },
-    SINGLE_QUOTE:         { value: 222 },
+    SINGLE_QUOTE:         { value: 222 }
 } )
 
 // Todo
 class MimeType extends Enum {}
+
 //MimeType.Font
 //MimeType.initEnum( {} )
 
@@ -362,11 +367,12 @@ class MimeType extends Enum {}
  * @type {Enum} Mouse
  */
 class Mouse extends Enum {}
+
 Mouse.initEnum( {
     WHEEL:  { value: -1 },
     LEFT:   { value: 0 },
     MIDDLE: { value: 1 },
-    RIGHT:  { value: 2 },
+    RIGHT:  { value: 2 }
 } )
 
 /**
@@ -384,6 +390,7 @@ Mouse.initEnum( {
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType} for further information.
  */
 class ResponseType extends Enum {}
+
 ResponseType.initEnum( {
     ArrayBuffer: { value: 'arraybuffer' },
     Blob:        { value: 'blob' },

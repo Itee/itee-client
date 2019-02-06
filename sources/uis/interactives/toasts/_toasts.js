@@ -8,9 +8,9 @@
 
 /* eslint-env browser */
 
-export { TErrorToast } from './TErrorToast'
-export { TInfoToast } from './TInfoToast'
-export { TMessageToast } from './TMessageToast'
+export { TErrorToast }    from './TErrorToast'
+export { TInfoToast }     from './TInfoToast'
+export { TMessageToast }  from './TMessageToast'
 export { TProgressToast } from './TProgressToast'
-export { TToast } from './TToast'
-export { TWarningToast } from './TWarningToast'
+export { TToast }         from './TToast'
+export { TWarningToast }  from './TWarningToast'

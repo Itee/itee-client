@@ -8,6 +8,6 @@
  *
  */
 
-export { TKeyboardState } from './TKeyboardController'
+export { TKeyboardState }   from './TKeyboardController'
 export { TMouseController } from './TMouseController'
 

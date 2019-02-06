@@ -46,7 +46,7 @@ class TAutoComplete extends React.Component {
 
         const _id    = id || `tAutoComplete_${_instanceCounter}`
         const _style = {}
-        const _class = ( className ) ? `tAutoComplete ${className}` : 'tAutoComplete'
+        const _class = (className) ? `tAutoComplete ${className}` : 'tAutoComplete'
 
         return (
             <t-auto-complete ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-auto-complete>

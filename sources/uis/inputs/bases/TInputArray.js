@@ -42,38 +42,38 @@ export default Vue.component( 'TInputArray', {
 
     },
     props:    [ 'label', 'value', 'onChange' ],
-    methods: {
+    methods:  {
 
-        _toggleCollapse() {
+        _toggleCollapse () {
 
             this.isCollapsed = !this.isCollapsed
 
         },
 
-        _onChange( index, event ) {
+        _onChange ( index, event ) {
 
             const array = this.value.slice()
 
             // Required to reset the input field before any parent update
-            const previousValue = array[index]
+            const previousValue = array[ index ]
 
-            array[index] = event.target.value
+            array[ index ]     = event.target.value
             event.target.value = previousValue
 
             this.onChange( array )
 
         },
 
-        _onAdd() {
+        _onAdd () {
 
             const array = this.value.slice()
-            array.push('')
+            array.push( '' )
 
             this.onChange( array )
 
         },
 
-        _onRemove( index ) {
+        _onRemove ( index ) {
 
             const array = this.value.slice()
             array.splice( index, 1 )

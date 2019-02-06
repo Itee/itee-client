@@ -46,7 +46,7 @@ class TInfoNotification extends React.Component {
 
         const _id    = id || `tInfoNotification_${_instanceCounter}`
         const _style = {}
-        const _class = ( className ) ? `tInfoNotification ${className}` : 'tInfoNotification'
+        const _class = (className) ? `tInfoNotification ${className}` : 'tInfoNotification'
 
         return (
             <t-info-notification ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-info-notification>

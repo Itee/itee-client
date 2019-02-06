@@ -23,13 +23,13 @@ export default Vue.component( 'TInputCheckbox', {
         </div>
     `,
     props:    [ 'id', 'label', 'value', 'iconOn', 'iconOff', 'onChange' ],
-    methods: {
+    methods:  {
 
-        _onClick( event ) {
+        _onClick ( event ) {
 
             const newValue = !this.value
 
-            console.log('TCheckbox _onClick')
+            console.log( 'TCheckbox _onClick' )
 
             this.onChange( newValue )
 

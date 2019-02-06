@@ -9,7 +9,7 @@
  */
 
 /* eslint-env browser */
-import Vue                              from '../../../../node_modules/vue/dist/vue.esm'
+import Vue           from '../../../../node_modules/vue/dist/vue.esm'
 import { isDefined } from 'itee-validators'
 
 export default Vue.component( 'TTreeItem', {
@@ -121,12 +121,12 @@ export default Vue.component( 'TTreeItem', {
             return children
 
         },
-        
+
         filteredAntelabelModifier () {
 
             return (isDefined( this.modifiers )) ? this.modifiers.filter( ( modifier ) => {
 
-                return modifier.position === "antelabel" && ( modifier.display === undefined || (modifier.display === 'onSelect' && this.isSelected) )
+                return modifier.position === 'antelabel' && (modifier.display === undefined || (modifier.display === 'onSelect' && this.isSelected))
 
             } ) : []
 
@@ -136,25 +136,25 @@ export default Vue.component( 'TTreeItem', {
 
             return (isDefined( this.modifiers )) ? this.modifiers.filter( ( modifier ) => {
 
-                return modifier.position === "postlabel" && ( modifier.display === undefined || (modifier.display === 'onSelect' && this.isSelected) )
+                return modifier.position === 'postlabel' && (modifier.display === undefined || (modifier.display === 'onSelect' && this.isSelected))
 
             } ) : []
 
         },
 
-
-        acceptableDeepLevel() {
+        acceptableDeepLevel () {
 
             return (this._currentDeepLevel < this.maxDeepLevel)
 
         },
 
-        forceUpdate() {
+        forceUpdate () {
 
-            if (this.needUpdate || !this.needUpdate)
+            if ( this.needUpdate || !this.needUpdate ) {
                 return true
+            }
 
-        },
+        }
 
     },
     methods:  {
@@ -171,7 +171,7 @@ export default Vue.component( 'TTreeItem', {
 
         },
 
-        filterChildren( children ) {
+        filterChildren ( children ) {
 
             return children.filter( child => !this.filters.includes( child.name ) )
 
@@ -181,7 +181,7 @@ export default Vue.component( 'TTreeItem', {
 
             // Todo: Externalize the sort function as use defined function. And implement current sort function as utility
             if ( ![ 'asc', 'desc' ].includes( this.sort ) ) {
-                console.error( "Invalid sorter !" )
+                console.error( 'Invalid sorter !' )
                 return
             }
 
@@ -215,10 +215,10 @@ export default Vue.component( 'TTreeItem', {
                 const selectedItem = document.querySelector( '.selected' )
                 if ( isDefined( selectedItem ) ) {
 
-                    const ttreeItem = ( this.deepSelect ) ? selectedItem.__vue__ : selectedItem.__vue__.$parent.$parent
+                    const ttreeItem = (this.deepSelect) ? selectedItem.__vue__ : selectedItem.__vue__.$parent.$parent
 
                     // In case the multiselect if false but the deepSelect is true we need to check if the selectedItem is not the child of this instance
-                    if( this._uid !== ttreeItem._uid ) {
+                    if ( this._uid !== ttreeItem._uid ) {
 
                         ttreeItem.isSelected = false
 

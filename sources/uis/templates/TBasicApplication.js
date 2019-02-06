@@ -10,16 +10,16 @@
 
 /* eslint-env browser */
 
-import React from 'react'
-import { THeader, TContent, TFooter } from '../displays/sections/_sections'
-import { TAppBar, TToolBar, TStatusBar } from '../displays/bars/_bars'
-import { TDateTime } from '../displays/bases/_bases'
-import { TBrand, TMenu, TMenuItem, TDropDownMenu } from '../displays/navigations/_navigations'
+import React                                        from 'react'
+import { THeader, TContent, TFooter }               from '../displays/sections/_sections'
+import { TAppBar, TToolBar, TStatusBar }            from '../displays/bars/_bars'
+import { TDateTime }                                from '../displays/bases/_bases'
+import { TBrand, TMenu, TMenuItem, TDropDownMenu }  from '../displays/navigations/_navigations'
 import { TLogingButton, TButtonGroup, TToolButton } from '../inputs/buttons/_buttons'
-import { TSplitter } from '../displays/splitters/_splitters'
-import { TTree, TTreeItem } from '../displays/trees/_trees'
-import { TViewport3D } from '../displays/medias/_medias'
-import { TDialogArea, TLoginDialog } from '../interactives/dialogs/_dialogs'
+import { TSplitter }                                from '../displays/splitters/_splitters'
+import { TTree, TTreeItem }                         from '../displays/trees/_trees'
+import { TViewport3D }                              from '../displays/medias/_medias'
+import { TDialogArea, TLoginDialog }                from '../interactives/dialogs/_dialogs'
 
 class TBasicApplication extends React.Component {
 
@@ -52,7 +52,7 @@ class TBasicApplication extends React.Component {
 
     componentWillReceiveProps ( /*nextProps*/ ) {}
 
-//    shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
+    //    shouldComponentUpdate ( /*nextProps, nextState*/ ) {}
 
     componentWillUpdate ( /*nextProps, nextState*/ ) {}
 

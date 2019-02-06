@@ -28,5 +28,5 @@ export default Vue.component( 'TTitleBar', {
             <TLabel :label=title />
         </TContainer>
     `,
-    props: [ 'height', 'width', 'orientation', 'title' ]
+    props:    [ 'height', 'width', 'orientation', 'title' ]
 } )

@@ -15,7 +15,7 @@ import {
     BufferAttribute,
     BufferGeometry,
     Face3,
-    Vector3,
+    Vector3
 } from 'three-full'
 
 /**
@@ -51,7 +51,7 @@ TBufferGeometriesManager.prototype = Object.assign( Object.create( TDataBaseMana
 
             case 'Scene':
                 texture = new Scene()
-                break;
+                break
 
             default:
                 texture = new Object3D()

@@ -46,7 +46,7 @@ class TAffix extends React.Component {
 
         const _id    = id || `tAffix_${_instanceCounter}`
         const _style = {}
-        const _class = ( className ) ? `tAffix ${className}` : 'tAffix'
+        const _class = (className) ? `tAffix ${className}` : 'tAffix'
 
         return (
             <t-affix ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-affix>

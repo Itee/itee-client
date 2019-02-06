@@ -46,7 +46,7 @@ class TRating extends React.Component {
 
         const _id    = id || `tRating_${_instanceCounter}`
         const _style = {}
-        const _class = ( className ) ? `tRating ${className}` : 'tRating'
+        const _class = (className) ? `tRating ${className}` : 'tRating'
 
         return (
             <t-rating ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-rating>

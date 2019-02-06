@@ -10,7 +10,7 @@
 
 /* eslint-env browser */
 
-import Vue from '../../../../node_modules/vue/dist/vue.esm'
+import Vue                            from '../../../../node_modules/vue/dist/vue.esm'
 import { TIdFactory, TIdFactoryType } from '../../../utils/TIdFactory'
 
 const IdFactory = new TIdFactory( TIdFactoryType.String, 't-dialog-header-' )
@@ -25,7 +25,7 @@ export default Vue.component( 'TDialogFooter', {
         </div>
     `,
     props:    {
-        id:         {
+        id:              {
             type:    String,
             default: IdFactory.createId()
         },

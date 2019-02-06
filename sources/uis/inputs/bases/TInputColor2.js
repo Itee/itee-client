@@ -8,14 +8,14 @@
  *
  */
 
-import Vue 		from '../../../../node_modules/vue/dist/vue.esm'
+import Vue      from '../../../../node_modules/vue/dist/vue.esm'
 import VueColor from '../../../../node_modules/vue-color/dist/vue-color'
 
 export default Vue.component( 'TInputColor2', {
-	components: {
-		'chrome-picker': VueColor.Chrome,
-	},
-    template: `
+    components: {
+        'chrome-picker': VueColor.Chrome
+    },
+    template:   `
     	<div class="form-group">
 
 
@@ -32,103 +32,103 @@ export default Vue.component( 'TInputColor2', {
 			</div>
 		</div>
     `,
-    props:    [ 'label', 'color', 'displayTextInput', 'onChange' ],
-    data() {
+    props:      [ 'label', 'color', 'displayTextInput', 'onChange' ],
+    data () {
 
-		return {
-			colors: {
-				hex: this.color,
-			},
-			colorValue: this.color,
-			displayPicker: false,
-		}
-		
-	},
-	mounted() {
-		this.setColor(this.color || '#000000');
-	},
-	methods: {
+        return {
+            colors:        {
+                hex: this.color
+            },
+            colorValue:    this.color,
+            displayPicker: false
+        }
 
-		setColor(color) {
+    },
+    mounted () {
+        this.setColor( this.color || '#000000' )
+    },
+    methods:    {
 
-			this.updateColors(color)
-			this.colorValue = color
+        setColor ( color ) {
 
-		},
+            this.updateColors( color )
+            this.colorValue = color
 
-		updateColors(color) {
+        },
 
-			if(color.slice(0, 1) == '#') {
-				this.colors = {
-					hex: color
-				}
-			}
-			else if(color.slice(0, 4) == 'rgba') {
-				var rgba = color.replace(/^rgba?\(|\s+|\)$/g,'').split(','),
-					hex = '#' + ((1 << 24) + (parseInt(rgba[0]) << 16) + (parseInt(rgba[1]) << 8) + parseInt(rgba[2])).toString(16).slice(1);
-				this.colors = {
-					hex: hex,
-					a: rgba[3],
-				}
-			}
+        updateColors ( color ) {
 
-			this.onChange( this.colors.hex )
+            if ( color.slice( 0, 1 ) == '#' ) {
+                this.colors = {
+                    hex: color
+                }
+            }
+            else if ( color.slice( 0, 4 ) == 'rgba' ) {
+                var rgba    = color.replace( /^rgba?\(|\s+|\)$/g, '' ).split( ',' ),
+                    hex     = '#' + ((1 << 24) + (parseInt( rgba[ 0 ] ) << 16) + (parseInt( rgba[ 1 ] ) << 8) + parseInt( rgba[ 2 ] )).toString( 16 ).slice( 1 )
+                this.colors = {
+                    hex: hex,
+                    a:   rgba[ 3 ]
+                }
+            }
 
-		},
+            this.onChange( this.colors.hex )
 
-		showPicker() {
+        },
 
-			document.addEventListener('click', this.documentClick)
-			this.displayPicker = true
+        showPicker () {
 
-		},
+            document.addEventListener( 'click', this.documentClick )
+            this.displayPicker = true
 
-		hidePicker() {
+        },
 
-			document.removeEventListener('click', this.documentClick)
-			this.displayPicker = false
+        hidePicker () {
 
-		},
+            document.removeEventListener( 'click', this.documentClick )
+            this.displayPicker = false
 
-		togglePicker() {
-			this.displayPicker ? this.hidePicker() : this.showPicker()
-		},
+        },
 
-		updateFromInput() {
-			this.updateColors( this.colorValue )
-		},
+        togglePicker () {
+            this.displayPicker ? this.hidePicker() : this.showPicker()
+        },
 
-		updateFromPicker(color) {
+        updateFromInput () {
+            this.updateColors( this.colorValue )
+        },
 
-			this.colors = color
-			if(color.rgba.a == 1) {
-				this.colorValue = color.hex
-			}
-			else {
-				this.colorValue = 'rgba(' + color.rgba.r + ', ' + color.rgba.g + ', ' + color.rgba.b + ', ' + color.rgba.a + ')'
-			}
-		},
+        updateFromPicker ( color ) {
 
-		documentClick(e) {
+            this.colors = color
+            if ( color.rgba.a == 1 ) {
+                this.colorValue = color.hex
+            }
+            else {
+                this.colorValue = 'rgba(' + color.rgba.r + ', ' + color.rgba.g + ', ' + color.rgba.b + ', ' + color.rgba.a + ')'
+            }
+        },
 
-			let el 		= this.$refs.colorpicker
-			let	target 	= e.target
+        documentClick ( e ) {
 
-			if(el !== target && !el.contains(target)) {
-				this.hidePicker()
-			}
+            let el     = this.$refs.colorpicker
+            let target = e.target
 
-		}
-	},
-	watch: {
+            if ( el !== target && !el.contains( target ) ) {
+                this.hidePicker()
+            }
 
-		colorValue(val) {
-			if(val) {
-				this.updateColors(val);
-				this.$emit('input', val);
-			}
-		}
+        }
+    },
+    watch:      {
 
-	},
+        colorValue ( val ) {
+            if ( val ) {
+                this.updateColors( val )
+                this.$emit( 'input', val )
+            }
+        }
+
+    }
 } )
 

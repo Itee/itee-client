@@ -11,7 +11,7 @@
 /* eslint-env browser */
 import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-export default Vue.component('TTable', {
+export default Vue.component( 'TTable', {
     template: `
       <table class="ttable">
           <thead>
@@ -49,96 +49,97 @@ export default Vue.component('TTable', {
           </tbody>
       </table>
     `,
-    data: function data() {
+    data:     function data () {
 
-      return {
-        items: [],
-        showChildren: false,
-        propertyColumns: [ 'Nom', 'Valeur' ],
-        message: 'Aucune information n\'a été trouvée'
-      };
+        return {
+            items:           [],
+            showChildren:    false,
+            propertyColumns: [ 'Nom', 'Valeur' ],
+            message:         'Aucune information n\'a été trouvée'
+        }
 
     },
-    props: ['id', 'label', 'item', 'columns', 'filter', 'displayColumnName', 'onChange', 'dragClass', 'onClose'],
+    props:    [ 'id', 'label', 'item', 'columns', 'filter', 'displayColumnName', 'onChange', 'dragClass', 'onClose' ],
     computed: {
 
-      computedColumns: function computedColumns() {
+        computedColumns: function computedColumns () {
 
-        return ( typeof this.item === 'object' ) ? this.propertyColumns : this.columns
-      },
+            return (typeof this.item === 'object') ? this.propertyColumns : this.columns
+        },
 
-      filteredData: function filteredData() {
+        filteredData: function filteredData () {
 
-        if ( !this.filter )
-          return this.item
+            if ( !this.filter ) {
+                return this.item
+            }
 
-        const value  = this.item
-        const filter = this.filter
+            const value  = this.item
+            const filter = this.filter
 
-        return ( typeof value === 'object' ) ? this._formatAsProperty( value, filter ) : this._formatAsList( value, filter )
-      }
+            return (typeof value === 'object') ? this._formatAsProperty( value, filter ) : this._formatAsList( value, filter )
+        }
 
     },
-    methods: {
+    methods:  {
 
-      _formatAsProperty: function _formatAsProperty( data, filter ) {
+        _formatAsProperty: function _formatAsProperty ( data, filter ) {
 
-        let me         = this
-        let resultProp = []
+            let me         = this
+            let resultProp = []
 
-        Object.keys( data )
-              .forEach( key => {
+            Object.keys( data )
+                  .forEach( key => {
 
-                  const property = data[ key ]
-                  let prop       = {}
+                      const property = data[ key ]
+                      let prop       = {}
 
-                  if ( filter( key, property ) ) {
-                    
-                    if ( typeof property === 'object' && property !== null ){
-                      me._formatAsCategory( key, property, resultProp)
-                      return
-                    }
+                      if ( filter( key, property ) ) {
 
-                    prop[ me.propertyColumns[0] ] = key
-                    prop[ me.propertyColumns[1] ] = property
-                    resultProp.push( prop )
-                  }
+                          if ( typeof property === 'object' && property !== null ) {
+                              me._formatAsCategory( key, property, resultProp )
+                              return
+                          }
 
-              } )
+                          prop[ me.propertyColumns[ 0 ] ] = key
+                          prop[ me.propertyColumns[ 1 ] ] = property
+                          resultProp.push( prop )
+                      }
 
-        return resultProp
-      },
+                  } )
 
-      _formatAsCategory: function _formatAsCategory( catKey, value, result ) {
-        
-        let me = this
+            return resultProp
+        },
 
-        Object.keys( value )
-              .forEach( key => {
+        _formatAsCategory: function _formatAsCategory ( catKey, value, result ) {
 
-                  const property = value[ key ]
-                  let prop       = {}
+            let me = this
 
-                  // TODO : Category styling
+            Object.keys( value )
+                  .forEach( key => {
 
-                  prop[ me.propertyColumns[0] ] = key
-                  prop[ me.propertyColumns[1] ] = property
-                  result.push( prop )
+                      const property = value[ key ]
+                      let prop       = {}
 
-              } )
-      },
+                      // TODO : Category styling
 
-      _formatAsList: function _formatAsList( data, filter ) {
+                      prop[ me.propertyColumns[ 0 ] ] = key
+                      prop[ me.propertyColumns[ 1 ] ] = property
+                      result.push( prop )
 
-        let resultProp = []
+                  } )
+        },
 
-        Object.keys( data )
-              .forEach( key => {
-                resultProp.push( data[ key ] )                  
-              } )
+        _formatAsList: function _formatAsList ( data, filter ) {
 
-        return resultProp
-      }
-      
+            let resultProp = []
+
+            Object.keys( data )
+                  .forEach( key => {
+                      resultProp.push( data[ key ] )
+                  } )
+
+            return resultProp
+        }
+
     }
-  })
+} )

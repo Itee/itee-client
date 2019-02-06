@@ -8,7 +8,7 @@
  *
  */
 
-import { isObject } from 'itee-validators'
+import { isObject }         from 'itee-validators'
 import { TDataBaseManager } from '../TDataBaseManager'
 
 /**
@@ -37,16 +37,16 @@ TTexturesManager.prototype = Object.assign( Object.create( TDataBaseManager.prot
     convert ( data ) {
 
         if ( !data ) {
-            throw new Error('TTexturesManager: Unable to convert null or undefined data !')
+            throw new Error( 'TTexturesManager: Unable to convert null or undefined data !' )
         }
 
         const textureType = data.type
-        let texture = undefined
+        let texture       = undefined
 
         switch ( textureType ) {
 
             default:
-                throw new Error(`TTexturesManager: Unknown texture of type: ${textureType}`)
+                throw new Error( `TTexturesManager: Unknown texture of type: ${textureType}` )
                 break
 
         }
@@ -77,12 +77,12 @@ Object.defineProperties( TTexturesManager.prototype, {
 
             for ( let dataIndex = 0, numberOfDatas = datas.length, data = undefined ; dataIndex < numberOfDatas ; dataIndex++ ) {
 
-                data   = datas[ dataIndex ]
+                data = datas[ dataIndex ]
 
                 try {
                     results[ data._id ] = this.convert( data )
-                } catch(err) {
-                    onError(err)
+                } catch ( err ) {
+                    onError( err )
                 }
 
                 onProgress( dataIndex / numberOfDatas )

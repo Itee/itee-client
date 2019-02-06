@@ -23,7 +23,7 @@ import {
     Float32BufferAttribute,
     LineBasicMaterial,
     LineSegments,
-    VertexColors,
+    VertexColors
 } from 'three-full'
 
 class TOrbitControlsHelper extends LineSegments {
@@ -31,86 +31,86 @@ class TOrbitControlsHelper extends LineSegments {
     constructor ( /*control,*/ radius = 2, radials = 16, circles = 2, divisions = 64, innerColor = new Color( 0x444444 ), outerColor = new Color( 0x888888 ) ) {
         super( TOrbitControlsHelper._createInternalGeometry( radius, radials, circles, divisions, innerColor, outerColor ), TOrbitControlsHelper._createInternalMaterial() )
 
-//        this.control     = control
+        //        this.control     = control
         this._intervalId = undefined
 
-//        this.impose()
+        //        this.impose()
 
     }
 
-//    get control () {
-//
-//        return this._control
-//
-//    }
-//
-//    set control ( value ) {
-//
-//        if ( isNull( value ) ) { throw new Error( 'Control cannot be null ! Expect an instace of camera controller.' ) }
-//        if ( isUndefined( value ) ) { throw new Error( 'Control cannot be undefined ! Expect an instace of camera controller.' ) }
-//
-//        this._control = value
-//
-//    }
-//
-//    setControl ( value ) {
-//
-//        this.control = value
-//        return this
-//
-//    }
+    //    get control () {
+    //
+    //        return this._control
+    //
+    //    }
+    //
+    //    set control ( value ) {
+    //
+    //        if ( isNull( value ) ) { throw new Error( 'Control cannot be null ! Expect an instace of camera controller.' ) }
+    //        if ( isUndefined( value ) ) { throw new Error( 'Control cannot be undefined ! Expect an instace of camera controller.' ) }
+    //
+    //        this._control = value
+    //
+    //    }
+    //
+    //    setControl ( value ) {
+    //
+    //        this.control = value
+    //        return this
+    //
+    //    }
 
     static _createInternalGeometry ( RADIUS, RADIALS, CIRCLES, DIVISIONS, color1, color2 ) {
 
         const vertices = []
         const colors   = []
 
-        let x, z, v, i, j, r, color;
+        let x, z, v, i, j, r, color
 
         // create the radials
         for ( i = 0 ; i <= RADIALS ; i++ ) {
 
-            v = ( i / RADIALS ) * ( Math.PI * 2 );
+            v = (i / RADIALS) * (Math.PI * 2)
 
-            x = Math.sin( v ) * RADIUS;
-            z = Math.cos( v ) * RADIUS;
+            x = Math.sin( v ) * RADIUS
+            z = Math.cos( v ) * RADIUS
 
-            vertices.push( 0, 0, 0 );
-            vertices.push( x, 0, z );
+            vertices.push( 0, 0, 0 )
+            vertices.push( x, 0, z )
 
-            color = ( i & 1 ) ? color1 : color2;
+            color = (i & 1) ? color1 : color2
 
-            colors.push( color.r, color.g, color.b );
-            colors.push( color.r, color.g, color.b );
+            colors.push( color.r, color.g, color.b )
+            colors.push( color.r, color.g, color.b )
 
         }
 
         // create the circles
         for ( i = 0 ; i <= CIRCLES ; i++ ) {
 
-            color = ( i & 1 ) ? color1 : color2;
+            color = (i & 1) ? color1 : color2
 
-            r = RADIUS - ( RADIUS / CIRCLES * i );
+            r = RADIUS - (RADIUS / CIRCLES * i)
 
             for ( j = 0 ; j < DIVISIONS ; j++ ) {
 
                 // first vertex
-                v = ( j / DIVISIONS ) * ( Math.PI * 2 );
+                v = (j / DIVISIONS) * (Math.PI * 2)
 
-                x = Math.sin( v ) * r;
-                z = Math.cos( v ) * r;
+                x = Math.sin( v ) * r
+                z = Math.cos( v ) * r
 
-                vertices.push( x, 0, z );
-                colors.push( color.r, color.g, color.b );
+                vertices.push( x, 0, z )
+                colors.push( color.r, color.g, color.b )
 
                 // second vertex
-                v = ( ( j + 1 ) / DIVISIONS ) * ( Math.PI * 2 );
+                v = ((j + 1) / DIVISIONS) * (Math.PI * 2)
 
-                x = Math.sin( v ) * r;
-                z = Math.cos( v ) * r;
+                x = Math.sin( v ) * r
+                z = Math.cos( v ) * r
 
-                vertices.push( x, 0, z );
-                colors.push( color.r, color.g, color.b );
+                vertices.push( x, 0, z )
+                colors.push( color.r, color.g, color.b )
 
             }
 
@@ -154,34 +154,34 @@ class TOrbitControlsHelper extends LineSegments {
 
     }
 
-//    impose () {
-//
-//        this._control.addEventListener( 'start', this.startOpacityAnimation.bind( this ) )
-//        this._control.addEventListener( 'change', this.updateHelperPosition.bind( this ) )
-//        this._control.addEventListener( 'end', this.endOpacityAnimation.bind( this ) )
-//
-//    }
+    //    impose () {
+    //
+    //        this._control.addEventListener( 'start', this.startOpacityAnimation.bind( this ) )
+    //        this._control.addEventListener( 'change', this.updateHelperPosition.bind( this ) )
+    //        this._control.addEventListener( 'end', this.endOpacityAnimation.bind( this ) )
+    //
+    //    }
 
-//    dispose () {
-//
-//        this._control.removeEventListener( 'start', this.startOpacityAnimation )
-//        this._control.removeEventListener( 'change', this.updateHelperPosition )
-//        this._control.removeEventListener( 'end', this.endOpacityAnimation )
-//
-//    }
+    //    dispose () {
+    //
+    //        this._control.removeEventListener( 'start', this.startOpacityAnimation )
+    //        this._control.removeEventListener( 'change', this.updateHelperPosition )
+    //        this._control.removeEventListener( 'end', this.endOpacityAnimation )
+    //
+    //    }
 
     /**
      *
      */
-//    updateHelperPosition () {
-//
-//        const target = this._control.target
-//
-//        this.position.x = target.x
-//        this.position.y = target.y
-//        this.position.z = target.z
-//
-//    }
+    //    updateHelperPosition () {
+    //
+    //        const target = this._control.target
+    //
+    //        this.position.x = target.x
+    //        this.position.y = target.y
+    //        this.position.z = target.z
+    //
+    //    }
 
     /**
      *

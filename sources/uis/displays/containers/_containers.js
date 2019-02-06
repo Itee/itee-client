@@ -8,12 +8,12 @@
 
 /* eslint-env browser */
 
-export { default as TContainer } from './TContainer'
-export { default as TCentererContainer } from './TContainerCentered'
+export { default as TContainer }           from './TContainer'
+export { default as TCentererContainer }   from './TContainerCentered'
 export { default as TContainerHorizontal } from './TContainerHorizontal'
-export { default as TJustifiedContainer } from './TContainerJustified'
-export { default as TContainerSpaced } from './TContainerSpaced'
-export { default as TContainerStretched } from './TContainerStretched'
-export { default as TContainerVertical } from './TContainerVertical'
+export { default as TJustifiedContainer }  from './TContainerJustified'
+export { default as TContainerSpaced }     from './TContainerSpaced'
+export { default as TContainerStretched }  from './TContainerStretched'
+export { default as TContainerVertical }   from './TContainerVertical'
 //export { default as TGridContainer } from './TGridContainer'
-export { default as TItemList } from './TItemList'
+export { default as TItemList }            from './TItemList'

@@ -12,9 +12,9 @@
 
 import React from 'react'
 
-import { THeader } from '../../displays/sections/THeader'
+import { THeader }  from '../../displays/sections/THeader'
 import { TContent } from '../../displays/sections/TContent'
-import { TFooter } from '../../displays/sections/TFooter'
+import { TFooter }  from '../../displays/sections/TFooter'
 
 import { TCentererLayout } from '../../displays/layouts/TCentererLayout'
 
@@ -27,7 +27,7 @@ class TLoginDialog extends React.Component {
         super( props )
         _instanceCounter++
 
-        this.state        = { value: '' };
+        this.state        = { value: '' }
         this.handleChange = this.handleChange.bind( this )
 
     }
@@ -65,7 +65,7 @@ class TLoginDialog extends React.Component {
             alignItems:    'center',
             flexDirection: 'column'
         }
-        const _class = ( className ) ? `tLoginDialog ${className}` : 'tLoginDialog'
+        const _class = (className) ? `tLoginDialog ${className}` : 'tLoginDialog'
 
         return (
             <form id={_id} className={_class} style={_style} onSubmit={submitHandler}>
@@ -83,11 +83,11 @@ class TLoginDialog extends React.Component {
                         <i className={'fa fa-user-circle-o'}></i>
 
                         <label>Username</label>
-                        <input type={'text'} placeholder={"Enter Username"} name={"userName"} required />
+                        <input type={'text'} placeholder={'Enter Username'} name={'userName'} required />
 
                         <label>Password</label>
-                        <input type={"password"} placeholder={"Enter Password"} name={"password"} required />
-                        <span className={"psw"}><a href={"#"}>Forgot password ?</a></span>
+                        <input type={'password'} placeholder={'Enter Password'} name={'password'} required />
+                        <span className={'psw'}><a href={'#'}>Forgot password ?</a></span>
                     </vertical-layout>
                 </TContent>
 
@@ -96,8 +96,8 @@ class TLoginDialog extends React.Component {
                         display: 'flex',
                         height:  '100%'
                     }}>
-                        <button type={"button"} onClick={closeHandler} className={'cancel-btn btn-danger'}>Cancel</button>
-                        <button type={"submit"} value={"Submit"}>Login</button>
+                        <button type={'button'} onClick={closeHandler} className={'cancel-btn btn-danger'}>Cancel</button>
+                        <button type={'submit'} value={'Submit'}>Login</button>
                     </div>
                 </TFooter>
 

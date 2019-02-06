@@ -178,17 +178,17 @@ class TGeometriesManager extends TDataBaseManager {
         }
 
         const geometryType = data.type
-        let geometry = null
+        let geometry       = null
 
         // Keep backward compat to next Major release
-        if ( data.isGeometry || geometryType === "Geometry") {
+        if ( data.isGeometry || geometryType === 'Geometry' ) {
 
             geometry = this._convertJsonToGeometry( data )
             if ( true /* todo: computeNormals */ ) {
                 geometry.computeFaceNormals()
             }
 
-        } else if ( data.isBufferGeometry || geometryType === "BufferGeometry") {
+        } else if ( data.isBufferGeometry || geometryType === 'BufferGeometry' ) {
 
             geometry = this._convertJsonToBufferGeometry( data )
             if ( true /* todo: computeNormals */ ) {

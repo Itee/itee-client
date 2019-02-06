@@ -46,7 +46,7 @@ class TWarningToast extends React.Component {
 
         const _id    = id || `tWarningToast_${_instanceCounter}`
         const _style = {}
-        const _class = ( className ) ? `tWarningToast ${className}` : 'tWarningToast'
+        const _class = (className) ? `tWarningToast ${className}` : 'tWarningToast'
 
         return (
             <t-warning-toast ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-warning-toast>

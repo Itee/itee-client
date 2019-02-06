@@ -23,7 +23,7 @@
  *
  */
 
-import React from 'react'
+import React     from 'react'
 import PropTypes from 'prop-types'
 
 let _instanceCounter = 0
@@ -65,7 +65,7 @@ class TErrorCatcher extends React.Component {
         const { id, className } = this.props
 
         const _id    = id || `tErrorCatcher_${_instanceCounter}`
-        const _class = ( className ) ? `tErrorCatcher ${className}` : 'tErrorCatcher'
+        const _class = (className) ? `tErrorCatcher ${className}` : 'tErrorCatcher'
 
         const _style = {}
 
@@ -77,7 +77,7 @@ class TErrorCatcher extends React.Component {
                 </t-error-catcher>
             )
         }
-        return this.props.children;
+        return this.props.children
 
     }
 

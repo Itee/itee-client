@@ -9,9 +9,9 @@
 /* eslint-env browser */
 
 export { TAutoComplete } from './TAutoComplete'
-export { TCascader } from './TCascader'
-export { TDropZone } from './TDropZone'
-export { TForm } from './TForm'
-export { TSearchBar } from './TSearchBar'
-export { TTransfer } from './TTransfer'
-export { TUpload } from './TUpload'
+export { TCascader }     from './TCascader'
+export { TDropZone }     from './TDropZone'
+export { TForm }         from './TForm'
+export { TSearchBar }    from './TSearchBar'
+export { TTransfer }     from './TTransfer'
+export { TUpload }       from './TUpload'

@@ -13,6 +13,7 @@
 import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
 import { TIdFactory, TIdFactoryType } from '../../../utils/TIdFactory'
+
 const IdFactory = new TIdFactory( TIdFactoryType.String, 't-dialog-' )
 
 export default Vue.component( 'TDialog', {
@@ -26,7 +27,7 @@ export default Vue.component( 'TDialog', {
         </div>
     `,
     props:    {
-        id:         {
+        id:        {
             type:    String,
             default: IdFactory.createId()
         },
@@ -39,35 +40,35 @@ export default Vue.component( 'TDialog', {
 
         computeClass () {
 
-            return ( this.isVisible ) ? 'modal fade show' : 'modal fade'
+            return (this.isVisible) ? 'modal fade show' : 'modal fade'
 
         },
 
         computeStyle () {
 
             return {
-                display:  ( this.isVisible ) ? 'block' : 'none'
+                display: (this.isVisible) ? 'block' : 'none'
             }
 
-        },
+        }
 
     },
     mounted () {
 
-        this.$el.addEventListener('wheel', this.handleWheel, true)
-        this.$el.addEventListener('mousewheel', this.handleWheel, true)
+        this.$el.addEventListener( 'wheel', this.handleWheel, true )
+        this.$el.addEventListener( 'mousewheel', this.handleWheel, true )
 
     },
     destroyed () {
 
-        this.$el.removeEventListener('wheel', this.handleWheel, true)
-        this.$el.removeEventListener('mousewheel', this.handleWheel, true)
+        this.$el.removeEventListener( 'wheel', this.handleWheel, true )
+        this.$el.removeEventListener( 'mousewheel', this.handleWheel, true )
 
     },
-    methods: {
+    methods:  {
 
         handleWheel ( wheelEvent ) {
-            console.log('wheeling')
+            console.log( 'wheeling' )
             wheelEvent.preventDefault()
             wheelEvent.stopPropagation()
         }

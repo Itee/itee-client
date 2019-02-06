@@ -24,9 +24,9 @@ export default Vue.component( 'TInputText', {
     </div>
     `,
     props:    [ 'id', 'label', 'value', 'onChange' ],
-    methods: {
+    methods:  {
 
-        _onChange( event ) {
+        _onChange ( event ) {
 
             const newValue = event.target.value
 

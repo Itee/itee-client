@@ -521,29 +521,29 @@ class TObjectsManager extends TDataBaseManager {
 
         if ( isDefined( data.scale ) ) {
 
-            if( data.scale.x !== 0 && data.scale.y !== 0 && data.scale.z !== 0 ) {
+            if ( data.scale.x !== 0 && data.scale.y !== 0 && data.scale.z !== 0 ) {
                 object.scale.x = data.scale.x
                 object.scale.y = data.scale.y
                 object.scale.z = data.scale.z
             } else {
-                console.warn('Try to assign null scale !')
+                console.warn( 'Try to assign null scale !' )
             }
 
         }
 
-        if ( isDefined(data.modelViewMatrix) && isNotEmptyArray( data.modelViewMatrix ) ) {
+        if ( isDefined( data.modelViewMatrix ) && isNotEmptyArray( data.modelViewMatrix ) ) {
             object.modelViewMatrix.fromArray( data.modelViewMatrix )
         }
 
-        if ( isDefined(data.normalMatrix) &&  isNotEmptyArray( data.normalMatrix ) ) {
+        if ( isDefined( data.normalMatrix ) && isNotEmptyArray( data.normalMatrix ) ) {
             object.normalMatrix.fromArray( data.normalMatrix )
         }
 
-        if ( isDefined(data.matrix) &&  isNotEmptyArray( data.matrix ) ) {
+        if ( isDefined( data.matrix ) && isNotEmptyArray( data.matrix ) ) {
             object.matrix.fromArray( data.matrix )
         }
 
-        if ( isDefined(data.matrixWorld) &&  isNotEmptyArray( data.matrixWorld ) ) {
+        if ( isDefined( data.matrixWorld ) && isNotEmptyArray( data.matrixWorld ) ) {
             object.matrixWorld.fromArray( data.matrixWorld )
         }
 
@@ -589,7 +589,7 @@ class TObjectsManager extends TDataBaseManager {
 
     fillObjects3D ( objects, onSuccess, onProgress, onError ) {
 
-        const self         = this
+        const self = this
 
         // Get objects that need geometry or materials
         const objectsArray = []

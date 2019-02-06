@@ -9,6 +9,6 @@
 /* eslint-env browser */
 
 export { TAccordion } from './TAccordion'
-export { TCollapse } from './TCollapse'
-export { TList } from './TList'
-export { TFeed } from './TFeed'
+export { TCollapse }  from './TCollapse'
+export { TList }      from './TList'
+export { TFeed }      from './TFeed'
