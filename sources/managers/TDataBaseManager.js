@@ -1188,6 +1188,8 @@ class TDataBaseManager {
         //        datas[ 'onLoadCallback' ] = onLoadCallback
         //        this._waitingQueue.push( datas )
 
+        const query = {}
+
         this._requestQueue.push( {
             _id:          `readAll_${Generate.id}`,
             _timeStart:   new Date(),
@@ -1195,6 +1197,7 @@ class TDataBaseManager {
             method:       HttpVerb.Read.value,
             url:          this._basePath,
             data:         {
+                query,
                 projection
             },
             onLoad:       onLoadCallback,
@@ -1296,6 +1299,8 @@ class TDataBaseManager {
 
     _updateAll ( update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
+        const query = {}
+
         this._requestQueue.push( {
             _id:          `updateAll_${Generate.id}`,
             _timeStart:   new Date(),
@@ -1303,6 +1308,7 @@ class TDataBaseManager {
             method:       HttpVerb.Update.value,
             url:          this._basePath,
             data:         {
+                query,
                 update
             },
             onLoad:       onLoadCallback,
@@ -1399,6 +1405,8 @@ class TDataBaseManager {
     }
 
     _deleteAll ( onLoadCallback, onProgressCallback, onErrorCallback ) {
+
+        const query = {}
 
         this._requestQueue.push( {
             _id:          `deleteAll_${Generate.id}`,
