@@ -46,7 +46,7 @@ class TInputDialog extends React.Component {
 
         const _id    = id || `tInputDialog_${_instanceCounter}`
         const _style = {}
-        const _class = ( className ) ? `tInputDialog ${className}` : 'tInputDialog'
+        const _class = (className) ? `tInputDialog ${className}` : 'tInputDialog'
 
         return (
             <t-input-dialog ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-input-dialog>

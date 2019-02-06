@@ -46,7 +46,7 @@ class TMessagePop extends React.Component {
 
         const _id    = id || `tMessagePop_${_instanceCounter}`
         const _style = {}
-        const _class = ( className ) ? `tMessagePop ${className}` : 'tMessagePop'
+        const _class = (className) ? `tMessagePop ${className}` : 'tMessagePop'
 
         return (
             <t-message-pop ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-message-pop>

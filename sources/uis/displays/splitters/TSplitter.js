@@ -10,7 +10,7 @@
 
 /* eslint-env browser */
 
-import Vue from '../../../../node_modules/vue/dist/vue.esm'
+import Vue    from '../../../../node_modules/vue/dist/vue.esm'
 import resize from 'vue-resize-directive'
 
 export default Vue.component( 'TSplitter', {
@@ -39,7 +39,7 @@ export default Vue.component( 'TSplitter', {
 
         computeClass () {
 
-            return ( this.isVertical ) ? 'tSplitter tSplitterVertical' : 'tSplitter tSplitterHorizontal'
+            return (this.isVertical) ? 'tSplitter tSplitterVertical' : 'tSplitter tSplitterHorizontal'
 
         },
 
@@ -47,9 +47,9 @@ export default Vue.component( 'TSplitter', {
 
             return {
                 display:  'flex',
-                flexFlow: ( this.isVertical ) ? 'row' : 'column',
+                flexFlow: (this.isVertical) ? 'row' : 'column',
                 overflow: 'hidden',
-                flex: 1
+                flex:     1
             }
 
         },

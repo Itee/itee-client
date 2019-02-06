@@ -21,58 +21,58 @@ export default Vue.component( 'TProgress', {
         </div>
     `,
 
-    props:      {
+    props: {
         orientation: {
-            type: String,
+            type:    String,
             default: 'horizontal'
         },
-        thickness: {
-            type: Number,
+        thickness:   {
+            type:    Number,
             default: 15
         },
-        state: {
-            type: String,
+        state:       {
+            type:    String,
             default: 'info'
         },
-        done: {
-            type: Number,
+        done:        {
+            type:    Number,
             default: 0
         },
-        todo: {
-            type: Number,
+        todo:        {
+            type:    Number,
             default: 100
         },
-        reverse: {
-            type: Boolean,
+        reverse:     {
+            type:    Boolean,
             default: false
         },
-        showLabel: {
-            type: Boolean,
+        showLabel:   {
+            type:    Boolean,
             default: true
         },
-        isVisible: {
-            type: Boolean,
+        isVisible:   {
+            type:    Boolean,
             default: true
         }
     },
 
     computed: {
 
-        _progress() {
+        _progress () {
 
-            return Math.ceil( ( this.done / this.todo ) * 100 )
+            return Math.ceil( (this.done / this.todo) * 100 )
 
         },
 
-        computeProgressStyle() {
+        computeProgressStyle () {
 
             let style = ''
 
-            if (this.orientation === 'vertical'){
+            if ( this.orientation === 'vertical' ) {
 
                 style += `width: ${this.thickness}px;`
 
-                if(this.reverse) {
+                if ( this.reverse ) {
                     style += 'flex-direction: column-reverse;'
                 }
 
@@ -80,24 +80,24 @@ export default Vue.component( 'TProgress', {
 
                 style += `height: ${this.thickness}px;`
 
-                if(this.reverse) {
+                if ( this.reverse ) {
                     style += 'flex-direction: row-reverse;'
                 }
 
             }
 
-            style += ( this.isVisible ) ? 'display:flex;' : 'display:none;'
+            style += (this.isVisible) ? 'display:flex;' : 'display:none;'
 
             return style
 
         },
 
-        computeProgressBarStyle() {
+        computeProgressBarStyle () {
 
             const progress = this._progress
-            let style = ''
+            let style      = ''
 
-            if (this.orientation === 'vertical'){
+            if ( this.orientation === 'vertical' ) {
                 style += `height: ${progress}%; width: ${this.thickness}px;`
             } else {
                 style += `width: ${progress}%; height: ${this.thickness}px;`
@@ -107,7 +107,7 @@ export default Vue.component( 'TProgress', {
 
         },
 
-        computeLabel() {
+        computeLabel () {
 
             return `${this._progress}%`
 

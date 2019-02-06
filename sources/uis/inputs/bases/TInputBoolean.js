@@ -27,9 +27,9 @@ export default Vue.component( 'TInputBoolean', {
     </div>
     `,
     props:    [ 'id', 'label', 'value', 'onChange' ],
-    methods: {
+    methods:  {
 
-        _onClick( event ) {
+        _onClick ( event ) {
 
             const newValue = !this.value
 

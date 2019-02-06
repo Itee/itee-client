@@ -24,7 +24,7 @@ import {
     Group,
     Mesh,
     MeshPhongMaterial,
-    ShapeBufferGeometry,
+    ShapeBufferGeometry
 } from 'three-full'
 
 import {
@@ -36,11 +36,11 @@ import {
 
 import { degreesToRadians } from 'itee-utils'
 
-import { ASCLoader } from './ASCLoader'
-import { SHPLoader } from './SHPLoader'
-import { DBFLoader } from './DBFLoader'
+import { ASCLoader }                from './ASCLoader'
+import { SHPLoader }                from './SHPLoader'
+import { DBFLoader }                from './DBFLoader'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
-import { FileFormat } from '../cores/TConstants'
+import { FileFormat }               from '../cores/TConstants'
 
 // Helpers
 /**
@@ -71,7 +71,7 @@ function getFileName ( fileUrl ) {
  */
 function getFileExtension ( fileName ) {
 
-    return fileName.slice( (fileName.lastIndexOf( "." ) - 1 >>> 0) + 2 );
+    return fileName.slice( (fileName.lastIndexOf( '.' ) - 1 >>> 0) + 2 )
 
 }
 
@@ -83,7 +83,7 @@ function getFileExtension ( fileName ) {
 function computeUrl ( fileUrl ) {
 
     const filePath = getFilePath( fileUrl )
-    const isBlob   = ( fileUrl.indexOf( 'blob' ) > -1 )
+    const isBlob   = (fileUrl.indexOf( 'blob' ) > -1)
 
     return (isBlob) ? filePath : fileUrl
 
@@ -114,14 +114,14 @@ Object.assign( TUniversalLoader.prototype, {
     load ( files, onLoad, onProgress, onError ) {
 
         if ( !files ) {
-            TLogger.error( "Unable to load null or undefined files !" )
+            TLogger.error( 'Unable to load null or undefined files !' )
             return
         }
 
         if ( files instanceof FileList ) {
 
             const numberOfFiles = files.length
-            TLogger.log( "numberOfFiles: " + numberOfFiles );
+            TLogger.log( 'numberOfFiles: ' + numberOfFiles )
 
             const filesUrls = []
             let fileUrl     = ''
@@ -259,7 +259,7 @@ Object.assign( TUniversalLoader.prototype, {
 
             this._loadObjMtlCouple( secondFile, firstFile, onLoad, onProgress, onError )
 
-        } else if ( firstFileExtension === FileFormat.Obj.value&& secondFileExtension === FileFormat.Mtl.value ) {
+        } else if ( firstFileExtension === FileFormat.Obj.value && secondFileExtension === FileFormat.Mtl.value ) {
 
             this._loadObjMtlCouple( firstFile, secondFile, onLoad, onProgress, onError )
 
@@ -581,7 +581,7 @@ Object.assign( TUniversalLoader.prototype, {
             }
 
             const group = new Group()
-            group.name  = "Locaux"
+            group.name  = 'Locaux'
 
             let mesh = undefined
             for ( let shapeIndex = 0, numberOfShapes = _shapes.length ; shapeIndex < numberOfShapes ; shapeIndex++ ) {

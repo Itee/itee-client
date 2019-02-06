@@ -42,7 +42,7 @@ class TLogingButton extends React.Component {
             //            }
 
             return (
-                <TDropDownMenu icon={"fa fa-user-circle-o"} align={'right'}>
+                <TDropDownMenu icon={'fa fa-user-circle-o'} align={'right'}>
                     <a href="#">Link 1</a>
                     <a href="#">Link 1</a>
                     <a href="#">Link 1</a>
@@ -72,8 +72,8 @@ class TLogingButton extends React.Component {
                 }
 
                 return (
-                    <a className={"logginBtn"} style={logginStyle} onClick={logInHandler}>
-                        <i className={"fa fa-key fa-flip-vertical"} style={iconStyle}></i>
+                    <a className={'logginBtn'} style={logginStyle} onClick={logInHandler}>
+                        <i className={'fa fa-key fa-flip-vertical'} style={iconStyle}></i>
                     </a>
                 )
 
@@ -89,8 +89,8 @@ class TLogingButton extends React.Component {
                 }
 
                 return (
-                    <a className={"logginBtn"} style={logginStyle} onClick={logInHandler}>
-                        <i className={"fa fa-key fa-flip-vertical"}></i>
+                    <a className={'logginBtn'} style={logginStyle} onClick={logInHandler}>
+                        <i className={'fa fa-key fa-flip-vertical'}></i>
                         {label}
                     </a>
                 )

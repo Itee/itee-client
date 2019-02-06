@@ -65,7 +65,7 @@ export default Vue.component( 'TInputObject', {
 
             return filteredProperties
 
-        },
+        }
 
     },
     methods:  {
@@ -81,7 +81,7 @@ export default Vue.component( 'TInputObject', {
             //Todo: Should return a deep copy updated ??!
             this.onChange( key, newValue )
 
-        },
+        }
 
         //        _availableProperty ( propertyName ) {
         //

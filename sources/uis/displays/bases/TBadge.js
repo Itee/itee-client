@@ -46,7 +46,7 @@ class TBadge extends React.Component {
 
         const _id    = id || `tBadge_${_instanceCounter}`
         const _style = {}
-        const _class = ( className ) ? `tBadge ${className}` : 'tBadge'
+        const _class = (className) ? `tBadge ${className}` : 'tBadge'
 
         return (
             <t-badge ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-badge>

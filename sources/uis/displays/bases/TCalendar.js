@@ -46,7 +46,7 @@ class TCalendar extends React.Component {
 
         const _id    = id || `tCalendar_${_instanceCounter}`
         const _style = {}
-        const _class = ( className ) ? `tCalendar ${className}` : 'tCalendar'
+        const _class = (className) ? `tCalendar ${className}` : 'tCalendar'
 
         return (
             <t-calendar ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-calendar>

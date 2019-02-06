@@ -8,8 +8,8 @@
 
 /* eslint-env browser */
 
-export { default as TDialog } from './TDialog'
-export { default as TDialogBody } from './TDialogBody'
+export { default as TDialog }       from './TDialog'
+export { default as TDialogBody }   from './TDialogBody'
 export { default as TDialogFooter } from './TDialogFooter'
 export { default as TDialogHeader } from './TDialogHeader'
 //export { default as TDialogArea } from './TDialogArea'

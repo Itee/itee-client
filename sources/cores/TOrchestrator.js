@@ -77,8 +77,8 @@ class TOrchestrator {
             request.onprogress = requestSkull.onProgress
             request.onerror    = requestSkull.onError
             request.open( requestSkull.method, requestSkull.url, true )
-            request.setRequestHeader( "Content-Type", "application/json" )
-            request.setRequestHeader( "Accept", "application/json" )
+            request.setRequestHeader( 'Content-Type', 'application/json' )
+            request.setRequestHeader( 'Accept', 'application/json' )
             request.responseType = requestSkull.responseType.value
 
             const dataToSend = (requestSkull.data && requestSkull.responseType === ResponseType.Json) ? JSON.stringify( requestSkull.data ) : requestSkull.data
@@ -94,7 +94,7 @@ class TOrchestrator {
 
         const processedRequestIndex = this._processQueue.indexOf( requestSkull )
         if ( processedRequestIndex > -1 ) {
-            this._processQueue.splice( processedRequestIndex, 1 );
+            this._processQueue.splice( processedRequestIndex, 1 )
         }
 
         requestSkull.onLoad( loadEvent )

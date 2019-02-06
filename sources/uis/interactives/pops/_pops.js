@@ -8,9 +8,9 @@
 
 /* eslint-env browser */
 
-export { TErrorPop } from './TErrorPop'
-export { TInfoPop } from './TInfoPop'
-export { TMessagePop } from './TMessagePop'
-export { TPop } from './TPop'
+export { TErrorPop }    from './TErrorPop'
+export { TInfoPop }     from './TInfoPop'
+export { TMessagePop }  from './TMessagePop'
+export { TPop }         from './TPop'
 export { TProgressPop } from './TProgressPop'
-export { TWarningPop } from './TWarningPop'
+export { TWarningPop }  from './TWarningPop'

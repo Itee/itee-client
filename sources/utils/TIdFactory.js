@@ -17,7 +17,6 @@ import {
     //    isNotUuid //todo
 } from 'itee-validators'
 
-
 //
 //const TIdFactoryType = Object.freeze( {
 //    Number: 0,
@@ -32,25 +31,25 @@ import {
 //} )
 
 const TIdFactoryType = Object.freeze( Object.defineProperties( {}, {
-    Number:          {
+    Number:   {
         value:      0,
         enumerable: true
     },
-    String:          {
+    String:   {
         value:      1,
         enumerable: true
     },
-    Uuid:            {
+    Uuid:     {
         value:      2,
         enumerable: true
     },
-    includes:        {
-        value: function includes( key ) {
-            return Object.values( this ).includes(key)
+    includes: {
+        value: function includes ( key ) {
+            return Object.values( this ).includes( key )
         }
     },
-    types: {
-        value: function types() {
+    types:    {
+        value: function types () {
             return Object.keys( this )
         }
     }

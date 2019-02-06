@@ -16,10 +16,10 @@ import {
     Vector3
 } from 'three-full'
 
-import { Keys } from '../cores/TConstants'
+import { Keys }                     from '../cores/TConstants'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 
-const PI_2 = Math.PI / 2
+const PI_2    = Math.PI / 2
 const STATE   = {
     NONE:   -1,
     ROTATE: 0,
@@ -38,7 +38,7 @@ const yVector = new Vector3( 0, 1, 0 )
 function TCameraPathController ( camera, domElement ) {
 
     if ( !camera ) {
-        TLogger.error( "Unable to create TCameraPathController with null or undefined camera !" )
+        TLogger.error( 'Unable to create TCameraPathController with null or undefined camera !' )
         return
     }
 
@@ -55,7 +55,7 @@ function TCameraPathController ( camera, domElement ) {
     this.currentPathIndex    = -1
     this.currentPathPosition = 0
 
-    this.domElement      = ( domElement !== undefined ) ? domElement : document
+    this.domElement      = (domElement !== undefined) ? domElement : document
     this.forwardControl  = this.domElement.children[ 0 ].children[ 0 ].children[ 0 ]
     this.backwardControl = this.domElement.children[ 0 ].children[ 1 ].children[ 0 ]
     this.timeoutId       = undefined
@@ -214,7 +214,7 @@ function TCameraPathController ( camera, domElement ) {
 
         } else {
 
-            TLogger.warn( "The key event is not implemented for key code: " + event.keyCode )
+            TLogger.warn( 'The key event is not implemented for key code: ' + event.keyCode )
 
         }
 

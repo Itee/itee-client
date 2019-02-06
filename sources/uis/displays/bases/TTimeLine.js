@@ -46,7 +46,7 @@ class TTimeLine extends React.Component {
 
         const _id    = id || `tTimeLine_${_instanceCounter}`
         const _style = {}
-        const _class = ( className ) ? `tTimeLine ${className}` : 'tTimeLine'
+        const _class = (className) ? `tTimeLine ${className}` : 'tTimeLine'
 
         return (
             <t-time-line ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-time-line>

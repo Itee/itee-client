@@ -51,7 +51,7 @@ class TBrand extends React.Component {
             padding:    '0 10px',
             cursor:     'pointer'
         }
-        const _class = ( className ) ? `tBrand ${className}` : 'tBrand'
+        const _class = (className) ? `tBrand ${className}` : 'tBrand'
 
         return (
             <t-brand id={_id} style={_style} class={_class}>

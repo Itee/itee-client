@@ -46,7 +46,7 @@ class TTransfer extends React.Component {
 
         const _id    = id || `tTransfer_${_instanceCounter}`
         const _style = {}
-        const _class = ( className ) ? `tTransfer ${className}` : 'tTransfer'
+        const _class = (className) ? `tTransfer ${className}` : 'tTransfer'
 
         return (
             <t-transfer ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-transfer>

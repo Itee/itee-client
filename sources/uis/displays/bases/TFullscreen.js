@@ -76,7 +76,7 @@ const FullScreen = {
      */
     bindKey ( opts ) {
 
-        opts         = opts || {}
+        opts           = opts || {}
         const charCode = opts.charCode || 'f'.charCodeAt( 0 )
         const dblclick = opts.dblclick !== undefined ? opts.dblclick : false
         const element  = opts.element

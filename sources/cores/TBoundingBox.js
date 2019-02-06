@@ -13,12 +13,12 @@
  * @constructor
  */
 function TBoundingBox () {
-    this.xMin = Number.MAX_VALUE;
-    this.xMax = Number.MIN_VALUE;
-    this.yMin = Number.MAX_VALUE;
-    this.yMax = Number.MIN_VALUE;
-    this.zMin = Number.MAX_VALUE;
-    this.zMax = Number.MIN_VALUE;
+    this.xMin = Number.MAX_VALUE
+    this.xMax = Number.MIN_VALUE
+    this.yMin = Number.MAX_VALUE
+    this.yMax = Number.MIN_VALUE
+    this.zMin = Number.MAX_VALUE
+    this.zMax = Number.MIN_VALUE
 }
 
 Object.assign( TBoundingBox.prototype, {
@@ -30,27 +30,27 @@ Object.assign( TBoundingBox.prototype, {
     computePoint ( point ) {
 
         if ( point.x < this.xMin ) {
-            this.xMin = point.x;
+            this.xMin = point.x
         }
 
         if ( point.x > this.xMax ) {
-            this.xMax = point.x;
+            this.xMax = point.x
         }
 
         if ( point.y < this.yMin ) {
-            this.yMin = point.y;
+            this.yMin = point.y
         }
 
         if ( point.y > this.yMax ) {
-            this.yMax = point.y;
+            this.yMax = point.y
         }
 
         if ( point.z < this.zMin ) {
-            this.zMin = point.z;
+            this.zMin = point.z
         }
 
         if ( point.z > this.zMax ) {
-            this.zMax = point.z;
+            this.zMax = point.z
         }
 
     },
@@ -62,7 +62,7 @@ Object.assign( TBoundingBox.prototype, {
     computePoints ( points ) {
 
         for ( let i = 0, numPts = points.length ; i < numPts ; ++i ) {
-            this.computePoint( points[ i ] );
+            this.computePoint( points[ i ] )
         }
 
     },

@@ -34,7 +34,7 @@ export default Vue.component( 'TInputColor', {
     props:    [ 'label', 'value', 'onChange' ],
     methods:  {
 
-        _inputColorOnChange( event ) {
+        _inputColorOnChange ( event ) {
 
             const color = event.target.value
 
@@ -57,7 +57,7 @@ export default Vue.component( 'TInputColor', {
         }
 
     },
-    created() {
+    created () {
 
         // value could be of differents types
         // we will need to use a standardized color in internal

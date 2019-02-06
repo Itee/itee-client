@@ -8,5 +8,5 @@
 
 /* eslint-env browser */
 
-export { TTab } from './TTab'
+export { TTab }       from './TTab'
 export { TTabLayout } from './TTabLayout'

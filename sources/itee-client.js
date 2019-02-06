@@ -14,30 +14,30 @@
 import '@babel/polyfill'
 
 // Import FontAwesome
-import { library } from '@fortawesome/fontawesome-svg-core'
-import { fab } from '@fortawesome/free-brands-svg-icons'
-import { far } from '@fortawesome/free-regular-svg-icons'
-import { fas } from '@fortawesome/free-solid-svg-icons'
+import { library }        from '@fortawesome/fontawesome-svg-core'
+import { fab }            from '@fortawesome/free-brands-svg-icons'
+import { far }            from '@fortawesome/free-regular-svg-icons'
+import { fas }            from '@fortawesome/free-solid-svg-icons'
 
 library.add( fab, far, fas )
 
 // Export es6 Three stuff
 //export * from 'three-full'
 //export * as Three from 'three-full'
-import * as Three from 'three-full'
+import * as Three         from 'three-full'
 
 export { Three }
 
 // Export Itee Dependencies
 //export * from 'itee-validators'
 //export * as Validator from 'itee-validators'
-import * as Validator from 'itee-validators'
+import * as Validator     from 'itee-validators'
 
 export { Validator }
 
 //export * from 'itee-utils'
 //export * as Utils from 'itee-utils'
-import * as Utils from 'itee-utils'
+import * as Utils         from 'itee-utils'
 
 export { Utils }
 

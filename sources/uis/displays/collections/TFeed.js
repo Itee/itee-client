@@ -46,7 +46,7 @@ class TFeed extends React.Component {
 
         const _id    = id || `tFeed_${_instanceCounter}`
         const _style = {}
-        const _class = ( className ) ? `tFeed ${className}` : 'tFeed'
+        const _class = (className) ? `tFeed ${className}` : 'tFeed'
 
         return (
             <t-feed ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-feed>

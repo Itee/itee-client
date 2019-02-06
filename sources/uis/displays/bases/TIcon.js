@@ -10,29 +10,29 @@
 
 /* eslint-env browser */
 
-import Vue from '../../../../node_modules/vue/dist/vue.esm'
+import Vue                 from '../../../../node_modules/vue/dist/vue.esm'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
-import { isObject } from 'itee-validators'
+import { isObject }        from 'itee-validators'
 
 // Todo: implement router facility here using target instead of clickHandler !
 
 export default Vue.component( 'TIcon', {
 
-    render:     function ( createElement ) {
+    render: function ( createElement ) {
 
         let dataObject = {
-            class: this.iconClass,
-            style: this.iconStyle,
-            attrs: this.iconAttrs,
-            props: ( isObject( this.iconProps ) ) ? this.iconProps : { icon: this.iconProps },
-            domProps: this.iconDomProps,
-            on: this.iconOn,
-            nativeOn: this.iconNativeOn,
-            directives: this.iconDirectives,
+            class:       this.iconClass,
+            style:       this.iconStyle,
+            attrs:       this.iconAttrs,
+            props:       (isObject( this.iconProps )) ? this.iconProps : { icon: this.iconProps },
+            domProps:    this.iconDomProps,
+            on:          this.iconOn,
+            nativeOn:    this.iconNativeOn,
+            directives:  this.iconDirectives,
             scopedSlots: this.iconScopedSlots,
-            slot: this.iconSlot,
-            key: this.iconKey,
-            ref: this.iconRef,
+            slot:        this.iconSlot,
+            key:         this.iconKey,
+            ref:         this.iconRef
         }
 
         return createElement(
@@ -42,7 +42,7 @@ export default Vue.component( 'TIcon', {
 
     },
 
-    props:      [ 'iconClass', 'iconStyle', 'iconAttrs', 'iconProps', 'iconDomProps', 'iconOn', 'iconNativeOn', 'iconDirectives', 'iconScopedSlots', 'iconSlot', 'iconKey', 'iconRef' ],
+    props: [ 'iconClass', 'iconStyle', 'iconAttrs', 'iconProps', 'iconDomProps', 'iconOn', 'iconNativeOn', 'iconDirectives', 'iconScopedSlots', 'iconSlot', 'iconKey', 'iconRef' ],
 
     components: {
         FontAwesomeIcon

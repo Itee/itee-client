@@ -40,21 +40,21 @@ export default Vue.component( 'TTree', {
         </TContainerVertical>
     `,
     props:    [ 'items', 'filters', 'sort', 'deepSelect', 'multiSelect', 'needUpdate', 'maxDeepLevel' ],
-//    data () {
-//
-//        return {
-//            forceUpdate: false
-//        }
-//
-//    },
+    //    data () {
+    //
+    //        return {
+    //            forceUpdate: false
+    //        }
+    //
+    //    },
     computed: {
 
         computedItems () {
 
             // force update
-//            if ( this.forceUpdate ) {
-//                this.forceUpdate = false
-//            }
+            //            if ( this.forceUpdate ) {
+            //                this.forceUpdate = false
+            //            }
 
             let items = this.items || []
 
@@ -68,21 +68,21 @@ export default Vue.component( 'TTree', {
 
             return items
 
-        },
+        }
 
-//        haveItems () {
-//
-//            return this.items && this.items.length > 0
-//
-//        },
+        //        haveItems () {
+        //
+        //            return this.items && this.items.length > 0
+        //
+        //        },
 
-//        forceUpdate () {
-//
-//            if ( this.needUpdate || !this.needUpdate ) {
-//                this.forceUpdate = true
-//            }
-//
-//        }
+        //        forceUpdate () {
+        //
+        //            if ( this.needUpdate || !this.needUpdate ) {
+        //                this.forceUpdate = true
+        //            }
+        //
+        //        }
 
     },
     methods:  {

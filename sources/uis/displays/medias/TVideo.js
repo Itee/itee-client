@@ -46,7 +46,7 @@ class TVideo extends React.Component {
 
         const _id    = id || `tVideo_${_instanceCounter}`
         const _style = {}
-        const _class = ( className ) ? `tVideo ${className}` : 'tVideo'
+        const _class = (className) ? `tVideo ${className}` : 'tVideo'
 
         return (
             <t-video ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-video>

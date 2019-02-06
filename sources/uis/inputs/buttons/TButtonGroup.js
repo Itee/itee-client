@@ -33,7 +33,7 @@ export default Vue.component( 'TButtonGroup', {
         isBlock:    {
             type:    Boolean,
             default: false
-        },
+        }
     },
     computed: {
 
@@ -48,7 +48,7 @@ export default Vue.component( 'TButtonGroup', {
             }
 
             const isBlock = this.isBlock
-            if(isBlock) {
+            if ( isBlock ) {
                 result += ' d-flex'
             }
 

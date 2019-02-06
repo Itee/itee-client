@@ -18,50 +18,50 @@ import {
     LinearFilter,
     UVMapping,
     AdditiveBlending
-} from '../../node_modules/threejs-full-es6/sources/constants'
-import { AnimationMixer } from '../../node_modules/threejs-full-es6/sources/animation/AnimationMixer'
-import { AxesHelper } from '../../node_modules/threejs-full-es6/sources/helpers/AxesHelper'
-import { BoxHelper } from '../../node_modules/threejs-full-es6/sources/helpers/BoxHelper'
-import { SkeletonHelper } from '../../node_modules/threejs-full-es6/sources/helpers/SkeletonHelper'
-import { AmbientLight } from '../../node_modules/threejs-full-es6/sources/lights/AmbientLight'
-import { Color } from '../../node_modules/threejs-full-es6/sources/math/Color'
-import { Vector3 } from '../../node_modules/threejs-full-es6/sources/math/Vector3'
-import { Matrix4 } from '../../node_modules/threejs-full-es6/sources/math/Matrix4'
-import { Frustum } from '../../node_modules/threejs-full-es6/sources/math/Frustum'
-import { Plane } from '../../node_modules/threejs-full-es6/sources/math/Plane'
-import { Line } from '../../node_modules/threejs-full-es6/sources/objects/Line'
-import { LineSegments } from '../../node_modules/threejs-full-es6/sources/objects/LineSegments'
-import { Group } from '../../node_modules/threejs-full-es6/sources/objects/Group'
-import { Mesh } from '../../node_modules/threejs-full-es6/sources/objects/Mesh'
-import { SkinnedMesh } from '../../node_modules/threejs-full-es6/sources/objects/SkinnedMesh'
-import { Object3D } from '../../node_modules/threejs-full-es6/sources/core/Object3D'
-import { Scene } from '../../node_modules/threejs-full-es6/sources/scenes/Scene'
-import { WireframeGeometry } from '../../node_modules/threejs-full-es6/sources/geometries/WireframeGeometry'
-import { TubeGeometry } from '../../node_modules/threejs-full-es6/sources/geometries/TubeGeometry'
+}                               from '../../node_modules/threejs-full-es6/sources/constants'
+import { AnimationMixer }       from '../../node_modules/threejs-full-es6/sources/animation/AnimationMixer'
+import { AxesHelper }           from '../../node_modules/threejs-full-es6/sources/helpers/AxesHelper'
+import { BoxHelper }            from '../../node_modules/threejs-full-es6/sources/helpers/BoxHelper'
+import { SkeletonHelper }       from '../../node_modules/threejs-full-es6/sources/helpers/SkeletonHelper'
+import { AmbientLight }         from '../../node_modules/threejs-full-es6/sources/lights/AmbientLight'
+import { Color }                from '../../node_modules/threejs-full-es6/sources/math/Color'
+import { Vector3 }              from '../../node_modules/threejs-full-es6/sources/math/Vector3'
+import { Matrix4 }              from '../../node_modules/threejs-full-es6/sources/math/Matrix4'
+import { Frustum }              from '../../node_modules/threejs-full-es6/sources/math/Frustum'
+import { Plane }                from '../../node_modules/threejs-full-es6/sources/math/Plane'
+import { Line }                 from '../../node_modules/threejs-full-es6/sources/objects/Line'
+import { LineSegments }         from '../../node_modules/threejs-full-es6/sources/objects/LineSegments'
+import { Group }                from '../../node_modules/threejs-full-es6/sources/objects/Group'
+import { Mesh }                 from '../../node_modules/threejs-full-es6/sources/objects/Mesh'
+import { SkinnedMesh }          from '../../node_modules/threejs-full-es6/sources/objects/SkinnedMesh'
+import { Object3D }             from '../../node_modules/threejs-full-es6/sources/core/Object3D'
+import { Scene }                from '../../node_modules/threejs-full-es6/sources/scenes/Scene'
+import { WireframeGeometry }    from '../../node_modules/threejs-full-es6/sources/geometries/WireframeGeometry'
+import { TubeGeometry }         from '../../node_modules/threejs-full-es6/sources/geometries/TubeGeometry'
 import { SphereBufferGeometry } from '../../node_modules/threejs-full-es6/sources/geometries/SphereGeometry'
-import { LineCurve } from '../../node_modules/threejs-full-es6/sources/curves/LineCurve'
-import { CatmullRomCurve3 } from '../../node_modules/threejs-full-es6/sources/curves/CatmullRomCurve3'
-import { LineBasicMaterial } from '../../node_modules/threejs-full-es6/sources/materials/LineBasicMaterial'
-import { MeshLambertMaterial } from '../../node_modules/threejs-full-es6/sources/materials/MeshLambertMaterial'
-import { SpriteMaterial } from '../../node_modules/threejs-full-es6/sources/materials/SpriteMaterial'
-import { Texture } from '../../node_modules/threejs-full-es6/sources/textures/Texture'
-import { JSONLoader } from '../../node_modules/threejs-full-es6/sources/loaders/JSONLoader'
-import { ImageLoader } from '../../node_modules/threejs-full-es6/sources/loaders/ImageLoader'
-import { Sprite } from '../../node_modules/threejs-full-es6/sources/objects/Sprite'
-import { Geometry } from '../../node_modules/threejs-full-es6/sources/core/Geometry'
+import { LineCurve }            from '../../node_modules/threejs-full-es6/sources/curves/LineCurve'
+import { CatmullRomCurve3 }     from '../../node_modules/threejs-full-es6/sources/curves/CatmullRomCurve3'
+import { LineBasicMaterial }    from '../../node_modules/threejs-full-es6/sources/materials/LineBasicMaterial'
+import { MeshLambertMaterial }  from '../../node_modules/threejs-full-es6/sources/materials/MeshLambertMaterial'
+import { SpriteMaterial }       from '../../node_modules/threejs-full-es6/sources/materials/SpriteMaterial'
+import { Texture }              from '../../node_modules/threejs-full-es6/sources/textures/Texture'
+import { JSONLoader }           from '../../node_modules/threejs-full-es6/sources/loaders/JSONLoader'
+import { ImageLoader }          from '../../node_modules/threejs-full-es6/sources/loaders/ImageLoader'
+import { Sprite }               from '../../node_modules/threejs-full-es6/sources/objects/Sprite'
+import { Geometry }             from '../../node_modules/threejs-full-es6/sources/core/Geometry'
 
 import {
     extend,
     createInterval,
     uniq
-} from '../utils/TObjectUtil'
-import { removeDiacritics } from '../utils/TStringUtil'
-import { TUniversalLoader } from '../loaders/TUniversalLoader'
-import { dockspawn } from '../third_party/dock-spawn'
-import { TViewport } from './TViewport'
-import { DefaultLogger as TLogger } from '../loggers/TLogger'
+}                                               from '../utils/TObjectUtil'
+import { removeDiacritics }                     from '../utils/TStringUtil'
+import { TUniversalLoader }                     from '../loaders/TUniversalLoader'
+import { dockspawn }                            from '../third_party/dock-spawn'
+import { TViewport }                            from './TViewport'
+import { DefaultLogger as TLogger }             from '../loggers/TLogger'
 import { TDataBaseManager as CompaniesManager } from '../managers/TDataBaseManager'
-import { TDataBaseManager as SitesManager } from '../managers/TDataBaseManager'
+import { TDataBaseManager as SitesManager }     from '../managers/TDataBaseManager'
 import { TDataBaseManager as BuildingsManager } from '../managers/TDataBaseManager'
 import {
     TScenesManager,
@@ -69,8 +69,8 @@ import {
     TGeometriesManager,
     TMaterialsManager,
     TPointsManager
-} from '../managers/databases/_databases'
-import { degreesToRadians } from '../maths/TMath'
+}                                               from '../managers/databases/_databases'
+import { degreesToRadians }                     from '../maths/TMath'
 
 //import { SplitModifier } from '../../build/tmp/SplitModifier'
 
@@ -84,22 +84,22 @@ import { degreesToRadians } from '../maths/TMath'
 function TApplication ( container, parameters, onReady ) {
 
     if ( !container ) {
-        TLogger.error( "Undefined or null container:" + container );
+        TLogger.error( 'Undefined or null container:' + container )
         return
     }
     if ( !parameters ) {
-        TLogger.error( "Undefined or null parameters:" + parameters );
+        TLogger.error( 'Undefined or null parameters:' + parameters )
         return
     }
     if ( !onReady ) {
-        TLogger.error( "Undefined or null onReady:" + onReady );
+        TLogger.error( 'Undefined or null onReady:' + onReady )
         return
     }
 
     //TLogger.time( "TApplication" )
-    TLogger.log( "Starting TApplication..." )
+    TLogger.log( 'Starting TApplication...' )
 
-    const self      = this;
+    const self = this
 
     // Recursive merging parameter
     const _parameters = extend( {
@@ -113,8 +113,8 @@ function TApplication ( container, parameters, onReady ) {
     this.imageLoader = new ImageLoader()
 
     // Usefull for shot updates
-    this.frustum                    = new Frustum();
-    this.cameraViewProjectionMatrix = new Matrix4();
+    this.frustum                    = new Frustum()
+    this.cameraViewProjectionMatrix = new Matrix4()
 
     this.viewer            = ''
     this.previousImageShot = undefined
@@ -209,13 +209,13 @@ function TApplication ( container, parameters, onReady ) {
 
             }
 
-            this.toggleXRay = false;
+            this.toggleXRay = false
             const xRayBtn   = document.getElementById( 'xRayBtn' )
             if ( xRayBtn ) {
 
                 xRayBtn.addEventListener( 'click', ( event ) => {
 
-                    self.toggleXRay = !self.toggleXRay;
+                    self.toggleXRay = !self.toggleXRay
                     self.changeMaterialSide.call( self, self.webglViewport.scene.children, self.toggleXRay )
 
                 } )
@@ -227,7 +227,7 @@ function TApplication ( container, parameters, onReady ) {
 
                 selectBtn.addEventListener( 'click', ( event ) => {
 
-                    self.webglViewport.isRaycastable = !self.webglViewport.isRaycastable;
+                    self.webglViewport.isRaycastable = !self.webglViewport.isRaycastable
 
                 } )
 
@@ -240,7 +240,7 @@ function TApplication ( container, parameters, onReady ) {
                     for ( let i = 0, element = undefined ; element = cameraModes[ i ] ; i++ ) {
                         element.addEventListener( 'click', ( event ) => {
 
-                            const child      = this.getElementsByTagName( "a" )
+                            const child      = this.getElementsByTagName( 'a' )
                             const cameraMode = child.getAttribute( 'data-value' )
                             self.setCameraMode.call( self, cameraMode )
 
@@ -297,8 +297,8 @@ function TApplication ( container, parameters, onReady ) {
 
             // Docking view
             // Convert a div to a dock manager.  Panels can then be docked on to it
-            this.mainContainer = new dockspawn.DockManager( container );
-            this.mainContainer.initialize();
+            this.mainContainer = new dockspawn.DockManager( container )
+            this.mainContainer.initialize()
             window.addEventListener( 'resize', () => {
 
                 // Important: need to reset the mainContainer size else DockManager will get false dimension
@@ -306,7 +306,7 @@ function TApplication ( container, parameters, onReady ) {
                 self.mainContainer.element.style.height = '100%'
                 self.mainContainer.invalidate()
 
-            }, true );
+            }, true )
 
             const documentNode = this.mainContainer.context.model.documentManagerNode
 
@@ -314,13 +314,13 @@ function TApplication ( container, parameters, onReady ) {
             // They can then be docked on to the dock manager
             // Panels get a titlebar and a close button, and can also be
             // converted to a floating dialog box which can be dragged / resized
-            const treeViewContainer = document.getElementById( "treeViewContainer" )
+            const treeViewContainer = document.getElementById( 'treeViewContainer' )
             if ( treeViewContainer ) {
                 this.treeView      = new dockspawn.PanelContainer( treeViewContainer, this.mainContainer, 'Projet' )
                 const solutionNode = this.mainContainer.dockLeft( documentNode, this.treeView, 0.20 )
             }
 
-            const webglViewportContainer = document.getElementById( "webglViewportContainer" )
+            const webglViewportContainer = document.getElementById( 'webglViewportContainer' )
             if ( webglViewportContainer ) {
                 this.webglViewportDockContainer = new dockspawn.PanelContainer( webglViewportContainer, this.mainContainer, 'Maquette' )
                 const outlineNode               = this.mainContainer.dockFill( documentNode, this.webglViewportDockContainer )
@@ -484,8 +484,8 @@ function TApplication ( container, parameters, onReady ) {
             if ( this.splitToolButton ) {
 
                 this.globalPlane          = new Plane( new Vector3( 0, -1, 0 ), 0.8 )
-                this.splitToolToggle      = false;
-                this.spliterSliderControl = new Slider( "#spliterSliderControl", {
+                this.splitToolToggle      = false
+                this.spliterSliderControl = new Slider( '#spliterSliderControl', {
                     reversed:         true,
                     min:              -50,
                     max:              85,
@@ -493,24 +493,24 @@ function TApplication ( container, parameters, onReady ) {
                     orientation:      'vertical',
                     tooltip_position: 'left',
                     precision:        2
-                } );
-                this.spliterSliderControl.on( "slide", function ( sliderValue ) {
+                } )
+                this.spliterSliderControl.on( 'slide', function ( sliderValue ) {
 
                     //                self.globalPlane.position.y = sliderValue / 10;
-                    self.globalPlane.constant = sliderValue;
+                    self.globalPlane.constant = sliderValue
 
-                } );
+                } )
 
-                self.spliterSliderControl.$sliderElem[ 0 ].style.display = 'none';
+                self.spliterSliderControl.$sliderElem[ 0 ].style.display = 'none'
 
                 this.splitToolButton.onclick = function ( event ) {
 
-                    self.splitToolToggle = !self.splitToolToggle;
+                    self.splitToolToggle = !self.splitToolToggle
 
-                    self.spliterSliderControl.$sliderElem[ 0 ].style.display = ( self.splitToolToggle ) ? 'block' : 'none';
-                    self.globalPlane.visible                                 = self.splitToolToggle;
+                    self.spliterSliderControl.$sliderElem[ 0 ].style.display = (self.splitToolToggle) ? 'block' : 'none'
+                    self.globalPlane.visible                                 = self.splitToolToggle
 
-                    self.webglViewport.renderer.clippingPlanes = ( self.splitToolToggle ) ? [ self.globalPlane ] : [];
+                    self.webglViewport.renderer.clippingPlanes = (self.splitToolToggle) ? [ self.globalPlane ] : []
                     //OR
                     //                if( self.splitToolToggle ) {
                     //
@@ -528,7 +528,7 @@ function TApplication ( container, parameters, onReady ) {
                     //
                     //                }
 
-                    event.preventDefault();
+                    event.preventDefault()
 
                 }
 
@@ -552,20 +552,20 @@ function TApplication ( container, parameters, onReady ) {
             //
             //                const importInput   = $( "#importInput" )
             //                const files         = importInput[ 0 ].files
-//                            const numberOfFiles = files.length
-//                            TLogger.log( "numberOfFiles: " + numberOfFiles );
-//
-//                            const filesUrls = []
-//                            let fileUrl     = ''
-//                            let fileIndex   = undefined
-//                            let fileObject  = undefined
-//
-//                            for ( fileIndex = 0 ; fileIndex < numberOfFiles ; ++fileIndex ) {
-//                                fileObject = files[ fileIndex ]
-//                                fileUrl    = URL.createObjectURL( fileObject ) + '/' + fileObject.name
-//
-//                                filesUrls.push( { url: fileUrl } )
-//                            }
+            //                            const numberOfFiles = files.length
+            //                            TLogger.log( "numberOfFiles: " + numberOfFiles );
+            //
+            //                            const filesUrls = []
+            //                            let fileUrl     = ''
+            //                            let fileIndex   = undefined
+            //                            let fileObject  = undefined
+            //
+            //                            for ( fileIndex = 0 ; fileIndex < numberOfFiles ; ++fileIndex ) {
+            //                                fileObject = files[ fileIndex ]
+            //                                fileUrl    = URL.createObjectURL( fileObject ) + '/' + fileObject.name
+            //
+            //                                filesUrls.push( { url: fileUrl } )
+            //                            }
             //
             //                self.loadObjectFromURL( filesUrls )
             //
@@ -598,19 +598,19 @@ function TApplication ( container, parameters, onReady ) {
             scenesIds:            null,
             objectsIds:           null,
             lookAtObjectWithId:   null,
-            lookAtObjectWithName: null,
+            lookAtObjectWithName: null
         }, parameters )
 
-        self.companiesManager  = new CompaniesManager()
+        self.companiesManager          = new CompaniesManager()
         self.companiesManager.basePath = '/companies'
 
-        self.sitesManager      = new SitesManager()
+        self.sitesManager          = new SitesManager()
         self.sitesManager.basePath = '/sites'
 
-        self.buildingsManager  = new BuildingsManager()
+        self.buildingsManager          = new BuildingsManager()
         self.buildingsManager.basePath = '/buildings'
 
-//        self.scenesManager     = new TScenesManager()
+        //        self.scenesManager     = new TScenesManager()
         self.objectsManager    = new TObjectsManager()
         self.geometriesManager = new TGeometriesManager()
         self.materialsManager  = new TMaterialsManager()
@@ -643,14 +643,14 @@ function TApplication ( container, parameters, onReady ) {
 
         if ( _parameters.fromDatabase ) {
 
-//            self.pointCloudManager = new TPointsManager( this.webglViewport )
+            //            self.pointCloudManager = new TPointsManager( this.webglViewport )
             self.pointCloudManager.setGlobalOffset( _parameters.globalOffset )
             if ( _parameters.samplingMin ) { self.pointCloudManager.setMinimumSamplingLimit( _parameters.samplingMin ) }
 
             self.pointCloudManager.getPointClouds( () => {
                 _pointCloudReady = true
                 _checkReady()
-            } );
+            } )
 
         }
 
@@ -691,7 +691,7 @@ function TApplication ( container, parameters, onReady ) {
 
                 mesh.name = 'Avatar'
 
-                var rad = 115 * Math.PI / 180;
+                var rad = 115 * Math.PI / 180
                 mesh.rotateY( rad )
 
                 onLoad( mesh )
@@ -750,8 +750,8 @@ function TApplication ( container, parameters, onReady ) {
                     self.webglViewport.scene.add( skeletonHelper )
 
                     // play animation
-                    var mixer = new AnimationMixer( skeletonHelper );
-                    mixer.clipAction( object.clip ).setEffectiveWeight( 1.0 ).play();
+                    var mixer = new AnimationMixer( skeletonHelper )
+                    mixer.clipAction( object.clip ).setEffectiveWeight( 1.0 ).play()
                     mixers.push( mixer )
 
                 } else {
@@ -1061,21 +1061,21 @@ function TApplication ( container, parameters, onReady ) {
 
         window.addEventListener( 'message', function ( event ) {
 
-            TLogger.log( event.data );
+            TLogger.log( event.data )
 
             // IMPORTANT: Check the origin of the data!
             if ( ~event.origin.indexOf( 'http://yoursite.com' ) ) {
                 // The data has been sent from your site
 
                 // The data sent with postMessage is stored in event.data
-                TLogger.log( event.data );
+                TLogger.log( event.data )
             } else {
                 // The data hasn't been sent from your site!
                 // Be careful! Do not use it.
-                return;
+                return
             }
 
-        } );
+        } )
 
         // Update meshes
         //        self.webglViewport.orbitControl.addEventListener( 'end', self.updateMeshResolution.bind( self ) )
@@ -1090,14 +1090,14 @@ function TApplication ( container, parameters, onReady ) {
         self.webglViewport.addEventListener( 'measureEnd', self.endMeasure.bind( self ) )
 
         // Todo: Set correct global bounding box offset
-        window.addEventListener( "keydown", function ( event ) {
+        window.addEventListener( 'keydown', function ( event ) {
             if ( event.defaultPrevented ) {
-                return; // Should do nothing if the key event was already consumed.
+                return // Should do nothing if the key event was already consumed.
             }
 
             switch ( event.key ) {
 
-                case "2":
+                case '2':
                     self.webglViewport.camera.position.x = 160 + 0
                     self.webglViewport.camera.position.y = 15 + 0
                     self.webglViewport.camera.position.z = 70 + 250
@@ -1105,9 +1105,9 @@ function TApplication ( container, parameters, onReady ) {
                     self.webglViewport.orbitControl.target.x = 160
                     self.webglViewport.orbitControl.target.y = 15
                     self.webglViewport.orbitControl.target.z = 70
-                    break;
+                    break
 
-                case "4":
+                case '4':
                     self.webglViewport.camera.position.x = 160 - 250
                     self.webglViewport.camera.position.y = 15 + 0
                     self.webglViewport.camera.position.z = 70 + 0
@@ -1115,9 +1115,9 @@ function TApplication ( container, parameters, onReady ) {
                     self.webglViewport.orbitControl.target.x = 160
                     self.webglViewport.orbitControl.target.y = 15
                     self.webglViewport.orbitControl.target.z = 70
-                    break;
+                    break
 
-                case "5":
+                case '5':
                     self.webglViewport.camera.position.x = 160 + 0
                     self.webglViewport.camera.position.y = 15 + 250
                     self.webglViewport.camera.position.z = 70 + 0
@@ -1125,9 +1125,9 @@ function TApplication ( container, parameters, onReady ) {
                     self.webglViewport.orbitControl.target.x = 160
                     self.webglViewport.orbitControl.target.y = 15
                     self.webglViewport.orbitControl.target.z = 70
-                    break;
+                    break
 
-                case "6":
+                case '6':
                     self.webglViewport.camera.position.x = 160 + 250
                     self.webglViewport.camera.position.y = 15 + 0
                     self.webglViewport.camera.position.z = 70 + 0
@@ -1135,9 +1135,9 @@ function TApplication ( container, parameters, onReady ) {
                     self.webglViewport.orbitControl.target.x = 160
                     self.webglViewport.orbitControl.target.y = 15
                     self.webglViewport.orbitControl.target.z = 70
-                    break;
+                    break
 
-                case "8":
+                case '8':
                     self.webglViewport.camera.position.x = 160 + 0
                     self.webglViewport.camera.position.y = 15 + 0
                     self.webglViewport.camera.position.z = 70 - 250
@@ -1145,17 +1145,17 @@ function TApplication ( container, parameters, onReady ) {
                     self.webglViewport.orbitControl.target.x = 160
                     self.webglViewport.orbitControl.target.y = 15
                     self.webglViewport.orbitControl.target.z = 70
-                    break;
+                    break
 
                 default:
-                    return; // Quit when this doesn't handle the key event.
+                    return // Quit when this doesn't handle the key event.
             }
 
-            self.webglViewport.orbitControl.update();
+            self.webglViewport.orbitControl.update()
 
             // Consume the event for suppressing "double action".
-            event.preventDefault();
-        }, true );
+            event.preventDefault()
+        }, true )
 
         _listenerReady = true
         _checkReady()
@@ -1188,7 +1188,7 @@ function TApplication ( container, parameters, onReady ) {
         _initURLQuery.call( self, _parameters.urlQuery )
         _initListener.call( self )
 
-    })();
+    })()
 
 }
 
@@ -1210,7 +1210,7 @@ Object.assign( TApplication, {
 
         if ( !particularEmbranchments ) {
 
-            TLogger.error( "Unable to create particular embranchment group with null or undefined particular embranchment !!!" )
+            TLogger.error( 'Unable to create particular embranchment group with null or undefined particular embranchment !!!' )
             return
 
         }
@@ -1297,7 +1297,7 @@ Object.assign( TApplication, {
 
             // Create ID sprit
             if ( generateSpritId ) {
-                sprit            = TApplication.createSprite( "BP: " + bpId )
+                sprit            = TApplication.createSprite( 'BP: ' + bpId )
                 sprit.position.x = (firstPoint.x + lastPoint.x) / 2
                 sprit.position.y = ((firstPoint.y + lastPoint.y) / 2) + 0.2
                 sprit.position.z = (firstPoint.z + lastPoint.z) / 2
@@ -1310,7 +1310,7 @@ Object.assign( TApplication, {
 
         //	particularEmbranchmentGroup.rotation.x -= Math.PI / 2
 
-        return particularEmbranchmentGroup;
+        return particularEmbranchmentGroup
 
     },
 
@@ -1326,7 +1326,7 @@ Object.assign( TApplication, {
 
         if ( !nodes ) {
 
-            TLogger.error( "Unable to create node group with null or undefined nodes !!!" )
+            TLogger.error( 'Unable to create node group with null or undefined nodes !!!' )
             return
 
         }
@@ -1361,7 +1361,7 @@ Object.assign( TApplication, {
                 coordinates[ 2 ] - 60
             )
 
-            geometry = new SphereBufferGeometry( 0.1, 16, 16 );
+            geometry = new SphereBufferGeometry( 0.1, 16, 16 )
             geometry.translate( position.x, position.y, position.z )
 
             material = new MeshLambertMaterial( {
@@ -1390,7 +1390,7 @@ Object.assign( TApplication, {
                     geometry.computeBoundingSphere()
                 }
 
-                sprit            = TApplication.createSprite( "N: " + nodeId )
+                sprit            = TApplication.createSprite( 'N: ' + nodeId )
                 sprit.position.x = geometry.boundingSphere.center.x
                 sprit.position.y = geometry.boundingSphere.center.y
                 sprit.position.z = geometry.boundingSphere.center.z
@@ -1420,7 +1420,7 @@ Object.assign( TApplication, {
 
         if ( !sections ) {
 
-            TLogger.error( "Unable to create section group with null or undefined sections !!!" )
+            TLogger.error( 'Unable to create section group with null or undefined sections !!!' )
             return
 
         }
@@ -1478,7 +1478,7 @@ Object.assign( TApplication, {
                 streetName:    section.properties.NOM_VOIE,
                 regulated:     section.properties.REGULE,
                 type:          section.properties.TYPE,
-                effluentsType: section.properties.TYPE_EFFLU,
+                effluentsType: section.properties.TYPE_EFFLU
             }
 
             // TRANSFORME ZUP/YFOR to YUP/-ZFOR
@@ -1493,7 +1493,7 @@ Object.assign( TApplication, {
                 firstPoint = geometry.vertices[ 0 ]
                 lastPoint  = geometry.vertices[ geometry.vertices.length - 1 ]
 
-                sprit            = TApplication.createSprite( "T: " + sectionId )
+                sprit            = TApplication.createSprite( 'T: ' + sectionId )
                 sprit.position.x = (firstPoint.x + lastPoint.x) / 2
                 sprit.position.y = ((firstPoint.y + lastPoint.y) / 2) + 0.2
                 sprit.position.z = (firstPoint.z + lastPoint.z) / 2
@@ -1525,7 +1525,7 @@ Object.assign( TApplication, {
 
         if ( !pathFile ) {
 
-            TLogger.error( "Unable to create path group with null or undefined paths !!!" )
+            TLogger.error( 'Unable to create path group with null or undefined paths !!!' )
             return
 
         }
@@ -1547,7 +1547,7 @@ Object.assign( TApplication, {
         for ( var i = 0 ; i < numberOfLines ; i++ ) {
 
             line  = lines[ i ]
-            words = line.split( " " )
+            words = line.split( ' ' )
 
             if ( words.length === 1 ) {
 
@@ -1559,7 +1559,7 @@ Object.assign( TApplication, {
 
             } else if ( words.length === 2 ) {
 
-                pathId = words[ 1 ].replace( /(\r\n|\n|\r)/gm, "" )
+                pathId = words[ 1 ].replace( /(\r\n|\n|\r)/gm, '' )
 
                 geometry.rotateX( -(Math.PI / 2) )
                 path      = new Line( geometry, material )
@@ -1577,7 +1577,7 @@ Object.assign( TApplication, {
                     var firstPoint = geometry.vertices[ 0 ]
                     var lastPoint  = geometry.vertices[ geometry.vertices.length - 1 ]
 
-                    var sprit        = TApplication.createSprite( "P: " + pathId )
+                    var sprit        = TApplication.createSprite( 'P: ' + pathId )
                     sprit.position.x = (firstPoint.x + lastPoint.x) / 2
                     sprit.position.y = ((firstPoint.y + lastPoint.y) / 2) - 0.5
                     sprit.position.z = (firstPoint.z + lastPoint.z) / 2
@@ -1601,7 +1601,7 @@ Object.assign( TApplication, {
 
             } else {
 
-                TLogger.error( "Invalid words: " + words )
+                TLogger.error( 'Invalid words: ' + words )
 
             }
 
@@ -1619,37 +1619,37 @@ Object.assign( TApplication, {
      */
     createSprite ( message, parameters ) {
 
-        var spriteSideLength = (parameters && parameters.spriteSideLength) ? parameters.spriteSideLength : 300;
-        var fontFace         = (parameters && parameters.fontFace) ? parameters.fontFace : "Arial";
-        var fontSize         = (parameters && parameters.fontSize) ? parameters.fontSize : "32";
-        var textColor        = (parameters && parameters.textColor) ? parameters.textColor : "white";
+        var spriteSideLength = (parameters && parameters.spriteSideLength) ? parameters.spriteSideLength : 300
+        var fontFace         = (parameters && parameters.fontFace) ? parameters.fontFace : 'Arial'
+        var fontSize         = (parameters && parameters.fontSize) ? parameters.fontSize : '32'
+        var textColor        = (parameters && parameters.textColor) ? parameters.textColor : 'white'
 
-        var spriteCenter = spriteSideLength / 2;
+        var spriteCenter = spriteSideLength / 2
 
-        var canvas    = document.createElement( 'canvas' );
-        canvas.width  = spriteSideLength;
-        canvas.height = spriteSideLength;
+        var canvas    = document.createElement( 'canvas' )
+        canvas.width  = spriteSideLength
+        canvas.height = spriteSideLength
 
         // get size data (height depends only on font size)
-        var context = canvas.getContext( '2d' );
+        var context = canvas.getContext( '2d' )
 
-        context.font  = "Bold " + fontSize + "px " + fontFace;
-        var textWidth = Math.round( context.measureText( message ).width );
+        context.font  = 'Bold ' + fontSize + 'px ' + fontFace
+        var textWidth = Math.round( context.measureText( message ).width )
 
-        context.fillStyle = textColor;
-        context.fillText( message, spriteCenter - (textWidth / 2), spriteCenter + ( Number.parseInt( fontSize ) / 2) );
+        context.fillStyle = textColor
+        context.fillText( message, spriteCenter - (textWidth / 2), spriteCenter + (Number.parseInt( fontSize ) / 2) )
 
         // canvas contents will be used for a texture
         var texture         = new Texture( canvas )
         texture.minFilter   = LinearFilter
         texture.mapping     = UVMapping
-        texture.needsUpdate = true;
+        texture.needsUpdate = true
 
         var spriteMaterial = new SpriteMaterial( {
             map: texture
-        } );
+        } )
 
-        return new Sprite( spriteMaterial );
+        return new Sprite( spriteMaterial )
 
     },
 
@@ -1662,7 +1662,7 @@ Object.assign( TApplication, {
 
         if ( !splinePaths ) {
 
-            TLogger.error( "Unable to create flow particles group with null or undefined spline paths !!!" )
+            TLogger.error( 'Unable to create flow particles group with null or undefined spline paths !!!' )
             return
 
         }
@@ -1678,13 +1678,13 @@ Object.assign( TApplication, {
 
         var flowParticulTexture         = new Texture( particleTexture )
         flowParticulTexture.minFilter   = LinearFilter
-        flowParticulTexture.needsUpdate = true;
+        flowParticulTexture.needsUpdate = true
 
         var flowMaterial = new SpriteMaterial( {
             map:      flowParticulTexture,
             color:    new Color( 0x4286f4 ),
             blending: AdditiveBlending
-        } );
+        } )
 
         for ( var pathIndex = 0, numberOfPaths = splinePaths.length ; pathIndex < numberOfPaths ; pathIndex++ ) {
 
@@ -1728,7 +1728,7 @@ Object.assign( TApplication, {
     computeSplinePath ( meshGroup, debug ) {
 
         if ( !meshGroup ) {
-            TLogger.error( "Unable to compute spline path with null or undefined linear meshes !!!" )
+            TLogger.error( 'Unable to compute spline path with null or undefined linear meshes !!!' )
             return
         }
 
@@ -1740,10 +1740,10 @@ Object.assign( TApplication, {
 
         for ( var sectionIndex = 0, numberOfSection = meshGroup.children.length ; sectionIndex < numberOfSection ; sectionIndex++ ) {
 
-            mesh = meshGroup.children[ sectionIndex ];
+            mesh = meshGroup.children[ sectionIndex ]
 
             splinePath         = new CatmullRomCurve3( mesh.geometry.vertices )
-            splinePath.type    = "catmullrom"
+            splinePath.type    = 'catmullrom'
             splinePath.tension = 0.05
             splinePath.name    = mesh.name
 
@@ -1751,7 +1751,7 @@ Object.assign( TApplication, {
 
                 var splineMaterial = new LineBasicMaterial( {
                     color: 0xff00f0
-                } );
+                } )
 
                 var splinePoints   = splinePath.getPoints( 500 )
                 var splineGeometry = new Geometry()
@@ -1893,7 +1893,7 @@ Object.assign( TApplication.prototype, {
             const buildingGroup    = new Group()
             buildingGroup[ '_id' ] = building._id
             buildingGroup.name     = building.name
-            buildingGroup.visible  = (visible && buildingIndex === 0 )
+            buildingGroup.visible  = (visible && buildingIndex === 0)
 
             if ( siteGroup ) {
 
@@ -1950,7 +1950,7 @@ Object.assign( TApplication.prototype, {
             const sceneGroup    = new Group()
             sceneGroup[ '_id' ] = scene._id
             sceneGroup.name     = scene.name
-            sceneGroup.visible  = (visible && scene.layers === 1 )
+            sceneGroup.visible  = (visible && scene.layers === 1)
 
             if ( buildingGroup ) {
 
@@ -2173,7 +2173,7 @@ Object.assign( TApplication.prototype, {
     insertTreeViewItem ( object, parentId, isCheckedByDefault = true, recursive = true ) {
 
         const itemId    = object._id || object.uuid
-        const itemName  = (object.name === "") ? itemId : object.name
+        const itemName  = (object.name === '') ? itemId : object.name
         const _parentId = parentId || 'treeViewContainer'
         const checked   = (isCheckedByDefault) ? 'checked="checked"' : ''
 
@@ -2194,7 +2194,7 @@ Object.assign( TApplication.prototype, {
 
         } )
 
-        $( '#' + _parentId ).children( '.children' ).append( item );
+        $( '#' + _parentId ).children( '.children' ).append( item )
 
         if ( recursive ) {
 
@@ -2214,19 +2214,19 @@ Object.assign( TApplication.prototype, {
      */
     changeMaterialSide ( objects, xRayActive ) {
 
-        var object = undefined;
+        var object = undefined
 
         for ( var objectIndex = 0, numberOfObjects = objects.length ; objectIndex < numberOfObjects ; ++objectIndex ) {
 
-            object = objects[ objectIndex ];
+            object = objects[ objectIndex ]
 
             if ( object.type === 'Mesh' ) {
 
-                object.material.side = ( xRayActive ) ? BackSide : FrontSide;
+                object.material.side = (xRayActive) ? BackSide : FrontSide
 
             } else if ( object.type === 'Group' ) {
 
-                this.changeMaterialSide.call( this, object.children, xRayActive );
+                this.changeMaterialSide.call( this, object.children, xRayActive )
 
             }
 
@@ -2242,13 +2242,13 @@ Object.assign( TApplication.prototype, {
      */
     setLayerGroupVisibility ( groupName, visibility ) {
 
-        var self = this;
+        var self = this
 
         if ( groupName === 'tigre' ) {
 
             this.geomapViewer.layerGroupSetVisible( 'Tigre', visibility, function () {
-                this.geomapViewer.mapRefresh();
-            }, this );
+                this.geomapViewer.mapRefresh()
+            }, this )
 
             this.webglViewport.setGroupVisibility( 'TigerParticularEmbranchments', visibility )
             this.webglViewport.setGroupVisibility( 'TigerNodes', visibility )
@@ -2257,8 +2257,8 @@ Object.assign( TApplication.prototype, {
         } else if ( groupName === 'caiman' ) {
 
             this.geomapViewer.layerGroupSetVisible( 'Caiman', visibility, function () {
-                this.geomapViewer.mapRefresh();
-            }, this );
+                this.geomapViewer.mapRefresh()
+            }, this )
 
             this.webglViewport.setGroupVisibility( 'CaimanParticularEmbranchments', visibility )
             this.webglViewport.setGroupVisibility( 'CaimanNodes', visibility )
@@ -2319,7 +2319,7 @@ Object.assign( TApplication.prototype, {
         // Get closest section and get his data to display
         var sections = this.webglViewport.scene.getObjectByName( 'CaimanSections' )
         if ( !sections ) {
-            TLogger.error( "Unable to update data panel with null sections !" )
+            TLogger.error( 'Unable to update data panel with null sections !' )
             return
         }
 
@@ -2331,11 +2331,11 @@ Object.assign( TApplication.prototype, {
         var vertice                 = undefined
         for ( var sectionIndex = 0, numberOfSections = sections.children.length ; sectionIndex < numberOfSections ; sectionIndex++ ) {
 
-            section = sections.children[ sectionIndex ];
+            section = sections.children[ sectionIndex ]
 
             for ( var i = 0, numberOfVertices = section.geometry.vertices.length ; i < numberOfVertices ; i++ ) {
 
-                vertice          = section.geometry.vertices[ i ];
+                vertice          = section.geometry.vertices[ i ]
                 distanceToCamera = cameraPosition.distanceTo( vertice )
 
                 if ( distanceToCamera < tinyestDistanceToCamera ) {
@@ -2362,40 +2362,40 @@ Object.assign( TApplication.prototype, {
         var paragraph = null
 
         paragraph             = document.createElement( 'p' )
-        paragraph.textContent = "Distance: " + distanceFromStart.toFixed( 2 ) + " m"
+        paragraph.textContent = 'Distance: ' + distanceFromStart.toFixed( 2 ) + ' m'
         this.dataPanel.appendChild( paragraph )
 
         paragraph             = document.createElement( 'p' )
-        paragraph.textContent = "Arrondissement: " + sectionData.borough
+        paragraph.textContent = 'Arrondissement: ' + sectionData.borough
         this.dataPanel.appendChild( paragraph )
 
         paragraph             = document.createElement( 'p' )
-        paragraph.textContent = "Circonscription: " + sectionData.district
+        paragraph.textContent = 'Circonscription: ' + sectionData.district
         this.dataPanel.appendChild( paragraph )
 
         paragraph             = document.createElement( 'p' )
-        paragraph.textContent = "Nom de voie: " + sectionData.streetName
+        paragraph.textContent = 'Nom de voie: ' + sectionData.streetName
         this.dataPanel.appendChild( paragraph )
 
         paragraph             = document.createElement( 'p' )
-        paragraph.textContent = "Type: " + sectionData.type
+        paragraph.textContent = 'Type: ' + sectionData.type
         this.dataPanel.appendChild( paragraph )
 
         paragraph             = document.createElement( 'p' )
-        paragraph.textContent = "Type d'effluent: " + sectionData.effluentsType
+        paragraph.textContent = 'Type d\'effluent: ' + sectionData.effluentsType
         this.dataPanel.appendChild( paragraph )
 
         paragraph             = document.createElement( 'p' )
-        paragraph.textContent = "Longueur: " + sectionData.length.toFixed( 2 ) + " m"
+        paragraph.textContent = 'Longueur: ' + sectionData.length.toFixed( 2 ) + ' m'
         this.dataPanel.appendChild( paragraph )
 
         paragraph             = document.createElement( 'p' )
-        paragraph.textContent = "Dernière visite: " + sectionData.lastVisit
+        paragraph.textContent = 'Dernière visite: ' + sectionData.lastVisit
         this.dataPanel.appendChild( paragraph )
 
         paragraph                = document.createElement( 'p' )
         var regulatedStringState = (sectionData.regulated === 0) ? 'Non' : 'Oui'
-        paragraph.textContent    = "Regulé: " + regulatedStringState
+        paragraph.textContent    = 'Regulé: ' + regulatedStringState
         this.dataPanel.appendChild( paragraph )
 
     },
@@ -2405,7 +2405,7 @@ Object.assign( TApplication.prototype, {
      */
     resetDataPanel () {
 
-        this.dataPanel.innerHTML = ""
+        this.dataPanel.innerHTML = ''
 
     },
 
@@ -2415,7 +2415,7 @@ Object.assign( TApplication.prototype, {
      */
     startMeasure ( measureMode ) {
 
-        this.webglViewport.view[ 0 ].className = "crosshair"
+        this.webglViewport.view[ 0 ].className = 'crosshair'
 
         var measureGroup = this.webglViewport.scene.getObjectByName( 'MeasureGroup' )
         if ( !measureGroup ) {
@@ -2741,7 +2741,7 @@ Object.assign( TApplication.prototype, {
      */
     endMeasure () {
 
-        this.webglViewport.view[ 0 ].className = ""
+        this.webglViewport.view[ 0 ].className = ''
 
         this.webglViewport.measuring = false
 
@@ -2789,7 +2789,7 @@ Object.assign( TApplication.prototype, {
 
         var shotGroup = this.webglViewport.scene.getObjectByName( 'shotGroup' )
         if ( !shotGroup ) {
-            TLogger.error( "Unable to update images shot with null shots !" )
+            TLogger.error( 'Unable to update images shot with null shots !' )
             return
         }
 
@@ -2850,8 +2850,8 @@ Object.assign( TApplication.prototype, {
             //			shot.material.map        = imageLoader.load( "resources/images/none_image.png" )
             //			shot.material.needUpdate = true
 
-            this.thumbnailPanel.innerHTML = ""
-            var thumbnails                = this.imageLoader.load( bestShot.userData.filePath + "LD/" + bestShot.name )
+            this.thumbnailPanel.innerHTML = ''
+            var thumbnails                = this.imageLoader.load( bestShot.userData.filePath + 'LD/' + bestShot.name )
 
             var link = document.createElement( 'a' )
             link.appendChild( thumbnails )
@@ -2885,19 +2885,19 @@ Object.assign( TApplication.prototype, {
         this.imageLoader.load( url, function onLoad ( imageHD ) {
 
             if ( !imageHD ) {
-                TLogger.error( "Unable to display empty or null hd image !" );
+                TLogger.error( 'Unable to display empty or null hd image !' )
                 return
             }
 
             const link = document.createElement( 'a' )
-            link.setAttribute( 'href', self.previousImageShot.userData.filePath + "HD/" + self.previousImageShot.name )
-            link.setAttribute( 'target', "_blank" )
+            link.setAttribute( 'href', self.previousImageShot.userData.filePath + 'HD/' + self.previousImageShot.name )
+            link.setAttribute( 'target', '_blank' )
 
             link.appendChild( imageHD )
 
             let modalContent = document.getElementById( 'imageShotModalContent' )
             while ( modalContent.lastChild ) {
-                modalContent.removeChild( modalContent.lastChild );
+                modalContent.removeChild( modalContent.lastChild )
             }
             modalContent.appendChild( link )
 
@@ -2933,12 +2933,12 @@ Object.assign( TApplication.prototype, {
         }
 
         var modalHeader       = document.getElementById( 'selectedObjectHeader' )
-        modalHeader.innerHTML = ""
+        modalHeader.innerHTML = ''
         modalHeader.appendChild( createHeaderTitle( selectedObject.name ) )
         modalHeader.appendChild( createHeaderButtons( carlId ) )
 
         var selectedObjectContent       = document.getElementById( 'selectedObjectContent' )
-        selectedObjectContent.innerHTML = ""
+        selectedObjectContent.innerHTML = ''
         selectedObjectContent.appendChild( ul )
 
         this.selectedObjectModalView.modal( 'show' )
@@ -3081,7 +3081,7 @@ Object.assign( TApplication.prototype, {
      */
     updateAvatar () {
 
-        var avatar = this.webglViewport.scene.getObjectByName( "Avatar" )
+        var avatar = this.webglViewport.scene.getObjectByName( 'Avatar' )
         if ( !avatar ) { return }
 
         var cameraControllerType = this.webglViewport.cameraControlType
@@ -3129,7 +3129,7 @@ Object.assign( TApplication.prototype, {
 
             }
 
-            var rad = 115 * Math.PI / 180;
+            var rad = 115 * Math.PI / 180
             avatar.rotateY( rad )
 
         }
@@ -3144,7 +3144,7 @@ Object.assign( TApplication.prototype, {
 
         this.webglViewport.setCameraControls( mode )
 
-        if ( mode === "avatar" ) {
+        if ( mode === 'avatar' ) {
 
         } else {
 
@@ -3174,19 +3174,19 @@ Object.assign( TApplication.prototype, {
      */
     askUserForPosition () {
 
-        var self = this;
-        this.geomapViewer.digitizePoint( "Cliquer sur la carte", true, function ( event ) {
+        var self = this
+        this.geomapViewer.digitizePoint( 'Cliquer sur la carte', true, function ( event ) {
 
             //Do something with the geometry
             var geometry = event.geometry
             if ( !geometry ) {
-                TLogger.warn( "Unable to find geometry in tiger event !" )
+                TLogger.warn( 'Unable to find geometry in tiger event !' )
                 return
             }
 
             var coordinates = geometry.coordinate
             if ( !coordinates ) {
-                TLogger.warn( "Unable to find coordinates in tiger geometry !" )
+                TLogger.warn( 'Unable to find coordinates in tiger geometry !' )
                 return
             }
 
@@ -3200,7 +3200,7 @@ Object.assign( TApplication.prototype, {
 
             self.webglViewport.setCameraPosition( webglCoordinates )
 
-        }, self );
+        }, self )
 
     },
 
@@ -3233,7 +3233,7 @@ Object.assign( TApplication.prototype, {
 
         var cameraPosition = this.webglViewport.camera.position
         if ( !cameraPosition ) {
-            TLogger.warn( "Unable to find coordinates of webgl camera !" )
+            TLogger.warn( 'Unable to find coordinates of webgl camera !' )
             return
         }
 
@@ -3249,15 +3249,15 @@ Object.assign( TApplication.prototype, {
 
             var scale    = 150
             var mySymbol = {
-                "x":      lambertCoordinates.x,
-                "y":      lambertCoordinates.y,
-                "color":  "00FF00",
-                "size":   "25pt",
-                "symbol": "f1eb"
+                'x':      lambertCoordinates.x,
+                'y':      lambertCoordinates.y,
+                'color':  '00FF00',
+                'size':   '25pt',
+                'symbol': 'f1eb'
             }
 
             this.geomapViewer.zoomToView( lambertCoordinates.x, lambertCoordinates.y, scale, function ( event ) {}, this )
-            this.geomapViewer.symbolDraw( "mySymbolLayer", mySymbol, true );
+            this.geomapViewer.symbolDraw( 'mySymbolLayer', mySymbol, true )
 
         } else if ( viewer === '3d' ) {
 
@@ -3281,7 +3281,7 @@ Object.assign( TApplication.prototype, {
 
         } else {
 
-            TLogger.error( "Unable to set rotation, unknown viewer: " + this.viewer );
+            TLogger.error( 'Unable to set rotation, unknown viewer: ' + this.viewer )
 
         }
 
@@ -3309,12 +3309,12 @@ Object.assign( TApplication.prototype, {
             var rotation = convertWebGLRotationToTopologicalYawPitch( cameraWorldDirection )
 
             var cameraSymbol = {
-                "x":        position.x,
-                "y":        position.y,
-                "rotation": rotation.yaw,
-                "color":    "00FF00",
-                "size":     "25pt",
-                "symbol":   "f1eb"
+                'x':        position.x,
+                'y':        position.y,
+                'rotation': rotation.yaw,
+                'color':    '00FF00',
+                'size':     '25pt',
+                'symbol':   'f1eb'
             }
 
             if ( this.webglViewport.cameraControlType === 'path' ) {
@@ -3327,7 +3327,7 @@ Object.assign( TApplication.prototype, {
 
             }
 
-            this.geomapViewer.symbolDraw( "mySymbolLayer", cameraSymbol, true )
+            this.geomapViewer.symbolDraw( 'mySymbolLayer', cameraSymbol, true )
 
         } else if ( this.viewer === '3d' ) {
 
@@ -3342,7 +3342,7 @@ Object.assign( TApplication.prototype, {
 
         } else {
 
-            TLogger.error( "Unable to set rotation, unknown viewer: " + this.viewer )
+            TLogger.error( 'Unable to set rotation, unknown viewer: ' + this.viewer )
 
         }
 
@@ -3385,7 +3385,7 @@ Object.assign( TApplication.prototype, {
             this.rlensPanel.style.display  = 'none'
             this.geomapPanel.style.display = 'none'
 
-            TLogger.error( 'Invalid map viewer options !!! Available options are: 2d or 3d.' );
+            TLogger.error( 'Invalid map viewer options !!! Available options are: 2d or 3d.' )
 
         }
 

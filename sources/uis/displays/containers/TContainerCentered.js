@@ -31,5 +31,5 @@ export default Vue.component( 'TContainerCentered', {
             <slot></slot>
         </TContainer>
     `,
-    props:    [ 'height', 'width', 'orientation', 'expand', 'wrapContent', 'overflow', 'overflowX', 'overflowY'  ]
+    props:    [ 'height', 'width', 'orientation', 'expand', 'wrapContent', 'overflow', 'overflowX', 'overflowY' ]
 } )

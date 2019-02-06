@@ -30,5 +30,5 @@ export default Vue.component( 'TContainerHorizontal', {
             <slot></slot>
         </TContainer>
     `,
-    props:    [ 'height', 'width', 'expand', 'wrapContent', 'vAlign', 'hAlign', 'wAlign', 'overflow', 'overflowX', 'overflowY'  ]
+    props:    [ 'height', 'width', 'expand', 'wrapContent', 'vAlign', 'hAlign', 'wAlign', 'overflow', 'overflowX', 'overflowY' ]
 } )

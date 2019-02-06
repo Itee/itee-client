@@ -27,7 +27,7 @@ import {
     Mesh,
     MeshBasicMaterial,
     PlaneGeometry,
-    TextureLoader,
+    TextureLoader
 } from 'three-full'
 
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
@@ -39,10 +39,10 @@ import { DefaultLogger as TLogger } from '../loggers/TLogger'
  */
 function RZMLLoader ( manager ) {
 
-    this.manager = ( manager !== undefined ) ? manager : DefaultLoadingManager;
+    this.manager = (manager !== undefined) ? manager : DefaultLoadingManager
 
-    this.textureLoader  = new TextureLoader();
-    this.imagesShotData = [];
+    this.textureLoader  = new TextureLoader()
+    this.imagesShotData = []
 
 }
 
@@ -66,15 +66,15 @@ Object.assign( RZMLLoader.prototype, {
 
         var filePath = url.replace( /[^\/]*$/, '' )
 
-        var scope = this;
+        var scope = this
 
-        var loader = new FileLoader( scope.manager );
-        loader.setResponseType( 'text/plain' );
+        var loader = new FileLoader( scope.manager )
+        loader.setResponseType( 'text/plain' )
         loader.load( url, function ( text ) {
 
-            onLoad( scope._parse( text, filePath ) );
+            onLoad( scope._parse( text, filePath ) )
 
-        }, onProgress, onError );
+        }, onProgress, onError )
 
     },
 
@@ -87,52 +87,52 @@ Object.assign( RZMLLoader.prototype, {
      */
     _parse ( text, filePath ) {
 
-        var document = null;
+        var document = null
 
         if ( window.DOMParser ) {
-            var parser = new DOMParser();
-            document   = parser.parseFromString( text, "text/xml" );
+            var parser = new DOMParser()
+            document   = parser.parseFromString( text, 'text/xml' )
         }
         else // Internet Explorer
         {
-            document       = new ActiveXObject( "Microsoft.XMLDOM" );
-            document.async = false;
-            document.loadXML( text );
+            document       = new ActiveXObject( 'Microsoft.XMLDOM' )
+            document.async = false
+            document.loadXML( text )
         }
 
-        var shots              = document.getElementsByTagName( 'SHOT' );
-        var shot               = undefined;
-        var cfrmElement        = undefined;
-        var translationElement = undefined;
-        var rotationElement    = undefined;
-        var iplnElement        = undefined;
+        var shots              = document.getElementsByTagName( 'SHOT' )
+        var shot               = undefined
+        var cfrmElement        = undefined
+        var translationElement = undefined
+        var rotationElement    = undefined
+        var iplnElement        = undefined
         for ( var i = 0, numberOfShots = shots.length ; i < numberOfShots ; ++i ) {
-            shot               = shots[ i ];
-            cfrmElement        = shot.children[ 0 ];
-            translationElement = cfrmElement.children[ 0 ];
-            rotationElement    = cfrmElement.children[ 1 ];
-            iplnElement        = shot.children[ 1 ];
+            shot               = shots[ i ]
+            cfrmElement        = shot.children[ 0 ]
+            translationElement = cfrmElement.children[ 0 ]
+            rotationElement    = cfrmElement.children[ 1 ]
+            iplnElement        = shot.children[ 1 ]
 
             // Todo: consider using array and/or create directly floating images from there
             this.imagesShotData.push( {
-                imageName: shot.attributes[ "n" ].value,
+                imageName: shot.attributes[ 'n' ].value,
                 //        imagePath: iplnElement.attributes["img"].value,
                 position:  {
-                    x: parseFloat( translationElement.attributes[ "x" ].value ),
-                    y: parseFloat( translationElement.attributes[ "y" ].value ),
-                    z: parseFloat( translationElement.attributes[ "z" ].value )
+                    x: parseFloat( translationElement.attributes[ 'x' ].value ),
+                    y: parseFloat( translationElement.attributes[ 'y' ].value ),
+                    z: parseFloat( translationElement.attributes[ 'z' ].value )
                 },
                 rotation:  {
-                    x: parseFloat( rotationElement.attributes[ "x" ].value ),
-                    y: parseFloat( rotationElement.attributes[ "y" ].value ),
-                    z: parseFloat( rotationElement.attributes[ "z" ].value )
+                    x: parseFloat( rotationElement.attributes[ 'x' ].value ),
+                    y: parseFloat( rotationElement.attributes[ 'y' ].value ),
+                    z: parseFloat( rotationElement.attributes[ 'z' ].value )
                 }
-            } );
+            } )
         }
 
         //TLogger.timeEnd( "RZMLLoader" );
 
-        return this._createImagesPacks( filePath );
+        return this._createImagesPacks( filePath )
     },
 
     /**

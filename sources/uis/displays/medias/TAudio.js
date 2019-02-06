@@ -46,7 +46,7 @@ class TAudio extends React.Component {
 
         const _id    = id || `tAudio_${_instanceCounter}`
         const _style = {}
-        const _class = ( className ) ? `tAudio ${className}` : 'tAudio'
+        const _class = (className) ? `tAudio ${className}` : 'tAudio'
 
         return (
             <t-audio ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-audio>

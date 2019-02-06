@@ -17,9 +17,9 @@ export default Vue.component( 'TCheckIcon', {
         <TIcon v-else class="tCheckicon active" :iconProps=iconOff v-bind:iconOn="{click: _onClick}" />
     `,
     props:    [ 'id', 'value', 'iconOn', 'iconOff', 'onClick' ],
-    methods: {
+    methods:  {
 
-        _onClick( event ) {
+        _onClick ( event ) {
 
             const newValue = !this.value
 

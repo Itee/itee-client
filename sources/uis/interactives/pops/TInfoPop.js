@@ -46,7 +46,7 @@ class TInfoPop extends React.Component {
 
         const _id    = id || `tInfoPop_${_instanceCounter}`
         const _style = {}
-        const _class = ( className ) ? `tInfoPop ${className}` : 'tInfoPop'
+        const _class = (className) ? `tInfoPop ${className}` : 'tInfoPop'
 
         return (
             <t-info-pop ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-info-pop>

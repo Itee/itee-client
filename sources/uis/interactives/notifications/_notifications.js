@@ -8,9 +8,9 @@
 
 /* eslint-env browser */
 
-export { TErrorNotification } from './TErrorNotification'
-export { TInfoNotification } from './TInfoNotification'
-export { TMessageNotification } from './TMessageNotification'
-export { TNotification } from './TNotification'
+export { TErrorNotification }    from './TErrorNotification'
+export { TInfoNotification }     from './TInfoNotification'
+export { TMessageNotification }  from './TMessageNotification'
+export { TNotification }         from './TNotification'
 export { TProgressNotification } from './TProgressNotification'
-export { TWarningNotification } from './TWarningNotification'
+export { TWarningNotification }  from './TWarningNotification'

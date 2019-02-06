@@ -8,8 +8,8 @@
 
 /* eslint-env browser */
 
-export { default as TContent } from './TContent'
-export { default as TFooter } from './TFooter'
-export { default as THeader } from './THeader'
+export { default as TContent }       from './TContent'
+export { default as TFooter }        from './TFooter'
+export { default as THeader }        from './THeader'
 export { default as TInfinitScroll } from './TInfinitScroll'
-export { default as TSection } from './TSection'
+export { default as TSection }       from './TSection'

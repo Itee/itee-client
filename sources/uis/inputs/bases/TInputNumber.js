@@ -25,10 +25,9 @@ export default Vue.component( 'TInputNumber', {
     `,
     props:    [ 'id', 'label', 'value', 'onChange' ],
     computed: {},
-    methods: {
+    methods:  {
 
-        _onChange( event ) {
-
+        _onChange ( event ) {
 
             const numericalValue = parseFloat( event.target.value )
 

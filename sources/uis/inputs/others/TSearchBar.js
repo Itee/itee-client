@@ -46,7 +46,7 @@ class TSearchBar extends React.Component {
 
         const _id    = id || `tSearchBar_${_instanceCounter}`
         const _style = {}
-        const _class = ( className ) ? `tSearchBar ${className}` : 'tSearchBar'
+        const _class = (className) ? `tSearchBar ${className}` : 'tSearchBar'
 
         return (
             <t-search-bar ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-search-bar>
