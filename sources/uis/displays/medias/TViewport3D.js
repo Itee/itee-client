@@ -441,7 +441,7 @@ export default Vue.component( 'TViewport3D', {
                 return
             }
 
-            event.preventDefault()
+            mouseEvent.preventDefault()
 
             // calculate mouse position in normalized device coordinates
             // (-1 to +1) for both components
@@ -465,13 +465,13 @@ export default Vue.component( 'TViewport3D', {
             }
         },
 
-        _deselect () {
+        _deselect ( mouseEvent ) {
 
             if ( !this.isRaycastable ) {
                 return
             }
 
-            event.preventDefault()
+            mouseEvent.preventDefault()
 
             this.$emit( 'deselect' )
 
