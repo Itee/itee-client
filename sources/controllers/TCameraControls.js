@@ -198,18 +198,30 @@ class TCameraControls extends EventDispatcher {
         this.zoomMaxSpeed     = Infinity
         this.zoomAcceleration = 1.0
 
+        this.canLookAt = true
+
         // The actions map about input events
         this.actionsMap = {
-            front:  [ Keys.Z.value, Keys.UP_ARROW.value ],
-            back:   [ Keys.S.value, Keys.DOWN_ARROW.value ],
-            up:     [ Keys.A.value, Keys.PAGE_UP.value ],
-            down:   [ Keys.E.value, Keys.PAGE_DOWN.value ],
-            left:   [ Keys.Q.value, Keys.LEFT_ARROW.value ],
-            right:  [ Keys.D.value, Keys.RIGHT_ARROW.value ],
-            rotate: [ Mouse.LEFT.value ],
-            pan:    [ Mouse.MIDDLE.value ],
-            roll:   [],
-            zoom:   [ Mouse.WHEEL.value ]
+            front:            [ Keys.Z.value, Keys.UP_ARROW.value ],
+            back:             [ Keys.S.value, Keys.DOWN_ARROW.value ],
+            up:               [ Keys.A.value, Keys.PAGE_UP.value ],
+            down:             [ Keys.E.value, Keys.PAGE_DOWN.value ],
+            left:             [ Keys.Q.value, Keys.LEFT_ARROW.value ],
+            right:            [ Keys.D.value, Keys.RIGHT_ARROW.value ],
+            rotate:           [ Mouse.LEFT.value ],
+            pan:              [ Mouse.MIDDLE.value ],
+            roll:             [],
+            zoom:             [ Mouse.WHEEL.value ],
+            lookAtFront:      [ Keys.NUMPAD_2.value ],
+            lookAtFrontLeft:  [ Keys.NUMPAD_3.value ],
+            lookAtFrontRight: [ Keys.NUMPAD_1.value ],
+            lookAtBack:       [ Keys.NUMPAD_8.value ],
+            lookAtBackLeft:   [ Keys.NUMPAD_9.value ],
+            lookAtBackRight:  [ Keys.NUMPAD_7.value ],
+            lookAtUp:         [ Keys.NUMPAD_5.value ],
+            lookAtDown:       [ Keys.NUMPAD_0.value ],
+            lookAtLeft:       [ Keys.NUMPAD_6.value ],
+            lookAtRight:      [ Keys.NUMPAD_4.value ]
         }
 
         // The current internal state of controller
@@ -443,26 +455,46 @@ class TCameraControls extends EventDispatcher {
         const actionMap = this.actionsMap
         const key       = keyEvent.keyCode
 
-        if ( actionMap.front.indexOf( key ) > -1 ) {
+        if ( actionMap.front.includes( key ) ) {
             this._front()
-        } else if ( actionMap.back.indexOf( key ) > -1 ) {
+        } else if ( actionMap.back.includes( key ) ) {
             this._back()
-        } else if ( actionMap.up.indexOf( key ) > -1 ) {
+        } else if ( actionMap.up.includes( key ) ) {
             this._up()
-        } else if ( actionMap.down.indexOf( key ) > -1 ) {
+        } else if ( actionMap.down.includes( key ) ) {
             this._down()
-        } else if ( actionMap.left.indexOf( key ) > -1 ) {
+        } else if ( actionMap.left.includes( key ) ) {
             this._left()
-        } else if ( actionMap.right.indexOf( key ) > -1 ) {
+        } else if ( actionMap.right.includes( key ) ) {
             this._right()
-        } else if ( actionMap.rotate.indexOf( key ) > -1 ) {
+        } else if ( actionMap.rotate.includes( key ) ) {
             this._rotate( 1.0 )
-        } else if ( actionMap.pan.indexOf( key ) > -1 ) {
+        } else if ( actionMap.pan.includes( key ) ) {
             this._pan( 1.0 )
-        } else if ( actionMap.roll.indexOf( key ) > -1 ) {
+        } else if ( actionMap.roll.includes( key ) ) {
             this._roll( 1.0 )
-        } else if ( actionMap.zoom.indexOf( key ) > -1 ) {
+        } else if ( actionMap.zoom.includes( key ) ) {
             this._zoom( 1.0 )
+        } else if ( actionMap.lookAtFront.includes( key ) ) {
+            this._lookAt( FRONT )
+        } else if ( actionMap.lookAtFrontLeft.includes( key ) ) {
+            this._lookAt( new Vector3( -1, 0, -1 ).normalize() )
+        } else if ( actionMap.lookAtFrontRight.includes( key ) ) {
+            this._lookAt( new Vector3( 1, 0, -1 ).normalize() )
+        } else if ( actionMap.lookAtBack.includes( key ) ) {
+            this._lookAt( BACK )
+        } else if ( actionMap.lookAtBackLeft.includes( key ) ) {
+            this._lookAt( new Vector3( -1, 0, 1 ).normalize() )
+        } else if ( actionMap.lookAtBackRight.includes( key ) ) {
+            this._lookAt( new Vector3( 1, 0, 1 ).normalize() )
+        } else if ( actionMap.lookAtUp.includes( key ) ) {
+            this._lookAt( UP )
+        } else if ( actionMap.lookAtDown.includes( key ) ) {
+            this._lookAt( DOWN )
+        } else if ( actionMap.lookAtLeft.includes( key ) ) {
+            this._lookAt( LEFT )
+        } else if ( actionMap.lookAtRight.includes( key ) ) {
+            this._lookAt( RIGHT )
         } else {
             // Unmapped key, just ignore it !
         }
@@ -487,10 +519,6 @@ class TCameraControls extends EventDispatcher {
 
         this.previousTouches = touchEvent.touches
 
-        //todo...
-        //        console.warn( 'Touch events are not implemented yet, sorry for the disagreement.' )
-        //        console.log( touchEvent )
-
     }
 
     _onTouchEnd ( touchEvent ) {
@@ -502,10 +530,6 @@ class TCameraControls extends EventDispatcher {
 
         this.previousTouches = []
         this._state          = State.None
-
-        //todo...
-        //        console.warn( 'Touch events are not implemented yet, sorry for the disagreement.' )
-        //        console.log( touchEvent )
 
     }
 
@@ -613,31 +637,31 @@ class TCameraControls extends EventDispatcher {
         const actionMap = this.actionsMap
         const button    = mouseEvent.button
 
-        if ( actionMap.front.indexOf( button ) > -1 ) {
+        if ( actionMap.front.includes( button ) ) {
             this._state = State.Moving
             this._front()
-        } else if ( actionMap.back.indexOf( button ) > -1 ) {
+        } else if ( actionMap.back.includes( button ) ) {
             this._state = State.Moving
             this._back()
-        } else if ( actionMap.up.indexOf( button ) > -1 ) {
+        } else if ( actionMap.up.includes( button ) ) {
             this._state = State.Moving
             this._up()
-        } else if ( actionMap.down.indexOf( button ) > -1 ) {
+        } else if ( actionMap.down.includes( button ) ) {
             this._state = State.Moving
             this._down()
-        } else if ( actionMap.left.indexOf( button ) > -1 ) {
+        } else if ( actionMap.left.includes( button ) ) {
             this._state = State.Moving
             this._left()
-        } else if ( actionMap.right.indexOf( button ) > -1 ) {
+        } else if ( actionMap.right.includes( button ) ) {
             this._state = State.Moving
             this._right()
-        } else if ( actionMap.rotate.indexOf( button ) > -1 ) {
+        } else if ( actionMap.rotate.includes( button ) ) {
             this._state = State.Rotating
-        } else if ( actionMap.pan.indexOf( button ) > -1 ) {
+        } else if ( actionMap.pan.includes( button ) ) {
             this._state = State.Panning
-        } else if ( actionMap.roll.indexOf( button ) > -1 ) {
+        } else if ( actionMap.roll.includes( button ) ) {
             this._state = State.Rolling
-        } else if ( actionMap.zoom.indexOf( button ) > -1 ) {
+        } else if ( actionMap.zoom.includes( button ) ) {
             this._state = State.Zooming
         } else {
             this._state = State.None
@@ -877,7 +901,7 @@ class TCameraControls extends EventDispatcher {
                     spherical.phi += degreesToRadians( -delta.y ) * this.rotateSpeed
                     spherical.phi = Math.max( this.minPolarAngle, Math.min( this.maxPolarAngle, spherical.phi ) )
 
-                    const newPosition = new Vector3().setFromSpherical( spherical ).add( this.target.position )
+                    const newPosition = new Vector3().setFromSpherical( spherical ).add( this._target.position )
                     this.setCameraPosition( newPosition )
 
                 } else if ( cameraUp.equals( BACK ) ) {
@@ -997,11 +1021,45 @@ class TCameraControls extends EventDispatcher {
 
             default:
                 throw new RangeError( `Invalid camera control mode parameter: ${this._mode}` )
-                break
 
         }
 
         this.dispatchEvent( { type: 'zoom' } )
+        this.dispatchEvent( { type: 'change' } )
+
+    }
+
+    _lookAt ( direction ) {
+
+        if ( !this.canLookAt ) {
+            return
+        }
+
+        const cameraPosition = this._camera.position
+        const targetPosition = this._target.position
+        const distanceTo     = cameraPosition.distanceTo( targetPosition )
+
+        switch ( this.mode ) {
+
+            case TCameraControlMode.FirstPerson:
+                // The result is inverted in front of Orbit type but is correct in FP mode except up and down so invert y axis
+                const _direction        = direction.clone()
+                _direction.y            = -(_direction.y)
+                const newTargetPosition = _direction.multiplyScalar( distanceTo ).add( cameraPosition )
+                this.setTargetPosition( newTargetPosition )
+                break
+
+            case TCameraControlMode.Orbit:
+                const newCameraPosition = direction.clone().multiplyScalar( distanceTo ).add( targetPosition )
+                this.setCameraPosition( newCameraPosition )
+                break
+
+            default:
+                throw new RangeError( `Invalid camera control mode parameter: ${this._mode}` )
+
+        }
+
+        this.dispatchEvent( { type: 'lookAt' } )
         this.dispatchEvent( { type: 'change' } )
 
     }
