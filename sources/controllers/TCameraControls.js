@@ -455,25 +455,25 @@ class TCameraControls extends EventDispatcher {
         const actionMap = this.actionsMap
         const key       = keyEvent.keyCode
 
-        if ( actionMap.front.indexOf( key ) > -1 ) {
+        if ( actionMap.front.includes( key ) ) {
             this._front()
-        } else if ( actionMap.back.indexOf( key ) > -1 ) {
+        } else if ( actionMap.back.includes( key ) ) {
             this._back()
-        } else if ( actionMap.up.indexOf( key ) > -1 ) {
+        } else if ( actionMap.up.includes( key ) ) {
             this._up()
-        } else if ( actionMap.down.indexOf( key ) > -1 ) {
+        } else if ( actionMap.down.includes( key ) ) {
             this._down()
-        } else if ( actionMap.left.indexOf( key ) > -1 ) {
+        } else if ( actionMap.left.includes( key ) ) {
             this._left()
-        } else if ( actionMap.right.indexOf( key ) > -1 ) {
+        } else if ( actionMap.right.includes( key ) ) {
             this._right()
-        } else if ( actionMap.rotate.indexOf( key ) > -1 ) {
+        } else if ( actionMap.rotate.includes( key ) ) {
             this._rotate( 1.0 )
-        } else if ( actionMap.pan.indexOf( key ) > -1 ) {
+        } else if ( actionMap.pan.includes( key ) ) {
             this._pan( 1.0 )
-        } else if ( actionMap.roll.indexOf( key ) > -1 ) {
+        } else if ( actionMap.roll.includes( key ) ) {
             this._roll( 1.0 )
-        } else if ( actionMap.zoom.indexOf( key ) > -1 ) {
+        } else if ( actionMap.zoom.includes( key ) ) {
             this._zoom( 1.0 )
         } else if ( actionMap.lookAtFront.includes( key ) ) {
             this._lookAt( FRONT )
@@ -519,10 +519,6 @@ class TCameraControls extends EventDispatcher {
 
         this.previousTouches = touchEvent.touches
 
-        //todo...
-        //        console.warn( 'Touch events are not implemented yet, sorry for the disagreement.' )
-        //        console.log( touchEvent )
-
     }
 
     _onTouchEnd ( touchEvent ) {
@@ -534,10 +530,6 @@ class TCameraControls extends EventDispatcher {
 
         this.previousTouches = []
         this._state          = State.None
-
-        //todo...
-        //        console.warn( 'Touch events are not implemented yet, sorry for the disagreement.' )
-        //        console.log( touchEvent )
 
     }
 
@@ -645,31 +637,31 @@ class TCameraControls extends EventDispatcher {
         const actionMap = this.actionsMap
         const button    = mouseEvent.button
 
-        if ( actionMap.front.indexOf( button ) > -1 ) {
+        if ( actionMap.front.includes( button ) ) {
             this._state = State.Moving
             this._front()
-        } else if ( actionMap.back.indexOf( button ) > -1 ) {
+        } else if ( actionMap.back.includes( button ) ) {
             this._state = State.Moving
             this._back()
-        } else if ( actionMap.up.indexOf( button ) > -1 ) {
+        } else if ( actionMap.up.includes( button ) ) {
             this._state = State.Moving
             this._up()
-        } else if ( actionMap.down.indexOf( button ) > -1 ) {
+        } else if ( actionMap.down.includes( button ) ) {
             this._state = State.Moving
             this._down()
-        } else if ( actionMap.left.indexOf( button ) > -1 ) {
+        } else if ( actionMap.left.includes( button ) ) {
             this._state = State.Moving
             this._left()
-        } else if ( actionMap.right.indexOf( button ) > -1 ) {
+        } else if ( actionMap.right.includes( button ) ) {
             this._state = State.Moving
             this._right()
-        } else if ( actionMap.rotate.indexOf( button ) > -1 ) {
+        } else if ( actionMap.rotate.includes( button ) ) {
             this._state = State.Rotating
-        } else if ( actionMap.pan.indexOf( button ) > -1 ) {
+        } else if ( actionMap.pan.includes( button ) ) {
             this._state = State.Panning
-        } else if ( actionMap.roll.indexOf( button ) > -1 ) {
+        } else if ( actionMap.roll.includes( button ) ) {
             this._state = State.Rolling
-        } else if ( actionMap.zoom.indexOf( button ) > -1 ) {
+        } else if ( actionMap.zoom.includes( button ) ) {
             this._state = State.Zooming
         } else {
             this._state = State.None
@@ -909,7 +901,7 @@ class TCameraControls extends EventDispatcher {
                     spherical.phi += degreesToRadians( -delta.y ) * this.rotateSpeed
                     spherical.phi = Math.max( this.minPolarAngle, Math.min( this.maxPolarAngle, spherical.phi ) )
 
-                    const newPosition = new Vector3().setFromSpherical( spherical ).add( this.target.position )
+                    const newPosition = new Vector3().setFromSpherical( spherical ).add( this._target.position )
                     this.setCameraPosition( newPosition )
 
                 } else if ( cameraUp.equals( BACK ) ) {
@@ -1029,7 +1021,6 @@ class TCameraControls extends EventDispatcher {
 
             default:
                 throw new RangeError( `Invalid camera control mode parameter: ${this._mode}` )
-                break
 
         }
 
