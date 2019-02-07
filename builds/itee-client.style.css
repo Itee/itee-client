@@ -41,6 +41,7 @@ body {
   width: 100%;
   margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 body {
   display: flex;
@@ -70,7 +71,7 @@ body {
   background-color: #d2d2d2;
 }
 ::-webkit-scrollbar {
-  width: 2px;
+  width: 5px;
 }
 #itee-application-root {
   display: flex;
@@ -502,14 +503,14 @@ label {
   display: inline-block;
   width: 32px;
   height: 32px;
-  background-color: #000;
+  background-color: #000000;
   cursor: pointer;
 }
 /***********/
 /* TSearch */
 /***********/
 #tsearch input::placeholder {
-  color: #000;
+  color: #000000;
   opacity: 0.4;
 }
 .tsearch-toolbar {
@@ -534,12 +535,12 @@ label {
   overflow: auto;
   top: 45px;
   max-height: 600px;
-  width: 500px;
   background: #ecf0f1;
   color: #34495e;
   list-style-type: none;
   padding: 0;
   border-bottom: 4px solid rgba(52, 73, 94, 0.1);
+  width: 100%;
 }
 .autocomplete-list h6 {
   text-align: left;
@@ -563,73 +564,50 @@ label {
 /**********/
 /* TTable */
 /**********/
-.ttable-title {
-  background-color: #ffffff;
-  border-bottom: 4px solid rgba(52, 73, 94, 0.1);
-  padding: 15px;
-  width: 600px;
-}
-.ttable-title h4 {
-  font-size: 16px;
-  width: 546px;
-}
-.ttable-toolbar {
-  color: #7f8c8d;
-  float: right;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-}
 .ttable-close {
   cursor: pointer;
 }
 .ttable-drag-handle {
   cursor: move;
-  padding-left: 5px;
 }
 .ttable {
-  width: 600px;
-  max-height: 750px;
+  min-width: 385px;
+  max-width: 500px;
+  max-height: 800px;
 }
 .ttable thead {
   display: block;
-  width: 600px;
-  border-bottom: 3px solid rgba(52, 73, 94, 0.1);
 }
 .ttable thead tr {
   color: #7f8c8d;
-  padding: 8px;
-}
-.ttable thead tr th {
-  padding: 8px;
-  padding-bottom: 3px;
 }
 .ttable tbody {
   display: block;
-  padding: 10px;
   width: 100%;
-  max-height: 700px;
   overflow-y: auto;
   overflow-x: hidden;
+  text-align: right;
 }
 .ttable tbody tr td {
-  padding: 6px;
   font-size: 13px;
-  border-bottom: 2px solid rgba(52, 73, 94, 0.1);
 }
 .ttable tbody tr td:first-child {
-  background-color: rgba(255, 255, 255, 0.8);
-  width: 200px;
-  color: #7f8c8d;
+  text-align: left;
+  width: 30%;
   text-transform: capitalize;
-  border-right: 4px solid rgba(52, 73, 94, 0.2);
 }
 .ttable tbody tr td:last-child {
-  background-color: rgba(255, 255, 255, 0.6);
-  color: #2c3e50;
-  width: 600px;
+  width: 70%;
 }
 .ttable tbody tr td h6 {
   text-transform: none;
-  padding: 10px;
+}
+.ttable .ttable-title .ttable-label {
+  float: left;
+  padding-top: 6px;
+  padding-bottom: 4px;
+  margin: 0;
+}
+.ttable .ttable-title .ttable-toolbar {
+  float: right;
 }
