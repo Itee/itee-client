@@ -447,13 +447,15 @@ class TCameraControls extends EventDispatcher {
     // Handlers
     _onKeyDown ( keyEvent ) {
 
-        if ( !this.enabled ) {
-            return
-        }
+        if ( !this.enabled || keyEvent.defaultPrevented ) { return }
         keyEvent.preventDefault()
 
-        const actionMap = this.actionsMap
-        const key       = keyEvent.keyCode
+        const actionMap   = this.actionsMap
+        const key         = keyEvent.keyCode
+        const altActive   = keyEvent.altKey
+        const ctrlActive  = keyEvent.ctrlKey
+        const metaActive  = keyEvent.metaKey
+        const shiftActive = keyEvent.shiftKey
 
         if ( actionMap.front.includes( key ) ) {
             this._front()
