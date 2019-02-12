@@ -186,7 +186,7 @@ class TCameraControls extends EventDispatcher {
         this.rollMinimum      = -Infinity
         this.rollMaximum      = -Infinity
         this.rollMinSpeed     = 0.0
-        this.rollSpeed        = 1.0
+        this.rollSpeed        = 0.1
         this.rollMaxSpeed     = Infinity
         this.rollAcceleration = 1.0
 
@@ -210,7 +210,10 @@ class TCameraControls extends EventDispatcher {
             right:            [ Keys.D.value, Keys.RIGHT_ARROW.value ],
             rotate:           [ Mouse.LEFT.value ],
             pan:              [ Mouse.MIDDLE.value ],
-            roll:             [],
+            roll:             {
+                left:  [ Keys.R.value ],
+                right: [ Keys.T.value ]
+            },
             zoom:             [ Mouse.WHEEL.value ],
             lookAtFront:      [ Keys.NUMPAD_2.value ],
             lookAtFrontLeft:  [ Keys.NUMPAD_3.value ],
@@ -471,8 +474,10 @@ class TCameraControls extends EventDispatcher {
             this._rotate( 1.0 )
         } else if ( actionMap.pan.includes( key ) ) {
             this._pan( 1.0 )
-        } else if ( actionMap.roll.includes( key ) ) {
+        } else if ( actionMap.roll.left.includes( key ) ) {
             this._roll( 1.0 )
+        } else if ( actionMap.roll.right.includes( key ) ) {
+            this._roll( -1.0 )
         } else if ( actionMap.zoom.includes( key ) ) {
             this._zoom( 1.0 )
         } else if ( actionMap.lookAtFront.includes( key ) ) {
@@ -936,9 +941,17 @@ class TCameraControls extends EventDispatcher {
 
     _roll ( delta ) {
 
-        if ( !this.canRoll ) {
-            return
-        }
+        if ( !this.canRoll ) { return }
+
+        const cameraPosition = this._camera.position
+        const targetPosition = this._target.position
+        const targetToCamera = new Vector3().subVectors( cameraPosition, targetPosition ).normalize()
+        const angle          = Math.PI / 16 //delta * this.rollSpeed
+
+        this._camera.up.applyAxisAngle( targetToCamera, angle )
+        this._camera.lookAt( targetPosition )
+        //or
+        //        this._camera.rotateOnAxis( targetToCamera, angle )
 
         this.dispatchEvent( { type: 'roll' } )
         this.dispatchEvent( { type: 'change' } )
