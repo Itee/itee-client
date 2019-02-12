@@ -736,11 +736,19 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.canMove || !this.canFront ) { return }
 
-        const cameraDirection = FRONT.clone().applyQuaternion( this._camera.quaternion )
-        const displacement    = (this._trackPath) ? this._getPathDisplacement( cameraDirection ) : cameraDirection.multiplyScalar( this.frontSpeed )
+        if ( this._camera.isPerspective ) {
 
-        this._camera.position.add( displacement )
-        this._target.position.add( displacement )
+            const cameraDirection = FRONT.clone().applyQuaternion( this._camera.quaternion )
+            const displacement    = (this._trackPath) ? this._getPathDisplacement( cameraDirection ) : cameraDirection.multiplyScalar( this.frontSpeed )
+
+            this._camera.position.add( displacement )
+            this._target.position.add( displacement )
+
+        } else {
+
+            // Todo: ...
+
+        }
 
         this.dispatchEvent( { type: 'move' } )
         this.dispatchEvent( { type: 'change' } )
@@ -751,11 +759,19 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.canMove || !this.canBack ) { return }
 
-        const cameraDirection = BACK.clone().applyQuaternion( this._camera.quaternion )
-        const displacement    = (this._trackPath) ? this._getPathDisplacement( cameraDirection ) : cameraDirection.multiplyScalar( this.backSpeed )
+        if ( this._camera.isPerspective ) {
 
-        this._camera.position.add( displacement )
-        this._target.position.add( displacement )
+            const cameraDirection = BACK.clone().applyQuaternion( this._camera.quaternion )
+            const displacement    = (this._trackPath) ? this._getPathDisplacement( cameraDirection ) : cameraDirection.multiplyScalar( this.backSpeed )
+
+            this._camera.position.add( displacement )
+            this._target.position.add( displacement )
+
+        } else {
+
+            // Todo: ...
+
+        }
 
         this.dispatchEvent( { type: 'move' } )
         this.dispatchEvent( { type: 'change' } )
@@ -766,12 +782,20 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.canMove || !this.canUp ) { return }
 
-        const displacement = UP.clone()
-                               .applyQuaternion( this._camera.quaternion )
-                               .multiplyScalar( this.upSpeed )
+        if ( this._camera.isPerspective ) {
 
-        this._camera.position.add( displacement )
-        this._target.position.add( displacement )
+            const displacement = UP.clone()
+                                   .applyQuaternion( this._camera.quaternion )
+                                   .multiplyScalar( this.upSpeed )
+
+            this._camera.position.add( displacement )
+            this._target.position.add( displacement )
+
+        } else {
+
+            // Todo: ...
+
+        }
 
         this.dispatchEvent( { type: 'move' } )
         this.dispatchEvent( { type: 'change' } )
@@ -782,12 +806,20 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.canMove || !this.canDown ) { return }
 
-        const displacement = DOWN.clone()
-                                 .applyQuaternion( this._camera.quaternion )
-                                 .multiplyScalar( this.downSpeed )
+        if ( this._camera.isPerspective ) {
 
-        this._camera.position.add( displacement )
-        this._target.position.add( displacement )
+            const displacement = DOWN.clone()
+                                     .applyQuaternion( this._camera.quaternion )
+                                     .multiplyScalar( this.downSpeed )
+
+            this._camera.position.add( displacement )
+            this._target.position.add( displacement )
+
+        } else {
+
+            // Todo: ...
+
+        }
 
         this.dispatchEvent( { type: 'move' } )
         this.dispatchEvent( { type: 'change' } )
@@ -798,12 +830,20 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.canMove || !this.canLeft ) { return }
 
-        const displacement = LEFT.clone()
-                                 .applyQuaternion( this._camera.quaternion )
-                                 .multiplyScalar( this.leftSpeed )
+        if ( this._camera.isPerspective ) {
 
-        this._camera.position.add( displacement )
-        this._target.position.add( displacement )
+            const displacement = LEFT.clone()
+                                     .applyQuaternion( this._camera.quaternion )
+                                     .multiplyScalar( this.leftSpeed )
+
+            this._camera.position.add( displacement )
+            this._target.position.add( displacement )
+
+        } else {
+
+            // Todo: ...
+
+        }
 
         this.dispatchEvent( { type: 'move' } )
         this.dispatchEvent( { type: 'change' } )
@@ -814,12 +854,20 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.canMove || !this.canRight ) { return }
 
-        const displacement = RIGHT.clone()
-                                  .applyQuaternion( this._camera.quaternion )
-                                  .multiplyScalar( this.rightSpeed )
+        if ( this._camera.isPerspective ) {
 
-        this._camera.position.add( displacement )
-        this._target.position.add( displacement )
+            const displacement = RIGHT.clone()
+                                      .applyQuaternion( this._camera.quaternion )
+                                      .multiplyScalar( this.rightSpeed )
+
+            this._camera.position.add( displacement )
+            this._target.position.add( displacement )
+
+        } else {
+
+            // Todo: ...
+
+        }
 
         this.dispatchEvent( { type: 'move' } )
         this.dispatchEvent( { type: 'change' } )
@@ -828,71 +876,77 @@ class TCameraControls extends EventDispatcher {
 
     _rotate ( delta ) {
 
-        if ( !this.canRotate ) {
-            return
-        }
+        if ( !this.canRotate ) { return }
 
-        const cameraPosition = this._camera.position
-        const targetPosition = this._target.position
-        const distanceTo     = cameraPosition.distanceTo( targetPosition )
-        const targetToCamera = new Vector3().subVectors( cameraPosition, targetPosition ).normalize()
-        const rotateSpeed    = this.rotateSpeed
+        if ( this._camera.isPerspective ) {
 
-        switch ( this._mode ) {
+            const cameraPosition = this._camera.position
+            const targetPosition = this._target.position
+            const distanceTo     = cameraPosition.distanceTo( targetPosition )
+            const targetToCamera = new Vector3().subVectors( cameraPosition, targetPosition ).normalize()
+            const rotateSpeed    = this.rotateSpeed
 
-            case TCameraControlMode.FirstPerson:
+            switch ( this._mode ) {
 
-                //        const normalizedX = (delta.x / this._domElement.clientWidth) - 1.0
-                //        const normalizedY = (delta.y / this._domElement.clientHeight) - 1.0
-                const normalizedX = delta.x
-                const normalizedY = delta.y
+                case TCameraControlMode.FirstPerson:
 
-                const newTargetPosition = new Vector3( -normalizedX, normalizedY, 0 )
-                    .applyQuaternion( this._camera.quaternion )
-                    .multiplyScalar( rotateSpeed )
-                    .add( targetPosition )
+                    //        const normalizedX = (delta.x / this._domElement.clientWidth) - 1.0
+                    //        const normalizedY = (delta.y / this._domElement.clientHeight) - 1.0
+                    const normalizedX = delta.x
+                    const normalizedY = delta.y
 
-                // Protect against owl head
-                const cameraToTargetDirection = new Vector3().subVectors( newTargetPosition, cameraPosition ).normalize()
-                const dotProductUp            = UP.clone().dot( cameraToTargetDirection )
-                const dotProductRight         = RIGHT.clone().dot( cameraToTargetDirection )
+                    const newTargetPosition = new Vector3( -normalizedX, normalizedY, 0 )
+                        .applyQuaternion( this._camera.quaternion )
+                        .multiplyScalar( rotateSpeed )
+                        .add( targetPosition )
 
-                const max = 0.97
-                if ( dotProductUp < -max || dotProductUp > max || dotProductRight < -2 || dotProductRight > 2 ) {
-                    return
-                }
+                    // Protect against owl head
+                    const cameraToTargetDirection = new Vector3().subVectors( newTargetPosition, cameraPosition ).normalize()
+                    const dotProductUp            = UP.clone().dot( cameraToTargetDirection )
+                    const dotProductRight         = RIGHT.clone().dot( cameraToTargetDirection )
 
-                // Care the target distance will change the sensitivity of mouse move
-                // and
-                // We need to set target at pre-defined distance of camera
-                // because if we use newTargetPosition the distance between
-                // camera and target will increase silently over the time
-                const lockedTargetPostion = cameraToTargetDirection.multiplyScalar( 1.0 ) // Todo: option
-                                                                   .add( cameraPosition )
-                this.setTargetPosition( lockedTargetPostion )
+                    const max = 0.97
+                    if ( dotProductUp < -max || dotProductUp > max || dotProductRight < -2 || dotProductRight > 2 ) {
+                        return
+                    }
 
-                break
+                    // Care the target distance will change the sensitivity of mouse move
+                    // and
+                    // We need to set target at pre-defined distance of camera
+                    // because if we use newTargetPosition the distance between
+                    // camera and target will increase silently over the time
+                    const lockedTargetPostion = cameraToTargetDirection.multiplyScalar( 1.0 ) // Todo: option
+                                                                       .add( cameraPosition )
+                    this.setTargetPosition( lockedTargetPostion )
 
-            case TCameraControlMode.Orbit:
+                    break
 
-                // restrict theta and phi between desired limits
-                const spherical = new Spherical().setFromVector3( targetToCamera )
+                case TCameraControlMode.Orbit:
 
-                const newTheta  = spherical.theta + (degreesToRadians( -delta.x ) * rotateSpeed)
-                const newPhi    = spherical.phi + (degreesToRadians( -delta.y ) * rotateSpeed)
-                spherical.theta = Math.max( this.minAzimuthAngle, Math.min( this.maxAzimuthAngle, newTheta ) )
-                spherical.phi   = Math.max( this.minPolarAngle, Math.min( this.maxPolarAngle, newPhi ) )
+                    // restrict theta and phi between desired limits
+                    const spherical = new Spherical().setFromVector3( targetToCamera )
 
-                const newPosition = new Vector3().setFromSpherical( spherical )
-                                                 .multiplyScalar( distanceTo )
-                                                 .add( targetPosition )
+                    const newTheta  = spherical.theta + (degreesToRadians( -delta.x ) * rotateSpeed)
+                    const newPhi    = spherical.phi + (degreesToRadians( -delta.y ) * rotateSpeed)
+                    spherical.theta = Math.max( this.minAzimuthAngle, Math.min( this.maxAzimuthAngle, newTheta ) )
+                    spherical.phi   = Math.max( this.minPolarAngle, Math.min( this.maxPolarAngle, newPhi ) )
 
-                this.setCameraPosition( newPosition )
+                    const newPosition = new Vector3().setFromSpherical( spherical )
+                                                     .multiplyScalar( distanceTo )
+                                                     .add( targetPosition )
 
-                break
+                    this.setCameraPosition( newPosition )
 
-            default:
-                throw new RangeError( `Unamanaged rotation for camera mode ${this._mode}` )
+                    break
+
+                default:
+                    throw new RangeError( `Unamanaged rotation for camera mode ${this._mode}` )
+
+            }
+
+        } else {
+
+            // Todo: ...
 
         }
 
@@ -905,15 +959,23 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.canPan ) { return }
 
-        // Take into account the distance between the camera and his target
-        const cameraPosition = this._camera.position
-        const targetPosition = this._target.position
-        const distanceTo     = cameraPosition.distanceTo( targetPosition )
-        const displacement   = new Vector3( -delta.x, delta.y, 0 ).applyQuaternion( this._camera.quaternion )
-                                                                  .multiplyScalar( this.panSpeed * distanceTo )
+        if ( this._camera.isPerspective ) {
 
-        this._camera.position.add( displacement )
-        this._target.position.add( displacement )
+            // Take into account the distance between the camera and his target
+            const cameraPosition = this._camera.position
+            const targetPosition = this._target.position
+            const distanceTo     = cameraPosition.distanceTo( targetPosition )
+            const displacement   = new Vector3( -delta.x, delta.y, 0 ).applyQuaternion( this._camera.quaternion )
+                                                                      .multiplyScalar( this.panSpeed * distanceTo )
+
+            this._camera.position.add( displacement )
+            this._target.position.add( displacement )
+
+        } else {
+
+            // Todo: ...
+
+        }
 
         this.dispatchEvent( { type: 'pan' } )
         this.dispatchEvent( { type: 'change' } )
@@ -924,15 +986,23 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.canRoll ) { return }
 
-        const cameraPosition = this._camera.position
-        const targetPosition = this._target.position
-        const targetToCamera = new Vector3().subVectors( cameraPosition, targetPosition ).normalize()
-        const angle          = Math.PI / 16 //delta * this.rollSpeed
+        if ( this._camera.isPerspective ) {
 
-        this._camera.up.applyAxisAngle( targetToCamera, angle )
-        this._camera.lookAt( targetPosition )
-        //or
-        //        this._camera.rotateOnAxis( targetToCamera, angle )
+            const cameraPosition = this._camera.position
+            const targetPosition = this._target.position
+            const targetToCamera = new Vector3().subVectors( cameraPosition, targetPosition ).normalize()
+            const angle          = Math.PI / 16 //delta * this.rollSpeed
+
+            this._camera.up.applyAxisAngle( targetToCamera, angle )
+            this._camera.lookAt( targetPosition )
+            //or
+            //        this._camera.rotateOnAxis( targetToCamera, angle )
+
+        } else {
+
+            // Todo: ...
+
+        }
 
         this.dispatchEvent( { type: 'roll' } )
         this.dispatchEvent( { type: 'change' } )
@@ -943,51 +1013,59 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.canZoom ) { return }
 
-        switch ( this._mode ) {
+        if ( this._camera.isPerspective ) {
 
-            case TCameraControlMode.FirstPerson:
+            switch ( this._mode ) {
 
-                if ( delta > 0 ) {
-                    this._camera.fov--
-                } else {
-                    this._camera.fov++
-                }
+                case TCameraControlMode.FirstPerson:
 
-                this._camera.updateProjectionMatrix()
+                    if ( delta > 0 ) {
+                        this._camera.fov--
+                    } else {
+                        this._camera.fov++
+                    }
 
-                break
+                    this._camera.updateProjectionMatrix()
 
-            case TCameraControlMode.Orbit:
+                    break
 
-                const cameraPosition                 = this._camera.position
-                const targetPosition                 = this._target.position
-                const distanceBetweenCameraAndTarget = cameraPosition.distanceTo( targetPosition )
-                const displacement                   = FRONT.clone()
-                                                            .applyQuaternion( this._camera.quaternion )
-                                                            .multiplyScalar( delta * this.zoomSpeed * distanceBetweenCameraAndTarget )
+                case TCameraControlMode.Orbit:
 
-                let cameraNextPosition                   = cameraPosition.clone().add( displacement )
-                const currentCameraToNextCameraDirection = new Vector3().subVectors( cameraNextPosition, cameraPosition ).normalize()
-                const targetToCurrentCameraDirection     = new Vector3().subVectors( cameraPosition, targetPosition ).normalize()
-                const targetToNextCameraDirection        = new Vector3().subVectors( cameraNextPosition, targetPosition ).normalize()
-                const dotCurrentDirection                = currentCameraToNextCameraDirection.dot( targetToCurrentCameraDirection )
-                const dotNextDirection                   = currentCameraToNextCameraDirection.dot( targetToNextCameraDirection )
-                const nextCameraToTargetSquaredDistance  = cameraNextPosition.distanceToSquared( targetPosition )
+                    const cameraPosition                 = this._camera.position
+                    const targetPosition                 = this._target.position
+                    const distanceBetweenCameraAndTarget = cameraPosition.distanceTo( targetPosition )
+                    const displacement                   = FRONT.clone()
+                                                                .applyQuaternion( this._camera.quaternion )
+                                                                .multiplyScalar( delta * this.zoomSpeed * distanceBetweenCameraAndTarget )
 
-                if ( dotCurrentDirection < 0 && ((nextCameraToTargetSquaredDistance < (this.zoomMinimum * this.zoomMinimum)) || dotNextDirection > 0) ) {
+                    let cameraNextPosition                   = cameraPosition.clone().add( displacement )
+                    const currentCameraToNextCameraDirection = new Vector3().subVectors( cameraNextPosition, cameraPosition ).normalize()
+                    const targetToCurrentCameraDirection     = new Vector3().subVectors( cameraPosition, targetPosition ).normalize()
+                    const targetToNextCameraDirection        = new Vector3().subVectors( cameraNextPosition, targetPosition ).normalize()
+                    const dotCurrentDirection                = currentCameraToNextCameraDirection.dot( targetToCurrentCameraDirection )
+                    const dotNextDirection                   = currentCameraToNextCameraDirection.dot( targetToNextCameraDirection )
+                    const nextCameraToTargetSquaredDistance  = cameraNextPosition.distanceToSquared( targetPosition )
 
-                    cameraNextPosition = targetToCurrentCameraDirection.clone()
-                                                                       .multiplyScalar( this.zoomMinimum )
-                                                                       .add( targetPosition )
+                    if ( dotCurrentDirection < 0 && ((nextCameraToTargetSquaredDistance < (this.zoomMinimum * this.zoomMinimum)) || dotNextDirection > 0) ) {
 
-                }
+                        cameraNextPosition = targetToCurrentCameraDirection.clone()
+                                                                           .multiplyScalar( this.zoomMinimum )
+                                                                           .add( targetPosition )
 
-                this._camera.position.copy( cameraNextPosition )
+                    }
 
-                break
+                    this._camera.position.copy( cameraNextPosition )
 
-            default:
-                throw new RangeError( `Invalid camera control mode parameter: ${this._mode}` )
+                    break
+
+                default:
+                    throw new RangeError( `Invalid camera control mode parameter: ${this._mode}` )
+
+            }
+
+        } else {
+
+            // Todo: ...
 
         }
 
@@ -1000,27 +1078,35 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.canLookAt ) { return }
 
-        const _direction     = direction.clone()
-        const cameraPosition = this._camera.position
-        const targetPosition = this._target.position
-        const distanceTo     = cameraPosition.distanceTo( targetPosition )
+        if ( this._camera.isPerspective ) {
 
-        switch ( this.mode ) {
+            const _direction     = direction.clone()
+            const cameraPosition = this._camera.position
+            const targetPosition = this._target.position
+            const distanceTo     = cameraPosition.distanceTo( targetPosition )
 
-            case TCameraControlMode.FirstPerson:
-                // The result is inverted in front of Orbit type but is correct in FP mode except up and down so invert y axis
-                _direction.y            = -(_direction.y)
-                const newTargetPosition = _direction.multiplyScalar( distanceTo ).add( cameraPosition )
-                this.setTargetPosition( newTargetPosition )
-                break
+            switch ( this.mode ) {
 
-            case TCameraControlMode.Orbit:
-                const newCameraPosition = _direction.multiplyScalar( distanceTo ).add( targetPosition )
-                this.setCameraPosition( newCameraPosition )
-                break
+                case TCameraControlMode.FirstPerson:
+                    // The result is inverted in front of Orbit type but is correct in FP mode except up and down so invert y axis
+                    _direction.y            = -(_direction.y)
+                    const newTargetPosition = _direction.multiplyScalar( distanceTo ).add( cameraPosition )
+                    this.setTargetPosition( newTargetPosition )
+                    break
 
-            default:
-                throw new RangeError( `Invalid camera control mode parameter: ${this._mode}` )
+                case TCameraControlMode.Orbit:
+                    const newCameraPosition = _direction.multiplyScalar( distanceTo ).add( targetPosition )
+                    this.setCameraPosition( newCameraPosition )
+                    break
+
+                default:
+                    throw new RangeError( `Invalid camera control mode parameter: ${this._mode}` )
+
+            }
+
+        } else {
+
+            // Todo: ...
 
         }
 
