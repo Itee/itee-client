@@ -503,18 +503,14 @@ class TCameraControls extends EventDispatcher {
 
     _onKeyUp ( keyEvent ) {
 
-        if ( !this.enabled ) {
-            return
-        }
+        if ( !this.enabled || keyEvent.defaultPrevented ) { return }
         keyEvent.preventDefault()
 
     }
 
     _onTouchStart ( touchEvent ) {
 
-        if ( !this.enabled ) {
-            return
-        }
+        if ( !this.enabled || touchEvent.defaultPrevented ) { return }
         touchEvent.preventDefault()
 
         this.previousTouches = touchEvent.touches
@@ -523,9 +519,7 @@ class TCameraControls extends EventDispatcher {
 
     _onTouchEnd ( touchEvent ) {
 
-        if ( !this.enabled ) {
-            return
-        }
+        if ( !this.enabled || touchEvent.defaultPrevented ) { return }
         touchEvent.preventDefault()
 
         this.previousTouches = []
@@ -535,9 +529,8 @@ class TCameraControls extends EventDispatcher {
 
     _onTouchCancel ( touchEvent ) {
 
-        if ( !this.enabled ) {
-            return
-        }
+        if ( !this.enabled || touchEvent.defaultPrevented ) { return }
+        touchEvent.preventDefault()
 
         this.previousTouches = []
         this._state          = State.None
@@ -546,9 +539,8 @@ class TCameraControls extends EventDispatcher {
 
     _onTouchLeave ( touchEvent ) {
 
-        if ( !this.enabled ) {
-            return
-        }
+        if ( !this.enabled || touchEvent.defaultPrevented ) { return }
+        touchEvent.preventDefault()
 
         this.previousTouches = []
         this._state          = State.None
@@ -557,9 +549,7 @@ class TCameraControls extends EventDispatcher {
 
     _onTouchMove ( touchEvent ) {
 
-        if ( !this.enabled ) {
-            return
-        }
+        if ( !this.enabled || touchEvent.defaultPrevented ) { return }
         touchEvent.preventDefault()
 
         const previousTouches         = this.previousTouches
@@ -629,9 +619,7 @@ class TCameraControls extends EventDispatcher {
 
     _onMouseDown ( mouseEvent ) {
 
-        if ( !this.enabled ) {
-            return
-        }
+        if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
         mouseEvent.preventDefault()
 
         const actionMap = this.actionsMap
@@ -671,8 +659,7 @@ class TCameraControls extends EventDispatcher {
 
     _onMouseMove ( mouseEvent ) {
 
-        if ( !this.enabled || this._state === State.None ) { return }
-
+        if ( !this.enabled || mouseEvent.defaultPrevented || this._state === State.None ) { return }
         mouseEvent.preventDefault()
 
         const state = this._state
@@ -713,6 +700,9 @@ class TCameraControls extends EventDispatcher {
     //todo allow other displacement from wheel
     _onMouseWheel ( mouseEvent ) {
 
+        if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
+        mouseEvent.preventDefault()
+
         const delta = mouseEvent.wheelDelta || mouseEvent.deltaY
         this._zoom( delta )
 
@@ -720,20 +710,19 @@ class TCameraControls extends EventDispatcher {
 
     _onMouseUp ( mouseEvent ) {
 
-        if ( !this.enabled ) {
-            return
-        }
-
+        if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
         mouseEvent.preventDefault()
+
         this._state = State.None
 
     }
 
     _onDblClick ( mouseEvent ) {
-        //todo...
-        console.warn( 'Double click events is not implemented yet, sorry for the disagreement.' )
-        console.log( mouseEvent )
+
+        if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
         mouseEvent.preventDefault()
+
+        console.warn( 'Double click events is not implemented yet, sorry for the disagreement.' )
 
     }
 
