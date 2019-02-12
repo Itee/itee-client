@@ -759,8 +759,7 @@ class TDataBaseManager {
 
         this._processQueue.splice( this._processQueue.indexOf( request ), 1 )
 
-        const debug = true
-        if ( debug ) {
+        if ( Window.Itee && Window.Itee.Debug ) {
 
             const diff = new Date().valueOf() - request._timeStart.valueOf()
 
