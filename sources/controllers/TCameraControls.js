@@ -729,9 +729,7 @@ class TCameraControls extends EventDispatcher {
     // Positional methods
     _front () {
 
-        if ( !this.canMove || !this.canFront ) {
-            return
-        }
+        if ( !this.canMove || !this.canFront ) { return }
 
         const cameraDirection = FRONT.clone().applyQuaternion( this._camera.quaternion )
         const displacement    = (this._trackPath) ? this._getPathDisplacement( cameraDirection ) : cameraDirection.multiplyScalar( this.frontSpeed )
@@ -746,9 +744,7 @@ class TCameraControls extends EventDispatcher {
 
     _back () {
 
-        if ( !this.canMove || !this.canBack ) {
-            return
-        }
+        if ( !this.canMove || !this.canBack ) { return }
 
         const cameraDirection = BACK.clone().applyQuaternion( this._camera.quaternion )
         const displacement    = (this._trackPath) ? this._getPathDisplacement( cameraDirection ) : cameraDirection.multiplyScalar( this.backSpeed )
@@ -763,9 +759,7 @@ class TCameraControls extends EventDispatcher {
 
     _up () {
 
-        if ( !this.canMove || !this.canUp ) {
-            return
-        }
+        if ( !this.canMove || !this.canUp ) { return }
 
         const displacement = UP.clone()
                                .applyQuaternion( this._camera.quaternion )
@@ -781,9 +775,7 @@ class TCameraControls extends EventDispatcher {
 
     _down () {
 
-        if ( !this.canMove || !this.canDown ) {
-            return
-        }
+        if ( !this.canMove || !this.canDown ) { return }
 
         const displacement = DOWN.clone()
                                  .applyQuaternion( this._camera.quaternion )
@@ -799,9 +791,7 @@ class TCameraControls extends EventDispatcher {
 
     _left () {
 
-        if ( !this.canMove || !this.canLeft ) {
-            return
-        }
+        if ( !this.canMove || !this.canLeft ) { return }
 
         const displacement = LEFT.clone()
                                  .applyQuaternion( this._camera.quaternion )
@@ -817,9 +807,7 @@ class TCameraControls extends EventDispatcher {
 
     _right () {
 
-        if ( !this.canMove || !this.canRight ) {
-            return
-        }
+        if ( !this.canMove || !this.canRight ) { return }
 
         const displacement = RIGHT.clone()
                                   .applyQuaternion( this._camera.quaternion )
@@ -929,16 +917,14 @@ class TCameraControls extends EventDispatcher {
 
     _pan ( delta ) {
 
-        if ( !this.canPan ) {
-            return
-        }
+        if ( !this.canPan ) { return }
 
         // Take into account the distance between the camera and his target
-        const cameraPosition                 = this._camera.position
-        const targetPosition                 = this._target.position
-        const distanceBetweenCameraAndTarget = cameraPosition.distanceTo( targetPosition )
-        const displacement                   = new Vector3( -delta.x, delta.y, 0 ).applyQuaternion( this._camera.quaternion )
-                                                                                  .multiplyScalar( this.panSpeed * distanceBetweenCameraAndTarget )
+        const cameraPosition = this._camera.position
+        const targetPosition = this._target.position
+        const distanceTo     = cameraPosition.distanceTo( targetPosition )
+        const displacement   = new Vector3( -delta.x, delta.y, 0 ).applyQuaternion( this._camera.quaternion )
+                                                                  .multiplyScalar( this.panSpeed * distanceTo )
 
         this._camera.position.add( displacement )
         this._target.position.add( displacement )
@@ -961,9 +947,7 @@ class TCameraControls extends EventDispatcher {
 
     _zoom ( delta ) {
 
-        if ( !this.canZoom ) {
-            return
-        }
+        if ( !this.canZoom ) { return }
 
         switch ( this._mode ) {
 
@@ -1020,10 +1004,9 @@ class TCameraControls extends EventDispatcher {
 
     _lookAt ( direction ) {
 
-        if ( !this.canLookAt ) {
-            return
-        }
+        if ( !this.canLookAt ) { return }
 
+        const _direction     = direction.clone()
         const cameraPosition = this._camera.position
         const targetPosition = this._target.position
         const distanceTo     = cameraPosition.distanceTo( targetPosition )
@@ -1032,14 +1015,13 @@ class TCameraControls extends EventDispatcher {
 
             case TCameraControlMode.FirstPerson:
                 // The result is inverted in front of Orbit type but is correct in FP mode except up and down so invert y axis
-                const _direction        = direction.clone()
                 _direction.y            = -(_direction.y)
                 const newTargetPosition = _direction.multiplyScalar( distanceTo ).add( cameraPosition )
                 this.setTargetPosition( newTargetPosition )
                 break
 
             case TCameraControlMode.Orbit:
-                const newCameraPosition = direction.clone().multiplyScalar( distanceTo ).add( targetPosition )
+                const newCameraPosition = _direction.multiplyScalar( distanceTo ).add( targetPosition )
                 this.setCameraPosition( newCameraPosition )
                 break
 
