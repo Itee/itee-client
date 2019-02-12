@@ -391,7 +391,6 @@ class TCameraControls extends EventDispatcher {
         this._domElement.addEventListener( 'mousedown', this._handlers.onMouseDown, false )
         this._domElement.addEventListener( 'mousemove', this._handlers.onMouseMove, false )
         this._domElement.addEventListener( 'mouseup', this._handlers.onMouseUp, false )
-        this._domElement.addEventListener( 'mousewheel', this._handlers.onMouseWheel, true )
         this._domElement.addEventListener( 'wheel', this._handlers.onMouseWheel, true )
 
         this._domElement.addEventListener( 'touchcancel', this._handlers.onTouchCancel, false )
@@ -413,7 +412,6 @@ class TCameraControls extends EventDispatcher {
         this._domElement.removeEventListener( 'mousedown', this._handlers.onMouseDown, false )
         this._domElement.removeEventListener( 'mousemove', this._handlers.onMouseMove, false )
         this._domElement.removeEventListener( 'mouseup', this._handlers.onMouseUp, false )
-        this._domElement.removeEventListener( 'mousewheel', this._handlers.onMouseWheel, false )
         this._domElement.removeEventListener( 'wheel', this._handlers.onMouseWheel, false )
 
         this._domElement.removeEventListener( 'touchcancel', this._handlers.onTouchCancel, false )
