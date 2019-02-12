@@ -652,7 +652,9 @@ class TCameraControls extends EventDispatcher {
             this._state = State.Rotating
         } else if ( actionMap.pan.includes( button ) ) {
             this._state = State.Panning
-        } else if ( actionMap.roll.includes( button ) ) {
+        } else if ( actionMap.roll.left.includes( button ) ) {
+            this._state = State.Rolling
+        } else if ( actionMap.roll.right.includes( button ) ) {
             this._state = State.Rolling
         } else if ( actionMap.zoom.includes( button ) ) {
             this._state = State.Zooming
