@@ -832,6 +832,12 @@ class TCameraControls extends EventDispatcher {
             return
         }
 
+        const cameraPosition = this._camera.position
+        const targetPosition = this._target.position
+        const distanceTo     = cameraPosition.distanceTo( targetPosition )
+        const targetToCamera = new Vector3().subVectors( cameraPosition, targetPosition ).normalize()
+        const rotateSpeed    = this.rotateSpeed
+
         switch ( this._mode ) {
 
             case TCameraControlMode.FirstPerson:
@@ -843,11 +849,11 @@ class TCameraControls extends EventDispatcher {
 
                 const newTargetPosition = new Vector3( -normalizedX, normalizedY, 0 )
                     .applyQuaternion( this._camera.quaternion )
-                    .multiplyScalar( this.rotateSpeed )
-                    .add( this._target.position )
+                    .multiplyScalar( rotateSpeed )
+                    .add( targetPosition )
 
                 // Protect against owl head
-                const cameraToTargetDirection = new Vector3().subVectors( newTargetPosition, this._camera.position ).normalize()
+                const cameraToTargetDirection = new Vector3().subVectors( newTargetPosition, cameraPosition ).normalize()
                 const dotProductUp            = UP.clone().dot( cameraToTargetDirection )
                 const dotProductRight         = RIGHT.clone().dot( cameraToTargetDirection )
 
@@ -862,56 +868,31 @@ class TCameraControls extends EventDispatcher {
                 // because if we use newTargetPosition the distance between
                 // camera and target will increase silently over the time
                 const lockedTargetPostion = cameraToTargetDirection.multiplyScalar( 1.0 ) // Todo: option
-                                                                   .add( this._camera.position )
+                                                                   .add( cameraPosition )
                 this.setTargetPosition( lockedTargetPostion )
 
                 break
 
             case TCameraControlMode.Orbit:
 
-                const cameraUp       = this._camera.up
-                const targetToCamera = new Vector3().subVectors( this._camera.position, this._target.position )
-                const spherical      = new Spherical().setFromVector3( targetToCamera )
+                // restrict theta and phi between desired limits
+                const spherical = new Spherical().setFromVector3( targetToCamera )
 
-                if ( cameraUp.equals( UP ) ) {
+                const newTheta  = spherical.theta + (degreesToRadians( -delta.x ) * rotateSpeed)
+                const newPhi    = spherical.phi + (degreesToRadians( -delta.y ) * rotateSpeed)
+                spherical.theta = Math.max( this.minAzimuthAngle, Math.min( this.maxAzimuthAngle, newTheta ) )
+                spherical.phi   = Math.max( this.minPolarAngle, Math.min( this.maxPolarAngle, newPhi ) )
 
-                    // restrict theta to be between desired limits
-                    spherical.theta += degreesToRadians( -delta.x ) * this.rotateSpeed
-                    spherical.theta = Math.max( this.minAzimuthAngle, Math.min( this.maxAzimuthAngle, spherical.theta ) )
+                const newPosition = new Vector3().setFromSpherical( spherical )
+                                                 .multiplyScalar( distanceTo )
+                                                 .add( targetPosition )
 
-                    // restrict phi to be between desired limits
-                    spherical.phi += degreesToRadians( -delta.y ) * this.rotateSpeed
-                    spherical.phi = Math.max( this.minPolarAngle, Math.min( this.maxPolarAngle, spherical.phi ) )
-
-                    const newPosition = new Vector3().setFromSpherical( spherical ).add( this._target.position )
-                    this.setCameraPosition( newPosition )
-
-                } else if ( cameraUp.equals( BACK ) ) {
-
-                    // restrict theta to be between desired limits
-                    //                    spherical.theta += degreesToRadians( -delta.x ) * this.rotateSpeed
-                    //                    spherical.theta = Math.max( this.minPolarAngle, Math.min( this.maxPolarAngle, spherical.theta ) )
-
-                    // restrict phi to be between desired limits
-                    spherical.phi += degreesToRadians( -delta.y ) * this.rotateSpeed
-                    //                    spherical.phi = Math.max( this.minAzimuthAngle, Math.min( this.maxAzimuthAngle, spherical.phi ) )
-
-                    const newPosition = new Vector3().setFromSpherical( spherical )
-                    this.setCameraPosition( newPosition )
-                    //                mesh.rotation.z = 90 * Math.PI/180;
-                    //                mesh.rotation.x = -90 * Math.PI/180;
-
-                } else {
-
-                    console.warn( 'Unknown/Unmanaged world axis orientation !' )
-
-                }
+                this.setCameraPosition( newPosition )
 
                 break
 
             default:
                 throw new RangeError( `Unamanaged rotation for camera mode ${this._mode}` )
-                break
 
         }
 
