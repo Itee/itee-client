@@ -9,44 +9,37 @@
  */
 
 import {
-    Object3D,
-    Mesh,
-    Raycaster,
-    Vector3,
-    Quaternion,
-    MeshBasicMaterial,
-    LineBasicMaterial,
-    ConeBufferGeometry,
-    CylinderBufferGeometry,
+    Box3,
     BoxBufferGeometry,
     BoxGeometry,
-    EdgesGeometry,
     BufferGeometry,
-    Float32BufferAttribute,
-    Line,
-    LineSegments,
-    OctahedronBufferGeometry,
-    PlaneBufferGeometry,
-    TorusBufferGeometry,
-    SphereBufferGeometry,
-    Euler,
-    Matrix4,
-    Color,
-    PerspectiveCamera,
-    OrthographicCamera,
+    ConeBufferGeometry,
+    CylinderBufferGeometry,
     DoubleSide,
+    EdgesGeometry,
+    Euler,
+    Float32BufferAttribute,
     FrontSide,
-    Box3
+    Line,
+    LineBasicMaterial,
+    LineSegments,
+    Matrix4,
+    Mesh,
+    MeshBasicMaterial,
+    Object3D,
+    OctahedronGeometry,
+    OrthographicCamera,
+    PerspectiveCamera,
+    Plane,
+    PlaneBufferGeometry,
+    Quaternion,
+    Raycaster,
+    TorusBufferGeometry,
+    Vector2,
+    Vector3
 } from 'three-full'
 
-import {
-    isNull,
-    isUndefined,
-    isNotDefined,
-    isEmptyArray,
-    isNotBoolean,
-    isArray
-} from 'itee-validators'
+import { isArray } from 'itee-validators'
 
 class ClippingBox extends Mesh {
 
@@ -777,7 +770,7 @@ class TransformGizmoScale extends TransformGizmo {
     }
 }
 
-export default class TClippingControls extends Object3D {
+class TClippingControls extends Object3D {
     constructor ( camera, domElement, boxColor, boxPosition, boxSize ) {
 
         super()
@@ -1410,3 +1403,5 @@ export default class TClippingControls extends Object3D {
     }
 
 }
+
+export { TClippingControls }
