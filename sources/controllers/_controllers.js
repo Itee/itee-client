@@ -10,3 +10,4 @@
 
 export * from './TCameraControls'
 export * from './TCameraPathController'
+export * from './TClippingControls'
