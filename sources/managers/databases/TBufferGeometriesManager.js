@@ -11,12 +11,11 @@
 import { TDataBaseManager } from '../TDataBaseManager'
 
 import {
-    BoxBufferGeometry,
-    BufferAttribute,
-    BufferGeometry,
-    Face3,
-    Vector3
+    Scene,
+    Object3D
 } from 'three-full'
+
+import { isObject } from 'itee-validators'
 
 /**
  *

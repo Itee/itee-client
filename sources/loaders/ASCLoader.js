@@ -421,7 +421,7 @@ Object.assign( ASCLoader.prototype, {
             this._parseLinesAsXYZIRGBnXnYnZ( lines )
 
         } else {
-            TLogger.error( 'Invalid data line: ' + line )
+            TLogger.error( 'Invalid data line: ' + lines )
         }
 
     },
