@@ -47,7 +47,6 @@ import {
     ResponseType,
     HttpStatusCode
 }                                   from '../cores/TConstants'
-import { TOrchestrator }            from '../cores/TOrchestrator'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { TProgressManager }         from './TProgressManager'
 import { TErrorManager }            from './TErrorManager'
@@ -269,9 +268,14 @@ class TDataBaseManager {
             //console.log( 'Process request: ' + requestSkull._id )
 
             const request      = new XMLHttpRequest()
-            request.onload     = this._onLoad.bind( this, requestSkull, this._onEnd.bind( this, requestSkull, requestSkull.onLoad ), this._onProgress.bind( this, requestSkull.onProgress ), this._onError.bind( this, requestSkull, requestSkull.onError ) )
+            request.onload     = this._onLoad.bind( this,
+                requestSkull,
+                this._onEnd.bind( this, requestSkull, requestSkull.onLoad ),
+                this._onProgress.bind( this, requestSkull.onProgress ),
+                this._onError.bind( this, requestSkull, requestSkull.onError )
+            )
             request.onprogress = this._onProgress.bind( this, requestSkull.onProgress )
-            request.onerror    = this._onError.bind( this, requestSkull.onError )
+            request.onerror    = this._onError.bind( this, requestSkull, requestSkull.onError )
             request.open( requestSkull.method, requestSkull.url, true )
             request.setRequestHeader( 'Content-Type', 'application/json' )
             request.setRequestHeader( 'Accept', 'application/json' )
