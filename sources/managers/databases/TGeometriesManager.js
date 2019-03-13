@@ -13,8 +13,11 @@
  *
  */
 
-import { isNull, isObject, isUndefined } from 'itee-validators'
-
+import {
+    isNull,
+    isObject,
+    isUndefined
+}                           from 'itee-validators'
 /* eslint-env browser */
 import {
     BoxBufferGeometry,
@@ -65,11 +68,11 @@ import {
     TubeGeometry,
     Vector3,
     WireframeGeometry
-}                                        from 'three-full'
-import { ResponseType }                  from '../../cores/TConstants'
-import { TDataBaseManager }              from '../TDataBaseManager'
-import { TErrorManager }                 from '../TErrorManager'
-import { TProgressManager }              from '../TProgressManager'
+}                           from 'three-full'
+import { ResponseType }     from '../../cores/TConstants'
+import { TDataBaseManager } from '../TDataBaseManager'
+import { TErrorManager }    from '../TErrorManager'
+import { TProgressManager } from '../TProgressManager'
 
 class TGeometriesManager extends TDataBaseManager {
 
@@ -139,7 +142,7 @@ class TGeometriesManager extends TDataBaseManager {
     _onJson ( jsonData, onSuccess, onProgress, onError ) {
 
         // Normalize to array
-        const datas   = (isObject( jsonData )) ? [ jsonData ] : jsonData
+        const datas   = ( isObject( jsonData ) ) ? [ jsonData ] : jsonData
         const results = {}
 
         for ( let dataIndex = 0, numberOfDatas = datas.length, data = undefined ; dataIndex < numberOfDatas ; dataIndex++ ) {
@@ -532,7 +535,7 @@ class TGeometriesManager extends TDataBaseManager {
                         for ( let index = 0, offset = 0, numberOfBytes = dataView.byteLength ; offset < numberOfBytes ; index += 3, offset += 4 * 3 ) {
                             float32Array[ index ]     = dataView.getFloat32( offset ) / globalScale
                             float32Array[ index + 1 ] = dataView.getFloat32( offset + 8 ) / globalScale
-                            float32Array[ index + 2 ] = -(dataView.getFloat32( offset + 4 ) / globalScale)
+                            float32Array[ index + 2 ] = -( dataView.getFloat32( offset + 4 ) / globalScale )
                         }
 
                     } else {
@@ -689,9 +692,9 @@ class TGeometriesManager extends TDataBaseManager {
             encoded3 = lookup[ base64.charCodeAt( i + 2 ) ]
             encoded4 = lookup[ base64.charCodeAt( i + 3 ) ]
 
-            bytes[ pointer++ ] = (encoded1 << 2) | (encoded2 >> 4)
-            bytes[ pointer++ ] = ((encoded2 & 15) << 4) | (encoded3 >> 2)
-            bytes[ pointer++ ] = ((encoded3 & 3) << 6) | (encoded4 & 63)
+            bytes[ pointer++ ] = ( encoded1 << 2 ) | ( encoded2 >> 4 )
+            bytes[ pointer++ ] = ( ( encoded2 & 15 ) << 4 ) | ( encoded3 >> 2 )
+            bytes[ pointer++ ] = ( ( encoded3 & 3 ) << 6 ) | ( encoded4 & 63 )
         }
 
         return arraybuffer

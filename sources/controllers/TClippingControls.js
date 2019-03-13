@@ -8,6 +8,7 @@
  *
  */
 
+import { isArray } from 'itee-validators'
 import {
     Box3,
     BoxBufferGeometry,
@@ -37,9 +38,7 @@ import {
     TorusBufferGeometry,
     Vector2,
     Vector3
-} from 'three-full'
-
-import { isArray } from 'itee-validators'
+}                  from 'three-full'
 
 class ClippingBox extends Mesh {
 

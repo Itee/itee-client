@@ -8,28 +8,25 @@
  *
  */
 
+import {
+    isNotDefined,
+    isObject
+}                       from 'itee-validators'
 /* eslint-env browser */
 import {
-    Line,
     BufferGeometry,
-    LineBasicMaterial,
     Float32BufferAttribute,
-    SphereBufferGeometry,
+    Line,
+    LineBasicMaterial,
+    Mesh,
     MeshPhongMaterial,
-    Mesh
-} from 'three-full'
+    SphereBufferGeometry
+}                       from 'three-full'
+import { ResponseType } from '../../cores/TConstants'
 
 import { TDataBaseManager } from '../TDataBaseManager'
-import { TProgressManager } from '../TProgressManager'
 import { TErrorManager }    from '../TErrorManager'
-import { ResponseType }     from '../../cores/TConstants'
-import {
-    isNull,
-    isUndefined,
-    isNotDefined,
-    isNotEmptyArray,
-    isObject
-}                           from 'itee-validators'
+import { TProgressManager } from '../TProgressManager'
 
 class TFilaireManager extends TDataBaseManager {
 
@@ -52,7 +49,7 @@ class TFilaireManager extends TDataBaseManager {
     _onJson ( jsonData, onSuccess, onProgress, onError ) {
 
         // Normalize to array
-        const datas   = (isObject( jsonData )) ? [ jsonData ] : jsonData
+        const datas   = ( isObject( jsonData ) ) ? [ jsonData ] : jsonData
         const results = {}
 
         for ( let dataIndex = 0, numberOfDatas = datas.length, data = undefined ; dataIndex < numberOfDatas ; dataIndex++ ) {

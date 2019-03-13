@@ -13,8 +13,8 @@
 
 /* eslint-env browser */
 
-import React     from 'react'
 import PropTypes from 'prop-types'
+import React     from 'react'
 
 let _instanceCounter = 0
 
@@ -93,7 +93,7 @@ class TDateTime extends React.Component {
         const { id, className } = this.props
 
         const _id    = id || `tDateTime_${_instanceCounter}`
-        const _class = (className) ? `tDateTime ${className}` : 'tDateTime'
+        const _class = ( className ) ? `tDateTime ${className}` : 'tDateTime'
 
         const _style = {}
 

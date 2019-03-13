@@ -46,7 +46,7 @@ class TTimePicker extends React.Component {
 
         const _id    = id || `tTimePicker_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tTimePicker ${className}` : 'tTimePicker'
+        const _class = ( className ) ? `tTimePicker ${className}` : 'tTimePicker'
 
         return (
             <t-time-picker ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-time-picker>

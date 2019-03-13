@@ -46,7 +46,7 @@ class TAccordion extends React.Component {
 
         const _id    = id || `tAccordion_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tAccordion ${className}` : 'tAccordion'
+        const _class = ( className ) ? `tAccordion ${className}` : 'tAccordion'
 
         return (
             <t-accordion ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-accordion>

@@ -8,34 +8,28 @@
  *
  */
 
+import { Enum }             from 'enumify'
+import { degreesToRadians } from 'itee-utils'
 import {
-    PI_2,
-    degreesToRadians
-}               from 'itee-utils'
-import {
-    isNull,
-    isUndefined,
-    isNotDefined,
     isEmptyArray,
-    isNotBoolean
-}               from 'itee-validators'
+    isNotBoolean,
+    isNotDefined,
+    isNull,
+    isUndefined
+}                           from 'itee-validators'
 import {
-    Quaternion,
-    Vector2,
-    Vector3,
-    Spherical,
-    ArrowHelper,
-    EventDispatcher,
     Camera,
+    EventDispatcher,
+    Object3D,
     PerspectiveCamera,
-    OrthographicCamera,
-    Object3D
-}               from 'three-full'
+    Spherical,
+    Vector2,
+    Vector3
+}                           from 'three-full'
 import {
     Keys,
     Mouse
-}               from '../cores/TConstants'
-import { Enum } from 'enumify'
+}                           from '../cores/TConstants'
 
 const FRONT = new Vector3( 0, 0, -1 )
 const BACK  = new Vector3( 0, 0, 1 )
@@ -157,16 +151,16 @@ class TCameraControls extends EventDispatcher {
         /**
          * How far you can orbit vertically, upper and lower limits.
          * Range is 0 to Math.PI radians.
-         * @type {number} angle in radians
+         * @type {number}
          */
         this.minPolarAngle = 0.001
 
         /**
          * How far you can orbit horizontally, upper and lower limits.
          * If set, must be a sub-interval of the interval [ - Math.PI, Math.PI ].
-         * @type {number} angle in radians
+         * @type {number}
          */
-        this.maxPolarAngle      = (Math.PI - 0.001)
+        this.maxPolarAngle = ( Math.PI - 0.001 )
         this.minAzimuthAngle    = -Infinity
         this.maxAzimuthAngle    = Infinity
         this.rotateMinSpeed     = 0.0
@@ -242,7 +236,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( isNull( value ) ) { throw new Error( 'Camera cannot be null ! Expect an instance of Camera' ) }
         if ( isUndefined( value ) ) { throw new Error( 'Camera cannot be undefined ! Expect an instance of Camera' ) }
-        if ( !(value instanceof Camera) ) { throw new Error( `Camera cannot be an instance of ${value.constructor.name}. Expect an instance of Camera.` ) }
+        if ( !( value instanceof Camera ) ) { throw new Error( `Camera cannot be an instance of ${value.constructor.name}. Expect an instance of Camera.` ) }
 
         this._camera = value
 
@@ -265,7 +259,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( isNull( value ) ) { throw new Error( 'Target cannot be null ! Expect an instance of Object3D.' ) }
         if ( isUndefined( value ) ) { throw new Error( 'Target cannot be undefined ! Expect an instance of Object3D.' ) }
-        if ( !(value instanceof Object3D) ) { throw new Error( `Target cannot be an instance of ${value.constructor.name}. Expect an instance of Object3D.` ) }
+        if ( !( value instanceof Object3D ) ) { throw new Error( `Target cannot be an instance of ${value.constructor.name}. Expect an instance of Object3D.` ) }
 
         this._target = value
 
@@ -286,7 +280,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( isNull( value ) ) { throw new Error( 'Mode cannot be null ! Expect a value from TCameraControlMode enum.' ) }
         if ( isUndefined( value ) ) { throw new Error( 'Mode cannot be undefined ! Expect a value from TCameraControlMode enum.' ) }
-        if ( !(value instanceof TCameraControlMode) ) { throw new Error( `Mode cannot be an instance of ${value.constructor.name}. Expect a value from TCameraControlMode enum.` ) }
+        if ( !( value instanceof TCameraControlMode ) ) { throw new Error( `Mode cannot be an instance of ${value.constructor.name}. Expect a value from TCameraControlMode enum.` ) }
 
         this._mode = value
 
@@ -360,7 +354,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( isNull( value ) ) { throw new Error( 'DomElement cannot be null ! Expect an instance of HTMLDocument.' ) }
         if ( isUndefined( value ) ) { throw new Error( 'DomElement cannot be undefined ! Expect an instance of HTMLDocument.' ) }
-        if ( !((value instanceof Window) || (value instanceof HTMLDocument) || (value instanceof HTMLDivElement) || (value instanceof HTMLCanvasElement)) ) { throw new Error( `Target cannot be an instance of ${value.constructor.name}. Expect an instance of Window, HTMLDocument or HTMLDivElement.` ) }
+        if ( !( ( value instanceof Window ) || ( value instanceof HTMLDocument ) || ( value instanceof HTMLDivElement ) || ( value instanceof HTMLCanvasElement ) ) ) { throw new Error( `Target cannot be an instance of ${value.constructor.name}. Expect an instance of Window, HTMLDocument or HTMLDivElement.` ) }
 
         // Clear previous element
         if ( this._domElement ) {
@@ -738,10 +732,10 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.canMove || !this.canFront ) { return }
 
-        if ( this._camera.type === "PerspectiveCamera" ) {
+        if ( this._camera.type === 'PerspectiveCamera' ) {
 
             const cameraDirection = FRONT.clone().applyQuaternion( this._camera.quaternion )
-            const displacement    = (this._trackPath) ? this._getPathDisplacement( cameraDirection ) : cameraDirection.multiplyScalar( this.frontSpeed )
+            const displacement    = ( this._trackPath ) ? this._getPathDisplacement( cameraDirection ) : cameraDirection.multiplyScalar( this.frontSpeed )
 
             this._camera.position.add( displacement )
             this._target.position.add( displacement )
@@ -761,10 +755,10 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.canMove || !this.canBack ) { return }
 
-        if ( this._camera.type === "PerspectiveCamera" ) {
+        if ( this._camera.type === 'PerspectiveCamera' ) {
 
             const cameraDirection = BACK.clone().applyQuaternion( this._camera.quaternion )
-            const displacement    = (this._trackPath) ? this._getPathDisplacement( cameraDirection ) : cameraDirection.multiplyScalar( this.backSpeed )
+            const displacement    = ( this._trackPath ) ? this._getPathDisplacement( cameraDirection ) : cameraDirection.multiplyScalar( this.backSpeed )
 
             this._camera.position.add( displacement )
             this._target.position.add( displacement )
@@ -784,7 +778,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.canMove || !this.canUp ) { return }
 
-        if ( this._camera.type === "PerspectiveCamera" ) {
+        if ( this._camera.type === 'PerspectiveCamera' ) {
 
             const displacement = UP.clone()
                                    .applyQuaternion( this._camera.quaternion )
@@ -808,7 +802,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.canMove || !this.canDown ) { return }
 
-        if ( this._camera.type === "PerspectiveCamera" ) {
+        if ( this._camera.type === 'PerspectiveCamera' ) {
 
             const displacement = DOWN.clone()
                                      .applyQuaternion( this._camera.quaternion )
@@ -832,7 +826,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.canMove || !this.canLeft ) { return }
 
-        if ( this._camera.type === "PerspectiveCamera" ) {
+        if ( this._camera.type === 'PerspectiveCamera' ) {
 
             const displacement = LEFT.clone()
                                      .applyQuaternion( this._camera.quaternion )
@@ -856,7 +850,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.canMove || !this.canRight ) { return }
 
-        if ( this._camera.type === "PerspectiveCamera" ) {
+        if ( this._camera.type === 'PerspectiveCamera' ) {
 
             const displacement = RIGHT.clone()
                                       .applyQuaternion( this._camera.quaternion )
@@ -880,7 +874,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.canRotate ) { return }
 
-        if ( this._camera.type === "PerspectiveCamera" ) {
+        if ( this._camera.type === 'PerspectiveCamera' ) {
 
             const cameraPosition = this._camera.position
             const targetPosition = this._target.position
@@ -928,8 +922,8 @@ class TCameraControls extends EventDispatcher {
                     // restrict theta and phi between desired limits
                     const spherical = new Spherical().setFromVector3( targetToCamera )
 
-                    const newTheta  = spherical.theta + (degreesToRadians( -delta.x ) * rotateSpeed)
-                    const newPhi    = spherical.phi + (degreesToRadians( -delta.y ) * rotateSpeed)
+                    const newTheta  = spherical.theta + ( degreesToRadians( -delta.x ) * rotateSpeed )
+                    const newPhi    = spherical.phi + ( degreesToRadians( -delta.y ) * rotateSpeed )
                     spherical.theta = Math.max( this.minAzimuthAngle, Math.min( this.maxAzimuthAngle, newTheta ) )
                     spherical.phi   = Math.max( this.minPolarAngle, Math.min( this.maxPolarAngle, newPhi ) )
 
@@ -961,7 +955,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.canPan ) { return }
 
-        if ( this._camera.type === "PerspectiveCamera" ) {
+        if ( this._camera.type === 'PerspectiveCamera' ) {
 
             // Take into account the distance between the camera and his target
             const cameraPosition = this._camera.position
@@ -988,7 +982,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.canRoll ) { return }
 
-        if ( this._camera.type === "PerspectiveCamera" ) {
+        if ( this._camera.type === 'PerspectiveCamera' ) {
 
             const cameraPosition = this._camera.position
             const targetPosition = this._target.position
@@ -1015,7 +1009,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.canZoom ) { return }
 
-        if ( this._camera.type === "PerspectiveCamera" ) {
+        if ( this._camera.type === 'PerspectiveCamera' ) {
 
             switch ( this._mode ) {
 
@@ -1048,7 +1042,7 @@ class TCameraControls extends EventDispatcher {
                     const dotNextDirection                   = currentCameraToNextCameraDirection.dot( targetToNextCameraDirection )
                     const nextCameraToTargetSquaredDistance  = cameraNextPosition.distanceToSquared( targetPosition )
 
-                    if ( dotCurrentDirection < 0 && ((nextCameraToTargetSquaredDistance < (this.zoomMinimum * this.zoomMinimum)) || dotNextDirection > 0) ) {
+                    if ( dotCurrentDirection < 0 && ( ( nextCameraToTargetSquaredDistance < ( this.zoomMinimum * this.zoomMinimum ) ) || dotNextDirection > 0 ) ) {
 
                         cameraNextPosition = targetToCurrentCameraDirection.clone()
                                                                            .multiplyScalar( this.zoomMinimum )
@@ -1080,7 +1074,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.canLookAt ) { return }
 
-        if ( this._camera.type === "PerspectiveCamera" ) {
+        if ( this._camera.type === 'PerspectiveCamera' ) {
 
             const _direction     = direction.clone()
             const cameraPosition = this._camera.position
@@ -1091,7 +1085,7 @@ class TCameraControls extends EventDispatcher {
 
                 case TCameraControlMode.FirstPerson:
                     // The result is inverted in front of Orbit type but is correct in FP mode except up and down so invert y axis
-                    _direction.y            = -(_direction.y)
+                    _direction.y            = -( _direction.y )
                     const newTargetPosition = _direction.multiplyScalar( distanceTo ).add( cameraPosition )
                     this.setTargetPosition( newTargetPosition )
                     break
@@ -1189,14 +1183,14 @@ class TCameraControls extends EventDispatcher {
         const currentPathPosition = this._currentPathPosition
 
         const nextPositiveOffset   = this._currentPathOffset + this._cameraJump
-        const positiveOffset       = (nextPositiveOffset < 1) ? nextPositiveOffset : 1
+        const positiveOffset       = ( nextPositiveOffset < 1 ) ? nextPositiveOffset : 1
         const positivePathPosition = this._currentPath.getPointAt( positiveOffset )
         const positiveDisplacement = new Vector3().subVectors( positivePathPosition, currentPathPosition )
         const positiveDirection    = positiveDisplacement.clone().normalize()
         const positiveDot          = cameraDirection.dot( positiveDirection )
 
         const nextNegativeOffset   = this._currentPathOffset - this._cameraJump
-        const negativeOffset       = (nextNegativeOffset > 0) ? nextNegativeOffset : 0
+        const negativeOffset       = ( nextNegativeOffset > 0 ) ? nextNegativeOffset : 0
         const negativePathPosition = this._currentPath.getPointAt( negativeOffset )
         const negativeDisplacement = new Vector3().subVectors( negativePathPosition, currentPathPosition )
         const negativeDirection    = negativeDisplacement.clone().normalize()
@@ -1253,7 +1247,7 @@ class TCameraControls extends EventDispatcher {
 
                 this._currentPathIndex    = indexOfBestPath
                 this._currentPath         = this._paths[ this._currentPathIndex ]
-                this._currentPathOffset   = (isFromStart) ? this._cameraJump : 1 - this._cameraJump
+                this._currentPathOffset   = ( isFromStart ) ? this._cameraJump : 1 - this._cameraJump
                 this._currentPathPosition = this._currentPath.getPointAt( this._currentPathOffset )
                 displacement              = bestDisplacement
 
@@ -1327,7 +1321,7 @@ class TCameraControls extends EventDispatcher {
 
                 this._currentPathIndex    = indexOfBestPath
                 this._currentPath         = this._paths[ this._currentPathIndex ]
-                this._currentPathOffset   = (isFromStart) ? this._cameraJump : 1 - this._cameraJump
+                this._currentPathOffset   = ( isFromStart ) ? this._cameraJump : 1 - this._cameraJump
                 this._currentPathPosition = this._currentPath.getPointAt( this._currentPathOffset )
                 displacement              = bestDisplacement
 
@@ -1338,7 +1332,7 @@ class TCameraControls extends EventDispatcher {
 
             }
 
-        } else if ( (positiveDot < 0 && negativeDot < 0) || (positiveDot > 0 && negativeDot > 0) ) { // Could occurs in high sharp curve with big move step
+        } else if ( ( positiveDot < 0 && negativeDot < 0 ) || ( positiveDot > 0 && negativeDot > 0 ) ) { // Could occurs in high sharp curve with big move step
 
             if ( positiveDot > negativeDot ) {
 
@@ -1408,7 +1402,10 @@ class TCameraControls extends EventDispatcher {
 
 }
 
-export { TCameraControls, TCameraControlMode }
+export {
+    TCameraControls,
+    TCameraControlMode
+}
 
 //// Extra work
 

@@ -46,7 +46,7 @@ class TProgressPop extends React.Component {
 
         const _id    = id || `tProgressPop_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tProgressPop ${className}` : 'tProgressPop'
+        const _class = ( className ) ? `tProgressPop ${className}` : 'tProgressPop'
 
         return (
             <t-progress-pop ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-progress-pop>

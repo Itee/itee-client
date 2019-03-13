@@ -46,7 +46,7 @@ class TRadioButton extends React.Component {
 
         const _id    = id || `tRadioButton_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tRadioButton ${className}` : 'tRadioButton'
+        const _class = ( className ) ? `tRadioButton ${className}` : 'tRadioButton'
 
         return (
             <t-radio-button ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-radio-button>

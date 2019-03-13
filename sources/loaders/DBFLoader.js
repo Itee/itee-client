@@ -80,8 +80,8 @@ const DataType = Object.freeze( {
  */
 function DBFLoader ( manager, logger ) {
 
-    this.manager = (manager === undefined) ? DefaultLoadingManager : manager
-    this.logger  = (logger === undefined) ? TLogger : logger
+    this.manager = ( manager === undefined ) ? DefaultLoadingManager : manager
+    this.logger  = ( logger === undefined ) ? TLogger : logger
     this.reader  = new BinaryReader()
 
 }
@@ -164,7 +164,7 @@ Object.assign( DBFLoader.prototype, {
     _isValidVersion ( version ) {
 
         const availablesVersionValues = Object.values( DBFVersion )
-        return (availablesVersionValues.includes( version ))
+        return ( availablesVersionValues.includes( version ) )
 
     },
 
@@ -502,7 +502,7 @@ Object.assign( DBFLoader.prototype, {
         for ( let recordIndex = 0 ; recordIndex < numberOfRecords ; recordIndex++ ) {
 
             record              = {}
-            record[ 'deleted' ] = (this.reader.getUint8() === DBFLoader.DeletedRecord)
+            record[ 'deleted' ] = ( this.reader.getUint8() === DBFLoader.DeletedRecord )
 
             for ( let fieldIndex = 0, numberOfFields = fields.length ; fieldIndex < numberOfFields ; fieldIndex++ ) {
 

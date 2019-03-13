@@ -11,56 +11,19 @@
 /* eslint-env browser */
 
 import {
-    // Constants
-    BasicShadowMap,
-    PCFShadowMap,
-    PCFSoftShadowMap,
-    // Cameras
-    ArrayCamera,
     CinematicCamera,
-    CubeCamera,
-    OrthographicCamera,
-    PerspectiveCamera,
-    StereoCamera,
-    // Controls
-    DeviceOrientationControls,
-    DragControls,
-    EditorControls,
-    FirstPersonControls,
-    FlyControls,
-    OrbitControls,
-    OrthographicTrackballControls,
-    PointerLockControls,
-    TrackballControls,
-    TransformControls,
-    // Effects
-    AnaglyphEffect,
-    AsciiEffect,
-    OutlineEffect,
-    ParallaxBarrierEffect,
-    PeppersGhostEffect,
-    StereoEffect,
-    // Renderers
-    CSS2DRenderer,
-    CSS3DRenderer,
-    SVGRenderer,
-    WebGL2Renderer,
-    WebGLRenderer,
-    // Internals
     Clock,
-    Group,
-    Raycaster,
-    Vector3,
+    CubeCamera,
     Frustum,
-    Matrix4
-} from 'three-full'
-
-import { default as Stats }     from '../../../../node_modules/stats.js/src/Stats'
-import { TOrbitControlsHelper } from '../../../objects3d/TOrbitControlsHelper'
-
-// Vue
-import Vue    from '../../../../node_modules/vue/dist/vue.esm'
+    Matrix4,
+    Raycaster,
+    StereoCamera
+}             from 'three-full'
 import resize from 'vue-resize-directive'
+
+import { default as Stats } from '../../../../node_modules/stats.js/src/Stats'
+// Vue
+import Vue                  from '../../../../node_modules/vue/dist/vue.esm'
 
 export default Vue.component( 'TViewport3D', {
 
@@ -145,7 +108,7 @@ export default Vue.component( 'TViewport3D', {
 
         showStats ( newValue, oldValue ) {
 
-            this._stats.domElement.style.display = (newValue) ? 'block' : 'none'
+            this._stats.domElement.style.display = ( newValue ) ? 'block' : 'none'
 
         },
 
@@ -197,7 +160,7 @@ export default Vue.component( 'TViewport3D', {
 
         _resize ( domElement ) {
 
-            const isEvent       = (domElement instanceof Event)
+            const isEvent       = ( domElement instanceof Event )
             let containerWidth  = 1
             let containerHeight = 1
 
@@ -224,7 +187,7 @@ export default Vue.component( 'TViewport3D', {
 
             if ( !this.camera ) { return }
 
-            const aspectRatio = (width / height)
+            const aspectRatio = ( width / height )
 
             if ( this.camera.isPerspectiveCamera ) {
 
@@ -415,8 +378,8 @@ export default Vue.component( 'TViewport3D', {
             const containerWidth             = this.$el.offsetWidth
             const containerHeight            = this.$el.offsetHeight
             const normalizedMouseCoordinates = {
-                x: (mousePositionX / containerWidth) * 2 - 1,
-                y: -(mousePositionY / containerHeight) * 2 + 1
+                x: ( mousePositionX / containerWidth ) * 2 - 1,
+                y: -( mousePositionY / containerHeight ) * 2 + 1
             }
 
             // update the picking ray with the camera and mouse position
@@ -449,8 +412,8 @@ export default Vue.component( 'TViewport3D', {
             const containerWidth             = this.$el.offsetWidth
             const containerHeight            = this.$el.offsetHeight
             const normalizedMouseCoordinates = {
-                x: (mousePositionX / containerWidth) * 2 - 1,
-                y: -(mousePositionY / containerHeight) * 2 + 1
+                x: ( mousePositionX / containerWidth ) * 2 - 1,
+                y: -( mousePositionY / containerHeight ) * 2 + 1
             }
 
             // update the picking ray with the camera and mouse position
@@ -583,7 +546,7 @@ export default Vue.component( 'TViewport3D', {
             // TODO: should be params
             const decimateValue = 0.9
 
-            if ( !this.isDecimate && (this.needCacheUpdate || this._cache.decimables.length === 0) ) {
+            if ( !this.isDecimate && ( this.needCacheUpdate || this._cache.decimables.length === 0 ) ) {
 
                 this._cache.decimables = []
                 const meshes           = []
@@ -670,7 +633,7 @@ export default Vue.component( 'TViewport3D', {
 
         // Init stats
         this._stats                           = new Stats()
-        this._stats.domElement.style.display  = (this.showStats) ? 'block' : 'none'
+        this._stats.domElement.style.display  = ( this.showStats ) ? 'block' : 'none'
         this._stats.domElement.style.position = 'absolute'
         this._stats.domElement.style.top      = null
         this._stats.domElement.style.left     = null

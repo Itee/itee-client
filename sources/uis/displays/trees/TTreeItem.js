@@ -8,9 +8,9 @@
  *
  */
 
+import { isDefined } from 'itee-validators'
 /* eslint-env browser */
 import Vue           from '../../../../node_modules/vue/dist/vue.esm'
-import { isDefined } from 'itee-validators'
 
 export default Vue.component( 'TTreeItem', {
     template: `
@@ -69,13 +69,13 @@ export default Vue.component( 'TTreeItem', {
 
         computeTreeItemClass () {
 
-            return (this.isSelected && this.deepSelect) ? 'tTreeItem selected' : 'tTreeItem'
+            return ( this.isSelected && this.deepSelect ) ? 'tTreeItem selected' : 'tTreeItem'
 
         },
 
         computeTreeItemContentClass () {
 
-            return (this.isSelected && !this.deepSelect) ? 'tTreeItemContent selected' : 'tTreeItemContent'
+            return ( this.isSelected && !this.deepSelect ) ? 'tTreeItemContent selected' : 'tTreeItemContent'
 
         },
 
@@ -94,14 +94,14 @@ export default Vue.component( 'TTreeItem', {
         computeToggleChildrenIconClass () {
 
             // Todo: Make them props
-            return (this.showChildren) ? 'chevron-circle-down' : 'chevron-circle-right'
+            return ( this.showChildren ) ? 'chevron-circle-down' : 'chevron-circle-right'
 
         },
 
         computeChildrenStyle () {
 
             return {
-                display: (this.showChildren) ? 'block' : 'none'
+                display: ( this.showChildren ) ? 'block' : 'none'
             }
 
         },
@@ -124,9 +124,9 @@ export default Vue.component( 'TTreeItem', {
 
         filteredAntelabelModifier () {
 
-            return (isDefined( this.modifiers )) ? this.modifiers.filter( ( modifier ) => {
+            return ( isDefined( this.modifiers ) ) ? this.modifiers.filter( ( modifier ) => {
 
-                return modifier.position === 'antelabel' && (modifier.display === undefined || (modifier.display === 'onSelect' && this.isSelected))
+                return modifier.position === 'antelabel' && ( modifier.display === undefined || ( modifier.display === 'onSelect' && this.isSelected ) )
 
             } ) : []
 
@@ -134,9 +134,9 @@ export default Vue.component( 'TTreeItem', {
 
         filteredPostlabelModifier () {
 
-            return (isDefined( this.modifiers )) ? this.modifiers.filter( ( modifier ) => {
+            return ( isDefined( this.modifiers ) ) ? this.modifiers.filter( ( modifier ) => {
 
-                return modifier.position === 'postlabel' && (modifier.display === undefined || (modifier.display === 'onSelect' && this.isSelected))
+                return modifier.position === 'postlabel' && ( modifier.display === undefined || ( modifier.display === 'onSelect' && this.isSelected ) )
 
             } ) : []
 
@@ -144,7 +144,7 @@ export default Vue.component( 'TTreeItem', {
 
         acceptableDeepLevel () {
 
-            return (this._currentDeepLevel < this.maxDeepLevel)
+            return ( this._currentDeepLevel < this.maxDeepLevel )
 
         },
 
@@ -161,7 +161,7 @@ export default Vue.component( 'TTreeItem', {
 
         haveChildren () {
 
-            return (this.children && this.children.length > 0)
+            return ( this.children && this.children.length > 0 )
 
         },
 
@@ -215,7 +215,7 @@ export default Vue.component( 'TTreeItem', {
                 const selectedItem = document.querySelector( '.selected' )
                 if ( isDefined( selectedItem ) ) {
 
-                    const ttreeItem = (this.deepSelect) ? selectedItem.__vue__ : selectedItem.__vue__.$parent.$parent
+                    const ttreeItem = ( this.deepSelect ) ? selectedItem.__vue__ : selectedItem.__vue__.$parent.$parent
 
                     // In case the multiselect if false but the deepSelect is true we need to check if the selectedItem is not the child of this instance
                     if ( this._uid !== ttreeItem._uid ) {

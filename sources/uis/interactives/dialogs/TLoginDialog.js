@@ -12,11 +12,11 @@
 
 import React from 'react'
 
-import { THeader }  from '../../displays/sections/THeader'
-import { TContent } from '../../displays/sections/TContent'
-import { TFooter }  from '../../displays/sections/TFooter'
-
 import { TCentererLayout } from '../../displays/layouts/TCentererLayout'
+import { TContent }        from '../../displays/sections/TContent'
+import { TFooter }         from '../../displays/sections/TFooter'
+
+import { THeader } from '../../displays/sections/THeader'
 
 let _instanceCounter = 0
 
@@ -61,11 +61,11 @@ class TLoginDialog extends React.Component {
 
         const _id    = id || `tLoginDialog_${_instanceCounter}`
         const _style = {
-            display:       (isVisible) ? 'flex' : 'none',
+            display:       ( isVisible ) ? 'flex' : 'none',
             alignItems:    'center',
             flexDirection: 'column'
         }
-        const _class = (className) ? `tLoginDialog ${className}` : 'tLoginDialog'
+        const _class = ( className ) ? `tLoginDialog ${className}` : 'tLoginDialog'
 
         return (
             <form id={_id} className={_class} style={_style} onSubmit={submitHandler}>

@@ -46,7 +46,7 @@ class TSpin extends React.Component {
 
         const _id    = id || `tSpin_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tSpin ${className}` : 'tSpin'
+        const _class = ( className ) ? `tSpin ${className}` : 'tSpin'
 
         return (
             <t-spin ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-spin>

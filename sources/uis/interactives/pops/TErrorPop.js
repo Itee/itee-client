@@ -46,7 +46,7 @@ class TErrorPop extends React.Component {
 
         const _id    = id || `tErrorPop_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tErrorPop ${className}` : 'tErrorPop'
+        const _class = ( className ) ? `tErrorPop ${className}` : 'tErrorPop'
 
         return (
             <t-error-pop ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-error-pop>

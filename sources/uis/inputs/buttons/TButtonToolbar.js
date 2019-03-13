@@ -8,9 +8,11 @@
  *
  */
 
-import Vue                            from '../../../../node_modules/vue/dist/vue.esm'
-import { isDefined }                  from 'itee-validators'
-import { TIdFactory, TIdFactoryType } from '../../../utils/TIdFactory'
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
+import {
+    TIdFactory,
+    TIdFactoryType
+}          from '../../../utils/TIdFactory'
 
 const IdFactory = new TIdFactory( TIdFactoryType.String, 't-button-' )
 
@@ -22,7 +24,7 @@ export default Vue.component( 'TButtonToolbar', {
     `,
     props:    {
         justifyContent: {
-            type:      String,
+            type: String,
             validator: ( value ) => { return [ 'start', 'end', 'center', 'between', 'around' ].includes( value ) }
         }
     },

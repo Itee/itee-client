@@ -61,7 +61,7 @@ const ShapeType = Object.freeze( {
  */
 function ringClockwise ( ring ) {
 
-    if ( (n = ring.length) < 4 ) {
+    if ( ( n = ring.length ) < 4 ) {
         return false
     }
 
@@ -99,12 +99,12 @@ function ringContainsSome ( ring, hole ) {
 function ringContains ( ring, point ) {
     var x = point[ 0 ], y = point[ 1 ], contains = -1
     for ( var i = 0, n = ring.length, j = n - 1 ; i < n ; j = i++ ) {
-        var pi = ring[ i ], xi = pi[ 0 ], yi = pi[ 1 ],
-            pj                               = ring[ j ], xj = pj[ 0 ], yj = pj[ 1 ]
+        var pi                               = ring[ i ], xi               = pi[ 0 ], yi = pi[ 1 ],
+            pj = ring[ j ], xj = pj[ 0 ], yj = pj[ 1 ]
         if ( segmentContains( pi, pj, point ) ) {
             return 0
         }
-        if ( ((yi > y) !== (yj > y)) && ((x < (xj - xi) * (y - yi) / (yj - yi) + xi)) ) {
+        if ( ( ( yi > y ) !== ( yj > y ) ) && ( ( x < ( xj - xi ) * ( y - yi ) / ( yj - yi ) + xi ) ) ) {
             contains = -contains
         }
     }
@@ -127,7 +127,7 @@ function segmentContains ( p0, p1, p2 ) {
     if ( x10 === 0 && y10 === 0 ) {
         return false
     }
-    var t = (x20 * x10 + y20 * y10) / (x10 * x10 + y10 * y10)
+    var t = ( x20 * x10 + y20 * y10 ) / ( x10 * x10 + y10 * y10 )
     return t < 0 || t > 1 ? false : t === 0 || t === 1 ? true : t * x10 === x20 && t * y10 === y20
 }
 
@@ -294,7 +294,7 @@ Object.assign( SHPLoader.prototype, {
         while ( !this._reader.isEndOfFile() ) {
 
             recordHeader = this._parseRecordHeader()
-            endOfRecord  = this._reader.getOffset() + (recordHeader.contentLength * 2)
+            endOfRecord  = this._reader.getOffset() + ( recordHeader.contentLength * 2 )
 
             // All parsing methods use little below
             this._reader.setEndianess( Endianness.Little )
@@ -381,7 +381,7 @@ Object.assign( SHPLoader.prototype, {
                     break
 
                 default:
-                    this.logger.error( `SHPLoader: Invalid switch parameter: ${ shapeType }` )
+                    this.logger.error( `SHPLoader: Invalid switch parameter: ${shapeType}` )
                     break
 
             }

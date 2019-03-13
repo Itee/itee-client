@@ -8,30 +8,22 @@
  *
  */
 
+import {
+    isDefined,
+    isNotBoolean,
+    isNotEmptyArray,
+    isNull,
+    isUndefined
+}                       from 'itee-validators'
 /* eslint-env browser */
 import {
     AmbientLight,
-    ArrayCamera,
-    ArrowHelper,
-    Audio,
-    AudioListener,
-    AxesHelper,
-    Bone,
-    Box3Helper,
-    BoxHelper,
-    Camera,
-    CameraHelper,
-    CubeCamera,
+    Color,
     DirectionalLight,
-    DirectionalLightHelper,
-    FaceNormalsHelper,
-    GridHelper,
+    Fog,
+    FogExp2,
     Group,
     HemisphereLight,
-    HemisphereLightHelper,
-    ImmediateRenderObject,
-    Lensflare,
-    Light,
     Line,
     LineLoop,
     LineSegments,
@@ -40,42 +32,21 @@ import {
     Object3D,
     OrthographicCamera,
     PerspectiveCamera,
-    PlaneHelper,
     PointLight,
-    PointLightHelper,
     Points,
-    PolarGridHelper,
-    PositionalAudio,
     RectAreaLight,
-    RectAreaLightHelper,
     Scene,
-    SkeletonHelper,
     SkinnedMesh,
     SpotLight,
-    SpotLightHelper,
-    Sprite,
-    VertexNormalsHelper,
-
-    Color,
-    Fog,
-    FogExp2
-} from 'three-full'
+    Sprite
+}                       from 'three-full'
+import { ResponseType } from '../../cores/TConstants'
 
 import { TDataBaseManager }   from '../TDataBaseManager'
+import { TErrorManager }      from '../TErrorManager'
+import { TProgressManager }   from '../TProgressManager'
 import { TGeometriesManager } from './TGeometriesManager'
 import { TMaterialsManager }  from './TMaterialsManager'
-import { TProgressManager }   from '../TProgressManager'
-import { TErrorManager }      from '../TErrorManager'
-import { ResponseType }       from '../../cores/TConstants'
-import {
-    isNull,
-    isUndefined,
-    isNotDefined,
-    isDefined,
-    isNotBoolean,
-    isNotEmptyArray,
-    isObject
-}                             from 'itee-validators'
 
 class TObjectsManager extends TDataBaseManager {
 
@@ -113,7 +84,7 @@ class TObjectsManager extends TDataBaseManager {
 
         if ( isNull( value ) ) { throw new TypeError( 'Geometries provider cannot be null ! Expect an instance of TGeometriesManager.' ) }
         if ( isUndefined( value ) ) { throw new TypeError( 'Geometries provider cannot be undefined ! Expect an instance of TGeometriesManager.' ) }
-        if ( !(value instanceof TGeometriesManager) ) { throw new TypeError( `Geometries provider cannot be an instance of ${value.constructor.name} ! Expect an instance of TGeometriesManager.` ) }
+        if ( !( value instanceof TGeometriesManager ) ) { throw new TypeError( `Geometries provider cannot be an instance of ${value.constructor.name} ! Expect an instance of TGeometriesManager.` ) }
 
         this._geometriesProvider = value
 
@@ -134,7 +105,7 @@ class TObjectsManager extends TDataBaseManager {
 
         if ( isNull( value ) ) { throw new TypeError( 'Materials provider cannot be null ! Expect an instance of TMaterialsManager.' ) }
         if ( isUndefined( value ) ) { throw new TypeError( 'Materials provider cannot be undefined ! Expect an instance of TMaterialsManager.' ) }
-        if ( !(value instanceof TMaterialsManager) ) { throw new TypeError( `Materials provider cannot be an instance of ${value.constructor.name} ! Expect an instance of TMaterialsManager.` ) }
+        if ( !( value instanceof TMaterialsManager ) ) { throw new TypeError( `Materials provider cannot be an instance of ${value.constructor.name} ! Expect an instance of TMaterialsManager.` ) }
 
         this._materialsProvider = value
 

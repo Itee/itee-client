@@ -46,7 +46,7 @@ class TDock extends React.Component {
 
         const _id    = id || `tDock_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tDock ${className}` : 'tDock'
+        const _class = ( className ) ? `tDock ${className}` : 'tDock'
 
         return (
             <t-dock ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-dock>

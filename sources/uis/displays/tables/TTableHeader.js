@@ -46,7 +46,7 @@ class TTableHeader extends React.Component {
 
         const _id    = id || `tTableHeader_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tTableHeader ${className}` : 'tTableHeader'
+        const _class = ( className ) ? `tTableHeader ${className}` : 'tTableHeader'
 
         return (
             <t-table-header ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-table-header>
