@@ -51,11 +51,9 @@ export default Vue.component( 'TViewport3D', {
     data () {
 
         return {
-            _effect:   undefined,
-            _selected: undefined,
-            _frameId:  undefined,
-            _timer:    new Clock( true ),
-            _stats:    new Stats()
+            frameId:  undefined,
+            timer:    new Clock( true ),
+            stats:    new Stats()
         }
 
     },
@@ -108,7 +106,7 @@ export default Vue.component( 'TViewport3D', {
 
         showStats ( newValue, oldValue ) {
 
-            this._stats.domElement.style.display = ( newValue ) ? 'block' : 'none'
+            this.stats.domElement.style.display = ( newValue ) ? 'block' : 'none'
 
         },
 
@@ -247,26 +245,26 @@ export default Vue.component( 'TViewport3D', {
 
             console.log( 'TViewport3D: _startLoop' )
 
-            if ( this._frameId ) {
+            if ( this.frameId ) {
                 return
             }
 
-            this._frameId = window.requestAnimationFrame( this._loop.bind( this ) )
+            this.frameId = window.requestAnimationFrame( this._loop.bind( this ) )
 
         },
 
         _loop () {
 
-            if ( this._stats && this.showStats ) {
-                this._stats.begin()
+            if ( this.stats && this.showStats ) {
+                this.stats.begin()
             }
 
-            this._frameId = window.requestAnimationFrame( this._loop.bind( this ) )
+            this.frameId = window.requestAnimationFrame( this._loop.bind( this ) )
 
             this._updateViewport()
 
-            if ( this._stats && this.showStats ) {
-                this._stats.end()
+            if ( this.stats && this.showStats ) {
+                this.stats.end()
             }
 
         },
@@ -318,9 +316,9 @@ export default Vue.component( 'TViewport3D', {
             if ( !this.control ) { return }
             if ( !this.control.update ) { return }
             if ( !this.$data ) { return }
-            if ( !this.$data._timer ) { return }
+            if ( !this.$data.timer ) { return }
 
-            this.control.update( this.$data._timer.getDelta() )
+            this.control.update( this.$data.timer.getDelta() )
 
         },
 
@@ -351,8 +349,8 @@ export default Vue.component( 'TViewport3D', {
 
             console.log( 'TViewport3D: _stopLoop' )
 
-            window.cancelAnimationFrame( this._frameId )
-            this._frameId = null
+            window.cancelAnimationFrame( this.frameId )
+            this.frameId = null
 
         },
 
@@ -632,14 +630,14 @@ export default Vue.component( 'TViewport3D', {
         this._raycaster = new Raycaster()
 
         // Init stats
-        this._stats                           = new Stats()
-        this._stats.domElement.style.display  = ( this.showStats ) ? 'block' : 'none'
-        this._stats.domElement.style.position = 'absolute'
-        this._stats.domElement.style.top      = null
-        this._stats.domElement.style.left     = null
-        this._stats.domElement.style.right    = '0px'
-        this._stats.domElement.style.bottom   = '0px'
-        this.$el.appendChild( this._stats.domElement )
+        this.stats                           = new Stats()
+        this.stats.domElement.style.display  = ( this.showStats ) ? 'block' : 'none'
+        this.stats.domElement.style.position = 'absolute'
+        this.stats.domElement.style.top      = null
+        this.stats.domElement.style.left     = null
+        this.stats.domElement.style.right    = '0px'
+        this.stats.domElement.style.bottom   = '0px'
+        this.$el.appendChild( this.stats.domElement )
 
         // Fill parent
         this._resize( this.$el )
