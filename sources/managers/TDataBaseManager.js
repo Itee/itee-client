@@ -47,7 +47,6 @@ import {
     ResponseType,
     HttpStatusCode
 }                                   from '../cores/TConstants'
-import { TOrchestrator }            from '../cores/TOrchestrator'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { TProgressManager }         from './TProgressManager'
 import { TErrorManager }            from './TErrorManager'
