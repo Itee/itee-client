@@ -64,7 +64,7 @@ export default Vue.component( 'TTable', {
 
         computedColumns: function computedColumns () {
 
-            return (typeof this.item === 'object') ? this.propertyColumns : this.columns
+            return ( typeof this.item === 'object' ) ? this.propertyColumns : this.columns
         },
 
         filteredData: function filteredData () {
@@ -76,7 +76,7 @@ export default Vue.component( 'TTable', {
             const value  = this.item
             const filter = this.filter
 
-            return (typeof value === 'object') ? this._formatAsProperty( value, filter ) : this._formatAsList( value, filter )
+            return ( typeof value === 'object' ) ? this._formatAsProperty( value, filter ) : this._formatAsList( value, filter )
         }
 
     },

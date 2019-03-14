@@ -46,7 +46,7 @@ class TToast extends React.Component {
 
         const _id    = id || `tToast_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tToast ${className}` : 'tToast'
+        const _class = ( className ) ? `tToast ${className}` : 'tToast'
 
         return (
             <t-toast ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-toast>

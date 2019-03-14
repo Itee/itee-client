@@ -11,10 +11,10 @@
 /* eslint-env browser */
 
 import {
-    isString,
-    isObject,
+    isArrayOfObject,
     isArrayOfString,
-    isArrayOfObject
+    isObject,
+    isString
 } from 'itee-validators'
 
 /**
@@ -144,7 +144,7 @@ Object.assign( TLogger.prototype, {
 
         } else {
 
-            this.logsArray[ tmpLevel ] = (datas) ? datas.toString() : 'Empty log data !'
+            this.logsArray[ tmpLevel ] = ( datas ) ? datas.toString() : 'Empty log data !'
 
         }
 

@@ -10,10 +10,10 @@
 
 /* eslint-env browser */
 
-import Vue from '../../../../node_modules/vue/dist/vue.esm'
+import { isString } from 'itee-validators'
+import Vue          from '../../../../node_modules/vue/dist/vue.esm'
 
 import { DefaultLogger as TLogger } from '../../../loggers/TLogger'
-import { isString }                 from 'itee-validators'
 
 export default Vue.component( 'TContainer', {
     template: `
@@ -86,18 +86,18 @@ export default Vue.component( 'TContainer', {
             if ( this.expand && this.width && this.height ) {
 
                 TLogger.warn( `TContainer: Conflict between expand, width and height ! Defaulting to width and height.` )
-                style.width  = isString( this.width ) ? this.width : `${this.width }px`
-                style.height = isString( this.height ) ? this.height : `${this.height }px`
+                style.width  = isString( this.width ) ? this.width : `${this.width}px`
+                style.height = isString( this.height ) ? this.height : `${this.height}px`
 
             } else if ( this.expand && this.width ) {
 
                 TLogger.warn( `TContainer: Conflict between expand and width ! Defaulting to width.` )
-                style.width = isString( this.width ) ? this.width : `${this.width }px`
+                style.width = isString( this.width ) ? this.width : `${this.width}px`
 
             } else if ( this.expand && this.height ) {
 
                 TLogger.warn( `TContainer: Conflict between expand and height ! Defaulting to height.` )
-                style.height = isString( this.height ) ? this.height : `${this.height }px`
+                style.height = isString( this.height ) ? this.height : `${this.height}px`
 
             } else if ( this.expand ) {
 
@@ -105,16 +105,16 @@ export default Vue.component( 'TContainer', {
 
             } else if ( this.width && this.height ) {
 
-                style.width  = isString( this.width ) ? this.width : `${this.width }px`
-                style.height = isString( this.height ) ? this.height : `${this.height }px`
+                style.width  = isString( this.width ) ? this.width : `${this.width}px`
+                style.height = isString( this.height ) ? this.height : `${this.height}px`
 
             } else if ( this.width ) {
 
-                style.width = isString( this.width ) ? this.width : `${this.width }px`
+                style.width = isString( this.width ) ? this.width : `${this.width}px`
 
             } else if ( this.height ) {
 
-                style.height = isString( this.height ) ? this.height : `${this.height }px`
+                style.height = isString( this.height ) ? this.height : `${this.height}px`
 
             } else {
 

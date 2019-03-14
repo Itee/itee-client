@@ -8,9 +8,11 @@
  *
  */
 
-import Vue                            from '../../../../node_modules/vue/dist/vue.esm'
-import { isDefined }                  from 'itee-validators'
-import { TIdFactory, TIdFactoryType } from '../../../utils/TIdFactory'
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
+import {
+    TIdFactory,
+    TIdFactoryType
+}          from '../../../utils/TIdFactory'
 
 const IdFactory = new TIdFactory( TIdFactoryType.String, 't-button-' )
 
@@ -40,7 +42,7 @@ export default Vue.component( 'TButtonGroup', {
         computeClass () {
 
             const isVertical = this.isVertical
-            let result       = (isVertical) ? 'btn-group-vertical' : 'btn-group'
+            let result       = ( isVertical ) ? 'btn-group-vertical' : 'btn-group'
 
             const size = this.size
             if ( size ) {

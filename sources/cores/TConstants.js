@@ -23,8 +23,8 @@
 import { Enum } from 'enumify'
 
 /**
- *
- * @type {Enum} FileFormat
+ * The FileFormat Enum give some commonly used file format in 3d context
+ * @type {Enum}
  */
 class FileFormat extends Enum {}
 
@@ -249,8 +249,8 @@ HttpVerb.initEnum( {
 } )
 
 /**
- *
- * @type {Enum} Keys
+ * The Keys Enum give the associated key_code
+ * @type {Enum}
  */
 class Keys extends Enum {}
 
@@ -363,8 +363,9 @@ class MimeType extends Enum {}
 //MimeType.initEnum( {} )
 
 /**
- *
- * @type {Enum} Mouse
+ * This Enum expose 4 common state of mouse button.
+ * Wheel, Left, Middle and Right
+ * @type {Enum}
  */
 class Mouse extends Enum {}
 

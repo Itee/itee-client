@@ -42,7 +42,7 @@ function BinaryReader ( buffer, offset, length, endianness ) {
 
     this._buffer     = buffer || new ArrayBuffer( 0 )
     this._offset     = offset || 0
-    this._length     = length || (buffer) ? buffer.byteLength : 0
+    this._length     = length || ( buffer ) ? buffer.byteLength : 0
     this._endianness = !!endianness || Endianness.Little
 
     this._updateDataView()
@@ -83,7 +83,7 @@ Object.assign( BinaryReader.prototype, {
      */
     isEndOfFile () {
 
-        return (this._offset === this._length)
+        return ( this._offset === this._length )
 
     },
 
@@ -154,7 +154,7 @@ Object.assign( BinaryReader.prototype, {
 
     getBoolean () {
 
-        return ((this.getUint8() & 1) === 1)
+        return ( ( this.getUint8() & 1 ) === 1 )
 
     },
 
@@ -346,12 +346,12 @@ Object.assign( BinaryReader.prototype, {
             low  = ~low & 0xFFFFFFFF
 
             if ( low === 0xFFFFFFFF ) {
-                high = (high + 1) & 0xFFFFFFFF
+                high = ( high + 1 ) & 0xFFFFFFFF
             }
 
-            low = (low + 1) & 0xFFFFFFFF
+            low = ( low + 1 ) & 0xFFFFFFFF
 
-            return -(high * 0x100000000 + low)
+            return -( high * 0x100000000 + low )
 
         }
 

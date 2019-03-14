@@ -10,8 +10,11 @@
 
 /* eslint-env browser */
 
-import Vue                            from '../../../../node_modules/vue/dist/vue.esm'
-import { TIdFactory, TIdFactoryType } from '../../../utils/TIdFactory'
+import Vue from '../../../../node_modules/vue/dist/vue.esm'
+import {
+    TIdFactory,
+    TIdFactoryType
+}          from '../../../utils/TIdFactory'
 
 const IdFactory = new TIdFactory( TIdFactoryType.String, 't-dialog-header-' )
 

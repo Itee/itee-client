@@ -15,7 +15,7 @@
  */
 
 //IE suck so...
-(() => {
+( () => {
 
     if ( typeof window.CustomEvent === 'function' ) {
         return false
@@ -36,7 +36,7 @@
 
     window.CustomEvent = CustomEvent
 
-})()
+} )()
 
 /**
  * End polyfills

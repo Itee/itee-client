@@ -55,7 +55,7 @@ function TCameraPathController ( camera, domElement ) {
     this.currentPathIndex    = -1
     this.currentPathPosition = 0
 
-    this.domElement      = (domElement !== undefined) ? domElement : document
+    this.domElement      = ( domElement !== undefined ) ? domElement : document
     this.forwardControl  = this.domElement.children[ 0 ].children[ 0 ].children[ 0 ]
     this.backwardControl = this.domElement.children[ 0 ].children[ 1 ].children[ 0 ]
     this.timeoutId       = undefined

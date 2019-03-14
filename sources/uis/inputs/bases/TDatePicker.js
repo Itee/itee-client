@@ -46,7 +46,7 @@ class TDatePicker extends React.Component {
 
         const _id    = id || `tDatePicker_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tDatePicker ${className}` : 'tDatePicker'
+        const _class = ( className ) ? `tDatePicker ${className}` : 'tDatePicker'
 
         return (
             <t-date-picker ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-date-picker>

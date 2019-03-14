@@ -8,9 +8,12 @@
  *
  */
 
-import Vue                            from '../../../../node_modules/vue/dist/vue.esm'
-import { isDefined }                  from 'itee-validators'
-import { TIdFactory, TIdFactoryType } from '../../../utils/TIdFactory'
+import { isDefined } from 'itee-validators'
+import Vue           from '../../../../node_modules/vue/dist/vue.esm'
+import {
+    TIdFactory,
+    TIdFactoryType
+}                    from '../../../utils/TIdFactory'
 
 const IdFactory = new TIdFactory( TIdFactoryType.String, 't-button-' )
 
@@ -120,9 +123,9 @@ export default Vue.component( 'TButton', {
 
         preDecorators () {
 
-            return (isDefined( this.decorators )) ? this.decorators.filter( ( decorator ) => {
+            return ( isDefined( this.decorators ) ) ? this.decorators.filter( ( decorator ) => {
 
-                return (decorator.position === undefined || decorator.position === 'pre') && (decorator.display === undefined || decorator.display === true)
+                return ( decorator.position === undefined || decorator.position === 'pre' ) && ( decorator.display === undefined || decorator.display === true )
 
             } ) : []
 
@@ -130,9 +133,9 @@ export default Vue.component( 'TButton', {
 
         postDecorators () {
 
-            return (isDefined( this.decorators )) ? this.decorators.filter( ( decorator ) => {
+            return ( isDefined( this.decorators ) ) ? this.decorators.filter( ( decorator ) => {
 
-                return decorator.position === 'post' && (decorator.display === undefined || decorator.display === true)
+                return decorator.position === 'post' && ( decorator.display === undefined || decorator.display === true )
 
             } ) : []
 

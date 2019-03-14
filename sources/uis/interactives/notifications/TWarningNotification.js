@@ -46,7 +46,7 @@ class TWarningNotification extends React.Component {
 
         const _id    = id || `tWarningNotification_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tWarningNotification ${className}` : 'tWarningNotification'
+        const _class = ( className ) ? `tWarningNotification ${className}` : 'tWarningNotification'
 
         return (
             <t-warning-notification ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-warning-notification>

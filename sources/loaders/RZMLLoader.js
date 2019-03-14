@@ -30,8 +30,6 @@ import {
     TextureLoader
 } from 'three-full'
 
-import { DefaultLogger as TLogger } from '../loggers/TLogger'
-
 /**
  *
  * @param manager
@@ -39,7 +37,7 @@ import { DefaultLogger as TLogger } from '../loggers/TLogger'
  */
 function RZMLLoader ( manager ) {
 
-    this.manager = (manager !== undefined) ? manager : DefaultLoadingManager
+    this.manager = ( manager === undefined ) ? DefaultLoadingManager : manager
 
     this.textureLoader  = new TextureLoader()
     this.imagesShotData = []
@@ -92,8 +90,7 @@ Object.assign( RZMLLoader.prototype, {
         if ( window.DOMParser ) {
             var parser = new DOMParser()
             document   = parser.parseFromString( text, 'text/xml' )
-        }
-        else // Internet Explorer
+        } else // Internet Explorer
         {
             document       = new ActiveXObject( 'Microsoft.XMLDOM' )
             document.async = false
@@ -164,7 +161,7 @@ Object.assign( RZMLLoader.prototype, {
             plane.position.z = imageShot.position.z - 60 - 0.34
             plane.rotation.x = _Math.degToRad( imageShot.rotation.x )
             plane.rotation.y = _Math.degToRad( imageShot.rotation.z ) // Need to inverse y and z due to z up import !!!
-            plane.rotation.z = -(_Math.degToRad( imageShot.rotation.y ))
+            plane.rotation.z = -( _Math.degToRad( imageShot.rotation.y ) )
             // plane.visible    = false
 
             plane.userData = {
@@ -175,7 +172,7 @@ Object.assign( RZMLLoader.prototype, {
 
         }
 
-        planesGroup.rotateX( -(Math.PI / 2) )
+        planesGroup.rotateX( -( Math.PI / 2 ) )
 
         return planesGroup
 

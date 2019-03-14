@@ -10,9 +10,9 @@
 
 /* eslint-env browser */
 
-import Vue                 from '../../../../node_modules/vue/dist/vue.esm'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 import { isObject }        from 'itee-validators'
+import Vue                 from '../../../../node_modules/vue/dist/vue.esm'
 
 // Todo: implement router facility here using target instead of clickHandler !
 
@@ -24,7 +24,7 @@ export default Vue.component( 'TIcon', {
             class:       this.iconClass,
             style:       this.iconStyle,
             attrs:       this.iconAttrs,
-            props:       (isObject( this.iconProps )) ? this.iconProps : { icon: this.iconProps },
+            props:       ( isObject( this.iconProps ) ) ? this.iconProps : { icon: this.iconProps },
             domProps:    this.iconDomProps,
             on:          this.iconOn,
             nativeOn:    this.iconNativeOn,

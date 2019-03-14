@@ -8,7 +8,7 @@
  *
  */
 
-import { TDataBaseManager } from '../TDataBaseManager'
+import { isObject } from 'itee-validators'
 
 import {
     ArcCurve,
@@ -16,19 +16,17 @@ import {
     CubicBezierCurve,
     CubicBezierCurve3,
     Curve,
+    CurvePath,
     EllipseCurve,
     LineCurve,
     LineCurve3,
+    Path,
     QuadraticBezierCurve,
     QuadraticBezierCurve3,
-    SplineCurve,
-
-    CurvePath,
-    Path,
-    Shape
-} from 'three-full'
-
-import { isObject } from 'itee-validators'
+    Shape,
+    SplineCurve
+}                           from 'three-full'
+import { TDataBaseManager } from '../TDataBaseManager'
 
 /**
  *
@@ -145,7 +143,7 @@ Object.defineProperties( TCurvesManager.prototype, {
         value: function _onJson ( jsonData, onSuccess, onProgress, onError ) {
 
             // Normalize to array
-            const datas   = (isObject( jsonData )) ? [ jsonData ] : jsonData
+            const datas   = ( isObject( jsonData ) ) ? [ jsonData ] : jsonData
             const results = {}
 
             for ( let dataIndex = 0, numberOfDatas = datas.length, data = undefined ; dataIndex < numberOfDatas ; dataIndex++ ) {

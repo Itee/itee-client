@@ -12,35 +12,34 @@
 /* eslint-env browser */
 
 import {
-    LinearFilter,
-    MeshPhongMaterial,
-    MeshLambertMaterial,
-    LineBasicMaterial,
-    Color,
-    Vector2,
-    TextureLoader,
-    ImageLoader
-} from 'three-full'
-
-import {
-    isNull,
-    isUndefined,
-    isNotDefined,
-    isDefined,
-    isNotBoolean,
-    isString,
-    isNotString,
-    isEmptyString,
-    isNotEmptyString,
     isBlankString,
-    isObject
-} from 'itee-validators'
+    isDefined,
+    isEmptyString,
+    isNotBoolean,
+    isNotDefined,
+    isNotEmptyString,
+    isNotString,
+    isNull,
+    isObject,
+    isString,
+    isUndefined
+}                       from 'itee-validators'
+import {
+    Color,
+    ImageLoader,
+    LinearFilter,
+    LineBasicMaterial,
+    MeshLambertMaterial,
+    MeshPhongMaterial,
+    TextureLoader,
+    Vector2
+}                       from 'three-full'
+import { ResponseType } from '../../cores/TConstants'
 
 import { TDataBaseManager } from '../TDataBaseManager'
-import { TTexturesManager } from './TTexturesManager'
-import { TProgressManager } from '../TProgressManager'
 import { TErrorManager }    from '../TErrorManager'
-import { ResponseType }     from '../../cores/TConstants'
+import { TProgressManager } from '../TProgressManager'
+import { TTexturesManager } from './TTexturesManager'
 
 const DEFAULT_IMAGE = new ImageLoader().load( 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAB3RJTUUH4gkKDRoGpGNegQAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAAMSURBVAjXY/j//z8ABf4C/tzMWecAAAAASUVORK5CYII=' )
 
@@ -97,7 +96,7 @@ class TMaterialsManager extends TDataBaseManager {
 
         if ( isNull( value ) ) { throw new TypeError( 'Textures provider cannot be null ! Expect an instance of TextureLoader.' ) }
         if ( isUndefined( value ) ) { throw new TypeError( 'Textures provider cannot be undefined ! Expect an instance of TextureLoader.' ) }
-        if ( !(value instanceof TTexturesManager) && !(value instanceof TextureLoader) ) { throw new TypeError( `Textures provider cannot be an instance of ${value.constructor.name} ! Expect an instance of TTexturesManager.` ) }
+        if ( !( value instanceof TTexturesManager ) && !( value instanceof TextureLoader ) ) { throw new TypeError( `Textures provider cannot be an instance of ${value.constructor.name} ! Expect an instance of TTexturesManager.` ) }
 
         this._texturesProvider = value
 
@@ -156,7 +155,7 @@ class TMaterialsManager extends TDataBaseManager {
     _onJson ( jsonData, onSuccess, onProgress, onError ) {
 
         // Normalize to array
-        const datas   = (isObject( jsonData )) ? [ jsonData ] : jsonData
+        const datas   = ( isObject( jsonData ) ) ? [ jsonData ] : jsonData
         const results = {}
 
         for ( let dataIndex = 0, numberOfDatas = datas.length, data = undefined ; dataIndex < numberOfDatas ; dataIndex++ ) {

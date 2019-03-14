@@ -89,12 +89,12 @@ const FullScreen = {
             }
         }
 
-        const onKeyPress = (event => {
+        const onKeyPress = ( event => {
             if ( event.which !== charCode ) {
                 return
             }
             toggle()
-        }).bind( this )
+        } ).bind( this )
 
         document.addEventListener( 'keypress', onKeyPress, false )
 

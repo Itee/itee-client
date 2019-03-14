@@ -21,7 +21,7 @@ export default Vue.component( 'TDivider', {
 
         computeClass () {
 
-            return (this.orientation === 'vertical') ? 'tDivider tDividerVertical' : 'tDivider tDividerHorizontal'
+            return ( this.orientation === 'vertical' ) ? 'tDivider tDividerVertical' : 'tDivider tDividerHorizontal'
 
         }
 

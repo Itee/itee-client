@@ -46,7 +46,7 @@ class TAnchor extends React.Component {
 
         const _id    = id || `tAnchor_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tAnchor ${className}` : 'tAnchor'
+        const _class = ( className ) ? `tAnchor ${className}` : 'tAnchor'
 
         return (
             <t-anchor ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-anchor>

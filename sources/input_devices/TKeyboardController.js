@@ -22,8 +22,8 @@
 
 /* eslint-env browser */
 
-import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import { Keys }                     from '../cores/TConstants'
+import { DefaultLogger as TLogger } from '../loggers/TLogger'
 
 /**
  *
@@ -53,7 +53,7 @@ Object.assign( TKeyboardState, {
      * @return {string}
      */
     keyName ( keyCode ) {
-        return (TKeyboardState.k[ keyCode ] !== null) ?
+        return ( TKeyboardState.k[ keyCode ] !== null ) ?
             TKeyboardState.k[ keyCode ] :
             String.fromCharCode( keyCode )
     },
@@ -99,9 +99,7 @@ Object.assign( TKeyboardState.prototype, {
                 TKeyboardState.status[ key ].down              = true
                 TKeyboardState.status[ key ].pressed           = true
                 TKeyboardState.status[ key ].updatedPreviously = true
-            }
-            else // updated previously
-            {
+            } else { // updated previously
                 TKeyboardState.status[ key ].down = false
             }
 
@@ -124,7 +122,7 @@ Object.assign( TKeyboardState.prototype, {
      * @return {*}
      */
     down ( keyName ) {
-        return (TKeyboardState.status[ keyName ] && TKeyboardState.status[ keyName ].down)
+        return ( TKeyboardState.status[ keyName ] && TKeyboardState.status[ keyName ].down )
     },
 
     /**
@@ -133,7 +131,7 @@ Object.assign( TKeyboardState.prototype, {
      * @return {*|pressed|boolean}
      */
     pressed ( keyName ) {
-        return (TKeyboardState.status[ keyName ] && TKeyboardState.status[ keyName ].pressed)
+        return ( TKeyboardState.status[ keyName ] && TKeyboardState.status[ keyName ].pressed )
     },
 
     /**
@@ -142,7 +140,7 @@ Object.assign( TKeyboardState.prototype, {
      * @return {*}
      */
     up ( keyName ) {
-        return (TKeyboardState.status[ keyName ] && TKeyboardState.status[ keyName ].up)
+        return ( TKeyboardState.status[ keyName ] && TKeyboardState.status[ keyName ].up )
     },
 
     /**

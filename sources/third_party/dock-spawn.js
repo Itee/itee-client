@@ -65,8 +65,7 @@ dockspawn.TabHandle.prototype._performUndock = function ( e, dragOffset ) {
         this.undockInitiator.enabled = false
         var panel                    = this.parent.container
         return panel.performUndockToDialog( e, dragOffset )
-    }
-    else {
+    } else {
         return null
     }
 }
@@ -130,13 +129,11 @@ dockspawn.TabHost = function ( tabStripDirection, displayCloseButton ) {
         this.hostElement.appendChild( this.contentElement )
         this.hostElement.appendChild( this.separatorElement )
         this.hostElement.appendChild( this.tabListElement )
-    }
-    else if ( this.tabStripDirection === dockspawn.TabHost.DIRECTION_TOP ) {
+    } else if ( this.tabStripDirection === dockspawn.TabHost.DIRECTION_TOP ) {
         this.hostElement.appendChild( this.tabListElement )
         this.hostElement.appendChild( this.separatorElement )
         this.hostElement.appendChild( this.contentElement )
-    }
-    else {
+    } else {
         throw new dockspawn.Exception( 'Only top and bottom tab strip orientations are supported' )
     }
 
@@ -207,8 +204,7 @@ dockspawn.TabHost.prototype.performLayout = function ( children ) {
             }
         } )
         this._setTabHandlesVisible( true )
-    }
-    else
+    } else
     // Do not show an empty tab handle host with zero tabs
     {
         this._setTabHandlesVisible( false )
@@ -227,7 +223,7 @@ dockspawn.TabHost.prototype._setTabHandlesVisible = function ( visible ) {
 dockspawn.TabHost.prototype.onTabPageSelected = function ( page ) {
     this.activeTab = page
     this.pages.forEach( function ( tabPage ) {
-        var selected = (tabPage === page)
+        var selected = ( tabPage === page )
         tabPage.setSelected( selected )
     } )
 
@@ -236,7 +232,7 @@ dockspawn.TabHost.prototype.onTabPageSelected = function ( page ) {
     var zIndex      = 1000
     this.pages.forEach( function ( tabPage ) {
         tabPage.handle.setZIndex( zIndex )
-        var selected = (tabPage === page)
+        var selected = ( tabPage === page )
         if ( selected ) {
             zIndexDelta = -1
         }
@@ -293,8 +289,7 @@ dockspawn.TabPage.prototype.setSelected = function ( flag ) {
         var width  = this.host.contentElement.clientWidth
         var height = this.host.contentElement.clientHeight
         this.container.resize( width, height )
-    }
-    else {
+    } else {
         removeNode( this.containerElement )
     }
 }
@@ -719,22 +714,21 @@ ResizeHandle.prototype.adjustSize = function ( container, clientWidth, clientHei
             this.element.style.left = '0px'
         }
         if ( this.east ) {
-            this.element.style.left = (clientWidth - this.cornerSize) + 'px'
+            this.element.style.left = ( clientWidth - this.cornerSize ) + 'px'
         }
         if ( this.north ) {
             this.element.style.top = '0px'
         }
         if ( this.south ) {
-            this.element.style.top = (clientHeight - this.cornerSize) + 'px'
+            this.element.style.top = ( clientHeight - this.cornerSize ) + 'px'
         }
-    }
-    else {
+    } else {
         if ( this.west ) {
             this.element.style.left = '0px'
             this.element.style.top  = this.cornerSize + 'px'
         }
         if ( this.east ) {
-            this.element.style.left = (clientWidth - this.handleSize) + 'px'
+            this.element.style.left = ( clientWidth - this.handleSize ) + 'px'
             this.element.style.top  = this.cornerSize + 'px'
         }
         if ( this.north ) {
@@ -743,13 +737,13 @@ ResizeHandle.prototype.adjustSize = function ( container, clientWidth, clientHei
         }
         if ( this.south ) {
             this.element.style.left = this.cornerSize + 'px'
-            this.element.style.top  = (clientHeight - this.handleSize) + 'px'
+            this.element.style.top  = ( clientHeight - this.handleSize ) + 'px'
         }
 
         if ( this.west || this.east ) {
-            this.element.style.height = (clientHeight - this.cornerSize * 2) + 'px'
+            this.element.style.height = ( clientHeight - this.cornerSize * 2 ) + 'px'
         } else {
-            this.element.style.width = (clientWidth - this.cornerSize * 2) + 'px'
+            this.element.style.width = ( clientWidth - this.cornerSize * 2 ) + 'px'
         }
     }
 }
@@ -771,8 +765,8 @@ dockspawn.DockManager = function ( element ) {
         throw new dockspawn.Exception( 'Invalid Dock Manager element provided' )
     }
 
-    this.element = element
-    this.context = this.dockWheel = this.layoutEngine = this.mouseMoveHandler = undefined
+    this.element              = element
+    this.context              = this.dockWheel = this.layoutEngine = this.mouseMoveHandler = undefined
     this.layoutEventListeners = []
 }
 
@@ -952,7 +946,7 @@ dockspawn.DockManager.prototype._requestDockContainer = function ( referenceNode
     layoutDockFunction( referenceNode, newNode )
 
     if ( ratio && newNode.parent &&
-        (newNode.parent.container.containerType === 'vertical' || newNode.parent.container.containerType === 'horizontal') ) {
+        ( newNode.parent.container.containerType === 'vertical' || newNode.parent.container.containerType === 'horizontal' ) ) {
         var splitter = newNode.parent.container
         splitter.setContainerRatio( container, ratio )
     }
@@ -1147,8 +1141,7 @@ dockspawn.DockLayoutEngine.prototype.undock = function ( node ) {
                 parentNode.detachFromParent()
                 parentNode.container.destroy()
                 grandParent.performLayout()
-            }
-            else {
+            } else {
                 // Parent is a root node.
                 // Make the other child the root node
                 parentNode.detachFromParent()
@@ -1156,8 +1149,7 @@ dockspawn.DockLayoutEngine.prototype.undock = function ( node ) {
                 this.dockManager.setRootNode( otherChild )
             }
         }
-    }
-    else {
+    } else {
         // the node to be removed has 2 or more other siblings. So it is safe to continue
         // using the parent composite container.
         parentNode.performLayout()
@@ -1193,8 +1185,7 @@ dockspawn.DockLayoutEngine.prototype._performDock = function ( referenceNode, ne
         if ( insertBeforeReference ) {
             compositeNode.addChild( newNode )
             compositeNode.addChild( referenceNode )
-        }
-        else {
+        } else {
             compositeNode.addChild( referenceNode )
             compositeNode.addChild( newNode )
         }
@@ -1228,8 +1219,7 @@ dockspawn.DockLayoutEngine.prototype._performDock = function ( referenceNode, ne
         if ( insertBeforeReference ) {
             compositeNode.addChild( newNode )
             compositeNode.addChild( referenceNode )
-        }
-        else {
+        } else {
             compositeNode.addChild( referenceNode )
             compositeNode.addChild( newNode )
         }
@@ -1240,8 +1230,7 @@ dockspawn.DockLayoutEngine.prototype._performDock = function ( referenceNode, ne
         compositeNode.container.setActiveChild( newNode.container )
         compositeNode.container.resize( referenceNodeWidth, referenceNodeHeight )
         referenceParent.container.resize( referenceNodeParentWidth, referenceNodeParentHeight )
-    }
-    else {
+    } else {
         // Add as a sibling, since the parent of the reference node is of the right composite type
         var referenceParent = referenceNode.parent
         if ( insertBeforeReference ) {
@@ -1313,12 +1302,12 @@ dockspawn.DockLayoutEngine.prototype.getDockBounds = function ( referenceNode, c
         // The parent already is of the desired composite type.  Will be inserted as sibling to the reference node
         compositeNode = referenceNode.parent
         childCount    = compositeNode.children.length
-        childPosition = compositeNode.children.indexOf( referenceNode ) + (insertBeforeReference ? 0 : 1)
+        childPosition = compositeNode.children.indexOf( referenceNode ) + ( insertBeforeReference ? 0 : 1 )
     } else {
         // The reference node will be replaced with a new composite node of the desired type with 2 children
         compositeNode     = referenceNode
         childCount        = 1   // The newly inserted composite node will contain the reference node
-        childPosition     = (insertBeforeReference ? 0 : 1)
+        childPosition     = ( insertBeforeReference ? 0 : 1 )
         hierarchyModified = true
     }
 
@@ -1329,11 +1318,11 @@ dockspawn.DockLayoutEngine.prototype.getDockBounds = function ( referenceNode, c
         // Existing size of the composite container (without the splitter bars).
         // This will also be the final size of the composite (splitter / fill)
         // container after the new panel has been docked
-        var compositeSize = this._getVaringDimension( compositeNode.container, direction ) - (childCount - 1) * splitBarSize
+        var compositeSize = this._getVaringDimension( compositeNode.container, direction ) - ( childCount - 1 ) * splitBarSize
 
         // size of the newly added panel
         var newPanelOriginalSize = this._getVaringDimension( containerToDock, direction )
-        var scaleMultiplier      = compositeSize / (compositeSize + newPanelOriginalSize)
+        var scaleMultiplier      = compositeSize / ( compositeSize + newPanelOriginalSize )
 
         // Size of the panel after it has been docked and scaled
         targetPanelSize = newPanelOriginalSize * scaleMultiplier
@@ -1432,8 +1421,7 @@ dockspawn.DockNode.prototype._addChildWithDirection = function ( referenceNode, 
     if ( before ) {
         this.children.push( childNode )
         this.children.push( referenceNode )
-    }
-    else {
+    } else {
         this.children.push( referenceNode )
         this.children.push( childNode )
     }
@@ -1898,8 +1886,7 @@ dockspawn.SplitterPanel.prototype.setContainerRatio = function ( container, rati
         if ( child !== container ) {
             size = this.stackedVertical ? child.containerElement.clientHeight : child.containerElement.clientWidth
             size *= otherPanelScaleMultipler
-        }
-        else {
+        } else {
             size = newContainerSize
         }
 
@@ -2083,7 +2070,7 @@ Object.defineProperty( dockspawn.PanelContainer.prototype, 'floatingDialog', {
     get: function () { return this._floatingDialog },
     set: function ( value ) {
         this._floatingDialog         = value
-        var canUndock                = (this._floatingDialog === undefined)
+        var canUndock                = ( this._floatingDialog === undefined )
         this.undockInitiator.enabled = canUndock
     }
 } )
@@ -2329,8 +2316,8 @@ dockspawn.SplitterBar.prototype._performDrag = function ( dx, dy ) {
     if ( newPreviousPanelSize < this.minPanelSize || newNextPanelSize < this.minPanelSize ) {
         // One of the panels is smaller than it should be.
         // In that case, check if the small panel's size is being increased
-        var continueProcessing = (newPreviousPanelSize < this.minPanelSize && newPreviousPanelSize > previousPanelSize) ||
-            (newNextPanelSize < this.minPanelSize && newNextPanelSize > nextPanelSize)
+        var continueProcessing = ( newPreviousPanelSize < this.minPanelSize && newPreviousPanelSize > previousPanelSize ) ||
+            ( newNextPanelSize < this.minPanelSize && newNextPanelSize > nextPanelSize )
 
         if ( !continueProcessing ) {
             return
@@ -2340,8 +2327,7 @@ dockspawn.SplitterBar.prototype._performDrag = function ( dx, dy ) {
     if ( this.stackedVertical ) {
         this.previousContainer.resize( previousWidth, newPreviousPanelSize )
         this.nextContainer.resize( nextWidth, newNextPanelSize )
-    }
-    else {
+    } else {
         this.previousContainer.resize( newPreviousPanelSize, previousHeight )
         this.nextContainer.resize( newNextPanelSize, nextHeight )
     }
@@ -2434,8 +2420,7 @@ dockspawn.DockGraphDeserializer.prototype._createContainer = function ( nodeInfo
         } else {
             container = new dockspawn.FillDockContainer( this.dockManager )
         }
-    }
-    else {
+    } else {
         throw new dockspawn.Exception( 'Cannot create dock container of unknown type: ' + containerType )
     }
 
@@ -2494,7 +2479,7 @@ function isPointInsideNode ( px, py, node ) {
     var width   = element.clientWidth
     var height  = element.clientHeight
 
-    return (px >= x && px <= x + width && py >= y && py <= y + height)
+    return ( px >= x && px <= x + width && py >= y && py <= y + height )
 }
 
 function Rectangle () {
@@ -2562,8 +2547,7 @@ Object.defineProperty( dockspawn.UndockInitiator.prototype, 'enabled', {
                 delete this.mouseDownHandler
             }
             this.mouseDownHandler = new dockspawn.EventHandler( this.element, 'mousedown', this.onMouseDown.bind( this ) )
-        }
-        else {
+        } else {
             if ( this.mouseDownHandler ) {
                 this.mouseDownHandler.cancel()
                 delete this.mouseDownHandler

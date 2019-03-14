@@ -68,7 +68,7 @@ export default Vue.component( 'TSearch', {
     },
     methods:  {
 
-         _onChange( event ) {
+        _onChange ( event ) {
 
             let searchValue = event.target.value.toLowerCase()
             this.message    = ''
@@ -82,9 +82,10 @@ export default Vue.component( 'TSearch', {
             let filteredList = this.autoCompleteList.filter( item => item.name.toLowerCase().includes( searchValue ) )
 
             this.items = this._removeDuplicate( this._sortItems( filteredList ) )
-            
-            if ( this.items.length === 0  )
-              this.message = "Aucun résultat trouvé" 
+
+            if ( this.items.length === 0 ) {
+                this.message = 'Aucun résultat trouvé'
+            }
         },
 
         _onClick ( item ) {
@@ -105,32 +106,35 @@ export default Vue.component( 'TSearch', {
                 return
             }
 
-          this._searchParentIds( parent.parentId, parentIdsList )
+            this._searchParentIds( parent.parentId, parentIdsList )
         },
 
-        _removeDuplicate( items ) {
+        _removeDuplicate ( items ) {
 
             let filteredList = []
 
             items.forEach( ( item ) => {
 
-              if ( !filteredList.some( x => ( x.id === item.id ) ) )
-                filteredList.push(item)
+                if ( !filteredList.some( x => ( x.id === item.id ) ) ) {
+                    filteredList.push( item )
+                }
 
             } )
 
             return filteredList
         },
 
-        _sortItems( items ) {
+        _sortItems ( items ) {
 
             return items.sort( ( a, b ) => {
 
-                if ( a.name < b.name )
-                  return -1
+                if ( a.name < b.name ) {
+                    return -1
+                }
 
-                if ( a.name > b.name )
-                  return 1
+                if ( a.name > b.name ) {
+                    return 1
+                }
 
                 return 0
 

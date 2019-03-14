@@ -9,13 +9,6 @@
  */
 
 /* eslint-env browser */
-import {
-    isNull,
-    isUndefined,
-    isNotNumber,
-    isNumberPositive,
-    isInteger
-} from 'itee-validators'
 
 import {
     BufferGeometry,
@@ -70,7 +63,7 @@ class TOrbitControlsHelper extends LineSegments {
         // create the radials
         for ( i = 0 ; i <= RADIALS ; i++ ) {
 
-            v = (i / RADIALS) * (Math.PI * 2)
+            v = ( i / RADIALS ) * ( Math.PI * 2 )
 
             x = Math.sin( v ) * RADIUS
             z = Math.cos( v ) * RADIUS
@@ -78,7 +71,7 @@ class TOrbitControlsHelper extends LineSegments {
             vertices.push( 0, 0, 0 )
             vertices.push( x, 0, z )
 
-            color = (i & 1) ? color1 : color2
+            color = ( i & 1 ) ? color1 : color2
 
             colors.push( color.r, color.g, color.b )
             colors.push( color.r, color.g, color.b )
@@ -88,14 +81,14 @@ class TOrbitControlsHelper extends LineSegments {
         // create the circles
         for ( i = 0 ; i <= CIRCLES ; i++ ) {
 
-            color = (i & 1) ? color1 : color2
+            color = ( i & 1 ) ? color1 : color2
 
-            r = RADIUS - (RADIUS / CIRCLES * i)
+            r = RADIUS - ( RADIUS / CIRCLES * i )
 
             for ( j = 0 ; j < DIVISIONS ; j++ ) {
 
                 // first vertex
-                v = (j / DIVISIONS) * (Math.PI * 2)
+                v = ( j / DIVISIONS ) * ( Math.PI * 2 )
 
                 x = Math.sin( v ) * r
                 z = Math.cos( v ) * r
@@ -104,7 +97,7 @@ class TOrbitControlsHelper extends LineSegments {
                 colors.push( color.r, color.g, color.b )
 
                 // second vertex
-                v = ((j + 1) / DIVISIONS) * (Math.PI * 2)
+                v = ( ( j + 1 ) / DIVISIONS ) * ( Math.PI * 2 )
 
                 x = Math.sin( v ) * r
                 z = Math.cos( v ) * r
@@ -145,10 +138,10 @@ class TOrbitControlsHelper extends LineSegments {
 
     static _createInternalMaterial () {
 
-        const material       = new LineBasicMaterial( { vertexColors: VertexColors } )
+        const material = new LineBasicMaterial( { vertexColors: VertexColors } )
         material.transparent = true
-        material.opacity     = 0.0
-        material.name        = 'TOrbitControlsHelperMaterial'
+        material.opacity = 0.0
+        material.name = 'TOrbitControlsHelperMaterial'
 
         return material
 

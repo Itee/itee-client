@@ -74,9 +74,9 @@ Object.assign( TBoundingBox.prototype, {
     getCenter () {
 
         return {
-            x: (this.xMin + this.xMax) / 2,
-            y: (this.yMin + this.yMax) / 2,
-            z: (this.zMin + this.zMax) / 2
+            x: ( this.xMin + this.xMax ) / 2,
+            y: ( this.yMin + this.yMax ) / 2,
+            z: ( this.zMin + this.zMax ) / 2
         }
 
     }

@@ -46,7 +46,7 @@ class TCode extends React.Component {
 
         const _id    = id || `tCode_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tCode ${className}` : 'tCode'
+        const _class = ( className ) ? `tCode ${className}` : 'tCode'
 
         return (
             <t-code ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-code>

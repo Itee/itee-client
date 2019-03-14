@@ -105,7 +105,7 @@ export default Vue.component( 'TMenuDropDown', {
                     break
 
                 default:
-                    throw new RangeError( `Invalid switch parameter: ${ this.popAt }`, 'TDropDownMenu' )
+                    throw new RangeError( `Invalid switch parameter: ${this.popAt}`, 'TDropDownMenu' )
                     break
 
             }
@@ -119,8 +119,8 @@ export default Vue.component( 'TMenuDropDown', {
             let _contentStyle = {
                 position:   'absolute',
                 //                minWidth: '100%',
-                display:    (this.isHover) ? 'block' : 'none',
-                visibility: (this.isVisible) ? 'visible' : 'hidden'
+                display:    ( this.isHover ) ? 'block' : 'none',
+                visibility: ( this.isVisible ) ? 'visible' : 'hidden'
             }
 
             const thisElement = this.$el
@@ -142,7 +142,7 @@ export default Vue.component( 'TMenuDropDown', {
 
                 case 'top':
                     top  = offsetTop - contentHeight
-                    left = offsetLeft + ((offsetWidth / 2) - (contentWidth / 2))
+                    left = offsetLeft + ( ( offsetWidth / 2 ) - ( contentWidth / 2 ) )
                     break
 
                 case 'topRight':
@@ -161,7 +161,7 @@ export default Vue.component( 'TMenuDropDown', {
                     break
 
                 case 'right':
-                    top  = offsetTop + (offsetHeight / 2) - (contentHeight / 2)
+                    top  = offsetTop + ( offsetHeight / 2 ) - ( contentHeight / 2 )
                     left = offsetLeft + offsetWidth
                     break
 
@@ -182,7 +182,7 @@ export default Vue.component( 'TMenuDropDown', {
 
                 case 'bottom':
                     top  = offsetTop + offsetHeight
-                    left = offsetLeft + (offsetWidth / 2) - (contentWidth / 2)
+                    left = offsetLeft + ( offsetWidth / 2 ) - ( contentWidth / 2 )
                     break
 
                 case 'bottomLeft':
@@ -201,7 +201,7 @@ export default Vue.component( 'TMenuDropDown', {
                     break
 
                 case 'left':
-                    top  = offsetTop + ((offsetHeight / 2) - (contentHeight / 2))
+                    top  = offsetTop + ( ( offsetHeight / 2 ) - ( contentHeight / 2 ) )
                     left = offsetLeft - contentWidth
                     break
 
@@ -221,7 +221,7 @@ export default Vue.component( 'TMenuDropDown', {
                     break
 
                 default:
-                    throw new RangeError( `Invalid switch parameter: ${ this.popAt }`, 'TDropDownMenu' )
+                    throw new RangeError( `Invalid switch parameter: ${this.popAt}`, 'TDropDownMenu' )
                     break
 
             }
