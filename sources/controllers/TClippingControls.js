@@ -9,35 +9,38 @@
  */
 
 import { 
-	Object3D,
-	Mesh,
-	Raycaster,
-	Vector3,
-	Quaternion,
-	MeshBasicMaterial,
-	LineBasicMaterial,
+    Object3D,
+    Mesh,
+    Plane,
+    Raycaster,
+    Vector2,
+    Vector3,
+    Quaternion,
+    MeshBasicMaterial,
+    LineBasicMaterial,
+    OctahedronGeometry,
     ConeBufferGeometry,
-	CylinderBufferGeometry,
-	BoxBufferGeometry,
-	BoxGeometry,
-	EdgesGeometry,
-	BufferGeometry,
-	Float32BufferAttribute,
-	Line,
-	LineSegments,
-	OctahedronBufferGeometry,
-	PlaneBufferGeometry,
-	TorusBufferGeometry,
-	SphereBufferGeometry,
-	Euler,
-	Matrix4,
-	Color,
-	PerspectiveCamera,
-	OrthographicCamera,
-	DoubleSide,
-	FrontSide,
-	Box3
-}	from 'three-full'
+    CylinderBufferGeometry,
+    BoxBufferGeometry,
+    BoxGeometry,
+    EdgesGeometry,
+    BufferGeometry,
+    Float32BufferAttribute,
+    Line,
+    LineSegments,
+    OctahedronBufferGeometry,
+    PlaneBufferGeometry,
+    TorusBufferGeometry,
+    SphereBufferGeometry,
+    Euler,
+    Matrix4,
+    Color,
+    PerspectiveCamera,
+    OrthographicCamera,
+    DoubleSide,
+    FrontSide,
+    Box3
+}    from 'three-full'
 
 import {
     isNull,
@@ -85,13 +88,15 @@ class ClippingBox extends Mesh {
         };
 
         this.planes = {
-	        "rightSidePlane" : new Plane( this.normalPlanes["normalRightSide"].clone() , 0 ),
-	        "leftSidePlane"  : new Plane( this.normalPlanes["normalLeftSide"].clone() , 0 ),
-	        "frontSidePlane" : new Plane( this.normalPlanes["normalFrontSide"].clone() , 0 ), 
-	        "backSidePlane"  : new Plane( this.normalPlanes["normalBackSide"].clone() , 0 ), 
-	        "topSidePlane" 	 : new Plane( this.normalPlanes["normalTopSide"].clone() , 0 ), 
-	        "bottomSidePlane": new Plane( this.normalPlanes["normalBottomSide"].clone() , 0 )
+            "rightSidePlane" : new Plane( this.normalPlanes["normalRightSide"].clone() , 0 ),
+            "leftSidePlane"  : new Plane( this.normalPlanes["normalLeftSide"].clone() , 0 ),
+            "frontSidePlane" : new Plane( this.normalPlanes["normalFrontSide"].clone() , 0 ), 
+            "backSidePlane"  : new Plane( this.normalPlanes["normalBackSide"].clone() , 0 ), 
+            "topSidePlane"      : new Plane( this.normalPlanes["normalTopSide"].clone() , 0 ), 
+            "bottomSidePlane": new Plane( this.normalPlanes["normalBottomSide"].clone() , 0 )
         }
+
+        this.visible = false
 
     }
 
@@ -102,17 +107,30 @@ class ClippingBox extends Mesh {
 
         return this.geometry.boundingSphere
     }
-    
+
+    setClippingBoxColor ( color ) {
+
+        let wireframeGeometry = new EdgesGeometry( this.geometry );
+        let wireframeMaterial = new LineBasicMaterial({
+          color: color,
+          linewidth: 4
+        })
+
+        let wireframe = new LineSegments( wireframeGeometry, wireframeMaterial )
+        wireframe.renderOrder = 1
+
+        this.add(wireframe)
+    }
 
     toggleClippingBox( state, objects ) {
 
-    	this.visible = state;
+        this.visible = state;
 
-    	let planes = []
-    	for( let i in this.planes )
-    		planes.push( this.planes[i] );
+        let planes = []
+        for( let i in this.planes )
+            planes.push( this.planes[i] );
 
-    	objects.traverse( ( object ) => {
+        objects.traverse( ( object ) => {
 
             if ( !object.geometry ) { return }
             if ( !object.material ) { return }
@@ -133,24 +151,24 @@ class ClippingBox extends Mesh {
 
     updateSize( size ) {
 
-    	this.scale.set( size.x, size.y, size.z )
+        this.scale.set( size.x, size.y, size.z )
     }
 
     update() {
 
-    	let boundingBox = new Box3()
-		boundingBox.setFromObject( this )
+        let boundingBox = new Box3()
+        boundingBox.setFromObject( this )
 
-		let margin = 0.2
-		let min    = boundingBox.min
-		let max    = boundingBox.max
+        let margin = 0.2
+        let min    = boundingBox.min
+        let max    = boundingBox.max
 
-		this.planes["rightSidePlane"].constant  = max.x + margin
-		this.planes["leftSidePlane"].constant   = -min.x + margin
-		this.planes["frontSidePlane"].constant  = max.y + margin
-		this.planes["backSidePlane"].constant   = -min.y + margin
-		this.planes["topSidePlane"].constant    = max.z + margin
-		this.planes["bottomSidePlane"].constant = -min.z + margin
+        this.planes["rightSidePlane"].constant  = max.x + margin
+        this.planes["leftSidePlane"].constant   = -min.x + margin
+        this.planes["frontSidePlane"].constant  = max.y + margin
+        this.planes["backSidePlane"].constant   = -min.y + margin
+        this.planes["topSidePlane"].constant    = max.z + margin
+        this.planes["bottomSidePlane"].constant = -min.z + margin
 
     }
 
@@ -163,7 +181,7 @@ class GizmoMaterial extends MeshBasicMaterial {
         this.depthTest = false;
         this.depthWrite = false;
         this.fog = false;
-        this.side = FrontSide;
+        this.side = DoubleSide;
         this.transparent = true;
 
         this.setValues( parameters );
@@ -185,7 +203,7 @@ class GizmoMaterial extends MeshBasicMaterial {
             this.opacity = this.oldOpacity;
 
         }
-	}
+    }
 }
 
 class GizmoLineMaterial extends LineBasicMaterial {
@@ -220,7 +238,9 @@ class GizmoLineMaterial extends LineBasicMaterial {
     }
 }
 
-const pickerMaterial = new GizmoMaterial( { visible: false, transparent: false } );
+let pickerMaterial = new GizmoMaterial( { visible: false, transparent: false } );
+pickerMaterial.opacity = 0.15;
+
 window.keyShortcut = null;
 
 class TransformGizmo extends Object3D {
@@ -310,7 +330,7 @@ class TransformGizmo extends Object3D {
             }
 
         } );
-	}
+    }
 
     highlight(axis) {
         this.traverse( function ( child ) {
@@ -350,12 +370,12 @@ class TransformGizmo extends Object3D {
             }
 
         } );
-	}
+    }
 }
 
 class TransformGizmoTranslate extends TransformGizmo {
     constructor() {
-		super();
+        super();
 
         const arrowGeometry = new ConeBufferGeometry( 0.05, 0.2, 12, 1, false );
         arrowGeometry.translate( 0, 0.5, 0 );
@@ -372,18 +392,18 @@ class TransformGizmoTranslate extends TransformGizmo {
         this.handleGizmos = {
 
             X: [
-                [ new Mesh( arrowGeometry, new GizmoMaterial( { color: 0xff0000 } ) ), [ 0.5, 0, 0 ], [ 0, 0, - Math.PI / 2 ] ],
-                [ new Line( lineXGeometry, new GizmoLineMaterial( { color: 0xff0000 } ) ) ]
+                [ new Mesh( arrowGeometry, new GizmoMaterial( { color: 0xff0000 } ) ), [ 0.5, 0, 0 ], [ 0, 0, -Math.PI / 2 ], null, 'fwd' ],
+                [ new Line( lineYGeometry, new GizmoLineMaterial( { color: 0xff0000 } ) ) ],
             ],
 
             Y: [
-                [ new Mesh( arrowGeometry, new GizmoMaterial( { color: 0x00ff00 } ) ), [ 0, 0.5, 0 ] ],
-                [	new Line( lineYGeometry, new GizmoLineMaterial( { color: 0x00ff00 } ) ) ]
+                [ new Mesh( arrowGeometry, new GizmoMaterial( { color: 0x00ff00 } ) ), [ 0, 0.5, 0 ], null, null, 'fwd' ],
+                [ new Line( lineYGeometry, new GizmoLineMaterial( { color: 0x00ff00 } ) ) ],
             ],
 
             Z: [
-                [ new Mesh( arrowGeometry, new GizmoMaterial( { color: 0x0000ff } ) ), [ 0, 0, 0.5 ], [ Math.PI / 2, 0, 0 ] ],
-                [ new Line( lineZGeometry, new GizmoLineMaterial( { color: 0x0000ff } ) ) ]
+                [ new Mesh( arrowGeometry, new GizmoMaterial( { color: 0x0000ff } ) ), [ 0, 0, 0.5 ], [ Math.PI / 2, 0, 0 ], null, 'fwd' ],
+                [ new Line( lineYGeometry, new GizmoLineMaterial( { color: 0x00ff00 } ) ) ],
             ],
 
             XYZ: [
@@ -481,7 +501,7 @@ class TransformGizmoTranslate extends TransformGizmo {
 
 class TransformGizmoRotate extends TransformGizmo {
     constructor() {
-		super();
+        super();
 
         const CircleGeometry = ( radius, facing, arc )=> {
 
@@ -505,15 +525,18 @@ class TransformGizmoRotate extends TransformGizmo {
         this.handleGizmos = {
 
             X: [
-                [ new Line( new CircleGeometry( 1, 'x', 0.5 ), new GizmoLineMaterial( { color: 0xff0000 } ) ) ]
+                [ new Line( new CircleGeometry( 1, 'x', 0.5 ), new GizmoLineMaterial( { color: 0xff0000 } ) ) ],
+                [ new Mesh( new OctahedronBufferGeometry( 0.04, 0 ), new GizmoMaterial( { color: 0xff0000 } ) ), [ 0, 0, 0.99 ], null, [ 3, 1, 1 ] ],
             ],
 
             Y: [
-                [ new Line( new CircleGeometry( 1, 'y', 0.5 ), new GizmoLineMaterial( { color: 0x00ff00 } ) ) ]
+                [ new Line( new CircleGeometry( 1, 'y', 0.5 ), new GizmoLineMaterial( { color: 0x00ff00 } ) ) ],
+                [ new Mesh( new OctahedronBufferGeometry( 0.04, 0 ), new GizmoMaterial( { color: 0x00ff00 } ) ), [ 0, 0, 0.99 ], null, [ 3, 1, 1 ] ],
             ],
 
             Z: [
-                [ new Line( new CircleGeometry( 1, 'z', 0.5 ), new GizmoLineMaterial( { color: 0x0000ff } ) ) ]
+                [ new Line( new CircleGeometry( 1, 'z', 0.5 ), new GizmoLineMaterial( { color: 0x0000ff } ) ) ],
+                [ new Mesh( new OctahedronBufferGeometry( 0.04, 0 ), new GizmoMaterial( { color: 0x0000ff } ) ), [ 0.99, 0, 0 ], null, [ 1, 3, 1 ] ],
             ],
 
             E: [
@@ -614,12 +637,12 @@ class TransformGizmoRotate extends TransformGizmo {
             }
 
         } );
-	}
+    }
 }
 
 class TransformGizmoScale extends TransformGizmo {
     constructor() {
-		super();
+        super();
 
         const arrowGeometry = new BoxBufferGeometry( 0.125, 0.125, 0.125 );
         arrowGeometry.translate( 0, 0.5, 0 );
@@ -705,27 +728,27 @@ class TransformGizmoScale extends TransformGizmo {
         }
 
         if ( axis === "XYZ" ) this.activePlane = this.planes[ "XYZE" ];
-	}
+    }
 }
 
 export default class TClippingControls extends Object3D {
-    constructor( camera, domElement, boxColor, boxPosition, boxSize ) {
+    constructor( camera, domElement, boxColor = 0x00ff00, boxPosition = new Vector3( 0, 0, 0 ), boxSize = 100 ) {
 
-		super();
+        super();
 
         this.domElement  = ( domElement !== undefined ) ? domElement : document
-        this.camera 	 = camera
-        this.boxColor 	 = ( boxColor !== undefined ) ? boxColor : 0x00ff00
-        this.boxPosition = ( boxPosition !== undefined ) ? boxPosition : new Vector3( 0, 0, 0 )
-        this.boxSize 	 = ( boxSize !== undefined ) ? boxSize : 100
+        this.camera      = camera
+        this.boxColor    = boxColor
+        this.boxPosition = boxPosition
+        this.boxSize     = boxSize
 
-        this.object 		 = undefined;
-        this.visible 		 = false;
+        this.object          = undefined;
+        this.visible          = false;
         this.translationSnap = null;
-        this.rotationSnap  	 = null;
-        this.space 			 = "world";
-        this.size 			 = 1;
-        this.axis 			 = null;
+        this.rotationSnap       = null;
+        this.space              = "world";
+        this.size              = 1;
+        this.axis              = null;
 
         this._mode = "translate";
         this._dragging = false;
@@ -744,10 +767,8 @@ export default class TClippingControls extends Object3D {
 
         }
 
-        this._clippingBox 	   = new ClippingBox( this.boxColor, this.boxPosition, this.boxSize )
+        this._clippingBox        = new ClippingBox( this.boxColor, this.boxPosition, this.boxSize )
         this._clippingBoxState = false
-        this.add( this._clippingBox )
-        this.attach( this._clippingBox )
 
         this._changeEvent = { type: "change" };
         this._mouseDownEvent = { type: "mouseDown" };
@@ -796,30 +817,31 @@ export default class TClippingControls extends Object3D {
         this.domElement.addEventListener( "mousedown", this.onPointerDown.bind(this), false );
         this.domElement.addEventListener( "touchstart", this.onPointerDown.bind(this), false );
 
-        this.domElement.addEventListener( "mousemove", this.onPointerHover.bind(this), false );
+        document.addEventListener( "mousemove", this.onPointerHover.bind(this), false );
         this.domElement.addEventListener( "touchmove", this.onPointerHover.bind(this), false );
 
         this.domElement.addEventListener( "mousemove", this.onPointerMove.bind(this), false );
         this.domElement.addEventListener( "touchmove", this.onPointerMove.bind(this), false );
 
-        this.domElement.addEventListener( "mouseup", this.onPointerUp.bind(this), false );
+        document.addEventListener( "mouseup", this.onPointerUp.bind(this), false );
         this.domElement.addEventListener( "mouseout", this.onPointerUp.bind(this), false );
         this.domElement.addEventListener( "touchend", this.onPointerUp.bind(this), false );
         this.domElement.addEventListener( "touchcancel", this.onPointerUp.bind(this), false );
         this.domElement.addEventListener( "touchleave", this.onPointerUp.bind(this), false );
+
     }
 
     dispose() {
         this.domElement.removeEventListener( "mousedown", this.onPointerDown.bind(this) );
         this.domElement.removeEventListener( "touchstart", this.onPointerDown.bind(this) );
 
-        this.domElement.removeEventListener( "mousemove", this.onPointerHover.bind(this) );
+        document.removeEventListener( "mousemove", this.onPointerHover.bind(this) );
         this.domElement.removeEventListener( "touchmove", this.onPointerHover.bind(this) );
 
         this.domElement.removeEventListener( "mousemove", this.onPointerMove.bind(this) );
         this.domElement.removeEventListener( "touchmove", this.onPointerMove.bind(this) );
 
-        this.domElement.removeEventListener( "mouseup", this.onPointerUp.bind(this) );
+        document.removeEventListener( "mouseup", this.onPointerUp.bind(this) );
         this.domElement.removeEventListener( "mouseout", this.onPointerUp.bind(this) );
         this.domElement.removeEventListener( "touchend", this.onPointerUp.bind(this) );
         this.domElement.removeEventListener( "touchcancel", this.onPointerUp.bind(this) );
@@ -828,19 +850,19 @@ export default class TClippingControls extends Object3D {
         if(window.keyShortcut) {
             window.removeEventListener( "keydown", window.keyShortcut );
         }
-	}
+    }
 
     attach( object ) {
         this.object = object;
         this.visible = true;
         this.update();
-	}
+    }
 
     detach() {
         this.object = undefined;
         this.visible = false;
         this.axis = null;
-	}
+    }
 
     getMode() {
         return this._mode
@@ -870,9 +892,9 @@ export default class TClippingControls extends Object3D {
         this.translationSnap = translationSnap;
     }
 
-	setRotationSnap( rotationSnap ) {
-		this.rotationSnap = rotationSnap;
-	}
+    setRotationSnap( rotationSnap ) {
+        this.rotationSnap = rotationSnap;
+    }
 
     setSize( size ) {
         this.size = size;
@@ -888,14 +910,25 @@ export default class TClippingControls extends Object3D {
 
     updateClippingBox( Objects, size ) {
 
-    	this._clippingBoxState = !this._clippingBoxState
-    	this._clippingBox.toggleClippingBox( this._clippingBoxState, Objects )
+        this._clippingBoxState = !this._clippingBoxState
 
-    	this._clippingBox.updateSize( size )
+        if ( this._clippingBoxState ) {
+            this._clippingBox.position.set(0,0,0)
+            this._clippingBox.rotation.set(0,0,0)
+            this.attach( this._clippingBox )
+            this._clippingBox.visible = true
+        }
+        else {
+            this.detach( this._clippingBox )
+            this._clippingBox.visible = false
+        }
+
+        this._clippingBox.toggleClippingBox( this._clippingBoxState, Objects )
+        this._clippingBox.updateSize( size )
     }
 
     update() {
-        if ( this.object === undefined ) return;
+        if ( this.object === undefined || this._mode === 'none' ) return;
 
         this.object.updateMatrixWorld();
         this._worldPosition.setFromMatrixPosition( this.object.matrixWorld );
@@ -930,9 +963,9 @@ export default class TClippingControls extends Object3D {
         }
 
         this._gizmo[ this._mode ].highlight( this.axis );
-	}
+    }
 
-	keyShortcut( event ) {
+    keyShortcut( event ) {
         switch ( event.keyCode ) {
             case 81: // Q
                 this.setSpace( this.space === "local" ? "world" : "local" );
@@ -962,7 +995,7 @@ export default class TClippingControls extends Object3D {
     }
 
     onPointerHover( event ) {
-        if ( this.object === undefined || this._dragging === true || ( event.button !== undefined && event.button !== 0 ) ) return;
+        if ( this.object === undefined || this._dragging === true || ( event.button !== undefined && event.button !== 0 ) || this._mode === 'none' ) return;
 
         const pointer = event.changedTouches ? event.changedTouches[ 0 ] : event;
 
@@ -985,10 +1018,10 @@ export default class TClippingControls extends Object3D {
             this.dispatchEvent( this._changeEvent );
 
         }
-	}
+    }
 
     onPointerDown( event ) {
-        if ( this.object === undefined || this._dragging === true || ( event.button !== undefined && event.button !== 0 ) ) return;
+        if ( this.object === undefined || this._dragging === true || ( event.button !== undefined && event.button !== 0 ) || this._mode === 'none' ) return;
 
         const pointer = event.changedTouches ? event.changedTouches[ 0 ] : event;
 
@@ -1043,7 +1076,7 @@ export default class TClippingControls extends Object3D {
         }
 
         this._dragging = true;
-	}
+    }
 
     onPointerMove( event ) {
         if ( this.object === undefined || this.axis === null || this._dragging === false || ( event.button !== undefined && event.button !== 0 ) ) return;
@@ -1275,7 +1308,7 @@ export default class TClippingControls extends Object3D {
             this.onPointerHover( event );
 
         }
-	}
+    }
 
     intersectObjects( pointer, objects ) {
         const rect = this.domElement.getBoundingClientRect();
@@ -1287,6 +1320,6 @@ export default class TClippingControls extends Object3D {
 
         const intersections = this._ray.intersectObjects( objects, true );
         return intersections[ 0 ] ? intersections[ 0 ] : false;
-	}
+    }
 
 }
