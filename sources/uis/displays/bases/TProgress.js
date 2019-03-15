@@ -60,7 +60,7 @@ export default Vue.component( 'TProgress', {
 
         _progress () {
 
-            return Math.ceil( (this.done / this.todo) * 100 )
+            return Math.ceil( ( this.done / this.todo ) * 100 )
 
         },
 
@@ -86,7 +86,7 @@ export default Vue.component( 'TProgress', {
 
             }
 
-            style += (this.isVisible) ? 'display:flex;' : 'display:none;'
+            style += ( this.isVisible ) ? 'display:flex;' : 'display:none;'
 
             return style
 

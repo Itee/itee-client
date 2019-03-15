@@ -46,7 +46,7 @@ class TTile extends React.Component {
 
         const _id    = id || `tTile_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tTile ${className}` : 'tTile'
+        const _class = ( className ) ? `tTile ${className}` : 'tTile'
 
         return (
             <t-tile ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-tile>

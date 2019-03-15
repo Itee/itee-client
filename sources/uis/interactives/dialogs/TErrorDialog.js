@@ -46,7 +46,7 @@ class TErrorDialog extends React.Component {
 
         const _id    = id || `tErrorDialog_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tErrorDialog ${className}` : 'tErrorDialog'
+        const _class = ( className ) ? `tErrorDialog ${className}` : 'tErrorDialog'
 
         return (
             <t-error-dialog ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-error-dialog>

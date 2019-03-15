@@ -46,7 +46,7 @@ class TToolTip extends React.Component {
 
         const _id    = id || `tToolTip_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tToolTip ${className}` : 'tToolTip'
+        const _class = ( className ) ? `tToolTip ${className}` : 'tToolTip'
 
         return (
             <t-tool-tip ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-tool-tip>

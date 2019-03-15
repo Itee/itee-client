@@ -10,16 +10,21 @@
 
 /* eslint-env browser */
 
-import React                                        from 'react'
-import { THeader, TContent, TFooter }               from '../displays/sections/_sections'
-import { TAppBar, TToolBar, TStatusBar }            from '../displays/bars/_bars'
-import { TDateTime }                                from '../displays/bases/_bases'
-import { TBrand, TMenu, TMenuItem, TDropDownMenu }  from '../displays/navigations/_navigations'
-import { TLogingButton, TButtonGroup, TToolButton } from '../inputs/buttons/_buttons'
-import { TSplitter }                                from '../displays/splitters/_splitters'
-import { TTree, TTreeItem }                         from '../displays/trees/_trees'
-import { TViewport3D }                              from '../displays/medias/_medias'
-import { TDialogArea, TLoginDialog }                from '../interactives/dialogs/_dialogs'
+import React         from 'react'
+import { TToolBar }  from '../displays/bars/_bars'
+import { TDateTime } from '../displays/bases/_bases'
+import {
+    TBrand,
+    TDropDownMenu
+}                    from '../displays/navigations/_navigations'
+import {
+    TLogingButton,
+    TToolButton
+}                    from '../inputs/buttons/_buttons'
+import {
+    TDialogArea,
+    TLoginDialog
+}                    from '../interactives/dialogs/_dialogs'
 
 class TBasicApplication extends React.Component {
 
@@ -79,9 +84,9 @@ class TBasicApplication extends React.Component {
 
         if ( this.state.isLogged ) {
 
-            this.setState( prevState => ({
+            this.setState( prevState => ( {
                 isLogged: !prevState.isLogged
-            }) )
+            } ) )
 
         }
 
@@ -99,11 +104,11 @@ class TBasicApplication extends React.Component {
     loginSubmitHandler ( event ) {
 
         //Todo: wait server response
-        this.setState( prevState => ({
+        this.setState( prevState => ( {
             isLogged:        !prevState.isLogged,
             underDialog:     false,
             showLoginDialog: false
-        }) )
+        } ) )
 
         event.preventDefault()
 

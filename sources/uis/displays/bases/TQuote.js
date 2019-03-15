@@ -46,7 +46,7 @@ class TQuote extends React.Component {
 
         const _id    = id || `tQuote_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tQuote ${className}` : 'tQuote'
+        const _class = ( className ) ? `tQuote ${className}` : 'tQuote'
 
         return (
             <t-quote ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-quote>

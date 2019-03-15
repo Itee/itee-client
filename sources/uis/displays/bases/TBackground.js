@@ -61,8 +61,8 @@ Background.prototype.updateBackground = function () {
 
     var _ = this
 
-    var image_width  = (_.view.width()) ? _.view.width() : 1
-    var image_height = (_.view.height()) ? _.view.height() : 1,
+    var image_width  = ( _.view.width() ) ? _.view.width() : 1
+    var image_height = ( _.view.height() ) ? _.view.height() : 1,
         over         = image_width / image_height,
         under        = image_height / image_width,
         body_width   = $( window ).width(),
@@ -73,14 +73,14 @@ Background.prototype.updateBackground = function () {
             'width':  body_width + 'px',
             'height': Math.ceil( under * body_width ) + 'px',
             'left':   '0px',
-            'top':    Math.abs( (under * body_width) - body_height ) / -2 + 'px'
+            'top':    Math.abs( ( under * body_width ) - body_height ) / -2 + 'px'
         } )
     } else {
         _.view.css( {
             'width':  Math.ceil( over * body_height ) + 'px',
             'height': body_height + 'px',
             'top':    '0px',
-            'left':   Math.abs( (over * body_height) - body_width ) / -2 + 'px'
+            'left':   Math.abs( ( over * body_height ) - body_width ) / -2 + 'px'
         } )
     }
 

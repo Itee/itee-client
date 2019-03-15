@@ -10,37 +10,34 @@
 
 /* eslint-env browser */
 
+import { degreesToRadians } from 'itee-utils'
+
+import {
+    isArray,
+    isFunction,
+    isObject,
+    isString
+}                                   from 'itee-validators'
 import {
     ColladaLoader,
-    FBXLoader,
-    MTLLoader,
-    ObjectLoader,
-    OBJLoader,
-    OBJLoader2,
-    STLLoader,
-
-    DoubleSide,
     DefaultLoadingManager,
+    DoubleSide,
+    FBXLoader,
     Group,
     Mesh,
     MeshPhongMaterial,
-    ShapeBufferGeometry
-} from 'three-full'
-
-import {
-    isString,
-    isArray,
-    isFunction,
-    isObject
-} from 'itee-validators'
-
-import { degreesToRadians } from 'itee-utils'
-
-import { ASCLoader }                from './ASCLoader'
-import { SHPLoader }                from './SHPLoader'
-import { DBFLoader }                from './DBFLoader'
-import { DefaultLogger as TLogger } from '../loggers/TLogger'
+    MTLLoader,
+    ObjectLoader,
+    OBJLoader,
+    ShapeBufferGeometry,
+    STLLoader
+}                                   from 'three-full'
 import { FileFormat }               from '../cores/TConstants'
+import { DefaultLogger as TLogger } from '../loggers/TLogger'
+
+import { ASCLoader } from './ASCLoader'
+import { DBFLoader } from './DBFLoader'
+import { SHPLoader } from './SHPLoader'
 
 // Helpers
 /**
@@ -71,7 +68,7 @@ function getFileName ( fileUrl ) {
  */
 function getFileExtension ( fileName ) {
 
-    return fileName.slice( (fileName.lastIndexOf( '.' ) - 1 >>> 0) + 2 )
+    return fileName.slice( ( fileName.lastIndexOf( '.' ) - 1 >>> 0 ) + 2 )
 
 }
 
@@ -83,9 +80,9 @@ function getFileExtension ( fileName ) {
 function computeUrl ( fileUrl ) {
 
     const filePath = getFilePath( fileUrl )
-    const isBlob   = (fileUrl.indexOf( 'blob' ) > -1)
+    const isBlob   = ( fileUrl.indexOf( 'blob' ) > -1 )
 
-    return (isBlob) ? filePath : fileUrl
+    return ( isBlob ) ? filePath : fileUrl
 
 }
 
@@ -154,7 +151,7 @@ Object.assign( TUniversalLoader.prototype, {
 
             // Todo: need to rework logic here and use wrapper object instead of array of object to avoid
             // Todo: array of 2 differents files.
-            if ( (files.length === 2) && (isObject( files[ 0 ] ) && isObject( files[ 1 ] )) ) {
+            if ( ( files.length === 2 ) && ( isObject( files[ 0 ] ) && isObject( files[ 1 ] ) ) ) {
 
                 this.loadAssociatedFiles( files, onLoad, onProgress, onError )
 

@@ -46,7 +46,7 @@ class TOptionGroup extends React.Component {
 
         const _id    = id || `tOptionGroup_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tOptionGroup ${className}` : 'tOptionGroup'
+        const _class = ( className ) ? `tOptionGroup ${className}` : 'tOptionGroup'
 
         return (
             <t-option-group ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-option-group>

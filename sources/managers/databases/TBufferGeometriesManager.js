@@ -8,15 +8,13 @@
  *
  */
 
-import { TDataBaseManager } from '../TDataBaseManager'
+import { isObject } from 'itee-validators'
 
 import {
-    BoxBufferGeometry,
-    BufferAttribute,
-    BufferGeometry,
-    Face3,
-    Vector3
-} from 'three-full'
+    Object3D,
+    Scene
+}                           from 'three-full'
+import { TDataBaseManager } from '../TDataBaseManager'
 
 /**
  *
@@ -80,7 +78,7 @@ Object.defineProperties( TBufferGeometriesManager.prototype, {
         value: function _onJson ( jsonData, onSuccess, onProgress, onError ) {
 
             // Normalize to array
-            const datas   = (isObject( jsonData )) ? [ jsonData ] : jsonData
+            const datas   = ( isObject( jsonData ) ) ? [ jsonData ] : jsonData
             const results = {}
             let result    = undefined
 

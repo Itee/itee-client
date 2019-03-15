@@ -10,7 +10,7 @@
 //export { TApplication } from './TApplication'
 export *                      from './TConstants'
 export { TStore }             from './TStore'
-export { TOrchestrator }      from './TOrchestrator'
+//export { TOrchestrator }      from './TOrchestrator'
 export { TAbtractFactory }    from './TAbtractFactory'
 export { TCloningFactory }    from './TCloningFactory'
 export { TInstancingFactory } from './TInstancingFactory'

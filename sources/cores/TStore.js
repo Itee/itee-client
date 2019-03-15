@@ -14,9 +14,9 @@
 /* eslint-env browser */
 
 import {
+    isFunction,
     isNotUndefined,
-    isString,
-    isFunction
+    isString
 } from 'itee-validators'
 
 /**
@@ -83,7 +83,7 @@ class TStore {
      */
     add ( key, item, force = false ) {
 
-        if ( this.contain( key ) && (!this._allowOverride && !force) ) {
+        if ( this.contain( key ) && ( !this._allowOverride && !force ) ) {
             throw new TypeError( `Item with key (${key}) already exist in collection !` )
         }
 

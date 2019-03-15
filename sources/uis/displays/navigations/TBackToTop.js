@@ -46,7 +46,7 @@ class TBackToTop extends React.Component {
 
         const _id    = id || `tBackToTop_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tBackToTop ${className}` : 'tBackToTop'
+        const _class = ( className ) ? `tBackToTop ${className}` : 'tBackToTop'
 
         return (
             <t-back-to-top ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-back-to-top>

@@ -46,7 +46,7 @@ class TColumn extends React.Component {
 
         const _id    = id || `tColumn_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tColumn ${className}` : 'tColumn'
+        const _class = ( className ) ? `tColumn ${className}` : 'tColumn'
 
         return (
             <t-column ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-column>

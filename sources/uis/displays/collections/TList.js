@@ -46,7 +46,7 @@ class TList extends React.Component {
 
         const _id    = id || `tList_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tList ${className}` : 'tList'
+        const _class = ( className ) ? `tList ${className}` : 'tList'
 
         return (
             <t-list ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-list>

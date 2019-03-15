@@ -72,7 +72,7 @@ Object.defineProperties( TTexturesManager.prototype, {
         value: function _onJson ( jsonData, onSuccess, onProgress, onError ) {
 
             // Normalize to array
-            const datas   = (isObject( jsonData )) ? [ jsonData ] : jsonData
+            const datas   = ( isObject( jsonData ) ) ? [ jsonData ] : jsonData
             const results = {}
 
             for ( let dataIndex = 0, numberOfDatas = datas.length, data = undefined ; dataIndex < numberOfDatas ; dataIndex++ ) {

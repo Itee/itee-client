@@ -18,40 +18,37 @@
 /* eslint-env browser */
 
 import {
-    isNull,
-    isUndefined,
-    isNotDefined,
-    isDefined,
-    isNotNumber,
-    isZero,
-    isNumberPositive,
-    isNumberNegative,
-    isString,
-    isNotString,
-    isEmptyString,
-    isNotEmptyString,
-    isBlankString,
-    isNotBlankString,
     isArray,
-    isNotArray,
-    isEmptyArray,
-    isNotEmptyArray,
     isArrayOfSingleElement,
-    isObject,
+    isBlankString,
+    isDefined,
     isEmptyObject,
+    isEmptyString,
+    isNotBlankString,
+    isNotDefined,
+    isNotEmptyArray,
     isNotEmptyObject,
-    isNotObject
+    isNotEmptyString,
+    isNotNumber,
+    isNotObject,
+    isNotString,
+    isNull,
+    isNumberNegative,
+    isNumberPositive,
+    isObject,
+    isString,
+    isUndefined,
+    isZero
 }                                   from 'itee-validators'
 import {
+    HttpStatusCode,
     HttpVerb,
-    ResponseType,
-    HttpStatusCode
+    ResponseType
 }                                   from '../cores/TConstants'
-import { TOrchestrator }            from '../cores/TOrchestrator'
-import { DefaultLogger as TLogger } from '../loggers/TLogger'
-import { TProgressManager }         from './TProgressManager'
-import { TErrorManager }            from './TErrorManager'
 import { TStore }                   from '../cores/TStore'
+import { DefaultLogger as TLogger } from '../loggers/TLogger'
+import { TErrorManager }            from './TErrorManager'
+import { TProgressManager }         from './TProgressManager'
 
 class IdGenerator {
 
@@ -149,7 +146,7 @@ class TDataBaseManager {
         if ( isNull( value ) ) { throw new Error( 'TDataBaseManager: responseType cannot be null !' ) }
         if ( isNull( value ) ) { throw new TypeError( 'Response type cannot be null ! Expect a non empty string.' ) }
         if ( isUndefined( value ) ) { throw new TypeError( 'Response type cannot be undefined ! Expect a non empty string.' ) }
-        if ( !(value instanceof ResponseType) ) { throw new TypeError( `Response type cannot be an instance of ${value.constructor.name} ! Expect a value from ResponseType enum.` ) }
+        if ( !( value instanceof ResponseType ) ) { throw new TypeError( `Response type cannot be an instance of ${value.constructor.name} ! Expect a value from ResponseType enum.` ) }
 
         this._responseType = value
 
@@ -225,7 +222,7 @@ class TDataBaseManager {
 
         if ( isNull( value ) ) { throw new TypeError( 'Progress manager cannot be null ! Expect an instance of TProgressManager.' ) }
         if ( isUndefined( value ) ) { throw new TypeError( 'Progress manager cannot be undefined ! Expect an instance of TProgressManager.' ) }
-        if ( !(value instanceof TProgressManager) ) { throw new TypeError( `Progress manager cannot be an instance of ${value.constructor.name} ! Expect an instance of TProgressManager.` ) }
+        if ( !( value instanceof TProgressManager ) ) { throw new TypeError( `Progress manager cannot be an instance of ${value.constructor.name} ! Expect an instance of TProgressManager.` ) }
 
         this._progressManager = value
 
@@ -246,7 +243,7 @@ class TDataBaseManager {
 
         if ( isNull( value ) ) { throw new TypeError( 'Error manager cannot be null ! Expect an instance of TErrorManager.' ) }
         if ( isUndefined( value ) ) { throw new TypeError( 'Error manager cannot be undefined ! Expect an instance of TErrorManager.' ) }
-        if ( !(value instanceof TErrorManager) ) { throw new TypeError( `Error manager cannot be an instance of ${value.constructor.name} ! Expect an instance of TErrorManager.` ) }
+        if ( !( value instanceof TErrorManager ) ) { throw new TypeError( `Error manager cannot be an instance of ${value.constructor.name} ! Expect an instance of TErrorManager.` ) }
 
         this._errorManager = value
 
@@ -266,18 +263,23 @@ class TDataBaseManager {
             const requestSkull = this._requestQueue.pop()
             this._processQueue.push( requestSkull )
 
-            console.log( 'Process request: ' + requestSkull._id )
+            //console.log( 'Process request: ' + requestSkull._id )
 
             const request      = new XMLHttpRequest()
-            request.onload     = this._onLoad.bind( this, requestSkull, this._onEnd.bind( this, requestSkull, requestSkull.onLoad ), this._onProgress.bind( this, requestSkull.onProgress ), this._onError.bind( this, requestSkull, requestSkull.onError ) )
+            request.onload     = this._onLoad.bind( this,
+                requestSkull,
+                this._onEnd.bind( this, requestSkull, requestSkull.onLoad ),
+                this._onProgress.bind( this, requestSkull.onProgress ),
+                this._onError.bind( this, requestSkull, requestSkull.onError )
+            )
             request.onprogress = this._onProgress.bind( this, requestSkull.onProgress )
-            request.onerror    = this._onError.bind( this, requestSkull.onError )
+            request.onerror    = this._onError.bind( this, requestSkull, requestSkull.onError )
             request.open( requestSkull.method, requestSkull.url, true )
             request.setRequestHeader( 'Content-Type', 'application/json' )
             request.setRequestHeader( 'Accept', 'application/json' )
             request.responseType = requestSkull.responseType.value
 
-            const dataToSend = (requestSkull.data && requestSkull.responseType === ResponseType.Json) ? JSON.stringify( requestSkull.data ) : requestSkull.data
+            const dataToSend = ( requestSkull.data && requestSkull.responseType === ResponseType.Json ) ? JSON.stringify( requestSkull.data ) : requestSkull.data
             request.send( dataToSend )
 
         }
@@ -841,7 +843,7 @@ class TDataBaseManager {
 
     _updateWaitingQueue () {
 
-        const haveNoRequestToProcess = (this._requestQueue.length === 0 && this._processQueue.length === 0)
+        const haveNoRequestToProcess = ( this._requestQueue.length === 0 && this._processQueue.length === 0 )
 
         for ( let requestIndex = this._waitingQueue.length - 1 ; requestIndex >= 0 ; requestIndex-- ) {
 
@@ -864,7 +866,7 @@ class TDataBaseManager {
             }
 
             // Check if request is now fullfilled
-            const demandIsComplet = (demand.underRequest.length === 0)
+            const demandIsComplet = ( demand.underRequest.length === 0 )
             if ( demandIsComplet ) {
 
                 this._waitingQueue.splice( requestIndex, 1 )

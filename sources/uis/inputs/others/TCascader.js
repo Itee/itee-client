@@ -46,7 +46,7 @@ class TCascader extends React.Component {
 
         const _id    = id || `tCascader_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tCascader ${className}` : 'tCascader'
+        const _class = ( className ) ? `tCascader ${className}` : 'tCascader'
 
         return (
             <t-cascader ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-cascader>

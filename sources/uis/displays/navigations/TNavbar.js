@@ -53,7 +53,7 @@ class TNavbar extends React.Component {
             display:         'flex',
             alignItems:      'center'
         }
-        const _class = (className) ? `tNavbar ${className}` : 'tNavbar'
+        const _class = ( className ) ? `tNavbar ${className}` : 'tNavbar'
 
         switch ( state ) {
 

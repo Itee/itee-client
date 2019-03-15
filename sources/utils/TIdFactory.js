@@ -9,12 +9,10 @@
  */
 
 import {
-    isNull,
-    isUndefined,
-    isNotUndefined,
     isNotNumber,
-    isNotString
-    //    isNotUuid //todo
+    isNotString,
+    isNull,
+    isUndefined
 } from 'itee-validators'
 
 //
@@ -95,8 +93,8 @@ class TIdFactory {
 
         if ( isUndefined( value ) ) { throw new Error( 'Base cannot be undefined ! Expect an instance of Object3D.' ) }
 
-        if ( (this._type === TIdFactoryType.Number) && isNotNumber( value ) ) { throw new Error( 'Invalide Base ! It does not match the type.' ) }
-        if ( (this._type === TIdFactoryType.String) && isNotString( value ) ) { throw new Error( 'Invalide Base ! It does not match the type.' ) }
+        if ( ( this._type === TIdFactoryType.Number ) && isNotNumber( value ) ) { throw new Error( 'Invalide Base ! It does not match the type.' ) }
+        if ( ( this._type === TIdFactoryType.String ) && isNotString( value ) ) { throw new Error( 'Invalide Base ! It does not match the type.' ) }
         //        if( (this._type === TIdFactoryType.Uuid) && isNotUuid( value ) ) { throw new Error( 'Invalide Base ! It does not match the type.' ) }
 
         this._base = value
@@ -116,4 +114,7 @@ class TIdFactory {
 
 }
 
-export { TIdFactory, TIdFactoryType }
+export {
+    TIdFactory,
+    TIdFactoryType
+}

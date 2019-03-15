@@ -48,7 +48,7 @@ export default Vue.component( 'TToolItem', {
 
         computedState: function computedState () {
 
-            return (this.isActive && this.isCheckBoxActive)
+            return ( this.isActive && this.isCheckBoxActive )
 
         }
 

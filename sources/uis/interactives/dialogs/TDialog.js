@@ -12,7 +12,10 @@
 
 import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
-import { TIdFactory, TIdFactoryType } from '../../../utils/TIdFactory'
+import {
+    TIdFactory,
+    TIdFactoryType
+} from '../../../utils/TIdFactory'
 
 const IdFactory = new TIdFactory( TIdFactoryType.String, 't-dialog-' )
 
@@ -40,14 +43,14 @@ export default Vue.component( 'TDialog', {
 
         computeClass () {
 
-            return (this.isVisible) ? 'modal fade show' : 'modal fade'
+            return ( this.isVisible ) ? 'modal fade show' : 'modal fade'
 
         },
 
         computeStyle () {
 
             return {
-                display: (this.isVisible) ? 'block' : 'none'
+                display: ( this.isVisible ) ? 'block' : 'none'
             }
 
         }

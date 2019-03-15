@@ -8,8 +8,8 @@
  *
  */
 
-import Vue      from '../../../../node_modules/vue/dist/vue.esm'
 import VueColor from '../../../../node_modules/vue-color/dist/vue-color'
+import Vue      from '../../../../node_modules/vue/dist/vue.esm'
 
 export default Vue.component( 'TInputColor2', {
     components: {
@@ -62,10 +62,9 @@ export default Vue.component( 'TInputColor2', {
                 this.colors = {
                     hex: color
                 }
-            }
-            else if ( color.slice( 0, 4 ) == 'rgba' ) {
+            } else if ( color.slice( 0, 4 ) == 'rgba' ) {
                 var rgba    = color.replace( /^rgba?\(|\s+|\)$/g, '' ).split( ',' ),
-                    hex     = '#' + ((1 << 24) + (parseInt( rgba[ 0 ] ) << 16) + (parseInt( rgba[ 1 ] ) << 8) + parseInt( rgba[ 2 ] )).toString( 16 ).slice( 1 )
+                    hex     = '#' + ( ( 1 << 24 ) + ( parseInt( rgba[ 0 ] ) << 16 ) + ( parseInt( rgba[ 1 ] ) << 8 ) + parseInt( rgba[ 2 ] ) ).toString( 16 ).slice( 1 )
                 this.colors = {
                     hex: hex,
                     a:   rgba[ 3 ]
@@ -103,8 +102,7 @@ export default Vue.component( 'TInputColor2', {
             this.colors = color
             if ( color.rgba.a == 1 ) {
                 this.colorValue = color.hex
-            }
-            else {
+            } else {
                 this.colorValue = 'rgba(' + color.rgba.r + ', ' + color.rgba.g + ', ' + color.rgba.b + ', ' + color.rgba.a + ')'
             }
         },

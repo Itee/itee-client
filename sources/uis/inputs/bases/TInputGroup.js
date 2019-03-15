@@ -46,7 +46,7 @@ class TInputGroup extends React.Component {
 
         const _id    = id || `tInputGroup_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tInputGroup ${className}` : 'tInputGroup'
+        const _class = ( className ) ? `tInputGroup ${className}` : 'tInputGroup'
 
         return (
             <t-input-group ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-input-group>

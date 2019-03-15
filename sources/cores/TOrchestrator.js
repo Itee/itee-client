@@ -11,10 +11,10 @@
 /* eslint-env browser */
 
 import {
-    isNull,
-    isUndefined,
     isNotNumber,
-    isNumberPositive
+    isNull,
+    isNumberPositive,
+    isUndefined
 } from 'itee-validators'
 
 import { ResponseType } from './TConstants'
@@ -81,7 +81,7 @@ class TOrchestrator {
             request.setRequestHeader( 'Accept', 'application/json' )
             request.responseType = requestSkull.responseType.value
 
-            const dataToSend = (requestSkull.data && requestSkull.responseType === ResponseType.Json) ? JSON.stringify( requestSkull.data ) : requestSkull.data
+            const dataToSend = ( requestSkull.data && requestSkull.responseType === ResponseType.Json ) ? JSON.stringify( requestSkull.data ) : requestSkull.data
             request.send( dataToSend )
 
             this._numberOfRunningRequest++

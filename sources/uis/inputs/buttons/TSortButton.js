@@ -46,7 +46,7 @@ class TSortButton extends React.Component {
 
         const _id    = id || `tSortButton_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tSortButton ${className}` : 'tSortButton'
+        const _class = ( className ) ? `tSortButton ${className}` : 'tSortButton'
 
         return (
             <t-sort-button ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-sort-button>

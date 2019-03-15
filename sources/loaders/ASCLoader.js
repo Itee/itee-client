@@ -33,10 +33,10 @@ import {
     Group,
     Points,
     PointsMaterial
-} from 'three-full'
+}                       from 'three-full'
+import { TBoundingBox } from '../cores/TBoundingBox'
 
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
-import { TBoundingBox }             from '../cores/TBoundingBox'
 
 /**
  *
@@ -45,7 +45,7 @@ import { TBoundingBox }             from '../cores/TBoundingBox'
  */
 function ASCLoader ( manager ) {
 
-    this.manager = (manager) ? manager : DefaultLoadingManager
+    this.manager = ( manager ) ? manager : DefaultLoadingManager
 
     this._boundingBox    = new TBoundingBox()
     this._points         = []
@@ -120,7 +120,7 @@ Object.assign( ASCLoader.prototype, {
 
         const self = this
 
-        const _sampling = (sampling) ? sampling : 100
+        const _sampling = ( sampling ) ? sampling : 100
 
         const reader     = new FileReader()
         const CHUNK_SIZE = 134217728
@@ -421,7 +421,7 @@ Object.assign( ASCLoader.prototype, {
             this._parseLinesAsXYZIRGBnXnYnZ( lines )
 
         } else {
-            TLogger.error( 'Invalid data line: ' + line )
+            TLogger.error( 'Invalid data line: ' + lines )
         }
 
     },
@@ -676,7 +676,7 @@ Object.assign( ASCLoader.prototype, {
      */
     _offsetPoints () {
 
-        const offset         = (this._autoOffset) ? this._boundingBox.getCenter() : this._offset
+        const offset         = ( this._autoOffset ) ? this._boundingBox.getCenter() : this._offset
         const numberOfPoints = this._points.length
         let point            = null
         for ( let i = 0 ; i < numberOfPoints ; ++i ) {

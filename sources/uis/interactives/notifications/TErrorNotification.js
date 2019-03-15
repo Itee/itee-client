@@ -46,7 +46,7 @@ class TErrorNotification extends React.Component {
 
         const _id    = id || `tErrorNotification_${_instanceCounter}`
         const _style = {}
-        const _class = (className) ? `tErrorNotification ${className}` : 'tErrorNotification'
+        const _class = ( className ) ? `tErrorNotification ${className}` : 'tErrorNotification'
 
         return (
             <t-error-notification ref={( container ) => {this._container = container}} id={_id} style={_style} class={_class}></t-error-notification>

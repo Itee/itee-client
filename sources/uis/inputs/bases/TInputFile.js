@@ -36,7 +36,7 @@ export default Vue.component( 'TInputFile', {
 
         _computePlaceholder () {
 
-            return (this.filesNames) ? this.filesNames.toString() : this.placeholder
+            return ( this.filesNames ) ? this.filesNames.toString() : this.placeholder
 
         }
 
@@ -49,7 +49,7 @@ export default Vue.component( 'TInputFile', {
 
             // Update local state
             const filesNames = Array.from( files ).map( file => file.name )
-            this.filesNames  = (filesNames.length > 0) ? filesNames : undefined
+            this.filesNames  = ( filesNames.length > 0 ) ? filesNames : undefined
 
             this.onChange( files )
 

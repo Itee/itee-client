@@ -11,66 +11,68 @@
 /* eslint-env browser */
 /* global $, H, URL */
 
+import { AnimationMixer }           from '../../node_modules/threejs-full-es6/sources/animation/AnimationMixer'
 import {
+    AdditiveBlending,
+    BackSide,
     DoubleSide,
     FrontSide,
-    BackSide,
     LinearFilter,
-    UVMapping,
-    AdditiveBlending
-}                               from '../../node_modules/threejs-full-es6/sources/constants'
-import { AnimationMixer }       from '../../node_modules/threejs-full-es6/sources/animation/AnimationMixer'
-import { AxesHelper }           from '../../node_modules/threejs-full-es6/sources/helpers/AxesHelper'
-import { BoxHelper }            from '../../node_modules/threejs-full-es6/sources/helpers/BoxHelper'
-import { SkeletonHelper }       from '../../node_modules/threejs-full-es6/sources/helpers/SkeletonHelper'
-import { AmbientLight }         from '../../node_modules/threejs-full-es6/sources/lights/AmbientLight'
-import { Color }                from '../../node_modules/threejs-full-es6/sources/math/Color'
-import { Vector3 }              from '../../node_modules/threejs-full-es6/sources/math/Vector3'
-import { Matrix4 }              from '../../node_modules/threejs-full-es6/sources/math/Matrix4'
-import { Frustum }              from '../../node_modules/threejs-full-es6/sources/math/Frustum'
-import { Plane }                from '../../node_modules/threejs-full-es6/sources/math/Plane'
-import { Line }                 from '../../node_modules/threejs-full-es6/sources/objects/Line'
-import { LineSegments }         from '../../node_modules/threejs-full-es6/sources/objects/LineSegments'
-import { Group }                from '../../node_modules/threejs-full-es6/sources/objects/Group'
-import { Mesh }                 from '../../node_modules/threejs-full-es6/sources/objects/Mesh'
-import { SkinnedMesh }          from '../../node_modules/threejs-full-es6/sources/objects/SkinnedMesh'
-import { Object3D }             from '../../node_modules/threejs-full-es6/sources/core/Object3D'
-import { Scene }                from '../../node_modules/threejs-full-es6/sources/scenes/Scene'
-import { WireframeGeometry }    from '../../node_modules/threejs-full-es6/sources/geometries/WireframeGeometry'
-import { TubeGeometry }         from '../../node_modules/threejs-full-es6/sources/geometries/TubeGeometry'
-import { SphereBufferGeometry } from '../../node_modules/threejs-full-es6/sources/geometries/SphereGeometry'
-import { LineCurve }            from '../../node_modules/threejs-full-es6/sources/curves/LineCurve'
-import { CatmullRomCurve3 }     from '../../node_modules/threejs-full-es6/sources/curves/CatmullRomCurve3'
-import { LineBasicMaterial }    from '../../node_modules/threejs-full-es6/sources/materials/LineBasicMaterial'
-import { MeshLambertMaterial }  from '../../node_modules/threejs-full-es6/sources/materials/MeshLambertMaterial'
-import { SpriteMaterial }       from '../../node_modules/threejs-full-es6/sources/materials/SpriteMaterial'
-import { Texture }              from '../../node_modules/threejs-full-es6/sources/textures/Texture'
-import { JSONLoader }           from '../../node_modules/threejs-full-es6/sources/loaders/JSONLoader'
-import { ImageLoader }          from '../../node_modules/threejs-full-es6/sources/loaders/ImageLoader'
-import { Sprite }               from '../../node_modules/threejs-full-es6/sources/objects/Sprite'
-import { Geometry }             from '../../node_modules/threejs-full-es6/sources/core/Geometry'
-
+    UVMapping
+}                                   from '../../node_modules/threejs-full-es6/sources/constants'
+import { Geometry }                 from '../../node_modules/threejs-full-es6/sources/core/Geometry'
+import { Object3D }                 from '../../node_modules/threejs-full-es6/sources/core/Object3D'
+import { CatmullRomCurve3 }         from '../../node_modules/threejs-full-es6/sources/curves/CatmullRomCurve3'
+import { LineCurve }                from '../../node_modules/threejs-full-es6/sources/curves/LineCurve'
+import { SphereBufferGeometry }     from '../../node_modules/threejs-full-es6/sources/geometries/SphereGeometry'
+import { TubeGeometry }             from '../../node_modules/threejs-full-es6/sources/geometries/TubeGeometry'
+import { WireframeGeometry }        from '../../node_modules/threejs-full-es6/sources/geometries/WireframeGeometry'
+import { AxesHelper }               from '../../node_modules/threejs-full-es6/sources/helpers/AxesHelper'
+import { BoxHelper }                from '../../node_modules/threejs-full-es6/sources/helpers/BoxHelper'
+import { SkeletonHelper }           from '../../node_modules/threejs-full-es6/sources/helpers/SkeletonHelper'
+import { AmbientLight }             from '../../node_modules/threejs-full-es6/sources/lights/AmbientLight'
+import { ImageLoader }              from '../../node_modules/threejs-full-es6/sources/loaders/ImageLoader'
+import { JSONLoader }               from '../../node_modules/threejs-full-es6/sources/loaders/JSONLoader'
+import { LineBasicMaterial }        from '../../node_modules/threejs-full-es6/sources/materials/LineBasicMaterial'
+import { MeshLambertMaterial }      from '../../node_modules/threejs-full-es6/sources/materials/MeshLambertMaterial'
+import { SpriteMaterial }           from '../../node_modules/threejs-full-es6/sources/materials/SpriteMaterial'
+import { Color }                    from '../../node_modules/threejs-full-es6/sources/math/Color'
+import { Frustum }                  from '../../node_modules/threejs-full-es6/sources/math/Frustum'
+import { Matrix4 }                  from '../../node_modules/threejs-full-es6/sources/math/Matrix4'
+import { Plane }                    from '../../node_modules/threejs-full-es6/sources/math/Plane'
+import { Vector3 }                  from '../../node_modules/threejs-full-es6/sources/math/Vector3'
+import { Group }                    from '../../node_modules/threejs-full-es6/sources/objects/Group'
+import { Line }                     from '../../node_modules/threejs-full-es6/sources/objects/Line'
+import { LineSegments }             from '../../node_modules/threejs-full-es6/sources/objects/LineSegments'
+import { Mesh }                     from '../../node_modules/threejs-full-es6/sources/objects/Mesh'
+import { SkinnedMesh }              from '../../node_modules/threejs-full-es6/sources/objects/SkinnedMesh'
+import { Sprite }                   from '../../node_modules/threejs-full-es6/sources/objects/Sprite'
+import { Scene }                    from '../../node_modules/threejs-full-es6/sources/scenes/Scene'
+import { Texture }                  from '../../node_modules/threejs-full-es6/sources/textures/Texture'
+import { TUniversalLoader }         from '../loaders/TUniversalLoader'
+import { DefaultLogger as TLogger } from '../loggers/TLogger'
 import {
-    extend,
-    createInterval,
-    uniq
-}                                               from '../utils/TObjectUtil'
-import { removeDiacritics }                     from '../utils/TStringUtil'
-import { TUniversalLoader }                     from '../loaders/TUniversalLoader'
-import { dockspawn }                            from '../third_party/dock-spawn'
-import { TViewport }                            from './TViewport'
-import { DefaultLogger as TLogger }             from '../loggers/TLogger'
-import { TDataBaseManager as CompaniesManager } from '../managers/TDataBaseManager'
-import { TDataBaseManager as SitesManager }     from '../managers/TDataBaseManager'
-import { TDataBaseManager as BuildingsManager } from '../managers/TDataBaseManager'
-import {
-    TScenesManager,
-    TObjectsManager,
     TGeometriesManager,
     TMaterialsManager,
-    TPointsManager
-}                                               from '../managers/databases/_databases'
-import { degreesToRadians }                     from '../maths/TMath'
+    TObjectsManager,
+    TPointsManager,
+    TScenesManager
+}                                   from '../managers/databases/_databases'
+import {
+    TDataBaseManager as CompaniesManager,
+    TDataBaseManager as SitesManager,
+    TDataBaseManager as BuildingsManager
+}                                   from '../managers/TDataBaseManager'
+import { degreesToRadians }         from '../maths/TMath'
+import { dockspawn }                from '../third_party/dock-spawn'
+
+import {
+    createInterval,
+    extend,
+    uniq
+}                           from '../utils/TObjectUtil'
+import { removeDiacritics } from '../utils/TStringUtil'
+import { TViewport }        from './TViewport'
 
 //import { SplitModifier } from '../../build/tmp/SplitModifier'
 
@@ -507,10 +509,10 @@ function TApplication ( container, parameters, onReady ) {
 
                     self.splitToolToggle = !self.splitToolToggle
 
-                    self.spliterSliderControl.$sliderElem[ 0 ].style.display = (self.splitToolToggle) ? 'block' : 'none'
+                    self.spliterSliderControl.$sliderElem[ 0 ].style.display = ( self.splitToolToggle ) ? 'block' : 'none'
                     self.globalPlane.visible                                 = self.splitToolToggle
 
-                    self.webglViewport.renderer.clippingPlanes = (self.splitToolToggle) ? [ self.globalPlane ] : []
+                    self.webglViewport.renderer.clippingPlanes = ( self.splitToolToggle ) ? [ self.globalPlane ] : []
                     //OR
                     //                if( self.splitToolToggle ) {
                     //
@@ -1178,7 +1180,7 @@ function TApplication ( container, parameters, onReady ) {
 
     }
 
-    (() => {
+    ( () => {
 
         _initGUI.call( self, _parameters.view )
         _initModelData.call( self, _parameters.model )
@@ -1188,7 +1190,7 @@ function TApplication ( container, parameters, onReady ) {
         _initURLQuery.call( self, _parameters.urlQuery )
         _initListener.call( self )
 
-    })()
+    } )()
 
 }
 
@@ -1291,16 +1293,16 @@ Object.assign( TApplication, {
 
             // TRANSFORME ZUP/YFOR to YUP/-ZFOR
             // Convert Y forward Z up to Y up - Z forward
-            mesh.geometry.rotateX( -(Math.PI / 2) )
+            mesh.geometry.rotateX( -( Math.PI / 2 ) )
             var boundingSphereCenter = mesh.geometry.center().negate() // Recenter geometry to mesh
             mesh.position.copy( boundingSphereCenter ) // Set previous geometry center as mesh position
 
             // Create ID sprit
             if ( generateSpritId ) {
                 sprit            = TApplication.createSprite( 'BP: ' + bpId )
-                sprit.position.x = (firstPoint.x + lastPoint.x) / 2
-                sprit.position.y = ((firstPoint.y + lastPoint.y) / 2) + 0.2
-                sprit.position.z = (firstPoint.z + lastPoint.z) / 2
+                sprit.position.x = ( firstPoint.x + lastPoint.x ) / 2
+                sprit.position.y = ( ( firstPoint.y + lastPoint.y ) / 2 ) + 0.2
+                sprit.position.z = ( firstPoint.z + lastPoint.z ) / 2
 
                 mesh.add( sprit )
             }
@@ -1379,7 +1381,7 @@ Object.assign( TApplication, {
 
             // TRANSFORME ZUP/YFOR to YUP/-ZFOR
             // Convert Y forward Z up to Y up - Z forward
-            mesh.geometry.rotateX( -(Math.PI / 2) )
+            mesh.geometry.rotateX( -( Math.PI / 2 ) )
             var boundingSphereCenter = mesh.geometry.center().negate() // Recenter geometry to mesh
             mesh.position.copy( boundingSphereCenter ) // Set previous geometry center as mesh position
 
@@ -1483,7 +1485,7 @@ Object.assign( TApplication, {
 
             // TRANSFORME ZUP/YFOR to YUP/-ZFOR
             // Convert Y forward Z up to Y up - Z forward
-            line.geometry.rotateX( -(Math.PI / 2) )
+            line.geometry.rotateX( -( Math.PI / 2 ) )
             //            var boundingSphereCenter = line.geometry.center().negate() // Recenter geometry to mesh
             //            line.position.copy( boundingSphereCenter ) // Set previous geometry center as mesh position
 
@@ -1494,9 +1496,9 @@ Object.assign( TApplication, {
                 lastPoint  = geometry.vertices[ geometry.vertices.length - 1 ]
 
                 sprit            = TApplication.createSprite( 'T: ' + sectionId )
-                sprit.position.x = (firstPoint.x + lastPoint.x) / 2
-                sprit.position.y = ((firstPoint.y + lastPoint.y) / 2) + 0.2
-                sprit.position.z = (firstPoint.z + lastPoint.z) / 2
+                sprit.position.x = ( firstPoint.x + lastPoint.x ) / 2
+                sprit.position.y = ( ( firstPoint.y + lastPoint.y ) / 2 ) + 0.2
+                sprit.position.z = ( firstPoint.z + lastPoint.z ) / 2
                 sprit.scale.x    = 2.5
                 sprit.scale.y    = 2.5
                 sprit.scale.z    = 2.5
@@ -1561,7 +1563,7 @@ Object.assign( TApplication, {
 
                 pathId = words[ 1 ].replace( /(\r\n|\n|\r)/gm, '' )
 
-                geometry.rotateX( -(Math.PI / 2) )
+                geometry.rotateX( -( Math.PI / 2 ) )
                 path      = new Line( geometry, material )
                 path.name = pathId
 
@@ -1578,9 +1580,9 @@ Object.assign( TApplication, {
                     var lastPoint  = geometry.vertices[ geometry.vertices.length - 1 ]
 
                     var sprit        = TApplication.createSprite( 'P: ' + pathId )
-                    sprit.position.x = (firstPoint.x + lastPoint.x) / 2
-                    sprit.position.y = ((firstPoint.y + lastPoint.y) / 2) - 0.5
-                    sprit.position.z = (firstPoint.z + lastPoint.z) / 2
+                    sprit.position.x = ( firstPoint.x + lastPoint.x ) / 2
+                    sprit.position.y = ( ( firstPoint.y + lastPoint.y ) / 2 ) - 0.5
+                    sprit.position.z = ( firstPoint.z + lastPoint.z ) / 2
                     sprit.scale.x    = 7
                     sprit.scale.y    = 7
                     sprit.scale.z    = 7
@@ -1619,10 +1621,10 @@ Object.assign( TApplication, {
      */
     createSprite ( message, parameters ) {
 
-        var spriteSideLength = (parameters && parameters.spriteSideLength) ? parameters.spriteSideLength : 300
-        var fontFace         = (parameters && parameters.fontFace) ? parameters.fontFace : 'Arial'
-        var fontSize         = (parameters && parameters.fontSize) ? parameters.fontSize : '32'
-        var textColor        = (parameters && parameters.textColor) ? parameters.textColor : 'white'
+        var spriteSideLength = ( parameters && parameters.spriteSideLength ) ? parameters.spriteSideLength : 300
+        var fontFace         = ( parameters && parameters.fontFace ) ? parameters.fontFace : 'Arial'
+        var fontSize         = ( parameters && parameters.fontSize ) ? parameters.fontSize : '32'
+        var textColor        = ( parameters && parameters.textColor ) ? parameters.textColor : 'white'
 
         var spriteCenter = spriteSideLength / 2
 
@@ -1637,7 +1639,7 @@ Object.assign( TApplication, {
         var textWidth = Math.round( context.measureText( message ).width )
 
         context.fillStyle = textColor
-        context.fillText( message, spriteCenter - (textWidth / 2), spriteCenter + (Number.parseInt( fontSize ) / 2) )
+        context.fillText( message, spriteCenter - ( textWidth / 2 ), spriteCenter + ( Number.parseInt( fontSize ) / 2 ) )
 
         // canvas contents will be used for a texture
         var texture         = new Texture( canvas )
@@ -1835,7 +1837,7 @@ Object.assign( TApplication.prototype, {
             var siteGroup      = new Group()
             siteGroup[ '_id' ] = site._id
             siteGroup.name     = site.name
-            siteGroup.visible  = (siteIndex === 0)
+            siteGroup.visible  = ( siteIndex === 0 )
 
             // These are the main group for the webgl view
             this.webglViewport.scene.add( siteGroup )
@@ -1893,7 +1895,7 @@ Object.assign( TApplication.prototype, {
             const buildingGroup    = new Group()
             buildingGroup[ '_id' ] = building._id
             buildingGroup.name     = building.name
-            buildingGroup.visible  = (visible && buildingIndex === 0)
+            buildingGroup.visible  = ( visible && buildingIndex === 0 )
 
             if ( siteGroup ) {
 
@@ -1950,7 +1952,7 @@ Object.assign( TApplication.prototype, {
             const sceneGroup    = new Group()
             sceneGroup[ '_id' ] = scene._id
             sceneGroup.name     = scene.name
-            sceneGroup.visible  = (visible && scene.layers === 1)
+            sceneGroup.visible  = ( visible && scene.layers === 1 )
 
             if ( buildingGroup ) {
 
@@ -2173,9 +2175,9 @@ Object.assign( TApplication.prototype, {
     insertTreeViewItem ( object, parentId, isCheckedByDefault = true, recursive = true ) {
 
         const itemId    = object._id || object.uuid
-        const itemName  = (object.name === '') ? itemId : object.name
+        const itemName  = ( object.name === '' ) ? itemId : object.name
         const _parentId = parentId || 'treeViewContainer'
-        const checked   = (isCheckedByDefault) ? 'checked="checked"' : ''
+        const checked   = ( isCheckedByDefault ) ? 'checked="checked"' : ''
 
         const domElement = `<li id="${itemId}">
                                 <input type="checkbox" id="${itemId}ExpandCheckbox" />
@@ -2222,7 +2224,7 @@ Object.assign( TApplication.prototype, {
 
             if ( object.type === 'Mesh' ) {
 
-                object.material.side = (xRayActive) ? BackSide : FrontSide
+                object.material.side = ( xRayActive ) ? BackSide : FrontSide
 
             } else if ( object.type === 'Group' ) {
 
@@ -2311,8 +2313,6 @@ Object.assign( TApplication.prototype, {
      */
     updateDataPanel () {
 
-
-
         // Get curve distance from start of path to current camera position
         var distanceFromStart = this.webglViewport.pathControl.getDistanceFromStart()
 
@@ -2394,7 +2394,7 @@ Object.assign( TApplication.prototype, {
         this.dataPanel.appendChild( paragraph )
 
         paragraph                = document.createElement( 'p' )
-        var regulatedStringState = (sectionData.regulated === 0) ? 'Non' : 'Oui'
+        var regulatedStringState = ( sectionData.regulated === 0 ) ? 'Non' : 'Oui'
         paragraph.textContent    = 'Regulé: ' + regulatedStringState
         this.dataPanel.appendChild( paragraph )
 
@@ -2576,9 +2576,9 @@ Object.assign( TApplication.prototype, {
 
             var sprit        = TApplication.createSprite( distance.toFixed( 3 ) + 'm' )
             sprit.name       = 'TemporaryMeasureDistanceLabel'
-            sprit.position.x = (lastMeasurePointPosition.x + intersectionPoint.x) / 2
-            sprit.position.y = ((lastMeasurePointPosition.y + intersectionPoint.y) / 2) + 0.2
-            sprit.position.z = (lastMeasurePointPosition.z + intersectionPoint.z) / 2
+            sprit.position.x = ( lastMeasurePointPosition.x + intersectionPoint.x ) / 2
+            sprit.position.y = ( ( lastMeasurePointPosition.y + intersectionPoint.y ) / 2 ) + 0.2
+            sprit.position.z = ( lastMeasurePointPosition.z + intersectionPoint.z ) / 2
 
             temporaryMeasureLine.add( sprit )
 
@@ -2710,9 +2710,9 @@ Object.assign( TApplication.prototype, {
             var distance                 = lastMeasurePointPosition.distanceTo( intersectionPoint )
 
             var sprit        = TApplication.createSprite( distance.toFixed( 3 ) + 'm' )
-            sprit.position.x = (lastMeasurePointPosition.x + intersectionPoint.x) / 2
-            sprit.position.y = ((lastMeasurePointPosition.y + intersectionPoint.y) / 2) + 0.2
-            sprit.position.z = (lastMeasurePointPosition.z + intersectionPoint.z) / 2
+            sprit.position.x = ( lastMeasurePointPosition.x + intersectionPoint.x ) / 2
+            sprit.position.y = ( ( lastMeasurePointPosition.y + intersectionPoint.y ) / 2 ) + 0.2
+            sprit.position.z = ( lastMeasurePointPosition.z + intersectionPoint.z ) / 2
 
             measureLine.add( sprit )
 
@@ -2958,7 +2958,7 @@ Object.assign( TApplication.prototype, {
                 var titleElement       = document.createElement( 'b' )
                 titleElement.innerText = dataName + ': '
 
-                if ( typeof (data) === 'object' ) {
+                if ( typeof ( data ) === 'object' ) {
 
                     liElement.appendChild( titleElement )
 

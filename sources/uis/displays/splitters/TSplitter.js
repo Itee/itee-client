@@ -10,8 +10,8 @@
 
 /* eslint-env browser */
 
-import Vue    from '../../../../node_modules/vue/dist/vue.esm'
 import resize from 'vue-resize-directive'
+import Vue    from '../../../../node_modules/vue/dist/vue.esm'
 
 export default Vue.component( 'TSplitter', {
     template:   `
@@ -30,7 +30,7 @@ export default Vue.component( 'TSplitter', {
             onTracking:             false,
             previousMousePositionX: 0,
             previousMousePositionY: 0,
-            position:               (this.initPosition) ? this.initPosition : 50
+            position:               ( this.initPosition ) ? this.initPosition : 50
         }
 
     },
@@ -39,7 +39,7 @@ export default Vue.component( 'TSplitter', {
 
         computeClass () {
 
-            return (this.isVertical) ? 'tSplitter tSplitterVertical' : 'tSplitter tSplitterHorizontal'
+            return ( this.isVertical ) ? 'tSplitter tSplitterVertical' : 'tSplitter tSplitterHorizontal'
 
         },
 
@@ -47,7 +47,7 @@ export default Vue.component( 'TSplitter', {
 
             return {
                 display:  'flex',
-                flexFlow: (this.isVertical) ? 'row' : 'column',
+                flexFlow: ( this.isVertical ) ? 'row' : 'column',
                 overflow: 'hidden',
                 flex:     1
             }
@@ -112,25 +112,25 @@ export default Vue.component( 'TSplitter', {
 
             if ( this.isVertical ) {
 
-                firstSplitWidth  = Math.round( (domElement.offsetWidth / 100) * currentSplitterPosition ) - firstSplitBorderWidth
+                firstSplitWidth  = Math.round( ( domElement.offsetWidth / 100 ) * currentSplitterPosition ) - firstSplitBorderWidth
                 firstSplitHeight = globalHeight - firstSplitBorderHeight
 
                 splitterWidth  = splitterElement.offsetWidth - splitterElementBorderWidth
                 splitterHeight = globalHeight - splitterElementBorderHeight
 
-                secondSplitWidth  = (Math.round( (domElement.offsetWidth / 100) * (100 - currentSplitterPosition) )) - secondSplitBorderWidth - splitterElement.offsetWidth
+                secondSplitWidth  = ( Math.round( ( domElement.offsetWidth / 100 ) * ( 100 - currentSplitterPosition ) ) ) - secondSplitBorderWidth - splitterElement.offsetWidth
                 secondSplitHeight = globalHeight - secondSplitBorderHeight
 
             } else {
 
                 firstSplitWidth  = globalWidth - firstSplitBorderWidth
-                firstSplitHeight = Math.round( (domElement.offsetHeight / 100) * currentSplitterPosition ) - firstSplitBorderHeight
+                firstSplitHeight = Math.round( ( domElement.offsetHeight / 100 ) * currentSplitterPosition ) - firstSplitBorderHeight
 
                 splitterWidth  = globalWidth - splitterElementBorderWidth
                 splitterHeight = splitterElement.offsetHeight - splitterElementBorderHeight
 
                 secondSplitWidth  = globalWidth - secondSplitBorderWidth
-                secondSplitHeight = (Math.round( (domElement.offsetHeight / 100) * (100 - currentSplitterPosition) )) - secondSplitBorderHeight - splitterElement.offsetHeight
+                secondSplitHeight = ( Math.round( ( domElement.offsetHeight / 100 ) * ( 100 - currentSplitterPosition ) ) ) - secondSplitBorderHeight - splitterElement.offsetHeight
 
             }
 
@@ -241,9 +241,9 @@ export default Vue.component( 'TSplitter', {
 
         if ( this.isVertical ) {
 
-            const firstWidth    = Math.round( (domElement.offsetWidth / 100) * currentSplitterPosition )
+            const firstWidth    = Math.round( ( domElement.offsetWidth / 100 ) * currentSplitterPosition )
             const splitterWidth = splitterElement.offsetWidth
-            const secondWidth   = (Math.round( (domElement.offsetWidth / 100) * (100 - currentSplitterPosition) )) - splitterWidth
+            const secondWidth   = ( Math.round( ( domElement.offsetWidth / 100 ) * ( 100 - currentSplitterPosition ) ) ) - splitterWidth
             const globalHeight  = domElement.offsetHeight
 
             firstSplit.style.width  = `${firstWidth}px`
@@ -258,9 +258,9 @@ export default Vue.component( 'TSplitter', {
 
         } else {
 
-            const firstHeight    = Math.round( (domElement.offsetHeight / 100) * currentSplitterPosition )
+            const firstHeight    = Math.round( ( domElement.offsetHeight / 100 ) * currentSplitterPosition )
             const splitterHeight = splitterElement.offsetHeight
-            const secondHeight   = (Math.round( (domElement.offsetHeight / 100) * (100 - currentSplitterPosition) )) - splitterHeight
+            const secondHeight   = ( Math.round( ( domElement.offsetHeight / 100 ) * ( 100 - currentSplitterPosition ) ) ) - splitterHeight
             const globalWidth    = domElement.offsetWidth
 
             firstSplit.style.height = `${firstHeight}px`
