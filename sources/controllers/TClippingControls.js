@@ -1444,4 +1444,4 @@ class TClippingControls extends Object3D {
 
 }
 
-export { TClippingControls }
+export { ClippingBox, GizmoMaterial, GizmoLineMaterial, TransformGizmo, TransformGizmoTranslate, TransformGizmoRotate, TransformGizmoScale, TClippingControls }
