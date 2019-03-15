@@ -179,6 +179,8 @@ export default Vue.component( 'TViewport3D', {
             this._resizeEffect( containerWidth, containerHeight )
             this._resizeRenderer( containerWidth, containerHeight )
 
+            this.$emit( 'resized', null )
+
         },
 
         _resizeCamera ( width, height ) {
