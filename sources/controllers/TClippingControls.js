@@ -58,7 +58,6 @@ class ClippingBox extends Mesh {
             color:     boxColor,
             linewidth: 4
         } )
-
         let wireframe         = new LineSegments( wireframeGeometry, wireframeMaterial )
         wireframe.renderOrder = 1
 
@@ -102,11 +101,11 @@ class ClippingBox extends Mesh {
             color:     color,
             linewidth: 4
         } )
-
         let wireframe         = new LineSegments( wireframeGeometry, wireframeMaterial )
         wireframe.renderOrder = 1
 
         this.add( wireframe )
+
     }
 
     toggleClippingBox ( state, objects ) {
@@ -140,6 +139,7 @@ class ClippingBox extends Mesh {
     updateSize ( size ) {
 
         this.scale.set( size.x, size.y, size.z )
+
     }
 
     update () {
@@ -163,6 +163,7 @@ class ClippingBox extends Mesh {
 }
 
 class GizmoMaterial extends MeshBasicMaterial {
+
     constructor ( parameters ) {
         super( parameters )
 
@@ -171,8 +172,8 @@ class GizmoMaterial extends MeshBasicMaterial {
         this.fog         = false
         this.side        = DoubleSide
         this.transparent = true
-        this.oldColor   = this.color.clone()
-        this.oldOpacity = this.opacity
+        this.oldColor    = this.color.clone()
+        this.oldOpacity  = this.opacity
 
     }
 
@@ -189,10 +190,13 @@ class GizmoMaterial extends MeshBasicMaterial {
             this.opacity = this.oldOpacity
 
         }
+
     }
+
 }
 
 class GizmoLineMaterial extends LineBasicMaterial {
+
     constructor ( parameters ) {
         super( parameters )
 
@@ -204,12 +208,13 @@ class GizmoLineMaterial extends LineBasicMaterial {
 
         this.setValues( parameters )
 
-        this.oldColor   = this.color.clone()
-        this.oldOpacity = this.opacity
+        this.oldColor    = this.color.clone()
+        this.oldOpacity  = this.opacity
 
     }
 
     highlight ( highlighted ) {
+
         if ( highlighted ) {
 
             this.color.setRGB( 1, 1, 0 )
@@ -221,7 +226,9 @@ class GizmoLineMaterial extends LineBasicMaterial {
             this.opacity = this.oldOpacity
 
         }
+
     }
+
 }
 
 let pickerMaterial     = new GizmoMaterial( {
@@ -325,6 +332,7 @@ class TransformGizmo extends Object3D {
             }
 
         } )
+
     }
 
     highlight ( axis ) {
@@ -366,9 +374,11 @@ class TransformGizmo extends Object3D {
 
         } )
     }
+
 }
 
 class TransformGizmoTranslate extends TransformGizmo {
+
     constructor () {
         super()
 
@@ -472,6 +482,7 @@ class TransformGizmoTranslate extends TransformGizmo {
         }
 
         this.init()
+
     }
 
     setActivePlane ( axis, eye ) {
@@ -526,11 +537,14 @@ class TransformGizmoTranslate extends TransformGizmo {
         }
 
     }
+
 }
 
 class TransformGizmoRotate extends TransformGizmo {
+
     constructor () {
         super()
+
         const CircleGeometry = ( radius, facing, arc ) => {
 
             const geometry = new BufferGeometry()
@@ -610,9 +624,11 @@ class TransformGizmoRotate extends TransformGizmo {
         this.pickerGizmos.XYZE[ 0 ][ 0 ].visible = false // disable XYZE picker gizmo
 
         this.init()
+
     }
 
     setActivePlane ( axis ) {
+
         if ( axis === 'E' ) {
             this.activePlane = this.planes[ 'XYZE' ]
         }
@@ -628,6 +644,7 @@ class TransformGizmoRotate extends TransformGizmo {
         if ( axis === 'Z' ) {
             this.activePlane = this.planes[ 'XY' ]
         }
+
     }
 
     update ( rotation, eye2 ) {
@@ -650,7 +667,7 @@ class TransformGizmoRotate extends TransformGizmo {
         tempMatrix.makeRotationFromQuaternion( tempQuaternion ).getInverse( tempMatrix )
         eye.applyMatrix4( tempMatrix )
 
-        this.traverse( function ( child ) {
+        this.traverse( child => {
 
             tempQuaternion.setFromEuler( worldRotation )
 
@@ -677,11 +694,14 @@ class TransformGizmoRotate extends TransformGizmo {
                 child.quaternion.copy( tempQuaternion )
 
             }
+
         } )
     }
+
 }
 
 class TransformGizmoScale extends TransformGizmo {
+
     constructor () {
         super()
 
@@ -782,9 +802,11 @@ class TransformGizmoScale extends TransformGizmo {
             this.activePlane = this.planes[ 'XYZE' ]
         }
     }
+
 }
 
-export default class TClippingControls extends Object3D {
+class TClippingControls extends Object3D {
+
     constructor ( camera, domElement, boxColor = 0x00ff00, boxPosition = new Vector3( 0, 0, 0 ), boxSize = 100 ) {
 
         super()
@@ -974,9 +996,11 @@ export default class TClippingControls extends Object3D {
 
         this._clippingBox.toggleClippingBox( this._clippingBoxState, Objects )
         this._clippingBox.updateSize( size )
+
     }
 
     update () {
+
         if ( this.object === undefined || this._mode === 'none' ) {
             return
         }
@@ -993,6 +1017,7 @@ export default class TClippingControls extends Object3D {
         this.position.copy( this._worldPosition )
         this.scale.set( this._scale, this._scale, this._scale )
 
+        // Update eye
         if ( this.camera instanceof PerspectiveCamera ) {
 
             this._eye.copy( this._camPosition ).sub( this._worldPosition ).normalize()
@@ -1003,6 +1028,7 @@ export default class TClippingControls extends Object3D {
 
         }
 
+        // Update gizmo
         if ( this.space === 'local' ) {
 
             this._gizmo[ this._mode ].update( this._worldRotation, this._eye )
