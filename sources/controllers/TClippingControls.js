@@ -39,6 +39,10 @@ import {
     Vector2,
     Vector3
 }                  from 'three-full'
+import {
+    Keys,
+    Mouse
+}                           from '../cores/TConstants'
 
 class ClippingBox extends Mesh {
 
@@ -1048,32 +1052,45 @@ class TClippingControls extends Object3D {
     }
 
     keyShortcut ( event ) {
+
+        // Todo: Allow external keymapping like in TCameraControls
         switch ( event.keyCode ) {
-            case 81: // Q
+
+            case Keys.Q.value:
                 this.setSpace( this.space === 'local' ? 'world' : 'local' )
                 break
-            case 17: // Ctrl
+
+            case Keys.CTRL.value:
                 this.setTranslationSnap( 100 )
                 this.setRotationSnap( Math.degToRad( 15 ) )
                 break
-            case 87: // W
+
+            case Keys.W.value:
                 this.setMode( 'translate' )
                 break
-            case 69: // E
+
+            case Keys.E.value:
                 this.setMode( 'rotate' )
                 break
-            case 82: // R
+
+            case Keys.R.value:
                 this.setMode( 'scale' )
                 break
-            case 187:
-            case 107: // +, =, num+
+
+            case Keys.ADD.value:
+            case Keys.EQUAL.value:
                 this.setSize( this.size + 0.1 )
                 break
-            case 189:
-            case 109: // -, _, num-
+
+            case Keys.DASH.value:
+            case Keys.SUBSTRACT.value:
                 this.setSize( Math.max( this.size - 0.1, 0.1 ) )
                 break
+
+            default: break;
+
         }
+
     }
 
     onPointerHover ( event ) {
