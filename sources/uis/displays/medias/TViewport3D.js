@@ -245,8 +245,6 @@ export default Vue.component( 'TViewport3D', {
 
         _startLoop () {
 
-            console.log( 'TViewport3D: _startLoop' )
-
             if ( this.frameId ) {
                 return
             }
@@ -348,8 +346,6 @@ export default Vue.component( 'TViewport3D', {
         },
 
         _stopLoop () {
-
-            console.log( 'TViewport3D: _stopLoop' )
 
             window.cancelAnimationFrame( this.frameId )
             this.frameId = null
