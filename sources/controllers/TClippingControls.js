@@ -28,6 +28,7 @@ import {
     MeshBasicMaterial,
     Object3D,
     OctahedronGeometry,
+    OctahedronBufferGeometry,
     OrthographicCamera,
     PerspectiveCamera,
     Plane,
