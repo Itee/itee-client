@@ -810,6 +810,15 @@ class TransformGizmoScale extends TransformGizmo {
 
 }
 
+const TClippingModes = Object.freeze( {
+
+    None:      'none',
+    Translate: 'translate',
+    Rotate:    'rotate',
+    Scale:     'scale'
+
+} )
+
 class TClippingControls extends Object3D {
 
     constructor ( camera, domElement, boxColor = 0x00ff00, boxPosition = new Vector3( 0, 0, 0 ), boxSize = 100 ) {
@@ -830,7 +839,7 @@ class TClippingControls extends Object3D {
         this.size            = 1
         this.axis            = null
 
-        this._mode     = 'translate'
+        this._mode     = TClippingModes.Translate
         this._dragging = false
         this._gizmo    = {
             'translate': new TransformGizmoTranslate(),
@@ -948,16 +957,16 @@ class TClippingControls extends Object3D {
 
         this._mode = mode ? mode : this._mode
 
-        if ( this._mode === 'scale' ) {
+        if ( this._mode === TClippingModes.Scale ) {
             this.space = 'local'
         }
 
         for ( let type in this._gizmo ) {
-            if ( this._mode === 'none' ) {
+            if ( this._mode === TClippingModes.None ) {
                 this._gizmo[ type ].visible = false
                 continue
             }
-            this._gizmo[ type ].visible = ( type === this._mode && this._mode )
+            this._gizmo[ type ].visible = ( this._mode && type === this._mode )
         }
 
         this.update()
@@ -1006,7 +1015,7 @@ class TClippingControls extends Object3D {
 
     update () {
 
-        if ( this.object === undefined || this._mode === 'none' ) {
+        if ( this.object === undefined || this._mode === TClippingModes.None ) {
             return
         }
 
@@ -1121,7 +1130,12 @@ class TClippingControls extends Object3D {
     }
 
     onPointerDown ( event ) {
-        if ( this.object === undefined || this._dragging === true || ( event.button !== undefined && event.button !== 0 ) || this._mode === 'none' ) {
+
+        if ( isNotDefined( this.object ) ) { return }
+        if ( this._dragging === true ) { return }
+        if ( this._mode === TClippingModes.None ) { return }
+
+        if ( ( event.button !== undefined && event.button !== 0 ) ) {
             return
         }
 
@@ -1196,7 +1210,7 @@ class TClippingControls extends Object3D {
 
         this._point.copy( planeIntersect.point )
 
-        if ( this._mode === 'translate' ) {
+        if ( this._mode === TClippingModes.Translate ) {
 
             this._point.sub( this._offset )
             this._point.multiply( this._parentScale )
@@ -1267,7 +1281,7 @@ class TClippingControls extends Object3D {
 
             }
 
-        } else if ( this._mode === 'scale' ) {
+        } else if ( this._mode === TClippingModes.Scale ) {
 
             this._point.sub( this._offset )
             this._point.multiply( this._parentScale )
@@ -1300,7 +1314,7 @@ class TClippingControls extends Object3D {
 
             }
 
-        } else if ( this._mode === 'rotate' ) {
+        } else if ( this._mode === TClippingModes.Rotate ) {
 
             this._point.sub( this._worldPosition )
             this._point.multiply( this._parentScale )
