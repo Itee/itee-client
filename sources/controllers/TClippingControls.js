@@ -1041,6 +1041,10 @@ class TClippingControls extends Object3D {
         }
 
         this._gizmo[ this._mode ].highlight( this.axis )
+
+        // Update box
+        this._clippingBox.update();
+
     }
 
     keyShortcut ( event ) {
