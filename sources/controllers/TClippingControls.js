@@ -170,15 +170,13 @@ class GizmoMaterial extends MeshBasicMaterial {
         this.fog         = false
         this.side        = DoubleSide
         this.transparent = true
-
-        this.setValues( parameters )
-
         this.oldColor   = this.color.clone()
         this.oldOpacity = this.opacity
 
     }
 
     highlight ( highlighted ) {
+
         if ( highlighted ) {
 
             this.color.setRGB( 1, 1, 0 )
