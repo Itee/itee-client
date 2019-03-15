@@ -205,9 +205,6 @@ class GizmoLineMaterial extends LineBasicMaterial {
         this.fog         = false
         this.transparent = true
         this.linewidth   = 1
-
-        this.setValues( parameters )
-
         this.oldColor    = this.color.clone()
         this.oldOpacity  = this.opacity
 
