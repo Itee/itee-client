@@ -237,8 +237,12 @@ window.keyShortcut     = null
 
 class TransformGizmo extends Object3D {
 
+    constructor () {
+        super()
+
+    }
+
     init () {
-        //super.init();
 
         this.handles = new Object3D()
         this.pickers = new Object3D()
