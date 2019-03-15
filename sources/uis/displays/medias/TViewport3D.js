@@ -159,8 +159,8 @@ export default Vue.component( 'TViewport3D', {
         _resize ( domElement ) {
 
             const isEvent       = ( domElement instanceof Event )
-            let containerWidth  = 1
-            let containerHeight = 1
+            let containerWidth  = 100
+            let containerHeight = 100
 
             if ( isEvent && domElement.target instanceof Window ) {
 
