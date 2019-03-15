@@ -8,7 +8,10 @@
  *
  */
 
-import { isArray } from 'itee-validators'
+import {
+    isArray,
+    isNotDefined
+}               from 'itee-validators'
 import {
     Box3,
     BoxBufferGeometry,
@@ -27,8 +30,8 @@ import {
     Mesh,
     MeshBasicMaterial,
     Object3D,
-    OctahedronGeometry,
     OctahedronBufferGeometry,
+    OctahedronGeometry,
     OrthographicCamera,
     PerspectiveCamera,
     Plane,
@@ -632,26 +635,6 @@ class TransformGizmoRotate extends TransformGizmo {
 
     }
 
-    setActivePlane ( axis ) {
-
-        if ( axis === 'E' ) {
-            this.activePlane = this.planes[ 'XYZE' ]
-        }
-
-        if ( axis === 'X' ) {
-            this.activePlane = this.planes[ 'YZ' ]
-        }
-
-        if ( axis === 'Y' ) {
-            this.activePlane = this.planes[ 'XZ' ]
-        }
-
-        if ( axis === 'Z' ) {
-            this.activePlane = this.planes[ 'XY' ]
-        }
-
-    }
-
     update ( rotation, eye2 ) {
         super.update( rotation, eye2 )
 
@@ -701,6 +684,26 @@ class TransformGizmoRotate extends TransformGizmo {
             }
 
         } )
+    }
+
+    setActivePlane ( axis ) {
+
+        if ( axis === 'E' ) {
+            this.activePlane = this.planes[ 'XYZE' ]
+        }
+
+        if ( axis === 'X' ) {
+            this.activePlane = this.planes[ 'YZ' ]
+        }
+
+        if ( axis === 'Y' ) {
+            this.activePlane = this.planes[ 'XZ' ]
+        }
+
+        if ( axis === 'Z' ) {
+            this.activePlane = this.planes[ 'XY' ]
+        }
+
     }
 
 }
@@ -1056,7 +1059,7 @@ class TClippingControls extends Object3D {
         this._gizmo[ this._mode ].highlight( this.axis )
 
         // Update box
-        this._clippingBox.update();
+        this._clippingBox.update()
 
     }
 
@@ -1096,7 +1099,8 @@ class TClippingControls extends Object3D {
                 this.setSize( Math.max( this.size - 0.1, 0.1 ) )
                 break
 
-            default: break;
+            default:
+                break
 
         }
 
@@ -1190,6 +1194,7 @@ class TClippingControls extends Object3D {
 
         }
         this._dragging = true
+
     }
 
     onPointerMove ( event ) {
@@ -1480,4 +1485,13 @@ class TClippingControls extends Object3D {
 
 }
 
-export { ClippingBox, GizmoMaterial, GizmoLineMaterial, TransformGizmo, TransformGizmoTranslate, TransformGizmoRotate, TransformGizmoScale, TClippingControls }
+export {
+    ClippingBox,
+    GizmoMaterial,
+    GizmoLineMaterial,
+    TransformGizmo,
+    TransformGizmoTranslate,
+    TransformGizmoRotate,
+    TransformGizmoScale,
+    TClippingControls
+}
