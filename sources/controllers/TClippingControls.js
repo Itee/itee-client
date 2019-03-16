@@ -919,7 +919,14 @@ class TClippingControls extends Object3D {
         if ( !( value instanceof Camera ) ) { throw new Error( `Camera cannot be an instance of ${value.constructor.name}. Expect an instance of Camera.` ) }
 
         this._camera = value
-        
+
+    }
+
+    setCamera ( value ) {
+
+        this.camera = value
+        return this
+
     }
 
     get domElement () {
@@ -928,9 +935,9 @@ class TClippingControls extends Object3D {
 
     set domElement ( value ) {
 
-        if ( isNull( value ) ) { throw new Error( 'DomElement cannot be null ! Expect an instance of HTMLDocument.' ) }
-        if ( isUndefined( value ) ) { throw new Error( 'DomElement cannot be undefined ! Expect an instance of HTMLDocument.' ) }
-        if ( !( ( value instanceof Window ) || ( value instanceof HTMLDocument ) || ( value instanceof HTMLDivElement ) || ( value instanceof HTMLCanvasElement ) ) ) { throw new Error( `Target cannot be an instance of ${value.constructor.name}. Expect an instance of Window, HTMLDocument or HTMLDivElement.` ) }
+        if ( isNull( value ) ) { throw new Error( 'DomElement cannot be null ! Expect an instance of Window, HTMLDocument, HTMLDivElement or HTMLCanvasElement.' ) }
+        if ( isUndefined( value ) ) { throw new Error( 'DomElement cannot be undefined ! Expect an instance of Window, HTMLDocument, HTMLDivElement or HTMLCanvasElement.' ) }
+        if ( !( ( value instanceof Window ) || ( value instanceof HTMLDocument ) || ( value instanceof HTMLDivElement ) || ( value instanceof HTMLCanvasElement ) ) ) { throw new Error( `Target cannot be an instance of ${value.constructor.name}. Expect an instance of Window, HTMLDocument, HTMLDivElement or HTMLCanvasElement.` ) }
 
         // Clear previous element
         if ( this._domElement ) {
@@ -946,14 +953,21 @@ class TClippingControls extends Object3D {
 
     }
 
+    setDomElement ( value ) {
+
+        this.domElement = value
+        return this
+
+    }
+
     get mode () {
         return this._mode
     }
 
     set mode ( value ) {
 
-        if ( isNull( value ) ) { throw new Error( 'Mode cannot be null ! Expect a value from TCameraControlMode enum.' ) }
-        if ( isUndefined( value ) ) { throw new Error( 'Mode cannot be undefined ! Expect a value from TCameraControlMode enum.' ) }
+        if ( isNull( value ) ) { throw new Error( 'Mode cannot be null ! Expect a value from TClippingModes enum.' ) }
+        if ( isUndefined( value ) ) { throw new Error( 'Mode cannot be undefined ! Expect a value from TClippingModes enum.' ) }
         if ( !( value instanceof TClippingModes ) ) { throw new Error( `Mode cannot be an instance of ${value.constructor.name}. Expect a value from TClippingModes enum.` ) }
 
         this._mode = value
@@ -981,9 +995,9 @@ class TClippingControls extends Object3D {
 
     }
 
-    setMode ( mode ) {
+    setMode ( value ) {
 
-        this.mode = mode
+        this.mode = value
         return this
 
     }
