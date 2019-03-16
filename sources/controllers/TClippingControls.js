@@ -901,8 +901,6 @@ class TClippingControls extends Object3D {
         this._camPosition         = new Vector3()
         this._camRotation         = new Euler()
 
-        this.impose()
-
     }
 
     get camera () {
