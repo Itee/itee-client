@@ -92,7 +92,7 @@ class ClippingBox extends LineSegments {
 
     setColor ( color ) {
 
-        this.material.color = color
+        this.material.color.set(color)
 
     }
 
@@ -841,7 +841,6 @@ class TClippingControls extends Object3D {
         this._dragging = false
 
         this._clippingBox = new ClippingBox()
-        this._clippingBox.setColor( 0x123456 )
         this.add( this._clippingBox )
 
         this._gizmos = {
