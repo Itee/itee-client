@@ -908,35 +908,45 @@ class TClippingControls extends Object3D {
         this._camPosition         = new Vector3()
         this._camRotation         = new Euler()
 
+        this.impose()
+
+    }
+
+    impose() {
         this.domElement.addEventListener( 'mousedown', this.onPointerDown.bind( this ), false )
-        this.domElement.addEventListener( 'touchstart', this.onPointerDown.bind( this ), false )
         this.domElement.addEventListener( 'mousemove', this.onPointerHover.bind( this ), false )
-        this.domElement.addEventListener( 'touchmove', this.onPointerHover.bind( this ), false )
-        this.domElement.addEventListener( 'mousemove', this.onPointerMove.bind( this ), false )
-        this.domElement.addEventListener( 'touchmove', this.onPointerMove.bind( this ), false )
-        this.domElement.addEventListener( 'mouseup', this.onPointerUp.bind( this ), false )
         this.domElement.addEventListener( 'mouseout', this.onPointerUp.bind( this ), false )
-        this.domElement.addEventListener( 'touchend', this.onPointerUp.bind( this ), false )
+        this.domElement.addEventListener( 'mouseup', this.onPointerUp.bind( this ), false )
+
         this.domElement.addEventListener( 'touchcancel', this.onPointerUp.bind( this ), false )
+        this.domElement.addEventListener( 'touchend', this.onPointerUp.bind( this ), false )
         this.domElement.addEventListener( 'touchleave', this.onPointerUp.bind( this ), false )
+        this.domElement.addEventListener( 'touchmove', this.onPointerHover.bind( this ), false )
+        this.domElement.addEventListener( 'touchmove', this.onPointerMove.bind( this ), false )
+        this.domElement.addEventListener( 'touchstart', this.onPointerDown.bind( this ), false )
+
     }
 
     dispose () {
-        this.domElement.removeEventListener( 'mousedown', this.onPointerDown.bind( this ) )
-        this.domElement.removeEventListener( 'touchstart', this.onPointerDown.bind( this ) )
-        this.domElement.removeEventListener( 'mousemove', this.onPointerHover.bind( this ) )
-        this.domElement.removeEventListener( 'touchmove', this.onPointerHover.bind( this ) )
-        this.domElement.removeEventListener( 'mousemove', this.onPointerMove.bind( this ) )
-        this.domElement.removeEventListener( 'touchmove', this.onPointerMove.bind( this ) )
-        this.domElement.removeEventListener( 'mouseup', this.onPointerUp.bind( this ) )
-        this.domElement.removeEventListener( 'mouseout', this.onPointerUp.bind( this ) )
-        this.domElement.removeEventListener( 'touchend', this.onPointerUp.bind( this ) )
-        this.domElement.removeEventListener( 'touchcancel', this.onPointerUp.bind( this ) )
-        this.domElement.removeEventListener( 'touchleave', this.onPointerUp.bind( this ) )
 
         if ( window.keyShortcut ) {
             window.removeEventListener( 'keydown', window.keyShortcut )
         }
+        this.domElement.removeEventListener( 'keydown', this._onKeyDown.bind( this ), false )
+        this.domElement.removeEventListener( 'keyup', this._onKeyUp.bind( this ), false )
+
+        this.domElement.removeEventListener( 'mousedown', this.onPointerDown.bind( this ), false )
+        this.domElement.removeEventListener( 'mousemove', this.onPointerHover.bind( this ), false )
+        this.domElement.removeEventListener( 'mouseout', this.onPointerUp.bind( this ), false )
+        this.domElement.removeEventListener( 'mouseup', this.onPointerUp.bind( this ), false )
+
+        this.domElement.removeEventListener( 'touchcancel', this.onPointerUp.bind( this ), false )
+        this.domElement.removeEventListener( 'touchend', this.onPointerUp.bind( this ), false )
+        this.domElement.removeEventListener( 'touchleave', this.onPointerUp.bind( this ), false )
+        this.domElement.removeEventListener( 'touchmove', this.onPointerHover.bind( this ), false )
+        this.domElement.removeEventListener( 'touchmove', this.onPointerMove.bind( this ), false )
+        this.domElement.removeEventListener( 'touchstart', this.onPointerDown.bind( this ), false )
+
     }
 
     attach ( object ) {
