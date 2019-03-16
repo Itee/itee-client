@@ -822,8 +822,8 @@ class TClippingControls extends Object3D {
 
         this._dragging = false
 
-        this._clippingBox      = new ClippingBox( boxColor, boxPosition, boxSize )
-        this._clippingBoxState = false
+        this._clippingBox = new ClippingBox()
+        this._clippingBox.setColor( 0x123456 )
         this.add( this._clippingBox )
 
         this._gizmos = {
