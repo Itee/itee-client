@@ -1182,45 +1182,61 @@ class TClippingControls extends Object3D {
     }
 
     /// Handlers
+    _consumeEvent( event ) {
+
+        if ( !event.cancelable ) {
+            return
+        }
+
+        event.stopImmediatePropagation()
+
+    }
+    
     // Keyboard
     _onKeyDown ( keyEvent ) {
 
         if ( !this.enabled || keyEvent.defaultPrevented ) { return }
         keyEvent.preventDefault()
-        keyEvent.stopPropagation()
 
         // Todo: Allow external keymapping like in TCameraControls
         switch ( event.keyCode ) {
 
             case Keys.Q.value:
                 this.setSpace( this._space === TClippingSpace.Local ? TClippingSpace.World : TClippingSpace.Local )
+                this._consumeEvent( keyEvent )
                 break
 
             case Keys.CTRL.value:
                 this.setTranslationSnap( 100 )
                 this.setRotationSnap( Math.degToRad( 15 ) )
+                this._consumeEvent( keyEvent )
                 break
 
             case Keys.W.value:
                 this.setMode( TClippingModes.Translate )
+                this._consumeEvent( keyEvent )
                 break
 
             case Keys.E.value:
                 this.setMode( TClippingModes.Rotate )
+                this._consumeEvent( keyEvent )
                 break
 
             case Keys.R.value:
                 this.setMode( TClippingModes.Scale )
+                this._consumeEvent( keyEvent )
                 break
 
             case Keys.ADD.value:
             case Keys.EQUAL.value:
                 this.setSize( this.size + 0.1 )
+                this._consumeEvent( keyEvent )
                 break
 
             case Keys.DASH.value:
             case Keys.SUBSTRACT.value:
                 this.setSize( Math.max( this.size - 0.1, 0.1 ) )
+                this._consumeEvent( keyEvent )
                 break
 
             default:
@@ -1234,7 +1250,6 @@ class TClippingControls extends Object3D {
 
         if ( !this.enabled || keyEvent.defaultPrevented ) { return }
         keyEvent.preventDefault()
-        keyEvent.stopPropagation()
 
         // Todo...
 
@@ -1243,9 +1258,8 @@ class TClippingControls extends Object3D {
     // Mouse
     _onDblClick ( mouseEvent ) {
 
-        if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
+        if ( !this.enabled  ) { return }
         mouseEvent.preventDefault()
-        mouseEvent.stopPropagation()
 
         // Todo...
 
@@ -1253,9 +1267,8 @@ class TClippingControls extends Object3D {
 
     _onMouseDown ( mouseEvent ) {
 
-        if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
+        if ( !this.enabled  ) { return }
         mouseEvent.preventDefault()
-        mouseEvent.stopPropagation()
 
         // Todo...
 
@@ -1263,9 +1276,8 @@ class TClippingControls extends Object3D {
 
     _onMouseEnter ( mouseEvent ) {
 
-        if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
+        if ( !this.enabled  ) { return }
         mouseEvent.preventDefault()
-        mouseEvent.stopPropagation()
 
         this.impose()
         if ( mouseEvent.target.constructor !== HTMLDocument ) {
@@ -1276,9 +1288,8 @@ class TClippingControls extends Object3D {
 
     _onMouseLeave ( mouseEvent ) {
 
-        if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
+        if ( !this.enabled  ) { return }
         mouseEvent.preventDefault()
-        mouseEvent.stopPropagation()
 
         if ( mouseEvent.target.constructor !== HTMLDocument ) {
             this._domElement.blur()
@@ -1289,9 +1300,8 @@ class TClippingControls extends Object3D {
 
     _onMouseMove ( mouseEvent ) {
 
-        if ( !this.enabled || mouseEvent.defaultPrevented || this._state === State.None ) { return }
+        if ( !this.enabled ) { return }
         mouseEvent.preventDefault()
-        mouseEvent.stopPropagation()
 
         // Todo...
 
@@ -1299,9 +1309,8 @@ class TClippingControls extends Object3D {
 
     _onMouseUp ( mouseEvent ) {
 
-        if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
+        if ( !this.enabled  ) { return }
         mouseEvent.preventDefault()
-        mouseEvent.stopPropagation()
 
         // Todo...
 
@@ -1309,9 +1318,8 @@ class TClippingControls extends Object3D {
 
     _onMouseWheel ( mouseEvent ) {
 
-        if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
+        if ( !this.enabled  ) { return }
         mouseEvent.preventDefault()
-        mouseEvent.stopPropagation()
 
         // Todo...
 
@@ -1320,9 +1328,8 @@ class TClippingControls extends Object3D {
     // Touche
     _onTouchCancel ( touchEvent ) {
 
-        if ( !this.enabled || touchEvent.defaultPrevented ) { return }
+        if ( !this.enabled  ) { return }
         touchEvent.preventDefault()
-        touchEvent.stopPropagation()
 
         // Todo...
 
@@ -1330,9 +1337,8 @@ class TClippingControls extends Object3D {
 
     _onTouchEnd ( touchEvent ) {
 
-        if ( !this.enabled || touchEvent.defaultPrevented ) { return }
+        if ( !this.enabled  ) { return }
         touchEvent.preventDefault()
-        touchEvent.stopPropagation()
 
         // Todo...
 
@@ -1340,9 +1346,8 @@ class TClippingControls extends Object3D {
 
     _onTouchLeave ( touchEvent ) {
 
-        if ( !this.enabled || touchEvent.defaultPrevented ) { return }
+        if ( !this.enabled  ) { return }
         touchEvent.preventDefault()
-        touchEvent.stopPropagation()
 
         // Todo...
 
@@ -1350,9 +1355,8 @@ class TClippingControls extends Object3D {
 
     _onTouchMove ( touchEvent ) {
 
-        if ( !this.enabled || touchEvent.defaultPrevented ) { return }
+        if ( !this.enabled  ) { return }
         touchEvent.preventDefault()
-        touchEvent.stopPropagation()
 
         // Todo...
 
@@ -1360,15 +1364,15 @@ class TClippingControls extends Object3D {
 
     _onTouchStart ( touchEvent ) {
 
-        if ( !this.enabled || touchEvent.defaultPrevented ) { return }
+        if ( !this.enabled  ) { return }
         touchEvent.preventDefault()
-        touchEvent.stopPropagation()
 
         // Todo...
 
     }
 
     onPointerHover ( event ) {
+
         if ( this.object === undefined || this._dragging === true || ( event.button !== undefined && event.button !== Mouse.LEFT ) ) {
             return
         }
@@ -1413,7 +1417,7 @@ class TClippingControls extends Object3D {
             if ( intersect ) {
 
                 event.preventDefault()
-                event.stopPropagation()
+                this._consumeEvent( event )
 
                 this.axis = intersect.object.name
 
@@ -1462,7 +1466,7 @@ class TClippingControls extends Object3D {
         }
 
         event.preventDefault()
-        event.stopPropagation()
+        this._consumeEvent( event )
 
         this._point.copy( planeIntersect.point )
 
