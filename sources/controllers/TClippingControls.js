@@ -8,6 +8,7 @@
  *
  */
 
+import { Enum }             from 'enumify'
 import {
     isArray,
     isNotDefined,
@@ -809,14 +810,9 @@ class TransformGizmoScale extends TransformGizmo {
 
 }
 
-const TClippingModes = Object.freeze( {
+class TClippingModes extends Enum {}
 
-    None:      -1,
-    Translate: 0,
-    Rotate:    1,
-    Scale:     2
-
-} )
+TClippingModes.initEnum( ['None', 'Translate', 'Rotate', 'Scale'] )
 
 let pickerMaterial     = new GizmoMaterial( {
     visible:     false,
@@ -832,6 +828,7 @@ class TClippingControls extends Object3D {
 
         this.camera      = camera
         this.domElement  = domElement
+        this.mode     = TClippingModes.None
 
         this.object          = undefined
         this.visible         = false
@@ -841,19 +838,21 @@ class TClippingControls extends Object3D {
         this.size            = 1
         this.axis            = null
 
-        this._mode     = TClippingModes.Translate
         this._dragging = false
 
         this._clippingBox      = new ClippingBox( boxColor, boxPosition, boxSize )
         this._clippingBoxState = false
         this.add( this._clippingBox )
 
-        this._gizmo    = [ new TransformGizmoTranslate(), new TransformGizmoRotate(), new TransformGizmoScale() ] // Care to the order here !
-        for ( let gizmoIndex = 0, numberOfGizmos = this._gizmo.length ; gizmoIndex < numberOfGizmos ; gizmoIndex++ ) {
-            const gizmo   = this._gizmo[ gizmoIndex ]
-            gizmo.visible = ( gizmoIndex === this._mode )
-            this.add( gizmo )
+        this._gizmos = {
+            'Translate': new TransformGizmoTranslate(),
+            'Rotate':    new TransformGizmoRotate(),
+            'Scale':     new TransformGizmoScale()
         }
+        for ( let mode in this._gizmos ) {
+            this.add( this._gizmos[ mode ] )
+        }
+        this._currentGizmo = null
 
         this._events = {
             change:       { type: 'change' },
@@ -941,6 +940,47 @@ class TClippingControls extends Object3D {
 
     }
 
+    get mode () {
+        return this._mode
+    }
+
+    set mode ( value ) {
+
+        if ( isNull( value ) ) { throw new Error( 'Mode cannot be null ! Expect a value from TCameraControlMode enum.' ) }
+        if ( isUndefined( value ) ) { throw new Error( 'Mode cannot be undefined ! Expect a value from TCameraControlMode enum.' ) }
+        if ( !( value instanceof TClippingModes ) ) { throw new Error( `Mode cannot be an instance of ${value.constructor.name}. Expect a value from TClippingModes enum.` ) }
+
+        this._mode = value
+
+        // Reset gizmos visibility
+        for ( let mode in this._gizmos ) {
+            this._gizmos[ mode ].visible = false
+        }
+
+        if ( this._mode === TClippingModes.None ) {
+
+            this._currentGizmo = null
+
+        } else {
+
+            this._currentGizmo         = this._gizmos[ this._mode ]
+            this._currentGizmo.visible = true
+
+        }
+
+        if ( this._mode === TClippingModes.Scale ) { this._space = 'local' }
+
+        this.update()
+        this.dispatchEvent( this._events.change )
+
+    }
+
+    setMode ( mode ) {
+
+        this.mode = mode
+        return this
+
+    }
     impose () {
 
         this.domElement.addEventListener( 'keydown', this._onKeyDown.bind( this ), false )
@@ -995,27 +1035,7 @@ class TClippingControls extends Object3D {
         return this._mode
     }
 
-    setMode ( mode ) {
 
-        this._mode = mode ? mode : this._mode
-
-        if ( this._mode === TClippingModes.Scale ) {
-            this.space = 'local'
-        }
-
-        for ( let gizmoIndex = 0, numberOfGizmos = this._gizmo.length ; gizmoIndex < numberOfGizmos ; gizmoIndex++ ) {
-            const gizmo = this._gizmo[ gizmoIndex ]
-            if ( this._mode === TClippingModes.None ) {
-                gizmo[ gizmoIndex ].visible = false
-                continue
-            }
-            gizmo[ gizmoIndex ].visible = ( this._mode && gizmoIndex === this._mode )
-        }
-
-        this.update()
-        this.dispatchEvent( this._events.change )
-
-    }
 
     setTranslationSnap ( translationSnap ) {
         this.translationSnap = translationSnap
@@ -1088,15 +1108,15 @@ class TClippingControls extends Object3D {
         // Update gizmo
         if ( this.space === 'local' ) {
 
-            this._gizmo[ this._mode ].update( this._worldRotation, this._eye )
+            this._currentGizmo.update( this._worldRotation, this._eye )
 
         } else if ( this.space === 'world' ) {
 
-            this._gizmo[ this._mode ].update( new Euler(), this._eye )
+            this._currentGizmo.update( new Euler(), this._eye )
 
         }
 
-        this._gizmo[ this._mode ].highlight( this.axis )
+        this._currentGizmo.highlight( this.axis )
 
         // Update box
         this._clippingBox.update()
@@ -1290,15 +1310,13 @@ class TClippingControls extends Object3D {
 
     }
 
-
-
     onPointerHover ( event ) {
         if ( this.object === undefined || this._dragging === true || ( event.button !== undefined && event.button !== Mouse.LEFT ) ) {
             return
         }
         const pointer = event.changedTouches ? event.changedTouches[ 0 ] : event
 
-        const intersect = this.intersectObjects( pointer, this._gizmo[ this._mode ].pickers.children )
+        const intersect = this.intersectObjects( pointer, this._currentGizmo.pickers.children )
 
         let axis = null
 
@@ -1333,7 +1351,7 @@ class TClippingControls extends Object3D {
 
         if ( pointer.button === Mouse.LEFT || pointer.button === undefined ) {
 
-            const intersect = this.intersectObjects( pointer, this._gizmo[ this._mode ].pickers.children )
+            const intersect = this.intersectObjects( pointer, this._currentGizmo.pickers.children )
             if ( intersect ) {
 
                 event.preventDefault()
@@ -1347,9 +1365,9 @@ class TClippingControls extends Object3D {
 
                 this._eye.copy( this._camPosition ).sub( this._worldPosition ).normalize()
 
-                this._gizmo[ this._mode ].setActivePlane( this.axis, this._eye )
+                this._currentGizmo.setActivePlane( this.axis, this._eye )
 
-                const planeIntersect = this.intersectObjects( pointer, [ this._gizmo[ this._mode ].activePlane ] )
+                const planeIntersect = this.intersectObjects( pointer, [ this._currentGizmo.activePlane ] )
 
                 if ( planeIntersect ) {
 
@@ -1380,7 +1398,7 @@ class TClippingControls extends Object3D {
 
         const pointer = event.changedTouches ? event.changedTouches[ 0 ] : event
 
-        const planeIntersect = this.intersectObjects( pointer, [ this._gizmo[ this._mode ].activePlane ] )
+        const planeIntersect = this.intersectObjects( pointer, [ this._currentGizmo.activePlane ] )
 
         if ( planeIntersect === false ) {
             return
