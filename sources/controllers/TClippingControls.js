@@ -235,11 +235,6 @@ class GizmoLineMaterial extends LineBasicMaterial {
 
 }
 
-let pickerMaterial     = new GizmoMaterial( {
-    visible:     false,
-    transparent: false
-} )
-pickerMaterial.opacity = 0.15
 window.keyShortcut     = null
 
 class TransformGizmo extends Object3D {
@@ -820,7 +815,11 @@ const TClippingModes = Object.freeze( {
     Rotate:    'rotate',
     Scale:     'scale'
 
+let pickerMaterial     = new GizmoMaterial( {
+    visible:     false,
+    transparent: false
 } )
+pickerMaterial.opacity = 0.15
 
 class TClippingControls extends Object3D {
 
