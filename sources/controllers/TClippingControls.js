@@ -19,6 +19,7 @@ import {
     BoxBufferGeometry,
     BoxGeometry,
     BufferGeometry,
+    Camera,
     ConeBufferGeometry,
     CylinderBufferGeometry,
     DoubleSide,
@@ -43,11 +44,11 @@ import {
     TorusBufferGeometry,
     Vector2,
     Vector3
-}                  from 'three-full'
+} from 'three-full'
 import {
     Keys,
     Mouse
-}                           from '../cores/TConstants'
+} from '../cores/TConstants'
 
 class ClippingBox extends Mesh {
 
