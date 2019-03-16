@@ -8,13 +8,13 @@
  *
  */
 
-import { Enum }             from 'enumify'
+import { Enum } from 'enumify'
 import {
     isArray,
     isNotDefined,
     isNull,
     isUndefined
-} from 'itee-validators'
+}               from 'itee-validators'
 import {
     Box3,
     BoxBufferGeometry,
@@ -45,11 +45,11 @@ import {
     TorusBufferGeometry,
     Vector2,
     Vector3
-} from 'three-full'
+}               from 'three-full'
 import {
     Keys,
     Mouse
-} from '../cores/TConstants'
+}               from '../cores/TConstants'
 
 class ClippingBox extends Mesh {
 
@@ -812,11 +812,11 @@ class TransformGizmoScale extends TransformGizmo {
 
 class TClippingModes extends Enum {}
 
-TClippingModes.initEnum( ['None', 'Translate', 'Rotate', 'Scale'] )
+TClippingModes.initEnum( [ 'None', 'Translate', 'Rotate', 'Scale' ] )
 
 class TClippingSpace extends Enum {}
 
-TClippingSpace.initEnum( ['Local', 'World'] )
+TClippingSpace.initEnum( [ 'Local', 'World' ] )
 
 let pickerMaterial     = new GizmoMaterial( {
     visible:     false,
@@ -830,10 +830,10 @@ class TClippingControls extends Object3D {
 
         super()
 
-        this.camera      = camera
-        this.domElement  = domElement
-        this.mode     = TClippingModes.None
-        this.space          = TClippingSpace.World
+        this.camera     = camera
+        this.domElement = domElement
+        this.mode       = TClippingModes.None
+        this.space      = TClippingSpace.World
 
         this.object          = undefined
         this.visible         = false
@@ -841,8 +841,6 @@ class TClippingControls extends Object3D {
         this.rotationSnap    = null
         this.size            = 1
         this.axis            = null
-
-
 
         this._dragging = false
 
@@ -922,13 +920,6 @@ class TClippingControls extends Object3D {
 
     }
 
-    setCamera ( value ) {
-
-        this.camera = value
-        return this
-
-    }
-
     get domElement () {
         return this._domElement
     }
@@ -950,13 +941,6 @@ class TClippingControls extends Object3D {
         this._domElement.addEventListener( 'mouseenter', this._onMouseEnter.bind( this ), false )
         this._domElement.addEventListener( 'mouseleave', this._onMouseLeave.bind( this ), false )
         this.impose()
-
-    }
-
-    setDomElement ( value ) {
-
-        this.domElement = value
-        return this
 
     }
 
@@ -995,13 +979,6 @@ class TClippingControls extends Object3D {
 
     }
 
-    setMode ( value ) {
-
-        this.mode = value
-        return this
-
-    }
-
     get space () {
         return this._space
     }
@@ -1016,6 +993,27 @@ class TClippingControls extends Object3D {
 
         this.update()
         this.dispatchEvent( this._events.change )
+
+    }
+
+    setCamera ( value ) {
+
+        this.camera = value
+        return this
+
+    }
+
+    setDomElement ( value ) {
+
+        this.domElement = value
+        return this
+
+    }
+
+    setMode ( value ) {
+
+        this.mode = value
+        return this
 
     }
 
@@ -1079,8 +1077,6 @@ class TClippingControls extends Object3D {
     getMode () {
         return this._mode
     }
-
-
 
     setTranslationSnap ( translationSnap ) {
         this.translationSnap = translationSnap
