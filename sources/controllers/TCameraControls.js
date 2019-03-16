@@ -52,30 +52,10 @@ class TCameraControls extends EventDispatcher {
 
         super()
 
-        // Need to be defined before domElement to make correct binding events
-        this._handlers = {
-            onMouseEnter:  this._onMouseEnter.bind( this ),
-            onMouseLeave:  this._onMouseLeave.bind( this ),
-            onMouseDown:   this._onMouseDown.bind( this ),
-            onMouseMove:   this._onMouseMove.bind( this ),
-            onMouseWheel:  this._onMouseWheel.bind( this ),
-            onMouseUp:     this._onMouseUp.bind( this ),
-            onDblClick:    this._onDblClick.bind( this ),
-            onTouchStart:  this._onTouchStart.bind( this ),
-            onTouchEnd:    this._onTouchEnd.bind( this ),
-            onTouchCancel: this._onTouchCancel.bind( this ),
-            onTouchLeave:  this._onTouchLeave.bind( this ),
-            onTouchMove:   this._onTouchMove.bind( this ),
-            onKeyDown:     this._onKeyDown.bind( this ),
-            onKeyUp:       this._onKeyUp.bind( this )
-        }
-
         this.camera     = camera
         this.target     = target
         this.mode       = mode
         this.domElement = domElement
-
-        // Set the displacement mode of the camera
 
         // Set to false to disable controls
         this.enabled = true
@@ -358,14 +338,14 @@ class TCameraControls extends EventDispatcher {
 
         // Clear previous element
         if ( this._domElement ) {
-            this._domElement.removeEventListener( 'mouseenter', this._handlers.onMouseEnter, false )
-            this._domElement.removeEventListener( 'mouseleave', this._handlers.onMouseLeave, false )
+            this._domElement.removeEventListener( 'mouseenter', this._onMouseEnter.bind( this ), false )
+            this._domElement.removeEventListener( 'mouseleave', this._onMouseLeave.bind( this ), false )
             this.dispose()
         }
 
         this._domElement = value
-        this._domElement.addEventListener( 'mouseenter', this._handlers.onMouseEnter, false )
-        this._domElement.addEventListener( 'mouseleave', this._handlers.onMouseLeave, false )
+        this._domElement.addEventListener( 'mouseenter', this._onMouseEnter.bind( this ), false )
+        this._domElement.addEventListener( 'mouseleave', this._onMouseLeave.bind( this ), false )
         this.impose()
 
     }
@@ -381,20 +361,20 @@ class TCameraControls extends EventDispatcher {
 
     impose () {
 
-        this._domElement.addEventListener( 'keydown', this._handlers.onKeyDown, false )
-        this._domElement.addEventListener( 'keyup', this._handlers.onKeyUp, false )
+        this._domElement.addEventListener( 'keydown', this._onKeyDown.bind( this ), false )
+        this._domElement.addEventListener( 'keyup', this._onKeyUp.bind( this ), false )
 
-        this._domElement.addEventListener( 'dblclick', this._handlers.onDblClick, false )
-        this._domElement.addEventListener( 'mousedown', this._handlers.onMouseDown, false )
-        this._domElement.addEventListener( 'mousemove', this._handlers.onMouseMove, false )
-        this._domElement.addEventListener( 'mouseup', this._handlers.onMouseUp, false )
-        this._domElement.addEventListener( 'wheel', this._handlers.onMouseWheel, {capture: true, once: false, passive: false} )
+        this._domElement.addEventListener( 'dblclick', this._onDblClick.bind( this ), false )
+        this._domElement.addEventListener( 'mousedown', this._onMouseDown.bind( this ), false )
+        this._domElement.addEventListener( 'mousemove', this._onMouseMove.bind( this ), false )
+        this._domElement.addEventListener( 'mouseup', this._onMouseUp.bind( this ), false )
+        this._domElement.addEventListener( 'wheel', this._onMouseWheel.bind( this ), {capture: true, once: false, passive: false} )
 
-        this._domElement.addEventListener( 'touchcancel', this._handlers.onTouchCancel, false )
-        this._domElement.addEventListener( 'touchend', this._handlers.onTouchEnd, false )
-        this._domElement.addEventListener( 'touchleave', this._handlers.onTouchLeave, false )
-        this._domElement.addEventListener( 'touchmove', this._handlers.onTouchMove, {capture: true, once: false, passive: false} )
-        this._domElement.addEventListener( 'touchstart', this._handlers.onTouchStart, {capture: true, once: false, passive: false} )
+        this._domElement.addEventListener( 'touchcancel', this._onTouchCancel.bind( this ), false )
+        this._domElement.addEventListener( 'touchend', this._onTouchEnd.bind( this ), false )
+        this._domElement.addEventListener( 'touchleave', this._onTouchLeave.bind( this ), false )
+        this._domElement.addEventListener( 'touchmove', this._onTouchMove.bind( this ), {capture: true, once: false, passive: false} )
+        this._domElement.addEventListener( 'touchstart', this._onTouchStart.bind( this ), {capture: true, once: false, passive: false} )
 
         this.dispatchEvent( { type: 'impose' } )
 
@@ -402,20 +382,20 @@ class TCameraControls extends EventDispatcher {
 
     dispose () {
 
-        this._domElement.removeEventListener( 'keydown', this._handlers.onKeyDown, false )
-        this._domElement.removeEventListener( 'keyup', this._handlers.onKeyUp, false )
+        this._domElement.removeEventListener( 'keydown', this._onKeyDown.bind( this ), false )
+        this._domElement.removeEventListener( 'keyup', this._onKeyUp.bind( this ), false )
 
-        this._domElement.removeEventListener( 'dblclick', this._handlers.onDblClick, false )
-        this._domElement.removeEventListener( 'mousedown', this._handlers.onMouseDown, false )
-        this._domElement.removeEventListener( 'mousemove', this._handlers.onMouseMove, false )
-        this._domElement.removeEventListener( 'mouseup', this._handlers.onMouseUp, false )
-        this._domElement.removeEventListener( 'wheel', this._handlers.onMouseWheel, {capture: true, once: false, passive: false} )
+        this._domElement.removeEventListener( 'dblclick', this._onDblClick.bind( this ), false )
+        this._domElement.removeEventListener( 'mousedown', this._onMouseDown.bind( this ), false )
+        this._domElement.removeEventListener( 'mousemove', this._onMouseMove.bind( this ), false )
+        this._domElement.removeEventListener( 'mouseup', this._onMouseUp.bind( this ), false )
+        this._domElement.removeEventListener( 'wheel', this._onMouseWheel.bind( this ), {capture: true, once: false, passive: false} )
 
-        this._domElement.removeEventListener( 'touchcancel', this._handlers.onTouchCancel, false )
-        this._domElement.removeEventListener( 'touchend', this._handlers.onTouchEnd, false )
-        this._domElement.removeEventListener( 'touchleave', this._handlers.onTouchLeave, false )
-        this._domElement.removeEventListener( 'touchmove', this._handlers.onTouchMove, {capture: true, once: false, passive: false} )
-        this._domElement.removeEventListener( 'touchstart', this._handlers.onTouchStart, {capture: true, once: false, passive: false} )
+        this._domElement.removeEventListener( 'touchcancel', this._onTouchCancel.bind( this ), false )
+        this._domElement.removeEventListener( 'touchend', this._onTouchEnd.bind( this ), false )
+        this._domElement.removeEventListener( 'touchleave', this._onTouchLeave.bind( this ), false )
+        this._domElement.removeEventListener( 'touchmove', this._onTouchMove.bind( this ), {capture: true, once: false, passive: false} )
+        this._domElement.removeEventListener( 'touchstart', this._onTouchStart.bind( this ), {capture: true, once: false, passive: false} )
 
         this.dispatchEvent( { type: 'dispose' } )
 
