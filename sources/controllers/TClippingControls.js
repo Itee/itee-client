@@ -1153,7 +1153,7 @@ class TClippingControls extends Object3D {
         //        this._worldPosition.setFromMatrixPosition( this.object.matrixWorld )
         //        this._worldRotation.setFromRotationMatrix( this._tempMatrix.extractRotation( this.object.matrixWorld ) )
 
-        this._camera.updateMatrixWorld()
+        this._camera.updateMatrixWorld( false )
         this._cameraPosition.setFromMatrixPosition( this._camera.matrixWorld )
         this._cameraRotation.setFromRotationMatrix( this._tempMatrix.extractRotation( this._camera.matrixWorld ) )
 
