@@ -823,12 +823,12 @@ pickerMaterial.opacity = 0.15
 
 class TClippingControls extends Object3D {
 
-    constructor ( camera, domElement, boxColor = 0x00ff00, boxPosition = new Vector3( 0, 0, 0 ), boxSize = 100 ) {
+    constructor ( camera, domElement = document, boxColor = 0x00ff00, boxPosition = new Vector3( 0, 0, 0 ), boxSize = 100 ) {
 
         super()
 
-        this.domElement  = ( domElement !== undefined ) ? domElement : document
         this.camera      = camera
+        this.domElement  = domElement
         this.boxColor    = boxColor
         this.boxPosition = boxPosition
         this.boxSize     = boxSize
@@ -905,7 +905,31 @@ class TClippingControls extends Object3D {
 
     }
 
-    impose() {
+    get domElement () {
+        return this._domElement
+    }
+
+    set domElement ( value ) {
+
+        if ( isNull( value ) ) { throw new Error( 'DomElement cannot be null ! Expect an instance of HTMLDocument.' ) }
+        if ( isUndefined( value ) ) { throw new Error( 'DomElement cannot be undefined ! Expect an instance of HTMLDocument.' ) }
+        if ( !( ( value instanceof Window ) || ( value instanceof HTMLDocument ) || ( value instanceof HTMLDivElement ) || ( value instanceof HTMLCanvasElement ) ) ) { throw new Error( `Target cannot be an instance of ${value.constructor.name}. Expect an instance of Window, HTMLDocument or HTMLDivElement.` ) }
+
+        // Clear previous element
+        if ( this._domElement ) {
+            this._domElement.removeEventListener( 'mouseenter', this._onMouseEnter.bind( this ), false )
+            this._domElement.removeEventListener( 'mouseleave', this._onMouseLeave.bind( this ), false )
+            this.dispose()
+        }
+
+        this._domElement = value
+        this._domElement.addEventListener( 'mouseenter', this._onMouseEnter.bind( this ), false )
+        this._domElement.addEventListener( 'mouseleave', this._onMouseLeave.bind( this ), false )
+        this.impose()
+
+    }
+
+    impose () {
 
         this.domElement.addEventListener( 'keydown', this._onKeyDown.bind( this ), false )
         this.domElement.addEventListener( 'keyup', this._onKeyUp.bind( this ), false )
