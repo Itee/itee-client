@@ -831,9 +831,6 @@ class TClippingControls extends Object3D {
 
         this.camera      = camera
         this.domElement  = domElement
-        this.boxColor    = boxColor
-        this.boxPosition = boxPosition
-        this.boxSize     = boxSize
 
         this.object          = undefined
         this.visible         = false
@@ -846,7 +843,7 @@ class TClippingControls extends Object3D {
         this._mode     = TClippingModes.Translate
         this._dragging = false
 
-        this._clippingBox      = new ClippingBox( this.boxColor, this.boxPosition, this.boxSize )
+        this._clippingBox      = new ClippingBox( boxColor, boxPosition, boxSize )
         this._clippingBoxState = false
         this.add( this._clippingBox )
 
