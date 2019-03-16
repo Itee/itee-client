@@ -861,13 +861,12 @@ class TClippingControls extends Object3D {
         this._clippingBox      = new ClippingBox( this.boxColor, this.boxPosition, this.boxSize )
         this._clippingBoxState = false
 
-        this._changeEvent       = { type: 'change' }
-        this._mouseDownEvent    = { type: 'mouseDown' }
-        this._mouseUpEvent      = {
-            type: 'mouseUp',
-            mode: this._mode
+        this._events = {
+            change:       { type: 'change' },
+            mouseDown:    { type: 'mouseDown' },
+            mouseUp:      { type: 'mouseUp' },
+            objectChange: { type: 'objectChange' }
         }
-        this._objectChangeEvent = { type: 'objectChange' }
 
         this._ray           = new Raycaster()
         this._pointerVector = new Vector2()
@@ -982,7 +981,7 @@ class TClippingControls extends Object3D {
         }
 
         this.update()
-        this.dispatchEvent( this._changeEvent )
+        this.dispatchEvent( this._events.change )
 
     }
 
@@ -997,13 +996,13 @@ class TClippingControls extends Object3D {
     setSize ( size ) {
         this.size = size
         this.update()
-        this.dispatchEvent( this._changeEvent )
+        this.dispatchEvent( this._events.change )
     }
 
     setSpace ( space ) {
         this.space = space
         this.update()
-        this.dispatchEvent( this._changeEvent )
+        this.dispatchEvent( this._events.change )
     }
 
     updateClippingBox ( Objects, size ) {
@@ -1137,7 +1136,7 @@ class TClippingControls extends Object3D {
 
             this.axis = axis
             this.update()
-            this.dispatchEvent( this._changeEvent )
+            this.dispatchEvent( this._events.change )
 
         }
     }
@@ -1174,7 +1173,7 @@ class TClippingControls extends Object3D {
 
                 this.axis = intersect.object.name
 
-                this.dispatchEvent( this._mouseDownEvent )
+                this.dispatchEvent( this._events.mouseDown )
 
                 this.update()
 
@@ -1445,8 +1444,8 @@ class TClippingControls extends Object3D {
         }
 
         this.update()
-        this.dispatchEvent( this._changeEvent )
-        this.dispatchEvent( this._objectChangeEvent )
+        this.dispatchEvent( this._events.change )
+        this.dispatchEvent( this._events.objectChange )
     }
 
     onPointerUp ( event ) {
@@ -1458,8 +1457,7 @@ class TClippingControls extends Object3D {
 
         if ( this._dragging && ( this.axis !== null ) ) {
 
-            this._mouseUpEvent.mode = this._mode
-            this.dispatchEvent( this._mouseUpEvent )
+            this.dispatchEvent( this._events.mouseUp )
 
         }
 
@@ -1471,13 +1469,14 @@ class TClippingControls extends Object3D {
 
             this.axis = null
             this.update()
-            this.dispatchEvent( this._changeEvent )
+            this.dispatchEvent( this._events.change )
 
         } else {
 
             this.onPointerHover( event )
 
         }
+
     }
 
     intersectObjects ( pointer, objects ) {
