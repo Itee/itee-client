@@ -879,8 +879,8 @@ class TClippingControls extends Object3D {
         this._worldPosition       = new Vector3()
         this._worldRotation       = new Euler()
         this._worldRotationMatrix = new Matrix4()
-        this._camPosition         = new Vector3()
-        this._camRotation         = new Euler()
+        this._cameraPosition      = new Vector3()
+        this._cameraRotation      = new Euler()
 
     }
 
@@ -1096,21 +1096,21 @@ class TClippingControls extends Object3D {
         this._worldRotation.setFromRotationMatrix( this._tempMatrix.extractRotation( this.object.matrixWorld ) )
 
         this._camera.updateMatrixWorld()
-        this._camPosition.setFromMatrixPosition( this._camera.matrixWorld )
-        this._camRotation.setFromRotationMatrix( this._tempMatrix.extractRotation( this._camera.matrixWorld ) )
+        this._cameraPosition.setFromMatrixPosition( this._camera.matrixWorld )
+        this._cameraRotation.setFromRotationMatrix( this._tempMatrix.extractRotation( this._camera.matrixWorld ) )
 
-        this._scale = this._worldPosition.distanceTo( this._camPosition ) / 6 * this.size
+        this._scale = this._worldPosition.distanceTo( this._cameraPosition ) / 6 * this.size
         this.position.copy( this._worldPosition )
         this.scale.set( this._scale, this._scale, this._scale )
 
         // Update eye
         if ( this._camera instanceof PerspectiveCamera ) {
 
-            this._eye.copy( this._camPosition ).sub( this._worldPosition ).normalize()
+            this._eye.copy( this._cameraPosition ).sub( this._worldPosition ).normalize()
 
         } else if ( this._camera instanceof OrthographicCamera ) {
 
-            this._eye.copy( this._camPosition ).normalize()
+            this._eye.copy( this._cameraPosition ).normalize()
 
         }
 
@@ -1372,7 +1372,7 @@ class TClippingControls extends Object3D {
 
                 this.update()
 
-                this._eye.copy( this._camPosition ).sub( this._worldPosition ).normalize()
+                this._eye.copy( this._cameraPosition ).sub( this._worldPosition ).normalize()
 
                 this._currentGizmo.setActivePlane( this.axis, this._eye )
 
