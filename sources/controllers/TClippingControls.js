@@ -1449,7 +1449,6 @@ class TClippingControls extends Object3D {
     }
 
     onPointerUp ( event ) {
-        event.preventDefault() // Prevent MouseEvent on mobile
 
         if ( event.button !== undefined && event.button !== 0 ) {
             return
