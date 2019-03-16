@@ -846,6 +846,7 @@ class TClippingControls extends Object3D {
 
         this._clippingBox      = new ClippingBox( this.boxColor, this.boxPosition, this.boxSize )
         this._clippingBoxState = false
+        this.add( this._clippingBox )
 
         this._gizmo    = [ new TransformGizmoTranslate(), new TransformGizmoRotate(), new TransformGizmoScale() ] // Care to the order here !
         for ( let gizmoIndex = 0, numberOfGizmos = this._gizmo.length ; gizmoIndex < numberOfGizmos ; gizmoIndex++ ) {
