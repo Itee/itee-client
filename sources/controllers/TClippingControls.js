@@ -1121,10 +1121,25 @@ class TClippingControls extends Object3D {
         this.update()
     }
 
+    enable () {
 
+        this.visible = true
+        this.enabled = true
 
+        if ( this._objectsToClip ) {
+            this._clippingBox.applyClippingTo( true, this._objectsToClip )
         }
 
+    }
+
+    disable () {
+
+        this.visible = false
+        this.enabled = false
+
+        if ( this._objectsToClip ) {
+            this._clippingBox.applyClippingTo( false, this._objectsToClip )
+        }
 
     }
 
