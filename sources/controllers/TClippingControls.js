@@ -808,10 +808,12 @@ class TransformGizmoScale extends TransformGizmo {
 
 const TClippingModes = Object.freeze( {
 
-    None:      'none',
-    Translate: 'translate',
-    Rotate:    'rotate',
-    Scale:     'scale'
+    None:      -1,
+    Translate: 0,
+    Rotate:    1,
+    Scale:     2
+
+} )
 
 let pickerMaterial     = new GizmoMaterial( {
     visible:     false,
@@ -841,23 +843,16 @@ class TClippingControls extends Object3D {
 
         this._mode     = TClippingModes.Translate
         this._dragging = false
-        this._gizmo    = {
-            'translate': new TransformGizmoTranslate(),
-            'rotate':    new TransformGizmoRotate(),
-            'scale':     new TransformGizmoScale()
-        }
-
-        for ( let type in this._gizmo ) {
-
-            const gizmoObj = this._gizmo[ type ]
-
-            gizmoObj.visible = ( type === this._mode )
-            this.add( gizmoObj )
-
-        }
 
         this._clippingBox      = new ClippingBox( this.boxColor, this.boxPosition, this.boxSize )
         this._clippingBoxState = false
+
+        this._gizmo    = [ new TransformGizmoTranslate(), new TransformGizmoRotate(), new TransformGizmoScale() ] // Care to the order here !
+        for ( let gizmoIndex = 0, numberOfGizmos = this._gizmo.length ; gizmoIndex < numberOfGizmos ; gizmoIndex++ ) {
+            const gizmo   = this._gizmo[ gizmoIndex ]
+            gizmo.visible = ( gizmoIndex === this._mode )
+            this.add( gizmo )
+        }
 
         this._events = {
             change:       { type: 'change' },
@@ -971,12 +966,13 @@ class TClippingControls extends Object3D {
             this.space = 'local'
         }
 
-        for ( let type in this._gizmo ) {
+        for ( let gizmoIndex = 0, numberOfGizmos = this._gizmo.length ; gizmoIndex < numberOfGizmos ; gizmoIndex++ ) {
+            const gizmo = this._gizmo[ gizmoIndex ]
             if ( this._mode === TClippingModes.None ) {
-                this._gizmo[ type ].visible = false
+                gizmo[ gizmoIndex ].visible = false
                 continue
             }
-            this._gizmo[ type ].visible = ( this._mode && type === this._mode )
+            gizmo[ gizmoIndex ].visible = ( this._mode && gizmoIndex === this._mode )
         }
 
         this.update()
@@ -1090,15 +1086,15 @@ class TClippingControls extends Object3D {
                 break
 
             case Keys.W.value:
-                this.setMode( 'translate' )
+                this.setMode( TClippingModes.Translate )
                 break
 
             case Keys.E.value:
-                this.setMode( 'rotate' )
+                this.setMode( TClippingModes.Rotate )
                 break
 
             case Keys.R.value:
-                this.setMode( 'scale' )
+                this.setMode( TClippingModes.Scale )
                 break
 
             case Keys.ADD.value:
@@ -1505,5 +1501,6 @@ export {
     TransformGizmoTranslate,
     TransformGizmoRotate,
     TransformGizmoScale,
+    TClippingModes,
     TClippingControls
 }
