@@ -1257,7 +1257,7 @@ class TClippingControls extends Object3D {
 
 
     onPointerHover ( event ) {
-        if ( this.object === undefined || this._dragging === true || ( event.button !== undefined && event.button !== 0 ) ) {
+        if ( this.object === undefined || this._dragging === true || ( event.button !== undefined && event.button !== Mouse.LEFT ) ) {
             return
         }
         const pointer = event.changedTouches ? event.changedTouches[ 0 ] : event
@@ -1289,13 +1289,13 @@ class TClippingControls extends Object3D {
         if ( this._dragging === true ) { return }
         if ( this._mode === TClippingModes.None ) { return }
 
-        if ( ( event.button !== undefined && event.button !== 0 ) ) {
+        if ( ( event.button !== undefined && event.button !== Mouse.LEFT ) ) {
             return
         }
 
         const pointer = event.changedTouches ? event.changedTouches[ 0 ] : event
 
-        if ( pointer.button === 0 || pointer.button === undefined ) {
+        if ( pointer.button === Mouse.LEFT || pointer.button === undefined ) {
 
             const intersect = this.intersectObjects( pointer, this._gizmo[ this._mode ].pickers.children )
             if ( intersect ) {
