@@ -10,8 +10,10 @@
 
 import {
     isArray,
-    isNotDefined
-}               from 'itee-validators'
+    isNotDefined,
+    isNull,
+    isUndefined
+} from 'itee-validators'
 import {
     Box3,
     BoxBufferGeometry,
@@ -905,6 +907,20 @@ class TClippingControls extends Object3D {
 
     }
 
+    get camera () {
+        return this._camera
+    }
+
+    set camera ( value ) {
+
+        if ( isNull( value ) ) { throw new Error( 'Camera cannot be null ! Expect an instance of Camera' ) }
+        if ( isUndefined( value ) ) { throw new Error( 'Camera cannot be undefined ! Expect an instance of Camera' ) }
+        if ( !( value instanceof Camera ) ) { throw new Error( `Camera cannot be an instance of ${value.constructor.name}. Expect an instance of Camera.` ) }
+
+        this._camera = value
+        
+    }
+
     get domElement () {
         return this._domElement
     }
@@ -1054,20 +1070,20 @@ class TClippingControls extends Object3D {
         this._worldPosition.setFromMatrixPosition( this.object.matrixWorld )
         this._worldRotation.setFromRotationMatrix( this._tempMatrix.extractRotation( this.object.matrixWorld ) )
 
-        this.camera.updateMatrixWorld()
-        this._camPosition.setFromMatrixPosition( this.camera.matrixWorld )
-        this._camRotation.setFromRotationMatrix( this._tempMatrix.extractRotation( this.camera.matrixWorld ) )
+        this._camera.updateMatrixWorld()
+        this._camPosition.setFromMatrixPosition( this._camera.matrixWorld )
+        this._camRotation.setFromRotationMatrix( this._tempMatrix.extractRotation( this._camera.matrixWorld ) )
 
         this._scale = this._worldPosition.distanceTo( this._camPosition ) / 6 * this.size
         this.position.copy( this._worldPosition )
         this.scale.set( this._scale, this._scale, this._scale )
 
         // Update eye
-        if ( this.camera instanceof PerspectiveCamera ) {
+        if ( this._camera instanceof PerspectiveCamera ) {
 
             this._eye.copy( this._camPosition ).sub( this._worldPosition ).normalize()
 
-        } else if ( this.camera instanceof OrthographicCamera ) {
+        } else if ( this._camera instanceof OrthographicCamera ) {
 
             this._eye.copy( this._camPosition ).normalize()
 
@@ -1640,7 +1656,7 @@ class TClippingControls extends Object3D {
         const y    = ( pointer.clientY - rect.top ) / rect.height
 
         this._pointerVector.set( ( x * 2 ) - 1, -( y * 2 ) + 1 )
-        this._ray.setFromCamera( this._pointerVector, this.camera )
+        this._ray.setFromCamera( this._pointerVector, this._camera )
 
         const intersections = this._ray.intersectObjects( objects, true )
         return intersections[ 0 ] ? intersections[ 0 ] : false
