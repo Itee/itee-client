@@ -1067,7 +1067,8 @@ class TClippingControls extends Object3D {
 
     }
 
-    // Handlers
+    /// Handlers
+    // Keyboard
     _onKeyDown ( keyEvent ) {
 
         if ( !this.enabled || keyEvent.defaultPrevented ) { return }
@@ -1124,6 +1125,136 @@ class TClippingControls extends Object3D {
         // Todo...
 
     }
+
+    // Mouse
+    _onDblClick ( mouseEvent ) {
+
+        if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
+        mouseEvent.preventDefault()
+        mouseEvent.stopPropagation()
+
+        // Todo...
+
+    }
+
+    _onMouseDown ( mouseEvent ) {
+
+        if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
+        mouseEvent.preventDefault()
+        mouseEvent.stopPropagation()
+
+        // Todo...
+
+    }
+
+    _onMouseEnter ( mouseEvent ) {
+
+        if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
+        mouseEvent.preventDefault()
+        mouseEvent.stopPropagation()
+
+        this.impose()
+        if ( mouseEvent.target.constructor !== HTMLDocument ) {
+            this._domElement.focus()
+        }
+
+    }
+
+    _onMouseLeave ( mouseEvent ) {
+
+        if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
+        mouseEvent.preventDefault()
+        mouseEvent.stopPropagation()
+
+        if ( mouseEvent.target.constructor !== HTMLDocument ) {
+            this._domElement.blur()
+        }
+        this.dispose()
+
+    }
+
+    _onMouseMove ( mouseEvent ) {
+
+        if ( !this.enabled || mouseEvent.defaultPrevented || this._state === State.None ) { return }
+        mouseEvent.preventDefault()
+        mouseEvent.stopPropagation()
+
+        // Todo...
+
+    }
+
+    _onMouseUp ( mouseEvent ) {
+
+        if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
+        mouseEvent.preventDefault()
+        mouseEvent.stopPropagation()
+
+        // Todo...
+
+    }
+
+    _onMouseWheel ( mouseEvent ) {
+
+        if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
+        mouseEvent.preventDefault()
+        mouseEvent.stopPropagation()
+
+        // Todo...
+
+    }
+
+    // Touche
+    _onTouchCancel ( touchEvent ) {
+
+        if ( !this.enabled || touchEvent.defaultPrevented ) { return }
+        touchEvent.preventDefault()
+        touchEvent.stopPropagation()
+
+        // Todo...
+
+    }
+
+    _onTouchEnd ( touchEvent ) {
+
+        if ( !this.enabled || touchEvent.defaultPrevented ) { return }
+        touchEvent.preventDefault()
+        touchEvent.stopPropagation()
+
+        // Todo...
+
+    }
+
+    _onTouchLeave ( touchEvent ) {
+
+        if ( !this.enabled || touchEvent.defaultPrevented ) { return }
+        touchEvent.preventDefault()
+        touchEvent.stopPropagation()
+
+        // Todo...
+
+    }
+
+    _onTouchMove ( touchEvent ) {
+
+        if ( !this.enabled || touchEvent.defaultPrevented ) { return }
+        touchEvent.preventDefault()
+        touchEvent.stopPropagation()
+
+        // Todo...
+
+    }
+
+    _onTouchStart ( touchEvent ) {
+
+        if ( !this.enabled || touchEvent.defaultPrevented ) { return }
+        touchEvent.preventDefault()
+        touchEvent.stopPropagation()
+
+        // Todo...
+
+    }
+
+
 
     onPointerHover ( event ) {
         if ( this.object === undefined || this._dragging === true || ( event.button !== undefined && event.button !== 0 ) ) {
