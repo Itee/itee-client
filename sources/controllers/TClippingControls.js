@@ -814,7 +814,6 @@ class TClippingControls extends Object3D {
         this.space      = TClippingSpace.World
 
         this.object          = undefined
-        this.visible         = false
         this.translationSnap = null
         this.rotationSnap    = null
         this.size            = 1
