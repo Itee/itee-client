@@ -970,7 +970,6 @@ class TClippingControls extends Object3D {
         if ( this._mode === TClippingModes.Scale ) { this._space = TClippingSpace.Local }
 
         this.update()
-        this.dispatchEvent( this._events.change )
 
     }
 
@@ -987,7 +986,6 @@ class TClippingControls extends Object3D {
         this._space = value
 
         this.update()
-        this.dispatchEvent( this._events.change )
 
     }
 
@@ -1112,7 +1110,6 @@ class TClippingControls extends Object3D {
     setSize ( size ) {
         this.size = size
         this.update()
-        this.dispatchEvent( this._events.change )
     }
 
     updateClippingBox ( Objects, size ) {
@@ -1178,6 +1175,9 @@ class TClippingControls extends Object3D {
 
         // Update box
         this._clippingBox.update()
+
+
+        this.dispatchEvent( this._events.change )
 
     }
 
@@ -1390,9 +1390,9 @@ class TClippingControls extends Object3D {
 
             this.axis = axis
             this.update()
-            this.dispatchEvent( this._events.change )
 
         }
+
     }
 
     onPointerDown ( event ) {
@@ -1417,9 +1417,8 @@ class TClippingControls extends Object3D {
 
                 this.axis = intersect.object.name
 
-                this.dispatchEvent( this._events.mouseDown )
-
                 this.update()
+                this.dispatchEvent( this._events.mouseDown )
 
                 this._eye.copy( this._cameraPosition ).sub( this._worldPosition ).normalize()
 
@@ -1688,7 +1687,6 @@ class TClippingControls extends Object3D {
         }
 
         this.update()
-        this.dispatchEvent( this._events.change )
         this.dispatchEvent( this._events.objectChange )
     }
 
@@ -1712,7 +1710,6 @@ class TClippingControls extends Object3D {
 
             this.axis = null
             this.update()
-            this.dispatchEvent( this._events.change )
 
         } else {
 
