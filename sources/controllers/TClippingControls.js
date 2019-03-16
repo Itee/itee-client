@@ -830,6 +830,7 @@ class TClippingControls extends Object3D {
         this.domElement     = domElement
         this.mode           = TClippingModes.None
         this.space          = TClippingSpace.World
+        this._objectsToClip = null
 
         this.object          = undefined
         this.translationSnap = null
@@ -1017,6 +1018,14 @@ class TClippingControls extends Object3D {
 
     }
 
+    setObjectsToClip ( objects ) {
+        this._objectsToClip = objects
+    }
+
+    setClippingBoxColor ( color ) {
+        this._clippingBox.setColor( color )
+    }
+
     impose () {
 
         this._domElement.addEventListener( 'keydown', this._handlers.onKeyDown, false )
@@ -1112,34 +1121,22 @@ class TClippingControls extends Object3D {
         this.update()
     }
 
-    updateClippingBox ( Objects, size ) {
 
-        this._clippingBoxState = !this._clippingBoxState
 
-        if ( this._clippingBoxState ) {
-            this._clippingBox.position.set( 0, 0, 0 )
-            this._clippingBox.rotation.set( 0, 0, 0 )
-            this.attach( this._clippingBox )
-            this._clippingBox.visible = true
-        } else {
-            this.detach( this._clippingBox )
-            this._clippingBox.visible = false
         }
 
-        this._clippingBox.toggleClippingBox( this._clippingBoxState, Objects )
-        this._clippingBox.updateSize( size )
 
     }
 
     update () {
 
-        if ( this.object === undefined || this._mode === TClippingModes.None ) {
+        if ( this._mode === TClippingModes.None ) {
             return
         }
 
-        this.object.updateMatrixWorld()
-        this._worldPosition.setFromMatrixPosition( this.object.matrixWorld )
-        this._worldRotation.setFromRotationMatrix( this._tempMatrix.extractRotation( this.object.matrixWorld ) )
+        //        this.object.updateMatrixWorld()
+        //        this._worldPosition.setFromMatrixPosition( this.object.matrixWorld )
+        //        this._worldRotation.setFromRotationMatrix( this._tempMatrix.extractRotation( this.object.matrixWorld ) )
 
         this._camera.updateMatrixWorld()
         this._cameraPosition.setFromMatrixPosition( this._camera.matrixWorld )
@@ -1176,6 +1173,8 @@ class TClippingControls extends Object3D {
         // Update box
         this._clippingBox.update()
 
+        // Object clipping update
+        this._clippingBox.applyClippingTo( true, this._objectsToClip )
 
         this.dispatchEvent( this._events.change )
 
@@ -1401,7 +1400,7 @@ class TClippingControls extends Object3D {
 
     onPointerDown ( event ) {
 
-        if ( isNotDefined( this.object ) ) { return }
+//        if ( isNotDefined( this.object ) ) { return }
         if ( this._dragging === true ) { return }
         if ( this._mode === TClippingModes.None ) { return }
 
@@ -1453,7 +1452,9 @@ class TClippingControls extends Object3D {
     }
 
     onPointerMove ( event ) {
-        if ( this.object === undefined || this.axis === null || this._dragging === false || ( event.button !== undefined && event.button !== 0 ) ) {
+
+        if ( this.axis === null || this._dragging === false || ( event.button !== undefined && event.button !== 0 ) ) {
+//        if ( this.object === undefined || this.axis === null || this._dragging === false || ( event.button !== undefined && event.button !== 0 ) ) {
             return
         }
 
