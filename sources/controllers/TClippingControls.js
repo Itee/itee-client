@@ -804,7 +804,7 @@ pickerMaterial.opacity = 0.15
 
 class TClippingControls extends Object3D {
 
-    constructor ( camera, domElement = document, boxColor = 0x00ff00, boxPosition = new Vector3( 0, 0, 0 ), boxSize = 100 ) {
+    constructor ( camera, domElement = document ) {
 
         super()
 
