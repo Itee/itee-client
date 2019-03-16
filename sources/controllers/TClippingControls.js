@@ -18,7 +18,6 @@ import {
 import {
     Box3,
     BoxBufferGeometry,
-    BoxGeometry,
     BufferGeometry,
     Camera,
     ConeBufferGeometry,
@@ -51,49 +50,34 @@ import {
     Mouse
 }               from '../cores/TConstants'
 
-class ClippingBox extends Mesh {
+class ClippingBox extends LineSegments {
 
-    constructor ( boxColor, boxPosition, boxSize ) {
+    constructor () {
         super()
 
-        // Box
-        this.geometry = new BoxGeometry( boxSize.x, boxSize.y, boxSize.z )
-        this.material = new MeshBasicMaterial( {
-            color:       boxColor,
-            transparent: true,
-            opacity:     0
+        this.geometry = new EdgesGeometry( new BoxBufferGeometry() )
+        this.material = new LineBasicMaterial( {
+            color: 0xffffff
         } )
-
-        let wireframeGeometry = new EdgesGeometry( this.geometry )
-        let wireframeMaterial = new LineBasicMaterial( {
-            color:     boxColor,
-            linewidth: 4
-        } )
-        let wireframe         = new LineSegments( wireframeGeometry, wireframeMaterial )
-        wireframe.renderOrder = 1
-
-        this.add( wireframe )
 
         // Planes
         this.normalPlanes = {
-            'normalRightSide':  new Vector3( -1, 0, 0 ),
-            'normalLeftSide':   new Vector3( 1, 0, 0 ),
-            'normalFrontSide':  new Vector3( 0, -1, 0 ),
-            'normalBackSide':   new Vector3( 0, 1, 0 ),
-            'normalTopSide':    new Vector3( 0, 0, -1 ),
-            'normalBottomSide': new Vector3( 0, 0, 1 )
+            normalRightSide:  new Vector3( -1, 0, 0 ),
+            normalLeftSide:   new Vector3( 1, 0, 0 ),
+            normalFrontSide:  new Vector3( 0, -1, 0 ),
+            normalBackSide:   new Vector3( 0, 1, 0 ),
+            normalTopSide:    new Vector3( 0, 0, -1 ),
+            normalBottomSide: new Vector3( 0, 0, 1 )
         }
 
         this.planes = {
-            'rightSidePlane':  new Plane( this.normalPlanes[ 'normalRightSide' ].clone(), 0 ),
-            'leftSidePlane':   new Plane( this.normalPlanes[ 'normalLeftSide' ].clone(), 0 ),
-            'frontSidePlane':  new Plane( this.normalPlanes[ 'normalFrontSide' ].clone(), 0 ),
-            'backSidePlane':   new Plane( this.normalPlanes[ 'normalBackSide' ].clone(), 0 ),
-            'topSidePlane':    new Plane( this.normalPlanes[ 'normalTopSide' ].clone(), 0 ),
-            'bottomSidePlane': new Plane( this.normalPlanes[ 'normalBottomSide' ].clone(), 0 )
+            rightSidePlane:  new Plane( this.normalPlanes.normalRightSide.clone(), 0 ),
+            leftSidePlane:   new Plane( this.normalPlanes.normalLeftSide.clone(), 0 ),
+            frontSidePlane:  new Plane( this.normalPlanes.normalFrontSide.clone(), 0 ),
+            backSidePlane:   new Plane( this.normalPlanes.normalBackSide.clone(), 0 ),
+            topSidePlane:    new Plane( this.normalPlanes.normalTopSide.clone(), 0 ),
+            bottomSidePlane: new Plane( this.normalPlanes.normalBottomSide.clone(), 0 )
         }
-
-        this.visible = false
 
     }
 
@@ -103,25 +87,18 @@ class ClippingBox extends Mesh {
         this.geometry.boundingSphere.applyMatrix4( this.matrixWorld )
 
         return this.geometry.boundingSphere
-    }
-
-    setClippingBoxColor ( color ) {
-
-        let wireframeGeometry = new EdgesGeometry( this.geometry )
-        let wireframeMaterial = new LineBasicMaterial( {
-            color:     color,
-            linewidth: 4
-        } )
-        let wireframe         = new LineSegments( wireframeGeometry, wireframeMaterial )
-        wireframe.renderOrder = 1
-
-        this.add( wireframe )
 
     }
 
-    toggleClippingBox ( state, objects ) {
+    setColor ( color ) {
 
-        this.visible = state
+        this.material.color = color
+
+    }
+
+    applyClippingTo ( state, objects ) {
+
+        if ( isNotDefined( objects ) ) { return }
 
         let planes = []
         for ( let i in this.planes ) {
@@ -130,8 +107,9 @@ class ClippingBox extends Mesh {
 
         objects.traverse( ( object ) => {
 
-            if ( !object.geometry ) { return }
-            if ( !object.material ) { return }
+            if ( isNotDefined( object ) ) { return }
+            if ( isNotDefined( object.geometry ) ) { return }
+            if ( isNotDefined( object.material ) ) { return }
 
             const materials = isArray( object.material ) ? object.material : [ object.material ]
 
@@ -162,12 +140,12 @@ class ClippingBox extends Mesh {
         let min    = boundingBox.min
         let max    = boundingBox.max
 
-        this.planes[ 'rightSidePlane' ].constant  = max.x + margin
-        this.planes[ 'leftSidePlane' ].constant   = -min.x + margin
-        this.planes[ 'frontSidePlane' ].constant  = max.y + margin
-        this.planes[ 'backSidePlane' ].constant   = -min.y + margin
-        this.planes[ 'topSidePlane' ].constant    = max.z + margin
-        this.planes[ 'bottomSidePlane' ].constant = -min.z + margin
+        this.planes.rightSidePlane.constant  = max.x + margin
+        this.planes.leftSidePlane.constant   = -min.x + margin
+        this.planes.frontSidePlane.constant  = max.y + margin
+        this.planes.backSidePlane.constant   = -min.y + margin
+        this.planes.topSidePlane.constant    = max.z + margin
+        this.planes.bottomSidePlane.constant = -min.z + margin
 
     }
 
