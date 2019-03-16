@@ -235,8 +235,6 @@ class GizmoLineMaterial extends LineBasicMaterial {
 
 }
 
-window.keyShortcut     = null
-
 class TransformGizmo extends Object3D {
 
     constructor () {
@@ -912,6 +910,10 @@ class TClippingControls extends Object3D {
     }
 
     impose() {
+
+        this.domElement.addEventListener( 'keydown', this._onKeyDown.bind( this ), false )
+        this.domElement.addEventListener( 'keyup', this._onKeyUp.bind( this ), false )
+
         this.domElement.addEventListener( 'mousedown', this.onPointerDown.bind( this ), false )
         this.domElement.addEventListener( 'mousemove', this.onPointerHover.bind( this ), false )
         this.domElement.addEventListener( 'mouseout', this.onPointerUp.bind( this ), false )
@@ -928,9 +930,6 @@ class TClippingControls extends Object3D {
 
     dispose () {
 
-        if ( window.keyShortcut ) {
-            window.removeEventListener( 'keydown', window.keyShortcut )
-        }
         this.domElement.removeEventListener( 'keydown', this._onKeyDown.bind( this ), false )
         this.domElement.removeEventListener( 'keyup', this._onKeyUp.bind( this ), false )
 
@@ -1071,7 +1070,12 @@ class TClippingControls extends Object3D {
 
     }
 
-    keyShortcut ( event ) {
+    // Handlers
+    _onKeyDown ( keyEvent ) {
+
+        if ( !this.enabled || keyEvent.defaultPrevented ) { return }
+        keyEvent.preventDefault()
+        keyEvent.stopPropagation()
 
         // Todo: Allow external keymapping like in TCameraControls
         switch ( event.keyCode ) {
@@ -1111,6 +1115,16 @@ class TClippingControls extends Object3D {
                 break
 
         }
+
+    }
+
+    _onKeyUp ( keyEvent ) {
+
+        if ( !this.enabled || keyEvent.defaultPrevented ) { return }
+        keyEvent.preventDefault()
+        keyEvent.stopPropagation()
+
+        // Todo...
 
     }
 
@@ -1156,16 +1170,6 @@ class TClippingControls extends Object3D {
         if ( pointer.button === 0 || pointer.button === undefined ) {
 
             const intersect = this.intersectObjects( pointer, this._gizmo[ this._mode ].pickers.children )
-
-            const intersectObject = this.intersectObjects( pointer, [ this.object ] )
-            if ( intersectObject ) {
-                if ( window.keyShortcut ) {
-                    window.removeEventListener( 'keydown', window.keyShortcut )
-                }
-                window.keyShortcut = this.keyShortcut.bind( this )
-                window.addEventListener( 'keydown', window.keyShortcut, false )
-            }
-
             if ( intersect ) {
 
                 event.preventDefault()
