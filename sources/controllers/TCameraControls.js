@@ -428,6 +428,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.enabled || keyEvent.defaultPrevented ) { return }
         keyEvent.preventDefault()
+        keyEvent.stopPropagation()
 
         const actionMap   = this.actionsMap
         const key         = keyEvent.keyCode
@@ -488,6 +489,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.enabled || keyEvent.defaultPrevented ) { return }
         keyEvent.preventDefault()
+        keyEvent.stopPropagation()
 
     }
 
@@ -495,6 +497,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.enabled || touchEvent.defaultPrevented ) { return }
         touchEvent.preventDefault()
+        touchEvent.stopPropagation()
 
         this.previousTouches = touchEvent.touches
 
@@ -504,6 +507,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.enabled || touchEvent.defaultPrevented ) { return }
         touchEvent.preventDefault()
+        touchEvent.stopPropagation()
 
         this.previousTouches = []
         this._state          = State.None
@@ -514,6 +518,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.enabled || touchEvent.defaultPrevented ) { return }
         touchEvent.preventDefault()
+        touchEvent.stopPropagation()
 
         this.previousTouches = []
         this._state          = State.None
@@ -524,6 +529,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.enabled || touchEvent.defaultPrevented ) { return }
         touchEvent.preventDefault()
+        touchEvent.stopPropagation()
 
         this.previousTouches = []
         this._state          = State.None
@@ -534,6 +540,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.enabled || touchEvent.defaultPrevented ) { return }
         touchEvent.preventDefault()
+        touchEvent.stopPropagation()
 
         const previousTouches         = this.previousTouches
         const currentTouches          = touchEvent.changedTouches
@@ -583,6 +590,10 @@ class TCameraControls extends EventDispatcher {
 
     _onMouseEnter ( mouseEvent ) {
 
+        if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
+        mouseEvent.preventDefault()
+        mouseEvent.stopPropagation()
+
         this.impose()
         if ( mouseEvent.target.constructor !== HTMLDocument ) {
             this._domElement.focus()
@@ -591,6 +602,10 @@ class TCameraControls extends EventDispatcher {
     }
 
     _onMouseLeave ( mouseEvent ) {
+
+        if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
+        mouseEvent.preventDefault()
+        mouseEvent.stopPropagation()
 
         if ( mouseEvent.target.constructor !== HTMLDocument ) {
             this._domElement.blur()
@@ -604,6 +619,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
         mouseEvent.preventDefault()
+        mouseEvent.stopPropagation()
 
         const actionMap = this.actionsMap
         const button    = mouseEvent.button
@@ -646,6 +662,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.enabled || mouseEvent.defaultPrevented || this._state === State.None ) { return }
         mouseEvent.preventDefault()
+        mouseEvent.stopPropagation()
 
         const state = this._state
         const delta = {
@@ -687,6 +704,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
         mouseEvent.preventDefault()
+        mouseEvent.stopPropagation()
 
         const delta = mouseEvent.wheelDelta || mouseEvent.deltaY
         this._zoom( delta )
@@ -697,6 +715,7 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
         mouseEvent.preventDefault()
+        mouseEvent.stopPropagation()
 
         this._state = State.None
 
@@ -706,8 +725,9 @@ class TCameraControls extends EventDispatcher {
 
         if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
         mouseEvent.preventDefault()
+        mouseEvent.stopPropagation()
 
-        console.warn( 'Double click events is not implemented yet, sorry for the disagreement.' )
+        console.warn( 'TCameraControls: Double click events is not implemented yet, sorry for the disagreement.' )
 
     }
 
