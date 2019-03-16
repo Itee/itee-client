@@ -1074,10 +1074,6 @@ class TClippingControls extends Object3D {
         this.axis    = null
     }
 
-    getMode () {
-        return this._mode
-    }
-
     setTranslationSnap ( translationSnap ) {
         this.translationSnap = translationSnap
     }
