@@ -963,7 +963,7 @@ class TClippingControls extends Object3D {
 
         } else {
 
-            this._currentGizmo         = this._gizmos[ this._mode ]
+            this._currentGizmo         = this._gizmos[ this._mode.name ]
             this._currentGizmo.visible = true
 
         }
