@@ -814,6 +814,10 @@ class TClippingModes extends Enum {}
 
 TClippingModes.initEnum( ['None', 'Translate', 'Rotate', 'Scale'] )
 
+class TClippingSpace extends Enum {}
+
+TClippingSpace.initEnum( ['Local', 'World'] )
+
 let pickerMaterial     = new GizmoMaterial( {
     visible:     false,
     transparent: false
@@ -829,14 +833,16 @@ class TClippingControls extends Object3D {
         this.camera      = camera
         this.domElement  = domElement
         this.mode     = TClippingModes.None
+        this.space          = TClippingSpace.World
 
         this.object          = undefined
         this.visible         = false
         this.translationSnap = null
         this.rotationSnap    = null
-        this.space           = 'world'
         this.size            = 1
         this.axis            = null
+
+
 
         this._dragging = false
 
@@ -968,7 +974,7 @@ class TClippingControls extends Object3D {
 
         }
 
-        if ( this._mode === TClippingModes.Scale ) { this._space = 'local' }
+        if ( this._mode === TClippingModes.Scale ) { this._space = TClippingSpace.Local }
 
         this.update()
         this.dispatchEvent( this._events.change )
@@ -981,6 +987,31 @@ class TClippingControls extends Object3D {
         return this
 
     }
+
+    get space () {
+        return this._space
+    }
+
+    set space ( value ) {
+
+        if ( isNull( value ) ) { throw new Error( 'Space cannot be null ! Expect a value from TClippingSpace enum.' ) }
+        if ( isUndefined( value ) ) { throw new Error( 'Space cannot be undefined ! Expect a value from TClippingSpace enum.' ) }
+        if ( !( value instanceof TClippingSpace ) ) { throw new Error( `Space cannot be an instance of ${value.constructor.name}. Expect a value from TClippingSpace enum.` ) }
+
+        this._space = value
+
+        this.update()
+        this.dispatchEvent( this._events.change )
+
+    }
+
+    setSpace ( value ) {
+
+        this.space = value
+        return this
+
+    }
+
     impose () {
 
         this.domElement.addEventListener( 'keydown', this._onKeyDown.bind( this ), false )
@@ -1051,12 +1082,6 @@ class TClippingControls extends Object3D {
         this.dispatchEvent( this._events.change )
     }
 
-    setSpace ( space ) {
-        this.space = space
-        this.update()
-        this.dispatchEvent( this._events.change )
-    }
-
     updateClippingBox ( Objects, size ) {
 
         this._clippingBoxState = !this._clippingBoxState
@@ -1106,11 +1131,11 @@ class TClippingControls extends Object3D {
         }
 
         // Update gizmo
-        if ( this.space === 'local' ) {
+        if ( this._space === TClippingSpace.Local ) {
 
             this._currentGizmo.update( this._worldRotation, this._eye )
 
-        } else if ( this.space === 'world' ) {
+        } else if ( this._space === TClippingSpace.World ) {
 
             this._currentGizmo.update( new Euler(), this._eye )
 
@@ -1135,7 +1160,7 @@ class TClippingControls extends Object3D {
         switch ( event.keyCode ) {
 
             case Keys.Q.value:
-                this.setSpace( this.space === 'local' ? 'world' : 'local' )
+                this.setSpace( this._space === TClippingSpace.Local ? TClippingSpace.World : TClippingSpace.Local )
                 break
 
             case Keys.CTRL.value:
@@ -1414,7 +1439,7 @@ class TClippingControls extends Object3D {
             this._point.sub( this._offset )
             this._point.multiply( this._parentScale )
 
-            if ( this.space === 'local' ) {
+            if ( this._space === TClippingSpace.Local ) {
 
                 this._point.applyMatrix4( this._tempMatrix.getInverse( this._worldRotationMatrix ) )
 
@@ -1435,7 +1460,7 @@ class TClippingControls extends Object3D {
 
             }
 
-            if ( this.space === 'world' || this.axis.search( 'XYZ' ) !== -1 ) {
+            if ( this._space === TClippingSpace.World || this.axis.search( 'XYZ' ) !== -1 ) {
 
                 if ( this.axis.search( 'X' ) === -1 ) {
                     this._point.x = 0
@@ -1456,7 +1481,7 @@ class TClippingControls extends Object3D {
 
             if ( this.translationSnap !== null ) {
 
-                if ( this.space === 'local' ) {
+                if ( this._space === TClippingSpace.Local ) {
 
                     this.object.position.applyMatrix4( this._tempMatrix.getInverse( this._worldRotationMatrix ) )
 
@@ -1472,7 +1497,7 @@ class TClippingControls extends Object3D {
                     this.object.position.z = Math.round( this.object.position.z / this.translationSnap ) * this.translationSnap
                 }
 
-                if ( this.space === 'local' ) {
+                if ( this._space === TClippingSpace.Local ) {
 
                     this.object.position.applyMatrix4( this._worldRotationMatrix )
 
@@ -1485,7 +1510,7 @@ class TClippingControls extends Object3D {
             this._point.sub( this._offset )
             this._point.multiply( this._parentScale )
 
-            if ( this.space === 'local' ) {
+            if ( this._space === TClippingSpace.Local ) {
 
                 if ( this.axis === 'XYZ' ) {
 
@@ -1551,7 +1576,7 @@ class TClippingControls extends Object3D {
 
                 this.object.quaternion.copy( this._tempQuaternion )
 
-            } else if ( this.space === 'local' ) {
+            } else if ( this._space === TClippingSpace.Local ) {
 
                 this._point.applyMatrix4( this._tempMatrix.getInverse( this._worldRotationMatrix ) )
 
@@ -1588,7 +1613,7 @@ class TClippingControls extends Object3D {
 
                 this.object.quaternion.copy( this._quaternionXYZ )
 
-            } else if ( this.space === 'world' ) {
+            } else if ( this._space === TClippingSpace.World ) {
 
                 this._rotation.set( Math.atan2( this._point.z, this._point.y ), Math.atan2( this._point.x, this._point.z ), Math.atan2( this._point.y, this._point.x ) )
                 this._offsetRotation.set( Math.atan2( this._tempVector.z, this._tempVector.y ), Math.atan2( this._tempVector.x, this._tempVector.z ), Math.atan2( this._tempVector.y, this._tempVector.x ) )
