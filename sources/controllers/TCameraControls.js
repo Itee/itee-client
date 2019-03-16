@@ -971,7 +971,7 @@ class TCameraControls extends EventDispatcher {
             const cameraPosition = this._camera.position
             const targetPosition = this._target.position
             const targetToCamera = new Vector3().subVectors( cameraPosition, targetPosition ).normalize()
-            const angle          = Math.PI / 16 //delta * this.rollSpeed
+            const angle          = delta * this.rollSpeed
 
             this._camera.up.applyAxisAngle( targetToCamera, angle )
             this._camera.lookAt( targetPosition )
