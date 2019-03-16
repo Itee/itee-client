@@ -442,11 +442,21 @@ class TCameraControls extends EventDispatcher {
     }
 
     // Handlers
+    _consumeEvent( event ) {
+
+        if ( !event.cancelable ) {
+            return
+        }
+
+        event.stopImmediatePropagation()
+
+    }
+
+    // Keys
     _onKeyDown ( keyEvent ) {
 
-        if ( !this.enabled || keyEvent.defaultPrevented ) { return }
+        if ( !this.enabled ) { return }
         keyEvent.preventDefault()
-        keyEvent.stopPropagation()
 
         const actionMap   = this.actionsMap
         const key         = keyEvent.keyCode
@@ -456,66 +466,126 @@ class TCameraControls extends EventDispatcher {
         const shiftActive = keyEvent.shiftKey
 
         if ( actionMap.front.includes( key ) ) {
+
             this._front()
+            this._consumeEvent( keyEvent )
+
         } else if ( actionMap.back.includes( key ) ) {
+            
             this._back()
+            this._consumeEvent( keyEvent )
+
         } else if ( actionMap.up.includes( key ) ) {
+            
             this._up()
+            this._consumeEvent( keyEvent )
+
         } else if ( actionMap.down.includes( key ) ) {
+            
             this._down()
+            this._consumeEvent( keyEvent )
+
         } else if ( actionMap.left.includes( key ) ) {
+            
             this._left()
+            this._consumeEvent( keyEvent )
+
         } else if ( actionMap.right.includes( key ) ) {
+            
             this._right()
+            this._consumeEvent( keyEvent )
+
         } else if ( actionMap.rotate.includes( key ) ) {
+            
             this._rotate( 1.0 )
         } else if ( actionMap.pan.includes( key ) ) {
+            
             this._pan( 1.0 )
+            this._consumeEvent( keyEvent )
+
         } else if ( actionMap.roll.left.includes( key ) ) {
+            
             this._roll( 1.0 )
+            this._consumeEvent( keyEvent )
+
         } else if ( actionMap.roll.right.includes( key ) ) {
+            
             this._roll( -1.0 )
+            this._consumeEvent( keyEvent )
+
         } else if ( actionMap.zoom.includes( key ) ) {
+            
             this._zoom( 1.0 )
+            this._consumeEvent( keyEvent )
+
         } else if ( actionMap.lookAtFront.includes( key ) ) {
+            
             this._lookAt( FRONT )
+            this._consumeEvent( keyEvent )
+
         } else if ( actionMap.lookAtFrontLeft.includes( key ) ) {
+            
             this._lookAt( new Vector3( -1, 0, -1 ).normalize() )
+            this._consumeEvent( keyEvent )
+
         } else if ( actionMap.lookAtFrontRight.includes( key ) ) {
+            
             this._lookAt( new Vector3( 1, 0, -1 ).normalize() )
+            this._consumeEvent( keyEvent )
+
         } else if ( actionMap.lookAtBack.includes( key ) ) {
+            
             this._lookAt( BACK )
+            this._consumeEvent( keyEvent )
+
         } else if ( actionMap.lookAtBackLeft.includes( key ) ) {
+            
             this._lookAt( new Vector3( -1, 0, 1 ).normalize() )
+            this._consumeEvent( keyEvent )
+
         } else if ( actionMap.lookAtBackRight.includes( key ) ) {
+            
             this._lookAt( new Vector3( 1, 0, 1 ).normalize() )
+            this._consumeEvent( keyEvent )
+
         } else if ( actionMap.lookAtUp.includes( key ) ) {
+            
             this._lookAt( UP )
+            this._consumeEvent( keyEvent )
+
         } else if ( actionMap.lookAtDown.includes( key ) ) {
+            
             this._lookAt( DOWN )
+            this._consumeEvent( keyEvent )
+
         } else if ( actionMap.lookAtLeft.includes( key ) ) {
+            
             this._lookAt( LEFT )
+            this._consumeEvent( keyEvent )
+
         } else if ( actionMap.lookAtRight.includes( key ) ) {
+            
             this._lookAt( RIGHT )
+            this._consumeEvent( keyEvent )
+
         } else {
-            // Unmapped key, just ignore it !
+            // Unmapped key, just ignore it ! May be this is for an other controls.
         }
 
     }
 
     _onKeyUp ( keyEvent ) {
 
-        if ( !this.enabled || keyEvent.defaultPrevented ) { return }
+        if ( !this.enabled ) { return }
         keyEvent.preventDefault()
-        keyEvent.stopPropagation()
 
     }
 
+    // Touches
     _onTouchStart ( touchEvent ) {
 
-        if ( !this.enabled || touchEvent.defaultPrevented ) { return }
+        if ( !this.enabled ) { return }
         touchEvent.preventDefault()
-        touchEvent.stopPropagation()
 
         this.previousTouches = touchEvent.touches
 
@@ -523,9 +593,8 @@ class TCameraControls extends EventDispatcher {
 
     _onTouchEnd ( touchEvent ) {
 
-        if ( !this.enabled || touchEvent.defaultPrevented ) { return }
+        if ( !this.enabled ) { return }
         touchEvent.preventDefault()
-        touchEvent.stopPropagation()
 
         this.previousTouches = []
         this._state          = State.None
@@ -534,9 +603,8 @@ class TCameraControls extends EventDispatcher {
 
     _onTouchCancel ( touchEvent ) {
 
-        if ( !this.enabled || touchEvent.defaultPrevented ) { return }
+        if ( !this.enabled ) { return }
         touchEvent.preventDefault()
-        touchEvent.stopPropagation()
 
         this.previousTouches = []
         this._state          = State.None
@@ -545,9 +613,8 @@ class TCameraControls extends EventDispatcher {
 
     _onTouchLeave ( touchEvent ) {
 
-        if ( !this.enabled || touchEvent.defaultPrevented ) { return }
+        if ( !this.enabled ) { return }
         touchEvent.preventDefault()
-        touchEvent.stopPropagation()
 
         this.previousTouches = []
         this._state          = State.None
@@ -556,9 +623,8 @@ class TCameraControls extends EventDispatcher {
 
     _onTouchMove ( touchEvent ) {
 
-        if ( !this.enabled || touchEvent.defaultPrevented ) { return }
+        if ( !this.enabled ) { return }
         touchEvent.preventDefault()
-        touchEvent.stopPropagation()
 
         const previousTouches         = this.previousTouches
         const currentTouches          = touchEvent.changedTouches
@@ -586,6 +652,8 @@ class TCameraControls extends EventDispatcher {
             this._pan( deltaPan )
             this._zoom( deltaZoom )
             this._roll( deltaRoll )
+            this._consumeEvent( touchEvent )
+
 
         } else if ( numberOfPreviousTouches === 1 && numberOfCurrentTouches === 1 ) {
 
@@ -595,6 +663,7 @@ class TCameraControls extends EventDispatcher {
             ).divideScalar( 10 ) //todo: to high sensibility else !!!
 
             this._rotate( deltaRotate )
+            this._consumeEvent( touchEvent )
 
         } else {
 
@@ -606,11 +675,11 @@ class TCameraControls extends EventDispatcher {
 
     }
 
+    // Mouse
     _onMouseEnter ( mouseEvent ) {
 
-        if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
+        if ( !this.enabled  ) { return }
         mouseEvent.preventDefault()
-        mouseEvent.stopPropagation()
 
         this.impose()
         if ( mouseEvent.target.constructor !== HTMLDocument ) {
@@ -621,9 +690,8 @@ class TCameraControls extends EventDispatcher {
 
     _onMouseLeave ( mouseEvent ) {
 
-        if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
+        if ( !this.enabled  ) { return }
         mouseEvent.preventDefault()
-        mouseEvent.stopPropagation()
 
         if ( mouseEvent.target.constructor !== HTMLDocument ) {
             this._domElement.blur()
@@ -635,52 +703,85 @@ class TCameraControls extends EventDispatcher {
 
     _onMouseDown ( mouseEvent ) {
 
-        if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
+        if ( !this.enabled  ) { return }
         mouseEvent.preventDefault()
-        mouseEvent.stopPropagation()
 
         const actionMap = this.actionsMap
         const button    = mouseEvent.button
 
         if ( actionMap.front.includes( button ) ) {
+
             this._state = State.Moving
             this._front()
+            this._consumeEvent( mouseEvent )
+
         } else if ( actionMap.back.includes( button ) ) {
+
             this._state = State.Moving
             this._back()
+            this._consumeEvent( mouseEvent )
+
         } else if ( actionMap.up.includes( button ) ) {
+
             this._state = State.Moving
             this._up()
+            this._consumeEvent( mouseEvent )
+
         } else if ( actionMap.down.includes( button ) ) {
+
             this._state = State.Moving
             this._down()
+            this._consumeEvent( mouseEvent )
+
         } else if ( actionMap.left.includes( button ) ) {
+
             this._state = State.Moving
             this._left()
+            this._consumeEvent( mouseEvent )
+
         } else if ( actionMap.right.includes( button ) ) {
+
             this._state = State.Moving
             this._right()
+            this._consumeEvent( mouseEvent )
+
         } else if ( actionMap.rotate.includes( button ) ) {
+
             this._state = State.Rotating
+            this._consumeEvent( mouseEvent )
+
         } else if ( actionMap.pan.includes( button ) ) {
+
             this._state = State.Panning
+            this._consumeEvent( mouseEvent )
+
         } else if ( actionMap.roll.left.includes( button ) ) {
+
             this._state = State.Rolling
+            this._consumeEvent( mouseEvent )
+
         } else if ( actionMap.roll.right.includes( button ) ) {
+
             this._state = State.Rolling
+            this._consumeEvent( mouseEvent )
+
         } else if ( actionMap.zoom.includes( button ) ) {
+
             this._state = State.Zooming
+            this._consumeEvent( mouseEvent )
+
         } else {
+
             this._state = State.None
+
         }
 
     }
 
     _onMouseMove ( mouseEvent ) {
 
-        if ( !this.enabled || mouseEvent.defaultPrevented || this._state === State.None ) { return }
+        if ( !this.enabled  || this._state === State.None ) { return }
         mouseEvent.preventDefault()
-        mouseEvent.stopPropagation()
 
         const state = this._state
         const delta = {
@@ -695,18 +796,22 @@ class TCameraControls extends EventDispatcher {
 
             case State.Rotating:
                 this._rotate( delta )
+                this._consumeEvent( mouseEvent )
                 break
 
             case State.Panning:
                 this._pan( delta )
+                this._consumeEvent( mouseEvent )
                 break
 
             case State.Rolling:
                 this._roll( delta )
+                this._consumeEvent( mouseEvent )
                 break
 
             case State.Zooming:
                 this._zoom( delta )
+                this._consumeEvent( mouseEvent )
                 break
 
             default:
@@ -720,20 +825,19 @@ class TCameraControls extends EventDispatcher {
     //todo allow other displacement from wheel
     _onMouseWheel ( mouseEvent ) {
 
-        if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
+        if ( !this.enabled  ) { return }
         mouseEvent.preventDefault()
-        mouseEvent.stopPropagation()
 
         const delta = mouseEvent.wheelDelta || mouseEvent.deltaY
         this._zoom( delta )
+        this._consumeEvent( mouseEvent )
 
     }
 
     _onMouseUp ( mouseEvent ) {
 
-        if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
+        if ( !this.enabled  ) { return }
         mouseEvent.preventDefault()
-        mouseEvent.stopPropagation()
 
         this._state = State.None
 
@@ -741,9 +845,8 @@ class TCameraControls extends EventDispatcher {
 
     _onDblClick ( mouseEvent ) {
 
-        if ( !this.enabled || mouseEvent.defaultPrevented ) { return }
+        if ( !this.enabled  ) { return }
         mouseEvent.preventDefault()
-        mouseEvent.stopPropagation()
 
         console.warn( 'TCameraControls: Double click events is not implemented yet, sorry for the disagreement.' )
 
