@@ -354,6 +354,10 @@ class TCameraControls extends EventDispatcher {
         if ( isUndefined( value ) ) { throw new Error( 'DomElement cannot be undefined ! Expect an instance of HTMLDocument.' ) }
         if ( !( ( value instanceof Window ) || ( value instanceof HTMLDocument ) || ( value instanceof HTMLDivElement ) || ( value instanceof HTMLCanvasElement ) ) ) { throw new Error( `DomElement cannot be an instance of ${value.constructor.name}. Expect an instance of Window, HTMLDocument or HTMLDivElement.` ) }
 
+        // Check focusability of given dom element because in case the element is not focusable
+        // the keydown event won't work !
+
+
         // Clear previous element
         if ( this._domElement ) {
             this._domElement.removeEventListener( 'mouseenter', this._handlers.onMouseEnter, false )
@@ -471,100 +475,100 @@ class TCameraControls extends EventDispatcher {
             this._consumeEvent( keyEvent )
 
         } else if ( actionMap.back.includes( key ) ) {
-            
+
             this._back()
             this._consumeEvent( keyEvent )
 
         } else if ( actionMap.up.includes( key ) ) {
-            
+
             this._up()
             this._consumeEvent( keyEvent )
 
         } else if ( actionMap.down.includes( key ) ) {
-            
+
             this._down()
             this._consumeEvent( keyEvent )
 
         } else if ( actionMap.left.includes( key ) ) {
-            
+
             this._left()
             this._consumeEvent( keyEvent )
 
         } else if ( actionMap.right.includes( key ) ) {
-            
+
             this._right()
             this._consumeEvent( keyEvent )
 
         } else if ( actionMap.rotate.includes( key ) ) {
-            
+
             this._rotate( 1.0 )
         } else if ( actionMap.pan.includes( key ) ) {
-            
+
             this._pan( 1.0 )
             this._consumeEvent( keyEvent )
 
         } else if ( actionMap.roll.left.includes( key ) ) {
-            
+
             this._roll( 1.0 )
             this._consumeEvent( keyEvent )
 
         } else if ( actionMap.roll.right.includes( key ) ) {
-            
+
             this._roll( -1.0 )
             this._consumeEvent( keyEvent )
 
         } else if ( actionMap.zoom.includes( key ) ) {
-            
+
             this._zoom( 1.0 )
             this._consumeEvent( keyEvent )
 
         } else if ( actionMap.lookAtFront.includes( key ) ) {
-            
+
             this._lookAt( FRONT )
             this._consumeEvent( keyEvent )
 
         } else if ( actionMap.lookAtFrontLeft.includes( key ) ) {
-            
+
             this._lookAt( new Vector3( -1, 0, -1 ).normalize() )
             this._consumeEvent( keyEvent )
 
         } else if ( actionMap.lookAtFrontRight.includes( key ) ) {
-            
+
             this._lookAt( new Vector3( 1, 0, -1 ).normalize() )
             this._consumeEvent( keyEvent )
 
         } else if ( actionMap.lookAtBack.includes( key ) ) {
-            
+
             this._lookAt( BACK )
             this._consumeEvent( keyEvent )
 
         } else if ( actionMap.lookAtBackLeft.includes( key ) ) {
-            
+
             this._lookAt( new Vector3( -1, 0, 1 ).normalize() )
             this._consumeEvent( keyEvent )
 
         } else if ( actionMap.lookAtBackRight.includes( key ) ) {
-            
+
             this._lookAt( new Vector3( 1, 0, 1 ).normalize() )
             this._consumeEvent( keyEvent )
 
         } else if ( actionMap.lookAtUp.includes( key ) ) {
-            
+
             this._lookAt( UP )
             this._consumeEvent( keyEvent )
 
         } else if ( actionMap.lookAtDown.includes( key ) ) {
-            
+
             this._lookAt( DOWN )
             this._consumeEvent( keyEvent )
 
         } else if ( actionMap.lookAtLeft.includes( key ) ) {
-            
+
             this._lookAt( LEFT )
             this._consumeEvent( keyEvent )
 
         } else if ( actionMap.lookAtRight.includes( key ) ) {
-            
+
             this._lookAt( RIGHT )
             this._consumeEvent( keyEvent )
 
