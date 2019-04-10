@@ -34,11 +34,8 @@ import {
     TextureLoader,
     Vector2
 }                       from 'three-full'
-import { ResponseType } from '../../cores/TConstants'
 
 import { TDataBaseManager } from '../TDataBaseManager'
-import { TErrorManager }    from '../TErrorManager'
-import { TProgressManager } from '../TProgressManager'
 import { TTexturesManager } from './TTexturesManager'
 
 const DEFAULT_IMAGE = new ImageLoader().load( 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAIAAACQd1PeAAAACXBIWXMAAC4jAAAuIwF4pT92AAAAB3RJTUUH4gkKDRoGpGNegQAAABl0RVh0Q29tbWVudABDcmVhdGVkIHdpdGggR0lNUFeBDhcAAAAMSURBVAjXY/j//z8ABf4C/tzMWecAAAAASUVORK5CYII=' )
@@ -55,13 +52,24 @@ class TMaterialsManager extends TDataBaseManager {
      * @param texturesPath
      * @param texturesProvider
      */
-    constructor ( basePath = '/materials', responseType = ResponseType.Json, bunchSize = 500, requestsConcurrency = 6, progressManager = new TProgressManager(), errorManager = new TErrorManager(), texturesPath = '/textures', texturesProvider = new TextureLoader(), generateMipmap = false, autoFillTextures = true ) {
-        super( basePath, responseType, bunchSize, requestsConcurrency, progressManager, errorManager )
+    constructor ( parameters = {} ) {
 
-        this.texturesPath     = texturesPath
-        this.texturesProvider = texturesProvider
-        this.generateMipmap   = generateMipmap
-        this.autoFillTextures = autoFillTextures
+        const _parameters = {
+            ...{
+                basePath:               '/materials',
+                texturesPath:           '/textures',
+                texturesProvider:       new TextureLoader(),
+                generateMipmap:         false,
+                autoFillTextures:       true
+            }, ...parameters
+        }
+
+        super( _parameters )
+
+        this.texturesPath     = _parameters.texturesPath
+        this.texturesProvider = _parameters.texturesProvider
+        this.generateMipmap   = _parameters.generateMipmap
+        this.autoFillTextures = _parameters.autoFillTextures
 
     }
 
