@@ -14,7 +14,7 @@ import {
     isNotEmptyArray,
     isNull,
     isUndefined
-}                       from 'itee-validators'
+} from 'itee-validators'
 /* eslint-env browser */
 import {
     AmbientLight,
@@ -39,12 +39,9 @@ import {
     SkinnedMesh,
     SpotLight,
     Sprite
-}                       from 'three-full'
-import { ResponseType } from '../../cores/TConstants'
+} from 'three-full'
 
 import { TDataBaseManager }   from '../TDataBaseManager'
-import { TErrorManager }      from '../TErrorManager'
-import { TProgressManager }   from '../TProgressManager'
 import { TGeometriesManager } from './TGeometriesManager'
 import { TMaterialsManager }  from './TMaterialsManager'
 
@@ -52,25 +49,28 @@ class TObjectsManager extends TDataBaseManager {
 
     /**
      *
-     * @param basePath
-     * @param responseType
-     * @param bunchSize
-     * @param projectionSystem
-     * @param globalScale
-     * @param progressManager
-     * @param errorManager
-     * @param geometriesProvider
-     * @param materialsProvider
+     * @param parameters
      */
-    constructor ( basePath = '/objects', responseType = ResponseType.Json, bunchSize = 500, requestsConcurrency = 6, projectionSystem = 'zBack', globalScale = 1, progressManager = new TProgressManager(), errorManager = new TErrorManager(), geometriesProvider = new TGeometriesManager(), materialsProvider = new TMaterialsManager(), autoFillObjects3D = true ) {
+    constructor ( parameters = {} ) {
 
-        super( basePath, responseType, bunchSize, requestsConcurrency, progressManager, errorManager )
+        const _parameters = {
+            ...{
+                basePath:           '/objects',
+                geometriesProvider: new TGeometriesManager(),
+                materialsProvider:  new TMaterialsManager(),
+                projectionSystem:   'zBack',
+                globalScale:        1,
+                autoFillObjects3D:  true
+            }, ...parameters
+        }
 
-        this.geometriesProvider = geometriesProvider
-        this.materialsProvider  = materialsProvider
-        this.projectionSystem   = projectionSystem
-        this.globalScale        = globalScale
-        this.autoFillObjects3D  = autoFillObjects3D
+        super( _parameters )
+
+        this.geometriesProvider = _parameters.geometriesProvider
+        this.materialsProvider  = _parameters.materialsProvider
+        this.projectionSystem   = _parameters.projectionSystem
+        this.globalScale        = _parameters.globalScale
+        this.autoFillObjects3D  = _parameters.autoFillObjects3D
 
     }
 
@@ -211,6 +211,12 @@ class TObjectsManager extends TDataBaseManager {
         }
 
     }
+
+    _onArrayBuffer ( data, onSuccess, onProgress, onError ) {}
+
+    _onBlob ( data, onSuccess, onProgress, onError ) {}
+
+    _onText ( data, onSuccess, onProgress, onError ) {}
 
     /**
      *
@@ -912,6 +918,7 @@ class TObjectsManager extends TDataBaseManager {
         }
 
     }
+
 
 }
 
