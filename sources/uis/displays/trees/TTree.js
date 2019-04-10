@@ -20,7 +20,6 @@ export default Vue.component( 'TTree', {
                 <slot name="header"></slot>
             </div>
             <ul v-if="haveItems()" class="tTreeItemChildren">
-            <!--<ul v-if="forceUpdate || haveItems" class="tTreeItemChildren">-->
                 <TTreeItem
                     v-for="item in computedItems"
                     v-bind:key="item.id"
@@ -39,22 +38,9 @@ export default Vue.component( 'TTree', {
             </ul>
         </TContainerVertical>
     `,
-    props:    [ 'items', 'filters', 'sort', 'deepSelect', 'multiSelect', 'needUpdate', 'maxDeepLevel' ],
-    //    data () {
-    //
-    //        return {
-    //            forceUpdate: false
-    //        }
-    //
-    //    },
     computed: {
 
         computedItems () {
-
-            // force update
-            //            if ( this.forceUpdate ) {
-            //                this.forceUpdate = false
-            //            }
 
             let items = this.items || []
 
@@ -69,20 +55,6 @@ export default Vue.component( 'TTree', {
             return items
 
         }
-
-        //        haveItems () {
-        //
-        //            return this.items && this.items.length > 0
-        //
-        //        },
-
-        //        forceUpdate () {
-        //
-        //            if ( this.needUpdate || !this.needUpdate ) {
-        //                this.forceUpdate = true
-        //            }
-        //
-        //        }
 
     },
     methods:  {
