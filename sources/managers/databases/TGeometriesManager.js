@@ -16,7 +16,8 @@
 import {
     isNull,
     isObject,
-    isUndefined
+    isUndefined,
+    isNotBoolean
 }                           from 'itee-validators'
 /* eslint-env browser */
 import {
@@ -69,29 +70,48 @@ import {
     Vector3,
     WireframeGeometry
 }                           from 'three-full'
-import { ResponseType }     from '../../cores/TConstants'
 import { TDataBaseManager } from '../TDataBaseManager'
-import { TErrorManager }    from '../TErrorManager'
-import { TProgressManager } from '../TProgressManager'
 
 class TGeometriesManager extends TDataBaseManager {
 
+    get computeNormals () {
+        return this._computeNormals
+    }
+
+    set computeNormals ( value ) {
+
+        if ( isNull( value ) ) { throw new TypeError( 'Compute normals cannot be null ! Expect a boolean.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Compute normals cannot be undefined ! Expect a boolean.' ) }
+        if ( isNotBoolean( value ) ) { throw new TypeError( `Compute normals cannot be an instance of ${value.constructor.name} ! Expect a boolean.` ) }
+
+        this._computeNormals = value
+    }
+
+    setComputeNormals ( value ) {
+        this.computeNormals = value
+        return this
+    }
+
     /**
      *
-     * @param basePath
-     * @param responseType
-     * @param bunchSize
-     * @param projectionSystem
-     * @param globalScale
-     * @param progressManager
-     * @param errorManager
+     * @param parameters
      */
-    constructor ( basePath = '/geometries', responseType = ResponseType.Json, bunchSize = 500, requestsConcurrency = 6, projectionSystem = 'zBack', globalScale = 1, progressManager = new TProgressManager(), errorManager = new TErrorManager() ) {
+    constructor ( parameters = {} ) {
 
-        super( basePath, responseType, bunchSize, requestsConcurrency, progressManager, errorManager )
+        const _parameters = {
+            ...{
+                basePath:         '/geometries',
+                projectionSystem: 'zBack',
+                globalScale:      1,
+                computeNormals:   true
+            }, ...parameters
+        }
 
-        this.projectionSystem = projectionSystem
-        this.globalScale      = globalScale
+        super( _parameters )
+
+        this.projectionSystem = _parameters.projectionSystem
+        this.globalScale      = _parameters.globalScale
+        this.computeNormals   = _parameters.computeNormals
 
     }
 
@@ -110,13 +130,6 @@ class TGeometriesManager extends TDataBaseManager {
 
     }
 
-    setProjectionSystem ( value ) {
-
-        this.projectionSystem = value
-        return this
-
-    }
-
     get globalScale () {
         return this._globalScale
     }
@@ -127,6 +140,13 @@ class TGeometriesManager extends TDataBaseManager {
         if ( isUndefined( value ) ) { throw new TypeError( 'Global scale cannot be undefined ! Expect a positive number.' ) }
 
         this._globalScale = value
+
+    }
+
+    setProjectionSystem ( value ) {
+
+        this.projectionSystem = value
+        return this
 
     }
 
@@ -187,14 +207,14 @@ class TGeometriesManager extends TDataBaseManager {
         if ( data.isGeometry || geometryType === 'Geometry' ) {
 
             geometry = this._convertJsonToGeometry( data )
-            if ( true /* todo: computeNormals */ ) {
+            if ( this._computeNormals ) {
                 geometry.computeFaceNormals()
             }
 
         } else if ( data.isBufferGeometry || geometryType === 'BufferGeometry' ) {
 
             geometry = this._convertJsonToBufferGeometry( data )
-            if ( true /* todo: computeNormals */ ) {
+            if ( this._computeNormals ) {
                 geometry.computeVertexNormals()
             }
 
