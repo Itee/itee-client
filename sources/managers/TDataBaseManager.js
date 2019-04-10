@@ -304,8 +304,6 @@ class TDataBaseManager {
             const requestSkull = this._requestQueue.pop()
             this._processQueue.push( requestSkull )
 
-            //console.log( 'Process request: ' + requestSkull._id )
-
             const request      = new XMLHttpRequest()
             request.onload     = this._onLoad.bind( this,
                 requestSkull,
