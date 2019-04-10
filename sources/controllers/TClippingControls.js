@@ -8,6 +8,8 @@
  *
  */
 
+/* global Math */
+
 import { Enum } from 'enumify'
 import {
     isArray,
@@ -34,7 +36,6 @@ import {
     MeshBasicMaterial,
     Object3D,
     OctahedronBufferGeometry,
-    OctahedronGeometry,
     OrthographicCamera,
     PerspectiveCamera,
     Plane,
@@ -49,6 +50,18 @@ import {
     Keys,
     Mouse
 }               from '../cores/TConstants'
+
+class LineGeometry extends BufferGeometry {
+
+    constructor () {
+        super()
+
+        this.type = 'LineGeometry'
+        this.addAttribute( 'position', new Float32BufferAttribute( [ 0, 0, 0, 1, 0, 0 ], 3 ) )
+
+    }
+
+}
 
 class ClippingBox extends LineSegments {
 
@@ -221,7 +234,6 @@ class TransformGizmo extends Object3D {
 
     constructor () {
         super()
-
     }
 
     init () {
@@ -273,10 +285,15 @@ class TransformGizmo extends Object3D {
                     const object   = gizmoMap[ name ][ i ][ 0 ]
                     const position = gizmoMap[ name ][ i ][ 1 ]
                     const rotation = gizmoMap[ name ][ i ][ 2 ]
+				    const scale = gizmoMap[ name ][ i ][ 3 ]
+				    const tag = gizmoMap[ name ][ i ][ 4 ]
 
+                    // name and tag properties are essential for picking and updating logic.
                     object.name = name
+				    object.tag = tag
 
-                    object.renderOrder = Infinity // avoid being hidden by other transparent objects
+                    // avoid being hidden by other transparent objects
+                    object.renderOrder = Infinity
 
                     if ( position ) {
                         object.position.set( position[ 0 ], position[ 1 ], position[ 2 ] )
@@ -284,9 +301,22 @@ class TransformGizmo extends Object3D {
                     if ( rotation ) {
                         object.rotation.set( rotation[ 0 ], rotation[ 1 ], rotation[ 2 ] )
                     }
+                    if (scale) {
+                        object.scale.set(scale[ 0 ], scale[ 1 ], scale[ 2 ]);
+                    }
+
+                    object.updateMatrix()
+
+                    // Apply pos, rot and scale to the geometry and reset object
+                    const tempGeometry = object.geometry.clone()
+				    tempGeometry.applyMatrix(object.matrix)
+				    object.geometry = tempGeometry
+
+				    object.position.set( 0, 0, 0 )
+				    object.rotation.set( 0, 0, 0 )
+				    object.scale.set(1, 1, 1)
 
                     parent.add( object )
-
                 }
 
             }
@@ -297,29 +327,26 @@ class TransformGizmo extends Object3D {
         setupGizmos( this.pickerGizmos, this.pickers )
 
         // reset Transformations
+        this.traverse( child => {
 
-        this.traverse( function ( child ) {
+            if( !child.isMesh ) { return }
 
-            if ( child instanceof Mesh ) {
+            child.updateMatrix()
 
-                child.updateMatrix()
+            const tempGeometry = child.geometry.clone()
+            tempGeometry.applyMatrix( child.matrix )
+            child.geometry = tempGeometry
 
-                const tempGeometry = child.geometry.clone()
-                tempGeometry.applyMatrix( child.matrix )
-                child.geometry = tempGeometry
-
-                child.position.set( 0, 0, 0 )
-                child.rotation.set( 0, 0, 0 )
-                child.scale.set( 1, 1, 1 )
-
-            }
+            child.position.set( 0, 0, 0 )
+            child.rotation.set( 0, 0, 0 )
+            child.scale.set( 1, 1, 1 )
 
         } )
 
     }
 
     highlight ( axis ) {
-        this.traverse( function ( child ) {
+        this.traverse( child => {
 
             if ( child.material && child.material.highlight ) {
 
@@ -343,7 +370,7 @@ class TransformGizmo extends Object3D {
         const vec2         = new Vector3( 0, 1, 0 )
         const lookAtMatrix = new Matrix4()
 
-        this.traverse( function ( child ) {
+        this.traverse( child => {
 
             if ( child.name.search( 'E' ) !== -1 ) {
 
@@ -365,101 +392,166 @@ class TransformGizmoTranslate extends TransformGizmo {
     constructor () {
         super()
 
-        const arrowGeometry = new ConeBufferGeometry( 0.05, 0.2, 12, 1, false )
-        arrowGeometry.translate( 0, 0.5, 0 )
+        // Geometries
 
-        const lineXGeometry = new BufferGeometry()
-        lineXGeometry.addAttribute( 'position', new Float32BufferAttribute( [ 0, 0, 0, 1, 0, 0 ], 3 ) )
+        const gizmoArrowGeometry = new ConeBufferGeometry( 0.05, 0.2, 12, 1, false )
+        const gizmoLineGeometry = new LineGeometry()
+        const gizmoPlaneGeometry = new PlaneBufferGeometry( 0.295, 0.295 )
 
-        const lineYGeometry = new BufferGeometry()
-        lineYGeometry.addAttribute( 'position', new Float32BufferAttribute( [ 0, 0, 0, 0, 1, 0 ], 3 ) )
+        // Materials
+        const gizmoMaterial = new MeshBasicMaterial( {
+            depthTest:   false,
+            depthWrite:  false,
+            transparent: true,
+            side:        DoubleSide,
+            fog:         false
+        } )
 
-        const lineZGeometry = new BufferGeometry()
-        lineZGeometry.addAttribute( 'position', new Float32BufferAttribute( [ 0, 0, 0, 0, 0, 1 ], 3 ) )
+        const gizmoLineMaterial = new LineBasicMaterial( {
+            depthTest:   false,
+            depthWrite:  false,
+            transparent: true,
+            linewidth:   1,
+            fog:         false
+        } )
+
+        const matInvisible   = gizmoMaterial.clone()
+        matInvisible.opacity = 0.15
+
+        const matHelper   = gizmoMaterial.clone()
+        matHelper.opacity = 0.33
+
+        const matRed = gizmoMaterial.clone()
+        matRed.color.set( 0xff0000 )
+
+        const matGreen = gizmoMaterial.clone()
+        matGreen.color.set( 0x00ff00 )
+
+        const matBlue = gizmoMaterial.clone()
+        matBlue.color.set( 0x0000ff )
+
+        const matWhiteTransperent   = gizmoMaterial.clone()
+        matWhiteTransperent.opacity = 0.25
+
+        const matYellowTransparent = matWhiteTransperent.clone()
+        matYellowTransparent.color.set( 0xffff00 )
+
+        const matCyanTransparent = matWhiteTransperent.clone()
+        matCyanTransparent.color.set( 0x00ffff )
+
+        const matMagentaTransparent = matWhiteTransperent.clone()
+        matMagentaTransparent.color.set( 0xff00ff )
+
+        const matYellow = gizmoMaterial.clone()
+        matYellow.color.set( 0xffff00 )
+
+        const matLineRed = gizmoLineMaterial.clone()
+        matLineRed.color.set( 0xff0000 )
+
+        const matLineGreen = gizmoLineMaterial.clone()
+        matLineGreen.color.set( 0x00ff00 )
+
+        const matLineBlue = gizmoLineMaterial.clone()
+        matLineBlue.color.set( 0x0000ff )
+
+        const matLineCyan = gizmoLineMaterial.clone()
+        matLineCyan.color.set( 0x00ffff )
+
+        const matLineMagenta = gizmoLineMaterial.clone()
+        matLineMagenta.color.set( 0xff00ff )
+
+        const matLineYellow = gizmoLineMaterial.clone()
+        matLineYellow.color.set( 0xffff00 )
+
+        const matLineGray = gizmoLineMaterial.clone()
+        matLineGray.color.set( 0x787878 )
+
+        const matLineYellowTransparent   = matLineYellow.clone()
+        matLineYellowTransparent.opacity = 0.25
+
+        const pickerMaterial = new GizmoMaterial( {
+            visible:     true,
+            transparent: false,
+            opacity:     0.15
+        } )
 
         this.handleGizmos = {
 
+            // Object / position / rotation / scale / tag
             X: [
-                [ new Mesh( arrowGeometry, new GizmoMaterial( { color: 0xff0000 } ) ), [ 0.5, 0, 0 ], [ 0, 0, -Math.PI / 2 ], null, 'fwd' ],
-                [ new Line( lineYGeometry, new GizmoLineMaterial( { color: 0xff0000 } ) ) ]
+                [ new Mesh( gizmoArrowGeometry, matRed ), [ 1, 0, 0 ], [ 0, 0, -Math.PI / 2 ], null, 'fwd' ],
+                [ new Mesh( gizmoArrowGeometry, matRed ), [ 1, 0, 0 ], [ 0, 0, Math.PI / 2 ], null, 'bwd' ],
+                [ new Line( gizmoLineGeometry, matLineRed ) ]
             ],
 
             Y: [
-                [ new Mesh( arrowGeometry, new GizmoMaterial( { color: 0x00ff00 } ) ), [ 0, 0.5, 0 ], null, null, 'fwd' ],
-                [ new Line( lineYGeometry, new GizmoLineMaterial( { color: 0x00ff00 } ) ) ]
+                [ new Mesh( gizmoArrowGeometry, matGreen ), [ 0, 1, 0 ], null, null, 'fwd' ],
+                [ new Mesh( gizmoArrowGeometry, matGreen ), [ 0, 1, 0 ], [ Math.PI, 0, 0 ], null, 'bwd' ],
+                [ new Line( gizmoLineGeometry, matLineGreen ), null, [ 0, 0, Math.PI / 2 ] ]
             ],
 
             Z: [
-                [ new Mesh( arrowGeometry, new GizmoMaterial( { color: 0x0000ff } ) ), [ 0, 0, 0.5 ], [ Math.PI / 2, 0, 0 ], null, 'fwd' ],
-                [ new Line( lineYGeometry, new GizmoLineMaterial( { color: 0x00ff00 } ) ) ]
-            ],
-
-            XYZ: [
-                [
-                    new Mesh( new OctahedronGeometry( 0.1, 0 ), new GizmoMaterial( {
-                        color:   0xffffff,
-                        opacity: 0.25
-                    } ) ), [ 0, 0, 0 ], [ 0, 0, 0 ]
-                ]
+                [ new Mesh( gizmoArrowGeometry, matBlue ), [ 0, 0, 1 ], [ Math.PI / 2, 0, 0 ], null, 'fwd' ],
+                [ new Mesh( gizmoArrowGeometry, matBlue ), [ 0, 0, 1 ], [ -Math.PI / 2, 0, 0 ], null, 'bwd' ],
+                [ new Line( gizmoLineGeometry, matLineBlue ), null, [ 0, -Math.PI / 2, 0 ] ]
             ],
 
             XY: [
-                [
-                    new Mesh( new PlaneBufferGeometry( 0.29, 0.29 ), new GizmoMaterial( {
-                        color:   0xffff00,
-                        opacity: 0.25
-                    } ) ), [ 0.15, 0.15, 0 ]
-                ]
+                [ new Mesh( gizmoPlaneGeometry, matYellowTransparent ), [ 0.15, 0.15, 0 ] ],
+                [ new Line( gizmoLineGeometry, matLineYellow ), [ 0.18, 0.3, 0 ], null, [ 0.125, 1, 1 ] ],
+                [ new Line( gizmoLineGeometry, matLineYellow ), [ 0.3, 0.18, 0 ], [ 0, 0, Math.PI / 2 ], [ 0.125, 1, 1 ] ]
             ],
 
             YZ: [
-                [
-                    new Mesh( new PlaneBufferGeometry( 0.29, 0.29 ), new GizmoMaterial( {
-                        color:   0x00ffff,
-                        opacity: 0.25
-                    } ) ), [ 0, 0.15, 0.15 ], [ 0, Math.PI / 2, 0 ]
-                ]
+                [ new Mesh( gizmoPlaneGeometry, matCyanTransparent ), [ 0, 0.15, 0.15 ], [ 0, Math.PI / 2, 0 ] ],
+                [ new Line( gizmoLineGeometry, matLineCyan ), [ 0, 0.18, 0.3 ], [ 0, 0, Math.PI / 2 ], [ 0.125, 1, 1 ] ],
+                [ new Line( gizmoLineGeometry, matLineCyan ), [ 0, 0.3, 0.18 ], [ 0, -Math.PI / 2, 0 ], [ 0.125, 1, 1 ] ]
             ],
 
             XZ: [
-                [
-                    new Mesh( new PlaneBufferGeometry( 0.29, 0.29 ), new GizmoMaterial( {
-                        color:   0xff00ff,
-                        opacity: 0.25
-                    } ) ), [ 0.15, 0, 0.15 ], [ -Math.PI / 2, 0, 0 ]
-                ]
+                [ new Mesh( gizmoPlaneGeometry, matMagentaTransparent ), [ 0.15, 0, 0.15 ], [ -Math.PI / 2, 0, 0 ] ],
+                [ new Line( gizmoLineGeometry, matLineMagenta ), [ 0.18, 0, 0.3 ], null, [ 0.125, 1, 1 ] ],
+                [ new Line( gizmoLineGeometry, matLineMagenta ), [ 0.3, 0, 0.18 ], [ 0, -Math.PI / 2, 0 ], [ 0.125, 1, 1 ] ]
+            ],
+
+            XYZ: [
+                [ new Mesh( new OctahedronBufferGeometry( 0.1, 0 ), matWhiteTransperent ), [ 0, 0, 0 ], [ 0, 0, 0 ] ]
             ]
 
         }
 
+        const pickupCylinderGeometry = new CylinderBufferGeometry( 0.2, 0, 1, 4, 1, false )
+        const pickupPlaneGeometry = new PlaneBufferGeometry( 0.4, 0.4 )
+        const pickupOctahedronGeometry = new OctahedronBufferGeometry( 0.2, 0 )
+
         this.pickerGizmos = {
 
             X: [
-                [ new Mesh( new CylinderBufferGeometry( 0.2, 0, 1, 4, 1, false ), pickerMaterial ), [ 0.6, 0, 0 ], [ 0, 0, -Math.PI / 2 ] ]
+                [ new Mesh( pickupCylinderGeometry, matInvisible ), [ 0.6, 0, 0 ], [ 0, 0, -Math.PI / 2 ] ]
             ],
 
             Y: [
-                [ new Mesh( new CylinderBufferGeometry( 0.2, 0, 1, 4, 1, false ), pickerMaterial ), [ 0, 0.6, 0 ] ]
+                [ new Mesh( pickupCylinderGeometry, matInvisible ), [ 0, 0.6, 0 ] ]
             ],
 
             Z: [
-                [ new Mesh( new CylinderBufferGeometry( 0.2, 0, 1, 4, 1, false ), pickerMaterial ), [ 0, 0, 0.6 ], [ Math.PI / 2, 0, 0 ] ]
-            ],
-
-            XYZ: [
-                [ new Mesh( new OctahedronGeometry( 0.2, 0 ), pickerMaterial ) ]
+                [ new Mesh( pickupCylinderGeometry, matInvisible ), [ 0, 0, 0.6 ], [ Math.PI / 2, 0, 0 ] ]
             ],
 
             XY: [
-                [ new Mesh( new PlaneBufferGeometry( 0.4, 0.4 ), pickerMaterial ), [ 0.2, 0.2, 0 ] ]
+                [ new Mesh( pickupPlaneGeometry, matInvisible ), [ 0.2, 0.2, 0 ] ]
             ],
 
             YZ: [
-                [ new Mesh( new PlaneBufferGeometry( 0.4, 0.4 ), pickerMaterial ), [ 0, 0.2, 0.2 ], [ 0, Math.PI / 2, 0 ] ]
+                [ new Mesh( pickupPlaneGeometry, matInvisible ), [ 0, 0.2, 0.2 ], [ 0, Math.PI / 2, 0 ] ]
             ],
 
             XZ: [
-                [ new Mesh( new PlaneBufferGeometry( 0.4, 0.4 ), pickerMaterial ), [ 0.2, 0, 0.2 ], [ -Math.PI / 2, 0, 0 ] ]
+                [ new Mesh( pickupPlaneGeometry, matInvisible ), [ 0.2, 0, 0.2 ], [ -Math.PI / 2, 0, 0 ] ]
+            ],
+
+            XYZ: [
+                [ new Mesh( pickupOctahedronGeometry, matInvisible ) ]
             ]
 
         }
@@ -527,6 +619,12 @@ class TransformGizmoRotate extends TransformGizmo {
 
     constructor () {
         super()
+
+        const pickerMaterial = new GizmoMaterial( {
+            visible:     true,
+            transparent: false,
+            opacity:     0.15
+        } )
 
         const CircleGeometry = ( radius, facing, arc ) => {
 
@@ -688,6 +786,12 @@ class TransformGizmoScale extends TransformGizmo {
     constructor () {
         super()
 
+        const pickerMaterial = new GizmoMaterial( {
+            visible:     true,
+            transparent: false,
+            opacity:     0.15
+        } )
+
         const arrowGeometry = new BoxBufferGeometry( 0.125, 0.125, 0.125 )
         arrowGeometry.translate( 0, 0.5, 0 )
 
@@ -796,12 +900,6 @@ class TClippingSpace extends Enum {}
 
 TClippingSpace.initEnum( [ 'Local', 'World' ] )
 
-let pickerMaterial     = new GizmoMaterial( {
-    visible:     false,
-    transparent: false
-} )
-pickerMaterial.opacity = 0.15
-
 class TClippingControls extends Object3D {
 
     constructor ( camera, domElement = document ) {
@@ -832,6 +930,8 @@ class TClippingControls extends Object3D {
         this.space          = TClippingSpace.World
         this._objectsToClip = null
 
+        this.enabled = false // Should be true by default
+
         this.object          = undefined
         this.translationSnap = null
         this.rotationSnap    = null
@@ -855,6 +955,8 @@ class TClippingControls extends Object3D {
 
         this._events = {
             change:       { type: 'change' },
+            mouseEnter:   { type: 'mouseEnter' },
+            mouseLeave:   { type: 'mouseLeave' },
             mouseDown:    { type: 'mouseDown' },
             mouseUp:      { type: 'mouseUp' },
             objectChange: { type: 'objectChange' }
@@ -1043,6 +1145,7 @@ class TClippingControls extends Object3D {
         this._domElement.addEventListener( 'touchstart', this._handlers.onTouchStart, {capture: true, once: false, passive: false} )
 
 
+/*
         this.domElement.addEventListener( 'mousedown', this.onPointerDown.bind( this ), false )
         this.domElement.addEventListener( 'mousemove', this.onPointerHover.bind( this ), false )
         this.domElement.addEventListener( 'mouseout', this.onPointerUp.bind( this ), false )
@@ -1054,6 +1157,7 @@ class TClippingControls extends Object3D {
         this.domElement.addEventListener( 'touchmove', this.onPointerHover.bind( this ), false )
         this.domElement.addEventListener( 'touchmove', this.onPointerMove.bind( this ), false )
         this.domElement.addEventListener( 'touchstart', this.onPointerDown.bind( this ), false )
+*/
 
 
         this.dispatchEvent( { type: 'impose' } )
@@ -1078,6 +1182,7 @@ class TClippingControls extends Object3D {
         this._domElement.removeEventListener( 'touchstart', this._handlers.onTouchStart, {capture: true, once: false, passive: false} )
 
 
+/*
         this.domElement.removeEventListener( 'mousedown', this.onPointerDown.bind( this ), false )
         this.domElement.removeEventListener( 'mousemove', this.onPointerHover.bind( this ), false )
         this.domElement.removeEventListener( 'mouseout', this.onPointerUp.bind( this ), false )
@@ -1089,12 +1194,14 @@ class TClippingControls extends Object3D {
         this.domElement.removeEventListener( 'touchmove', this.onPointerHover.bind( this ), false )
         this.domElement.removeEventListener( 'touchmove', this.onPointerMove.bind( this ), false )
         this.domElement.removeEventListener( 'touchstart', this.onPointerDown.bind( this ), false )
+*/
 
 
         this.dispatchEvent( { type: 'dispose' } )
 
     }
 
+/*
     attach ( object ) {
         this.object  = object
         this.visible = true
@@ -1106,6 +1213,7 @@ class TClippingControls extends Object3D {
         this.visible = false
         this.axis    = null
     }
+*/
 
     setTranslationSnap ( translationSnap ) {
         this.translationSnap = translationSnap
@@ -1208,7 +1316,7 @@ class TClippingControls extends Object3D {
     // Keyboard
     _onKeyDown ( keyEvent ) {
 
-        if ( !this.enabled || keyEvent.defaultPrevented ) { return }
+        if ( !this.enabled ) { return }
         keyEvent.preventDefault()
 
         // Todo: Allow external keymapping like in TCameraControls
@@ -1221,7 +1329,7 @@ class TClippingControls extends Object3D {
 
             case Keys.CTRL.value:
                 this.setTranslationSnap( 100 )
-                this.setRotationSnap( Math.degToRad( 15 ) )
+                this.setRotationSnap( 15 * (Math.PI / 180) )
                 this._consumeEvent( keyEvent )
                 break
 
@@ -1283,7 +1391,44 @@ class TClippingControls extends Object3D {
         if ( !this.enabled  ) { return }
         mouseEvent.preventDefault()
 
-        // Todo...
+        if ( this._dragging === true ) { return }
+        if ( this._mode === TClippingModes.None ) { return }
+        if ( mouseEvent.button !== Mouse.LEFT.value ) { return }
+
+        const intersect = this.intersectObjects( mouseEvent, this._currentGizmo.pickers.children )
+        if ( intersect ) {
+
+            mouseEvent.preventDefault()
+            this._consumeEvent( mouseEvent )
+
+            this.axis = intersect.object.name
+
+            this.update()
+
+            this._eye.copy( this._cameraPosition ).sub( this._worldPosition ).normalize()
+
+            this._currentGizmo.setActivePlane( this.axis, this._eye )
+
+            const planeIntersect = this.intersectObjects( mouseEvent, [ this._currentGizmo.activePlane ] )
+            if ( planeIntersect ) {
+
+                this._oldPosition.copy( this.position )
+                this._oldScale.copy( this._clippingBox.scale )
+
+                this._oldRotationMatrix.extractRotation( this.matrix )
+                this._worldRotationMatrix.extractRotation( this.matrixWorld )
+
+                this._parentRotationMatrix.extractRotation( this.parent.matrixWorld )
+                this._parentScale.setFromMatrixScale( this._tempMatrix.getInverse( this.parent.matrixWorld ) )
+
+                this._offset.copy( planeIntersect.point )
+
+            }
+
+        }
+
+        this._dragging = true
+        this.dispatchEvent( this._events.mouseDown )
 
     }
 
@@ -1316,16 +1461,302 @@ class TClippingControls extends Object3D {
         if ( !this.enabled ) { return }
         mouseEvent.preventDefault()
 
-        // Todo...
+        // Check for hovering or not
+        if ( this._dragging === false ) {
+
+            const intersect = this.intersectObjects( event, this._currentGizmo.pickers.children )
+            let axis = null
+
+            if ( intersect ) {
+
+                axis = intersect.object.name
+
+                this._consumeEvent( mouseEvent )
+                this.dispatchEvent( this._events.mouseEnter )
+
+            } else {
+
+                this.dispatchEvent( this._events.mouseLeave )
+
+            }
+
+            if ( this.axis !== axis ) {
+
+                this.axis = axis
+                this.update()
+
+            }
+
+        } else {
+
+            if ( this.axis === null ) { return }
+            if ( event.button !== Mouse.LEFT.value ) { return }
+
+            /// onMove
+            const planeIntersect = this.intersectObjects( event, [ this._currentGizmo.activePlane ] )
+            if ( planeIntersect === false ) { return }
+
+            event.preventDefault()
+            this._consumeEvent( event )
+
+            this._point.copy( planeIntersect.point )
+
+            if ( this._mode === TClippingModes.Translate ) {
+
+                this._point.sub( this._offset )
+                this._point.multiply( this._parentScale )
+
+                if ( this._space === TClippingSpace.Local ) {
+
+                    this._point.applyMatrix4( this._tempMatrix.getInverse( this._worldRotationMatrix ) )
+
+                    if ( this.axis.search( 'X' ) === -1 ) {
+                        this._point.x = 0
+                    }
+                    if ( this.axis.search( 'Y' ) === -1 ) {
+                        this._point.y = 0
+                    }
+                    if ( this.axis.search( 'Z' ) === -1 ) {
+                        this._point.z = 0
+                    }
+
+                    this._point.applyMatrix4( this._oldRotationMatrix )
+
+                    this._worldPosition.copy( this._oldPosition )
+                    this._worldPosition.add( this._point )
+
+                }
+
+                if ( this._space === TClippingSpace.World || this.axis.search( 'XYZ' ) !== -1 ) {
+
+                    if ( this.axis.search( 'X' ) === -1 ) {
+                        this._point.x = 0
+                    }
+                    if ( this.axis.search( 'Y' ) === -1 ) {
+                        this._point.y = 0
+                    }
+                    if ( this.axis.search( 'Z' ) === -1 ) {
+                        this._point.z = 0
+                    }
+
+                    this._point.applyMatrix4( this._tempMatrix.getInverse( this._parentRotationMatrix ) )
+
+                    this.position.copy( this._oldPosition )
+                    this.position.add( this._point )
+
+                }
+
+                if ( this.translationSnap !== null ) {
+
+                    if ( this._space === TClippingSpace.Local ) {
+
+                        this.position.applyMatrix4( this._tempMatrix.getInverse( this._worldRotationMatrix ) )
+
+                    }
+
+                    if ( this.axis.search( 'X' ) !== -1 ) {
+                        this.position.x = Math.round( this.position.x / this.translationSnap ) * this.translationSnap
+                    }
+                    if ( this.axis.search( 'Y' ) !== -1 ) {
+                        this.position.y = Math.round( this.position.y / this.translationSnap ) * this.translationSnap
+                    }
+                    if ( this.axis.search( 'Z' ) !== -1 ) {
+                        this.position.z = Math.round( this.position.z / this.translationSnap ) * this.translationSnap
+                    }
+
+                    if ( this._space === TClippingSpace.Local ) {
+
+                        this.position.applyMatrix4( this._worldRotationMatrix )
+
+                    }
+
+                }
+
+            } else if ( this._mode === TClippingModes.Scale ) {
+
+                this._point.sub( this._offset )
+                this._point.multiply( this._parentScale )
+
+                if ( this._space === TClippingSpace.Local ) {
+
+                    if ( this.axis === 'XYZ' ) {
+
+                        this._scale = 1 + ( ( this._point.y ) / Math.max( this._oldScale.x, this._oldScale.y, this._oldScale.z ) )
+
+                        this._clippingBox.scale.x = this._oldScale.x * this._scale
+                        this._clippingBox.scale.y = this._oldScale.y * this._scale
+                        this._clippingBox.scale.z = this._oldScale.z * this._scale
+
+                    } else {
+
+                        this._point.applyMatrix4( this._tempMatrix.getInverse( this._worldRotationMatrix ) )
+
+                        if ( this.axis === 'X' ) {
+                            this._clippingBox.scale.x = this._oldScale.x * ( 1 + this._point.x / this._oldScale.x )
+                        }
+                        if ( this.axis === 'Y' ) {
+                            this._clippingBox.scale.y = this._oldScale.y * ( 1 + this._point.y / this._oldScale.y )
+                        }
+                        if ( this.axis === 'Z' ) {
+                            this._clippingBox.scale.z = this._oldScale.z * ( 1 + this._point.z / this._oldScale.z )
+                        }
+
+                    }
+
+                }
+
+            } else if ( this._mode === TClippingModes.Rotate ) {
+
+                this._point.sub( this._worldPosition )
+                this._point.multiply( this._parentScale )
+                this._tempVector.copy( this._offset ).sub( this._worldPosition )
+                this._tempVector.multiply( this._parentScale )
+
+                if ( this.axis === 'E' ) {
+
+                    this._point.applyMatrix4( this._tempMatrix.getInverse( this._lookAtMatrix ) )
+                    this._tempVector.applyMatrix4( this._tempMatrix.getInverse( this._lookAtMatrix ) )
+
+                    this._rotation.set( Math.atan2( this._point.z, this._point.y ), Math.atan2( this._point.x, this._point.z ), Math.atan2( this._point.y, this._point.x ) )
+                    this._offsetRotation.set( Math.atan2( this._tempVector.z, this._tempVector.y ), Math.atan2( this._tempVector.x, this._tempVector.z ), Math.atan2( this._tempVector.y, this._tempVector.x ) )
+
+                    this._tempQuaternion.setFromRotationMatrix( this._tempMatrix.getInverse( this._parentRotationMatrix ) )
+
+                    this._quaternionE.setFromAxisAngle( this._eye, this._rotation.z - this._offsetRotation.z )
+                    this._quaternionXYZ.setFromRotationMatrix( this._worldRotationMatrix )
+
+                    this._tempQuaternion.multiplyQuaternions( this._tempQuaternion, this._quaternionE )
+                    this._tempQuaternion.multiplyQuaternions( this._tempQuaternion, this._quaternionXYZ )
+
+                    this.quaternion.copy( this._tempQuaternion )
+
+                } else if ( this.axis === 'XYZE' ) {
+
+                    this._quaternionE.setFromEuler( this._point.clone().cross( this._tempVector ).normalize() ) // rotation axis
+
+                    this._tempQuaternion.setFromRotationMatrix( this._tempMatrix.getInverse( this._parentRotationMatrix ) )
+                    this._quaternionX.setFromAxisAngle( this._quaternionE, -this._point.clone().angleTo( this._tempVector ) )
+                    this._quaternionXYZ.setFromRotationMatrix( this._worldRotationMatrix )
+
+                    this._tempQuaternion.multiplyQuaternions( this._tempQuaternion, this._quaternionX )
+                    this._tempQuaternion.multiplyQuaternions( this._tempQuaternion, this._quaternionXYZ )
+
+                    this.quaternion.copy( this._tempQuaternion )
+
+                } else if ( this._space === TClippingSpace.Local ) {
+
+                    this._point.applyMatrix4( this._tempMatrix.getInverse( this._worldRotationMatrix ) )
+
+                    this._tempVector.applyMatrix4( this._tempMatrix.getInverse( this._worldRotationMatrix ) )
+
+                    this._rotation.set( Math.atan2( this._point.z, this._point.y ), Math.atan2( this._point.x, this._point.z ), Math.atan2( this._point.y, this._point.x ) )
+                    this._offsetRotation.set( Math.atan2( this._tempVector.z, this._tempVector.y ), Math.atan2( this._tempVector.x, this._tempVector.z ), Math.atan2( this._tempVector.y, this._tempVector.x ) )
+
+                    this._quaternionXYZ.setFromRotationMatrix( this._oldRotationMatrix )
+
+                    if ( this.rotationSnap !== null ) {
+
+                        this._quaternionX.setFromAxisAngle( this._unitX, Math.round( ( this._rotation.x - this._offsetRotation.x ) / this.rotationSnap ) * this.rotationSnap )
+                        this._quaternionY.setFromAxisAngle( this._unitY, Math.round( ( this._rotation.y - this._offsetRotation.y ) / this.rotationSnap ) * this.rotationSnap )
+                        this._quaternionZ.setFromAxisAngle( this._unitZ, Math.round( ( this._rotation.z - this._offsetRotation.z ) / this.rotationSnap ) * this.rotationSnap )
+
+                    } else {
+
+                        this._quaternionX.setFromAxisAngle( this._unitX, this._rotation.x - this._offsetRotation.x )
+                        this._quaternionY.setFromAxisAngle( this._unitY, this._rotation.y - this._offsetRotation.y )
+                        this._quaternionZ.setFromAxisAngle( this._unitZ, this._rotation.z - this._offsetRotation.z )
+
+                    }
+
+                    if ( this.axis === 'X' ) {
+                        this._quaternionXYZ.multiplyQuaternions( this._quaternionXYZ, this._quaternionX )
+                    }
+                    if ( this.axis === 'Y' ) {
+                        this._quaternionXYZ.multiplyQuaternions( this._quaternionXYZ, this._quaternionY )
+                    }
+                    if ( this.axis === 'Z' ) {
+                        this._quaternionXYZ.multiplyQuaternions( this._quaternionXYZ, this._quaternionZ )
+                    }
+
+                    this.quaternion.copy( this._quaternionXYZ )
+
+                } else if ( this._space === TClippingSpace.World ) {
+
+                    this._rotation.set( Math.atan2( this._point.z, this._point.y ), Math.atan2( this._point.x, this._point.z ), Math.atan2( this._point.y, this._point.x ) )
+                    this._offsetRotation.set( Math.atan2( this._tempVector.z, this._tempVector.y ), Math.atan2( this._tempVector.x, this._tempVector.z ), Math.atan2( this._tempVector.y, this._tempVector.x ) )
+
+                    this._tempQuaternion.setFromRotationMatrix( this._tempMatrix.getInverse( this._parentRotationMatrix ) )
+
+                    if ( this.rotationSnap !== null ) {
+
+                        this._quaternionX.setFromAxisAngle( this._unitX, Math.round( ( this._rotation.x - this._offsetRotation.x ) / this.rotationSnap ) * this.rotationSnap )
+                        this._quaternionY.setFromAxisAngle( this._unitY, Math.round( ( this._rotation.y - this._offsetRotation.y ) / this.rotationSnap ) * this.rotationSnap )
+                        this._quaternionZ.setFromAxisAngle( this._unitZ, Math.round( ( this._rotation.z - this._offsetRotation.z ) / this.rotationSnap ) * this.rotationSnap )
+
+                    } else {
+
+                        this._quaternionX.setFromAxisAngle( this._unitX, this._rotation.x - this._offsetRotation.x )
+                        this._quaternionY.setFromAxisAngle( this._unitY, this._rotation.y - this._offsetRotation.y )
+                        this._quaternionZ.setFromAxisAngle( this._unitZ, this._rotation.z - this._offsetRotation.z )
+
+                    }
+
+                    this._quaternionXYZ.setFromRotationMatrix( this._worldRotationMatrix )
+
+                    if ( this.axis === 'X' ) {
+                        this._tempQuaternion.multiplyQuaternions( this._tempQuaternion, this._quaternionX )
+                    }
+                    if ( this.axis === 'Y' ) {
+                        this._tempQuaternion.multiplyQuaternions( this._tempQuaternion, this._quaternionY )
+                    }
+                    if ( this.axis === 'Z' ) {
+                        this._tempQuaternion.multiplyQuaternions( this._tempQuaternion, this._quaternionZ )
+                    }
+
+                    this._tempQuaternion.multiplyQuaternions( this._tempQuaternion, this._quaternionXYZ )
+
+                    this.quaternion.copy( this._tempQuaternion )
+
+                }
+
+            }
+
+            this.update()
+            this.dispatchEvent( this._events.objectChange )
+
+        }
 
     }
 
     _onMouseUp ( mouseEvent ) {
 
         if ( !this.enabled  ) { return }
+        if ( event.button !== Mouse.LEFT.value ) {
+            return
+        }
+
         mouseEvent.preventDefault()
 
-        // Todo...
+        if ( this._dragging && ( this.axis !== null ) ) {
+
+            this.dispatchEvent( this._events.mouseUp )
+
+        }
+
+        this._dragging = false
+
+        if ( 'TouchEvent' in window && event instanceof TouchEvent ) {
+
+            // Force "rollover"
+
+            this.axis = null
+            this.update()
+
+        } else {
+
+            this._onMouseMove( event )
+
+        }
 
     }
 
@@ -1384,362 +1815,10 @@ class TClippingControls extends Object3D {
 
     }
 
-    onPointerHover ( event ) {
-
-        if ( this.object === undefined || this._dragging === true || ( event.button !== undefined && event.button !== Mouse.LEFT ) ) {
-            return
-        }
-        const pointer = event.changedTouches ? event.changedTouches[ 0 ] : event
-
-        const intersect = this.intersectObjects( pointer, this._currentGizmo.pickers.children )
-
-        let axis = null
-
-        if ( intersect ) {
-
-            axis = intersect.object.name
-
-            event.preventDefault()
-
-        }
-
-        if ( this.axis !== axis ) {
-
-            this.axis = axis
-            this.update()
-
-        }
-
-    }
-
-    onPointerDown ( event ) {
-
-//        if ( isNotDefined( this.object ) ) { return }
-        if ( this._dragging === true ) { return }
-        if ( this._mode === TClippingModes.None ) { return }
-
-        if ( ( event.button !== undefined && event.button !== Mouse.LEFT ) ) {
-            return
-        }
-
-        const pointer = event.changedTouches ? event.changedTouches[ 0 ] : event
-
-        if ( pointer.button === Mouse.LEFT || pointer.button === undefined ) {
-
-            const intersect = this.intersectObjects( pointer, this._currentGizmo.pickers.children )
-            if ( intersect ) {
-
-                event.preventDefault()
-                this._consumeEvent( event )
-
-                this.axis = intersect.object.name
-
-                this.update()
-                this.dispatchEvent( this._events.mouseDown )
-
-                this._eye.copy( this._cameraPosition ).sub( this._worldPosition ).normalize()
-
-                this._currentGizmo.setActivePlane( this.axis, this._eye )
-
-                const planeIntersect = this.intersectObjects( pointer, [ this._currentGizmo.activePlane ] )
-
-                if ( planeIntersect ) {
-
-                    this._oldPosition.copy( this.object.position )
-                    this._oldScale.copy( this.object.scale )
-
-                    this._oldRotationMatrix.extractRotation( this.object.matrix )
-                    this._worldRotationMatrix.extractRotation( this.object.matrixWorld )
-
-                    this._parentRotationMatrix.extractRotation( this.object.parent.matrixWorld )
-                    this._parentScale.setFromMatrixScale( this._tempMatrix.getInverse( this.object.parent.matrixWorld ) )
-
-                    this._offset.copy( planeIntersect.point )
-
-                }
-
-            }
-
-        }
-        this._dragging = true
-
-    }
-
-    onPointerMove ( event ) {
-
-        if ( this.axis === null || this._dragging === false || ( event.button !== undefined && event.button !== 0 ) ) {
-//        if ( this.object === undefined || this.axis === null || this._dragging === false || ( event.button !== undefined && event.button !== 0 ) ) {
-            return
-        }
-
-        const pointer = event.changedTouches ? event.changedTouches[ 0 ] : event
-
-        const planeIntersect = this.intersectObjects( pointer, [ this._currentGizmo.activePlane ] )
-
-        if ( planeIntersect === false ) {
-            return
-        }
-
-        event.preventDefault()
-        this._consumeEvent( event )
-
-        this._point.copy( planeIntersect.point )
-
-        if ( this._mode === TClippingModes.Translate ) {
-
-            this._point.sub( this._offset )
-            this._point.multiply( this._parentScale )
-
-            if ( this._space === TClippingSpace.Local ) {
-
-                this._point.applyMatrix4( this._tempMatrix.getInverse( this._worldRotationMatrix ) )
-
-                if ( this.axis.search( 'X' ) === -1 ) {
-                    this._point.x = 0
-                }
-                if ( this.axis.search( 'Y' ) === -1 ) {
-                    this._point.y = 0
-                }
-                if ( this.axis.search( 'Z' ) === -1 ) {
-                    this._point.z = 0
-                }
-
-                this._point.applyMatrix4( this._oldRotationMatrix )
-
-                this.object.position.copy( this._oldPosition )
-                this.object.position.add( this._point )
-
-            }
-
-            if ( this._space === TClippingSpace.World || this.axis.search( 'XYZ' ) !== -1 ) {
-
-                if ( this.axis.search( 'X' ) === -1 ) {
-                    this._point.x = 0
-                }
-                if ( this.axis.search( 'Y' ) === -1 ) {
-                    this._point.y = 0
-                }
-                if ( this.axis.search( 'Z' ) === -1 ) {
-                    this._point.z = 0
-                }
-
-                this._point.applyMatrix4( this._tempMatrix.getInverse( this._parentRotationMatrix ) )
-
-                this.object.position.copy( this._oldPosition )
-                this.object.position.add( this._point )
-
-            }
-
-            if ( this.translationSnap !== null ) {
-
-                if ( this._space === TClippingSpace.Local ) {
-
-                    this.object.position.applyMatrix4( this._tempMatrix.getInverse( this._worldRotationMatrix ) )
-
-                }
-
-                if ( this.axis.search( 'X' ) !== -1 ) {
-                    this.object.position.x = Math.round( this.object.position.x / this.translationSnap ) * this.translationSnap
-                }
-                if ( this.axis.search( 'Y' ) !== -1 ) {
-                    this.object.position.y = Math.round( this.object.position.y / this.translationSnap ) * this.translationSnap
-                }
-                if ( this.axis.search( 'Z' ) !== -1 ) {
-                    this.object.position.z = Math.round( this.object.position.z / this.translationSnap ) * this.translationSnap
-                }
-
-                if ( this._space === TClippingSpace.Local ) {
-
-                    this.object.position.applyMatrix4( this._worldRotationMatrix )
-
-                }
-
-            }
-
-        } else if ( this._mode === TClippingModes.Scale ) {
-
-            this._point.sub( this._offset )
-            this._point.multiply( this._parentScale )
-
-            if ( this._space === TClippingSpace.Local ) {
-
-                if ( this.axis === 'XYZ' ) {
-
-                    this._scale = 1 + ( ( this._point.y ) / Math.max( this._oldScale.x, this._oldScale.y, this._oldScale.z ) )
-
-                    this.object.scale.x = this._oldScale.x * this._scale
-                    this.object.scale.y = this._oldScale.y * this._scale
-                    this.object.scale.z = this._oldScale.z * this._scale
-
-                } else {
-
-                    this._point.applyMatrix4( this._tempMatrix.getInverse( this._worldRotationMatrix ) )
-
-                    if ( this.axis === 'X' ) {
-                        this.object.scale.x = this._oldScale.x * ( 1 + this._point.x / this._oldScale.x )
-                    }
-                    if ( this.axis === 'Y' ) {
-                        this.object.scale.y = this._oldScale.y * ( 1 + this._point.y / this._oldScale.y )
-                    }
-                    if ( this.axis === 'Z' ) {
-                        this.object.scale.z = this._oldScale.z * ( 1 + this._point.z / this._oldScale.z )
-                    }
-
-                }
-
-            }
-
-        } else if ( this._mode === TClippingModes.Rotate ) {
-
-            this._point.sub( this._worldPosition )
-            this._point.multiply( this._parentScale )
-            this._tempVector.copy( this._offset ).sub( this._worldPosition )
-            this._tempVector.multiply( this._parentScale )
-
-            if ( this.axis === 'E' ) {
-
-                this._point.applyMatrix4( this._tempMatrix.getInverse( this._lookAtMatrix ) )
-                this._tempVector.applyMatrix4( this._tempMatrix.getInverse( this._lookAtMatrix ) )
-
-                this._rotation.set( Math.atan2( this._point.z, this._point.y ), Math.atan2( this._point.x, this._point.z ), Math.atan2( this._point.y, this._point.x ) )
-                this._offsetRotation.set( Math.atan2( this._tempVector.z, this._tempVector.y ), Math.atan2( this._tempVector.x, this._tempVector.z ), Math.atan2( this._tempVector.y, this._tempVector.x ) )
-
-                this._tempQuaternion.setFromRotationMatrix( this._tempMatrix.getInverse( this._parentRotationMatrix ) )
-
-                this._quaternionE.setFromAxisAngle( this._eye, this._rotation.z - this._offsetRotation.z )
-                this._quaternionXYZ.setFromRotationMatrix( this._worldRotationMatrix )
-
-                this._tempQuaternion.multiplyQuaternions( this._tempQuaternion, this._quaternionE )
-                this._tempQuaternion.multiplyQuaternions( this._tempQuaternion, this._quaternionXYZ )
-
-                this.object.quaternion.copy( this._tempQuaternion )
-
-            } else if ( this.axis === 'XYZE' ) {
-
-                this._quaternionE.setFromEuler( this._point.clone().cross( this._tempVector ).normalize() ) // rotation axis
-
-                this._tempQuaternion.setFromRotationMatrix( this._tempMatrix.getInverse( this._parentRotationMatrix ) )
-                this._quaternionX.setFromAxisAngle( this._quaternionE, -this._point.clone().angleTo( this._tempVector ) )
-                this._quaternionXYZ.setFromRotationMatrix( this._worldRotationMatrix )
-
-                this._tempQuaternion.multiplyQuaternions( this._tempQuaternion, this._quaternionX )
-                this._tempQuaternion.multiplyQuaternions( this._tempQuaternion, this._quaternionXYZ )
-
-                this.object.quaternion.copy( this._tempQuaternion )
-
-            } else if ( this._space === TClippingSpace.Local ) {
-
-                this._point.applyMatrix4( this._tempMatrix.getInverse( this._worldRotationMatrix ) )
-
-                this._tempVector.applyMatrix4( this._tempMatrix.getInverse( this._worldRotationMatrix ) )
-
-                this._rotation.set( Math.atan2( this._point.z, this._point.y ), Math.atan2( this._point.x, this._point.z ), Math.atan2( this._point.y, this._point.x ) )
-                this._offsetRotation.set( Math.atan2( this._tempVector.z, this._tempVector.y ), Math.atan2( this._tempVector.x, this._tempVector.z ), Math.atan2( this._tempVector.y, this._tempVector.x ) )
-
-                this._quaternionXYZ.setFromRotationMatrix( this._oldRotationMatrix )
-
-                if ( this.rotationSnap !== null ) {
-
-                    this._quaternionX.setFromAxisAngle( this._unitX, Math.round( ( this._rotation.x - this._offsetRotation.x ) / this.rotationSnap ) * this.rotationSnap )
-                    this._quaternionY.setFromAxisAngle( this._unitY, Math.round( ( this._rotation.y - this._offsetRotation.y ) / this.rotationSnap ) * this.rotationSnap )
-                    this._quaternionZ.setFromAxisAngle( this._unitZ, Math.round( ( this._rotation.z - this._offsetRotation.z ) / this.rotationSnap ) * this.rotationSnap )
-
-                } else {
-
-                    this._quaternionX.setFromAxisAngle( this._unitX, this._rotation.x - this._offsetRotation.x )
-                    this._quaternionY.setFromAxisAngle( this._unitY, this._rotation.y - this._offsetRotation.y )
-                    this._quaternionZ.setFromAxisAngle( this._unitZ, this._rotation.z - this._offsetRotation.z )
-
-                }
-
-                if ( this.axis === 'X' ) {
-                    this._quaternionXYZ.multiplyQuaternions( this._quaternionXYZ, this._quaternionX )
-                }
-                if ( this.axis === 'Y' ) {
-                    this._quaternionXYZ.multiplyQuaternions( this._quaternionXYZ, this._quaternionY )
-                }
-                if ( this.axis === 'Z' ) {
-                    this._quaternionXYZ.multiplyQuaternions( this._quaternionXYZ, this._quaternionZ )
-                }
-
-                this.object.quaternion.copy( this._quaternionXYZ )
-
-            } else if ( this._space === TClippingSpace.World ) {
-
-                this._rotation.set( Math.atan2( this._point.z, this._point.y ), Math.atan2( this._point.x, this._point.z ), Math.atan2( this._point.y, this._point.x ) )
-                this._offsetRotation.set( Math.atan2( this._tempVector.z, this._tempVector.y ), Math.atan2( this._tempVector.x, this._tempVector.z ), Math.atan2( this._tempVector.y, this._tempVector.x ) )
-
-                this._tempQuaternion.setFromRotationMatrix( this._tempMatrix.getInverse( this._parentRotationMatrix ) )
-
-                if ( this.rotationSnap !== null ) {
-
-                    this._quaternionX.setFromAxisAngle( this._unitX, Math.round( ( this._rotation.x - this._offsetRotation.x ) / this.rotationSnap ) * this.rotationSnap )
-                    this._quaternionY.setFromAxisAngle( this._unitY, Math.round( ( this._rotation.y - this._offsetRotation.y ) / this.rotationSnap ) * this.rotationSnap )
-                    this._quaternionZ.setFromAxisAngle( this._unitZ, Math.round( ( this._rotation.z - this._offsetRotation.z ) / this.rotationSnap ) * this.rotationSnap )
-
-                } else {
-
-                    this._quaternionX.setFromAxisAngle( this._unitX, this._rotation.x - this._offsetRotation.x )
-                    this._quaternionY.setFromAxisAngle( this._unitY, this._rotation.y - this._offsetRotation.y )
-                    this._quaternionZ.setFromAxisAngle( this._unitZ, this._rotation.z - this._offsetRotation.z )
-
-                }
-
-                this._quaternionXYZ.setFromRotationMatrix( this._worldRotationMatrix )
-
-                if ( this.axis === 'X' ) {
-                    this._tempQuaternion.multiplyQuaternions( this._tempQuaternion, this._quaternionX )
-                }
-                if ( this.axis === 'Y' ) {
-                    this._tempQuaternion.multiplyQuaternions( this._tempQuaternion, this._quaternionY )
-                }
-                if ( this.axis === 'Z' ) {
-                    this._tempQuaternion.multiplyQuaternions( this._tempQuaternion, this._quaternionZ )
-                }
-
-                this._tempQuaternion.multiplyQuaternions( this._tempQuaternion, this._quaternionXYZ )
-
-                this.object.quaternion.copy( this._tempQuaternion )
-
-            }
-
-        }
-
-        this.update()
-        this.dispatchEvent( this._events.objectChange )
-    }
-
-    onPointerUp ( event ) {
-
-        if ( event.button !== undefined && event.button !== 0 ) {
-            return
-        }
-
-        if ( this._dragging && ( this.axis !== null ) ) {
-
-            this.dispatchEvent( this._events.mouseUp )
-
-        }
-
-        this._dragging = false
-
-        if ( 'TouchEvent' in window && event instanceof TouchEvent ) {
-
-            // Force "rollover"
-
-            this.axis = null
-            this.update()
-
-        } else {
-
-            this.onPointerHover( event )
-
-        }
-
-    }
-
+    /// Utils
     intersectObjects ( pointer, objects ) {
-        const rect = this.domElement.getBoundingClientRect()
+
+        const rect = this._domElement.getBoundingClientRect()
         const x    = ( pointer.clientX - rect.left ) / rect.width
         const y    = ( pointer.clientY - rect.top ) / rect.height
 
@@ -1748,6 +1827,7 @@ class TClippingControls extends Object3D {
 
         const intersections = this._ray.intersectObjects( objects, true )
         return intersections[ 0 ] ? intersections[ 0 ] : false
+
     }
 
 }
