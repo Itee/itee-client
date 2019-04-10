@@ -91,21 +91,29 @@ class TDataBaseManager {
 
     /**
      *
-     * @param basePath
-     * @param responseType
-     * @param bunchSize
-     * @param requestsConcurrency
-     * @param progressManager
-     * @param errorManager
+     * @param parameters
      */
-    constructor ( basePath = '/', responseType = ResponseType.Json, bunchSize = 500, requestsConcurrency = 6, progressManager = new TProgressManager(), errorManager = new TErrorManager() ) {
+    constructor ( parameters = {} ) {
 
-        this.basePath            = basePath
-        this.responseType        = responseType
-        this.bunchSize           = bunchSize
-        this.requestsConcurrency = requestsConcurrency
-        this.progressManager     = progressManager
-        this.errorManager        = errorManager
+        const _parameters = {
+            ...{
+                basePath:               '/',
+                responseType:           ResponseType.Json,
+                bunchSize:              500,
+                requestAggregationTime: 200,
+                requestsConcurrency:    6,
+                progressManager:        new TProgressManager(),
+                errorManager:           new TErrorManager()
+            }, ...parameters
+        }
+
+        this.basePath               = _parameters.basePath
+        this.responseType           = _parameters.responseType
+        this.bunchSize              = _parameters.bunchSize
+        this.requestAggregationTime = _parameters.requestAggregationTime
+        this.requestsConcurrency    = _parameters.requestsConcurrency
+        this.progressManager        = _parameters.progressManager
+        this.errorManager           = _parameters.errorManager
 
         this._cache        = new TStore()
         this._waitingQueue = []
@@ -177,6 +185,39 @@ class TDataBaseManager {
     setBunchSize ( value ) {
 
         this.bunchSize = value
+        return this
+
+    }
+
+    get requestAggregationTime () {
+        return this._requestsAggregationTime
+    }
+
+    set requestAggregationTime ( value ) {
+
+        if ( isNull( value ) ) {
+            throw new TypeError( 'Requests aggregation time cannot be null ! Expect a positive number.' )
+        }
+
+        if ( isUndefined( value ) ) {
+            throw new TypeError( 'Requests aggregation time cannot be undefined ! Expect a positive number.' )
+        }
+
+        if ( isNotNumber( value ) ) {
+            throw new TypeError( `Requests aggregation time cannot be an instance of ${value.constructor.name} ! Expect a positive number.` )
+        }
+
+        if ( isNumberNegative( value ) ) {
+            throw new TypeError( 'Requests aggregation time cannot be lower or equal to zero ! Expect a positive number.' )
+        }
+
+        this._requestsAggregationTime = value
+
+    }
+
+    setRequestAggregationTime ( value ) {
+
+        this.requestAggregationTime = value
         return this
 
     }
