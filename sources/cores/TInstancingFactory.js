@@ -23,7 +23,7 @@ class TInstancingFactory extends TAbtractFactory {
     create ( key, ...parameters ) {
         super.create( key, ...parameters )
 
-        return new this.getItem( key )( ...parameters )
+        return new this.get( key )( ...parameters )
 
     }
 

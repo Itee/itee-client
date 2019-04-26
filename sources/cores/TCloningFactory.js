@@ -23,7 +23,7 @@ class TCloningFactory extends TAbtractFactory {
     create ( key, ...parameters ) {
         super.create( key, ...parameters )
 
-        return this.getItem( key ).clone()
+        return this.get( key ).clone( ...parameters )
 
     }
 }
