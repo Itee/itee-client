@@ -22,9 +22,9 @@ import {
 
 import { DefaultLogger as TLogger } from '../Loggers/TLogger'
 import {
-    BinaryReader,
+    TBinaryReader,
     Endianness
-}                                   from './BinaryReader'
+}                                   from './TBinaryReader'
 
 ///////////
 
@@ -82,7 +82,7 @@ function DBFLoader ( manager, logger ) {
 
     this.manager = ( manager === undefined ) ? DefaultLoadingManager : manager
     this.logger  = ( logger === undefined ) ? TLogger : logger
-    this.reader  = new BinaryReader()
+    this.reader  = new TBinaryReader()
 
 }
 
