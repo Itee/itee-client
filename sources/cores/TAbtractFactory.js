@@ -12,8 +12,11 @@ import { TStore } from './TStore'
 
 class TAbtractFactory extends TStore {
 
-    constructor ( collection = {}, allowOverride = false, keyValidators = {}, itemValidators = {} ) {
-        super( collection, allowOverride, keyValidators, itemValidators )
+    constructor ( parameters = {} ) {
+
+        const _parameters = { ...{}, ...parameters }
+
+        super( _parameters )
 
     }
 
