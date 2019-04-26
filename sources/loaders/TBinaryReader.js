@@ -86,6 +86,8 @@ class TBinaryReader {
         this._offset = 0
         this._length = value.byteLength
 
+        this._updateDataView()
+
     }
 
     /**
@@ -98,8 +100,8 @@ class TBinaryReader {
     setBuffer ( buffer, offset, length ) {
 
         this.buffer = buffer
-
-        this._updateDataView()
+        this.offset = offset || 0
+        this.length = length || buffer.byteLength
 
         return this
 
@@ -119,6 +121,16 @@ class TBinaryReader {
         if ( isNotNumber( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
 
         this._offset = value
+
+        this._updateDataView()
+
+    }
+
+    setOffset( value ) {
+
+        this.offset = value
+        return this
+
     }
 
     get length () {
@@ -135,6 +147,16 @@ class TBinaryReader {
         if ( isNotNumber( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
 
         this._length = value
+
+        this._updateDataView()
+
+    }
+
+    setLength( value ) {
+
+        this.length = value
+        return this
+
     }
 
     get endianness () {
@@ -161,7 +183,6 @@ class TBinaryReader {
     setEndianess ( endianess ) {
 
         this.endianness = endianess
-
         return this
 
     }
