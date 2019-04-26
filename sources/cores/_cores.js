@@ -11,6 +11,6 @@
 export *                      from './TConstants'
 export { TStore }             from './TStore'
 //export { TOrchestrator }      from './TOrchestrator'
-export { TAbtractFactory }    from './TAbtractFactory'
+export { TAbstractFactory }    from './TAbstractFactory'
 export { TCloningFactory }    from './TCloningFactory'
 export { TInstancingFactory } from './TInstancingFactory'

@@ -10,7 +10,7 @@
 
 import { TStore } from './TStore'
 
-class TAbtractFactory extends TStore {
+class TAbstractFactory extends TStore {
 
     constructor ( parameters = {} ) {
 
@@ -28,4 +28,4 @@ class TAbtractFactory extends TStore {
 
 }
 
-export { TAbtractFactory }
+export { TAbstractFactory }

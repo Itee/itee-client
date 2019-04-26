@@ -8,9 +8,9 @@
  *
  */
 
-import { TAbtractFactory } from './TAbtractFactory'
+import { TAbstractFactory } from './TAbstractFactory'
 
-class TCloningFactory extends TAbtractFactory {
+class TCloningFactory extends TAbstractFactory {
 
     constructor ( parameters = {} ) {
 
