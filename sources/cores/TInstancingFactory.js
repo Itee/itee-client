@@ -12,8 +12,11 @@ import { TAbtractFactory } from './TAbtractFactory'
 
 class TInstancingFactory extends TAbtractFactory {
 
-    constructor ( collection = {}, allowOverride = false, keyValidators = {}, itemValidators = {} ) {
-        super( collection, allowOverride, keyValidators, itemValidators )
+    constructor ( parameters = {} ) {
+
+        const _parameters = { ...{}, ...parameters }
+
+        super( _parameters )
 
     }
 
