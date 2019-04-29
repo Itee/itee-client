@@ -105,7 +105,7 @@ class ClippingBox extends LineSegments {
 
     setColor ( color ) {
 
-        this.material.color.set(color)
+        this.material.color.set( color )
 
     }
 
@@ -168,13 +168,13 @@ class ClippingBox extends LineSegments {
 
 class CylindricalPicker extends Mesh {
 
-    static _createInternalGeometry( parameters ) {
+    static _createInternalGeometry ( parameters ) {
 
         return new CylinderBufferGeometry( parameters.radiusTop, parameters.radiusBottom, parameters.height, parameters.radialSegments, parameters.heightSegments, parameters.openEnded )
 
     }
 
-    static _createInternalMaterial( parameters ) {
+    static _createInternalMaterial ( parameters ) {
 
         return new MeshBasicMaterial( parameters )
 
@@ -184,15 +184,15 @@ class CylindricalPicker extends Mesh {
 
         const _parameters = {
             ...{
-                geometry:     {
-                    radiusTop: 0.2,
-                    radiusBottom: 0,
-                    height: 1,
+                geometry: {
+                    radiusTop:      0.2,
+                    radiusBottom:   0,
+                    height:         1,
                     radialSegments: 4,
                     heightSegments: 1,
-                    openEnded: false
+                    openEnded:      false
                 },
-                material:     {
+                material: {
                     depthTest:   false,
                     depthWrite:  false,
                     fog:         false,
@@ -212,13 +212,13 @@ class CylindricalPicker extends Mesh {
 
 class PlanarPicker extends Mesh {
 
-    static _createInternalGeometry( parameters ) {
+    static _createInternalGeometry ( parameters ) {
 
         return new PlaneBufferGeometry( parameters.width, parameters.height, parameters.widthSegments, parameters.heightSegments )
 
     }
 
-    static _createInternalMaterial( parameters ) {
+    static _createInternalMaterial ( parameters ) {
 
         return new MeshBasicMaterial( parameters )
 
@@ -228,13 +228,13 @@ class PlanarPicker extends Mesh {
 
         const _parameters = {
             ...{
-                geometry:     {
-                    width: 0.4,
-                    height: 0.4,
-                    widthSegments: 1,
+                geometry: {
+                    width:          0.4,
+                    height:         0.4,
+                    widthSegments:  1,
                     heightSegments: 1
                 },
-                material:     {
+                material: {
                     depthTest:   false,
                     depthWrite:  false,
                     fog:         false,
@@ -254,13 +254,13 @@ class PlanarPicker extends Mesh {
 
 class OctahedricalPicker extends Mesh {
 
-    static _createInternalGeometry( parameters ) {
+    static _createInternalGeometry ( parameters ) {
 
         return new OctahedronBufferGeometry( parameters.radius, parameters.detail )
 
     }
 
-    static _createInternalMaterial( parameters ) {
+    static _createInternalMaterial ( parameters ) {
 
         return new MeshBasicMaterial( parameters )
 
@@ -270,11 +270,11 @@ class OctahedricalPicker extends Mesh {
 
         const _parameters = {
             ...{
-                geometry:     {
+                geometry: {
                     radius: 0.2,
                     detail: 0
                 },
-                material:     {
+                material: {
                     depthTest:   false,
                     depthWrite:  false,
                     fog:         false,
@@ -407,7 +407,9 @@ class GizmoLineMaterial extends LineBasicMaterial {
 class TransformGizmo extends Object3D {
 
     constructor () {
+
         super()
+
     }
 
     init () {
@@ -459,12 +461,12 @@ class TransformGizmo extends Object3D {
                     const object   = gizmoMap[ name ][ i ][ 0 ]
                     const position = gizmoMap[ name ][ i ][ 1 ]
                     const rotation = gizmoMap[ name ][ i ][ 2 ]
-				    const scale = gizmoMap[ name ][ i ][ 3 ]
-				    const tag = gizmoMap[ name ][ i ][ 4 ]
+                    const scale    = gizmoMap[ name ][ i ][ 3 ]
+                    const tag      = gizmoMap[ name ][ i ][ 4 ]
 
                     // name and tag properties are essential for picking and updating logic.
                     object.name = name
-				    object.tag = tag
+                    object.tag  = tag
 
                     // avoid being hidden by other transparent objects
                     object.renderOrder = Infinity
@@ -475,20 +477,20 @@ class TransformGizmo extends Object3D {
                     if ( rotation ) {
                         object.rotation.set( rotation[ 0 ], rotation[ 1 ], rotation[ 2 ] )
                     }
-                    if (scale) {
-                        object.scale.set(scale[ 0 ], scale[ 1 ], scale[ 2 ]);
+                    if ( scale ) {
+                        object.scale.set( scale[ 0 ], scale[ 1 ], scale[ 2 ] )
                     }
 
                     object.updateMatrix()
 
                     // Apply pos, rot and scale to the geometry and reset object
                     const tempGeometry = object.geometry.clone()
-				    tempGeometry.applyMatrix(object.matrix)
-				    object.geometry = tempGeometry
+                    tempGeometry.applyMatrix( object.matrix )
+                    object.geometry = tempGeometry
 
-				    object.position.set( 0, 0, 0 )
-				    object.rotation.set( 0, 0, 0 )
-				    object.scale.set(1, 1, 1)
+                    object.position.set( 0, 0, 0 )
+                    object.rotation.set( 0, 0, 0 )
+                    object.scale.set( 1, 1, 1 )
 
                     parent.add( object )
                 }
@@ -503,7 +505,7 @@ class TransformGizmo extends Object3D {
         // reset Transformations
         this.traverse( child => {
 
-            if( !child.isMesh ) { return }
+            if ( !child.isMesh ) { return }
 
             child.updateMatrix()
 
@@ -564,12 +566,13 @@ class TransformGizmo extends Object3D {
 class TransformGizmoTranslate extends TransformGizmo {
 
     constructor () {
+
         super()
 
         // Geometries
 
         const gizmoArrowGeometry = new ConeBufferGeometry( 0.05, 0.2, 12, 1, false )
-        const gizmoLineGeometry = new LineGeometry()
+        const gizmoLineGeometry  = new LineGeometry()
         const gizmoPlaneGeometry = new PlaneBufferGeometry( 0.295, 0.295 )
 
         // Materials
@@ -1309,29 +1312,39 @@ class TClippingControls extends Object3D {
         this._domElement.addEventListener( 'mousedown', this._handlers.onMouseDown, false )
         this._domElement.addEventListener( 'mousemove', this._handlers.onMouseMove, false )
         this._domElement.addEventListener( 'mouseup', this._handlers.onMouseUp, false )
-        this._domElement.addEventListener( 'wheel', this._handlers.onMouseWheel, {capture: true, once: false, passive: false} )
+        this._domElement.addEventListener( 'wheel', this._handlers.onMouseWheel, {
+            capture: true,
+            once:    false,
+            passive: false
+        } )
 
         this._domElement.addEventListener( 'touchcancel', this._handlers.onTouchCancel, false )
         this._domElement.addEventListener( 'touchend', this._handlers.onTouchEnd, false )
         this._domElement.addEventListener( 'touchleave', this._handlers.onTouchLeave, false )
-        this._domElement.addEventListener( 'touchmove', this._handlers.onTouchMove, {capture: true, once: false, passive: false} )
-        this._domElement.addEventListener( 'touchstart', this._handlers.onTouchStart, {capture: true, once: false, passive: false} )
+        this._domElement.addEventListener( 'touchmove', this._handlers.onTouchMove, {
+            capture: true,
+            once:    false,
+            passive: false
+        } )
+        this._domElement.addEventListener( 'touchstart', this._handlers.onTouchStart, {
+            capture: true,
+            once:    false,
+            passive: false
+        } )
 
+        /*
+         this.domElement.addEventListener( 'mousedown', this.onPointerDown.bind( this ), false )
+         this.domElement.addEventListener( 'mousemove', this.onPointerHover.bind( this ), false )
+         this.domElement.addEventListener( 'mouseout', this.onPointerUp.bind( this ), false )
+         this.domElement.addEventListener( 'mouseup', this.onPointerUp.bind( this ), false )
 
-/*
-        this.domElement.addEventListener( 'mousedown', this.onPointerDown.bind( this ), false )
-        this.domElement.addEventListener( 'mousemove', this.onPointerHover.bind( this ), false )
-        this.domElement.addEventListener( 'mouseout', this.onPointerUp.bind( this ), false )
-        this.domElement.addEventListener( 'mouseup', this.onPointerUp.bind( this ), false )
-
-        this.domElement.addEventListener( 'touchcancel', this.onPointerUp.bind( this ), false )
-        this.domElement.addEventListener( 'touchend', this.onPointerUp.bind( this ), false )
-        this.domElement.addEventListener( 'touchleave', this.onPointerUp.bind( this ), false )
-        this.domElement.addEventListener( 'touchmove', this.onPointerHover.bind( this ), false )
-        this.domElement.addEventListener( 'touchmove', this.onPointerMove.bind( this ), false )
-        this.domElement.addEventListener( 'touchstart', this.onPointerDown.bind( this ), false )
-*/
-
+         this.domElement.addEventListener( 'touchcancel', this.onPointerUp.bind( this ), false )
+         this.domElement.addEventListener( 'touchend', this.onPointerUp.bind( this ), false )
+         this.domElement.addEventListener( 'touchleave', this.onPointerUp.bind( this ), false )
+         this.domElement.addEventListener( 'touchmove', this.onPointerHover.bind( this ), false )
+         this.domElement.addEventListener( 'touchmove', this.onPointerMove.bind( this ), false )
+         this.domElement.addEventListener( 'touchstart', this.onPointerDown.bind( this ), false )
+         */
 
         this.dispatchEvent( { type: 'impose' } )
 
@@ -1346,47 +1359,57 @@ class TClippingControls extends Object3D {
         this._domElement.removeEventListener( 'mousedown', this._handlers.onMouseDown, false )
         this._domElement.removeEventListener( 'mousemove', this._handlers.onMouseMove, false )
         this._domElement.removeEventListener( 'mouseup', this._handlers.onMouseUp, false )
-        this._domElement.removeEventListener( 'wheel', this._handlers.onMouseWheel, {capture: true, once: false, passive: false} )
+        this._domElement.removeEventListener( 'wheel', this._handlers.onMouseWheel, {
+            capture: true,
+            once:    false,
+            passive: false
+        } )
 
         this._domElement.removeEventListener( 'touchcancel', this._handlers.onTouchCancel, false )
         this._domElement.removeEventListener( 'touchend', this._handlers.onTouchEnd, false )
         this._domElement.removeEventListener( 'touchleave', this._handlers.onTouchLeave, false )
-        this._domElement.removeEventListener( 'touchmove', this._handlers.onTouchMove, {capture: true, once: false, passive: false} )
-        this._domElement.removeEventListener( 'touchstart', this._handlers.onTouchStart, {capture: true, once: false, passive: false} )
+        this._domElement.removeEventListener( 'touchmove', this._handlers.onTouchMove, {
+            capture: true,
+            once:    false,
+            passive: false
+        } )
+        this._domElement.removeEventListener( 'touchstart', this._handlers.onTouchStart, {
+            capture: true,
+            once:    false,
+            passive: false
+        } )
 
+        /*
+         this.domElement.removeEventListener( 'mousedown', this.onPointerDown.bind( this ), false )
+         this.domElement.removeEventListener( 'mousemove', this.onPointerHover.bind( this ), false )
+         this.domElement.removeEventListener( 'mouseout', this.onPointerUp.bind( this ), false )
+         this.domElement.removeEventListener( 'mouseup', this.onPointerUp.bind( this ), false )
 
-/*
-        this.domElement.removeEventListener( 'mousedown', this.onPointerDown.bind( this ), false )
-        this.domElement.removeEventListener( 'mousemove', this.onPointerHover.bind( this ), false )
-        this.domElement.removeEventListener( 'mouseout', this.onPointerUp.bind( this ), false )
-        this.domElement.removeEventListener( 'mouseup', this.onPointerUp.bind( this ), false )
-
-        this.domElement.removeEventListener( 'touchcancel', this.onPointerUp.bind( this ), false )
-        this.domElement.removeEventListener( 'touchend', this.onPointerUp.bind( this ), false )
-        this.domElement.removeEventListener( 'touchleave', this.onPointerUp.bind( this ), false )
-        this.domElement.removeEventListener( 'touchmove', this.onPointerHover.bind( this ), false )
-        this.domElement.removeEventListener( 'touchmove', this.onPointerMove.bind( this ), false )
-        this.domElement.removeEventListener( 'touchstart', this.onPointerDown.bind( this ), false )
-*/
-
+         this.domElement.removeEventListener( 'touchcancel', this.onPointerUp.bind( this ), false )
+         this.domElement.removeEventListener( 'touchend', this.onPointerUp.bind( this ), false )
+         this.domElement.removeEventListener( 'touchleave', this.onPointerUp.bind( this ), false )
+         this.domElement.removeEventListener( 'touchmove', this.onPointerHover.bind( this ), false )
+         this.domElement.removeEventListener( 'touchmove', this.onPointerMove.bind( this ), false )
+         this.domElement.removeEventListener( 'touchstart', this.onPointerDown.bind( this ), false )
+         */
 
         this.dispatchEvent( { type: 'dispose' } )
 
     }
 
-/*
-    attach ( object ) {
-        this.object  = object
-        this.visible = true
-        this.update()
-    }
+    /*
+     attach ( object ) {
+     this.object  = object
+     this.visible = true
+     this.update()
+     }
 
-    detach () {
-        this.object  = undefined
-        this.visible = false
-        this.axis    = null
-    }
-*/
+     detach () {
+     this.object  = undefined
+     this.visible = false
+     this.axis    = null
+     }
+     */
 
     setTranslationSnap ( translationSnap ) {
         this.translationSnap = translationSnap
@@ -1476,7 +1499,7 @@ class TClippingControls extends Object3D {
     }
 
     /// Handlers
-    _consumeEvent( event ) {
+    _consumeEvent ( event ) {
 
         if ( !event.cancelable ) {
             return
@@ -1485,7 +1508,7 @@ class TClippingControls extends Object3D {
         event.stopImmediatePropagation()
 
     }
-    
+
     // Keyboard
     _onKeyDown ( keyEvent ) {
 
@@ -1502,7 +1525,7 @@ class TClippingControls extends Object3D {
 
             case Keys.CTRL.value:
                 this.setTranslationSnap( 100 )
-                this.setRotationSnap( 15 * (Math.PI / 180) )
+                this.setRotationSnap( 15 * ( Math.PI / 180 ) )
                 this._consumeEvent( keyEvent )
                 break
 
@@ -1552,7 +1575,7 @@ class TClippingControls extends Object3D {
     // Mouse
     _onDblClick ( mouseEvent ) {
 
-        if ( !this.enabled  ) { return }
+        if ( !this.enabled ) { return }
         mouseEvent.preventDefault()
 
         // Todo...
@@ -1561,7 +1584,7 @@ class TClippingControls extends Object3D {
 
     _onMouseDown ( mouseEvent ) {
 
-        if ( !this.enabled  ) { return }
+        if ( !this.enabled ) { return }
         mouseEvent.preventDefault()
 
         if ( this._dragging === true ) { return }
@@ -1606,7 +1629,7 @@ class TClippingControls extends Object3D {
 
     _onMouseEnter ( mouseEvent ) {
 
-        if ( !this.enabled  ) { return }
+        if ( !this.enabled ) { return }
         mouseEvent.preventDefault()
 
         this.impose()
@@ -1618,7 +1641,7 @@ class TClippingControls extends Object3D {
 
     _onMouseLeave ( mouseEvent ) {
 
-        if ( !this.enabled  ) { return }
+        if ( !this.enabled ) { return }
         mouseEvent.preventDefault()
 
         if ( mouseEvent.target.constructor !== HTMLDocument ) {
@@ -1639,7 +1662,7 @@ class TClippingControls extends Object3D {
         if ( this._dragging === false ) {
 
             const intersect = this.intersectObjects( event, this._currentGizmo.pickers.children )
-            let axis = null
+            let axis        = null
 
             if ( intersect ) {
 
@@ -1904,7 +1927,7 @@ class TClippingControls extends Object3D {
 
     _onMouseUp ( mouseEvent ) {
 
-        if ( !this.enabled  ) { return }
+        if ( !this.enabled ) { return }
         if ( event.button !== Mouse.LEFT.value ) {
             return
         }
@@ -1936,7 +1959,7 @@ class TClippingControls extends Object3D {
 
     _onMouseWheel ( mouseEvent ) {
 
-        if ( !this.enabled  ) { return }
+        if ( !this.enabled ) { return }
         mouseEvent.preventDefault()
 
         // Todo...
@@ -1946,7 +1969,7 @@ class TClippingControls extends Object3D {
     // Touche
     _onTouchCancel ( touchEvent ) {
 
-        if ( !this.enabled  ) { return }
+        if ( !this.enabled ) { return }
         touchEvent.preventDefault()
 
         // Todo...
@@ -1955,7 +1978,7 @@ class TClippingControls extends Object3D {
 
     _onTouchEnd ( touchEvent ) {
 
-        if ( !this.enabled  ) { return }
+        if ( !this.enabled ) { return }
         touchEvent.preventDefault()
 
         // Todo...
@@ -1964,7 +1987,7 @@ class TClippingControls extends Object3D {
 
     _onTouchLeave ( touchEvent ) {
 
-        if ( !this.enabled  ) { return }
+        if ( !this.enabled ) { return }
         touchEvent.preventDefault()
 
         // Todo...
@@ -1973,7 +1996,7 @@ class TClippingControls extends Object3D {
 
     _onTouchMove ( touchEvent ) {
 
-        if ( !this.enabled  ) { return }
+        if ( !this.enabled ) { return }
         touchEvent.preventDefault()
 
         // Todo...
@@ -1982,7 +2005,7 @@ class TClippingControls extends Object3D {
 
     _onTouchStart ( touchEvent ) {
 
-        if ( !this.enabled  ) { return }
+        if ( !this.enabled ) { return }
         touchEvent.preventDefault()
 
         // Todo...
