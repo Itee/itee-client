@@ -164,6 +164,180 @@ class ClippingBox extends LineSegments {
 
 }
 
+// Pickers
+
+class CylindricalPicker extends Mesh {
+
+    static _createInternalGeometry( parameters ) {
+
+        return new CylinderBufferGeometry( parameters.radiusTop, parameters.radiusBottom, parameters.height, parameters.radialSegments, parameters.heightSegments, parameters.openEnded )
+
+    }
+
+    static _createInternalMaterial( parameters ) {
+
+        return new MeshBasicMaterial( parameters )
+
+    }
+
+    constructor ( parameters = {} ) {
+
+        const _parameters = {
+            ...{
+                geometry:     {
+                    radiusTop: 0.2,
+                    radiusBottom: 0,
+                    height: 1,
+                    radialSegments: 4,
+                    heightSegments: 1,
+                    openEnded: false
+                },
+                material:     {
+                    depthTest:   false,
+                    depthWrite:  false,
+                    fog:         false,
+                    opacity:     0.15,
+                    side:        DoubleSide,
+                    transparent: true,
+                    visible:     true
+                }
+            }, ...parameters
+        }
+
+        super( CylindricalPicker._createInternalGeometry( _parameters.geometry ), CylindricalPicker._createInternalMaterial( _parameters.material ) )
+
+    }
+
+}
+
+class PlanarPicker extends Mesh {
+
+    static _createInternalGeometry( parameters ) {
+
+        return new PlaneBufferGeometry( parameters.width, parameters.height, parameters.widthSegments, parameters.heightSegments )
+
+    }
+
+    static _createInternalMaterial( parameters ) {
+
+        return new MeshBasicMaterial( parameters )
+
+    }
+
+    constructor ( parameters = {} ) {
+
+        const _parameters = {
+            ...{
+                geometry:     {
+                    width: 0.4,
+                    height: 0.4,
+                    widthSegments: 1,
+                    heightSegments: 1
+                },
+                material:     {
+                    depthTest:   false,
+                    depthWrite:  false,
+                    fog:         false,
+                    opacity:     0.15,
+                    side:        DoubleSide,
+                    transparent: true,
+                    visible:     true
+                }
+            }, ...parameters
+        }
+
+        super( PlanarPicker._createInternalGeometry( _parameters.geometry ), PlanarPicker._createInternalMaterial( _parameters.material ) )
+
+    }
+
+}
+
+class OctahedricalPicker extends Mesh {
+
+    static _createInternalGeometry( parameters ) {
+
+        return new OctahedronBufferGeometry( parameters.radius, parameters.detail )
+
+    }
+
+    static _createInternalMaterial( parameters ) {
+
+        return new MeshBasicMaterial( parameters )
+
+    }
+
+    constructor ( parameters = {} ) {
+
+        const _parameters = {
+            ...{
+                geometry:     {
+                    radius: 0.2,
+                    detail: 0
+                },
+                material:     {
+                    depthTest:   false,
+                    depthWrite:  false,
+                    fog:         false,
+                    opacity:     0.15,
+                    side:        DoubleSide,
+                    transparent: true,
+                    visible:     true
+                }
+            }, ...parameters
+        }
+
+        super( OctahedricalPicker._createInternalGeometry( _parameters.geometry ), OctahedricalPicker._createInternalMaterial( _parameters.material ) )
+
+    }
+
+}
+
+// Handles
+
+class TranslateHandle extends Object3D {
+
+    constructor ( parameters = {} ) {
+
+        const _parameters = {
+            ...{}, ...parameters
+        }
+
+        super()
+
+    }
+
+}
+
+class ScaleHandle extends Object3D {
+
+    constructor ( parameters = {} ) {
+
+        const _parameters = {
+            ...{}, ...parameters
+        }
+
+        super()
+
+    }
+
+}
+
+class RotateHandle extends Object3D {
+
+    constructor ( parameters = {} ) {
+
+        const _parameters = {
+            ...{}, ...parameters
+        }
+
+        super()
+
+    }
+
+}
+
+//Gizmos
+
 class GizmoMaterial extends MeshBasicMaterial {
 
     constructor ( parameters ) {
@@ -520,38 +694,34 @@ class TransformGizmoTranslate extends TransformGizmo {
 
         }
 
-        const pickupCylinderGeometry = new CylinderBufferGeometry( 0.2, 0, 1, 4, 1, false )
-        const pickupPlaneGeometry = new PlaneBufferGeometry( 0.4, 0.4 )
-        const pickupOctahedronGeometry = new OctahedronBufferGeometry( 0.2, 0 )
-
         this.pickerGizmos = {
 
             X: [
-                [ new Mesh( pickupCylinderGeometry, matInvisible ), [ 0.6, 0, 0 ], [ 0, 0, -Math.PI / 2 ] ]
+                [ new CylindricalPicker(), [ 0.6, 0, 0 ], [ 0, 0, -Math.PI / 2 ] ]
             ],
 
             Y: [
-                [ new Mesh( pickupCylinderGeometry, matInvisible ), [ 0, 0.6, 0 ] ]
+                [ new CylindricalPicker(), [ 0, 0.6, 0 ] ]
             ],
 
             Z: [
-                [ new Mesh( pickupCylinderGeometry, matInvisible ), [ 0, 0, 0.6 ], [ Math.PI / 2, 0, 0 ] ]
+                [ new CylindricalPicker(), [ 0, 0, 0.6 ], [ Math.PI / 2, 0, 0 ] ]
             ],
 
             XY: [
-                [ new Mesh( pickupPlaneGeometry, matInvisible ), [ 0.2, 0.2, 0 ] ]
+                [ new PlanarPicker(), [ 0.2, 0.2, 0 ] ]
             ],
 
             YZ: [
-                [ new Mesh( pickupPlaneGeometry, matInvisible ), [ 0, 0.2, 0.2 ], [ 0, Math.PI / 2, 0 ] ]
+                [ new PlanarPicker(), [ 0, 0.2, 0.2 ], [ 0, Math.PI / 2, 0 ] ]
             ],
 
             XZ: [
-                [ new Mesh( pickupPlaneGeometry, matInvisible ), [ 0.2, 0, 0.2 ], [ -Math.PI / 2, 0, 0 ] ]
+                [ new PlanarPicker(), [ 0.2, 0, 0.2 ], [ -Math.PI / 2, 0, 0 ] ]
             ],
 
             XYZ: [
-                [ new Mesh( pickupOctahedronGeometry, matInvisible ) ]
+                [ new OctahedricalPicker() ]
             ]
 
         }
