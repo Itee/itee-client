@@ -1640,6 +1640,8 @@ class TClippingControls extends Object3D {
         if ( !this.enabled ) { return }
         mouseEvent.preventDefault()
 
+        if ( this._mode === TClippingModes.None ) { return }
+
         // Check for hovering or not
         if ( this._dragging === false ) {
 
