@@ -8,19 +8,22 @@
  *
  */
 
-import { TAbtractFactory } from './TAbtractFactory'
+import { TAbstractFactory } from './TAbstractFactory'
 
-class TCloningFactory extends TAbtractFactory {
+class TCloningFactory extends TAbstractFactory {
 
-    constructor ( collection = {}, allowOverride = false, keyValidators = {}, itemValidators = {} ) {
-        super( collection, allowOverride, keyValidators, itemValidators )
+    constructor ( parameters = {} ) {
+
+        const _parameters = { ...{}, ...parameters }
+
+        super( _parameters )
 
     }
 
     create ( key, ...parameters ) {
         super.create( key, ...parameters )
 
-        return this.getItem( key ).clone()
+        return this.get( key ).clone( ...parameters )
 
     }
 }

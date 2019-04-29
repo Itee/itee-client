@@ -8,19 +8,22 @@
  *
  */
 
-import { TAbtractFactory } from './TAbtractFactory'
+import { TAbstractFactory } from './TAbstractFactory'
 
-class TInstancingFactory extends TAbtractFactory {
+class TInstancingFactory extends TAbstractFactory {
 
-    constructor ( collection = {}, allowOverride = false, keyValidators = {}, itemValidators = {} ) {
-        super( collection, allowOverride, keyValidators, itemValidators )
+    constructor ( parameters = {} ) {
+
+        const _parameters = { ...{}, ...parameters }
+
+        super( _parameters )
 
     }
 
     create ( key, ...parameters ) {
         super.create( key, ...parameters )
 
-        return new this.getItem( key )( ...parameters )
+        return new this.get( key )( ...parameters )
 
     }
 
