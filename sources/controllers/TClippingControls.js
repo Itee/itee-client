@@ -1571,7 +1571,6 @@ class TClippingControls extends Object3D {
         const intersect = this.intersectObjects( mouseEvent, this._currentGizmo.pickers.children )
         if ( intersect ) {
 
-            mouseEvent.preventDefault()
             this._consumeEvent( mouseEvent )
 
             this.axis = intersect.object.name
