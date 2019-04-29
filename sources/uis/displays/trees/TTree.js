@@ -38,6 +38,7 @@ export default Vue.component( 'TTree', {
             </ul>
         </TContainerVertical>
     `,
+    props:    [ 'items', 'filters', 'sort', 'deepSelect', 'multiSelect', 'needUpdate', 'maxDeepLevel' ],
     computed: {
 
         computedItems () {
