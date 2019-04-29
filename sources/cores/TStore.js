@@ -67,10 +67,10 @@ class TStore {
             }, ...parameters
         }
 
-        this.collection         = _parameters.collection
-        this.setAllowOverride   = _parameters.allowOverride
-        this.setKeyValidators   = _parameters.keyValidators
-        this.setValueValidators = _parameters.valueValidators
+        this.collection      = _parameters.collection
+        this.allowOverride   = _parameters.allowOverride
+        this.keyValidators   = _parameters.keyValidators
+        this.valueValidators = _parameters.valueValidators
 
     }
 
@@ -208,7 +208,6 @@ class TStore {
 
     }
 
-
     /**
      * Allow to add new key value pair, the key cannot be null, undefined, or an empty string.
      * In case the key already exist, the value will be overwritten if force params is true or this
@@ -216,6 +215,7 @@ class TStore {
      *
      * @param key
      * @param value
+     * @param force
      */
     add ( key, value, force = false ) {
 
