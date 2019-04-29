@@ -804,7 +804,16 @@ pickerMaterial.opacity = 0.15
 
 class TClippingControls extends Object3D {
 
-    constructor ( camera, domElement = document ) {
+    constructor ( parameters = {} ) {
+
+        const _parameters = {
+            ...{
+                camera:     null,
+                domElement: window,
+                mode:       TClippingModes.None,
+                space:      TClippingSpace.World
+            }, ...parameters
+        }
 
         super()
 
@@ -826,10 +835,10 @@ class TClippingControls extends Object3D {
             onKeyUp:       this._onKeyUp.bind( this )
         }
 
-        this.camera         = camera
-        this.domElement     = domElement
-        this.mode           = TClippingModes.None
-        this.space          = TClippingSpace.World
+        this.camera         = _parameters.camera
+        this.domElement     = _parameters.domElement
+        this.mode           = _parameters.mode
+        this.space          = _parameters.space
         this._objectsToClip = null
 
         this.object          = undefined
