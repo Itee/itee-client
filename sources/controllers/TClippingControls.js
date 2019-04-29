@@ -573,7 +573,7 @@ class TransformGizmoTranslate extends TransformGizmo {
         const gizmoPlaneGeometry = new PlaneBufferGeometry( 0.295, 0.295 )
 
         // Materials
-        const gizmoMaterial = new MeshBasicMaterial( {
+        const gizmoMaterial = new GizmoMaterial( {
             depthTest:   false,
             depthWrite:  false,
             transparent: true,
@@ -581,7 +581,7 @@ class TransformGizmoTranslate extends TransformGizmo {
             fog:         false
         } )
 
-        const gizmoLineMaterial = new LineBasicMaterial( {
+        const gizmoLineMaterial = new GizmoLineMaterial( {
             depthTest:   false,
             depthWrite:  false,
             transparent: true,
@@ -642,12 +642,6 @@ class TransformGizmoTranslate extends TransformGizmo {
 
         const matLineYellowTransparent   = matLineYellow.clone()
         matLineYellowTransparent.opacity = 0.25
-
-        const pickerMaterial = new GizmoMaterial( {
-            visible:     true,
-            transparent: false,
-            opacity:     0.15
-        } )
 
         this.handleGizmos = {
 
