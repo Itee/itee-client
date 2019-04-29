@@ -1673,7 +1673,7 @@ class TClippingControls extends Object3D {
 
             /// onMove
             const planeIntersect = this.intersectObjects( event, [ this._currentGizmo.activePlane ] )
-            if ( planeIntersect === false ) { return }
+            if ( !planeIntersect ) { return }
 
             event.preventDefault()
             this._consumeEvent( event )
@@ -2005,7 +2005,7 @@ class TClippingControls extends Object3D {
         this._ray.setFromCamera( this._pointerVector, this._camera )
 
         const intersections = this._ray.intersectObjects( objects, true )
-        return intersections[ 0 ] ? intersections[ 0 ] : false
+        return intersections[ 0 ] ? intersections[ 0 ] : null
 
     }
 
