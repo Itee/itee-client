@@ -14,11 +14,12 @@
  */
 
 import {
+    isDefined,
+    isNotBoolean,
     isNull,
     isObject,
-    isUndefined,
-    isNotBoolean
-}                           from 'itee-validators'
+    isUndefined
+} from 'itee-validators'
 /* eslint-env browser */
 import {
     BoxBufferGeometry,
@@ -72,25 +73,19 @@ import {
 }                           from 'three-full'
 import { TDataBaseManager } from '../TDataBaseManager'
 
+const ArrayType = {
+    Int8Array:         0,
+    Uint8Array:        1,
+    Uint8ClampedArray: 2,
+    Int16Array:        3,
+    Uint16Array:       4,
+    Int32Array:        5,
+    Uint32Array:       6,
+    Float32Array:      7,
+    Float64Array:      8
+}
+
 class TGeometriesManager extends TDataBaseManager {
-
-    get computeNormals () {
-        return this._computeNormals
-    }
-
-    set computeNormals ( value ) {
-
-        if ( isNull( value ) ) { throw new TypeError( 'Compute normals cannot be null ! Expect a boolean.' ) }
-        if ( isUndefined( value ) ) { throw new TypeError( 'Compute normals cannot be undefined ! Expect a boolean.' ) }
-        if ( isNotBoolean( value ) ) { throw new TypeError( `Compute normals cannot be an instance of ${value.constructor.name} ! Expect a boolean.` ) }
-
-        this._computeNormals = value
-    }
-
-    setComputeNormals ( value ) {
-        this.computeNormals = value
-        return this
-    }
 
     /**
      *
@@ -115,11 +110,24 @@ class TGeometriesManager extends TDataBaseManager {
 
     }
 
-    //// Getter/Setter
+    get computeNormals () {
+        return this._computeNormals
+    }
+
+    set computeNormals ( value ) {
+
+        if ( isNull( value ) ) { throw new TypeError( 'Compute normals cannot be null ! Expect a boolean.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Compute normals cannot be undefined ! Expect a boolean.' ) }
+        if ( isNotBoolean( value ) ) { throw new TypeError( `Compute normals cannot be an instance of ${value.constructor.name} ! Expect a boolean.` ) }
+
+        this._computeNormals = value
+    }
 
     get projectionSystem () {
         return this._projectionSystem
     }
+
+    //// Getter/Setter
 
     set projectionSystem ( value ) {
 
@@ -141,6 +149,11 @@ class TGeometriesManager extends TDataBaseManager {
 
         this._globalScale = value
 
+    }
+
+    setComputeNormals ( value ) {
+        this.computeNormals = value
+        return this
     }
 
     setProjectionSystem ( value ) {
@@ -201,21 +214,25 @@ class TGeometriesManager extends TDataBaseManager {
         }
 
         const geometryType = data.type
-        let geometry       = null
+        if ( !geometryType ) {
+            throw new Error( 'TGeometriesManager: Unable to convert untyped data !' )
+        }
+
+        let geometry = null
 
         // Keep backward compat to next Major release
-        if ( data.isGeometry || geometryType === 'Geometry' ) {
-
-            geometry = this._convertJsonToGeometry( data )
-            if ( this._computeNormals ) {
-                geometry.computeFaceNormals()
-            }
-
-        } else if ( data.isBufferGeometry || geometryType === 'BufferGeometry' ) {
+        if ( data.isBufferGeometry || geometryType.includes( 'BufferGeometry' ) ) {
 
             geometry = this._convertJsonToBufferGeometry( data )
             if ( this._computeNormals ) {
                 geometry.computeVertexNormals()
+            }
+
+        } else if ( data.isGeometry || geometryType.includes( 'Geometry' ) ) {
+
+            geometry = this._convertJsonToGeometry( data )
+            if ( this._computeNormals ) {
+                geometry.computeFaceNormals()
             }
 
         } else {
@@ -375,7 +392,7 @@ class TGeometriesManager extends TDataBaseManager {
     _convertJsonToBufferGeometry ( data ) {
 
         const bufferGeometryType = data.type
-        let bufferGeometry       = undefined
+        let bufferGeometry       = null
 
         switch ( bufferGeometryType ) {
 
@@ -470,41 +487,21 @@ class TGeometriesManager extends TDataBaseManager {
 
             default:
                 throw new Error( `TGeometriesManager: Unknown buffer geometry of type: ${bufferGeometryType}` )
-                break
+
         }
 
         // COMMON PARTS
-        bufferGeometry._id = data._id
-
+        bufferGeometry._id  = data._id
         bufferGeometry.uuid = data.uuid
         bufferGeometry.name = data.name
-        bufferGeometry.type = data.type
 
         // Extract index
         const dataIndexes = data.index
         if ( dataIndexes && dataIndexes.array && dataIndexes.array.length > 0 ) {
 
-            const indexeArray = dataIndexes.array
-            let uint16Array   = undefined
-
-            if ( Array.isArray( indexeArray ) ) {
-
-                uint16Array = new Uint32Array( indexeArray )
-
-            } else { //base64
-
-                const arrayBuffer = this.__convertBase64ToArrayBuffer( indexeArray )
-                const dataView    = new DataView( arrayBuffer )
-
-                uint16Array = new Uint16Array( arrayBuffer.byteLength / 2 )
-
-                for ( let index = 0, offset = 0, numberOfBytes = dataView.byteLength ; offset < numberOfBytes ; index++, offset += 2 ) {
-                    uint16Array[ index ] = dataView.getUint16( offset )
-                }
-
-            }
-
-            bufferGeometry.index = new BufferAttribute( uint16Array, dataIndexes.itemSize, dataIndexes.normalized )
+            const arrayBuffer    = this.__convertBase64ToArrayBuffer( dataIndexes.array )
+            const typedArray     = this.__convertArrayBufferToTypedArray( arrayBuffer )
+            bufferGeometry.index = new BufferAttribute( typedArray, dataIndexes.itemSize, dataIndexes.normalized )
 
         }
 
@@ -518,142 +515,53 @@ class TGeometriesManager extends TDataBaseManager {
             const positionAttributes = dataAttributes.position
             if ( positionAttributes ) {
 
-                const positionArray = positionAttributes.array
-                const globalScale   = this._globalScale
-                let float32Array    = undefined
+                const arrayBuffer = this.__convertBase64ToArrayBuffer( positionAttributes.array )
+                const typedArray  = this.__convertArrayBufferToTypedArray( arrayBuffer )
+                const globalScale = this.globalScale
 
-                if ( Array.isArray( positionArray ) ) {
+                const positionArray = new Float32Array( typedArray )
 
-                    const zbackpos = []
+                if ( this._projectionSystem === 'zBack' ) {
 
-                    if ( this._projectionSystem === 'zBack' ) {
-
-                        for ( let pi = 0, numPos = positionArray.length ; pi < numPos ; pi += 3 ) {
-                            zbackpos.push( positionArray[ pi ] / globalScale, positionArray[ pi + 2 ] / globalScale, -positionArray[ pi + 1 ] / globalScale )
-                        }
-
-                    } else {
-
-                        for ( let pi = 0, numPos = positionArray.length ; pi < numPos ; pi += 3 ) {
-                            zbackpos.push( positionArray[ pi ] / globalScale, positionArray[ pi + 1 ] / globalScale, positionArray[ pi + 2 ] / globalScale )
-                        }
-
+                    let x = null
+                    let y = null
+                    let z = null
+                    for ( let pi = 0, numPos = positionArray.length ; pi < numPos ; pi += 3 ) {
+                        x                       = positionArray[ pi ] / globalScale
+                        y                       = positionArray[ pi + 2 ] / globalScale
+                        z                       = -positionArray[ pi + 1 ] / globalScale
+                        positionArray[ pi ]     = x
+                        positionArray[ pi + 1 ] = y
+                        positionArray[ pi + 2 ] = z
                     }
 
-                    float32Array = new Float32Array( zbackpos )
+                } else {
 
-                } else { //base64
-
-                    //Float32Array from base64 but should be int16
-                    const arrayBuffer = this.__convertBase64ToArrayBuffer( positionArray )
-                    const dataView    = new DataView( arrayBuffer )
-
-                    float32Array = new Float32Array( arrayBuffer.byteLength / 4 )
-
-                    if ( this._projectionSystem === 'zBack' ) {
-
-                        for ( let index = 0, offset = 0, numberOfBytes = dataView.byteLength ; offset < numberOfBytes ; index += 3, offset += 4 * 3 ) {
-                            float32Array[ index ]     = dataView.getFloat32( offset ) / globalScale
-                            float32Array[ index + 1 ] = dataView.getFloat32( offset + 8 ) / globalScale
-                            float32Array[ index + 2 ] = -( dataView.getFloat32( offset + 4 ) / globalScale )
-                        }
-
-                    } else {
-
-                        for ( let index = 0, offset = 0, numberOfBytes = dataView.byteLength ; offset < numberOfBytes ; index += 3, offset += 4 * 3 ) {
-                            float32Array[ index ]     = dataView.getFloat32( offset ) / globalScale
-                            float32Array[ index + 1 ] = dataView.getFloat32( offset + 4 ) / globalScale
-                            float32Array[ index + 2 ] = dataView.getFloat32( offset + 8 ) / globalScale
-                        }
-
+                    for ( let posIndex = 0, numPos = positionArray.length ; posIndex < numPos ; posIndex++ ) {
+                        positionArray[ posIndex ] /= globalScale
                     }
 
                 }
 
-                attributes[ 'position' ] = new BufferAttribute( float32Array, positionAttributes.itemSize, positionAttributes.normalized )
+                attributes[ 'position' ] = new BufferAttribute( positionArray, positionAttributes.itemSize, positionAttributes.normalized )
 
             }
 
             const normalAttributes = dataAttributes.normal
             if ( normalAttributes ) {
 
-                const normalArray = normalAttributes.array
-                let float32Array  = undefined
-                if ( Array.isArray( normalArray ) ) {
-
-                    const rotatedDatas = []
-
-                    if ( this._projectionSystem === 'zBack' ) {
-
-                        for ( let i = 0, numPos = normalArray.length ; i < numPos ; i += 3 ) {
-                            rotatedDatas.push( normalArray[ i ], normalArray[ i + 2 ], -normalArray[ i + 1 ] )
-                        }
-
-                    } else {
-
-                        for ( let i = 0, numPos = normalArray.length ; i < numPos ; i += 3 ) {
-                            rotatedDatas.push( normalArray[ i ], normalArray[ i + 1 ], normalArray[ i + 2 ] )
-                        }
-
-                    }
-
-                    float32Array = new Float32Array( rotatedDatas )
-
-                } else {
-
-                    //Float32Array from base64 but should be int16
-                    const arrayBuffer  = this.__convertBase64ToArrayBuffer( normalArray )
-                    const dataView     = new DataView( arrayBuffer )
-                    const float32Array = new Float32Array( arrayBuffer.byteLength / 4 )
-
-                    if ( this._projectionSystem === 'zBack' ) {
-
-                        for ( let index = 0, offset = 0, numberOfBytes = dataView.byteLength ; offset < numberOfBytes ; index += 3, offset += 4 * 3 ) {
-                            float32Array[ index ]     = dataView.getFloat32( offset )
-                            float32Array[ index + 1 ] = dataView.getFloat32( offset + 8 )
-                            float32Array[ index + 2 ] = -dataView.getFloat32( offset + 4 )
-                        }
-
-                    } else {
-
-                        for ( let index = 0, offset = 0, numberOfBytes = dataView.byteLength ; offset < numberOfBytes ; index += 3, offset += 4 * 3 ) {
-                            float32Array[ index ]     = dataView.getFloat32( offset )
-                            float32Array[ index + 1 ] = dataView.getFloat32( offset + 4 )
-                            float32Array[ index + 2 ] = dataView.getFloat32( offset + 8 )
-                        }
-
-                    }
-
-                }
-
-                attributes[ 'normal' ] = new BufferAttribute( float32Array, normalAttributes.itemSize, normalAttributes.normalized )
+                const arrayBuffer      = this.__convertBase64ToArrayBuffer( normalAttributes.array )
+                const typedArray       = this.__convertArrayBufferToTypedArray( arrayBuffer )
+                attributes[ 'normal' ] = new BufferAttribute( typedArray, normalAttributes.itemSize, normalAttributes.normalized )
 
             }
 
             const uvAttributes = dataAttributes.uv
             if ( uvAttributes ) {
 
-                const uvArray    = uvAttributes.array
-                let float32Array = undefined
-                if ( Array.isArray( uvArray ) ) {
-
-                    float32Array = new Float32Array( uvArray )
-
-                } else {
-
-                    //Float32Array from base64 but should be int16
-                    const arrayBuffer = this.__convertBase64ToArrayBuffer( uvAttributes.array )
-                    const dataView    = new DataView( arrayBuffer )
-
-                    float32Array = new Float32Array( arrayBuffer.byteLength / 4 )
-
-                    for ( let index = 0, offset = 0, numberOfBytes = dataView.byteLength ; offset < numberOfBytes ; index++, offset += 4 ) {
-                        float32Array[ index ] = dataView.getFloat32( offset )
-                    }
-
-                }
-
-                attributes[ 'uv' ] = new BufferAttribute( float32Array, uvAttributes.itemSize, uvAttributes.normalized )
+                const arrayBuffer  = this.__convertBase64ToArrayBuffer( uvAttributes.array )
+                const typedArray   = this.__convertArrayBufferToTypedArray( arrayBuffer )
+                attributes[ 'uv' ] = new BufferAttribute( typedArray, uvAttributes.itemSize, uvAttributes.normalized )
 
             }
 
@@ -661,6 +569,7 @@ class TGeometriesManager extends TDataBaseManager {
 
         }
 
+        if(isDefined())
         bufferGeometry.groups         = data.groups
         bufferGeometry.boundingBox    = null // Need to set null because only checked vs undefined data.boundingBox
         bufferGeometry.boundingSphere = null // idem... data.boundingSphere
@@ -676,6 +585,92 @@ class TGeometriesManager extends TDataBaseManager {
         }
 
         return bufferGeometry
+
+    }
+
+    __convertArrayBufferToTypedArray ( arrayBuffer ) {
+
+        const ONE_BYTE       = 1
+        const TWO_BYTE       = 2
+        const FOUR_BYTE      = 4
+        const HEIGHT_BYTE    = 8
+        const dataView       = new DataView( arrayBuffer )
+        const dataByteLength = arrayBuffer.byteLength - 1
+        const type           = dataView.getUint8( 0 )
+
+        let typedArray = null
+
+        switch ( type ) {
+
+            case ArrayType.Int8Array:
+                typedArray = new Int8Array( dataByteLength / ONE_BYTE )
+                for ( let index = 0, offset = 1 ; offset < dataByteLength ; index++, offset += ONE_BYTE ) {
+                    typedArray[ index ] = dataView.getInt8( offset )
+                }
+                break
+
+            case ArrayType.Uint8Array:
+                typedArray = new Uint8Array( dataByteLength / ONE_BYTE )
+                for ( let index = 0, offset = 1 ; offset < dataByteLength ; index++, offset += ONE_BYTE ) {
+                    typedArray[ index ] = dataView.getUint8( offset )
+                }
+                break
+
+            case ArrayType.Uint8ClampedArray:
+                typedArray = new Uint8ClampedArray( dataByteLength / ONE_BYTE )
+                for ( let index = 0, offset = 1 ; offset < dataByteLength ; index++, offset += ONE_BYTE ) {
+                    typedArray[ index ] = dataView.getUint8( offset )
+                }
+                break
+
+            case ArrayType.Int16Array:
+                typedArray = new Int16Array( dataByteLength / TWO_BYTE )
+                for ( let index = 0, offset = 1 ; offset < dataByteLength ; index++, offset += TWO_BYTE ) {
+                    typedArray[ index ] = dataView.getInt16( offset )
+                }
+                break
+
+            case ArrayType.Uint16Array:
+                typedArray = new Uint16Array( dataByteLength / TWO_BYTE )
+                for ( let index = 0, offset = 1 ; offset < dataByteLength ; index++, offset += TWO_BYTE ) {
+                    typedArray[ index ] = dataView.getUint16( offset )
+                }
+                break
+
+            case ArrayType.Int32Array:
+                typedArray = new Int32Array( dataByteLength / FOUR_BYTE )
+                for ( let index = 0, offset = 1 ; offset < dataByteLength ; index++, offset += FOUR_BYTE ) {
+                    typedArray[ index ] = dataView.getInt32( offset )
+                }
+                break
+
+            case ArrayType.Uint32Array:
+                typedArray = new Uint32Array( dataByteLength / FOUR_BYTE )
+                for ( let index = 0, offset = 1 ; offset < dataByteLength ; index++, offset += FOUR_BYTE ) {
+                    typedArray[ index ] = dataView.getUint32( offset )
+                }
+                break
+
+            case ArrayType.Float32Array:
+                typedArray = new Float32Array( dataByteLength / FOUR_BYTE )
+                for ( let index = 0, offset = 1 ; offset < dataByteLength ; index++, offset += FOUR_BYTE ) {
+                    typedArray[ index ] = dataView.getFloat32( offset )
+                }
+                break
+
+            case ArrayType.Float64Array:
+                typedArray = new Float64Array( dataByteLength / HEIGHT_BYTE )
+                for ( let index = 0, offset = 1 ; offset < dataByteLength ; index++, offset += HEIGHT_BYTE ) {
+                    typedArray[ index ] = dataView.getFloat64( offset )
+                }
+                break
+
+            default:
+                throw new RangeError( `Invalid switch parameter: ${type}` )
+
+        }
+
+        return typedArray
 
     }
 
@@ -718,6 +713,7 @@ class TGeometriesManager extends TDataBaseManager {
         }
 
         return arraybuffer
+
     }
 
 }
