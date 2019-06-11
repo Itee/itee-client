@@ -48,7 +48,16 @@ TCameraControlMode.initEnum( [ 'FirstPerson', 'Orbit', 'Fly', 'Path' ] )
 
 class TCameraControls extends EventDispatcher {
 
-    constructor ( camera, target = new Object3D(), mode = TCameraControlMode.Orbit, domElement = window ) {
+    constructor ( parameters = {} ) {
+
+        const _parameters = {
+            ...{
+                camera:     null,
+                target:     new Object3D(),
+                mode:       TCameraControlMode.Orbit,
+                domElement: window
+            }, ...parameters
+        }
 
         super()
 
@@ -70,10 +79,10 @@ class TCameraControls extends EventDispatcher {
             onKeyUp:       this._onKeyUp.bind( this )
         }
 
-        this.camera     = camera
-        this.target     = target
-        this.mode       = mode
-        this.domElement = domElement
+        this.camera     = _parameters.camera
+        this.target     = _parameters.target
+        this.mode       = _parameters.mode
+        this.domElement = _parameters.domElement
 
         // Set to false to disable controls
         this.enabled = true

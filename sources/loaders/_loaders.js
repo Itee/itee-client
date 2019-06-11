@@ -9,10 +9,10 @@
 /* eslint-env browser */
 
 export {
-    BinaryReader,
+    TBinaryReader,
     Endianness,
     Byte
-}                           from './BinaryReader'
+}                           from './TBinaryReader'
 export { ASCLoader }        from './ASCLoader'
 export {
     DBFLoader,

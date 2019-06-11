@@ -115,10 +115,15 @@ class TDataBaseManager {
         this.progressManager        = _parameters.progressManager
         this.errorManager           = _parameters.errorManager
 
-        this._cache        = new TStore()
-        this._waitingQueue = []
-        this._requestQueue = []
-        this._processQueue = []
+        this._cache                = new TStore()
+        this._waitingQueue         = []
+        this._aggregateQueue       = []
+        this._requestQueue         = []
+        this._processQueue         = []
+        this._aggregationTimeoutId = null
+
+
+        this._idToRequest = []
 
     }
 
@@ -190,7 +195,7 @@ class TDataBaseManager {
     }
 
     get requestAggregationTime () {
-        return this._requestsAggregationTime
+        return this._requestAggregationTime
     }
 
     set requestAggregationTime ( value ) {
@@ -211,7 +216,7 @@ class TDataBaseManager {
             throw new TypeError( 'Requests aggregation time cannot be lower or equal to zero ! Expect a positive number.' )
         }
 
-        this._requestsAggregationTime = value
+        this._requestAggregationTime = value
 
     }
 
@@ -294,6 +299,43 @@ class TDataBaseManager {
 
         this.errorManager = value
         return this
+
+    }
+
+    aggregateQueue () {
+
+        clearTimeout( this._aggregationTimeoutId )
+
+        this._aggregationTimeoutId = setTimeout( () => {
+
+            const datasToRequest = this._idToRequest
+            let idBunch          = []
+            for ( let idIndex = datasToRequest.length - 1 ; idIndex >= 0 ; idIndex-- ) {
+
+                idBunch.push( datasToRequest.pop() )
+
+                if ( idBunch.length === this._bunchSize || idIndex === 0 ) {
+
+                    this._requestQueue.push( {
+                        _id:          `readMany_${Generate.id}`,
+                        _timeStart:   new Date(),
+                        _type:        RequestType.ReadMany,
+                        method:       HttpVerb.Read.value,
+                        url:          this._basePath,
+                        data:         {
+                            ids:        idBunch
+                        },
+                        responseType: this._responseType
+                    } )
+
+                    idBunch = []
+                }
+
+            }
+
+            this.processQueue.call( this )
+
+        }, this._requestAggregationTime )
 
     }
 
@@ -1079,22 +1121,8 @@ class TDataBaseManager {
                 console.error( error )
             }
 
-            this._requestQueue.push( {
-                _id:          `readOne_${Generate.id}`,
-                _timeStart:   new Date(),
-                _type:        RequestType.ReadOne,
-                method:       HttpVerb.Read.value,
-                url:          `${this._basePath}/${id}`,
-                data:         {
-                    projection
-                },
-                onLoad:       onLoadCallback,
-                onProgress:   onProgressCallback,
-                onError:      onErrorCallback,
-                responseType: this._responseType
-            } )
-
-            this.processQueue()
+            this._idToRequest.push(id)
+            this.aggregateQueue()
 
         }
 
@@ -1139,7 +1167,6 @@ class TDataBaseManager {
             this._waitingQueue.push( datas )
 
             const datasToRequest = datas.toRequest
-            let idBunch          = []
             let id               = undefined
             for ( let idIndex = datasToRequest.length - 1 ; idIndex >= 0 ; idIndex-- ) {
 
@@ -1154,33 +1181,12 @@ class TDataBaseManager {
                     console.error( error )
                 }
 
-                idBunch.push( id )
-
-                if ( idBunch.length === this._bunchSize || idIndex === 0 ) {
-
-                    this._requestQueue.push( {
-                        _id:          `readMany_${Generate.id}`,
-                        _timeStart:   new Date(),
-                        _type:        RequestType.ReadMany,
-                        method:       HttpVerb.Read.value,
-                        url:          this._basePath,
-                        data:         {
-                            ids:        idBunch,
-                            projection: projection
-                        },
-                        onLoad:       onLoadCallback,
-                        onProgress:   onProgressCallback,
-                        onError:      onErrorCallback,
-                        responseType: this._responseType
-                    } )
-
-                    idBunch = []
-                }
+                this._idToRequest.push(id)
 
             }
 
-            this.processQueue()
-
+            this.aggregateQueue()
+            
         }
 
     }

@@ -26,9 +26,9 @@ import {
 
 import { DefaultLogger as TLogger } from '../Loggers/TLogger'
 import {
-    BinaryReader,
+    TBinaryReader,
     Endianness
-}                                   from './BinaryReader'
+}                                   from './TBinaryReader'
 
 ///////////
 
@@ -148,7 +148,7 @@ function SHPLoader ( manager = DefaultLoadingManager, logger = TLogger ) {
         to:   'zForward'
     }
 
-    this._reader = new BinaryReader()
+    this._reader = new TBinaryReader()
 
 }
 

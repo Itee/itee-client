@@ -10,10 +10,13 @@
 
 import { TStore } from './TStore'
 
-class TAbtractFactory extends TStore {
+class TAbstractFactory extends TStore {
 
-    constructor ( collection = {}, allowOverride = false, keyValidators = {}, itemValidators = {} ) {
-        super( collection, allowOverride, keyValidators, itemValidators )
+    constructor ( parameters = {} ) {
+
+        const _parameters = { ...{}, ...parameters }
+
+        super( _parameters )
 
     }
 
@@ -25,4 +28,4 @@ class TAbtractFactory extends TStore {
 
 }
 
-export { TAbtractFactory }
+export { TAbstractFactory }
