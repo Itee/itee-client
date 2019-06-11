@@ -11,13 +11,12 @@
 /* eslint-env browser */
 
 import {
+    ArrowHelper,
     CinematicCamera,
     Clock,
-    CubeCamera,
     Frustum,
     Matrix4,
-    Raycaster,
-    StereoCamera
+    Raycaster
 }             from 'three-full'
 import resize from 'vue-resize-directive'
 
@@ -27,7 +26,7 @@ import Vue                  from '../../../../node_modules/vue/dist/vue.esm'
 
 export default Vue.component( 'TViewport3D', {
 
-    template: `<div class="tViewport3D" v-resize:debounce="_resize" @click.left="_select" @click.right="_deselect" tabindex="-1"></div>`,
+    template: `<div class="tViewport3D" v-resize:debounce="_resize" @click.left="_select" @click.right="_deselect" tabindex="-1"><slot></slot></div>`,
 
     props: [
         'width',
@@ -380,6 +379,17 @@ export default Vue.component( 'TViewport3D', {
 
             // update the picking ray with the camera and mouse position
             this._raycaster.setFromCamera( normalizedMouseCoordinates, this.camera )
+
+            // Debug ray
+            const debugRay = false
+            if ( debugRay ) {
+
+                const origin      = this._raycaster.ray.origin
+                const direction   = this._raycaster.ray.direction
+                const arrowHelper = new ArrowHelper( direction, origin, 10, 0x123456 )
+                this.scene.add( arrowHelper )
+
+            }
 
             // calculate objects intersecting the picking ray
             const raycastables = this._getRaycastableCache()
