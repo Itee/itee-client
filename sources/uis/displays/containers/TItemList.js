@@ -79,18 +79,18 @@ export default Vue.component( 'TItemList', {
 
             if ( this.expand && this.width && this.height ) {
 
-                TLogger.warn( `TContainer: Conflict between expand, width and height ! Defaulting to width and height.` )
+                TLogger.warn( `TItemList: Conflict between expand, width and height ! Defaulting to width and height.` )
                 style.width  = this.width
                 style.height = this.height
 
             } else if ( this.expand && this.width ) {
 
-                TLogger.warn( `TContainer: Conflict between expand and width ! Defaulting to width.` )
+                TLogger.warn( `TItemList: Conflict between expand and width ! Defaulting to width.` )
                 style.width = this.width
 
             } else if ( this.expand && this.height ) {
 
-                TLogger.warn( `TContainer: Conflict between expand and height ! Defaulting to height.` )
+                TLogger.warn( `TItemList: Conflict between expand and height ! Defaulting to height.` )
                 style.height = this.height
 
             } else if ( this.expand ) {
@@ -143,11 +143,11 @@ export default Vue.component( 'TItemList', {
                         break
 
                     case 'stretch':
-                        TLogger.warn( 'TContainer: Unable to stretch content in a vertical container !' )
+                        TLogger.warn( 'TItemList: Unable to stretch content in a vertical container !' )
                         break
 
                     case 'baseline':
-                        TLogger.warn( 'TContainer: Unable to align content on a horizontal baseline in a vertical container !' )
+                        TLogger.warn( 'TItemList: Unable to align content on a horizontal baseline in a vertical container !' )
                         break
 
                     default:
@@ -171,11 +171,11 @@ export default Vue.component( 'TItemList', {
                         break
 
                     case 'spaced':
-                        TLogger.warn( 'TContainer: Unable to space content in a vertical container !' )
+                        TLogger.warn( 'TItemList: Unable to space content in a vertical container !' )
                         break
 
                     case 'justified':
-                        TLogger.warn( 'TContainer: Unable to justify content in a vertical container !' )
+                        TLogger.warn( 'TItemList: Unable to justify content in a vertical container !' )
                         break
 
                     case 'baseline':
@@ -211,11 +211,11 @@ export default Vue.component( 'TItemList', {
                         break
 
                     case 'spaced':
-                        TLogger.warn( 'TContainer: Unable to space content in a horizontal container !' )
+                        TLogger.warn( 'TItemList: Unable to space content in a horizontal container !' )
                         break
 
                     case 'justified':
-                        TLogger.warn( 'TContainer: Unable to justify content in a horizontal container !' )
+                        TLogger.warn( 'TItemList: Unable to justify content in a horizontal container !' )
                         break
 
                     case 'stretch':
@@ -227,7 +227,7 @@ export default Vue.component( 'TItemList', {
                         break
 
                     default:
-                        TLogger.error( `TContainer: Unknown vertical alignement: ${this.vAlign} !!!` )
+                        TLogger.error( `TItemList: Unknown vertical alignement: ${this.vAlign} !!!` )
                         break
 
                 }
@@ -255,15 +255,15 @@ export default Vue.component( 'TItemList', {
                         break
 
                     case 'stretch':
-                        TLogger.warn( 'TContainer: Unable to stretch content in a horizontal container !' )
+                        TLogger.warn( 'TItemList: Unable to stretch content in a horizontal container !' )
                         break
 
                     case 'baseline':
-                        TLogger.warn( 'TContainer: Unable to align content on a horizontal baseline in a horizontal container !' )
+                        TLogger.warn( 'TItemList: Unable to align content on a horizontal baseline in a horizontal container !' )
                         break
 
                     default:
-                        TLogger.error( `TContainer: Unknown horizontal alignement: ${this.hAlign} !!!` )
+                        TLogger.error( `TItemList: Unknown horizontal alignement: ${this.hAlign} !!!` )
                         break
 
                 }
@@ -310,7 +310,7 @@ export default Vue.component( 'TItemList', {
                 style.flexWrap = 'nowrap'
 
                 if ( this.wAlign ) {
-                    TLogger.warn( 'TContainer: Unable to set content wrapping alignment with a unwrapped container !' )
+                    TLogger.warn( 'TItemList: Unable to set content wrapping alignment with a unwrapped container !' )
                 }
 
             }

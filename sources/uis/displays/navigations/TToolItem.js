@@ -16,19 +16,17 @@ import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
 export default Vue.component( 'TToolItem', {
     template: `
-        <div v-if="onClick" :class=computedClass :title=tooltip >
-            <span @click=onClick(onClickData)>
-              <TIcon v-if='icon' :iconProps="icon" />
+        <div v-if="onClick" :class=computedClass :title=tooltip @click=onClick(onClickData)>
+            <TIcon v-if='icon' :iconProps="icon" class="tToolIcon" />
               {{label}}
-              <slot></slot>
-            </span>
-            <span v-if='isCheckableItem'>
-              <TIcon v-if=computedState iconProps="check-square"  v-bind:iconOn="{click: _onClickCheckBox}"/>
-              <TIcon v-else iconProps="square" v-bind:iconOn="{click: _onClickCheckBox}"/>
-            </span>
+            <slot></slot>
+            <template v-if='isCheckableItem'>
+              <TIcon v-if=computedState iconProps="check-square"  v-bind:iconOn="{click: _onClickCheckBox}" class="tToolIcon" />
+              <TIcon v-else iconProps="square" v-bind:iconOn="{click: _onClickCheckBox}" class="tToolIcon" />
+            </template>
         </div>
         <div v-else :class=computedClass :title=tooltip >
-            <TIcon v-if='icon' :iconProps="icon" />
+            <TIcon v-if='icon' :iconProps="icon" class="tToolIcon" />
             {{label}}
             <slot></slot>
         </div>

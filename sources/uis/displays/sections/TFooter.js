@@ -13,7 +13,7 @@ import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
 export default Vue.component( 'TFooter', {
     template: `
-        <TContainer class="tFooter" height="30px" vAlign="center" hAlign="center">
+        <TContainer class="tFooter" :height=30 vAlign="center" hAlign="center">
             <slot></slot>
         </TContainer>
     `
