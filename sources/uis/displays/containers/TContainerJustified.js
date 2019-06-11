@@ -11,25 +11,73 @@
 /* eslint-env browser */
 
 import Vue from '../../../../node_modules/vue/dist/vue.esm'
+import {
+    TIdFactory,
+    TIdFactoryType
+}                    from '../../../utils/TIdFactory'
+const IdFactory = new TIdFactory( TIdFactoryType.String, 't-container-justified-' )
 
 export default Vue.component( 'TContainerJustified', {
-    template: `
+    template: `<!-- TContainerJustified Start -->
         <TContainer 
-		        class="tContainer tContainerJustified" 
-		        :height=height 
-		        :width=width 
-		        :orientation=orientation
-		        :expand=expand 
-		        :wrapContent=wrapContent 
-		        vAlign="justified"
-		        hAlign="justified"
-		        wAlign="justified"
-		        :overflow=overflow 
-		        :overflowX=overflowX 
-		        :overflowY=overflowY 
+            :id=computeId
+            class="tContainer tContainerJustified" 
+            :height=height 
+            :width=width 
+            :orientation=orientation
+            :expand=expand 
+            :wrapContent=wrapContent 
+            vAlign="justified"
+            hAlign="justified"
+            wAlign="justified"
+            :overflow=overflow 
+            :overflowX=overflowX 
+            :overflowY=overflowY 
         >
             <slot></slot>
         </TContainer>
-    `,
-    props:    [ 'height', 'width', 'expand', 'wrapContent', 'overflow', 'overflowX', 'overflowY' ]
+<!-- TContainerJustified End -->`,
+    props: {
+        id:         {
+            type:    String
+        },
+        height: {
+            type: Number
+        },
+        width: {
+            type: Number
+        },
+        orientation: {
+            type: String,
+            default: ''
+        },
+        expand: {
+            type:    Boolean,
+            default: false
+        },
+        wrapContent: {
+            type:    Boolean,
+            default: false
+        },
+        overflow: {
+            type:    String
+        },
+        overflowX: {
+            type:    String
+        },
+        overflowY: {
+            type:    String
+        }
+    },
+    computed: {
+        computeId () {
+
+            if( this.id ) {
+                return this.id
+            } else {
+                return IdFactory.createId()
+            }
+
+        },
+    }
 } )

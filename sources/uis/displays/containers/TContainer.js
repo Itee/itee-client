@@ -14,14 +14,62 @@ import { isString } from 'itee-validators'
 import Vue          from '../../../../node_modules/vue/dist/vue.esm'
 
 import { DefaultLogger as TLogger } from '../../../loggers/TLogger'
+import {
+    TIdFactory,
+    TIdFactoryType
+}                    from '../../../utils/TIdFactory'
+const IdFactory = new TIdFactory( TIdFactoryType.String, 't-container-' )
 
 export default Vue.component( 'TContainer', {
     template: `
-        <div :class=computeClass :style=computeStyle>
+        <div :id=computeId :class=computeClass :style=computeStyle>
             <slot></slot>
         </div>
     `,
-    props:    [ 'height', 'width', 'orientation', 'expand', 'wrapContent', 'vAlign', 'hAlign', 'wAlign', 'overflow', 'overflowX', 'overflowY' ],
+    props: {
+        id:         {
+            type:    String
+        },
+        height: {
+            type: Number
+        },
+        width: {
+            type: Number
+        },
+        orientation: {
+            type: String,
+            default: ''
+        },
+        vAlign: {
+            type: String,
+            validator: ( value ) => { return [ 'start', 'end', 'center', 'spaced', 'justified', 'stretch', 'baseline' ].includes( value ) }
+        },
+        hAlign: {
+            type: String,
+            validator: ( value ) => { return [ 'start', 'end', 'center', 'spaced', 'justified', 'stretch', 'baseline' ].includes( value ) }
+        },
+        wAlign: {
+            type: String,
+            validator: ( value ) => { return [ 'start', 'end', 'center', 'spaced', 'justified', 'stretch' ].includes( value ) }
+        },
+        expand: {
+            type:    Boolean,
+            default: false
+        },
+        wrapContent: {
+            type:    Boolean,
+            default: false
+        },
+        overflow: {
+            type:    String
+        },
+        overflowX: {
+            type:    String
+        },
+        overflowY: {
+            type:    String
+        }
+    },
     watch:    {
         // whenever question changes, this function will run
         width: function ( newValue, oldValue ) {
@@ -34,6 +82,16 @@ export default Vue.component( 'TContainer', {
 
     },
     computed: {
+
+        computeId () {
+
+            if( this.id ) {
+                return this.id
+            } else {
+                return IdFactory.createId()
+            }
+
+        },
 
         computeClass () {
 
@@ -85,18 +143,18 @@ export default Vue.component( 'TContainer', {
 
             if ( this.expand && this.width && this.height ) {
 
-                TLogger.warn( `TContainer: Conflict between expand, width and height ! Defaulting to width and height.` )
+                TLogger.warn( `TContainer [${this.id}]: Conflict between expand, width and height ! Defaulting to width and height.` )
                 style.width  = isString( this.width ) ? this.width : `${this.width}px`
                 style.height = isString( this.height ) ? this.height : `${this.height}px`
 
             } else if ( this.expand && this.width ) {
 
-                TLogger.warn( `TContainer: Conflict between expand and width ! Defaulting to width.` )
+                TLogger.warn( `TContainer [${this.id}]: Conflict between expand and width ! Defaulting to width.` )
                 style.width = isString( this.width ) ? this.width : `${this.width}px`
 
             } else if ( this.expand && this.height ) {
 
-                TLogger.warn( `TContainer: Conflict between expand and height ! Defaulting to height.` )
+                TLogger.warn( `TContainer [${this.id}]: Conflict between expand and height ! Defaulting to height.` )
                 style.height = isString( this.height ) ? this.height : `${this.height}px`
 
             } else if ( this.expand ) {
@@ -149,15 +207,15 @@ export default Vue.component( 'TContainer', {
                         break
 
                     case 'stretch':
-                        TLogger.warn( 'TContainer: Unable to stretch content in a vertical container !' )
+                        TLogger.warn( `TContainer [${this.id}]: Unable to stretch content in a vertical container !` )
                         break
 
                     case 'baseline':
-                        TLogger.warn( 'TContainer: Unable to align content on a horizontal baseline in a vertical container !' )
+                        TLogger.warn( `TContainer [${this.id}]: Unable to align content on a horizontal baseline in a vertical container !` )
                         break
 
                     default:
-                        TLogger.error( `TContainer: Unknown vertical alignement: ${this.vAlign} !!!` )
+                        TLogger.error( `TContainer [${this.id}]: Unknown vertical alignement: ${this.vAlign} !!!` )
                         break
 
                 }
@@ -177,11 +235,11 @@ export default Vue.component( 'TContainer', {
                         break
 
                     case 'spaced':
-                        TLogger.warn( 'TContainer: Unable to space content in a vertical container !' )
+                        TLogger.warn( `TContainer [${this.id}]: Unable to space content in a vertical container !` )
                         break
 
                     case 'justified':
-                        TLogger.warn( 'TContainer: Unable to justify content in a vertical container !' )
+                        TLogger.warn( `TContainer [${this.id}]: Unable to justify content in a vertical container !` )
                         break
 
                     case 'baseline':
@@ -193,7 +251,7 @@ export default Vue.component( 'TContainer', {
                         break
 
                     default:
-                        TLogger.error( `TContainer: Unknown horizontal alignement: ${this.hAlign} !!!` )
+                        TLogger.error( `TContainer [${this.id}]: Unknown horizontal alignement: ${this.hAlign} !!!` )
                         break
 
                 }
@@ -217,11 +275,11 @@ export default Vue.component( 'TContainer', {
                         break
 
                     case 'spaced':
-                        TLogger.warn( 'TContainer: Unable to space content in a horizontal container !' )
+                        TLogger.warn( `TContainer [${this.id}]: Unable to space content in a horizontal container !` )
                         break
 
                     case 'justified':
-                        TLogger.warn( 'TContainer: Unable to justify content in a horizontal container !' )
+                        TLogger.warn( `TContainer [${this.id}]: Unable to justify content in a horizontal container !` )
                         break
 
                     case 'stretch':
@@ -233,7 +291,7 @@ export default Vue.component( 'TContainer', {
                         break
 
                     default:
-                        TLogger.error( `TContainer: Unknown vertical alignement: ${this.vAlign} !!!` )
+                        TLogger.error( `TContainer [${this.id}]: Unknown vertical alignement: ${this.vAlign} !!!` )
                         break
 
                 }
@@ -261,15 +319,15 @@ export default Vue.component( 'TContainer', {
                         break
 
                     case 'stretch':
-                        TLogger.warn( 'TContainer: Unable to stretch content in a horizontal container !' )
+                        TLogger.warn( `TContainer [${this.id}]: Unable to stretch content in a horizontal container !` )
                         break
 
                     case 'baseline':
-                        TLogger.warn( 'TContainer: Unable to align content on a horizontal baseline in a horizontal container !' )
+                        TLogger.warn( `TContainer [${this.id}]: Unable to align content on a horizontal baseline in a horizontal container !` )
                         break
 
                     default:
-                        TLogger.error( `TContainer: Unknown horizontal alignement: ${this.hAlign} !!!` )
+                        TLogger.error( `TContainer [${this.id}]: Unknown horizontal alignement: ${this.hAlign} !!!` )
                         break
 
                 }
@@ -307,7 +365,7 @@ export default Vue.component( 'TContainer', {
                         break
 
                     default:
-                        TLogger.error( `TContainer: Unknown horizontal alignement: ${this.wAlign} !!!` )
+                        TLogger.error( `TContainer [${this.id}]: Unknown horizontal alignement: ${this.wAlign} !!!` )
                         break
                 }
 
@@ -316,7 +374,7 @@ export default Vue.component( 'TContainer', {
                 style.flexWrap = 'nowrap'
 
                 if ( this.wAlign ) {
-                    TLogger.warn( 'TContainer: Unable to set content wrapping alignment with a unwrapped container !' )
+                    TLogger.warn( `TContainer [${this.id}]: Unable to set content wrapping alignment with a unwrapped container !` )
                 }
 
             }

@@ -11,24 +11,80 @@
 /* eslint-env browser */
 
 import Vue from '../../../../node_modules/vue/dist/vue.esm'
+import {
+    TIdFactory,
+    TIdFactoryType
+}                    from '../../../utils/TIdFactory'
+const IdFactory = new TIdFactory( TIdFactoryType.String, 't-container-vertical-' )
 
 export default Vue.component( 'TContainerVertical', {
-    template: `
+    template: `<!-- TContainerVertical Start -->
         <TContainer
-		        :height=height 
-		        :width=width 
-		        orientation="vertical" 
-		        :expand=expand 
-		        :wrapContent=wrapContent 
-		        :vAlign=vAlign
-		        :hAlign=hAlign
-		        :wAlign=wAlign
-		        :overflow=overflow 
-		        :overflowX=overflowX 
-		        :overflowY=overflowY 
+            :id=computeId
+            :height=height 
+            :width=width 
+            orientation="vertical" 
+            :expand=expand 
+            :wrapContent=wrapContent 
+            :vAlign=vAlign
+            :hAlign=hAlign
+            :wAlign=wAlign
+            :overflow=overflow 
+            :overflowX=overflowX 
+            :overflowY=overflowY 
         >
             <slot></slot>
         </TContainer>
-    `,
-    props:    [ 'height', 'width', 'expand', 'wrapContent', 'vAlign', 'hAlign', 'wAlign', 'overflow', 'overflowX', 'overflowY' ]
+<!-- TContainerVertical End -->`,
+    props: {
+        id:         {
+            type:    String
+        },
+        height: {
+            type: Number
+        },
+        width: {
+            type: Number
+        },
+        vAlign: {
+            type: String,
+            validator: ( value ) => { return [ 'start', 'end', 'center', 'spaced', 'justified' ].includes( value ) }
+        },
+        hAlign: {
+            type: String,
+            validator: ( value ) => { return [ 'start', 'end', 'center', 'stretch', 'baseline' ].includes( value ) }
+        },
+        wAlign: {
+            type: String,
+            validator: ( value ) => { return [ 'start', 'end', 'center', 'spaced', 'justified', 'stretch' ].includes( value ) }
+        },
+        expand: {
+            type:    Boolean,
+            default: false
+        },
+        wrapContent: {
+            type:    Boolean,
+            default: false
+        },
+        overflow: {
+            type:    String
+        },
+        overflowX: {
+            type:    String
+        },
+        overflowY: {
+            type:    String
+        }
+    },
+    computed: {
+        computeId () {
+
+            if( this.id ) {
+                return this.id
+            } else {
+                return IdFactory.createId()
+            }
+
+        },
+    }
 } )
