@@ -23,7 +23,7 @@ import {
     isObject,
     isString,
     isUndefined
-}                       from 'itee-validators'
+} from 'itee-validators'
 import {
     Color,
     ImageLoader,
@@ -31,9 +31,10 @@ import {
     LineBasicMaterial,
     MeshLambertMaterial,
     MeshPhongMaterial,
+    PointsMaterial,
     TextureLoader,
     Vector2
-}                       from 'three-full'
+} from 'three-full'
 
 import { TDataBaseManager } from '../TDataBaseManager'
 import { TTexturesManager } from './TTexturesManager'
@@ -56,11 +57,11 @@ class TMaterialsManager extends TDataBaseManager {
 
         const _parameters = {
             ...{
-                basePath:               '/materials',
-                texturesPath:           '/textures',
-                texturesProvider:       new TextureLoader(),
-                generateMipmap:         false,
-                autoFillTextures:       true
+                basePath:         '/materials',
+                texturesPath:     '/textures',
+                texturesProvider: new TextureLoader(),
+                generateMipmap:   false,
+                autoFillTextures: true
             }, ...parameters
         }
 
@@ -89,13 +90,6 @@ class TMaterialsManager extends TDataBaseManager {
 
     }
 
-    setTexturesPath ( value ) {
-
-        this.texturesPath = value
-        return this
-
-    }
-
     get texturesProvider () {
         return this._texturesProvider
     }
@@ -107,13 +101,6 @@ class TMaterialsManager extends TDataBaseManager {
         if ( !( value instanceof TTexturesManager ) && !( value instanceof TextureLoader ) ) { throw new TypeError( `Textures provider cannot be an instance of ${value.constructor.name} ! Expect an instance of TTexturesManager.` ) }
 
         this._texturesProvider = value
-
-    }
-
-    setTexturesProvider ( value ) {
-
-        this.texturesProvider = value
-        return this
 
     }
 
@@ -130,13 +117,6 @@ class TMaterialsManager extends TDataBaseManager {
         this._generateMipmap = value
     }
 
-    setGenerateMipmap ( value ) {
-
-        this.generateMipmap = value
-        return this
-
-    }
-
     get autoFillTextures () {
         return this._autoFillTextures
     }
@@ -148,6 +128,27 @@ class TMaterialsManager extends TDataBaseManager {
         if ( isNotBoolean( value ) ) { throw new TypeError( 'Global scale cannot be null ! Expect a boolean.' ) }
 
         this._autoFillTextures = value
+
+    }
+
+    setTexturesPath ( value ) {
+
+        this.texturesPath = value
+        return this
+
+    }
+
+    setTexturesProvider ( value ) {
+
+        this.texturesProvider = value
+        return this
+
+    }
+
+    setGenerateMipmap ( value ) {
+
+        this.generateMipmap = value
+        return this
 
     }
 
@@ -494,6 +495,38 @@ class TMaterialsManager extends TDataBaseManager {
                 const color = data.color
                 if ( isDefined( color ) ) {
                     material.color = this._setColor( color )
+                }
+
+                break
+            }
+
+            case 'PointsMaterial': {
+                material = new PointsMaterial()
+                this._fillBaseMaterialData( material, data )
+
+                const color = data.color
+                if ( isDefined( color ) ) {
+                    material.color = this._setColor( color )
+                }
+
+                const map = data.map
+                if ( isDefined( map ) ) {
+                    material.map = map
+                }
+
+                const morphTargets = data.morphTargets
+                if ( isDefined( morphTargets ) ) {
+                    material.morphTargets = morphTargets
+                }
+
+                const size = data.size
+                if ( isDefined( size ) ) {
+                    material.size = size
+                }
+
+                const sizeAttenuation = data.sizeAttenuation
+                if ( isDefined( sizeAttenuation ) ) {
+                    material.sizeAttenuation = sizeAttenuation
                 }
 
                 break
