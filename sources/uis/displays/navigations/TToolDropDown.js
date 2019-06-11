@@ -31,7 +31,7 @@ export default Vue.component( 'TToolDropDown', {
         }
 
     },
-    props:    [ 'popAt', 'icon', 'label', 'tooltip' ],
+    props:    [ 'popAt', 'icon', 'label', 'tooltip', 'isActive' ],
     computed: {
 
         computeClass () {
@@ -108,6 +108,10 @@ export default Vue.component( 'TToolDropDown', {
                     throw new RangeError( `Invalid switch parameter: ${this.popAt}`, 'TDropDownMenu' )
                     break
 
+            }
+
+            if ( this.isActive ) {
+                classList += ' isActive'
             }
 
             return classList

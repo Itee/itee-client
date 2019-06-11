@@ -14,7 +14,7 @@ import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
 export default Vue.component( 'TInfinitScroll', {
     template: `
-        <TContainer class="tInfinitScroll" expand=true vAlign="center" hAlign="start" overflow="scroll">
+        <TContainer class="tInfinitScroll" :expand=true vAlign="center" hAlign="start" overflow="scroll">
             <slot></slot>
         </TContainer>
     `

@@ -147,12 +147,17 @@ body {
     font-size:        1.6em;
     color:            #efefef;
     min-height:       50px;
+    max-height:       50px;
 
     .tToolItem {
-        padding: 10px 15px;
+
+        display: flex;
+        align-items: center;
+        margin-top: -1px;
+        padding: 12px 15px;
         cursor:  pointer;
 
-        &:not(.disable):hover, &.isActive {
+        &:not(.disable):hover, &:not(.disable).isActive {
             margin-bottom:    -1px;
             border-bottom:    1px solid #4eaeff;
             background-color: rgba(150, 150, 150, 1);
@@ -160,9 +165,11 @@ body {
 
         &.disabled {
             cursor:           not-allowed;
+            margin-bottom:    -1px;
+            border-bottom:    1px solid #ff2b1c;
             background-color: rgb(95, 95, 95);
 
-            svg {
+            > * {
                 cursor: not-allowed;
             }
 
@@ -172,12 +179,19 @@ body {
             cursor: pointer;
         }
 
+        .tToolIcon {
+            margin-right: 5px;
+        }
+
     }
 
     .tToolDropDown {
-        padding: 11px 16px;
 
-        &:hover {
+        padding: 6px 16px;
+
+        &:not(.disable):hover, &.isActive {
+            margin-bottom:       -1px;
+            border-bottom:    1px solid #4eaeff;
             background-color: rgba(150, 150, 150, 1);
         }
 
@@ -217,6 +231,18 @@ body {
             background-color: #323232f2;
             box-shadow:       2px 2px 2px 0px rgba(0, 0, 0, 0.2);
             font-size:        20px;
+        }
+
+        &.disabled {
+            cursor:           not-allowed;
+            margin-bottom:    -1px;
+            border-bottom:    1px solid #ff2b1c;
+            background-color: rgb(95, 95, 95);
+
+            > * {
+                cursor: not-allowed;
+            }
+
         }
 
     }

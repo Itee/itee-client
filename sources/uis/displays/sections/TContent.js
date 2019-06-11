@@ -14,8 +14,8 @@ import Vue from '../../../../node_modules/vue/dist/vue.esm'
 
 export default Vue.component( 'TContent', {
     template: `
-        <TContainer class="tContent" :expand=true :wrap=true vAlign="stretch" hAlign="stretch" wAlign="stretch">
+        <TContainerStretched class="tContent" orientation="horizontal" :expand=true :wrapContent=true>
             <slot></slot>
-        </TContainer>
+        </TContainerStretched>
     `
 } )
