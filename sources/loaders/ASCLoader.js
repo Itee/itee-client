@@ -32,10 +32,9 @@ import {
     FileLoader,
     Group,
     Points,
-    PointsMaterial
+    PointsMaterial,
+    Box3
 }                       from 'three-full'
-import { TBoundingBox } from '../cores/TBoundingBox'
-
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 
 /**
@@ -47,7 +46,7 @@ function ASCLoader ( manager ) {
 
     this.manager = ( manager ) ? manager : DefaultLoadingManager
 
-    this._boundingBox    = new TBoundingBox()
+    this._boundingBox    = new Box3()
     this._points         = []
     this._numberOfPoints = 0
     this._coloredPoints  = false
