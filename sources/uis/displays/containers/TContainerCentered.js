@@ -27,7 +27,7 @@ export default Vue.component( 'TContainerCentered', {
             :width=width 
             :orientation=orientation 
             :expand=expand 
-            wrapContent=true 
+            :wrapContent=true 
             vAlign="center" 
             hAlign="center" 
             wAlign="center" 
