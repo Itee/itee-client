@@ -21,38 +21,6 @@ import {
 
 class TOrbitControlsHelper extends LineSegments {
 
-    constructor ( /*control,*/ radius = 2, radials = 16, circles = 2, divisions = 64, innerColor = new Color( 0x444444 ), outerColor = new Color( 0x888888 ) ) {
-        super( TOrbitControlsHelper._createInternalGeometry( radius, radials, circles, divisions, innerColor, outerColor ), TOrbitControlsHelper._createInternalMaterial() )
-
-        //        this.control     = control
-        this._intervalId = undefined
-
-        //        this.impose()
-
-    }
-
-    //    get control () {
-    //
-    //        return this._control
-    //
-    //    }
-    //
-    //    set control ( value ) {
-    //
-    //        if ( isNull( value ) ) { throw new Error( 'Control cannot be null ! Expect an instace of camera controller.' ) }
-    //        if ( isUndefined( value ) ) { throw new Error( 'Control cannot be undefined ! Expect an instace of camera controller.' ) }
-    //
-    //        this._control = value
-    //
-    //    }
-    //
-    //    setControl ( value ) {
-    //
-    //        this.control = value
-    //        return this
-    //
-    //    }
-
     static _createInternalGeometry ( RADIUS, RADIALS, CIRCLES, DIVISIONS, color1, color2 ) {
 
         const vertices = []
@@ -138,47 +106,37 @@ class TOrbitControlsHelper extends LineSegments {
 
     static _createInternalMaterial () {
 
-        const material = new LineBasicMaterial( { vertexColors: VertexColors } )
+        const material       = new LineBasicMaterial( { vertexColors: VertexColors } )
         material.transparent = true
-        material.opacity = 0.0
-        material.name = 'TOrbitControlsHelperMaterial'
+        material.opacity     = 0.0
+        material.name        = 'TOrbitControlsHelperMaterial'
 
         return material
 
     }
 
-    //    impose () {
-    //
-    //        this._control.addEventListener( 'start', this.startOpacityAnimation.bind( this ) )
-    //        this._control.addEventListener( 'change', this.updateHelperPosition.bind( this ) )
-    //        this._control.addEventListener( 'end', this.endOpacityAnimation.bind( this ) )
-    //
-    //    }
+    constructor ( parameters = {} ) {
 
-    //    dispose () {
-    //
-    //        this._control.removeEventListener( 'start', this.startOpacityAnimation )
-    //        this._control.removeEventListener( 'change', this.updateHelperPosition )
-    //        this._control.removeEventListener( 'end', this.endOpacityAnimation )
-    //
-    //    }
+        const _parameters = {
+            ...{
+                radius:     2,
+                radials:    16,
+                circles:    2,
+                divisions:  64,
+                innerColor: new Color( 0x444444 ),
+                outerColor: new Color( 0x888888 )
+            }, ...parameters
+        }
 
-    /**
-     *
-     */
-    //    updateHelperPosition () {
-    //
-    //        const target = this._control.target
-    //
-    //        this.position.x = target.x
-    //        this.position.y = target.y
-    //        this.position.z = target.z
-    //
-    //    }
+        super( TOrbitControlsHelper._createInternalGeometry( _parameters.radius, _parameters.radials, _parameters.circles, _parameters.divisions, _parameters.innerColor, _parameters.outerColor ), TOrbitControlsHelper._createInternalMaterial() )
 
-    /**
-     *
-     */
+        //        this.control     = control
+        this._intervalId = undefined
+
+        //        this.impose()
+
+    }
+
     startOpacityAnimation () {
 
         // In case fade off is running, kill it an restore opacity to 1
@@ -193,9 +151,6 @@ class TOrbitControlsHelper extends LineSegments {
 
     }
 
-    /**
-     *
-     */
     endOpacityAnimation () {
 
         // Manage transparency interval
