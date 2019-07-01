@@ -205,7 +205,7 @@ class TMaterialsManager extends TDataBaseManager {
         }
 
         const type   = data.type
-        let material = undefined
+        let material = null
 
         switch ( type ) {
 
