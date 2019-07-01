@@ -39,7 +39,8 @@ export default Vue.component( 'TContainerJustified', {
 <!-- TContainerJustified End -->`,
     props: {
         id:         {
-            type:    String
+            type:    String,
+            default: IdFactory.createId()
         },
         height: {
             type: Number

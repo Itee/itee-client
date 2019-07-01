@@ -40,7 +40,8 @@ export default Vue.component( 'TContainerCentered', {
 <!-- TContainerCentered End -->`,
     props:    {
         id:          {
-            type:    String
+            type:    String,
+            default: IdFactory.createId()
         },
         height:      {
             type: Number

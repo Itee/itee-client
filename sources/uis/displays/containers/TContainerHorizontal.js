@@ -38,7 +38,8 @@ export default Vue.component( 'TContainerHorizontal', {
 <!-- TContainerHorizontal End -->`,
     props: {
         id:         {
-            type:    String
+            type:    String,
+            default: IdFactory.createId()
         },
         height: {
             type: Number

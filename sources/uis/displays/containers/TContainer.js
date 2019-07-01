@@ -17,42 +17,44 @@ import { DefaultLogger as TLogger } from '../../../loggers/TLogger'
 import {
     TIdFactory,
     TIdFactoryType
-}                    from '../../../utils/TIdFactory'
+}                                   from '../../../utils/TIdFactory'
+
 const IdFactory = new TIdFactory( TIdFactoryType.String, 't-container-' )
 
 export default Vue.component( 'TContainer', {
     template: `
-        <div :id=computeId :class=computeClass :style=computeStyle>
+        <div :id=id :class=computeClass :style=computeStyle>
             <slot></slot>
         </div>
     `,
-    props: {
-        id:         {
-            type:    String
+    props:    {
+        id:          {
+            type: String,
+            default: IdFactory.createId()
         },
-        height: {
+        height:      {
             type: Number
         },
-        width: {
+        width:       {
             type: Number
         },
         orientation: {
-            type: String,
+            type:    String,
             default: ''
         },
-        vAlign: {
-            type: String,
+        vAlign:      {
+            type:      String,
             validator: ( value ) => { return [ 'start', 'end', 'center', 'spaced', 'justified', 'stretch', 'baseline' ].includes( value ) }
         },
-        hAlign: {
-            type: String,
+        hAlign:      {
+            type:      String,
             validator: ( value ) => { return [ 'start', 'end', 'center', 'spaced', 'justified', 'stretch', 'baseline' ].includes( value ) }
         },
-        wAlign: {
-            type: String,
+        wAlign:      {
+            type:      String,
             validator: ( value ) => { return [ 'start', 'end', 'center', 'spaced', 'justified', 'stretch' ].includes( value ) }
         },
-        expand: {
+        expand:      {
             type:    Boolean,
             default: false
         },
@@ -60,17 +62,18 @@ export default Vue.component( 'TContainer', {
             type:    Boolean,
             default: false
         },
-        overflow: {
-            type:    String
+        overflow:    {
+            type: String
         },
-        overflowX: {
-            type:    String
+        overflowX:   {
+            type: String
         },
-        overflowY: {
-            type:    String
+        overflowY:   {
+            type: String
         }
     },
     watch:    {
+
         // whenever question changes, this function will run
         width: function ( newValue, oldValue ) {
             console.log( 'TContainer: Width change from ' + oldValue + ' to ' + newValue )
@@ -82,16 +85,6 @@ export default Vue.component( 'TContainer', {
 
     },
     computed: {
-
-        computeId () {
-
-            if( this.id ) {
-                return this.id
-            } else {
-                return IdFactory.createId()
-            }
-
-        },
 
         computeClass () {
 
@@ -384,4 +377,5 @@ export default Vue.component( 'TContainer', {
         }
 
     }
+
 } )
