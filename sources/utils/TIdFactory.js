@@ -108,8 +108,7 @@ class TIdFactory {
     }
 
     createId () {
-        this._counter += 1
-        return this._base + this._counter
+        return this._base + this._counter++
     }
 
 }
