@@ -8,16 +8,23 @@
  *
  */
 
+import {
+    isNull,
+    isUndefined
+} from 'itee-validators'
 /* eslint-env browser */
 import {
+    Camera,
     EventDispatcher,
     MOUSE,
+    Object3D,
     Quaternion,
     Vector3
 } from 'three-full'
 
 import { Keys }                     from '../cores/TConstants'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
+import { TCameraControlMode }       from './TCameraControls'
 
 const PI_2    = Math.PI / 2
 const STATE   = {
