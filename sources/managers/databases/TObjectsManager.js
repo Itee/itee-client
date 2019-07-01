@@ -230,7 +230,7 @@ class TObjectsManager extends TDataBaseManager {
         }
 
         const objectType = data.type
-        let object       = undefined
+        let object       = null
 
         // Todo: Use factory instead and allow user to register its own object type !!!
         switch ( objectType ) {
