@@ -19,7 +19,7 @@ import {
     isNull,
     isObject,
     isUndefined
-} from 'itee-validators'
+}                           from 'itee-validators'
 /* eslint-env browser */
 import {
     BoxBufferGeometry,
@@ -95,19 +95,48 @@ class TGeometriesManager extends TDataBaseManager {
 
         const _parameters = {
             ...{
-                basePath:         '/geometries',
-                projectionSystem: 'zBack',
-                globalScale:      1,
-                computeNormals:   true
+                basePath:              '/geometries',
+                projectionSystem:      'zBack',
+                globalScale:           1,
+                computeNormals:        true,
+                computeBoundingBox:    true,
+                computeBoundingSphere: true
             }, ...parameters
         }
 
         super( _parameters )
 
-        this.projectionSystem = _parameters.projectionSystem
-        this.globalScale      = _parameters.globalScale
-        this.computeNormals   = _parameters.computeNormals
+        this.projectionSystem      = _parameters.projectionSystem
+        this.globalScale           = _parameters.globalScale
+        this.computeNormals        = _parameters.computeNormals
+        this.computeBoundingBox    = _parameters.computeBoundingBox
+        this.computeBoundingSphere = _parameters.computeBoundingSphere
+    }
 
+    //// Getter/Setter
+
+    get computeBoundingBox () {
+        return this._computeBoundingBox
+    }
+
+    set computeBoundingBox ( value ) {
+        if ( isNull( value ) ) { throw new TypeError( 'Compute bounding box cannot be null ! Expect a boolean.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Compute bounding box cannot be undefined ! Expect a boolean.' ) }
+        if ( isNotBoolean( value ) ) { throw new TypeError( `Compute bounding box cannot be an instance of ${value.constructor.name} ! Expect a boolean.` ) }
+
+        this._computeBoundingBox = value
+    }
+
+    get computeBoundingSphere () {
+        return this._computeBoundingSphere
+    }
+
+    set computeBoundingSphere ( value ) {
+        if ( isNull( value ) ) { throw new TypeError( 'Compute bounding sphere cannot be null ! Expect a boolean.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Compute bounding sphere cannot be undefined ! Expect a boolean.' ) }
+        if ( isNotBoolean( value ) ) { throw new TypeError( `Compute bounding sphere cannot be an instance of ${value.constructor.name} ! Expect a boolean.` ) }
+
+        this._computeBoundingSphere = value
     }
 
     get computeNormals () {
@@ -115,7 +144,6 @@ class TGeometriesManager extends TDataBaseManager {
     }
 
     set computeNormals ( value ) {
-
         if ( isNull( value ) ) { throw new TypeError( 'Compute normals cannot be null ! Expect a boolean.' ) }
         if ( isUndefined( value ) ) { throw new TypeError( 'Compute normals cannot be undefined ! Expect a boolean.' ) }
         if ( isNotBoolean( value ) ) { throw new TypeError( `Compute normals cannot be an instance of ${value.constructor.name} ! Expect a boolean.` ) }
@@ -126,8 +154,6 @@ class TGeometriesManager extends TDataBaseManager {
     get projectionSystem () {
         return this._projectionSystem
     }
-
-    //// Getter/Setter
 
     set projectionSystem ( value ) {
 
@@ -148,6 +174,20 @@ class TGeometriesManager extends TDataBaseManager {
         if ( isUndefined( value ) ) { throw new TypeError( 'Global scale cannot be undefined ! Expect a positive number.' ) }
 
         this._globalScale = value
+
+    }
+
+    setComputeBoundingBox ( value ) {
+
+        this.computeBoundingBox = value
+        return this
+
+    }
+
+    setComputeBoundingShpere ( value ) {
+
+        this.computeBoundingSphere = value
+        return this
 
     }
 
@@ -239,6 +279,14 @@ class TGeometriesManager extends TDataBaseManager {
 
             throw new Error( `TGeometriesManager: Unable to retrieve geometry of type ${geometryType} !` )
 
+        }
+
+        if ( this.computeBoundingBox ) {
+            geometry.computeBoundingBox()
+        }
+
+        if ( this.computeBoundingSphere ) {
+            geometry.computeBoundingSphere()
         }
 
         return geometry
@@ -569,11 +617,23 @@ class TGeometriesManager extends TDataBaseManager {
 
         }
 
-        if(isDefined())
-        bufferGeometry.groups         = data.groups
-        bufferGeometry.boundingBox    = null // Need to set null because only checked vs undefined data.boundingBox
-        bufferGeometry.boundingSphere = null // idem... data.boundingSphere
-        //        bufferGeometry.drawRange      = data.drawRange
+        if ( isDefined( data.groups ) ) {
+            bufferGeometry.groups = data.groups
+        }
+
+        // Need to set null because only checked vs undefined data.boundingBox
+        if ( isDefined( data.boundingBox ) ) {
+            bufferGeometry.boundingBox = data.boundingBox
+        }
+
+        // idem... data.boundingSphere
+        if ( isDefined( data.boundingSphere ) ) {
+            bufferGeometry.boundingSphere = data.boundingSphere
+        }
+
+        //        if ( isDefined( data.drawRange ) ) {
+        //            bufferGeometry.drawRange = data.drawRange
+        //        }
 
         if ( bufferGeometryType === 'ShapeBufferGeometry' ) {
 
