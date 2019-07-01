@@ -42,18 +42,22 @@ const yVector = new Vector3( 0, 1, 0 )
  * @param domElement
  * @constructor
  */
-function TCameraPathController ( camera, domElement ) {
+function TCameraPathController ( parameters = {} ) {
 
-    if ( !camera ) {
-        TLogger.error( 'Unable to create TCameraPathController with null or undefined camera !' )
-        return
+    const _parameters = {
+        ...{
+            camera:     null,
+            target:     new Object3D(),
+            mode:       TCameraControlMode.Orbit,
+            domElement: window
+        }, ...parameters
     }
 
     const self = this
 
     let currentState = STATE.NONE
 
-    this.camera     = camera
+    this.camera     = _parameters.camera
     this.cameraJump = 0.0
 
     this.paths               = []
@@ -371,6 +375,29 @@ function TCameraPathController ( camera, domElement ) {
 }
 
 Object.assign( TCameraPathController.prototype, EventDispatcher.prototype, {
+
+    get camera () {
+
+        return this._camera
+
+    },
+
+    set camera ( value ) {
+
+        if ( isNull( value ) ) { throw new Error( 'Camera cannot be null ! Expect an instance of Camera' ) }
+        if ( isUndefined( value ) ) { throw new Error( 'Camera cannot be undefined ! Expect an instance of Camera' ) }
+        if ( !( value instanceof Camera ) ) { throw new Error( `Camera cannot be an instance of ${value.constructor.name}. Expect an instance of Camera.` ) }
+
+        this._camera = value
+
+    },
+
+    setCamera ( value ) {
+
+        this.camera = value
+        return this
+
+    },
 
     /**
      *
