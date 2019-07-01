@@ -20,7 +20,7 @@ import {
     FileLoader
 } from 'three-full'
 
-import { DefaultLogger as TLogger } from '../Loggers/TLogger'
+import { DefaultLogger } from '../loggers/TLogger'
 import {
     TBinaryReader,
     Endianness
@@ -78,10 +78,10 @@ const DataType = Object.freeze( {
  * @param logger
  * @constructor
  */
-function DBFLoader ( manager, logger ) {
+function DBFLoader ( manager = DefaultLoadingManager, logger = DefaultLogger ) {
 
-    this.manager = ( manager === undefined ) ? DefaultLoadingManager : manager
-    this.logger  = ( logger === undefined ) ? TLogger : logger
+    this.manager = manager
+    this.logger  = logger
     this.reader  = new TBinaryReader()
 
 }
@@ -141,7 +141,7 @@ Object.assign( DBFLoader.prototype, {
 
         const version = this.reader.getInt8()
         if ( !this._isValidVersion( version ) ) {
-            TLogger.error( `DBFLoader: Invalid version number: ${version}` )
+            this.logger.error( `DBFLoader: Invalid version number: ${version}` )
             return null
         }
 
@@ -213,7 +213,7 @@ Object.assign( DBFLoader.prototype, {
 
         // Check terminator
         if ( this.reader.getUint8() !== DBFLoader.Terminator ) {
-            TLogger.error( 'DBFLoader: Invalid terminator after field descriptors !!!' )
+            this.logger.error( 'DBFLoader: Invalid terminator after field descriptors !!!' )
         }
 
         return header

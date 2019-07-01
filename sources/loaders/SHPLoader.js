@@ -24,7 +24,7 @@ import {
     Vector3
 } from 'three-full'
 
-import { DefaultLogger as TLogger } from '../Loggers/TLogger'
+import { DefaultLogger } from '../loggers/TLogger'
 import {
     TBinaryReader,
     Endianness
@@ -137,7 +137,7 @@ function segmentContains ( p0, p1, p2 ) {
  * @param logger
  * @constructor
  */
-function SHPLoader ( manager = DefaultLoadingManager, logger = TLogger ) {
+function SHPLoader ( manager = DefaultLoadingManager, logger = DefaultLogger ) {
 
     this.manager = manager
     this.logger  = logger
@@ -658,7 +658,7 @@ Object.assign( SHPLoader.prototype, {
                 let array = arrays[ arrayIndex ]
 
                 if ( !array ) {
-                    TLogger.log( 'no array, oups !' )
+                    this.logger.log( 'no array, oups !' )
                     continue
                 }
 

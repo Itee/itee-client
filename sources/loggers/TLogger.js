@@ -13,8 +13,10 @@
 import {
     isArrayOfObject,
     isArrayOfString,
+    isNull,
     isObject,
-    isString
+    isString,
+    isUndefined
 } from 'itee-validators'
 
 /**
@@ -50,16 +52,58 @@ const LogLevel = Object.freeze( {
  * @param outputs
  * @constructor
  */
-function TLogger ( outputs ) {
+class TLogger {
 
-    this.outputLevel  = LogLevel.Info
-    this.outputs      = outputs || LogOutput.Console
-    this.logsArray    = []
-    this.counterTrace = 0
+    constructor ( parameters = {} ) {
 
-}
+        const _parameters = {
+            ...{
+                outputLevel: LogLevel.Info,
+                outputs:     LogOutput.Console
+            }, ...parameters
+        }
 
-Object.assign( TLogger.prototype, {
+        this.outputLevel = _parameters.outputLevel
+        this.outputs     = _parameters.outputs
+
+        this._logsArray    = []
+        this._counterTrace = 0
+
+    }
+
+    get outputLevel () {
+        return this._outputLevel
+    }
+
+    set outputLevel ( value ) {
+
+        const memberName = 'OutputLevel'
+        const expect     = 'Expect a value from LogLevel enum.'
+
+        if ( isNull( value ) ) { throw new Error( `${memberName} cannot be null ! ${expect}` ) }
+        if ( isUndefined( value ) ) { throw new Error( `${memberName} cannot be undefined ! ${expect}` ) }
+        //        if ( !Object.keys( LogLevel ).includes( value ) ) { throw new Error( `${memberName} cannot be an instance of ${value.constructor.name}. ${expect}` ) }
+
+        this._outputLevel = value
+
+    }
+
+    get outputs () {
+        return this._outputs
+    }
+
+    set outputs ( value ) {
+
+        const memberName = 'Output'
+        const expect     = 'Expect a value from LogOutput enum.'
+
+        if ( isNull( value ) ) { throw new Error( `${memberName} cannot be null ! ${expect}` ) }
+        if ( isUndefined( value ) ) { throw new Error( `${memberName} cannot be undefined ! ${expect}` ) }
+        //        if ( !Object.keys( LogOutput ).includes( value ) ) { throw new Error( `${memberName} cannot be an instance of ${value.constructor.name}. ${expect}` ) }
+
+        this._outputs = value
+
+    }
 
     /**
      *
@@ -67,7 +111,7 @@ Object.assign( TLogger.prototype, {
      * @return {string}
      * @private
      */
-    _levelToString ( level ) {
+    static _levelToString ( level ) {
 
         let levelString = ''
 
@@ -93,7 +137,7 @@ Object.assign( TLogger.prototype, {
 
         return levelString
 
-    },
+    }
 
     /**
      *
@@ -101,14 +145,14 @@ Object.assign( TLogger.prototype, {
      * @return {string}
      * @private
      */
-    _formatObjectError ( error ) {
+    static _formatObjectError ( error ) {
 
         return `<b>${error.name}</b><br>
                 <p>${error.message} </p><br>
                 <span>in file ${error.fileName} at line n°${error.lineNumber} and column n°${error.columnNumber}</span><br>
                 <p>Stack: ${error.stack} </p>`
 
-    },
+    }
 
     /**
      *
@@ -119,24 +163,24 @@ Object.assign( TLogger.prototype, {
      */
     _formatTrace ( level, datas ) {
 
-        const levelString = this._levelToString( level )
-        const tmpLevel    = `${levelString}_${this.counterTrace}`
+        const levelString = TLogger._levelToString( level )
+        const tmpLevel    = `${levelString}_${this._counterTrace}`
 
         if ( isString( datas ) ) {
 
-            this.logsArray[ tmpLevel ] = datas
+            this._logsArray[ tmpLevel ] = datas
 
         } else if ( isObject( datas ) ) {
 
-            this.logsArray[ tmpLevel ] = this._formatObjectError( datas )
+            this._logsArray[ tmpLevel ] = TLogger._formatObjectError( datas )
 
         } else if ( isArrayOfString( datas ) ) {
 
-            this.logsArray[ tmpLevel ] = datas.toString()
+            this._logsArray[ tmpLevel ] = datas.toString()
 
         } else if ( isArrayOfObject( datas ) ) {
 
-            this.logsArray[ tmpLevel ] = ''
+            this._logsArray[ tmpLevel ] = ''
 
             for ( let dataIndex = 0, numberOfDatas = datas.length ; dataIndex < numberOfDatas ; dataIndex++ ) {
                 this._formatTrace( level, datas[ dataIndex ] )
@@ -144,14 +188,14 @@ Object.assign( TLogger.prototype, {
 
         } else {
 
-            this.logsArray[ tmpLevel ] = ( datas ) ? datas.toString() : 'Empty log data !'
+            this._logsArray[ tmpLevel ] = ( datas ) ? datas.toString() : 'Empty log data !'
 
         }
 
-        this.counterTrace++
-        return this.logsArray[ tmpLevel ]
+        this._counterTrace++
+        return this._logsArray[ tmpLevel ]
 
-    },
+    }
 
     // Todo: Use listener models
     /**
@@ -289,7 +333,7 @@ Object.assign( TLogger.prototype, {
                 return
         }
 
-    },
+    }
 
     /**
      *
@@ -300,7 +344,7 @@ Object.assign( TLogger.prototype, {
             level:   LogLevel.Info,
             message: info
         } )
-    },
+    }
 
     /**
      *
@@ -311,7 +355,7 @@ Object.assign( TLogger.prototype, {
             level:   LogLevel.Warning,
             message: warning
         } )
-    },
+    }
 
     /**
      *
@@ -324,7 +368,21 @@ Object.assign( TLogger.prototype, {
         } )
     }
 
-} )
+    setOutputLevel ( value ) {
+
+        this.outputLevel = value
+        return this
+
+    }
+
+    setOutput ( value ) {
+
+        this.outputs = value
+        return this
+
+    }
+
+}
 
 const DefaultLogger = new TLogger()
 

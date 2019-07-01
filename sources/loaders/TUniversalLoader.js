@@ -33,7 +33,7 @@ import {
     STLLoader
 }                                   from 'three-full'
 import { FileFormat }               from '../cores/TConstants'
-import { DefaultLogger as TLogger } from '../loggers/TLogger'
+import { DefaultLogger } from '../loggers/TLogger'
 
 import { ASCLoader } from './ASCLoader'
 import { DBFLoader } from './DBFLoader'
@@ -92,7 +92,7 @@ function computeUrl ( fileUrl ) {
  * @param logger
  * @constructor
  */
-function TUniversalLoader ( manager = DefaultLoadingManager, logger = TLogger ) {
+function TUniversalLoader ( manager = DefaultLoadingManager, logger = DefaultLogger ) {
 
     this.manager = manager
     this.logger  = logger

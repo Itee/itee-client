@@ -35,16 +35,17 @@ import {
     PointsMaterial,
     Box3
 }                       from 'three-full'
-import { DefaultLogger as TLogger } from '../loggers/TLogger'
+import { DefaultLogger } from '../loggers/TLogger'
 
 /**
  *
  * @param manager
  * @constructor
  */
-function ASCLoader ( manager ) {
+function ASCLoader ( manager = DefaultLoadingManager, logger = DefaultLogger ) {
 
-    this.manager = ( manager ) ? manager : DefaultLoadingManager
+    this.manager = manager
+    this.logger  = logger
 
     this._boundingBox    = new Box3()
     this._points         = []
@@ -78,7 +79,7 @@ Object.assign( ASCLoader.prototype, {
      */
     load ( url, onLoad, onProgress, onError, sampling ) {
 
-        //        //TLogger.time("ASCLoader")
+        //        //this.logger.time("ASCLoader")
 
         const loader = new FileLoader( this.manager )
         loader.setResponseType( 'blob' )
@@ -127,15 +128,15 @@ Object.assign( ASCLoader.prototype, {
 
         reader.onabort = function ( abortEvent ) {
 
-            // TLogger.log("abortEvent:");
-            // TLogger.log(abortEvent);
+            // this.logger.log("abortEvent:");
+            // this.logger.log(abortEvent);
 
         }
 
         reader.onerror = function ( errorEvent ) {
 
-            // TLogger.log("errorEvent:");
-            // TLogger.log(errorEvent);
+            // this.logger.log("errorEvent:");
+            // this.logger.log(errorEvent);
 
             if ( onError ) {
                 onError( errorEvent )
@@ -145,15 +146,15 @@ Object.assign( ASCLoader.prototype, {
 
         reader.onloadstart = function ( loadStartEvent ) {
 
-            // TLogger.log("loadStartEvent:");
-            // TLogger.log(loadStartEvent);
+            // this.logger.log("loadStartEvent:");
+            // this.logger.log(loadStartEvent);
 
         }
 
         reader.onprogress = function ( progressEvent ) {
 
-            // TLogger.log("progressEvent:");
-            // TLogger.log(progressEvent);
+            // this.logger.log("progressEvent:");
+            // this.logger.log(progressEvent);
 
             // // By lines
             // var lines = this.result.split('\n');
@@ -169,8 +170,8 @@ Object.assign( ASCLoader.prototype, {
 
         reader.onload = function ( loadEvent ) {
 
-            // TLogger.log("loadEvent:");
-            // TLogger.log(loadEvent);
+            // this.logger.log("loadEvent:");
+            // this.logger.log(loadEvent);
 
             // By lines
             const lines         = this.result.split( '\n' )
@@ -179,7 +180,7 @@ Object.assign( ASCLoader.prototype, {
             // /!\ Rollback offset for last line that is uncompleted in most time
             offset -= lines[ numberOfLines - 1 ].length
 
-            // //TLogger.time("Parse Lines A");
+            // //this.logger.time("Parse Lines A");
             const modSampling = Math.round( 100 / _sampling )
             for ( let lineIndex = 0 ; lineIndex < numberOfLines - 1 ; lineIndex++ ) {
                 if ( lineIndex % modSampling === 0 ) // Just to make cloud lighter under debug !!!!
@@ -187,52 +188,52 @@ Object.assign( ASCLoader.prototype, {
                     self._parseLine( lines[ lineIndex ] )
                 }
             }
-            // //TLogger.timeEnd("Parse Lines A");
+            // //this.logger.timeEnd("Parse Lines A");
 
-            // //TLogger.time("Parse Lines B");
+            // //this.logger.time("Parse Lines B");
             // self._parseLines(lines);
-            // //TLogger.timeEnd("Parse Lines B");
+            // //this.logger.timeEnd("Parse Lines B");
 
             ////Todo: use ArrayBuffer instead !!!
-            // //TLogger.time("Parse Lines B");
+            // //this.logger.time("Parse Lines B");
             // self._bufferIndex = 0;
             // self._positions = new Float32Array( numberOfLines * 3 );
             // for (var lineIndex = 0; lineIndex < numberOfLines - 1; lineIndex++) {
             //     self._parseLineB(lines[ lineIndex ])
             // }
-            // //TLogger.timeEnd("Parse Lines B");
+            // //this.logger.timeEnd("Parse Lines B");
             //
-            // //TLogger.time("Parse Lines C");
+            // //this.logger.time("Parse Lines C");
             // self._bufferIndexC = 0;
             // self._positionsC = new Float32Array( numberOfLines * 3 );
             // for (var lineIndex = 0; lineIndex < numberOfLines - 1; lineIndex++) {
             //     self._parseLineB(lines[ lineIndex ])
             // }
-            // //TLogger.timeEnd("Parse Lines C");
+            // //this.logger.timeEnd("Parse Lines C");
 
         }
 
         reader.onloadend = function ( loadEndEvent ) {
 
-            // TLogger.log("loadEndEvent");
-            // TLogger.log(loadEndEvent);
+            // this.logger.log("loadEndEvent");
+            // this.logger.log(loadEndEvent);
 
             if ( self._points.length > 1000000 || offset + CHUNK_SIZE >= blob.size ) {
 
                 // Compute bounding box in view to get his center for auto offseting the cloud point.
                 // if ( self._autoOffset ) {
-                //     //TLogger.time("Compute Points");
+                //     //this.logger.time("Compute Points");
                 //     self._boundingBox.computePoints(self._points);
-                //     //TLogger.timeEnd("Compute Points");
+                //     //this.logger.timeEnd("Compute Points");
                 // }
 
-                // //TLogger.time("Offset Points");
+                // //this.logger.time("Offset Points");
                 self._offsetPoints()
-                // //TLogger.timeEnd("Offset Points");
+                // //this.logger.timeEnd("Offset Points");
 
-                // //TLogger.time("Create WorldCell");
+                // //this.logger.time("Create WorldCell");
                 self._createSubCloudPoint( groupToFeed )
-                // //TLogger.timeEnd("Create WorldCell");
+                // //this.logger.timeEnd("Create WorldCell");
 
             }
 
@@ -247,24 +248,24 @@ Object.assign( ASCLoader.prototype, {
         function seek () {
             if ( offset >= blob.size ) {
 
-                // //TLogger.timeEnd("Parse")
-                //                //TLogger.timeEnd( "ASCLoader" )
+                // //this.logger.timeEnd("Parse")
+                //                //this.logger.timeEnd( "ASCLoader" )
 
                 // // Compute bounding box in view to get his center for auto offseting the cloud point.
                 // if ( self._autoOffset ) {
-                //     //TLogger.time("Compute Points");
+                //     //this.logger.time("Compute Points");
                 //     self._boundingBox.computePoints(self._points);
-                //     //TLogger.timeEnd("Compute Points");
+                //     //this.logger.timeEnd("Compute Points");
                 // }
                 //
-                // //TLogger.time("Offset Points");
+                // //this.logger.time("Offset Points");
                 // self._offsetPoints();
-                // //TLogger.timeEnd("Offset Points");
+                // //this.logger.timeEnd("Offset Points");
                 //
-                // //TLogger.time("Create WorldCell");
+                // //this.logger.time("Create WorldCell");
                 // self._createCloudPoint(groupToFeed);
                 // // var cloudPoints = self._createCloudPoint();
-                // //TLogger.timeEnd("Create WorldCell");
+                // //this.logger.timeEnd("Create WorldCell");
                 // // onLoad(cloudPoints);
 
                 return
@@ -376,7 +377,7 @@ Object.assign( ASCLoader.prototype, {
             } )
 
         } else {
-            TLogger.error( 'Invalid data line: ' + line )
+            this.logger.error( 'Invalid data line: ' + line )
         }
 
     },
@@ -420,7 +421,7 @@ Object.assign( ASCLoader.prototype, {
             this._parseLinesAsXYZIRGBnXnYnZ( lines )
 
         } else {
-            TLogger.error( 'Invalid data line: ' + lines )
+            this.logger.error( 'Invalid data line: ' + lines )
         }
 
     },

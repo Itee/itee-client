@@ -28,16 +28,19 @@ import {
     MeshBasicMaterial,
     PlaneGeometry,
     TextureLoader
-} from 'three-full'
+}                                   from 'three-full'
+import { DefaultLogger } from '../loggers/TLogger'
 
 /**
  *
  * @param manager
+ * @param logger
  * @constructor
  */
-function RZMLLoader ( manager ) {
+function RZMLLoader ( manager = DefaultLoadingManager, logger = DefaultLogger ) {
 
-    this.manager = ( manager === undefined ) ? DefaultLoadingManager : manager
+    this.manager = manager
+    this.logger  = logger
 
     this.textureLoader  = new TextureLoader()
     this.imagesShotData = []
@@ -60,7 +63,7 @@ Object.assign( RZMLLoader.prototype, {
      */
     load ( url, onLoad, onProgress, onError ) {
 
-        //TLogger.time( "RZMLLoader" )
+        //this.logger.time( "RZMLLoader" )
 
         var filePath = url.replace( /[^\/]*$/, '' )
 
@@ -127,7 +130,7 @@ Object.assign( RZMLLoader.prototype, {
             } )
         }
 
-        //TLogger.timeEnd( "RZMLLoader" );
+        //this.logger.timeEnd( "RZMLLoader" );
 
         return this._createImagesPacks( filePath )
     },
