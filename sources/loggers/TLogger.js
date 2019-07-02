@@ -43,10 +43,10 @@ const LogType = Object.freeze( {
  * @type {Object}
  */
 const LogLevel = Object.freeze( {
-    Debug:    0,
-    Info:     1,
-    Warning:  2,
-    Error:    3
+    Debug:   0,
+    Info:    1,
+    Warning: 2,
+    Error:   3
 } )
 
 /*
@@ -123,6 +123,7 @@ class TLogger {
         this.outputs     = _parameters.outputs
 
         this._logsArray    = []
+        this._timers       = {}
         this._counterTrace = 0
 
     }
@@ -210,6 +211,30 @@ class TLogger {
      * @param message
      */
     dispatch ( message ) {
+
+        const type = message.type
+        switch ( type ) {
+
+            case LogType.Message:
+                this._dispatchMessage( message )
+                break
+
+            case LogType.Progress:
+                this._dispatchProgress( message )
+                break
+
+            case LogType.Time:
+                this._dispatchTime( message )
+                break
+
+            default:
+                throw new RangeError( `Invalid switch parameter: ${type}` )
+
+        }
+
+    }
+
+    _dispatchMessage ( message ) {
 
         const level          = message.level
         let formattedMessage = this._formatTrace( level, message.message )
@@ -342,6 +367,18 @@ class TLogger {
 
     }
 
+    _dispatchProgress ( progress ) {
+
+        console.log( progress.message )
+
+    }
+
+    _dispatchTime ( time ) {
+
+        console.log( time.message )
+
+    }
+
     /**
      *
      * @param info
@@ -349,6 +386,7 @@ class TLogger {
     log ( info ) {
 
         this.dispatch( {
+            type:    LogType.Message,
             level:   LogLevel.Info,
             message: info
         } )
@@ -362,6 +400,7 @@ class TLogger {
     warn ( warning ) {
 
         this.dispatch( {
+            type:    LogType.Message,
             level:   LogLevel.Warning,
             message: warning
         } )
@@ -375,6 +414,7 @@ class TLogger {
     error ( error ) {
 
         this.dispatch( {
+            type:    LogType.Message,
             level:   LogLevel.Error,
             message: error
         } )
@@ -397,7 +437,8 @@ class TLogger {
             const message     = `${type}: ${advancement}% [${loaded}/${total}]`
 
             this.dispatch( {
-                level:   LogLevel.Progress,
+                type:    LogType.Progress,
+                level:   LogLevel.Info,
                 message: message
             } )
 
@@ -405,12 +446,23 @@ class TLogger {
 
     }
 
-    startChronoFor( key ) {
+    startChronoFor ( key ) {
+
+        this._timers[ key ] = new Date().getTime()
 
     }
 
-    stopChronoFor( key ) {
-        
+    stopChronoFor ( key ) {
+
+        const deltaTime = ( new Date().getTime() - this._timers[ key ] )
+        const message   = `${key} take ${deltaTime}ms.`
+
+        this.dispatch( {
+            type:    LogType.Time,
+            level:   LogLevel.Debug,
+            message: message
+        } )
+
     }
 
     setOutputLevel ( value ) {
