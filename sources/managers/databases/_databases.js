@@ -8,12 +8,11 @@
 
 /* eslint-env browser */
 
-//export { MeshManager } from './MeshManager' // Todo: Remove when merged in TObjectsManager
-
-export { TObjectsManager }          from './TObjectsManager'
-export { TCurvesManager }           from './TCurvesManager'
-export { TGeometriesManager }       from './TGeometriesManager'
 export { TBufferGeometriesManager } from './TBufferGeometriesManager'
+export { TCurvesManager }           from './TCurvesManager'
+export { TFilaireManager }          from './TFilaireManager'
+export { TGeometriesManager }       from './TGeometriesManager'
 export { TMaterialsManager }        from './TMaterialsManager'
+export { TObjectsManager }          from './TObjectsManager'
 export { TTexturesManager }         from './TTexturesManager'
 
