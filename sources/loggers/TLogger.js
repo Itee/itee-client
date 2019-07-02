@@ -61,6 +61,55 @@ const LogLevel = Object.freeze( {
  */
 class TLogger {
 
+    /**
+     *
+     * @param level
+     * @return {string}
+     * @private
+     */
+    static _levelToString ( level ) {
+
+        let levelString = ''
+
+        switch ( level ) {
+
+            case LogLevel.Info:
+                levelString = 'info'
+                break
+
+            case LogLevel.Warning:
+                levelString = 'warning'
+                break
+
+            case LogLevel.Error:
+                levelString = 'error'
+                break
+
+            default:
+                levelString = 'unknownLogLevel'
+                break
+
+        }
+
+        return levelString
+
+    }
+
+    /**
+     *
+     * @param objError
+     * @return {string}
+     * @private
+     */
+    static _formatObjectError ( error ) {
+
+        return `<b>${error.name}</b><br>
+                <p>${error.message} </p><br>
+                <span>in file ${error.fileName} at line n°${error.lineNumber} and column n°${error.columnNumber}</span><br>
+                <p>Stack: ${error.stack} </p>`
+
+    }
+
     constructor ( parameters = {} ) {
 
         const _parameters = {
@@ -109,55 +158,6 @@ class TLogger {
         //        if ( !Object.keys( LogOutput ).includes( value ) ) { throw new Error( `${memberName} cannot be an instance of ${value.constructor.name}. ${expect}` ) }
 
         this._outputs = value
-
-    }
-
-    /**
-     *
-     * @param level
-     * @return {string}
-     * @private
-     */
-    static _levelToString ( level ) {
-
-        let levelString = ''
-
-        switch ( level ) {
-
-            case LogLevel.Info:
-                levelString = 'info'
-                break
-
-            case LogLevel.Warning:
-                levelString = 'warning'
-                break
-
-            case LogLevel.Error:
-                levelString = 'error'
-                break
-
-            default:
-                levelString = 'unknownLogLevel'
-                break
-
-        }
-
-        return levelString
-
-    }
-
-    /**
-     *
-     * @param objError
-     * @return {string}
-     * @private
-     */
-    static _formatObjectError ( error ) {
-
-        return `<b>${error.name}</b><br>
-                <p>${error.message} </p><br>
-                <span>in file ${error.fileName} at line n°${error.lineNumber} and column n°${error.columnNumber}</span><br>
-                <p>Stack: ${error.stack} </p>`
 
     }
 
@@ -347,10 +347,12 @@ class TLogger {
      * @param info
      */
     log ( info ) {
+
         this.dispatch( {
             level:   LogLevel.Info,
             message: info
         } )
+
     }
 
     /**
@@ -358,10 +360,12 @@ class TLogger {
      * @param warning
      */
     warn ( warning ) {
+
         this.dispatch( {
             level:   LogLevel.Warning,
             message: warning
         } )
+
     }
 
     /**
@@ -369,10 +373,36 @@ class TLogger {
      * @param error
      */
     error ( error ) {
+
         this.dispatch( {
             level:   LogLevel.Error,
             message: error
         } )
+
+    }
+
+    progress ( progress ) {
+
+        progress.preventDefault()
+        if ( progress.cancelable ) {
+            progress.stopImmediatePropagation()
+        }
+
+        if ( progress.lengthComputable ) {
+
+            const type        = progress.type
+            const loaded      = progress.loaded
+            const total       = progress.total
+            const advancement = Math.round( ( loaded / total ) * 10000 ) / 100
+            const message     = `${type}: ${advancement}% [${loaded}/${total}]`
+
+            this.dispatch( {
+                level:   LogLevel.Progress,
+                message: message
+            } )
+
+        }
+
     }
 
     setOutputLevel ( value ) {
