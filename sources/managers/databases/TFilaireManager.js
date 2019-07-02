@@ -96,7 +96,7 @@ class TFilaireManager extends TDataBaseManager {
         }
 
         const objectType = data.type
-        let object       = undefined
+        let object       = null
 
         if ( isNotDefined( objectType ) ) {
             throw new Error( `TFilaireManager.convert() : data type must be defined !!!` )
@@ -124,7 +124,6 @@ class TFilaireManager extends TDataBaseManager {
 
             default:
                 throw new Error( `TFilaireManager: Unknown object of type: ${objectType}` )
-                break
 
         }
 
