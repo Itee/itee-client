@@ -323,15 +323,20 @@ class TDataBaseManager {
             const requestSkull = this._requestQueue.pop()
             this._processQueue.push( requestSkull )
 
-            const request      = new XMLHttpRequest()
-            request.onload     = this._onLoad.bind( this,
+            const request              = new XMLHttpRequest()
+            request.onloadstart        = function _onLoadStart ( loadStartEvent ) { this._logger.log( loadStartEvent ) }
+            request.onload             = this._onLoad.bind( this,
                 requestSkull,
                 this._onEnd.bind( this, requestSkull, requestSkull.onLoad ),
                 this._onProgress.bind( this, requestSkull.onProgress ),
                 this._onError.bind( this, requestSkull, requestSkull.onError )
             )
-            request.onprogress = this._onProgress.bind( this, requestSkull.onProgress )
-            request.onerror    = this._onError.bind( this, requestSkull, requestSkull.onError )
+            request.onloadend          = function _onLoadEnd ( loadEndEvent ) { this._logger.log( loadEndEvent ) }
+            request.onprogress         = this._onProgress.bind( this, requestSkull.onProgress )
+            request.onreadystatechange = function _onReadyStateChange ( readyStateEvent ) { this._logger.log( readyStateEvent ) }
+            request.onabort            = function _onAbort ( abortEvent ) { this._logger.error( abortEvent ) }
+            request.onerror            = this._onError.bind( this, requestSkull, requestSkull.onError )
+            request.ontimeout          = function _onTimeout ( timeoutEvent ) { this._logger.error( timeoutEvent ) }
             request.open( requestSkull.method, requestSkull.url, true )
             request.setRequestHeader( 'Content-Type', 'application/json' )
             request.setRequestHeader( 'Accept', 'application/json' )
