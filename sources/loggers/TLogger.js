@@ -405,6 +405,14 @@ class TLogger {
 
     }
 
+    startChronoFor( key ) {
+
+    }
+
+    stopChronoFor( key ) {
+        
+    }
+
     setOutputLevel ( value ) {
 
         this.outputLevel = value
