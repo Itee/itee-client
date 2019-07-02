@@ -32,14 +32,21 @@ const LogOutput = Object.freeze( {
     All:      255
 } )
 
+const LogType = Object.freeze( {
+    Message:  0,
+    Progress: 1,
+    Time:     2
+} )
+
 /**
  *
  * @type {Object}
  */
 const LogLevel = Object.freeze( {
-    Info:    0,
-    Warning: 1,
-    Error:   2
+    Debug:    0,
+    Info:     1,
+    Warning:  2,
+    Error:    3
 } )
 
 /*
