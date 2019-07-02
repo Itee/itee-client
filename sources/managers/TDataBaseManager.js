@@ -39,16 +39,17 @@ import {
     isString,
     isUndefined,
     isZero
-}                                   from 'itee-validators'
+}                 from 'itee-validators'
 import {
     HttpStatusCode,
     HttpVerb,
     ResponseType
-}                                   from '../cores/TConstants'
-import { TStore }                   from '../cores/TStore'
-import { DefaultLogger as TLogger } from '../loggers/TLogger'
-import { TErrorManager }            from './TErrorManager'
-import { TProgressManager }         from './TProgressManager'
+}                 from '../cores/TConstants'
+import { TStore } from '../cores/TStore'
+import {
+    DefaultLogger,
+    TLogger
+}                 from '../loggers/TLogger'
 
 class IdGenerator {
 
@@ -102,8 +103,7 @@ class TDataBaseManager {
                 bunchSize:              500,
                 requestAggregationTime: 200,
                 requestsConcurrency:    6,
-                progressManager:        new TProgressManager(),
-                errorManager:           new TErrorManager()
+                logger:                 DefaultLogger
             }, ...parameters
         }
 
@@ -112,8 +112,7 @@ class TDataBaseManager {
         this.bunchSize              = _parameters.bunchSize
         this.requestAggregationTime = _parameters.requestAggregationTime
         this.requestsConcurrency    = _parameters.requestsConcurrency
-        this.progressManager        = _parameters.progressManager
-        this.errorManager           = _parameters.errorManager
+        this.logger                 = _parameters.logger
 
         this._cache                = new TStore()
         this._waitingQueue         = []
@@ -121,7 +120,6 @@ class TDataBaseManager {
         this._requestQueue         = []
         this._processQueue         = []
         this._aggregationTimeoutId = null
-
 
         this._idToRequest = []
 
@@ -143,13 +141,6 @@ class TDataBaseManager {
 
     }
 
-    setBasePath ( value ) {
-
-        this.basePath = value
-        return this
-
-    }
-
     get responseType () {
         return this._responseType
     }
@@ -165,13 +156,6 @@ class TDataBaseManager {
 
     }
 
-    setResponseType ( value ) {
-
-        this.responseType = value
-        return this
-
-    }
-
     get bunchSize () {
         return this._bunchSize
     }
@@ -184,13 +168,6 @@ class TDataBaseManager {
         if ( !isNumberPositive( value ) ) { throw new TypeError( `Bunch size cannot be lower or equal to zero ! Expect a positive number.` ) }
 
         this._bunchSize = value
-
-    }
-
-    setBunchSize ( value ) {
-
-        this.bunchSize = value
-        return this
 
     }
 
@@ -220,13 +197,6 @@ class TDataBaseManager {
 
     }
 
-    setRequestAggregationTime ( value ) {
-
-        this.requestAggregationTime = value
-        return this
-
-    }
-
     get requestsConcurrency () {
         return this._requestsConcurrency
     }
@@ -253,6 +223,48 @@ class TDataBaseManager {
 
     }
 
+    get logger () {
+        return this._logger
+    }
+
+    set logger ( value ) {
+
+        if ( isNull( value ) ) { throw new TypeError( 'Progress manager cannot be null ! Expect an instance of TProgressManager.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Progress manager cannot be undefined ! Expect an instance of TProgressManager.' ) }
+        if ( !( value instanceof TLogger ) ) { throw new TypeError( `Progress manager cannot be an instance of ${value.constructor.name} ! Expect an instance of TProgressManager.` ) }
+
+        this._logger = value
+
+    }
+
+    setBasePath ( value ) {
+
+        this.basePath = value
+        return this
+
+    }
+
+    setResponseType ( value ) {
+
+        this.responseType = value
+        return this
+
+    }
+
+    setBunchSize ( value ) {
+
+        this.bunchSize = value
+        return this
+
+    }
+
+    setRequestAggregationTime ( value ) {
+
+        this.requestAggregationTime = value
+        return this
+
+    }
+
     setRequestsConcurrency ( value ) {
 
         this.requestsConcurrency = value
@@ -260,44 +272,9 @@ class TDataBaseManager {
 
     }
 
-    get progressManager () {
-        return this._progressManager
-    }
+    setLogger ( value ) {
 
-    set progressManager ( value ) {
-
-        if ( isNull( value ) ) { throw new TypeError( 'Progress manager cannot be null ! Expect an instance of TProgressManager.' ) }
-        if ( isUndefined( value ) ) { throw new TypeError( 'Progress manager cannot be undefined ! Expect an instance of TProgressManager.' ) }
-        if ( !( value instanceof TProgressManager ) ) { throw new TypeError( `Progress manager cannot be an instance of ${value.constructor.name} ! Expect an instance of TProgressManager.` ) }
-
-        this._progressManager = value
-
-    }
-
-    setProgressManager ( value ) {
-
-        this.progressManager = value
-        return this
-
-    }
-
-    get errorManager () {
-        return this._errorManager
-    }
-
-    set errorManager ( value ) {
-
-        if ( isNull( value ) ) { throw new TypeError( 'Error manager cannot be null ! Expect an instance of TErrorManager.' ) }
-        if ( isUndefined( value ) ) { throw new TypeError( 'Error manager cannot be undefined ! Expect an instance of TErrorManager.' ) }
-        if ( !( value instanceof TErrorManager ) ) { throw new TypeError( `Error manager cannot be an instance of ${value.constructor.name} ! Expect an instance of TErrorManager.` ) }
-
-        this._errorManager = value
-
-    }
-
-    setErrorManager ( value ) {
-
-        this.errorManager = value
+        this.logger = value
         return this
 
     }
@@ -323,7 +300,7 @@ class TDataBaseManager {
                         method:       HttpVerb.Read.value,
                         url:          this._basePath,
                         data:         {
-                            ids:        idBunch
+                            ids: idBunch
                         },
                         responseType: this._responseType
                     } )
@@ -686,24 +663,20 @@ class TDataBaseManager {
      * @private
      * @function
      * @memberOf TDataBaseManager.prototype
-     * @description The private _onProgress method will handle all progress event from server and submit them to the progressManager if exist else to the user onProgressCallback
+     * @description The private _onProgress method will handle all progress event from server and submit them to the logger if exist else to the user onProgressCallback
      *
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {object} progressEvent - The server progress event.
      */
     _onProgress ( onProgressCallback, progressEvent ) {
 
-        if ( isDefined( this._progressManager ) ) {
+        if ( isDefined( this._logger ) ) {
 
-            this._progressManager.update( progressEvent, onProgressCallback )
+            this._logger.progress( progressEvent, onProgressCallback )
 
         } else if ( isDefined( onProgressCallback ) ) {
 
             onProgressCallback( progressEvent )
-
-        } else {
-
-            //TLogger.log( progressEvent )
 
         }
 
@@ -713,7 +686,7 @@ class TDataBaseManager {
      * @private
      * @function
      * @memberOf TDataBaseManager.prototype
-     * @description The private _onError method will handle all error event from server and submit them to the errorManager if exist else to the user onErrorCallback
+     * @description The private _onError method will handle all error event from server and submit them to the logger if exist else to the user onErrorCallback
      *
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      * @param {object} errorEvent - A server error event
@@ -722,17 +695,13 @@ class TDataBaseManager {
 
         this._closeRequest( request )
 
-        if ( isDefined( this._errorManager ) ) {
+        if ( isDefined( this._logger ) ) {
 
-            this._errorManager.update( errorEvent, onErrorCallback )
+            this._logger.error( errorEvent, onErrorCallback )
 
         } else if ( isDefined( onErrorCallback ) ) {
 
             onErrorCallback( errorEvent )
-
-        } else {
-
-            TLogger.error( errorEvent )
 
         }
 
@@ -1121,7 +1090,7 @@ class TDataBaseManager {
                 console.error( error )
             }
 
-            this._idToRequest.push(id)
+            this._idToRequest.push( id )
             this.aggregateQueue()
 
         }
@@ -1181,12 +1150,12 @@ class TDataBaseManager {
                     console.error( error )
                 }
 
-                this._idToRequest.push(id)
+                this._idToRequest.push( id )
 
             }
 
             this.aggregateQueue()
-            
+
         }
 
     }

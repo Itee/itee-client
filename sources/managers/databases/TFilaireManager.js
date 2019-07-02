@@ -11,7 +11,7 @@
 import {
     isNotDefined,
     isObject
-}                       from 'itee-validators'
+}                                   from 'itee-validators'
 /* eslint-env browser */
 import {
     BufferGeometry,
@@ -21,12 +21,11 @@ import {
     Mesh,
     MeshPhongMaterial,
     SphereBufferGeometry
-}                       from 'three-full'
-import { ResponseType } from '../../cores/TConstants'
+}                                   from 'three-full'
+import { ResponseType }             from '../../cores/TConstants'
+import { DefaultLogger as TLogger } from '../../loggers/TLogger'
 
 import { TDataBaseManager } from '../TDataBaseManager'
-import { TErrorManager }    from '../TErrorManager'
-import { TProgressManager } from '../TProgressManager'
 
 class TFilaireManager extends TDataBaseManager {
 
@@ -38,9 +37,20 @@ class TFilaireManager extends TDataBaseManager {
      * @param progressManager
      * @param errorManager
      */
-    constructor ( basePath = '/', responseType = ResponseType.Json, bunchSize = 500, requestsConcurrency, progressManager = new TProgressManager(), errorManager = new TErrorManager() ) {
+    constructor ( parameters = {} ) {
 
-        super( basePath, responseType, bunchSize, requestsConcurrency, progressManager, errorManager )
+        const _parameters = {
+            ...{
+                basePath:               '/',
+                responseType:           ResponseType.Json,
+                bunchSize:              500,
+                requestAggregationTime: 200,
+                requestsConcurrency:    6,
+                logger:                 TLogger
+            }, ...parameters
+        }
+
+        super( _parameters )
 
     }
 

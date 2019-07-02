@@ -2,7 +2,7 @@
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  *
- * @class TErrorManager
+ * @class TCache
  * @classdesc TCache is a simple javascript object whose purpose is to store some ket/value data to future usage. It could be enable/disable.
  *
  * @example
@@ -23,7 +23,6 @@ import {
     isString,
     isUndefined
 }                        from 'itee-validators'
-import { TErrorManager } from '../managers/TErrorManager'
 
 /**
  * @class Super class cache!
