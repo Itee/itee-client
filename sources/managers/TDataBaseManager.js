@@ -324,19 +324,19 @@ class TDataBaseManager {
             this._processQueue.push( requestSkull )
 
             const request              = new XMLHttpRequest()
-            request.onloadstart        = function _onLoadStart ( loadStartEvent ) { this._logger.log( loadStartEvent ) }
+            request.onloadstart        = _onLoadStart.bind( this )
             request.onload             = this._onLoad.bind( this,
                 requestSkull,
                 this._onEnd.bind( this, requestSkull, requestSkull.onLoad ),
                 this._onProgress.bind( this, requestSkull.onProgress ),
                 this._onError.bind( this, requestSkull, requestSkull.onError )
             )
-            request.onloadend          = function _onLoadEnd ( loadEndEvent ) { this._logger.log( loadEndEvent ) }
+            request.onloadend          = _onLoadEnd.bind( this )
             request.onprogress         = this._onProgress.bind( this, requestSkull.onProgress )
-            request.onreadystatechange = function _onReadyStateChange ( readyStateEvent ) { this._logger.log( readyStateEvent ) }
-            request.onabort            = function _onAbort ( abortEvent ) { this._logger.error( abortEvent ) }
+            request.onreadystatechange = _onReadyStateChange.bind( this )
+            request.onabort            = _onAbort.bind( this )
             request.onerror            = this._onError.bind( this, requestSkull, requestSkull.onError )
-            request.ontimeout          = function _onTimeout ( timeoutEvent ) { this._logger.error( timeoutEvent ) }
+            request.ontimeout          = _onTimeout.bind( this )
             request.open( requestSkull.method, requestSkull.url, true )
             request.setRequestHeader( 'Content-Type', 'application/json' )
             request.setRequestHeader( 'Accept', 'application/json' )
@@ -346,6 +346,16 @@ class TDataBaseManager {
             request.send( dataToSend )
 
         }
+
+        function _onLoadStart ( loadStartEvent ) { this._logger.log( loadStartEvent ) }
+
+        function _onLoadEnd ( loadEndEvent ) { this._logger.log( loadEndEvent ) }
+
+        function _onReadyStateChange ( readyStateEvent ) { this._logger.log( readyStateEvent ) }
+
+        function _onAbort ( abortEvent ) { this._logger.error( abortEvent ) }
+
+        function _onTimeout ( timeoutEvent ) { this._logger.error( timeoutEvent ) }
 
     }
 
