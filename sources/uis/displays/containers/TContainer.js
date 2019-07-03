@@ -29,7 +29,7 @@ export default Vue.component( 'TContainer', {
     `,
     props:    {
         id:          {
-            type: String,
+            type:    String,
             default: IdFactory.createId()
         },
         height:      {
