@@ -24,7 +24,7 @@ export default Vue.component( 'TInputColor', {
             <div class="input-group-append">
             
                 <div class="input-group-text">
-                    <input type="color" class="form-control" :value=value @change="_inputColorOnChange" />
+                    <input type="color" class="form-control" :value=value @change=_inputColorOnChange />
                 </div>
                 
             </div>
