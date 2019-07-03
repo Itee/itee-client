@@ -43,10 +43,12 @@ const LogType = Object.freeze( {
  * @type {Object}
  */
 const LogLevel = Object.freeze( {
-    Debug:   0,
-    Info:    1,
-    Warning: 2,
-    Error:   3
+    None:    0,
+    Debug:   1,
+    Info:    2,
+    Warning: 4,
+    Error:   8,
+    All:     255
 } )
 
 /*
@@ -114,7 +116,7 @@ class TLogger {
 
         const _parameters = {
             ...{
-                outputLevel: LogLevel.Info,
+                outputLevel: LogLevel.All,
                 outputs:     LogOutput.Console
             }, ...parameters
         }
@@ -237,139 +239,291 @@ class TLogger {
     _dispatchMessage ( message ) {
 
         const level          = message.level
-        let formattedMessage = this._formatTrace( level, message.message )
+        let formattedMessage = this._formatTrace( level, message )
 
         // Root message in function of gravity
         switch ( level ) {
 
             case LogLevel.Error:
-                if ( this.outputLevel === LogLevel.Error || this.outputLevel === LogLevel.Warning || this.outputLevel === LogLevel.Info ) {
-
-                    if ( this.outputs & LogOutput.Console ) {
-
-                        console.error( formattedMessage )
-
-                    }
-
-                    if ( this.outputs & LogOutput.Html ) {
-
-                        const span = document.createElement( 'span' )
-                        span.classList.add( 'log-error' )
-                        span.innerText = formattedMessage
-                        document.body.appendChild( span )
-
-                    }
-
-                    if ( this.outputs & LogOutput.Toast ) {
-
-                        // Todo: implement TToast
-
-                    }
-
-                    if ( this.outputs & LogOutput.File ) {
-
-                        // Todo: implement file
-
-                    }
-
-                    if ( this.outputs & LogOutput.Database ) {
-
-                        // Todo: implement db
-
-                    }
-
+                if ( this.outputLevel & LogLevel.Error ) {
+                    this._dispatchErrorMessage( formattedMessage )
                 }
                 break
 
             case LogLevel.Warning:
-                if ( this.outputLevel === LogLevel.Warning || this.outputLevel === LogLevel.Info ) {
-
-                    if ( this.outputs & LogOutput.Console ) {
-
-                        console.warn( formattedMessage )
-
-                    }
-
-                    if ( this.outputs & LogOutput.Html ) {
-
-                        const span = document.createElement( 'span' )
-                        span.classList.add( 'log-warning' )
-                        span.innerText = formattedMessage
-                        document.body.appendChild( span )
-
-                    }
-
-                    if ( this.outputs & LogOutput.Toast ) {
-
-                        // Todo: implement TToast
-
-                    }
-
-                    if ( this.outputs & LogOutput.File ) {
-
-                        // Todo: implement file
-
-                    }
-
-                    if ( this.outputs & LogOutput.Database ) {
-
-                        // Todo: implement db
-
-                    }
-
+                if ( this.outputLevel & LogLevel.Warning ) {
+                    this._dispatchWarningMessage( formattedMessage )
                 }
                 break
 
             case LogLevel.Info:
-                if ( this.outputLevel === LogLevel.Info ) {
+                if ( this.outputLevel & LogLevel.Info ) {
+                    this._dispatchInfoMessage( formattedMessage )
+                }
+                break
 
-                    if ( this.outputs & LogOutput.Console ) {
-
-                        console.log( formattedMessage )
-
-                    }
-
-                    if ( this.outputs & LogOutput.Html ) {
-
-                        const span = document.createElement( 'span' )
-                        span.classList.add( 'log-info' )
-                        span.innerText = formattedMessage
-                        document.body.appendChild( span )
-
-                    }
-
-                    if ( this.outputs & LogOutput.Toast ) {
-
-                        // Todo: implement TToast
-
-                    }
-
-                    if ( this.outputs & LogOutput.File ) {
-
-                        // Todo: implement file
-
-                    }
-
-                    if ( this.outputs & LogOutput.Database ) {
-
-                        // Todo: implement db
-
-                    }
-
+            case LogLevel.Debug:
+                if ( this.outputLevel & LogLevel.Debug ) {
+                    this._dispatchDebugMessage( formattedMessage )
                 }
                 break
 
             // For "Debug" output, don't store trace like this !
             default:
-                console.log( formattedMessage )
-                return
+                throw new RangeError( `Invalid switch parameter: ${type}` )
+
+        }
+
+    }
+
+    _dispatchErrorMessage ( errorMessage ) {
+
+        if ( this.outputs & LogOutput.Console ) {
+
+            console.error( errorMessage )
+
+        }
+
+        if ( this.outputs & LogOutput.Html ) {
+
+            const span = document.createElement( 'span' )
+            span.classList.add( 'log-error' )
+            span.innerText = errorMessage
+            document.body.appendChild( span )
+
+        }
+
+        if ( this.outputs & LogOutput.Toast ) {
+
+            // Todo: implement TToast
+
+        }
+
+        if ( this.outputs & LogOutput.File ) {
+
+            // Todo: implement file
+
+        }
+
+        if ( this.outputs & LogOutput.Database ) {
+
+            // Todo: implement db
+
+        }
+
+    }
+
+    _dispatchWarningMessage ( warnMessage ) {
+
+        if ( this.outputs & LogOutput.Console ) {
+
+            console.warn( warnMessage )
+
+        }
+
+        if ( this.outputs & LogOutput.Html ) {
+
+            const span = document.createElement( 'span' )
+            span.classList.add( 'log-warning' )
+            span.innerText = warnMessage
+            document.body.appendChild( span )
+
+        }
+
+        if ( this.outputs & LogOutput.Toast ) {
+
+            // Todo: implement TToast
+
+        }
+
+        if ( this.outputs & LogOutput.File ) {
+
+            // Todo: implement file
+
+        }
+
+        if ( this.outputs & LogOutput.Database ) {
+
+            // Todo: implement db
+
+        }
+
+    }
+
+    _dispatchInfoMessage ( infoMessage ) {
+
+        if ( this.outputs & LogOutput.Console ) {
+
+            console.log( infoMessage )
+
+        }
+
+        if ( this.outputs & LogOutput.Html ) {
+
+            const span = document.createElement( 'span' )
+            span.classList.add( 'log-info' )
+            span.innerText = infoMessage
+            document.body.appendChild( span )
+
+        }
+
+        if ( this.outputs & LogOutput.Toast ) {
+
+            // Todo: implement TToast
+
+        }
+
+        if ( this.outputs & LogOutput.File ) {
+
+            // Todo: implement file
+
+        }
+
+        if ( this.outputs & LogOutput.Database ) {
+
+            // Todo: implement db
+
+        }
+
+    }
+
+    _dispatchDebugMessage ( debugMessage ) {
+
+        if ( this.outputs & LogOutput.Console ) {
+
+            console.log( infoMessage )
+
+        }
+
+        if ( this.outputs & LogOutput.Html ) {
+
+            const span = document.createElement( 'span' )
+            span.classList.add( 'log-info' )
+            span.innerText = infoMessage
+            document.body.appendChild( span )
+
+        }
+
+        if ( this.outputs & LogOutput.Toast ) {
+
+            // Todo: implement TToast
+
+        }
+
+        if ( this.outputs & LogOutput.File ) {
+
+            // Todo: implement file
+
+        }
+
+        if ( this.outputs & LogOutput.Database ) {
+
+            // Todo: implement db
+
         }
 
     }
 
     _dispatchProgress ( progress ) {
 
+        const level          = progress.level
+        let formattedMessage = this._formatTrace( level, progress )
+
+        // Root message in function of gravity
+        switch ( level ) {
+
+            case LogLevel.Info:
+                if ( this.outputLevel & LogLevel.Info ) {
+                    this._dispatchInfoProgress( formattedMessage )
+                }
+                break
+
+            case LogLevel.Debug:
+                if ( this.outputLevel & LogLevel.Debug ) {
+                    this._dispatchDebugProgress( formattedMessage )
+                }
+                break
+
+            // For "Debug" output, don't store trace like this !
+            default:
+                throw new RangeError( `Invalid switch parameter: ${type}` )
+
+        }
         console.log( progress.message )
+
+    }
+
+    _dispatchInfoProgress ( infoProgress ) {
+
+        if ( this.outputs & LogOutput.Console ) {
+
+            console.log( infoProgress )
+
+        }
+
+        if ( this.outputs & LogOutput.Html ) {
+
+            const span = document.createElement( 'span' )
+            span.classList.add( 'log-info' )
+            span.innerText = infoProgress
+            document.body.appendChild( span )
+
+        }
+
+        if ( this.outputs & LogOutput.Toast ) {
+
+            // Todo: implement TToast
+
+        }
+
+        if ( this.outputs & LogOutput.File ) {
+
+            // Todo: implement file
+
+        }
+
+        if ( this.outputs & LogOutput.Database ) {
+
+            // Todo: implement db
+
+        }
+
+    }
+
+    _dispatchDebugProgress ( debugProgress ) {
+
+        if ( this.outputs & LogOutput.Console ) {
+
+            console.log( debugProgress )
+
+        }
+
+        if ( this.outputs & LogOutput.Html ) {
+
+            const span = document.createElement( 'span' )
+            span.classList.add( 'log-info' )
+            span.innerText = debugProgress
+            document.body.appendChild( span )
+
+        }
+
+        if ( this.outputs & LogOutput.Toast ) {
+
+            // Todo: implement TToast
+
+        }
+
+        if ( this.outputs & LogOutput.File ) {
+
+            // Todo: implement file
+
+        }
+
+        if ( this.outputs & LogOutput.Database ) {
+
+            // Todo: implement db
+
+        }
 
     }
 
