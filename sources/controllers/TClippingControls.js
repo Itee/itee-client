@@ -153,7 +153,7 @@ class ClippingBox extends LineSegments {
 
         this._boundingBox.setFromObject( this )
 
-        const margin = 0.2
+        const margin = 0.0
         const min    = this._boundingBox.min
         const max    = this._boundingBox.max
 
@@ -1571,16 +1571,17 @@ class TClippingControls extends Object3D {
 
         const _parameters = {
             ...{
-                camera:     null,
-                domElement: window,
-                mode:       TClippingModes.None
+                camera:        null,
+                domElement:    window,
+                mode:          TClippingModes.None,
+                objectsToClip: new Object3D()
             }, ...parameters
         }
 
         super()
 
         // Need to be defined before domElement to make correct binding events
-        this._handlers = {
+        this._handlers                 = {
             onMouseEnter:  this._onMouseEnter.bind( this ),
             onMouseLeave:  this._onMouseLeave.bind( this ),
             onMouseDown:   this._onMouseDown.bind( this ),
@@ -1596,17 +1597,19 @@ class TClippingControls extends Object3D {
             onKeyDown:     this._onKeyDown.bind( this ),
             onKeyUp:       this._onKeyUp.bind( this )
         }
+        // Could/Should(?) use the objectsToClip boundingbox if exist ! [only in case we are sure that boundingbox (is/must be) implemented for each object3D.]
+        this._objectsToClipBoundingBox = new Box3()
+
+        this._clippingBox = new ClippingBox()
+        this.add( this._clippingBox )
 
         this.camera          = _parameters.camera
         this.domElement      = _parameters.domElement
         this.mode            = _parameters.mode
-        this.objectsToClip   = null
+        this.objectsToClip   = _parameters.objectsToClip
         this.translationSnap = 0.1
         this.scaleSnap       = 0.1
         this.rotationSnap    = 0.1
-
-        this._clippingBox = new ClippingBox()
-        this.add( this._clippingBox )
 
         this.enabled = false // Should be true by default
 
@@ -1683,7 +1686,27 @@ class TClippingControls extends Object3D {
     }
 
     set objectsToClip ( value ) {
+
+        if ( isNull( value ) ) { throw new Error( 'Objects to clip cannot be null ! Expect an instance of Object3D' ) }
+        if ( isUndefined( value ) ) { throw new Error( 'Objects to clip cannot be undefined ! Expect an instance of Object3D' ) }
+        if ( !( value instanceof Object3D ) ) { throw new Error( `Objects to clip cannot be an instance of ${value.constructor.name}. Expect an instance of Object3D.` ) }
+
         this._objectsToClip = value
+
+        const size = new Vector3()
+        this._objectsToClipBoundingBox
+            .makeEmpty()
+            .expandByObject( value )
+            .getSize( size )
+
+        const x = Math.round( size.x ) || 50
+        const y = Math.round( size.y ) || 22
+        const z = Math.round( size.z ) || 70
+        this.scale.set( x, y, z )
+//        this.scale.set( 50, 22, 70 )
+
+        this._clippingBox.update()
+
     }
 
     get camera () {
@@ -1776,7 +1799,10 @@ class TClippingControls extends Object3D {
     }
 
     setObjectsToClip ( objects ) {
-        this._objectsToClip = objects
+
+        this.objectsToClip = objects
+        return this
+
     }
 
     impose () {
