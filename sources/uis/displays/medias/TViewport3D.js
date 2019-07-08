@@ -17,12 +17,11 @@ import {
     Frustum,
     Matrix4,
     Raycaster
-}             from 'three-full'
-import resize from 'vue-resize-directive'
-
+}                           from 'three-full'
+import resize               from 'vue-resize-directive'
 import { default as Stats } from '../../../../node_modules/stats.js/src/Stats'
-// Vue
 import Vue                  from '../../../../node_modules/vue/dist/vue.esm'
+import { DefaultLogger as TLogger } from '../../../loggers/TLogger'
 
 export default Vue.component( 'TViewport3D', {
 
@@ -50,9 +49,9 @@ export default Vue.component( 'TViewport3D', {
     data () {
 
         return {
-            frameId:  undefined,
-            timer:    new Clock( true ),
-            stats:    new Stats()
+            frameId: undefined,
+            timer:   new Clock( true ),
+            stats:   new Stats()
         }
 
     },
@@ -206,7 +205,7 @@ export default Vue.component( 'TViewport3D', {
 
             } else {
 
-                console.error( `TViewport3D: Unable to resize unknown camera of type ${typeof this.camera}` )
+                TLogger.error( `TViewport3D: Unable to resize unknown camera of type ${typeof this.camera}` )
 
             }
 
