@@ -39,6 +39,18 @@ FileFormat.initEnum( {
     Shp:  { value: 'shp' },
     Stl:  { value: 'stl' }
 } )
+FileFormat.toString           = function toString () {
+
+    let result = ''
+    for ( let index = 0, numberOfValues = this.enumValues.length ; index < numberOfValues ; index++ ) {
+        let enumValue = this.enumValues[ index ]
+        result += `${enumValue.name}, `
+    }
+    result = result.slice( 0, -2 )
+    return result
+
+}
+
 
 /**
  * @typedef {Enum} HttpStatusCode
