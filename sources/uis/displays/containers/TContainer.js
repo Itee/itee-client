@@ -75,12 +75,12 @@ export default Vue.component( 'TContainer', {
     watch:    {
 
         // whenever question changes, this function will run
-        width: function ( newValue, oldValue ) {
-            console.log( 'TContainer: Width change from ' + oldValue + ' to ' + newValue )
+        width: ( newValue, oldValue ) => {
+            TLogger.log( `TContainer: Width change from ${oldValue} to ${newValue}` )
         },
 
-        height: function ( newValue, oldValue ) {
-            console.log( 'TContainer: Height change from ' + oldValue + ' to ' + newValue )
+        height: ( newValue, oldValue ) => {
+            TLogger.log( `TContainer: Height change from ${oldValue} to ${newValue}` )
         }
 
     },
