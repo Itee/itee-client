@@ -8,9 +8,10 @@
  *
  */
 
-import { isDefined } from 'itee-validators'
+import { isDefined }                from 'itee-validators'
 /* eslint-env browser */
-import Vue           from '../../../../node_modules/vue/dist/vue.esm'
+import Vue                          from '../../../../node_modules/vue/dist/vue.esm'
+import { DefaultLogger as TLogger } from '../../../loggers/TLogger'
 
 export default Vue.component( 'TTreeItem', {
     template: `
@@ -181,7 +182,7 @@ export default Vue.component( 'TTreeItem', {
 
             // Todo: Externalize the sort function as use defined function. And implement current sort function as utility
             if ( ![ 'asc', 'desc' ].includes( this.sort ) ) {
-                console.error( 'Invalid sorter !' )
+                TLogger.error( 'Invalid sorter !' )
                 return
             }
 
