@@ -71,7 +71,6 @@ export default Vue.component( 'TDialog', {
     methods:  {
 
         handleWheel ( wheelEvent ) {
-            console.log( 'wheeling' )
             wheelEvent.preventDefault()
             wheelEvent.stopPropagation()
         }
