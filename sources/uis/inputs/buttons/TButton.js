@@ -14,6 +14,7 @@ import {
     TIdFactory,
     TIdFactoryType
 }                    from '../../../utils/TIdFactory'
+import { DefaultLogger as TLogger } from '../../../loggers/TLogger'
 
 const IdFactory = new TIdFactory( TIdFactoryType.String, 't-button-' )
 
@@ -93,7 +94,7 @@ export default Vue.component( 'TButton', {
 
                 if ( isOutlined ) {
 
-                    if ( type === 'link' ) { console.warn( 'TButton: button type link cannot be outlined !' ) }
+                    if ( type === 'link' ) { TLogger.warn( 'TButton: button type link cannot be outlined !' ) }
 
                     result += ` btn-outline-${type}`
 
@@ -120,7 +121,7 @@ export default Vue.component( 'TButton', {
             // Compute active property
             if ( isActive === true ) {
 
-                if ( isDisabled === true ) { console.warn( `TButton: Button is active but marked as disabled.` ) }
+                if ( isDisabled === true ) { TLogger.warn( `TButton: Button is active but marked as disabled.` ) }
 
                 result += ` active`
 
