@@ -111,14 +111,14 @@ Object.assign( TUniversalLoader.prototype, {
     load ( files, onLoad, onProgress, onError ) {
 
         if ( !files ) {
-            TLogger.error( 'Unable to load null or undefined files !' )
+            this.logger.error( 'Unable to load null or undefined files !' )
             return
         }
 
         if ( files instanceof FileList ) {
 
             const numberOfFiles = files.length
-            TLogger.log( 'numberOfFiles: ' + numberOfFiles )
+            this.logger.log( 'numberOfFiles: ' + numberOfFiles )
 
             const filesUrls = []
             let fileUrl     = ''
@@ -169,7 +169,7 @@ Object.assign( TUniversalLoader.prototype, {
 
         } else {
 
-            TLogger.error( 'TUniversalLoader: Invalid files parameter !!!' )
+            this.logger.error( 'TUniversalLoader: Invalid files parameter !!!' )
 
         }
 
