@@ -10,6 +10,7 @@
 
 /* eslint-env browser */
 import Vue from '../../../../node_modules/vue/dist/vue.esm'
+import { DefaultLogger as TLogger } from '../../../loggers/TLogger'
 
 export default Vue.component( 'TInputCheckbox', {
     template: `
@@ -29,7 +30,7 @@ export default Vue.component( 'TInputCheckbox', {
 
             const newValue = !this.value
 
-            console.log( 'TCheckbox _onClick' )
+            TLogger.log( 'TCheckbox _onClick' )
 
             this.onChange( newValue )
 
