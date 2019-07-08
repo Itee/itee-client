@@ -12,6 +12,7 @@
 
 import Vue from '../../../../node_modules/vue/dist/vue.esm'
 import './TTreeItem'
+import { DefaultLogger as TLogger } from '../../../loggers/TLogger'
 
 export default Vue.component( 'TTree', {
     template: `
@@ -76,7 +77,7 @@ export default Vue.component( 'TTree', {
 
             // Todo: Externalize the sort function as use defined function. And implement current sort function as utility
             if ( ![ 'asc', 'desc' ].includes( this.sort ) ) {
-                console.error( 'Invalid sorter !' )
+                TLogger.error( 'Invalid sorter !' )
                 return
             }
 
