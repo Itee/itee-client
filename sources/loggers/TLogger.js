@@ -116,7 +116,7 @@ class TLogger {
 
         const _parameters = {
             ...{
-                outputLevel: LogLevel.All,
+                outputLevel: LogLevel.Error,
                 outputs:     LogOutput.Console
             }, ...parameters
         }
@@ -427,7 +427,7 @@ class TLogger {
     _dispatchProgress ( progress ) {
 
         const level          = progress.level
-        let formattedMessage = this._formatTrace( level, progress )
+        let formattedMessage = progress.message
 
         // Root message in function of gravity
         switch ( level ) {
@@ -449,7 +449,6 @@ class TLogger {
                 throw new RangeError( `Invalid switch parameter: ${type}` )
 
         }
-        console.log( progress.message )
 
     }
 
@@ -530,6 +529,16 @@ class TLogger {
     _dispatchTime ( time ) {
 
         console.log( time.message )
+
+    }
+
+    debug ( debug ) {
+
+        this.dispatch( {
+            type:    LogType.Message,
+            level:   LogLevel.Debug,
+            message: debug
+        } )
 
     }
 
