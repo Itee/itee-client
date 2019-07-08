@@ -21,11 +21,11 @@ import {
     Camera,
     EventDispatcher,
     Object3D,
-    PerspectiveCamera,
     Spherical,
     Vector2,
     Vector3
 }                           from 'three-full'
+import { DefaultLogger }    from '../loggers/TLogger'
 import {
     Keys,
     Mouse
@@ -52,6 +52,7 @@ class TCameraControls extends EventDispatcher {
 
         const _parameters = {
             ...{
+                logger:     DefaultLogger,
                 camera:     null,
                 target:     new Object3D(),
                 mode:       TCameraControlMode.Orbit,
@@ -79,6 +80,7 @@ class TCameraControls extends EventDispatcher {
             onKeyUp:       this._onKeyUp.bind( this )
         }
 
+        this.logger     = _parameters.logger
         this.camera     = _parameters.camera
         this.target     = _parameters.target
         this.mode       = _parameters.mode
@@ -249,13 +251,6 @@ class TCameraControls extends EventDispatcher {
 
     }
 
-    setCamera ( value ) {
-
-        this.camera = value
-        return this
-
-    }
-
     get target () {
 
         return this._target
@@ -269,13 +264,6 @@ class TCameraControls extends EventDispatcher {
         if ( !( value instanceof Object3D ) ) { throw new Error( `Target cannot be an instance of ${value.constructor.name}. Expect an instance of Object3D.` ) }
 
         this._target = value
-
-    }
-
-    setTarget ( value ) {
-
-        this.target = value
-        return this
 
     }
 
@@ -297,13 +285,6 @@ class TCameraControls extends EventDispatcher {
 
     }
 
-    setMode ( value ) {
-
-        this.mode = value
-        return this
-
-    }
-
     get paths () {
         return this._paths
     }
@@ -311,20 +292,6 @@ class TCameraControls extends EventDispatcher {
     set paths ( value ) {
 
         this._paths = value
-
-    }
-
-    setPaths ( value ) {
-
-        this.paths = value
-        return this
-
-    }
-
-    addPath ( value ) {
-
-        this._paths.push( value )
-        return this
 
     }
 
@@ -344,13 +311,6 @@ class TCameraControls extends EventDispatcher {
 
     }
 
-    setTrackPath ( value ) {
-
-        this.trackPath = value
-        return this
-
-    }
-
     get domElement () {
 
         return this._domElement
@@ -366,7 +326,6 @@ class TCameraControls extends EventDispatcher {
         // Check focusability of given dom element because in case the element is not focusable
         // the keydown event won't work !
 
-
         // Clear previous element
         if ( this._domElement ) {
             this._domElement.removeEventListener( 'mouseenter', this._handlers.onMouseEnter, false )
@@ -378,6 +337,48 @@ class TCameraControls extends EventDispatcher {
         this._domElement.addEventListener( 'mouseenter', this._handlers.onMouseEnter, false )
         this._domElement.addEventListener( 'mouseleave', this._handlers.onMouseLeave, false )
         this.impose()
+
+    }
+
+    setCamera ( value ) {
+
+        this.camera = value
+        return this
+
+    }
+
+    setTarget ( value ) {
+
+        this.target = value
+        return this
+
+    }
+
+    setMode ( value ) {
+
+        this.mode = value
+        return this
+
+    }
+
+    setPaths ( value ) {
+
+        this.paths = value
+        return this
+
+    }
+
+    addPath ( value ) {
+
+        this._paths.push( value )
+        return this
+
+    }
+
+    setTrackPath ( value ) {
+
+        this.trackPath = value
+        return this
 
     }
 
@@ -399,13 +400,25 @@ class TCameraControls extends EventDispatcher {
         this._domElement.addEventListener( 'mousedown', this._handlers.onMouseDown, false )
         this._domElement.addEventListener( 'mousemove', this._handlers.onMouseMove, false )
         this._domElement.addEventListener( 'mouseup', this._handlers.onMouseUp, false )
-        this._domElement.addEventListener( 'wheel', this._handlers.onMouseWheel, {capture: true, once: false, passive: false} )
+        this._domElement.addEventListener( 'wheel', this._handlers.onMouseWheel, {
+            capture: true,
+            once:    false,
+            passive: false
+        } )
 
         this._domElement.addEventListener( 'touchcancel', this._handlers.onTouchCancel, false )
         this._domElement.addEventListener( 'touchend', this._handlers.onTouchEnd, false )
         this._domElement.addEventListener( 'touchleave', this._handlers.onTouchLeave, false )
-        this._domElement.addEventListener( 'touchmove', this._handlers.onTouchMove, {capture: true, once: false, passive: false} )
-        this._domElement.addEventListener( 'touchstart', this._handlers.onTouchStart, {capture: true, once: false, passive: false} )
+        this._domElement.addEventListener( 'touchmove', this._handlers.onTouchMove, {
+            capture: true,
+            once:    false,
+            passive: false
+        } )
+        this._domElement.addEventListener( 'touchstart', this._handlers.onTouchStart, {
+            capture: true,
+            once:    false,
+            passive: false
+        } )
 
         this.dispatchEvent( { type: 'impose' } )
 
@@ -420,13 +433,25 @@ class TCameraControls extends EventDispatcher {
         this._domElement.removeEventListener( 'mousedown', this._handlers.onMouseDown, false )
         this._domElement.removeEventListener( 'mousemove', this._handlers.onMouseMove, false )
         this._domElement.removeEventListener( 'mouseup', this._handlers.onMouseUp, false )
-        this._domElement.removeEventListener( 'wheel', this._handlers.onMouseWheel, {capture: true, once: false, passive: false} )
+        this._domElement.removeEventListener( 'wheel', this._handlers.onMouseWheel, {
+            capture: true,
+            once:    false,
+            passive: false
+        } )
 
         this._domElement.removeEventListener( 'touchcancel', this._handlers.onTouchCancel, false )
         this._domElement.removeEventListener( 'touchend', this._handlers.onTouchEnd, false )
         this._domElement.removeEventListener( 'touchleave', this._handlers.onTouchLeave, false )
-        this._domElement.removeEventListener( 'touchmove', this._handlers.onTouchMove, {capture: true, once: false, passive: false} )
-        this._domElement.removeEventListener( 'touchstart', this._handlers.onTouchStart, {capture: true, once: false, passive: false} )
+        this._domElement.removeEventListener( 'touchmove', this._handlers.onTouchMove, {
+            capture: true,
+            once:    false,
+            passive: false
+        } )
+        this._domElement.removeEventListener( 'touchstart', this._handlers.onTouchStart, {
+            capture: true,
+            once:    false,
+            passive: false
+        } )
 
         this.dispatchEvent( { type: 'dispose' } )
 
@@ -455,7 +480,7 @@ class TCameraControls extends EventDispatcher {
     }
 
     // Handlers
-    _consumeEvent( event ) {
+    _consumeEvent ( event ) {
 
         if ( !event.cancelable ) {
             return
@@ -667,7 +692,6 @@ class TCameraControls extends EventDispatcher {
             this._roll( deltaRoll )
             this._consumeEvent( touchEvent )
 
-
         } else if ( numberOfPreviousTouches === 1 && numberOfCurrentTouches === 1 ) {
 
             const deltaRotate = new Vector2(
@@ -680,7 +704,7 @@ class TCameraControls extends EventDispatcher {
 
         } else {
 
-            console.warn( 'Ignoring inconsistent touches event.' )
+            this.logger.warn( 'Ignoring inconsistent touches event.' )
 
         }
 
@@ -691,7 +715,7 @@ class TCameraControls extends EventDispatcher {
     // Mouse
     _onMouseEnter ( mouseEvent ) {
 
-        if ( !this.enabled  ) { return }
+        if ( !this.enabled ) { return }
         mouseEvent.preventDefault()
 
         this.impose()
@@ -703,7 +727,7 @@ class TCameraControls extends EventDispatcher {
 
     _onMouseLeave ( mouseEvent ) {
 
-        if ( !this.enabled  ) { return }
+        if ( !this.enabled ) { return }
         mouseEvent.preventDefault()
 
         if ( mouseEvent.target.constructor !== HTMLDocument ) {
@@ -716,7 +740,7 @@ class TCameraControls extends EventDispatcher {
 
     _onMouseDown ( mouseEvent ) {
 
-        if ( !this.enabled  ) { return }
+        if ( !this.enabled ) { return }
         mouseEvent.preventDefault()
 
         const actionMap = this.actionsMap
@@ -793,7 +817,7 @@ class TCameraControls extends EventDispatcher {
 
     _onMouseMove ( mouseEvent ) {
 
-        if ( !this.enabled  || this._state === State.None ) { return }
+        if ( !this.enabled || this._state === State.None ) { return }
         mouseEvent.preventDefault()
 
         const state = this._state
@@ -838,7 +862,7 @@ class TCameraControls extends EventDispatcher {
     //todo allow other displacement from wheel
     _onMouseWheel ( mouseEvent ) {
 
-        if ( !this.enabled  ) { return }
+        if ( !this.enabled ) { return }
         mouseEvent.preventDefault()
 
         const delta = mouseEvent.wheelDelta || mouseEvent.deltaY
@@ -849,7 +873,7 @@ class TCameraControls extends EventDispatcher {
 
     _onMouseUp ( mouseEvent ) {
 
-        if ( !this.enabled  ) { return }
+        if ( !this.enabled ) { return }
         mouseEvent.preventDefault()
 
         this._state = State.None
@@ -858,10 +882,10 @@ class TCameraControls extends EventDispatcher {
 
     _onDblClick ( mouseEvent ) {
 
-        if ( !this.enabled  ) { return }
+        if ( !this.enabled ) { return }
         mouseEvent.preventDefault()
 
-        console.warn( 'TCameraControls: Double click events is not implemented yet, sorry for the disagreement.' )
+        this.logger.warn( 'TCameraControls: Double click events is not implemented yet, sorry for the disagreement.' )
 
     }
 
@@ -1256,7 +1280,7 @@ class TCameraControls extends EventDispatcher {
         //todo: move on path in the FRONT camera direction
 
         if ( isEmptyArray( this._paths ) ) {
-            console.warn( 'Try to init path displacement without any paths' )
+            this.logger.warn( 'Try to init path displacement without any paths' )
             return
         }
 
@@ -1314,7 +1338,7 @@ class TCameraControls extends EventDispatcher {
 
     _getPathDisplacement ( cameraDirection ) {
 
-        let displacement = undefined
+        let displacement = null
 
         //Todo: add options to move in camera direction or not
         // try a default positive progress on path
@@ -1391,7 +1415,7 @@ class TCameraControls extends EventDispatcher {
 
             } else {
 
-                console.warn( 'Reach path end.' )
+                this.logger.warn( 'Reach path end.' )
                 displacement = new Vector3()
 
             }
@@ -1465,7 +1489,7 @@ class TCameraControls extends EventDispatcher {
 
             } else {
 
-                console.warn( 'Reach path start.' )
+                this.logger.warn( 'Reach path start.' )
                 displacement = new Vector3()
 
             }
@@ -1488,7 +1512,7 @@ class TCameraControls extends EventDispatcher {
 
         } else {
 
-            console.warn( 'Unable to find correct next path position.' )
+            this.logger.warn( 'Unable to find correct next path position.' )
             displacement = new Vector3()
 
         }
