@@ -10,8 +10,9 @@
 
 /* eslint-env browser */
 
-import resize from 'vue-resize-directive'
-import Vue    from '../../../../node_modules/vue/dist/vue.esm'
+import resize                       from 'vue-resize-directive'
+import Vue                          from '../../../../node_modules/vue/dist/vue.esm'
+import { DefaultLogger as TLogger } from '../../../loggers/TLogger'
 
 export default Vue.component( 'TSplitter', {
     template:   `
@@ -55,8 +56,6 @@ export default Vue.component( 'TSplitter', {
         },
 
         computeSeparatorStyle () {
-
-            console.log( 'computeSeparatorStyle' )
 
             let _separatorStyle = {
                 //                display: 'flex'
@@ -136,16 +135,15 @@ export default Vue.component( 'TSplitter', {
 
             firstSplit.style.width  = `${firstSplitWidth}px`
             firstSplit.style.height = `${firstSplitHeight}px`
+            TLogger.debug( `TSplitter.onResize(fW/fH): ${firstSplitWidth}/${firstSplitHeight}` )
 
             splitterElement.style.width  = `${splitterWidth}px`
             splitterElement.style.height = `${splitterHeight}px`
+            TLogger.debug( `TSplitter.onResize(spW/spH): ${splitterWidth}/${splitterHeight}` )
 
             secondSplit.style.width  = `${secondSplitWidth}px`
             secondSplit.style.height = `${secondSplitHeight}px`
-
-            console.log( `TSplitter.onResize(fW/fH): ${firstSplitWidth}/${firstSplitHeight}` )
-            console.log( `TSplitter.onResize(spW/spH): ${splitterWidth}/${splitterHeight}` )
-            console.log( `TSplitter.onResize(sW/sH): ${secondSplitWidth}/${secondSplitHeight}` )
+            TLogger.debug( `TSplitter.onResize(sW/sH): ${secondSplitWidth}/${secondSplitHeight}` )
 
         },
 
@@ -189,7 +187,7 @@ export default Vue.component( 'TSplitter', {
                 secondSplit.style.width  = `${secondWidth}px`
                 secondSplit.style.height = `${globalHeight}px`
 
-                console.log( `TSplitter.onMouseMoveHandler(fw/sw): ${firstWidth}/${secondWidth}` )
+                TLogger.log( `TSplitter.onMouseMoveHandler(fw/sw): ${firstWidth}/${secondWidth}` )
 
                 this.previousMousePositionX = event.clientX
 
@@ -212,7 +210,7 @@ export default Vue.component( 'TSplitter', {
                 secondSplit.style.height = `${secondHeight}px`
                 secondSplit.style.width  = `${globalWidth}px`
 
-                console.log( `TSplitter.onMouseMoveHandler(fh/sh): ${firstHeight}/${secondHeight}` )
+                TLogger.log( `TSplitter.onMouseMoveHandler(fh/sh): ${firstHeight}/${secondHeight}` )
 
                 this.previousMousePositionY = event.clientY
 
@@ -254,7 +252,7 @@ export default Vue.component( 'TSplitter', {
             secondSplit.style.width  = `${secondWidth}px`
             secondSplit.style.height = `${globalHeight}px`
 
-            console.log( `TSplitter.mounted(fw/sw): ${firstWidth}/${secondWidth}` )
+            TLogger.log( `TSplitter.mounted(fw/sw): ${firstWidth}/${secondWidth}` )
 
         } else {
 
@@ -271,14 +269,9 @@ export default Vue.component( 'TSplitter', {
             secondSplit.style.height = `${secondHeight}px`
             secondSplit.style.width  = `${globalWidth}px`
 
-            console.log( `TSplitter.mounted(fh/sh): ${firstHeight}/${secondHeight}` )
+            TLogger.log( `TSplitter.mounted(fh/sh): ${firstHeight}/${secondHeight}` )
 
         }
-
-    },
-    updated () {
-
-        //        console.log('Updated !')
 
     }
 
