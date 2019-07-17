@@ -118,16 +118,15 @@ Object.assign( TUniversalLoader.prototype, {
         if ( files instanceof FileList ) {
 
             const numberOfFiles = files.length
-            this.logger.log( 'numberOfFiles: ' + numberOfFiles )
+            this.logger.log( `numberOfFiles: ${numberOfFiles}` )
 
             const filesUrls = []
             let fileUrl     = ''
-            let fileIndex   = undefined
-            let fileObject  = undefined
+            let fileObject  = null
 
-            for ( fileIndex = 0 ; fileIndex < numberOfFiles ; ++fileIndex ) {
+            for ( let fileIndex = 0 ; fileIndex < numberOfFiles ; ++fileIndex ) {
                 fileObject = files[ fileIndex ]
-                fileUrl    = URL.createObjectURL( fileObject ) + '/' + fileObject.name
+                fileUrl    = `${URL.createObjectURL( fileObject )}/${fileObject.name}`
 
                 filesUrls.push( { url: fileUrl } )
             }
@@ -136,7 +135,7 @@ Object.assign( TUniversalLoader.prototype, {
 
         } else if ( files instanceof File ) {
 
-            const fileUrl = URL.createObjectURL( files ) + '/' + files.name
+            const fileUrl = `${URL.createObjectURL( files )}/${files.name}`
             this.loadSingleFile( { url: fileUrl }, onLoad, onProgress, onError )
 
         } else if ( isObject( files ) ) {
