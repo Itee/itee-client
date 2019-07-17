@@ -21,7 +21,7 @@ export default Vue.component( 'TInputFile', {
             
             <div class="custom-file">
                 <input class="custom-file-input" type="file" name="files[]" multiple v-on:change=_onChange>
-                <label class="custom-file-label">{{_computePlaceholder}}</label>
+                <label class="custom-file-label" style="overflow: hidden;">{{_computePlaceholder}}</label>
             </div>
             
         </div>
