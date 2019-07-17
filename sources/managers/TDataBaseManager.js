@@ -347,15 +347,15 @@ class TDataBaseManager {
 
         }
 
-        function _onLoadStart ( loadStartEvent ) { this._logger.log( loadStartEvent ) }
+        function _onLoadStart ( loadStartEvent ) { this.logger.progress( loadStartEvent ) }
 
-        function _onLoadEnd ( loadEndEvent ) { this._logger.log( loadEndEvent ) }
+        function _onLoadEnd ( loadEndEvent ) { this.logger.progress( loadEndEvent ) }
 
-        function _onReadyStateChange ( readyStateEvent ) { this._logger.log( readyStateEvent ) }
+        function _onReadyStateChange ( readyStateEvent ) { this.logger.debug( readyStateEvent ) }
 
-        function _onAbort ( abortEvent ) { this._logger.error( abortEvent ) }
+        function _onAbort ( abortEvent ) { this.logger.error( abortEvent ) }
 
-        function _onTimeout ( timeoutEvent ) { this._logger.error( timeoutEvent ) }
+        function _onTimeout ( timeoutEvent ) { this.logger.error( timeoutEvent ) }
 
     }
 
@@ -685,9 +685,9 @@ class TDataBaseManager {
      */
     _onProgress ( onProgressCallback, progressEvent ) {
 
-        if ( isDefined( this._logger ) ) {
+        if ( isDefined( this.logger ) ) {
 
-            this._logger.progress( progressEvent, onProgressCallback )
+            this.logger.progress( progressEvent, onProgressCallback )
 
         } else if ( isDefined( onProgressCallback ) ) {
 
@@ -710,9 +710,9 @@ class TDataBaseManager {
 
         this._closeRequest( request )
 
-        if ( isDefined( this._logger ) ) {
+        if ( isDefined( this.logger ) ) {
 
-            this._logger.error( errorEvent, onErrorCallback )
+            this.logger.error( errorEvent, onErrorCallback )
 
         } else if ( isDefined( onErrorCallback ) ) {
 
@@ -829,12 +829,12 @@ class TDataBaseManager {
         if ( Window.Itee && Window.Itee.Debug ) {
 
             const diff = new Date().valueOf() - request._timeStart.valueOf()
-
-            console.log( `${this.constructor.name} close request [${request._id}] on ${diff}ms` )
-            console.log( 'Waiting queue: ', this._waitingQueue.length )
-            console.log( 'Request queue: ', this._requestQueue.length )
-            console.log( 'Process queue: ', this._processQueue.length )
-            console.log( '==========================' )
+            const message = `${this.constructor.name} close request [${request._id}] on ${diff}ms.` +
+            `Waiting queue: ${this._waitingQueue.length}` +
+            `Request queue: ${this._requestQueue.length}` +
+            `Process queue: ${this._processQueue.length}` +
+            `==========================`
+            this.logger.debug(message)
 
         }
 
@@ -896,10 +896,10 @@ class TDataBaseManager {
             if ( isNull( cachedResult ) ) {
                 this._cache.add( id, data, true )
             } else if ( isUndefined( cachedResult ) ) {
-                console.warn( 'Cache was not pre-allocated with null value.' )
+                this.logger.warn( 'Cache was not pre-allocated with null value.' )
                 this._cache.add( id, data )
             } else {
-                console.error( 'Cached value already exist !' )
+                this.logger.error( 'Cached value already exist !' )
             }
 
         }
@@ -939,7 +939,7 @@ class TDataBaseManager {
 
             } else if ( !demandIsComplet && haveNoRequestToProcess /* && haveTryAgainManyTimesButFail */ ) {
 
-                console.warn( 'Incomplet demand but empty request/process queue' )
+                this.logger.warn( 'Incomplet demand but empty request/process queue' )
                 this._waitingQueue.splice( requestIndex, 1 )
                 demand.onLoadCallback( demand.results )
 
@@ -1102,7 +1102,7 @@ class TDataBaseManager {
                 datas.underRequest.push( id )
                 datas.toRequest.splice( datas.toRequest.indexOf( id ), 1 )
             } catch ( error ) {
-                console.error( error )
+                this.logger.error( error )
             }
 
             this._idToRequest.push( id )
@@ -1162,7 +1162,7 @@ class TDataBaseManager {
                     datas.underRequest.push( id )
                     datas.toRequest.splice( datas.toRequest.indexOf( id ), 1 )
                 } catch ( error ) {
-                    console.error( error )
+                    this.logger.error( error )
                 }
 
                 this._idToRequest.push( id )
