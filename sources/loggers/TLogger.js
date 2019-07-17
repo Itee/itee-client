@@ -99,21 +99,6 @@ class TLogger {
 
     }
 
-    /**
-     *
-     * @param objError
-     * @return {string}
-     * @private
-     */
-    static _formatObjectError ( error ) {
-
-        return `<b>${error.name}</b><br>
-                <p>${error.message} </p><br>
-                <span>in file ${error.fileName} at line n°${error.lineNumber} and column n°${error.columnNumber}</span><br>
-                <p>Stack: ${error.stack} </p>`
-
-    }
-
     constructor ( parameters = {} ) {
 
         const _parameters = {
@@ -240,39 +225,39 @@ class TLogger {
 
     _dispatchMessage ( message ) {
 
-        const level          = message.level
-        let formattedMessage = this._formatTrace( level, message )
+        const level = message.level
+        const data  = message.message
 
         // Root message in function of gravity
         switch ( level ) {
 
             case LogLevel.Error:
                 if ( this.outputLevel & LogLevel.Error ) {
-                    this._dispatchErrorMessage( formattedMessage )
+                    this._dispatchErrorMessage( data )
                 }
                 break
 
             case LogLevel.Warning:
                 if ( this.outputLevel & LogLevel.Warning ) {
-                    this._dispatchWarningMessage( formattedMessage )
+                    this._dispatchWarningMessage( data )
                 }
                 break
 
             case LogLevel.Info:
                 if ( this.outputLevel & LogLevel.Info ) {
-                    this._dispatchInfoMessage( formattedMessage )
+                    this._dispatchInfoMessage( data )
                 }
                 break
 
             case LogLevel.Debug:
                 if ( this.outputLevel & LogLevel.Debug ) {
-                    this._dispatchDebugMessage( formattedMessage )
+                    this._dispatchDebugMessage( data )
                 }
                 break
 
             // For "Debug" output, don't store trace like this !
             default:
-                throw new RangeError( `Invalid switch parameter: ${type}` )
+                throw new RangeError( `Invalid switch parameter: ${level}` )
 
         }
 
@@ -393,7 +378,7 @@ class TLogger {
 
         if ( this.outputs & LogOutput.Console ) {
 
-            console.log( infoMessage )
+            console.log( debugMessage )
 
         }
 
@@ -401,7 +386,7 @@ class TLogger {
 
             const span = document.createElement( 'span' )
             span.classList.add( 'log-info' )
-            span.innerText = infoMessage
+            span.innerText = debugMessage
             document.body.appendChild( span )
 
         }
@@ -650,5 +635,8 @@ const DefaultLogger = new TLogger()
 
 export {
     TLogger,
-    DefaultLogger
+    DefaultLogger,
+    LogLevel,
+    LogType,
+    LogOutput
 }
