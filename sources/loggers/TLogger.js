@@ -18,12 +18,13 @@ import {
     isString,
     isUndefined
 } from 'itee-validators'
+import { toEnum } from 'itee-utils'
 
 /**
  *
  * @type {Object}
  */
-const LogOutput = Object.freeze( {
+const LogOutput = toEnum( {
     Console:  1,
     Html:     2,
     Toast:    4,
@@ -32,7 +33,7 @@ const LogOutput = Object.freeze( {
     All:      255
 } )
 
-const LogType = Object.freeze( {
+const LogType = toEnum( {
     Message:  0,
     Progress: 1,
     Time:     2
@@ -42,14 +43,15 @@ const LogType = Object.freeze( {
  *
  * @type {Object}
  */
-const LogLevel = Object.freeze( {
-    None:    0,
-    Debug:   1,
-    Info:    2,
-    Warning: 4,
-    Error:   8,
-    All:     255
+const LogLevel = toEnum( {
+    None:     0,
+    Debug:    1,
+    Info:     2,
+    Warning:  4,
+    Error:    8,
+    All:      255
 } )
+
 
 /*
  *  Allow to toast an message or error to user
