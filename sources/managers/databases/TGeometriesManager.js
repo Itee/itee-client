@@ -281,11 +281,14 @@ class TGeometriesManager extends TDataBaseManager {
 
         }
 
+        // Todo: Allow to force if exist
         if ( this.computeBoundingBox ) {
+            geometry.boundingBox = null
             geometry.computeBoundingBox()
         }
 
         if ( this.computeBoundingSphere ) {
+            geometry.boundingSphere = null
             geometry.computeBoundingSphere()
         }
 
