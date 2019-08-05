@@ -12,14 +12,36 @@
     "3d",
     "frontend"
   ],
-  "private": false,
-  "author": "Tristan VALCKE",
-  "contributors": [
-    {}
-  ],
-  "repository": "https://github.com/Itee/itee-client.git",
+  "author": {
+    "name": "Itee (Tristan Valcke)",
+    "url": "https://github.com/Itee"
+  },
+  "contributors": [],
   "license": "BSD-3-Clause",
-  "main": "builds/itee-client.es.js",
+  "private": false,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Itee/itee-client"
+  },
+  "main": "builds/itee-client.cjs.js",
+  "module": "builds/itee-client.esm.js",
+  "browser": "builds/itee-client.iife.js",
+  "homepage": "https://github.com/Itee/itee-client#readme",
+  "man": "./documentation/API/index.html",
+  "bugs": {
+    "url": "https://github.com/Itee/itee-client/issues"
+  },
+  "engines": {
+    "node": ">=8.16.0"
+  },
+  "os": [
+    "win32",
+    "linux"
+  ],
+  "cpu": [
+    "x64",
+    "ia32"
+  ],
   "scripts": {
     "default": "gulp",
     "help": "gulp help",
@@ -79,6 +101,7 @@
     "rollup-plugin-terser": "^5.1.1",
     "semantic-release": "^15.13.19"
   },
+  "optionalDependencies": {},
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
