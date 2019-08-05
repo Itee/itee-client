@@ -18,17 +18,13 @@
  * } )
  */
 
-/* eslint-env browser */
-
-import { Enum } from 'enumify'
+import { toEnum } from 'itee-utils'
 
 /**
  * The FileFormat Enum give some commonly used file format in 3d context
  * @type {Enum}
  */
-class FileFormat extends Enum {}
-
-FileFormat.initEnum( {
+const FileFormat = toEnum( {
     Asc:  { value: 'asc' },
     Dae:  { value: 'dae' },
     Dbf:  { value: 'dbf' },
@@ -39,18 +35,6 @@ FileFormat.initEnum( {
     Shp:  { value: 'shp' },
     Stl:  { value: 'stl' }
 } )
-FileFormat.toString           = function toString () {
-
-    let result = ''
-    for ( let index = 0, numberOfValues = this.enumValues.length ; index < numberOfValues ; index++ ) {
-        let enumValue = this.enumValues[ index ]
-        result += `${enumValue.name}, `
-    }
-    result = result.slice( 0, -2 )
-    return result
-
-}
-
 
 /**
  * @typedef {Enum} HttpStatusCode
@@ -144,9 +128,7 @@ FileFormat.toString           = function toString () {
  * @description HttpStatusCode contains all http status code available to check and process correctly server response.
  * @see {@link https://en.wikipedia.org/wiki/List_of_HTTP_status_codes} for further information.
  */
-class HttpStatusCode extends Enum {}
-
-HttpStatusCode.initEnum( {
+const HttpStatusCode = toEnum( {
 
     // 100
     Continue:           { value: 100 },
@@ -251,9 +233,7 @@ HttpStatusCode.initEnum( {
  * @description HttpVerb contains the CRUD actions with corresponding http verb to request an itee server.
  * @see {@link https://en.wikipedia.org/wiki/Create,_read,_update_and_delete} for further information.
  */
-class HttpVerb extends Enum {}
-
-HttpVerb.initEnum( {
+const HttpVerb = toEnum( {
     Create: { value: 'PUT' },
     Read:   { value: 'POST' },
     Update: { value: 'PATCH' },
@@ -264,9 +244,7 @@ HttpVerb.initEnum( {
  * The Keys Enum give the associated key_code
  * @type {Enum}
  */
-class Keys extends Enum {}
-
-Keys.initEnum( {
+const Keys = toEnum( {
     BACKSPACE:            { value: 8 },
     TAB:                  { value: 9 },
     ENTER:                { value: 13 },
@@ -369,19 +347,14 @@ Keys.initEnum( {
 } )
 
 // Todo
-class MimeType extends Enum {}
-
-//MimeType.Font
-//MimeType.initEnum( {} )
+const MimeType = toEnum( {} )
 
 /**
  * This Enum expose 4 common state of mouse button.
  * Wheel, Left, Middle and Right
  * @type {Enum}
  */
-class Mouse extends Enum {}
-
-Mouse.initEnum( {
+const Mouse = toEnum( {
     WHEEL:  { value: -1 },
     LEFT:   { value: 0 },
     MIDDLE: { value: 1 },
@@ -402,9 +375,7 @@ Mouse.initEnum( {
  * @description ResponseType allow to filter wich type of response is recieved from the server.
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType} for further information.
  */
-class ResponseType extends Enum {}
-
-ResponseType.initEnum( {
+const ResponseType = toEnum( {
     ArrayBuffer: { value: 'arraybuffer' },
     Blob:        { value: 'blob' },
     Document:    { value: 'document' },
