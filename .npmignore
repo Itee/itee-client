@@ -1,7 +1,8 @@
-# Created by .ignore support plugin (hsz.mobi)
+.idea/
+/.releaserc
+/.travis.yml
 /configs/
-/tests/
 /documentation/
+/gulpfile.js
+/tests/
 /tutorials/
-/styles/old/
-.idea
