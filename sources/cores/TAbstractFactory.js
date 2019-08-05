@@ -20,6 +20,7 @@ class TAbstractFactory extends TStore {
 
     }
 
+    // eslint-disable-next-line no-unused-vars
     create ( key, ...parameters ) {
 
         // Need to be reimplemented

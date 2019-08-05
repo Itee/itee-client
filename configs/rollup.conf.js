@@ -87,15 +87,15 @@ function CreateRollupConfigs ( options ) {
             const outputPath = ( isProd ) ? path.join( output, `${fileName}.${format}.min.js` ) : path.join( output, `${fileName}.${format}.js` )
 
             configs.push( {
-                input:     input,
-                external:  [
+                input:    input,
+                external: [
                     'itee-validators',
                     'itee-utils'
                 ],
-                plugins:   [
+                plugins: [
                     isProd && terser()
                 ],
-                onwarn:    ( { loc, frame, message } ) => {
+                onwarn: ( { loc, frame, message } ) => {
 
                     // Ignore some errors
                     if ( message.includes( 'Circular dependency' ) ) { return }

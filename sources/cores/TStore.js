@@ -11,8 +11,6 @@
  * TLogger.log( cache.get('foo') ) // 'bar'
  */
 
-/* eslint-env browser */
-
 import {
     isFunction,
     isNotArray,
@@ -22,7 +20,7 @@ import {
     isNull,
     isString,
     isUndefined
-}                        from 'itee-validators'
+} from 'itee-validators'
 
 /**
  * @class Super class cache!
@@ -82,20 +80,13 @@ class TStore {
     set collection ( value ) {
 
         const memberName = 'Collection'
-        const expect = 'Expect an object.'
+        const expect     = 'Expect an object.'
 
         if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
         if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
         if ( isNotObject( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
 
         this._collection = value
-
-    }
-
-    setCollection ( value ) {
-
-        this.collection = value
-        return this
 
     }
 
@@ -108,20 +99,13 @@ class TStore {
     set allowOverride ( value ) {
 
         const memberName = 'Allow override'
-        const expect = 'Expect a boolean.'
+        const expect     = 'Expect a boolean.'
 
         if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
         if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
         if ( isNotBoolean( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
 
         this._allowOverride = value
-
-    }
-
-    setAllowOverride ( value ) {
-
-        this.allowOverride = value
-        return this
 
     }
 
@@ -134,20 +118,13 @@ class TStore {
     set keyValidators ( value ) {
 
         const memberName = 'Keys validators'
-        const expect = 'Expect an array of TValidator or an empty array.'
+        const expect     = 'Expect an array of TValidator or an empty array.'
 
         if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
         if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
         if ( isNotArray( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
 
         this._keyValidators = value
-
-    }
-
-    setKeyValidators( value ) {
-
-        this.keyValidators(value)
-        return this
 
     }
 
@@ -158,7 +135,7 @@ class TStore {
     set valueValidators ( value ) {
 
         const memberName = 'Values validators'
-        const expect = 'Expect an array of TValidator or an empty array.'
+        const expect     = 'Expect an array of TValidator or an empty array.'
 
         if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
         if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
@@ -168,42 +145,43 @@ class TStore {
 
     }
 
-    setValueValidators ( value ) {
-
-        this.valueValidators( value )
-        return this
-
-    }
-
     get keys () {
 
-        const keys       = []
-        const collection = this._collection
-
-        for ( let key in collection ) {
-            if ( !collection.hasOwnProperty( key ) ) {
-                continue
-            }
-            keys.push( key )
-        }
-
-        return keys
+        return Object.keys( this._collection )
 
     }
 
     get values () {
 
-        const values     = []
-        const collection = this._collection
+        return Object.values( this._collection )
 
-        for ( let key in collection ) {
-            if ( !collection.hasOwnProperty( key ) ) {
-                continue
-            }
-            values.push( collection[ key ] )
-        }
+    }
 
-        return values
+    setCollection ( value ) {
+
+        this.collection = value
+        return this
+
+    }
+
+    setAllowOverride ( value ) {
+
+        this.allowOverride = value
+        return this
+
+    }
+
+    setKeyValidators ( value ) {
+
+        this.keyValidators( value )
+        return this
+
+    }
+
+    setValueValidators ( value ) {
+
+        this.valueValidators( value )
+        return this
 
     }
 

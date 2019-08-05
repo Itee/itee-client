@@ -10,6 +10,7 @@
 
 /* eslint-env browser */
 
+import { toEnum } from 'itee-utils'
 import {
     isArrayOfObject,
     isArrayOfString,
@@ -17,8 +18,7 @@ import {
     isObject,
     isString,
     isUndefined
-} from 'itee-validators'
-import { toEnum } from 'itee-utils'
+}                 from 'itee-validators'
 
 /**
  *
@@ -44,14 +44,13 @@ const LogType = toEnum( {
  * @type {Object}
  */
 const LogLevel = toEnum( {
-    None:     0,
-    Debug:    1,
-    Info:     2,
-    Warning:  4,
-    Error:    8,
-    All:      255
+    None:    0,
+    Debug:   1,
+    Info:    2,
+    Warning: 4,
+    Error:   8,
+    All:     255
 } )
-
 
 /*
  *  Allow to toast an message or error to user
@@ -433,7 +432,7 @@ class TLogger {
 
             // For "Debug" output, don't store trace like this !
             default:
-                throw new RangeError( `Invalid switch parameter: ${type}` )
+                throw new RangeError( `Invalid switch parameter: ${level}` )
 
         }
 

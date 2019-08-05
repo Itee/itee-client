@@ -65,11 +65,13 @@ class TKeyboardController {
         }
     }
 
-    constructor ( parameters = {} ) {
+    constructor ( /*parameters = {}*/ ) {
 
-        const _parameters = {
-            ...{}, ...parameters
-        }
+        /*
+         const _parameters = {
+         ...{}, ...parameters
+         }
+         */
 
         // bind keyEvents
         document.addEventListener( 'keydown', TKeyboardController.onKeyDown, false )

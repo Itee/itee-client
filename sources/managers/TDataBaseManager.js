@@ -40,6 +40,7 @@ import {
     isUndefined,
     isZero
 }                 from 'itee-validators'
+import { toEnum } from 'itee-utils'
 import {
     HttpStatusCode,
     HttpVerb,
@@ -66,7 +67,7 @@ class IdGenerator {
 
 const Generate = new IdGenerator()
 
-const RequestType = Object.freeze( {
+const RequestType = toEnum( {
     CreateOne:   0,
     CreateMany:  1,
     ReadOne:     2,
@@ -294,12 +295,12 @@ class TDataBaseManager {
                 if ( idBunch.length === this._bunchSize || idIndex === 0 ) {
 
                     this._requestQueue.push( {
-                        _id:          `readMany_${Generate.id}`,
-                        _timeStart:   new Date(),
-                        _type:        RequestType.ReadMany,
-                        method:       HttpVerb.Read.value,
-                        url:          this._basePath,
-                        data:         {
+                        _id:        `readMany_${Generate.id}`,
+                        _timeStart: new Date(),
+                        _type:      RequestType.ReadMany,
+                        method:     HttpVerb.Read.value,
+                        url:        this._basePath,
+                        data:       {
                             ids: idBunch
                         },
                         responseType: this._responseType
@@ -596,7 +597,6 @@ class TDataBaseManager {
             case HttpStatusCode.AlreadyReported.value:
             case HttpStatusCode.ContentDifferent.value:
             case HttpStatusCode.IMUsed.value:
-            // 300
             case HttpStatusCode.MultipleChoices.value:
             case HttpStatusCode.MovedPermanently.value:
             case HttpStatusCode.Found.value:
@@ -607,7 +607,6 @@ class TDataBaseManager {
             case HttpStatusCode.TemporaryRedirect.value:
             case HttpStatusCode.PermanentRedirect.value:
             case HttpStatusCode.TooManyRedirects.value:
-            // 400
             case HttpStatusCode.BadRequest.value:
             case HttpStatusCode.Unauthorized.value:
             case HttpStatusCode.PaymentRequired.value:
@@ -643,7 +642,6 @@ class TDataBaseManager {
             case HttpStatusCode.SSLCertificateRequired.value:
             case HttpStatusCode.HTTPRequestSentToHTTPSPort.value:
             case HttpStatusCode.ClientClosedRequest.value:
-            // 500
             case HttpStatusCode.InternalServerError.value:
             case HttpStatusCode.NotImplemented.value:
             case HttpStatusCode.BadGateway.value:
@@ -743,12 +741,10 @@ class TDataBaseManager {
 
             case RequestType.CreateOne:
             case RequestType.CreateMany:
-
             case RequestType.UpdateOne:
             case RequestType.UpdateMany:
             case RequestType.UpdateWhere:
             case RequestType.UpdateAll:
-
             case RequestType.DeleteOne:
             case RequestType.DeleteMany:
             case RequestType.DeleteWhere:
@@ -828,13 +824,13 @@ class TDataBaseManager {
 
         if ( Window.Itee && Window.Itee.Debug ) {
 
-            const diff = new Date().valueOf() - request._timeStart.valueOf()
+            const diff    = new Date().valueOf() - request._timeStart.valueOf()
             const message = `${this.constructor.name} close request [${request._id}] on ${diff}ms.` +
-            `Waiting queue: ${this._waitingQueue.length}` +
-            `Request queue: ${this._requestQueue.length}` +
-            `Process queue: ${this._processQueue.length}` +
-            `==========================`
-            this.logger.debug(message)
+                `Waiting queue: ${this._waitingQueue.length}` +
+                `Request queue: ${this._requestQueue.length}` +
+                `Process queue: ${this._processQueue.length}` +
+                `==========================`
+            this.logger.debug( message )
 
         }
 
@@ -965,6 +961,7 @@ class TDataBaseManager {
      * @param {function} onProgress - The onProgress callback, which is call during the parsing.
      * @param {function} onError - The onError callback, which is call when parser throw an error during parsing.
      */
+    // eslint-disable-next-line no-unused-vars
     _onArrayBuffer ( data, onSuccess, onProgress, onError ) {}
 
     /**
@@ -979,6 +976,7 @@ class TDataBaseManager {
      * @param {function} onProgress - The onProgress callback, which is call during the parsing.
      * @param {function} onError - The onError callback, which is call when parser throw an error during parsing.
      */
+    // eslint-disable-next-line no-unused-vars
     _onBlob ( data, onSuccess, onProgress, onError ) {}
 
     /**
@@ -993,6 +991,7 @@ class TDataBaseManager {
      * @param {function} onProgress - The onProgress callback, which is call during the parsing.
      * @param {function} onError - The onError callback, which is call when parser throw an error during parsing.
      */
+    // eslint-disable-next-line no-unused-vars
     _onJson ( data, onSuccess, onProgress, onError ) {}
 
     /**
@@ -1007,6 +1006,7 @@ class TDataBaseManager {
      * @param {function} onProgress - The onProgress callback, which is call during the parsing.
      * @param {function} onError - The onError callback, which is call when parser throw an error during parsing.
      */
+    // eslint-disable-next-line no-unused-vars
     _onText ( data, onSuccess, onProgress, onError ) {}
 
     // REST Api calls
@@ -1088,6 +1088,8 @@ class TDataBaseManager {
             } else {
 
                 datas[ 'onLoadCallback' ] = onLoadCallback
+                datas[ 'onProgressCallback' ] = onProgressCallback
+                datas[ 'onErrorCallback' ] = onErrorCallback
                 this._waitingQueue.push( datas )
 
             }
@@ -1095,6 +1097,8 @@ class TDataBaseManager {
         } else {
 
             datas[ 'onLoadCallback' ] = onLoadCallback
+            datas[ 'onProgressCallback' ] = onProgressCallback
+            datas[ 'onErrorCallback' ] = onErrorCallback
             this._waitingQueue.push( datas )
 
             try {
@@ -1141,6 +1145,8 @@ class TDataBaseManager {
             } else {
 
                 datas[ 'onLoadCallback' ] = onLoadCallback
+                datas[ 'onProgressCallback' ] = onProgressCallback
+                datas[ 'onErrorCallback' ] = onErrorCallback
                 this._waitingQueue.push( datas )
 
             }
@@ -1148,6 +1154,8 @@ class TDataBaseManager {
         } else {
 
             datas[ 'onLoadCallback' ] = onLoadCallback
+            datas[ 'onProgressCallback' ] = onProgressCallback
+            datas[ 'onErrorCallback' ] = onErrorCallback
             this._waitingQueue.push( datas )
 
             const datasToRequest = datas.toRequest
@@ -1188,12 +1196,12 @@ class TDataBaseManager {
         //        this._waitingQueue.push( datas )
 
         this._requestQueue.push( {
-            _id:          `readWhere_${Generate.id}`,
-            _timeStart:   new Date(),
-            _type:        RequestType.ReadWhere,
-            method:       HttpVerb.Read.value,
-            url:          this._basePath,
-            data:         {
+            _id:        `readWhere_${Generate.id}`,
+            _timeStart: new Date(),
+            _type:      RequestType.ReadWhere,
+            method:     HttpVerb.Read.value,
+            url:        this._basePath,
+            data:       {
                 query,
                 projection
             },
@@ -1221,12 +1229,12 @@ class TDataBaseManager {
         const query = {}
 
         this._requestQueue.push( {
-            _id:          `readAll_${Generate.id}`,
-            _timeStart:   new Date(),
-            _type:        RequestType.ReadAll,
-            method:       HttpVerb.Read.value,
-            url:          this._basePath,
-            data:         {
+            _id:        `readAll_${Generate.id}`,
+            _timeStart: new Date(),
+            _type:      RequestType.ReadAll,
+            method:     HttpVerb.Read.value,
+            url:        this._basePath,
+            data:       {
                 query,
                 projection
             },
@@ -1254,12 +1262,12 @@ class TDataBaseManager {
     _updateOne ( id, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:          `updateOne_${Generate.id}`,
-            _timeStart:   new Date(),
-            _type:        RequestType.UpdateOne,
-            method:       HttpVerb.Update.value,
-            url:          `${this._basePath}/${id}`,
-            data:         {
+            _id:        `updateOne_${Generate.id}`,
+            _timeStart: new Date(),
+            _type:      RequestType.UpdateOne,
+            method:     HttpVerb.Update.value,
+            url:        `${this._basePath}/${id}`,
+            data:       {
                 update
             },
             onLoad:       onLoadCallback,
@@ -1286,12 +1294,12 @@ class TDataBaseManager {
     _updateMany ( ids, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:          `updateMany_${Generate.id}`,
-            _timeStart:   new Date(),
-            _type:        RequestType.UpdateMany,
-            method:       HttpVerb.Update.value,
-            url:          this._basePath,
-            data:         {
+            _id:        `updateMany_${Generate.id}`,
+            _timeStart: new Date(),
+            _type:      RequestType.UpdateMany,
+            method:     HttpVerb.Update.value,
+            url:        this._basePath,
+            data:       {
                 ids,
                 update
             },
@@ -1308,12 +1316,12 @@ class TDataBaseManager {
     _updateWhere ( query, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:          `updateWhere_${Generate.id}`,
-            _timeStart:   new Date(),
-            _type:        RequestType.UpdateWhere,
-            method:       HttpVerb.Update.value,
-            url:          this._basePath,
-            data:         {
+            _id:        `updateWhere_${Generate.id}`,
+            _timeStart: new Date(),
+            _type:      RequestType.UpdateWhere,
+            method:     HttpVerb.Update.value,
+            url:        this._basePath,
+            data:       {
                 query,
                 update
             },
@@ -1332,12 +1340,12 @@ class TDataBaseManager {
         const query = {}
 
         this._requestQueue.push( {
-            _id:          `updateAll_${Generate.id}`,
-            _timeStart:   new Date(),
-            _type:        RequestType.UpdateAll,
-            method:       HttpVerb.Update.value,
-            url:          this._basePath,
-            data:         {
+            _id:        `updateAll_${Generate.id}`,
+            _timeStart: new Date(),
+            _type:      RequestType.UpdateAll,
+            method:     HttpVerb.Update.value,
+            url:        this._basePath,
+            data:       {
                 query,
                 update
             },
@@ -1395,12 +1403,12 @@ class TDataBaseManager {
     _deleteMany ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:          `deleteMany_${Generate.id}`,
-            _timeStart:   new Date(),
-            _type:        RequestType.DeleteMany,
-            method:       HttpVerb.Delete.value,
-            url:          this._basePath,
-            data:         {
+            _id:        `deleteMany_${Generate.id}`,
+            _timeStart: new Date(),
+            _type:      RequestType.DeleteMany,
+            method:     HttpVerb.Delete.value,
+            url:        this._basePath,
+            data:       {
                 ids
             },
             onLoad:       onLoadCallback,
@@ -1416,12 +1424,12 @@ class TDataBaseManager {
     _deleteWhere ( query, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:          `deleteWhere_${Generate.id}`,
-            _timeStart:   new Date(),
-            _type:        RequestType.DeleteWhere,
-            method:       HttpVerb.Delete.value,
-            url:          this._basePath,
-            data:         {
+            _id:        `deleteWhere_${Generate.id}`,
+            _timeStart: new Date(),
+            _type:      RequestType.DeleteWhere,
+            method:     HttpVerb.Delete.value,
+            url:        this._basePath,
+            data:       {
                 query
             },
             onLoad:       onLoadCallback,
@@ -1439,12 +1447,12 @@ class TDataBaseManager {
         const query = {}
 
         this._requestQueue.push( {
-            _id:          `deleteAll_${Generate.id}`,
-            _timeStart:   new Date(),
-            _type:        RequestType.DeleteAll,
-            method:       HttpVerb.Delete.value,
-            url:          this._basePath,
-            data:         {
+            _id:        `deleteAll_${Generate.id}`,
+            _timeStart: new Date(),
+            _type:      RequestType.DeleteAll,
+            method:     HttpVerb.Delete.value,
+            url:        this._basePath,
+            data:       {
                 query
             },
             onLoad:       onLoadCallback,
@@ -1477,7 +1485,7 @@ TDataBaseManager._requests = {
         update: {},
         delete: {}
     },
-    processed:    {
+    processed: {
         create: {},
         read:   {},
         update: {},

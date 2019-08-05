@@ -8,14 +8,14 @@
  *
  */
 
+import { toEnum } from 'itee-utils'
 import {
     isNotArrayBuffer,
     isNotBoolean,
     isNotNumber,
     isNull,
     isUndefined
-} from 'itee-validators'
-import { toEnum } from 'itee-utils'
+}                 from 'itee-validators'
 
 /* eslint-env browser */
 
@@ -91,23 +91,6 @@ class TBinaryReader {
 
     }
 
-    /**
-     *
-     * @param buffer
-     * @param offset
-     * @param length
-     * @return {this}
-     */
-    setBuffer ( buffer, offset, length ) {
-
-        this.buffer = buffer
-        this.offset = offset || 0
-        this.length = length || buffer.byteLength
-
-        return this
-
-    }
-
     get offset () {
         return this._offset
     }
@@ -124,13 +107,6 @@ class TBinaryReader {
         this._offset = value
 
         this._updateDataView()
-
-    }
-
-    setOffset( value ) {
-
-        this.offset = value
-        return this
 
     }
 
@@ -153,13 +129,6 @@ class TBinaryReader {
 
     }
 
-    setLength( value ) {
-
-        this.length = value
-        return this
-
-    }
-
     get endianness () {
         return this._endianness
     }
@@ -174,6 +143,37 @@ class TBinaryReader {
         if ( isNotBoolean( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
 
         this._endianness = value
+    }
+
+    /**
+     *
+     * @param buffer
+     * @param offset
+     * @param length
+     * @return {this}
+     */
+    setBuffer ( buffer, offset, length ) {
+
+        this.buffer = buffer
+        this.offset = offset || 0
+        this.length = length || buffer.byteLength
+
+        return this
+
+    }
+
+    setOffset ( value ) {
+
+        this.offset = value
+        return this
+
+    }
+
+    setLength ( value ) {
+
+        this.length = value
+        return this
+
     }
 
     /**

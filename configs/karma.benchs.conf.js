@@ -78,8 +78,8 @@ function CreateKarmaBenchmarkConfiguration ( config ) {
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-//        browsers: [ 'Firefox' ],
-                browsers: [ 'Chrome' ],
+        //        browsers: [ 'Firefox' ],
+        browsers: [ 'Chrome' ],
         //        browsers: [ 'Edge' ],
         //        browsers: [ 'Firefox', 'Chrome', 'Edge' ],
 

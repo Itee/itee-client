@@ -16,32 +16,32 @@
 function CreateJsdocConfiguration () {
 
     return {
-        "tags":         {
-            "allowUnknownTags": false,
-            "dictionaries":     [ "jsdoc", "closure" ]
+        'tags': {
+            'allowUnknownTags': false,
+            'dictionaries':     [ 'jsdoc', 'closure' ]
         },
-        "source":       {
-            "include":        [ "README.md" ],
-            "includePattern": "\.js$",
-            "excludePattern": "(node_modules|documentation|builds)"
+        'source': {
+            'include':        [ 'README.md' ],
+            'includePattern': '.js$',
+            'excludePattern': '(node_modules|documentation|builds)'
         },
-        "sourceType":   "module",
-        "plugins":      [],
-        "recurseDepth": 5,
-        "opts":         {
-            "template":    "node_modules/docdash/",
-            "encoding":    "utf8",
-            "destination": "./documentation/",
-            "recurse":     true,
-            "verbose":     true,
-            "private":     true,
-            "tutorials":   "tutorials/"
+        'sourceType':   'module',
+        'plugins':      [],
+        'recurseDepth': 5,
+        'opts':         {
+            'template':    'node_modules/docdash/',
+            'encoding':    'utf8',
+            'destination': './documentation/',
+            'recurse':     true,
+            'verbose':     true,
+            'private':     true,
+            'tutorials':   'tutorials/'
         },
-        "templates":    {
-            "cleverLinks":    false,
-            "monospaceLinks": false,
-            "default":        {
-                "includeDate": false
+        'templates': {
+            'cleverLinks':    false,
+            'monospaceLinks': false,
+            'default':        {
+                'includeDate': false
             }
         }
     }

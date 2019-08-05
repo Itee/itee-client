@@ -12,7 +12,7 @@
 
 class TMouseController {
 
-    constructor ( parameters = {} ) {
+    constructor ( /*parameters = {}*/ ) {
 
     }
 

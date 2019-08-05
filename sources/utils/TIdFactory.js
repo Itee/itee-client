@@ -29,15 +29,15 @@ import {
 //} )
 
 const TIdFactoryType = Object.freeze( Object.defineProperties( {}, {
-    Number:   {
+    Number: {
         value:      0,
         enumerable: true
     },
-    String:   {
+    String: {
         value:      1,
         enumerable: true
     },
-    Uuid:     {
+    Uuid: {
         value:      2,
         enumerable: true
     },
@@ -46,7 +46,7 @@ const TIdFactoryType = Object.freeze( Object.defineProperties( {}, {
             return Object.values( this ).includes( key )
         }
     },
-    types:    {
+    types: {
         value: function types () {
             return Object.keys( this )
         }
@@ -78,13 +78,6 @@ class TIdFactory {
         this._type = value
     }
 
-    setType ( value ) {
-
-        this.type = value
-        return this
-
-    }
-
     get base () {
         return this._base
     }
@@ -98,6 +91,13 @@ class TIdFactory {
         //        if( (this._type === TIdFactoryType.Uuid) && isNotUuid( value ) ) { throw new Error( 'Invalide Base ! It does not match the type.' ) }
 
         this._base = value
+    }
+
+    setType ( value ) {
+
+        this.type = value
+        return this
+
     }
 
     setBase ( value ) {
