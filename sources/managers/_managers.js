@@ -9,5 +9,3 @@
 /* eslint-env browser */
 
 export { TDataBaseManager } from './TDataBaseManager'
-
-export * from './databases/_databases'
