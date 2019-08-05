@@ -6,22 +6,8 @@
  *
  */
 
-/* eslint-env browser */
-
 export {
     TBinaryReader,
     Endianness,
     Byte
-}                           from './TBinaryReader'
-export { ASCLoader }        from './ASCLoader'
-export {
-    DBFLoader,
-    DataType
-}                           from './DBFLoader'
-export {
-    SHPLoader,
-    ShapeType
-}                           from './SHPLoader'
-//export { FBXLoader2 } from './FBXLoader2'
-export { RZMLLoader }       from './RZMLLoader'
-export { TUniversalLoader } from './TUniversalLoader'
+} from './TBinaryReader'
