@@ -53,7 +53,6 @@ import VueRouter from 'vue-router'
 export { VueRouter }
 
 // Export Itee stuff
-export * from './controllers/_controllers'
 export * from './cores/_cores'
 export * from './input_devices/_inputDevices'
 export * from './loaders/_loaders'
