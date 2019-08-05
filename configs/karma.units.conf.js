@@ -2,34 +2,31 @@
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  *
- * @module config/karmaBenchConfiguration
- *
- * @description The file manage the karma configuration for run benchmarks that are under `tests/benchmarks` folder
- *
+ * @module Config-Karma-Units
+ * @description The file manage the karma configuration for run units tests that are under `tests/units` folder
  */
 
-/* eslint-env node */
+const packageInfos = require( '../package' )
 
 /**
- * Will assign an appropriate configuration object for karma.
+ * Will assign an appropriate configuration object about unit tests for karma.
  *
+ * @generator
  * @param {object} config - The karma configuration object to extend
  */
-function CreateKarmaBenchmarkConfiguration ( config ) {
+function CreateKarmaUnitsConfiguration ( config ) {
 
     config.set( {
 
         // base path that will be used to resolve all patterns (eg. files, exclude)
-        basePath: '../',
+        basePath: '../tests/',
 
         // frameworks to use
         // available frameworks: https://npmjs.org/browse/keyword/karma-adapter
-        frameworks: [ 'benchmark' ],
+        frameworks: [ 'mocha', 'chai' ],
 
         // list of files / patterns to load in the browser
-        files: [
-            'tests/benchmarks/**/*.bench.js'
-        ],
+        files: [ `builds/${packageInfos.name}.units.js` ],
 
         // list of files to exclude
         exclude: [],
@@ -41,7 +38,19 @@ function CreateKarmaBenchmarkConfiguration ( config ) {
         // test results reporter to use
         // possible values: 'dots', 'progress'
         // available reporters: https://npmjs.org/browse/keyword/karma-reporter
-        reporters: [ 'progress' ],
+        reporters: [ 'mocha', 'html' ],
+
+        htmlReporter: {
+            outputFile: '../documentation/UnitTestsReport.html',
+
+            // Optional
+            pageTitle:       'Unit Tests',
+            subPageTitle:    'Result of unit testing for Itee-Utils library.',
+            groupSuites:     true,
+            useCompactStyle: false,
+            useLegacyStyle:  false,
+            showOnlyFailed:  false
+        },
 
         // web server port
         port: 9876,
@@ -58,8 +67,13 @@ function CreateKarmaBenchmarkConfiguration ( config ) {
 
         // start these browsers
         // available browser launchers: https://npmjs.org/browse/keyword/karma-launcher
-        browsers: [ 'Chrome' ],
-        //        browsers: ['Chrome', 'Firefox', 'Safari', 'IE'],
+//        browsers: [ 'Firefox' ],
+                browsers: [ 'Chrome' ],
+        //        browsers: [ 'Edge' ],
+        //        browsers: [ 'Firefox', 'Chrome', 'Edge' ],
+
+        // Format assertion errors and stack traces. Useful for removing vendors and compiled sources. Return an empty line '' to remove it.
+        formatError: () => '',
 
         // Continuous Integration mode
         // if true, Karma captures browsers, runs the tests and exits
@@ -67,13 +81,20 @@ function CreateKarmaBenchmarkConfiguration ( config ) {
 
         // Concurrency level
         // how many browser should be started simultaneous
-        concurrency: 1,
+        concurrency: 4,
+
+        // If, during test execution, Karma does not receive any message from a browser
+        browserNoActivityTimeout: 60000,
+        browserDisconnectTimeout: 60000,
 
         // If browser does not capture in given timeout [ms], kill it
-        captureTimeout: 60000
+        captureTimeout: 60000,
+
+        // How long will Karma wait for browser process to terminate before sending a SIGKILL signal.
+        processKillTimeout: 360000
 
     } )
 
 }
 
-module.exports = CreateKarmaBenchmarkConfiguration
+module.exports = CreateKarmaUnitsConfiguration
