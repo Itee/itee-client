@@ -15,6 +15,7 @@ import {
     isNull,
     isUndefined
 } from 'itee-validators'
+import { toEnum } from 'itee-utils'
 
 /* eslint-env browser */
 
@@ -22,7 +23,7 @@ import {
  *
  * @type {Object}
  */
-const Endianness = Object.freeze( {
+const Endianness = toEnum( {
     Little: true,
     Big:    false
 } )
@@ -31,7 +32,7 @@ const Endianness = Object.freeze( {
  *
  * @type {Object}
  */
-const Byte = Object.freeze( {
+const Byte = toEnum( {
     One:    1,
     Two:    2,
     Four:   4,
