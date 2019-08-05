@@ -54,6 +54,7 @@
     "bootstrap": "^4.3.1",
     "bootstrap-slider": "^10.6.1",
     "chai": "^4.2.0",
+    "cz-conventional-changelog": "^3.0.2",
     "del": "^5.0.0",
     "docdash": "^1.1.1",
     "eslint-plugin-vue": "^5.2.3",
@@ -90,5 +91,10 @@
     "rollup-plugin-strip": "^1.2.1",
     "rollup-plugin-uglify-es": "0.0.1",
     "three-full": "^17.1.0"
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
   }
 }
