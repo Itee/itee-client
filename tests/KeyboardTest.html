@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-		<title>Tests</title>
-	</head>
-	<body>
-		<script>
-            'use strict';
+    <head>
+        <meta charset="UTF-8">
+        <title>Tests</title>
+    </head>
+    <body>
+        <script>
+            'use strict'
 
             window.addEventListener( 'keydown', ( event ) => {
 
-                const key     = event.key;
-                const code    = event.code;
-                const keyCode = event.keyCode;
+                const key     = event.key
+                const code    = event.code
+                const keyCode = event.keyCode
 
                 if ( key !== 'Control' && event.ctrlKey ) {
                     console.log( `Combination of ctrlKey + Key: ${key} | Code: ${code} | keyCode: ${keyCode}` )
@@ -26,59 +26,59 @@
                     console.log( `Key: ${key} | Code: ${code} | keyCode: ${keyCode}` )
                 }
 
-//                event.preventDefault()
+                //                event.preventDefault()
 
-            }, false );
+            }, false )
 
-            document.addEventListener('keyup', (event) => {
-                const keyName = event.key;
+            document.addEventListener( 'keyup', ( event ) => {
+                const keyName = event.key
 
-                if (keyName === 'Control') {
-                    alert('Control key was released');
+                if ( keyName === 'Control' ) {
+                    alert( 'Control key was released' )
                 }
-            }, false);
+            }, false )
 
-            window.addEventListener("beforeunload", function (e) {
-                var confirmationMessage = "\o/ beforeunload ";
+            window.addEventListener( 'beforeunload', function ( e ) {
+                var confirmationMessage = '\o/ beforeunload ';
 
-                (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-                return confirmationMessage;                            //Webkit, Safari, Chrome
-            });
+                ( e || window.event ).returnValue = confirmationMessage //Gecko + IE
+                return confirmationMessage                            //Webkit, Safari, Chrome
+            } )
 
-            window.addEventListener("unload", function (e) {
-                var confirmationMessage = "\o/ unload";
+            window.addEventListener( 'unload', function ( e ) {
+                var confirmationMessage = '\o/ unload';
 
-                (e || window.event).returnValue = confirmationMessage; //Gecko + IE
-                return confirmationMessage;                            //Webkit, Safari, Chrome
-            });
+                ( e || window.event ).returnValue = confirmationMessage //Gecko + IE
+                return confirmationMessage                            //Webkit, Safari, Chrome
+            } )
 
             // Adapted slightly from Sam Dutton
             // Set name of hidden property and visibility change event
             // since some browsers only offer vendor-prefixed support
-            var hidden, state, visibilityChange;
-            if (typeof document.hidden !== "undefined") {
-                hidden = "hidden";
-                visibilityChange = "visibilitychange";
-                state = "visibilityState";
-            } else if (typeof document.mozHidden !== "undefined") {
-                hidden = "mozHidden";
-                visibilityChange = "mozvisibilitychange";
-                state = "mozVisibilityState";
-            } else if (typeof document.msHidden !== "undefined") {
-                hidden = "msHidden";
-                visibilityChange = "msvisibilitychange";
-                state = "msVisibilityState";
-            } else if (typeof document.webkitHidden !== "undefined") {
-                hidden = "webkitHidden";
-                visibilityChange = "webkitvisibilitychange";
-                state = "webkitVisibilityState";
+            var hidden, state, visibilityChange
+            if ( typeof document.hidden !== 'undefined' ) {
+                hidden           = 'hidden'
+                visibilityChange = 'visibilitychange'
+                state            = 'visibilityState'
+            } else if ( typeof document.mozHidden !== 'undefined' ) {
+                hidden           = 'mozHidden'
+                visibilityChange = 'mozvisibilitychange'
+                state            = 'mozVisibilityState'
+            } else if ( typeof document.msHidden !== 'undefined' ) {
+                hidden           = 'msHidden'
+                visibilityChange = 'msvisibilitychange'
+                state            = 'msVisibilityState'
+            } else if ( typeof document.webkitHidden !== 'undefined' ) {
+                hidden           = 'webkitHidden'
+                visibilityChange = 'webkitvisibilitychange'
+                state            = 'webkitVisibilityState'
             }
 
             // Add a listener that constantly changes the title
-            document.addEventListener(visibilityChange, function() {
-                document.title = document[state];
-            }, false);
+            document.addEventListener( visibilityChange, function () {
+                document.title = document[ state ]
+            }, false )
 
-		</script>
-	</body>
+        </script>
+    </body>
 </html>

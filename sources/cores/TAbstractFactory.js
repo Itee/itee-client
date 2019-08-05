@@ -8,9 +8,9 @@
  *
  */
 
-import { TAbstractFactory } from './TAbstractFactory'
+import { TStore } from './TStore'
 
-class TInstancingFactory extends TAbstractFactory {
+class TAbstractFactory extends TStore {
 
     constructor ( parameters = {} ) {
 
@@ -20,14 +20,13 @@ class TInstancingFactory extends TAbstractFactory {
 
     }
 
+    // eslint-disable-next-line no-unused-vars
     create ( key, ...parameters ) {
-        super.create( key, ...parameters )
 
-        return new this.get( key )( ...parameters )
+        // Need to be reimplemented
 
     }
 
 }
 
-export { TInstancingFactory }
-
+export { TAbstractFactory }

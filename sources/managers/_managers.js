@@ -9,7 +9,3 @@
 /* eslint-env browser */
 
 export { TDataBaseManager } from './TDataBaseManager'
-export { TErrorManager }    from './TErrorManager'
-export { TProgressManager } from './TProgressManager'
-
-export * from './databases/_databases'

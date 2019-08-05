@@ -10,16 +10,12 @@
 
 /* eslint-env browser */
 
-/**
- *
- * @constructor
- */
-function TMouseController () {
+class TMouseController {
+
+    constructor ( /*parameters = {}*/ ) {
+
+    }
 
 }
-
-Object.assign( TMouseController, {} )
-
-Object.assign( TMouseController.prototype, {} )
 
 export { TMouseController }

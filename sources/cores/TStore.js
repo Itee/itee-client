@@ -2,7 +2,7 @@
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  *
- * @class TErrorManager
+ * @class TCache
  * @classdesc TCache is a simple javascript object whose purpose is to store some ket/value data to future usage. It could be enable/disable.
  *
  * @example
@@ -11,12 +11,15 @@
  * TLogger.log( cache.get('foo') ) // 'bar'
  */
 
-/* eslint-env browser */
-
 import {
     isFunction,
+    isNotArray,
+    isNotBoolean,
+    isNotObject,
     isNotUndefined,
-    isString
+    isNull,
+    isString,
+    isUndefined
 } from 'itee-validators'
 
 /**
@@ -27,6 +30,7 @@ class TStore {
     static _validate ( value, validators ) {
 
         for ( let validatorIndex = 0, numberOfValidators = validators.length ; validatorIndex < numberOfValidators ; validatorIndex++ ) {
+
             let validator = validators[ validatorIndex ]
 
             if ( !validator.validator( value ) ) {
@@ -49,47 +53,157 @@ class TStore {
     /**
      * @constructor
      */
-    constructor ( collection = {}, allowOverride = false, keyValidators = [], itemValidators = [] ) {
+    constructor ( parameters = {} ) {
 
-        this._collection     = collection
-        this._allowOverride  = allowOverride
-        this._keyValidators  = keyValidators
-        this._itemValidators = itemValidators
+        const _parameters = {
+            ...{
+                collection:      {},
+                allowOverride:   false,
+                keyValidators:   [],
+                valueValidators: []
+            }, ...parameters
+        }
+
+        this.collection      = _parameters.collection
+        this.allowOverride   = _parameters.allowOverride
+        this.keyValidators   = _parameters.keyValidators
+        this.valueValidators = _parameters.valueValidators
+
+    }
+
+    get collection () {
+
+        return this._collection
+
+    }
+
+    set collection ( value ) {
+
+        const memberName = 'Collection'
+        const expect     = 'Expect an object.'
+
+        if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
+        if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
+        if ( isNotObject( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+
+        this._collection = value
+
+    }
+
+    get allowOverride () {
+
+        return this._allowOverride
+
+    }
+
+    set allowOverride ( value ) {
+
+        const memberName = 'Allow override'
+        const expect     = 'Expect a boolean.'
+
+        if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
+        if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
+        if ( isNotBoolean( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+
+        this._allowOverride = value
+
+    }
+
+    get keyValidators () {
+
+        return this._keyValidators
+
+    }
+
+    set keyValidators ( value ) {
+
+        const memberName = 'Keys validators'
+        const expect     = 'Expect an array of TValidator or an empty array.'
+
+        if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
+        if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
+        if ( isNotArray( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+
+        this._keyValidators = value
+
+    }
+
+    get valueValidators () {
+        return this._valueValidators
+    }
+
+    set valueValidators ( value ) {
+
+        const memberName = 'Values validators'
+        const expect     = 'Expect an array of TValidator or an empty array.'
+
+        if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
+        if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
+        if ( isNotArray( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+
+        this._valueValidators = value
 
     }
 
     get keys () {
 
-        const keys       = []
-        const collection = this._collection
+        return Object.keys( this._collection )
 
-        for ( let key in collection ) {
-            if ( !collection.hasOwnProperty( key ) ) {
-                continue
-            }
-            keys.push( key )
-        }
+    }
 
-        return keys
+    get values () {
+
+        return Object.values( this._collection )
+
+    }
+
+    setCollection ( value ) {
+
+        this.collection = value
+        return this
+
+    }
+
+    setAllowOverride ( value ) {
+
+        this.allowOverride = value
+        return this
+
+    }
+
+    setKeyValidators ( value ) {
+
+        this.keyValidators( value )
+        return this
+
+    }
+
+    setValueValidators ( value ) {
+
+        this.valueValidators( value )
+        return this
 
     }
 
     /**
      * Allow to add new key value pair, the key cannot be null, undefined, or an empty string.
-     * In case the key already exist, the value will be overwritten.
+     * In case the key already exist, the value will be overwritten if force params is true or this
+     * allow overriding else it throw an TypeError.
      *
      * @param key
-     * @param item
+     * @param value
+     * @param force
      */
-    add ( key, item, force = false ) {
+    add ( key, value, force = false ) {
 
         if ( this.contain( key ) && ( !this._allowOverride && !force ) ) {
             throw new TypeError( `Item with key (${key}) already exist in collection !` )
         }
 
         TStore._validate( key, this._keyValidators )
-        TStore._validate( item, this._itemValidators )
-        this._collection[ key ] = item
+        TStore._validate( value, this._valueValidators )
+
+        this._collection[ key ] = value
 
         return this
 

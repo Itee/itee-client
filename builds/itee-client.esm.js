@@ -1,10 +1,6 @@
-console.log('Itee.Client v6.6.6 - CommonJs')
-'use strict';
-
-Object.defineProperty(exports, '__esModule', { value: true });
-
-var iteeUtils = require('itee-utils');
-var iteeValidators = require('itee-validators');
+console.log('Itee.Client v6.6.6 - EsModule')
+import { toEnum } from 'itee-utils';
+import { isString, isFunction, isNull, isUndefined, isNotObject, isNotBoolean, isNotArray, isNotUndefined, isObject, isArrayOfString, isArrayOfObject, isNotArrayBuffer, isNotNumber, isNotString, isEmptyString, isBlankString, isNumberPositive, isNumberNegative, isZero, isArray, isNotEmptyArray, isArrayOfSingleElement, isNotEmptyObject, isNotEmptyString, isNotBlankString, isEmptyObject, isNotDefined, isDefined } from 'itee-validators';
 
 /**
  * @author [Tristan Valcke]{@link https://github.com/Itee}
@@ -20,7 +16,7 @@ var iteeValidators = require('itee-validators');
  * The FileFormat Enum give some commonly used file format in 3d context
  * @type {Enum}
  */
-const FileFormat = iteeUtils.toEnum( {
+const FileFormat = toEnum( {
     Asc:  { value: 'asc' },
     Dae:  { value: 'dae' },
     Dbf:  { value: 'dbf' },
@@ -124,7 +120,7 @@ const FileFormat = iteeUtils.toEnum( {
  * @description HttpStatusCode contains all http status code available to check and process correctly server response.
  * @see {@link https://en.wikipedia.org/wiki/List_of_HTTP_status_codes} for further information.
  */
-const HttpStatusCode = iteeUtils.toEnum( {
+const HttpStatusCode = toEnum( {
 
     // 100
     Continue:           { value: 100 },
@@ -229,7 +225,7 @@ const HttpStatusCode = iteeUtils.toEnum( {
  * @description HttpVerb contains the CRUD actions with corresponding http verb to request an itee server.
  * @see {@link https://en.wikipedia.org/wiki/Create,_read,_update_and_delete} for further information.
  */
-const HttpVerb = iteeUtils.toEnum( {
+const HttpVerb = toEnum( {
     Create: { value: 'PUT' },
     Read:   { value: 'POST' },
     Update: { value: 'PATCH' },
@@ -240,7 +236,7 @@ const HttpVerb = iteeUtils.toEnum( {
  * The Keys Enum give the associated key_code
  * @type {Enum}
  */
-const Keys = iteeUtils.toEnum( {
+const Keys = toEnum( {
     BACKSPACE:            { value: 8 },
     TAB:                  { value: 9 },
     ENTER:                { value: 13 },
@@ -343,14 +339,14 @@ const Keys = iteeUtils.toEnum( {
 } );
 
 // Todo
-const MimeType = iteeUtils.toEnum( {} );
+const MimeType = toEnum( {} );
 
 /**
  * This Enum expose 4 common state of mouse button.
  * Wheel, Left, Middle and Right
  * @type {Enum}
  */
-const Mouse = iteeUtils.toEnum( {
+const Mouse = toEnum( {
     WHEEL:  { value: -1 },
     LEFT:   { value: 0 },
     MIDDLE: { value: 1 },
@@ -371,7 +367,7 @@ const Mouse = iteeUtils.toEnum( {
  * @description ResponseType allow to filter wich type of response is recieved from the server.
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType} for further information.
  */
-const ResponseType = iteeUtils.toEnum( {
+const ResponseType = toEnum( {
     ArrayBuffer: { value: 'arraybuffer' },
     Blob:        { value: 'blob' },
     Document:    { value: 'document' },
@@ -407,9 +403,9 @@ class TStore {
             if ( !validator.validator( value ) ) {
 
                 const error = validator.error;
-                if ( iteeValidators.isString( error ) ) {
+                if ( isString( error ) ) {
                     throw new TypeError( error )
-                } else if ( iteeValidators.isFunction( error ) ) {
+                } else if ( isFunction( error ) ) {
                     throw new TypeError( error( value ) )
                 } else {
                     throw new TypeError( `${value} is invalid.` )
@@ -453,9 +449,9 @@ class TStore {
         const memberName = 'Collection';
         const expect     = 'Expect an object.';
 
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( iteeValidators.isNotObject( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
+        if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
+        if ( isNotObject( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
 
         this._collection = value;
 
@@ -472,9 +468,9 @@ class TStore {
         const memberName = 'Allow override';
         const expect     = 'Expect a boolean.';
 
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( iteeValidators.isNotBoolean( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
+        if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
+        if ( isNotBoolean( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
 
         this._allowOverride = value;
 
@@ -491,9 +487,9 @@ class TStore {
         const memberName = 'Keys validators';
         const expect     = 'Expect an array of TValidator or an empty array.';
 
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( iteeValidators.isNotArray( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
+        if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
+        if ( isNotArray( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
 
         this._keyValidators = value;
 
@@ -508,9 +504,9 @@ class TStore {
         const memberName = 'Values validators';
         const expect     = 'Expect an array of TValidator or an empty array.';
 
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( iteeValidators.isNotArray( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
+        if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
+        if ( isNotArray( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
 
         this._valueValidators = value;
 
@@ -582,7 +578,7 @@ class TStore {
 
     contain ( key ) {
 
-        return iteeValidators.isNotUndefined( this._collection[ key ] )
+        return isNotUndefined( this._collection[ key ] )
 
     }
 
@@ -724,7 +720,7 @@ class TInstancingFactory extends TAbstractFactory {
  *
  * @type {Object}
  */
-const LogOutput = iteeUtils.toEnum( {
+const LogOutput = toEnum( {
     Console:  1,
     Html:     2,
     Toast:    4,
@@ -733,7 +729,7 @@ const LogOutput = iteeUtils.toEnum( {
     All:      255
 } );
 
-const LogType = iteeUtils.toEnum( {
+const LogType = toEnum( {
     Message:  0,
     Progress: 1,
     Time:     2
@@ -743,7 +739,7 @@ const LogType = iteeUtils.toEnum( {
  *
  * @type {Object}
  */
-const LogLevel = iteeUtils.toEnum( {
+const LogLevel = toEnum( {
     None:    0,
     Debug:   1,
     Info:    2,
@@ -825,8 +821,8 @@ class TLogger {
         const memberName = 'OutputLevel';
         const expect     = 'Expect a value from LogLevel enum.';
 
-        if ( iteeValidators.isNull( value ) ) { throw new Error( `${memberName} cannot be null ! ${expect}` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new Error( `${memberName} cannot be undefined ! ${expect}` ) }
+        if ( isNull( value ) ) { throw new Error( `${memberName} cannot be null ! ${expect}` ) }
+        if ( isUndefined( value ) ) { throw new Error( `${memberName} cannot be undefined ! ${expect}` ) }
         //        if ( !Object.keys( LogLevel ).includes( value ) ) { throw new Error( `${memberName} cannot be an instance of ${value.constructor.name}. ${expect}` ) }
 
         this._outputLevel = value;
@@ -842,8 +838,8 @@ class TLogger {
         const memberName = 'Output';
         const expect     = 'Expect a value from LogOutput enum.';
 
-        if ( iteeValidators.isNull( value ) ) { throw new Error( `${memberName} cannot be null ! ${expect}` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new Error( `${memberName} cannot be undefined ! ${expect}` ) }
+        if ( isNull( value ) ) { throw new Error( `${memberName} cannot be null ! ${expect}` ) }
+        if ( isUndefined( value ) ) { throw new Error( `${memberName} cannot be undefined ! ${expect}` ) }
         //        if ( !Object.keys( LogOutput ).includes( value ) ) { throw new Error( `${memberName} cannot be an instance of ${value.constructor.name}. ${expect}` ) }
 
         this._outputs = value;
@@ -862,19 +858,19 @@ class TLogger {
         const levelString = TLogger._levelToString( level );
         const tmpLevel    = `${levelString}_${this._counterTrace}`;
 
-        if ( iteeValidators.isString( datas ) ) {
+        if ( isString( datas ) ) {
 
             this._logsArray[ tmpLevel ] = datas;
 
-        } else if ( iteeValidators.isObject( datas ) ) {
+        } else if ( isObject( datas ) ) {
 
             this._logsArray[ tmpLevel ] = TLogger._formatObjectError( datas );
 
-        } else if ( iteeValidators.isArrayOfString( datas ) ) {
+        } else if ( isArrayOfString( datas ) ) {
 
             this._logsArray[ tmpLevel ] = datas.toString();
 
-        } else if ( iteeValidators.isArrayOfObject( datas ) ) {
+        } else if ( isArrayOfObject( datas ) ) {
 
             this._logsArray[ tmpLevel ] = '';
 
@@ -1442,7 +1438,7 @@ class TMouseController {
  *
  * @type {Object}
  */
-const Endianness = iteeUtils.toEnum( {
+const Endianness = toEnum( {
     Little: true,
     Big:    false
 } );
@@ -1451,7 +1447,7 @@ const Endianness = iteeUtils.toEnum( {
  *
  * @type {Object}
  */
-const Byte = iteeUtils.toEnum( {
+const Byte = toEnum( {
     One:    1,
     Two:    2,
     Four:   4,
@@ -1498,9 +1494,9 @@ class TBinaryReader {
         const memberName = 'Buffer';
         const expect     = 'Expect an instance of ArrayBuffer.';
 
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( iteeValidators.isNotArrayBuffer ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
+        if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
+        if ( isNotArrayBuffer ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
 
         this._buffer = value;
         this._offset = 0;
@@ -1519,9 +1515,9 @@ class TBinaryReader {
         const memberName = 'Offset';
         const expect     = 'Expect a number.';
 
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( iteeValidators.isNotNumber( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
+        if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
+        if ( isNotNumber( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
 
         this._offset = value;
 
@@ -1538,9 +1534,9 @@ class TBinaryReader {
         const memberName = 'Length';
         const expect     = 'Expect a number.';
 
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( iteeValidators.isNotNumber( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
+        if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
+        if ( isNotNumber( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
 
         this._length = value;
 
@@ -1557,9 +1553,9 @@ class TBinaryReader {
         const memberName = 'Endianness';
         const expect     = 'Expect a boolean.';
 
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( iteeValidators.isNotBoolean( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
+        if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
+        if ( isNotBoolean( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
 
         this._endianness = value;
     }
@@ -2052,7 +2048,7 @@ class IdGenerator {
 
 const Generate = new IdGenerator();
 
-const RequestType = iteeUtils.toEnum( {
+const RequestType = toEnum( {
     CreateOne:   0,
     CreateMany:  1,
     ReadOne:     2,
@@ -2117,11 +2113,11 @@ class TDataBaseManager {
 
     set basePath ( value ) {
 
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( 'Base path cannot be null ! Expect a non empty string.' ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( 'Base path cannot be undefined ! Expect a non empty string.' ) }
-        if ( iteeValidators.isNotString( value ) ) { throw new TypeError( `Base path cannot be an instance of ${value.constructor.name} ! Expect a non empty string.` ) }
-        if ( iteeValidators.isEmptyString( value ) ) { throw new TypeError( 'Base path cannot be empty ! Expect a non empty string.' ) }
-        if ( iteeValidators.isBlankString( value ) ) { throw new TypeError( 'Base path cannot contain only whitespace ! Expect a non empty string.' ) }
+        if ( isNull( value ) ) { throw new TypeError( 'Base path cannot be null ! Expect a non empty string.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Base path cannot be undefined ! Expect a non empty string.' ) }
+        if ( isNotString( value ) ) { throw new TypeError( `Base path cannot be an instance of ${value.constructor.name} ! Expect a non empty string.` ) }
+        if ( isEmptyString( value ) ) { throw new TypeError( 'Base path cannot be empty ! Expect a non empty string.' ) }
+        if ( isBlankString( value ) ) { throw new TypeError( 'Base path cannot contain only whitespace ! Expect a non empty string.' ) }
 
         this._basePath = value;
 
@@ -2133,9 +2129,9 @@ class TDataBaseManager {
 
     set responseType ( value ) {
 
-        if ( iteeValidators.isNull( value ) ) { throw new Error( 'TDataBaseManager: responseType cannot be null !' ) }
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( 'Response type cannot be null ! Expect a non empty string.' ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( 'Response type cannot be undefined ! Expect a non empty string.' ) }
+        if ( isNull( value ) ) { throw new Error( 'TDataBaseManager: responseType cannot be null !' ) }
+        if ( isNull( value ) ) { throw new TypeError( 'Response type cannot be null ! Expect a non empty string.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Response type cannot be undefined ! Expect a non empty string.' ) }
         if ( !( value instanceof ResponseType ) ) { throw new TypeError( `Response type cannot be an instance of ${value.constructor.name} ! Expect a value from ResponseType enum.` ) }
 
         this._responseType = value;
@@ -2148,10 +2144,10 @@ class TDataBaseManager {
 
     set bunchSize ( value ) {
 
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( 'Bunch size cannot be null ! Expect a positive number.' ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( 'Bunch size cannot be undefined ! Expect a positive number.' ) }
-        if ( iteeValidators.isNotNumber( value ) ) { throw new TypeError( `Bunch size cannot be an instance of ${value.constructor.name} ! Expect a positive number.` ) }
-        if ( !iteeValidators.isNumberPositive( value ) ) { throw new TypeError( `Bunch size cannot be lower or equal to zero ! Expect a positive number.` ) }
+        if ( isNull( value ) ) { throw new TypeError( 'Bunch size cannot be null ! Expect a positive number.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Bunch size cannot be undefined ! Expect a positive number.' ) }
+        if ( isNotNumber( value ) ) { throw new TypeError( `Bunch size cannot be an instance of ${value.constructor.name} ! Expect a positive number.` ) }
+        if ( !isNumberPositive( value ) ) { throw new TypeError( `Bunch size cannot be lower or equal to zero ! Expect a positive number.` ) }
 
         this._bunchSize = value;
 
@@ -2163,19 +2159,19 @@ class TDataBaseManager {
 
     set requestAggregationTime ( value ) {
 
-        if ( iteeValidators.isNull( value ) ) {
+        if ( isNull( value ) ) {
             throw new TypeError( 'Requests aggregation time cannot be null ! Expect a positive number.' )
         }
 
-        if ( iteeValidators.isUndefined( value ) ) {
+        if ( isUndefined( value ) ) {
             throw new TypeError( 'Requests aggregation time cannot be undefined ! Expect a positive number.' )
         }
 
-        if ( iteeValidators.isNotNumber( value ) ) {
+        if ( isNotNumber( value ) ) {
             throw new TypeError( `Requests aggregation time cannot be an instance of ${value.constructor.name} ! Expect a positive number.` )
         }
 
-        if ( iteeValidators.isNumberNegative( value ) ) {
+        if ( isNumberNegative( value ) ) {
             throw new TypeError( 'Requests aggregation time cannot be lower or equal to zero ! Expect a positive number.' )
         }
 
@@ -2189,19 +2185,19 @@ class TDataBaseManager {
 
     set requestsConcurrency ( value ) {
 
-        if ( iteeValidators.isNull( value ) ) {
+        if ( isNull( value ) ) {
             throw new TypeError( 'Minimum of simultaneous request cannot be null ! Expect a positive number.' )
         }
 
-        if ( iteeValidators.isUndefined( value ) ) {
+        if ( isUndefined( value ) ) {
             throw new TypeError( 'Minimum of simultaneous request cannot be undefined ! Expect a positive number.' )
         }
 
-        if ( iteeValidators.isNotNumber( value ) ) {
+        if ( isNotNumber( value ) ) {
             throw new TypeError( `Minimum of simultaneous request cannot be an instance of ${value.constructor.name} ! Expect a positive number.` )
         }
 
-        if ( iteeValidators.isZero( value ) || iteeValidators.isNumberNegative( value ) ) {
+        if ( isZero( value ) || isNumberNegative( value ) ) {
             throw new TypeError( 'Minimum of simultaneous request cannot be lower or equal to zero ! Expect a positive number.' )
         }
 
@@ -2215,8 +2211,8 @@ class TDataBaseManager {
 
     set logger ( value ) {
 
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( 'Progress manager cannot be null ! Expect an instance of TProgressManager.' ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( 'Progress manager cannot be undefined ! Expect an instance of TProgressManager.' ) }
+        if ( isNull( value ) ) { throw new TypeError( 'Progress manager cannot be null ! Expect an instance of TProgressManager.' ) }
+        if ( isUndefined( value ) ) { throw new TypeError( 'Progress manager cannot be undefined ! Expect an instance of TProgressManager.' ) }
         if ( !( value instanceof TLogger ) ) { throw new TypeError( `Progress manager cannot be an instance of ${value.constructor.name} ! Expect an instance of TProgressManager.` ) }
 
         this._logger = value;
@@ -2358,9 +2354,9 @@ class TDataBaseManager {
      */
     create ( data, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        if ( iteeValidators.isArray( data ) && iteeValidators.isNotEmptyArray( data ) ) {
+        if ( isArray( data ) && isNotEmptyArray( data ) ) {
 
-            if ( iteeValidators.isArrayOfSingleElement( data ) ) {
+            if ( isArrayOfSingleElement( data ) ) {
 
                 this._createOne( data[ 0 ], onLoadCallback, onProgressCallback, onErrorCallback );
 
@@ -2370,7 +2366,7 @@ class TDataBaseManager {
 
             }
 
-        } else if ( iteeValidators.isObject( data ) && iteeValidators.isNotEmptyObject( data ) ) {
+        } else if ( isObject( data ) && isNotEmptyObject( data ) ) {
 
             this._createOne( data, onLoadCallback, onProgressCallback, onErrorCallback );
 
@@ -2394,13 +2390,13 @@ class TDataBaseManager {
      */
     read ( condition, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        if ( iteeValidators.isString( condition ) && iteeValidators.isNotEmptyString( condition ) && iteeValidators.isNotBlankString( condition ) ) {
+        if ( isString( condition ) && isNotEmptyString( condition ) && isNotBlankString( condition ) ) {
 
             this._readOne( condition, projection, onLoadCallback, onProgressCallback, onErrorCallback );
 
-        } else if ( iteeValidators.isArray( condition ) && iteeValidators.isNotEmptyArray( condition ) ) {
+        } else if ( isArray( condition ) && isNotEmptyArray( condition ) ) {
 
-            if ( iteeValidators.isArrayOfSingleElement( condition ) ) {
+            if ( isArrayOfSingleElement( condition ) ) {
 
                 this._readOne( condition[ 0 ], projection, onLoadCallback, onProgressCallback, onErrorCallback );
 
@@ -2410,9 +2406,9 @@ class TDataBaseManager {
 
             }
 
-        } else if ( iteeValidators.isObject( condition ) ) {
+        } else if ( isObject( condition ) ) {
 
-            if ( iteeValidators.isEmptyObject( condition ) ) {
+            if ( isEmptyObject( condition ) ) {
 
                 this._readAll( projection, onLoadCallback, onProgressCallback, onErrorCallback );
 
@@ -2443,23 +2439,23 @@ class TDataBaseManager {
      */
     update ( condition, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        if ( iteeValidators.isNotDefined( update ) ) {
+        if ( isNotDefined( update ) ) {
             onErrorCallback( 'TDataBaseManager.update: Update data cannot be null or undefined !' );
             return
         }
 
-        if ( iteeValidators.isNotObject( update ) ) {
+        if ( isNotObject( update ) ) {
             onErrorCallback( 'TDataBaseManager.update: Invalid update data type. Expect an object.' );
             return
         }
 
-        if ( iteeValidators.isString( condition ) && iteeValidators.isNotEmptyString( condition ) && iteeValidators.isNotBlankString( condition ) ) {
+        if ( isString( condition ) && isNotEmptyString( condition ) && isNotBlankString( condition ) ) {
 
             this._updateOne( condition, update, onLoadCallback, onProgressCallback, onErrorCallback );
 
-        } else if ( iteeValidators.isArray( condition ) && iteeValidators.isNotEmptyArray( condition ) ) {
+        } else if ( isArray( condition ) && isNotEmptyArray( condition ) ) {
 
-            if ( iteeValidators.isArrayOfSingleElement( condition ) ) {
+            if ( isArrayOfSingleElement( condition ) ) {
 
                 this._updateOne( condition[ 0 ], update, onLoadCallback, onProgressCallback, onErrorCallback );
 
@@ -2469,9 +2465,9 @@ class TDataBaseManager {
 
             }
 
-        } else if ( iteeValidators.isObject( condition ) ) {
+        } else if ( isObject( condition ) ) {
 
-            if ( iteeValidators.isEmptyObject( condition ) ) {
+            if ( isEmptyObject( condition ) ) {
 
                 this._updateAll( update, onLoadCallback, onProgressCallback, onErrorCallback );
 
@@ -2501,13 +2497,13 @@ class TDataBaseManager {
      */
     delete ( condition, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
-        if ( iteeValidators.isString( condition ) && iteeValidators.isNotEmptyString( condition ) && iteeValidators.isNotBlankString( condition ) ) {
+        if ( isString( condition ) && isNotEmptyString( condition ) && isNotBlankString( condition ) ) {
 
             this._deleteOne( condition, onLoadCallback, onProgressCallback, onErrorCallback );
 
-        } else if ( iteeValidators.isArray( condition ) && iteeValidators.isNotEmptyArray( condition ) ) {
+        } else if ( isArray( condition ) && isNotEmptyArray( condition ) ) {
 
-            if ( iteeValidators.isArrayOfSingleElement( condition ) ) {
+            if ( isArrayOfSingleElement( condition ) ) {
 
                 this._deleteOne( condition[ 0 ], onLoadCallback, onProgressCallback, onErrorCallback );
 
@@ -2517,9 +2513,9 @@ class TDataBaseManager {
 
             }
 
-        } else if ( iteeValidators.isObject( condition ) ) {
+        } else if ( isObject( condition ) ) {
 
-            if ( iteeValidators.isEmptyObject( condition ) ) {
+            if ( isEmptyObject( condition ) ) {
 
                 this._deleteAll( onLoadCallback, onProgressCallback, onErrorCallback );
 
@@ -2668,11 +2664,11 @@ class TDataBaseManager {
      */
     _onProgress ( onProgressCallback, progressEvent ) {
 
-        if ( iteeValidators.isDefined( this.logger ) ) {
+        if ( isDefined( this.logger ) ) {
 
             this.logger.progress( progressEvent, onProgressCallback );
 
-        } else if ( iteeValidators.isDefined( onProgressCallback ) ) {
+        } else if ( isDefined( onProgressCallback ) ) {
 
             onProgressCallback( progressEvent );
 
@@ -2693,11 +2689,11 @@ class TDataBaseManager {
 
         this._closeRequest( request );
 
-        if ( iteeValidators.isDefined( this.logger ) ) {
+        if ( isDefined( this.logger ) ) {
 
             this.logger.error( errorEvent, onErrorCallback );
 
-        } else if ( iteeValidators.isDefined( onErrorCallback ) ) {
+        } else if ( isDefined( onErrorCallback ) ) {
 
             onErrorCallback( errorEvent );
 
@@ -2834,9 +2830,9 @@ class TDataBaseManager {
             const id          = ids[ idIndex ];
             const cachedValue = this._cache.get( id );
 
-            if ( iteeValidators.isDefined( cachedValue ) ) {
+            if ( isDefined( cachedValue ) ) {
                 results[ id ] = cachedValue;
-            } else if ( iteeValidators.isNull( cachedValue ) ) { // In request
+            } else if ( isNull( cachedValue ) ) { // In request
                 underRequest.push( id );
             } else {
                 toRequest.push( id );
@@ -2854,11 +2850,11 @@ class TDataBaseManager {
 
     _updateCache ( datas ) {
 
-        if ( iteeValidators.isNull( datas ) ) { throw new TypeError( 'Data cannot be null ! Expect an array of object.' ) }
-        if ( iteeValidators.isUndefined( datas ) ) { throw new TypeError( 'Data cannot be undefined ! Expect an array of object.' ) }
+        if ( isNull( datas ) ) { throw new TypeError( 'Data cannot be null ! Expect an array of object.' ) }
+        if ( isUndefined( datas ) ) { throw new TypeError( 'Data cannot be undefined ! Expect an array of object.' ) }
 
         let _datas = {};
-        if ( iteeValidators.isArray( datas ) ) {
+        if ( isArray( datas ) ) {
 
             for ( let key in datas ) {
                 _datas[ datas[ key ]._id ] = datas[ key ];
@@ -2874,9 +2870,9 @@ class TDataBaseManager {
 
             const cachedResult = this._cache.get( id );
 
-            if ( iteeValidators.isNull( cachedResult ) ) {
+            if ( isNull( cachedResult ) ) {
                 this._cache.add( id, data, true );
-            } else if ( iteeValidators.isUndefined( cachedResult ) ) {
+            } else if ( isUndefined( cachedResult ) ) {
                 this.logger.warn( 'Cache was not pre-allocated with null value.' );
                 this._cache.add( id, data );
             } else {
@@ -2901,7 +2897,7 @@ class TDataBaseManager {
                 const id           = demand.underRequest[ dataIndex ];
                 const cachedResult = this._cache.get( id );
 
-                if ( iteeValidators.isNotDefined( cachedResult ) ) { continue }
+                if ( isNotDefined( cachedResult ) ) { continue }
 
                 // Assign the cached value
                 demand.results[ id ] = cachedResult;
@@ -3540,8 +3536,8 @@ class TIdFactory {
 
     set type ( value ) {
 
-        if ( iteeValidators.isNull( value ) ) { throw new Error( `Type cannot be null ! Expect an value from TIdFactoryType enum: ${TIdFactoryType.types()}` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new Error( `Type cannot be undefined ! Expect an value from TIdFactoryType enum: ${TIdFactoryType.types()}` ) }
+        if ( isNull( value ) ) { throw new Error( `Type cannot be null ! Expect an value from TIdFactoryType enum: ${TIdFactoryType.types()}` ) }
+        if ( isUndefined( value ) ) { throw new Error( `Type cannot be undefined ! Expect an value from TIdFactoryType enum: ${TIdFactoryType.types()}` ) }
         if ( !TIdFactoryType.includes( value ) ) { throw new Error( `Invalide type ! Expect an value from TIdFactoryType enum: ${TIdFactoryType.types()}` ) }
 
         this._type = value;
@@ -3553,10 +3549,10 @@ class TIdFactory {
 
     set base ( value ) {
 
-        if ( iteeValidators.isUndefined( value ) ) { throw new Error( 'Base cannot be undefined ! Expect an instance of Object3D.' ) }
+        if ( isUndefined( value ) ) { throw new Error( 'Base cannot be undefined ! Expect an instance of Object3D.' ) }
 
-        if ( ( this._type === TIdFactoryType.Number ) && iteeValidators.isNotNumber( value ) ) { throw new Error( 'Invalide Base ! It does not match the type.' ) }
-        if ( ( this._type === TIdFactoryType.String ) && iteeValidators.isNotString( value ) ) { throw new Error( 'Invalide Base ! It does not match the type.' ) }
+        if ( ( this._type === TIdFactoryType.Number ) && isNotNumber( value ) ) { throw new Error( 'Invalide Base ! It does not match the type.' ) }
+        if ( ( this._type === TIdFactoryType.String ) && isNotString( value ) ) { throw new Error( 'Invalide Base ! It does not match the type.' ) }
         //        if( (this._type === TIdFactoryType.Uuid) && isNotUuid( value ) ) { throw new Error( 'Invalide Base ! It does not match the type.' ) }
 
         this._base = value;
@@ -3582,25 +3578,5 @@ class TIdFactory {
 
 }
 
-exports.Byte = Byte;
-exports.DefaultLogger = DefaultLogger;
-exports.Endianness = Endianness;
-exports.FileFormat = FileFormat;
-exports.HttpStatusCode = HttpStatusCode;
-exports.HttpVerb = HttpVerb;
-exports.Keys = Keys;
-exports.MimeType = MimeType;
-exports.Mouse = Mouse;
-exports.ResponseType = ResponseType;
-exports.TAbstractFactory = TAbstractFactory;
-exports.TBinaryReader = TBinaryReader;
-exports.TCloningFactory = TCloningFactory;
-exports.TDataBaseManager = TDataBaseManager;
-exports.TIdFactory = TIdFactory;
-exports.TIdFactoryType = TIdFactoryType;
-exports.TInstancingFactory = TInstancingFactory;
-exports.TKeyboardController = TKeyboardController;
-exports.TLogger = TLogger;
-exports.TMouseController = TMouseController;
-exports.TStore = TStore;
-//# sourceMappingURL=itee-client.cjs.js.map
+export { Byte, DefaultLogger, Endianness, FileFormat, HttpStatusCode, HttpVerb, Keys, MimeType, Mouse, ResponseType, TAbstractFactory, TBinaryReader, TCloningFactory, TDataBaseManager, TIdFactory, TIdFactoryType, TInstancingFactory, TKeyboardController, TLogger, TMouseController, TStore };
+//# sourceMappingURL=itee-client.esm.js.map
