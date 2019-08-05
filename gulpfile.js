@@ -38,26 +38,27 @@
 
 const packageInfos = require( './package.json' )
 const gulp         = require( 'gulp' )
-const util         = require( 'gulp-util' )
+//const util         = require( 'gulp-util' )
 const jsdoc        = require( 'gulp-jsdoc3' )
 const eslint       = require( 'gulp-eslint' )
-const gulpif       = require( 'gulp-if' )
-const less         = require( 'gulp-less' )
-const sass         = require( 'gulp-sass' )
-const cleanCss     = require( 'gulp-clean-css' )
-const concat       = require( 'gulp-concat' )
-const del          = require( 'del' )
-const rollup       = require( 'rollup' )
-const path         = require( 'path' )
-const karma        = require( 'karma' )
-const log          = require( 'fancy-log' )
-const colors       = require( 'ansi-colors' )
-const red          = colors.red
-const green        = colors.green
-const blue         = colors.blue
-const cyan         = colors.cyan
-const yellow       = colors.yellow
-const magenta      = colors.magenta
+//const gulpif       = require( 'gulp-if' )
+//const less         = require( 'gulp-less' )
+//const sass         = require( 'gulp-sass' )
+//const cleanCss     = require( 'gulp-clean-css' )
+//const concat       = require( 'gulp-concat' )
+const del       = require( 'del' )
+const rollup    = require( 'rollup' )
+const path      = require( 'path' )
+const karma     = require( 'karma' )
+const parseArgs = require( 'minimist' )
+const log       = require( 'fancy-log' )
+const colors    = require( 'ansi-colors' )
+const red       = colors.red
+const green     = colors.green
+const blue      = colors.blue
+const cyan      = colors.cyan
+const yellow    = colors.yellow
+const magenta   = colors.magenta
 
 /**
  * @method npm run help ( default )
@@ -287,76 +288,78 @@ gulp.task( 'build-test', ( done ) => {
 
 } )
 
-/**
+/*
+ /!**
  * @method npm run build-style-dev
  * @global
  * @description Build less files from assets, and concat them into one file
- */
-gulp.task( 'build-style-dev', () => {
+ *!/
+ gulp.task( 'build-style-dev', () => {
 
-    const styleFiles = [
-        //    './node_modules/font-awesome/less/font-awesome.less',
-        //    './node_modules/bootstrap/scss/bootstrap.scss',
-        //    './node_modules/bootstrap-slider/dist/css/bootstrap-slider.css',
-        './styles/itee-client.less'
-    ]
+ const styleFiles = [
+ //    './node_modules/font-awesome/less/font-awesome.less',
+ //    './node_modules/bootstrap/scss/bootstrap.scss',
+ //    './node_modules/bootstrap-slider/dist/css/bootstrap-slider.css',
+ './styles/itee-client.less'
+ ]
 
-    return gulp.src( styleFiles )
-               .pipe( gulpif( /[.]less$/, less() ) )
-               .pipe( gulpif( /[.]scss/, sass() ) )
-               .pipe( concat( 'itee-client.style.css' ) )
-               .pipe( gulp.dest( './builds/' ) )
+ return gulp.src( styleFiles )
+ .pipe( gulpif( /[.]less$/, less() ) )
+ .pipe( gulpif( /[.]scss/, sass() ) )
+ .pipe( concat( 'itee-client.style.css' ) )
+ .pipe( gulp.dest( './builds/' ) )
 
-} )
+ } )
 
-/**
+ /!**
  * @method npm run build-style-prod
  * @global
  * @description Build less files from assets, and concat them into one minimified file
- */
-gulp.task( 'build-style-prod', () => {
+ *!/
+ gulp.task( 'build-style-prod', () => {
 
-    const styleFiles = [
-        //    './node_modules/font-awesome/less/font-awesome.less',
-        //    './node_modules/bootstrap/scss/bootstrap.scss',
-        //    './node_modules/bootstrap-slider/dist/css/bootstrap-slider.css',
-        './styles/itee-client.less'
-    ]
+ const styleFiles = [
+ //    './node_modules/font-awesome/less/font-awesome.less',
+ //    './node_modules/bootstrap/scss/bootstrap.scss',
+ //    './node_modules/bootstrap-slider/dist/css/bootstrap-slider.css',
+ './styles/itee-client.less'
+ ]
 
-    return gulp.src( styleFiles )
-               .pipe( gulpif( /[.]less$/, less() ) )
-               .pipe( gulpif( /[.]scss/, sass() ) )
-               .pipe( concat( 'itee-client.style.min.css' ) )
-               .pipe( cleanCss( { compatibility: 'ie8' } ) )
-               .pipe( gulp.dest( './builds/' ) )
+ return gulp.src( styleFiles )
+ .pipe( gulpif( /[.]less$/, less() ) )
+ .pipe( gulpif( /[.]scss/, sass() ) )
+ .pipe( concat( 'itee-client.style.min.css' ) )
+ .pipe( cleanCss( { compatibility: 'ie8' } ) )
+ .pipe( gulp.dest( './builds/' ) )
 
-} )
+ } )
 
-/**
+ /!**
  * @method npm run build-style
  * @global
  * @description Build styles files from assets for dev and prod envs.
- */
-gulp.task( 'build-style', gulp.parallel( 'build-style-dev', 'build-style-prod' ) )
+ *!/
+ gulp.task( 'build-style', gulp.parallel( 'build-style-dev', 'build-style-prod' ) )
 
-/**
+ /!**
  * @method npm run watch-style
  * @global
  * @description Add watcher to assets less/css files and run build-style on file change
+ *!/
+ gulp.task( 'watch-style', gulp.series( 'build-style', ( done ) => {
+
+ const styleFiles = [
+ //    './node_modules/font-awesome/less/font-awesome.less',
+ //    './node_modules/bootstrap/scss/bootstrap.scss',
+ //    './node_modules/bootstrap-slider/dist/css/bootstrap-slider.css',
+ './styles/itee-client.less'
+ ]
+
+ gulp.watch( styleFiles, [ 'build-style' ] )
+ done()
+
+ } ) )
  */
-gulp.task( 'watch-style', gulp.series( 'build-style', ( done ) => {
-
-    const styleFiles = [
-        //    './node_modules/font-awesome/less/font-awesome.less',
-        //    './node_modules/bootstrap/scss/bootstrap.scss',
-        //    './node_modules/bootstrap-slider/dist/css/bootstrap-slider.css',
-        './styles/itee-client.less'
-    ]
-
-    gulp.watch( styleFiles, [ 'build-style' ] )
-    done()
-
-} ) )
 
 /**
  * @method npm run build-script
@@ -372,7 +375,7 @@ gulp.task( 'build-script', ( done ) => {
             n: 'Itee.Client',
             i: path.join( __dirname, 'sources', `${packageInfos.name}.js` ),
             o: path.join( __dirname, 'builds' ),
-            f: 'esm,cjs,iife,umd',
+            f: 'esm,cjs,iife',
             e: 'dev,prod',
             s: true,
             t: true
@@ -424,7 +427,8 @@ gulp.task( 'build-script', ( done ) => {
  * @global
  * @description Build css and javascript files
  */
-gulp.task( 'build', gulp.parallel( 'build-style', 'build-script' ) )
+gulp.task( 'build', gulp.series( 'build-script' ) )
+//gulp.task( 'build', gulp.parallel( 'build-style', 'build-script' ) )
 
 /**
  * @method npm run release
@@ -432,8 +436,8 @@ gulp.task( 'build', gulp.parallel( 'build-style', 'build-script' ) )
  * @description Will perform a complet release of the library including 'clean', 'lint', 'doc', 'build-test', 'test' and finally 'build'.
  */
 
-//gulp.task( 'release', gulp.series( 'clean', 'lint', 'doc', 'build-test', 'test', 'build' ) )
-gulp.task( 'release', gulp.series( 'clean', gulp.parallel( 'lint', 'doc', 'test' ), gulp.parallel( 'build-style', 'build-script' ) ) )
+gulp.task( 'release', gulp.series( 'clean', 'lint', 'doc', 'build-test', 'test', 'build' ) )
+//gulp.task( 'release', gulp.series( 'clean', gulp.parallel( 'lint', 'doc', 'test' ), gulp.parallel( 'build-style', 'build-script' ) ) )
 
 //---------
 
