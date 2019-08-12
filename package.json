@@ -59,16 +59,16 @@
     "postversion": "gulp build"
   },
   "dependencies": {
-    "itee-utils": "^5.0.1",
-    "itee-validators": "^5.0.1"
+    "itee-utils": "^5.1.1",
+    "itee-validators": "^5.1.2"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^3.0.4",
-    "@semantic-release/commit-analyzer": "^6.2.0",
+    "@semantic-release/commit-analyzer": "^6.3.0",
     "@semantic-release/git": "^7.0.16",
     "@semantic-release/github": "^5.4.2",
     "@semantic-release/npm": "^5.1.13",
-    "@semantic-release/release-notes-generator": "^7.2.1",
+    "@semantic-release/release-notes-generator": "^7.3.0",
     "ansi-colors": "^4.1.1",
     "benchmark": "^2.1.4",
     "chai": "^4.2.0",
@@ -87,7 +87,7 @@
     "karma-chai": "^0.1.0",
     "karma-chrome-launcher": "^3.0.0",
     "karma-edge-launcher": "^0.4.2",
-    "karma-firefox-launcher": "^1.1.0",
+    "karma-firefox-launcher": "^1.2.0",
     "karma-htmlfile-reporter": "^0.3.8",
     "karma-ie-launcher": "^1.0.0",
     "karma-mocha": "^1.3.0",
@@ -96,8 +96,8 @@
     "karma-safari-launcher": "^1.0.0",
     "minimist": "^1.2.0",
     "mocha": "^6.2.0",
-    "mochawesome": "^4.0.1",
-    "rollup": "^1.18.0",
+    "mochawesome": "^4.1.0",
+    "rollup": "^1.19.4",
     "rollup-plugin-terser": "^5.1.1",
     "semantic-release": "^15.13.19"
   },
