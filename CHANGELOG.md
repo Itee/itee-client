@@ -1,3 +1,10 @@
+# [7.1.0](https://github.com/Itee/itee-client/compare/v7.0.0...v7.1.0) (2019-08-12)
+
+
+### Features
+
+* **docs:** add docs to github ([7e1dcce](https://github.com/Itee/itee-client/commit/7e1dcce))
+
 # [7.0.0](https://github.com/Itee/itee-client/compare/v6.6.6...v7.0.0) (2019-08-05)
 
 
