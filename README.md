@@ -1,14 +1,24 @@
-[![Build Status](https://travis-ci.org/Itee/itee-client.svg?branch=master)](https://travis-ci.org/Itee/itee-client)
-[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
-___
 
-# <center>[IteeClient]</center>
+<h1 align="center">[Itee Client]</h1>
+<br>
 
-The itee client is the end user part of the itee solution predicted for running WebGL 3d content.
-It allow to make fast, and light call to itee server counter part to create/read/update/delete data from webgl server.
+<p align="center">The itee client is the end user part of the itee solution predicted for running WebGL 3d content. It allow to make fast, and light call to itee server counter part to create/read/update/delete data from webgl server.</p>
+<br>
 
+<p align="center">
+    <a href="https://www.npmjs.com/package/itee-client">
+        <img src="https://img.shields.io/npm/v/itee-client" alt="Current package version">
+    </a>
+    <a href="https://travis-ci.org/Itee/itee-client">
+        <img src="https://travis-ci.org/Itee/itee-client.svg?branch=master" alt="Build status">
+    </a>
+    <a href="https://github.com/semantic-release/semantic-release">
+        <img src="https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg" alt="Build status">
+    </a>
+</p>
 
-## How to install
+<br>
+<h2>How to install</h2>
 
 From npm:
 
@@ -22,19 +32,17 @@ If you want to build the repository from source follow these instructions:
     
 then copy/paste the builded module you need from builds folder.
     
-## How to use
+<br>   
+<h2>How to use</h2>
 
-First of all, you should take a look to the documentation ! You could find an "hello world" example in tutorial section.
-In case you have clone the repository you could auto-generate the library documentation using: 
+<p align="center">At begin was <a href="https://itee.github.io/itee-client/">RTFM</a> !</p>
+<br>
+In case you have clone the repository you could also auto-generate the library documentation using: 
 
     npm run doc
 
-
-## How to contribute
-
-Coming soon...
-
-## BSD-3-Clause License
+<br>
+<h2>License (BSD-3-Clause)</h2>
 
 <div class="prettyprint source">
 <code style=" color: #ddd; font-size: 16px; ">
