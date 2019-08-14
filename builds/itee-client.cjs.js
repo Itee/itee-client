@@ -1,4 +1,4 @@
-console.log('Itee.Client v7.1.0 - CommonJs')
+console.log('Itee.Client v7.1.1 - CommonJs')
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -2136,7 +2136,7 @@ class TDataBaseManager {
         if ( iteeValidators.isNull( value ) ) { throw new Error( 'TDataBaseManager: responseType cannot be null !' ) }
         if ( iteeValidators.isNull( value ) ) { throw new TypeError( 'Response type cannot be null ! Expect a non empty string.' ) }
         if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( 'Response type cannot be undefined ! Expect a non empty string.' ) }
-        if ( !( value instanceof ResponseType ) ) { throw new TypeError( `Response type cannot be an instance of ${value.constructor.name} ! Expect a value from ResponseType enum.` ) }
+//        if ( !( value instanceof ResponseType ) ) { throw new TypeError( `Response type cannot be an instance of ${value.constructor.name} ! Expect a value from ResponseType enum.` ) }
 
         this._responseType = value;
 
