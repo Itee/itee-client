@@ -1,3 +1,10 @@
+## [7.1.1](https://github.com/Itee/itee-client/compare/v7.1.0...v7.1.1) (2019-08-14)
+
+
+### Bug Fixes
+
+* **tdatabasemanager:** comment responsetype check due to enum rollback that throw ([85e758b](https://github.com/Itee/itee-client/commit/85e758b))
+
 # [7.1.0](https://github.com/Itee/itee-client/compare/v7.0.0...v7.1.0) (2019-08-12)
 
 
