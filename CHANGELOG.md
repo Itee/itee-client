@@ -1,3 +1,10 @@
+## [7.1.2](https://github.com/Itee/itee-client/compare/v7.1.1...v7.1.2) (2020-02-17)
+
+
+### Bug Fixes
+
+* **package:** update package lock ([5714cac](https://github.com/Itee/itee-client/commit/5714caca52084c36897d108a84430967bfd41f47)), closes [#23](https://github.com/Itee/itee-client/issues/23)
+
 ## [7.1.1](https://github.com/Itee/itee-client/compare/v7.1.0...v7.1.1) (2019-08-14)
 
 
