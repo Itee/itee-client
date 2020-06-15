@@ -432,7 +432,7 @@ class TLogger {
 
             // For "Debug" output, don't store trace like this !
             default:
-                throw new RangeError( `Invalid switch parameter: ${level}` )
+                throw new RangeError( `Invalid progress level parameter: ${level}` )
 
         }
 
