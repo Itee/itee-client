@@ -1,4 +1,4 @@
-console.log('Itee.Client v7.1.2 - CommonJs')
+console.log('Itee.Client v7.1.3 - CommonJs')
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -1084,7 +1084,7 @@ class TLogger {
 
             // For "Debug" output, don't store trace like this !
             default:
-                throw new RangeError( `Invalid switch parameter: ${level}` )
+                throw new RangeError( `Invalid progress level parameter: ${level}` )
 
         }
 
@@ -1500,7 +1500,7 @@ class TBinaryReader {
 
         if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
         if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( iteeValidators.isNotArrayBuffer ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( iteeValidators.isNotArrayBuffer( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
 
         this._buffer = value;
         this._offset = 0;
