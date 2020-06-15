@@ -1,3 +1,10 @@
+## [7.1.3](https://github.com/Itee/itee-client/compare/v7.1.2...v7.1.3) (2020-06-15)
+
+
+### Bug Fixes
+
+* **tbinaryreader:** fix wrong function call witout parenthesis ([1ca24f9](https://github.com/Itee/itee-client/commit/1ca24f9fc1cb25e4057cd3657dda350e955a0b82))
+
 ## [7.1.2](https://github.com/Itee/itee-client/compare/v7.1.1...v7.1.2) (2020-02-17)
 
 

@@ -1,4 +1,4 @@
-console.log('Itee.Client v7.1.2 - EsModule')
+console.log('Itee.Client v7.1.3 - EsModule')
 import { toEnum } from 'itee-utils';
 import { isString, isFunction, isNull, isUndefined, isNotObject, isNotBoolean, isNotArray, isNotUndefined, isObject, isArrayOfString, isArrayOfObject, isNotArrayBuffer, isNotNumber, isNotString, isEmptyString, isBlankString, isNumberPositive, isNumberNegative, isZero, isArray, isNotEmptyArray, isArrayOfSingleElement, isNotEmptyObject, isNotEmptyString, isNotBlankString, isEmptyObject, isNotDefined, isDefined } from 'itee-validators';
 
@@ -1080,7 +1080,7 @@ class TLogger {
 
             // For "Debug" output, don't store trace like this !
             default:
-                throw new RangeError( `Invalid switch parameter: ${level}` )
+                throw new RangeError( `Invalid progress level parameter: ${level}` )
 
         }
 
@@ -1496,7 +1496,7 @@ class TBinaryReader {
 
         if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
         if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( isNotArrayBuffer ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( isNotArrayBuffer( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
 
         this._buffer = value;
         this._offset = 0;
