@@ -81,7 +81,7 @@ class TBinaryReader {
 
         if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
         if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( isNotArrayBuffer ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( isNotArrayBuffer( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
 
         this._buffer = value
         this._offset = 0
