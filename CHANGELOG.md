@@ -1,3 +1,10 @@
+## [7.1.4](https://github.com/Itee/itee-client/compare/v7.1.3...v7.1.4) (2020-07-21)
+
+
+### Bug Fixes
+
+* **package:** upgrade all deps to their latest version ([69636a7](https://github.com/Itee/itee-client/commit/69636a70ea7523f410fc4cc565a8b846b862ab72))
+
 ## [7.1.3](https://github.com/Itee/itee-client/compare/v7.1.2...v7.1.3) (2020-06-15)
 
 

@@ -1,4 +1,4 @@
-console.log('Itee.Client v7.1.3 - CommonJs')
+console.log('Itee.Client v7.1.4 - CommonJs')
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -3484,44 +3484,11 @@ TDataBaseManager._requests = {
  *
  */
 
-//
-//const TIdFactoryType = Object.freeze( {
-//    Number: 0,
-//    String: 1,
-//    Uuid:   2,
-//    includes ( key ) {
-//        return isNotUndefined( TIdFactoryType[ key ] )
-//    },
-//    availablesTypes () {
-//        return [ 'Number', 'String', 'UUID' ]
-//    }
-//} )
-
-const TIdFactoryType = Object.freeze( Object.defineProperties( {}, {
-    Number: {
-        value:      0,
-        enumerable: true
-    },
-    String: {
-        value:      1,
-        enumerable: true
-    },
-    Uuid: {
-        value:      2,
-        enumerable: true
-    },
-    includes: {
-        value: function includes ( key ) {
-            return Object.values( this ).includes( key )
-        }
-    },
-    types: {
-        value: function types () {
-            return Object.keys( this )
-        }
-    }
-
-} ) );
+const TIdFactoryType = iteeUtils.toEnum( {
+    Number: 0,
+    String: 1,
+    Uuid:   2
+} );
 
 class TIdFactory {
 
