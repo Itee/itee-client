@@ -8,51 +8,19 @@
  *
  */
 
+import { toEnum } from 'itee-utils'
 import {
     isNotNumber,
     isNotString,
     isNull,
     isUndefined
-} from 'itee-validators'
+}                 from 'itee-validators'
 
-//
-//const TIdFactoryType = Object.freeze( {
-//    Number: 0,
-//    String: 1,
-//    Uuid:   2,
-//    includes ( key ) {
-//        return isNotUndefined( TIdFactoryType[ key ] )
-//    },
-//    availablesTypes () {
-//        return [ 'Number', 'String', 'UUID' ]
-//    }
-//} )
-
-const TIdFactoryType = Object.freeze( Object.defineProperties( {}, {
-    Number: {
-        value:      0,
-        enumerable: true
-    },
-    String: {
-        value:      1,
-        enumerable: true
-    },
-    Uuid: {
-        value:      2,
-        enumerable: true
-    },
-    includes: {
-        value: function includes ( key ) {
-            return Object.values( this ).includes( key )
-        }
-    },
-    types: {
-        value: function types () {
-            return Object.keys( this )
-        }
-    }
-
-} ) )
+const TIdFactoryType = toEnum( {
+    Number: 0,
+    String: 1,
+    Uuid:   2
+} )
 
 class TIdFactory {
 
