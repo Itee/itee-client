@@ -60,7 +60,8 @@
   },
   "dependencies": {
     "itee-utils": "^5.2.0",
-    "itee-validators": "^5.2.0"
+    "itee-validators": "^5.2.0",
+    "uuid": "^8.3.1"
   },
   "devDependencies": {
     "@semantic-release/changelog": "^5.0.1",
@@ -98,6 +99,7 @@
     "mocha": "^8.0.1",
     "mochawesome": "^6.1.1",
     "rollup": "^2.22.1",
+    "rollup-plugin-node-resolve": "^5.2.0",
     "rollup-plugin-terser": "^6.1.0",
     "semantic-release": "^17.1.1"
   },

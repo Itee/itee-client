@@ -1,13 +1,3 @@
-/**
- * @author [Tristan Valcke]{@link https://github.com/Itee}
- * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
- *
- * @file Todo
- *
- * @example Todo
- *
- */
-
 import { toEnum } from 'itee-utils'
 import {
     isNotNumber,
@@ -16,12 +6,19 @@ import {
     isUndefined
 }                 from 'itee-validators'
 
+/**
+ * @deprecated
+ * @type {ReadonlyArray<unknown>}
+ */
 const TIdFactoryType = toEnum( {
     Number: 0,
     String: 1,
     Uuid:   2
 } )
 
+/**
+ * @deprecated
+ */
 class TIdFactory {
 
     constructor ( type = TIdFactoryType.Number, base = null ) {
