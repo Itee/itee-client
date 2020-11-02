@@ -1,13 +1,3 @@
-/**
- * @author [Tristan Valcke]{@link https://github.com/Itee}
- * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
- *
- * @class Todo...
- * @classdesc Todo...
- * @example Todo...
- *
- */
-
 /* eslint-env browser */
 
 import { toEnum } from 'itee-utils'
@@ -21,8 +11,13 @@ import {
 }                 from 'itee-validators'
 
 /**
+ * @typedef {Enum} Keys
  *
- * @type {Object}
+ * @constant
+ * @type {Keys}
+ * @deprecated
+ * @inner
+ * @description Keys contains common keyboard key values, this allow to write semantic code instead of integer when dealing with key codes.
  */
 const LogOutput = toEnum( {
     Console:  1,
@@ -33,6 +28,14 @@ const LogOutput = toEnum( {
     All:      255
 } )
 
+/**
+ * @typedef {Enum} LogType
+ *
+ * @constant
+ * @type {LogType}
+ * @deprecated
+ * @description Keys contains common keyboard key values, this allow to write semantic code instead of integer when dealing with key codes.
+ */
 const LogType = toEnum( {
     Message:  0,
     Progress: 1,
@@ -40,8 +43,17 @@ const LogType = toEnum( {
 } )
 
 /**
+ * @typedef {Enum} LogLevel
+ * @property {Number} None=0 - No log allowed
+ * @property {Number} Debug=1 - Allow Debug log entry
+ * @property {Number} Info=2 - Allow Info log entry
+ * @property {Number} Warning=4 - Allow Warning log entry
+ * @property {Number} Error=8 - Allow Error log entry
+ * @property {Number} All=255 - Allow all log entry
  *
- * @type {Object}
+ * @constant
+ * @type {LogLevel}
+ * @description LogLevel is a flag that allow to set which type of log is allowed
  */
 const LogLevel = toEnum( {
     None:    0,
@@ -52,20 +64,14 @@ const LogLevel = toEnum( {
     All:     255
 } )
 
-/*
- *  Allow to toast an message or error to user
- *  @level String who represent the gravity level of message between "error | warn (for warning) | other (will display like info message)"
- *  @message String message to display
- */
 /**
- *
- * @param outputs
- * @constructor
+ * @class
+ * @classdesc TLogger is a fairly interface for log everthing you need, in every place you want.
+ * It can filter log input in function of severity based on LogLevel enum, and can send log to many different output like console, database, or UI.
  */
 class TLogger {
 
     /**
-     *
      * @param level
      * @return {string}
      * @private
@@ -98,6 +104,11 @@ class TLogger {
 
     }
 
+    /**
+     * @constructor
+     * @param {string} level - String who represent the gravity level of message between "error | warn (for warning) | other (will display like info message)"
+     * @param {string} message - the to display
+     */
     constructor ( parameters = {} ) {
 
         const _parameters = {
@@ -116,6 +127,10 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @return {*}
+     */
     get outputLevel () {
         return this._outputLevel
     }
@@ -133,6 +148,10 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @return {*}
+     */
     get outputs () {
         return this._outputs
     }
@@ -222,6 +241,11 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param message
+     * @private
+     */
     _dispatchMessage ( message ) {
 
         const level = message.level
@@ -262,6 +286,11 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param errorMessage
+     * @private
+     */
     _dispatchErrorMessage ( errorMessage ) {
 
         if ( this.outputs & LogOutput.Console ) {
@@ -299,6 +328,11 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param warnMessage
+     * @private
+     */
     _dispatchWarningMessage ( warnMessage ) {
 
         if ( this.outputs & LogOutput.Console ) {
@@ -336,6 +370,11 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param infoMessage
+     * @private
+     */
     _dispatchInfoMessage ( infoMessage ) {
 
         if ( this.outputs & LogOutput.Console ) {
@@ -373,6 +412,11 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param debugMessage
+     * @private
+     */
     _dispatchDebugMessage ( debugMessage ) {
 
         if ( this.outputs & LogOutput.Console ) {
@@ -410,6 +454,11 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param progress
+     * @private
+     */
     _dispatchProgress ( progress ) {
 
         const level          = progress.level
@@ -438,6 +487,11 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param infoProgress
+     * @private
+     */
     _dispatchInfoProgress ( infoProgress ) {
 
         if ( this.outputs & LogOutput.Console ) {
@@ -475,6 +529,11 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param debugProgress
+     * @private
+     */
     _dispatchDebugProgress ( debugProgress ) {
 
         if ( this.outputs & LogOutput.Console ) {
@@ -512,12 +571,21 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param time
+     * @private
+     */
     _dispatchTime ( time ) {
 
         console.log( time.message )
 
     }
 
+    /**
+     *
+     * @param debug
+     */
     debug ( debug ) {
 
         this.dispatch( {
@@ -570,6 +638,10 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param progress
+     */
     progress ( progress ) {
 
         progress.preventDefault()
@@ -595,12 +667,20 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param key
+     */
     startChronoFor ( key ) {
 
         this._timers[ key ] = new Date().getTime()
 
     }
 
+    /**
+     *
+     * @param key
+     */
     stopChronoFor ( key ) {
 
         const deltaTime = ( new Date().getTime() - this._timers[ key ] )
@@ -614,6 +694,11 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param value
+     * @return {TLogger}
+     */
     setOutputLevel ( value ) {
 
         this.outputLevel = value
@@ -621,6 +706,11 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param value
+     * @return {TLogger}
+     */
     setOutput ( value ) {
 
         this.outputs = value
@@ -630,6 +720,10 @@ class TLogger {
 
 }
 
+/**
+ * A default logger instance that can be use everywhere it is needed.
+ * @type {TLogger}
+ */
 const DefaultLogger = new TLogger()
 
 export {

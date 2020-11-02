@@ -1,28 +1,46 @@
 /**
- * @author [Tristan Valcke]{@link https://github.com/Itee}
- * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
- *
- * @class ClassName
- * @classdesc Todo...
- * @example Todo...
- *
- */
-/**
  * A freezed javascript object used like an enum.
  * @typedef {object} Enum
+ * @constant
  * @example
- * const Foo = Object.freeze( {
- *     Bar: 0,
- *     Baz: 1,
- *     Qux: 3
+ * var Meal = toEnum( {
+ *     Food: 'Tartiflette',
+ *     Drink: 'Saint-Emilion',
+ *     Dessert: 'Mousse au chocolat'
  * } )
+ *
+ * if( Foo.includes('Tartiflette') {
+ *     // Happy
+ * }
+ *
+ * var myDrink = 'coke'
+ * if( myDrink === Meal.Drink ) {
+ *
+ * } else {
+ *     // Your life is a pain
+ * }
+ *
+ * var MealTypes = Meal.types
+ * // ['Tartiflette', 'Saint-Emilion', 'Mousse au chocolat' ]
+ *
  */
-
 import { toEnum } from 'itee-utils'
 
 /**
- * The FileFormat Enum give some commonly used file format in 3d context
- * @type {Enum}
+ * @typedef {Enum} FileFormat
+ * @property {String} Asc="asc" - The ascii file format
+ * @property {String} Dae="dae" - The dae file format
+ * @property {String} Dbf="dbf" - The dbf file format
+ * @property {String} Fbx="fbx" - The fbx file format
+ * @property {String} Mtl="mtl" - The material file format
+ * @property {String} Json="json" - The json file format
+ * @property {String} Obj="obj" - The object file format
+ * @property {String} Shp="shp" - The shape file format
+ * @property {String} Stl="stl" - The stereolithographie file format
+ *
+ * @constant
+ * @type {FileFormat}
+ * @description The FileFormat Enum give some commonly used file format in 3d context
  */
 const FileFormat = toEnum( {
     Asc:  { value: 'asc' },
@@ -223,10 +241,10 @@ const HttpStatusCode = toEnum( {
 
 /**
  * @typedef {Enum} HttpVerb
- * @property {string} Create="PUT" - Corresponding to the create http verb for an itee server, namely "PUT".
- * @property {string} Read="POST" - Corresponding to the read http verb for an itee server, namely "POST".
- * @property {string} Update="PATCH" - Corresponding to the update http verb for an itee server, namely "PATCH".
- * @property {string} Delete="DELETE" - Corresponding to the delete http verb for an itee server, namely "DELETE".
+ * @property {String} Create="PUT" - Corresponding to the create http verb for an itee server, namely "PUT".
+ * @property {String} Read="POST" - Corresponding to the read http verb for an itee server, namely "POST".
+ * @property {String} Update="PATCH" - Corresponding to the update http verb for an itee server, namely "PATCH".
+ * @property {String} Delete="DELETE" - Corresponding to the delete http verb for an itee server, namely "DELETE".
  *
  * @constant
  * @type {HttpVerb}
@@ -241,8 +259,15 @@ const HttpVerb = toEnum( {
 } )
 
 /**
- * The Keys Enum give the associated key_code
- * @type {Enum}
+ * @typedef {Enum} Keys
+ * @property {Number} BACKSPACE=8 - The backspace key code
+ * @property {Number} TAB=9 - The tab key code
+ * @property {Number} ENTER=13 - The enter key code
+ * @property {Number} Etc...=* - All the rest
+ *
+ * @constant
+ * @type {Keys}
+ * @description Keys contains common keyboard key values, this allow to write semantic code instead of integer when dealing with key codes.
  */
 const Keys = toEnum( {
     BACKSPACE:            { value: 8 },
@@ -346,29 +371,42 @@ const Keys = toEnum( {
     SINGLE_QUOTE:         { value: 222 }
 } )
 
-// Todo
+/**
+ * @typedef {Enum} MimeType
+ * @property {Number} ...
+ *
+ * @constant
+ * @type {MimeType}
+ * @description Todo...
+ */
 const MimeType = toEnum( {} )
 
 /**
- * This Enum expose 4 common state of mouse button.
- * Wheel, Left, Middle and Right
- * @type {Enum}
+ * @typedef {Enum} Mouse
+ * @property {Number} Wheel=-1 - The enter key code
+ * @property {Number} Left=0 - The enter key code
+ * @property {Number} Middle=1 - The enter key code
+ * @property {Number} Right=2 - The enter key code
+ *
+ * @constant
+ * @type {Mouse}
+ * @description This Mouse Enum expose 4 common state of mouse button values (Wheel, Left, Middle and Right), this allow to write semantic code instead of integer when dealing with mouse button codes.
  */
 const Mouse = toEnum( {
-    WHEEL:  { value: -1 },
-    LEFT:   { value: 0 },
-    MIDDLE: { value: 1 },
-    RIGHT:  { value: 2 }
+    Wheel:  { value: -1 },
+    Left:   { value: 0 },
+    Middle: { value: 1 },
+    Right:  { value: 2 }
 } )
 
 /**
  * @typedef {Enum} ResponseType
- * @property {string} ArrayBuffer="arraybuffer" - The "arraybuffer" server response type.
- * @property {string} Blob="blob" - The "blob" server response type.
- * @property {string} Document="document" - The "document" server response type.
- * @property {string} Json="json" - The "json" server response type.
- * @property {string} DOMString="text" - The "text" server response type.
- * @property {string} Default="text" - The "" server response type ( equivalent to DOMString ).
+ * @property {String} ArrayBuffer="arraybuffer" - The "arraybuffer" server response type.
+ * @property {String} Blob="blob" - The "blob" server response type.
+ * @property {String} Document="document" - The "document" server response type.
+ * @property {String} Json="json" - The "json" server response type.
+ * @property {String} DOMString="text" - The "text" server response type.
+ * @property {String} Default="text" - The "" server response type ( equivalent to DOMString ).
  *
  * @constant
  * @type {ResponseType}

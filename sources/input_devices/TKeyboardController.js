@@ -1,30 +1,27 @@
-/**
- * @author [Tristan Valcke]{@link https://github.com/Itee}
- * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
- *
- * based on Lee Stemkoski work
- *
- * @class TFactory
- * @classdesc Todo...
- * @example Todo...
- * (1) create a global variable:
- *      var keyboard = new TKeyboardController();
- * (2) during main loop:
- *       keyboard.update();
- * (3) check state of keys:
- *       keyboard.down("A")    -- true for one update cycle after key is pressed
- *       keyboard.pressed("A") -- true as long as key is being pressed
- *       keyboard.up("A")      -- true for one update cycle after key is released
- *
- *  See TKeyboardController.k object data below for names of keys whose state can be polled
- *
- */
-
 /* eslint-env browser */
 
 import { Keys }                     from '../cores/TConstants'
 import { DefaultLogger as TLogger } from '../loggers/TLogger'
 
+/**
+ * @class
+ * @classdesc TKeyboardController allow single source of thruth for keyboard state checking (based on Lee Stemkoski work).
+ * See TKeyboardController.k object data below for names of keys whose state can be polled
+ *
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ * @example {@lang javascript}
+ * // (1) create a global variable:
+ * var keyboard = new TKeyboardController();
+ *
+ * // (2) during main loop:
+ * keyboard.update();
+ *
+ * // (3) check state of keys:
+ * keyboard.down("A")    -- true for one update cycle after key is pressed
+ * keyboard.pressed("A") -- true as long as key is being pressed
+ * keyboard.up("A")      -- true for one update cycle after key is released
+ */
 class TKeyboardController {
 
     /**
@@ -65,13 +62,16 @@ class TKeyboardController {
         }
     }
 
-    constructor ( /*parameters = {}*/ ) {
+    /**
+     *
+     * @param parameters
+     */
+    constructor ( parameters = {} ) {
 
-        /*
          const _parameters = {
-         ...{}, ...parameters
+             ...{},
+             ...parameters
          }
-         */
 
         // bind keyEvents
         document.addEventListener( 'keydown', TKeyboardController.onKeyDown, false )
@@ -146,7 +146,16 @@ class TKeyboardController {
 
 }
 
+/**
+ *
+ * @type {Keys}
+ */
 TKeyboardController.k      = Keys
+
+/**
+ *
+ * @type {{}}
+ */
 TKeyboardController.status = {}
 
 export { TKeyboardController }

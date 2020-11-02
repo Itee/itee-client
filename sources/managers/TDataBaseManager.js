@@ -17,6 +17,7 @@
 
 /* eslint-env browser */
 
+import { toEnum } from 'itee-utils'
 import {
     isArray,
     isArrayOfSingleElement,
@@ -40,7 +41,6 @@ import {
     isUndefined,
     isZero
 }                 from 'itee-validators'
-import { toEnum } from 'itee-utils'
 import {
     HttpStatusCode,
     HttpVerb,
@@ -52,6 +52,9 @@ import {
     TLogger
 }                 from '../loggers/TLogger'
 
+/**
+ * @deprecated
+ */
 class IdGenerator {
 
     constructor () {
@@ -67,6 +70,10 @@ class IdGenerator {
 
 const Generate = new IdGenerator()
 
+/**
+ *
+ * @type {ReadonlyArray<unknown>}
+ */
 const RequestType = toEnum( {
     CreateOne:   0,
     CreateMany:  1,
@@ -84,8 +91,15 @@ const RequestType = toEnum( {
     DeleteAll:   13
 } )
 
+/**
+ * @class
+ */
 class TDataBaseManager {
 
+    /**
+     *
+     * @returns {number}
+     */
     static get requestId () {
         TDataBaseManager._requestId++
         return TDataBaseManager._requestId
@@ -126,6 +140,10 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @returns {*}
+     */
     get basePath () {
         return this._basePath
     }
@@ -142,6 +160,10 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @returns {*}
+     */
     get responseType () {
         return this._responseType
     }
@@ -151,12 +173,16 @@ class TDataBaseManager {
         if ( isNull( value ) ) { throw new Error( 'TDataBaseManager: responseType cannot be null !' ) }
         if ( isNull( value ) ) { throw new TypeError( 'Response type cannot be null ! Expect a non empty string.' ) }
         if ( isUndefined( value ) ) { throw new TypeError( 'Response type cannot be undefined ! Expect a non empty string.' ) }
-//        if ( !( value instanceof ResponseType ) ) { throw new TypeError( `Response type cannot be an instance of ${value.constructor.name} ! Expect a value from ResponseType enum.` ) }
+        //        if ( !( value instanceof ResponseType ) ) { throw new TypeError( `Response type cannot be an instance of ${value.constructor.name} ! Expect a value from ResponseType enum.` ) }
 
         this._responseType = value
 
     }
 
+    /**
+     *
+     * @returns {*}
+     */
     get bunchSize () {
         return this._bunchSize
     }
@@ -172,6 +198,10 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @returns {*}
+     */
     get requestAggregationTime () {
         return this._requestAggregationTime
     }
@@ -198,6 +228,10 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @returns {*}
+     */
     get requestsConcurrency () {
         return this._requestsConcurrency
     }
@@ -224,6 +258,10 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @returns {TLogger}
+     */
     get logger () {
         return this._logger
     }
@@ -238,6 +276,11 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param value
+     * @returns {TDataBaseManager}
+     */
     setBasePath ( value ) {
 
         this.basePath = value
@@ -245,6 +288,11 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param value
+     * @returns {TDataBaseManager}
+     */
     setResponseType ( value ) {
 
         this.responseType = value
@@ -252,6 +300,11 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param value
+     * @returns {TDataBaseManager}
+     */
     setBunchSize ( value ) {
 
         this.bunchSize = value
@@ -259,6 +312,11 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param value
+     * @returns {TDataBaseManager}
+     */
     setRequestAggregationTime ( value ) {
 
         this.requestAggregationTime = value
@@ -266,6 +324,11 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param value
+     * @returns {TDataBaseManager}
+     */
     setRequestsConcurrency ( value ) {
 
         this.requestsConcurrency = value
@@ -273,6 +336,11 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param value
+     * @returns {TDataBaseManager}
+     */
     setLogger ( value ) {
 
         this.logger = value
@@ -280,6 +348,9 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     */
     aggregateQueue () {
 
         clearTimeout( this._aggregationTimeoutId )
@@ -295,12 +366,12 @@ class TDataBaseManager {
                 if ( idBunch.length === this._bunchSize || idIndex === 0 ) {
 
                     this._requestQueue.push( {
-                        _id:        `readMany_${Generate.id}`,
-                        _timeStart: new Date(),
-                        _type:      RequestType.ReadMany,
-                        method:     HttpVerb.Read.value,
-                        url:        this._basePath,
-                        data:       {
+                        _id:          `readMany_${Generate.id}`,
+                        _timeStart:   new Date(),
+                        _type:        RequestType.ReadMany,
+                        method:       HttpVerb.Read.value,
+                        url:          this._basePath,
+                        data:         {
                             ids: idBunch
                         },
                         responseType: this._responseType
@@ -317,6 +388,9 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     */
     processQueue () {
 
         while ( this._requestQueue.length > 0 && this._processQueue.length < this._requestsConcurrency ) {
@@ -362,9 +436,7 @@ class TDataBaseManager {
 
     // Publics
     /**
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The create method allow to create a new ressource on the server. Providing a single object that match a database schema, or an array of them.
+     * The create method allow to create a new ressource on the server. Providing a single object that match a database schema, or an array of them.
      *
      * @param {object|array.<object>} data - The data to send for create new objects.
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
@@ -398,9 +470,7 @@ class TDataBaseManager {
     }
 
     /**
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The read method allow to retrieve data from the server, using a single id or an array of them.
+     * The read method allow to retrieve data from the server, using a single id or an array of them.
      *
      * @param {string|array.<string>} condition - The ids of objects to retrieve.
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
@@ -446,9 +516,7 @@ class TDataBaseManager {
     }
 
     /**
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The update method allow to update data on the server, using a single id or an array of them, and a corresponding object about the data to update.
+     * The update method allow to update data on the server, using a single id or an array of them, and a corresponding object about the data to update.
      *
      * @param {string|array.<string>} condition - The ids of objects to update.
      * @param {object} update - The update data ( need to match the related database schema ! ). In case of multiple ids they will be updated with the same given data.
@@ -505,9 +573,7 @@ class TDataBaseManager {
     }
 
     /**
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The delete method allow to remove data from the server, using a single id or an array of them.
+     * The delete method allow to remove data from the server, using a single id or an array of them.
      *
      * @param {string|array.<string>|object|null} condition - The ids of objects to delete.
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
@@ -557,16 +623,14 @@ class TDataBaseManager {
     //// Events
 
     /**
-     * @private
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The private _onLoad method allow to process the server response in an abstract way to check against error and wrong status code.
+     * The private _onLoad method allow to process the server response in an abstract way to check against error and wrong status code.
      * It will bind user callback on each type of returns, and dispatch in sub methods in function of the response type.
      *
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      * @param {object} loadEvent - The server response object to parse.
+     * @private
      */
     _onLoad ( request, onLoadCallback, onProgressCallback, onErrorCallback, loadEvent ) {
 
@@ -673,13 +737,11 @@ class TDataBaseManager {
     }
 
     /**
-     * @private
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The private _onProgress method will handle all progress event from server and submit them to the logger if exist else to the user onProgressCallback
+     * The private _onProgress method will handle all progress event from server and submit them to the logger if exist else to the user onProgressCallback
      *
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {object} progressEvent - The server progress event.
+     * @private
      */
     _onProgress ( onProgressCallback, progressEvent ) {
 
@@ -696,13 +758,11 @@ class TDataBaseManager {
     }
 
     /**
-     * @private
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The private _onError method will handle all error event from server and submit them to the logger if exist else to the user onErrorCallback
+     * The private _onError method will handle all error event from server and submit them to the logger if exist else to the user onErrorCallback
      *
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      * @param {object} errorEvent - A server error event
+     * @private
      */
     _onError ( request, onErrorCallback, errorEvent ) {
 
@@ -720,6 +780,15 @@ class TDataBaseManager {
 
     }
 
+    /**
+     * The private _onEnd method is call after all other callback and perform request type checking in view to upadte cache, waitingqueue and callback if needed,
+     * to finally close the request
+     *
+     * @param request
+     * @param onLoadCallback
+     * @param response
+     * @private
+     */
     _onEnd ( request, onLoadCallback, response ) {
 
         const type = request._type
@@ -764,7 +833,16 @@ class TDataBaseManager {
     //// Data parsing
     // Expect that methods were reimplemented when TDataBaseManager is inherited
 
-    // Dispatch response to the correct handler in function of response type
+    /**
+     * Dispatch response to the correct handler in function of response type
+     *
+     * @param response
+     * @param responseType
+     * @param onLoadCallback
+     * @param onProgressCallback
+     * @param onErrorCallback
+     * @private
+     */
     _dispatchResponse ( response, responseType, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         switch ( responseType ) {
@@ -815,6 +893,7 @@ class TDataBaseManager {
 
     /**
      * Will remove the request from the process queue
+     *
      * @param request
      * @private
      */
@@ -838,6 +917,12 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param ids
+     * @returns {Object}
+     * @private
+     */
     _retrieveCachedValues ( ids ) {
 
         let results      = {}
@@ -867,6 +952,11 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param datas
+     * @private
+     */
     _updateCache ( datas ) {
 
         if ( isNull( datas ) ) { throw new TypeError( 'Data cannot be null ! Expect an array of object.' ) }
@@ -902,6 +992,10 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @private
+     */
     _updateWaitingQueue () {
 
         const haveNoRequestToProcess = ( this._requestQueue.length === 0 && this._processQueue.length === 0 )
@@ -950,12 +1044,10 @@ class TDataBaseManager {
     }
 
     /**
+     * The abstract private _onArrayBuffer method must be overridden in case the parser expect an array buffer as input data.
+     *
      * @private
      * @abstract
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The abstract private _onArrayBuffer method must be overridden in case the parser expect an array buffer as input data.
-     *
      * @param {ArrayBuffer} data - The retrieved data to parse.
      * @param {function} onSuccess - The onLoad callback, which is call when parser parse with success the data.
      * @param {function} onProgress - The onProgress callback, which is call during the parsing.
@@ -965,12 +1057,10 @@ class TDataBaseManager {
     _onArrayBuffer ( data, onSuccess, onProgress, onError ) {}
 
     /**
+     * The abstract private _onBlob method must be overridden in case the parser expect a blob as input data.
+     *
      * @private
      * @abstract
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The abstract private _onBlob method must be overridden in case the parser expect a blob as input data.
-     *
      * @param {Blob} data - The retrieved data to parse.
      * @param {function} onSuccess - The onLoad callback, which is call when parser parse with success the data.
      * @param {function} onProgress - The onProgress callback, which is call during the parsing.
@@ -980,12 +1070,10 @@ class TDataBaseManager {
     _onBlob ( data, onSuccess, onProgress, onError ) {}
 
     /**
+     * The abstract private _onJson method must be overridden in case the parser expect json as input data.
+     *
      * @private
      * @abstract
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The abstract private _onJson method must be overridden in case the parser expect json as input data.
-     *
      * @param {json} data - The retrieved data to parse.
      * @param {function} onSuccess - The onLoad callback, which is call when parser parse with success the data.
      * @param {function} onProgress - The onProgress callback, which is call during the parsing.
@@ -995,12 +1083,10 @@ class TDataBaseManager {
     _onJson ( data, onSuccess, onProgress, onError ) {}
 
     /**
+     * The abstract private _onText method must be overridden in case the parser expect a string/text as input data.
+     *
      * @private
      * @abstract
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The abstract private _onText method must be overridden in case the parser expect a string/text as input data.
-     *
      * @param {string} data - The retrieved data to parse.
      * @param {function} onSuccess - The onLoad callback, which is call when parser parse with success the data.
      * @param {function} onProgress - The onProgress callback, which is call during the parsing.
@@ -1011,11 +1097,9 @@ class TDataBaseManager {
 
     // REST Api calls
     /**
-     * @private
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The private _create method allow to format a server request to create objects with the given data and get creation result with given callbacks.
+     * The private _create method allow to format a server request to create objects with the given data and get creation result with given callbacks.
      *
+     * @private
      * @param {object} data - The data to send.
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
@@ -1040,6 +1124,14 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param datas
+     * @param onLoadCallback
+     * @param onProgressCallback
+     * @param onErrorCallback
+     * @private
+     */
     _createMany ( datas, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
@@ -1060,11 +1152,9 @@ class TDataBaseManager {
     }
 
     /**
-     * @private
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The private _updateOne method will format a server request to get a single object with the given id.
+     * The private _updateOne method will format a server request to get a single object with the given id.
      *
+     * @private
      * @param {string} id - The object's id of the object to retrieve.
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
@@ -1087,18 +1177,18 @@ class TDataBaseManager {
 
             } else {
 
-                datas[ 'onLoadCallback' ] = onLoadCallback
+                datas[ 'onLoadCallback' ]     = onLoadCallback
                 datas[ 'onProgressCallback' ] = onProgressCallback
-                datas[ 'onErrorCallback' ] = onErrorCallback
+                datas[ 'onErrorCallback' ]    = onErrorCallback
                 this._waitingQueue.push( datas )
 
             }
 
         } else {
 
-            datas[ 'onLoadCallback' ] = onLoadCallback
+            datas[ 'onLoadCallback' ]     = onLoadCallback
             datas[ 'onProgressCallback' ] = onProgressCallback
-            datas[ 'onErrorCallback' ] = onErrorCallback
+            datas[ 'onErrorCallback' ]    = onErrorCallback
             this._waitingQueue.push( datas )
 
             try {
@@ -1117,11 +1207,9 @@ class TDataBaseManager {
     }
 
     /**
-     * @private
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The private _readMany method will format a server request to get objects with id in the ids array.
+     * The private _readMany method will format a server request to get objects with id in the ids array.
      *
+     * @private
      * @param {array.<string>} ids - The ids of objects to retrieve.
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
@@ -1144,18 +1232,18 @@ class TDataBaseManager {
 
             } else {
 
-                datas[ 'onLoadCallback' ] = onLoadCallback
+                datas[ 'onLoadCallback' ]     = onLoadCallback
                 datas[ 'onProgressCallback' ] = onProgressCallback
-                datas[ 'onErrorCallback' ] = onErrorCallback
+                datas[ 'onErrorCallback' ]    = onErrorCallback
                 this._waitingQueue.push( datas )
 
             }
 
         } else {
 
-            datas[ 'onLoadCallback' ] = onLoadCallback
+            datas[ 'onLoadCallback' ]     = onLoadCallback
             datas[ 'onProgressCallback' ] = onProgressCallback
-            datas[ 'onErrorCallback' ] = onErrorCallback
+            datas[ 'onErrorCallback' ]    = onErrorCallback
             this._waitingQueue.push( datas )
 
             const datasToRequest = datas.toRequest
@@ -1183,6 +1271,15 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param query
+     * @param projection
+     * @param onLoadCallback
+     * @param onProgressCallback
+     * @param onErrorCallback
+     * @private
+     */
     _readWhere ( query, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         //        // Filter requested values by cached values
@@ -1196,12 +1293,12 @@ class TDataBaseManager {
         //        this._waitingQueue.push( datas )
 
         this._requestQueue.push( {
-            _id:        `readWhere_${Generate.id}`,
-            _timeStart: new Date(),
-            _type:      RequestType.ReadWhere,
-            method:     HttpVerb.Read.value,
-            url:        this._basePath,
-            data:       {
+            _id:          `readWhere_${Generate.id}`,
+            _timeStart:   new Date(),
+            _type:        RequestType.ReadWhere,
+            method:       HttpVerb.Read.value,
+            url:          this._basePath,
+            data:         {
                 query,
                 projection
             },
@@ -1215,6 +1312,14 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param projection
+     * @param onLoadCallback
+     * @param onProgressCallback
+     * @param onErrorCallback
+     * @private
+     */
     _readAll ( projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         //        const datas = {
@@ -1229,12 +1334,12 @@ class TDataBaseManager {
         const query = {}
 
         this._requestQueue.push( {
-            _id:        `readAll_${Generate.id}`,
-            _timeStart: new Date(),
-            _type:      RequestType.ReadAll,
-            method:     HttpVerb.Read.value,
-            url:        this._basePath,
-            data:       {
+            _id:          `readAll_${Generate.id}`,
+            _timeStart:   new Date(),
+            _type:        RequestType.ReadAll,
+            method:       HttpVerb.Read.value,
+            url:          this._basePath,
+            data:         {
                 query,
                 projection
             },
@@ -1249,25 +1354,24 @@ class TDataBaseManager {
     }
 
     /**
-     * @private
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The private _updateOne method will format a server request to update a single object with the given id.
+     * The private _updateOne method will format a server request to update a single object with the given id.
      *
      * @param {string} id - The object's id of the object to update.
+     * @param update
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
+     * @private
      */
     _updateOne ( id, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:        `updateOne_${Generate.id}`,
-            _timeStart: new Date(),
-            _type:      RequestType.UpdateOne,
-            method:     HttpVerb.Update.value,
-            url:        `${this._basePath}/${id}`,
-            data:       {
+            _id:          `updateOne_${Generate.id}`,
+            _timeStart:   new Date(),
+            _type:        RequestType.UpdateOne,
+            method:       HttpVerb.Update.value,
+            url:          `${this._basePath}/${id}`,
+            data:         {
                 update
             },
             onLoad:       onLoadCallback,
@@ -1281,25 +1385,24 @@ class TDataBaseManager {
     }
 
     /**
-     * @private
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The private _updateMany method will format a server request to update objects with id in the ids array.
+     * The private _updateMany method will format a server request to update objects with id in the ids array.
      *
      * @param {array.<string>} ids - The ids of objects to update.
+     * @param update
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
+     * @private
      */
     _updateMany ( ids, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:        `updateMany_${Generate.id}`,
-            _timeStart: new Date(),
-            _type:      RequestType.UpdateMany,
-            method:     HttpVerb.Update.value,
-            url:        this._basePath,
-            data:       {
+            _id:          `updateMany_${Generate.id}`,
+            _timeStart:   new Date(),
+            _type:        RequestType.UpdateMany,
+            method:       HttpVerb.Update.value,
+            url:          this._basePath,
+            data:         {
                 ids,
                 update
             },
@@ -1313,39 +1416,24 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param query
+     * @param update
+     * @param onLoadCallback
+     * @param onProgressCallback
+     * @param onErrorCallback
+     * @private
+     */
     _updateWhere ( query, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:        `updateWhere_${Generate.id}`,
-            _timeStart: new Date(),
-            _type:      RequestType.UpdateWhere,
-            method:     HttpVerb.Update.value,
-            url:        this._basePath,
-            data:       {
-                query,
-                update
-            },
-            onLoad:       onLoadCallback,
-            onProgress:   onProgressCallback,
-            onError:      onErrorCallback,
-            responseType: this._responseType
-        } )
-
-        this.processQueue()
-
-    }
-
-    _updateAll ( update, onLoadCallback, onProgressCallback, onErrorCallback ) {
-
-        const query = {}
-
-        this._requestQueue.push( {
-            _id:        `updateAll_${Generate.id}`,
-            _timeStart: new Date(),
-            _type:      RequestType.UpdateAll,
-            method:     HttpVerb.Update.value,
-            url:        this._basePath,
-            data:       {
+            _id:          `updateWhere_${Generate.id}`,
+            _timeStart:   new Date(),
+            _type:        RequestType.UpdateWhere,
+            method:       HttpVerb.Update.value,
+            url:          this._basePath,
+            data:         {
                 query,
                 update
             },
@@ -1360,15 +1448,45 @@ class TDataBaseManager {
     }
 
     /**
+     *
+     * @param update
+     * @param onLoadCallback
+     * @param onProgressCallback
+     * @param onErrorCallback
      * @private
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The private _deleteOne method will format a server request to delete a single object with the given id.
+     */
+    _updateAll ( update, onLoadCallback, onProgressCallback, onErrorCallback ) {
+
+        const query = {}
+
+        this._requestQueue.push( {
+            _id:          `updateAll_${Generate.id}`,
+            _timeStart:   new Date(),
+            _type:        RequestType.UpdateAll,
+            method:       HttpVerb.Update.value,
+            url:          this._basePath,
+            data:         {
+                query,
+                update
+            },
+            onLoad:       onLoadCallback,
+            onProgress:   onProgressCallback,
+            onError:      onErrorCallback,
+            responseType: this._responseType
+        } )
+
+        this.processQueue()
+
+    }
+
+    /**
+     * The private _deleteOne method will format a server request to delete a single object with the given id.
      *
      * @param {string} id - The object's id of the object to delete.
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
+     * @private
      */
     _deleteOne ( id, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
@@ -1390,25 +1508,23 @@ class TDataBaseManager {
     }
 
     /**
-     * @private
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The private _deleteMany method will format a server request to delete objects with id in the ids array.
+     * The private _deleteMany method will format a server request to delete objects with id in the ids array.
      *
      * @param {array.<string>} ids - The ids of objects to delete.
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
+     * @private
      */
     _deleteMany ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:        `deleteMany_${Generate.id}`,
-            _timeStart: new Date(),
-            _type:      RequestType.DeleteMany,
-            method:     HttpVerb.Delete.value,
-            url:        this._basePath,
-            data:       {
+            _id:          `deleteMany_${Generate.id}`,
+            _timeStart:   new Date(),
+            _type:        RequestType.DeleteMany,
+            method:       HttpVerb.Delete.value,
+            url:          this._basePath,
+            data:         {
                 ids
             },
             onLoad:       onLoadCallback,
@@ -1421,15 +1537,23 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param query
+     * @param onLoadCallback
+     * @param onProgressCallback
+     * @param onErrorCallback
+     * @private
+     */
     _deleteWhere ( query, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:        `deleteWhere_${Generate.id}`,
-            _timeStart: new Date(),
-            _type:      RequestType.DeleteWhere,
-            method:     HttpVerb.Delete.value,
-            url:        this._basePath,
-            data:       {
+            _id:          `deleteWhere_${Generate.id}`,
+            _timeStart:   new Date(),
+            _type:        RequestType.DeleteWhere,
+            method:       HttpVerb.Delete.value,
+            url:          this._basePath,
+            data:         {
                 query
             },
             onLoad:       onLoadCallback,
@@ -1442,17 +1566,24 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param onLoadCallback
+     * @param onProgressCallback
+     * @param onErrorCallback
+     * @private
+     */
     _deleteAll ( onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         const query = {}
 
         this._requestQueue.push( {
-            _id:        `deleteAll_${Generate.id}`,
-            _timeStart: new Date(),
-            _type:      RequestType.DeleteAll,
-            method:     HttpVerb.Delete.value,
-            url:        this._basePath,
-            data:       {
+            _id:          `deleteAll_${Generate.id}`,
+            _timeStart:   new Date(),
+            _type:        RequestType.DeleteAll,
+            method:       HttpVerb.Delete.value,
+            url:          this._basePath,
+            data:         {
                 query
             },
             onLoad:       onLoadCallback,
@@ -1468,24 +1599,45 @@ class TDataBaseManager {
 }
 
 // Static stuff
-
+/**
+ *
+ * @type {number}
+ * @private
+ */
 TDataBaseManager._requestId = 0
 
+/**
+ *
+ * @type {Object}
+ * @private
+ */
 TDataBaseManager._requests = {
+    /**
+     * The global waiting queue to process
+     */
     waitingQueue: {},
+    /**
+     * The objects not requested yet
+     */
     toProcess:    {
         create: {},
         read:   {},
         update: {},
         delete: {}
     },
+    /**
+     * The object currently under request
+     */
     underProcess: {
         create: {},
         read:   {},
         update: {},
         delete: {}
     },
-    processed: {
+    /**
+     * The objects already processed
+     */
+    processed:    {
         create: {},
         read:   {},
         update: {},
