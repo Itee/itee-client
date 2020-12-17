@@ -456,6 +456,7 @@ class AbstractWebAPI {
                       .forEach( ( origin ) => {
 
                           if ( origin.isReady ) { return }
+                          if ( origin.isUnreachable ) { return }
 
                           if ( isDefined( origin.silent ) ) {
                               if ( isFalse( origin.silent ) ) {
@@ -608,6 +609,7 @@ class AbstractWebAPI {
             } else if ( force && !origin.window ) {
 
                 console.error( `[${this._origin}]: Origin "${origin.id}" is unreachable !` )
+                origin.isUnreachable = true
                 origin.messageQueue.push( message )
 
             } else {
