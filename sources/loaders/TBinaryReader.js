@@ -1,13 +1,3 @@
-/**
- * @author [Tristan Valcke]{@link https://github.com/Itee}
- * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
- *
- * @class Todo...
- * @classdesc Todo...
- * @example Todo...
- *
- */
-
 import { toEnum } from 'itee-utils'
 import {
     isNotArrayBuffer,
@@ -20,8 +10,13 @@ import {
 /* eslint-env browser */
 
 /**
+ * @typedef {Enum} Endianness
+ * @property {Boolean} Little=true - The Little endianess
+ * @property {Number} Big=false - The Big endianess
  *
- * @type {Object}
+ * @constant
+ * @type {Endianness}
+ * @description Endianness enum allow semantic usage.
  */
 const Endianness = toEnum( {
     Little: true,
@@ -29,8 +24,15 @@ const Endianness = toEnum( {
 } )
 
 /**
+ * @typedef {Enum} Byte
+ * @property {Number} One=1 - Octet
+ * @property {Number} Two=2 - Doublet
+ * @property {Number} Four=4 - Quadlet
+ * @property {Number} Height=8 - Octlet
  *
- * @type {Object}
+ * @constant
+ * @type {Byte}
+ * @description Byte allow semantic meaning of quantity of bytes based on power of two.
  */
 const Byte = toEnum( {
     One:    1,
@@ -39,17 +41,25 @@ const Byte = toEnum( {
     Height: 8
 } )
 
-/**
- *
- * @param buffer
- * @param offset
- * @param length
- * @param endianness
- * @constructor
- */
 
+/**
+ * @class
+ * @classdesc TBinaryReader is design to perform fast binary read/write
+ *
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ */
 class TBinaryReader {
 
+    /**
+     * @constructor
+     * @param parameters
+     * @param parameters.buffer
+     * @param parameters.offset
+     * @param parameters.length
+     * @param parameters.endianness
+     * @constructor
+     */
     constructor ( parameters = {} ) {
 
         const _parameters = {
@@ -70,6 +80,10 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @returns {*}
+     */
     get buffer () {
         return this._buffer
     }
@@ -91,6 +105,10 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @returns {*}
+     */
     get offset () {
         return this._offset
     }
@@ -114,6 +132,10 @@ class TBinaryReader {
         return this._length
     }
 
+    /**
+     *
+     * @param value
+     */
     set length ( value ) {
 
         const memberName = 'Length'
@@ -129,6 +151,10 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @returns {*}
+     */
     get endianness () {
         return this._endianness
     }
@@ -150,7 +176,7 @@ class TBinaryReader {
      * @param buffer
      * @param offset
      * @param length
-     * @return {this}
+     * @returns {TBinaryReader}
      */
     setBuffer ( buffer, offset, length ) {
 
@@ -162,6 +188,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param value
+     * @returns {TBinaryReader}
+     */
     setOffset ( value ) {
 
         this.offset = value
@@ -169,6 +200,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param value
+     * @returns {TBinaryReader}
+     */
     setLength ( value ) {
 
         this.length = value
@@ -179,7 +215,7 @@ class TBinaryReader {
     /**
      *
      * @param endianess
-     * @return {this}
+     * @returns {TBinaryReader}
      */
     setEndianess ( endianess ) {
 
@@ -191,7 +227,7 @@ class TBinaryReader {
     /**
      *
      * @param increment
-     * @return {*}
+     * @returns {*}
      * @private
      */
     _getAndUpdateOffsetBy ( increment ) {
@@ -214,7 +250,7 @@ class TBinaryReader {
 
     /**
      *
-     * @return {boolean}
+     * @returns {boolean}
      */
     isEndOfFile () {
 
@@ -225,7 +261,7 @@ class TBinaryReader {
     /**
      *
      * @param offset
-     * @return {this}
+     * @returns {TBinaryReader}
      */
     skipOffsetTo ( offset ) {
 
@@ -238,7 +274,7 @@ class TBinaryReader {
     /**
      *
      * @param nBytes
-     * @return {this}
+     * @returns {TBinaryReader}
      */
     skipOffsetOf ( nBytes ) {
 
@@ -248,12 +284,21 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @returns {boolean}
+     */
     getBoolean () {
 
         return ( ( this.getUint8() & 1 ) === 1 )
 
     }
 
+    /**
+     *
+     * @param length
+     * @returns {Array}
+     */
     getBooleanArray ( length ) {
 
         const array = []
@@ -270,7 +315,7 @@ class TBinaryReader {
 
     /**
      *
-     * @return {number}
+     * @returns {number}
      */
     getInt8 () {
 
@@ -278,6 +323,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param length
+     * @returns {Array}
+     */
     getInt8Array ( length ) {
 
         const array = []
@@ -294,7 +344,7 @@ class TBinaryReader {
 
     /**
      *
-     * @return {number}
+     * @returns {number}
      */
     getUint8 () {
 
@@ -302,6 +352,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param length
+     * @returns {Array}
+     */
     getUint8Array ( length ) {
 
         const array = []
@@ -318,7 +373,7 @@ class TBinaryReader {
 
     /**
      *
-     * @return {number}
+     * @returns {number}
      */
     getInt16 () {
 
@@ -326,6 +381,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param length
+     * @returns {Array}
+     */
     getInt16Array ( length ) {
 
         const array = []
@@ -342,7 +402,7 @@ class TBinaryReader {
 
     /**
      *
-     * @return {number}
+     * @returns {number}
      */
     getUint16 () {
 
@@ -350,6 +410,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param length
+     * @returns {Array}
+     */
     getUint16Array ( length ) {
 
         const array = []
@@ -366,7 +431,7 @@ class TBinaryReader {
 
     /**
      *
-     * @return {number}
+     * @returns {number}
      */
     getInt32 () {
 
@@ -374,6 +439,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param length
+     * @returns {Array}
+     */
     getInt32Array ( length ) {
 
         const array = []
@@ -390,7 +460,7 @@ class TBinaryReader {
 
     /**
      *
-     * @return {number}
+     * @returns {number}
      */
     getUint32 () {
 
@@ -398,6 +468,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param length
+     * @returns {Array}
+     */
     getUint32Array ( length ) {
 
         const array = []
@@ -412,13 +487,18 @@ class TBinaryReader {
 
     }
 
-    // From THREE.FBXLoader
-    // JavaScript doesn't support 64-bit integer so attempting to calculate by ourselves.
-    // 1 << 32 will return 1 so using multiply operation instead here.
-    // There'd be a possibility that this method returns wrong value if the value
-    // is out of the range between Number.MAX_SAFE_INTEGER and Number.MIN_SAFE_INTEGER.
-    // TODO: safely handle 64-bit integer
+    /**
+     *
+     * @returns {number}
+     */
     getInt64 () {
+
+        // From THREE.FBXLoader
+        // JavaScript doesn't support 64-bit integer so attempting to calculate by ourselves.
+        // 1 << 32 will return 1 so using multiply operation instead here.
+        // There'd be a possibility that this method returns wrong value if the value
+        // is out of the range between Number.MAX_SAFE_INTEGER and Number.MIN_SAFE_INTEGER.
+        // TODO: safely handle 64-bit integer
 
         let low  = null
         let high = null
@@ -455,6 +535,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param length
+     * @returns {Array}
+     */
     getInt64Array ( length ) {
 
         const array = []
@@ -469,8 +554,13 @@ class TBinaryReader {
 
     }
 
-    // Note: see getInt64() comment
+
+    /**
+     *
+     * @returns {number}
+     */
     getUint64 () {
+        // Note: see getInt64() comment
 
         let low  = null
         let high = null
@@ -491,6 +581,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param length
+     * @returns {Array}
+     */
     getUint64Array ( length ) {
 
         const array = []
@@ -507,7 +602,7 @@ class TBinaryReader {
 
     /**
      *
-     * @return {number}
+     * @returns {number}
      */
     getFloat32 () {
 
@@ -515,6 +610,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param length
+     * @returns {Array}
+     */
     getFloat32Array ( length ) {
 
         const array = []
@@ -539,6 +639,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param length
+     * @returns {Array}
+     */
     getFloat64Array ( length ) {
 
         const array = []
@@ -555,7 +660,7 @@ class TBinaryReader {
 
     /**
      *
-     * @return {string}
+     * @returns {string}
      */
     getChar () {
 
@@ -592,6 +697,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param size
+     * @returns {ArrayBuffer}
+     */
     getArrayBuffer ( size ) {
 
         const offset = this._getAndUpdateOffsetBy( size )

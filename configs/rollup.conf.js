@@ -14,6 +14,7 @@
 
 const packageInfos = require( '../package' )
 const path         = require( 'path' )
+const nodeResolve = require( 'rollup-plugin-node-resolve' )
 const terser       = require( 'rollup-plugin-terser' ).terser
 
 function _computeBanner ( name, format ) {
@@ -93,6 +94,7 @@ function CreateRollupConfigs ( options ) {
                     'itee-utils'
                 ],
                 plugins: [
+                    nodeResolve(),
                     isProd && terser()
                 ],
                 onwarn: ( { loc, frame, message } ) => {

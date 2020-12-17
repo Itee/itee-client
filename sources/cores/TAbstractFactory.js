@@ -1,17 +1,20 @@
-/**
- * @author [Tristan Valcke]{@link https://github.com/Itee}
- * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
- *
- * @file Todo
- *
- * @example Todo
- *
- */
-
 import { TStore } from './TStore'
 
+/**
+ * @class
+ * @classdesc The abstract class to create factory
+ * @abstract
+ * @extends TStore
+ *
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ */
 class TAbstractFactory extends TStore {
 
+    /**
+     * @constructor
+     * @param parameters
+     */
     constructor ( parameters = {} ) {
 
         const _parameters = { ...{}, ...parameters }
@@ -21,6 +24,11 @@ class TAbstractFactory extends TStore {
     }
 
     // eslint-disable-next-line no-unused-vars
+    /**
+     * The create factory method. It allow to automate Class creation by constructor key, and parameters to pass for initialized the instance.
+     * @param {*} key
+     * @param parameters
+     */
     create ( key, ...parameters ) {
 
         // Need to be reimplemented

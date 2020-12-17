@@ -1,16 +1,3 @@
-/**
- * @author [Tristan Valcke]{@link https://github.com/Itee}
- * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
- *
- * @class TCache
- * @classdesc TCache is a simple javascript object whose purpose is to store some ket/value data to future usage. It could be enable/disable.
- *
- * @example
- * var cache = new TCache()
- * cache.add( 'foo', 'bar' )
- * TLogger.log( cache.get('foo') ) // 'bar'
- */
-
 import {
     isFunction,
     isNotArray,
@@ -23,10 +10,25 @@ import {
 } from 'itee-validators'
 
 /**
- * @class Super class cache!
+ * @class
+ * @classdesc TStore is a simple javascript object whose purpose is to store some ket/value data to future usage. It could be enable/disable.
+ *
+ * @example {@lang javascript}
+ * var cache = new TCache()
+ * cache.add( 'foo', 'bar' )
+ * TLogger.log( cache.get('foo') ) // 'bar'
+ *
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  */
 class TStore {
 
+    /**
+     *
+     * @param value
+     * @param validators
+     * @private
+     */
     static _validate ( value, validators ) {
 
         for ( let validatorIndex = 0, numberOfValidators = validators.length ; validatorIndex < numberOfValidators ; validatorIndex++ ) {
@@ -52,6 +54,11 @@ class TStore {
 
     /**
      * @constructor
+     * @param {Object} [parameters={}]
+     * @param {Object} [parameters.collection={}]
+     * @param {Boolean} [parameters.allowOverride=false]
+     * @param {Array.<function>} [parameters.keyValidators=[]]
+     * @param {Array.<function>} [parameters.valueValidators=[]]
      */
     constructor ( parameters = {} ) {
 
@@ -71,6 +78,10 @@ class TStore {
 
     }
 
+    /**
+     *
+     * @return {{}}
+     */
     get collection () {
 
         return this._collection
@@ -90,6 +101,10 @@ class TStore {
 
     }
 
+    /**
+     *
+     * @return {*}
+     */
     get allowOverride () {
 
         return this._allowOverride
@@ -109,6 +124,10 @@ class TStore {
 
     }
 
+    /**
+     *
+     * @return {*}
+     */
     get keyValidators () {
 
         return this._keyValidators
@@ -128,6 +147,10 @@ class TStore {
 
     }
 
+    /**
+     *
+     * @return {*}
+     */
     get valueValidators () {
         return this._valueValidators
     }
@@ -145,18 +168,31 @@ class TStore {
 
     }
 
+    /**
+     *
+     * @return {string[]}
+     */
     get keys () {
 
         return Object.keys( this._collection )
 
     }
 
+    /**
+     *
+     * @return {unknown[] | any[]}
+     */
     get values () {
 
         return Object.values( this._collection )
 
     }
 
+    /**
+     *
+     * @param value
+     * @return {TStore} The current instance (this)
+     */
     setCollection ( value ) {
 
         this.collection = value
@@ -164,6 +200,11 @@ class TStore {
 
     }
 
+    /**
+     *
+     * @param value
+     * @return {TStore} The current instance (this)
+     */
     setAllowOverride ( value ) {
 
         this.allowOverride = value
@@ -171,6 +212,11 @@ class TStore {
 
     }
 
+    /**
+     *
+     * @param value
+     * @return {TStore} The current instance (this)
+     */
     setKeyValidators ( value ) {
 
         this.keyValidators( value )
@@ -178,6 +224,11 @@ class TStore {
 
     }
 
+    /**
+     *
+     * @param value
+     * @return {TStore} The current instance (this)
+     */
     setValueValidators ( value ) {
 
         this.valueValidators( value )
@@ -190,9 +241,10 @@ class TStore {
      * In case the key already exist, the value will be overwritten if force params is true or this
      * allow overriding else it throw an TypeError.
      *
-     * @param key
-     * @param value
-     * @param force
+     * @param {*} key
+     * @param {*} value
+     * @param {Boolean} force
+     * @return {TStore} The current instance (this)
      */
     add ( key, value, force = false ) {
 
@@ -209,6 +261,11 @@ class TStore {
 
     }
 
+    /**
+     *
+     * @param key
+     * @return {boolean}
+     */
     contain ( key ) {
 
         return isNotUndefined( this._collection[ key ] )
@@ -231,6 +288,7 @@ class TStore {
      * Remove to value from the cache. Does nothing if the key does not exist.
      *
      * @param key
+     * @return {TStore} The current instance (this)
      */
     remove ( key ) {
 
@@ -242,6 +300,7 @@ class TStore {
 
     /**
      * Clear the cache and reset collection to an empty object.
+     * @return {TStore} The current instance (this)
      */
     clear () {
 
