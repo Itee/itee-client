@@ -53,6 +53,10 @@ class AbstractWebAPI {
             ...parameters
         }
 
+        // Internal stuff
+        this._origin    = window.location.origin
+        this._responses = new Map()
+
         // Listen message from Window
         window.addEventListener( 'message', this._onMessage.bind( this ), false )
 
@@ -60,11 +64,7 @@ class AbstractWebAPI {
         this.allowedOrigins = _parameters.allowedOrigins
         this.targetOrigin   = _parameters.targetOrigin // Todo: defaulting targetOrigin to the first allowedOrigins if exist
         this.requestTimeout = _parameters.requestTimeout
-
-        // Internal stuff
-        this._origin    = window.location.origin
-        this._responses = new Map()
-
+        
         // Emit onReady event
         this._broadCastReadyMessage()
     }
