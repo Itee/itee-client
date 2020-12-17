@@ -64,7 +64,7 @@ class AbstractWebAPI {
         this.allowedOrigins = _parameters.allowedOrigins
         this.targetOrigin   = _parameters.targetOrigin // Todo: defaulting targetOrigin to the first allowedOrigins if exist
         this.requestTimeout = _parameters.requestTimeout
-        
+
         // Emit onReady event
         this._broadCastReadyMessage()
     }
@@ -108,11 +108,12 @@ class AbstractWebAPI {
 
         const expectation = 'Expect a valid string origin id !'
 
-        if ( isUndefined( value ) ) { throw new ReferenceError( `[${this._origin}]: Target origin cannot be undefined. ${expectation}` ) }
-        if ( isNull( value ) ) { throw new ReferenceError( `[${this._origin}]: Target origin cannot be null. ${expectation}` ) }
-        if ( isNotString( value ) ) { throw new ReferenceError( `[${this._origin}]: Target origin is invalid. ${expectation}` ) }
-        if ( !this.allowedOrigins.map( origin => origin.id )
-                  .includes( value ) ) { throw new ReferenceError( `[${this._origin}]: Provided target origin is not contain in current allowedOrigins. ${expectation}` ) }
+        if ( isUndefined( value ) ) { throw new ReferenceError( `[${ this._origin }]: Target origin cannot be undefined. ${ expectation }` ) }
+        if ( isNull( value ) ) { throw new ReferenceError( `[${ this._origin }]: Target origin cannot be null. ${ expectation }` ) }
+        if ( isNotString( value ) ) { throw new ReferenceError( `[${ this._origin }]: Target origin is invalid. ${ expectation }` ) }
+
+        const allowedOriginsIds = this.allowedOrigins.map( origin => origin.id )
+        if ( !allowedOriginsIds.includes( value ) ) { throw new ReferenceError( `[${ this._origin }]: Provided target origin is not contain in current allowedOrigins. ${ expectation }` ) }
 
         this._targetOrigin = value
 
@@ -127,10 +128,10 @@ class AbstractWebAPI {
     }
 
     set requestTimeout ( value ) {
-        if ( isNull( value ) ) { throw new ReferenceError( `[${this._origin}]: The request timeout cannot be null, expect to be 0 or a positive number.` )}
-        if ( isUndefined( value ) ) { throw new ReferenceError( `[${this._origin}]: The request timeout cannot be undefined, expect to be 0 or a positive number.` )}
-        if ( isNotNumber( value ) ) { throw new ReferenceError( `[${this._origin}]: The request timeout expect to be 0 or a positive number.` )}
-        if ( isNumberNegative( value ) && !isZero( value ) ) { throw new ReferenceError( `[${this._origin}]: The request timeout expect to be 0 or a positive number.` )}
+        if ( isNull( value ) ) { throw new ReferenceError( `[${ this._origin }]: The request timeout cannot be null, expect to be 0 or a positive number.` )}
+        if ( isUndefined( value ) ) { throw new ReferenceError( `[${ this._origin }]: The request timeout cannot be undefined, expect to be 0 or a positive number.` )}
+        if ( isNotNumber( value ) ) { throw new ReferenceError( `[${ this._origin }]: The request timeout expect to be 0 or a positive number.` )}
+        if ( isNumberNegative( value ) && !isZero( value ) ) { throw new ReferenceError( `[${ this._origin }]: The request timeout expect to be 0 or a positive number.` )}
 
         this._requestTimeout = value
     }
@@ -264,7 +265,7 @@ class AbstractWebAPI {
             const frames = document.getElementsByTagName( 'iframe' )
             const frame  = Array.from( frames ).find( iframe => iframe.src.includes( originURI ) )
             if ( isNotDefined( frame ) ) {
-                console.warn( `[${this._origin}]: Unable to find iframe for [${originURI}] URI !` )
+                console.warn( `[${ this._origin }]: Unable to find iframe for [${ originURI }] URI !` )
                 originWindow = null
             } else {
                 originWindow = frame.contentWindow
@@ -286,7 +287,7 @@ class AbstractWebAPI {
         // Is allowed origin
         const origin = this._getAllowedOriginByURI( event.origin )
         if ( origin === undefined ) {
-            console.warn( `[${this._origin}]: An unallowed origin [${event.origin}] try to access the web api.` )
+            console.warn( `[${ this._origin }]: An unallowed origin [${ event.origin }] try to access the web api.` )
             return
         }
 
@@ -315,38 +316,38 @@ class AbstractWebAPI {
      */
     _dispatchMessageFrom ( origin, message ) {
 
-        if ( isNotDefined( message ) ) { throw new ReferenceError( `[${this._origin}]: Message cannot be null or undefined ! Expect a json object.` ) }
+        if ( isNotDefined( message ) ) { throw new ReferenceError( `[${ this._origin }]: Message cannot be null or undefined ! Expect a json object.` ) }
 
         const messageType = message.type
 
         if ( messageType === '_ready' ) {
 
-            console.log( `[${this._origin}]: Recieve '_ready' message from [${origin.uri}].` )
+            console.log( `[${ this._origin }]: Recieve '_ready' message from [${ origin.uri }].` )
             this.onReadyFrom( origin, message )
 
         } else if ( messageType === '_progress' ) {
 
-            console.log( `[${this._origin}]: Recieve '_progress' message from [${origin.uri}].` )
+            console.log( `[${ this._origin }]: Recieve '_progress' message from [${ origin.uri }].` )
             this.onProgressFrom( origin, message )
 
         } else if ( messageType === '_error' ) {
 
-            console.log( `[${this._origin}]: Recieve '_error' message from [${origin.uri}].` )
+            console.log( `[${ this._origin }]: Recieve '_error' message from [${ origin.uri }].` )
             this.onErrorFrom( origin, message )
 
         } else if ( messageType === '_response' ) {
 
-            console.log( `[${this._origin}]: Recieve '_response' message from [${origin.uri}].` )
+            console.log( `[${ this._origin }]: Recieve '_response' message from [${ origin.uri }].` )
             this.onResponseFrom( origin, message )
 
         } else if ( messageType === '_request' ) {
 
-            console.log( `[${this._origin}]: Recieve '_request' message from [${origin.uri}].` )
+            console.log( `[${ this._origin }]: Recieve '_request' message from [${ origin.uri }].` )
             this.onRequestFrom( origin, message )
 
         } else {
 
-            console.log( `[${this._origin}]: Recieve 'custom' message from [${origin.uri}].` )
+            console.log( `[${ this._origin }]: Recieve 'custom' message from [${ origin.uri }].` )
             this.onMessageFrom( origin, message )
 
         }
@@ -382,8 +383,8 @@ class AbstractWebAPI {
     onRequestFrom ( origin, request ) {
 
         const method = request.method
-        if ( this._isNotAllowedForAllMethods( origin ) && this._isNotAllowedMethod( origin, method ) ) { throw new Error( `[${this._origin}]: Origin [${origin}] try to access an unallowed method named ${method}.` ) }
-        if ( this._methodNotExist( method ) ) { throw new ReferenceError( `[${this._origin}]: Origin [${origin}] try to access an unexisting method named ${method}.` ) }
+        if ( this._isNotAllowedForAllMethods( origin ) && this._isNotAllowedMethod( origin, method ) ) { throw new Error( `[${ this._origin }]: Origin [${ origin }] try to access an unallowed method named ${ method }.` ) }
+        if ( this._methodNotExist( method ) ) { throw new ReferenceError( `[${ this._origin }]: Origin [${ origin }] try to access an unexisting method named ${ method }.` ) }
 
         const parameters = request.parameters
         let response
@@ -565,7 +566,7 @@ class AbstractWebAPI {
                     } else if ( currentWaitingTime >= this.requestTimeout ) {
 
                         clearInterval( intervalId )
-                        reject( new Error( `[${this._origin}]: Request Timeout: ${request}` ) )
+                        reject( new Error( `[${ this._origin }]: Request Timeout: ${ request }` ) )
 
                     } else {
 
@@ -593,28 +594,28 @@ class AbstractWebAPI {
      */
     postMessageTo ( originId, message, force = false ) {
 
-        if ( isNotDefined( originId ) ) { throw new ReferenceError( `[${this._origin}]: Unable to post message to null or undefined origin id !` ) }
-        if ( isNotDefined( message ) ) { throw new ReferenceError( `[${this._origin}]: Unable to post null or undefined message !` ) }
+        if ( isNotDefined( originId ) ) { throw new ReferenceError( `[${ this._origin }]: Unable to post message to null or undefined origin id !` ) }
+        if ( isNotDefined( message ) ) { throw new ReferenceError( `[${ this._origin }]: Unable to post null or undefined message !` ) }
 
         const origin = this._getAllowedOriginById( originId )
-        if ( isNotDefined( origin ) ) { throw new ReferenceError( `[${this._origin}]: Unable to retrieved origin with id: ${originId}` ) }
+        if ( isNotDefined( origin ) ) { throw new ReferenceError( `[${ this._origin }]: Unable to retrieved origin with id: ${ originId }` ) }
 
         try {
 
             if ( !force && !origin.isReady ) {
 
-                console.warn( `[${this._origin}]: Origin "${origin.id}" is not ready yet !` )
+                console.warn( `[${ this._origin }]: Origin "${ origin.id }" is not ready yet !` )
                 origin.messageQueue.push( message )
 
             } else if ( force && !origin.window ) {
 
-                console.error( `[${this._origin}]: Origin "${origin.id}" is unreachable !` )
+                console.error( `[${ this._origin }]: Origin "${ origin.id }" is unreachable !` )
                 origin.isUnreachable = true
                 origin.messageQueue.push( message )
 
             } else {
 
-                console.log( `[${this._origin}]: Send message of type [${message.type}] to  [${origin.uri}]` )
+                console.log( `[${ this._origin }]: Send message of type [${ message.type }] to  [${ origin.uri }]` )
                 origin.window.postMessage( JSON.stringify( message ), origin.uri )
 
             }
