@@ -555,7 +555,7 @@ class AbstractWebAPI {
                         this._responses.delete( request.id )
                         clearInterval( intervalId )
 
-                        if ( response.type === 'error' ) {
+                        if ( response && response.type === 'error' ) {
                             reject( response )
                         } else {
                             resovle( response )
