@@ -359,6 +359,7 @@ class AbstractWebAPI {
      * @param origin
      * @param message
      */
+    // eslint-disable-next-line no-unused-vars
     onReadyFrom ( origin, message ) {
 
         if ( !origin.isReady ) {
@@ -416,6 +417,7 @@ class AbstractWebAPI {
      * @param origin
      * @param progress
      */
+    // eslint-disable-next-line no-unused-vars
     onProgressFrom ( origin, progress ) {
         // todo: emit progress base on request id ?
     }
@@ -425,6 +427,7 @@ class AbstractWebAPI {
      * @param origin
      * @param error
      */
+    // eslint-disable-next-line no-unused-vars
     onErrorFrom ( origin, error ) {
         // todo: manage intternal error than allow user define handling
     }
@@ -434,6 +437,7 @@ class AbstractWebAPI {
      * @param origin
      * @param message
      */
+    // eslint-disable-next-line no-unused-vars
     onMessageFrom ( origin, message ) {
         // Need to be reimplemented if needed
     }

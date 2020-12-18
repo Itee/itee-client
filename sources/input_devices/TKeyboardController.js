@@ -66,12 +66,13 @@ class TKeyboardController {
      *
      * @param parameters
      */
+    // eslint-disable-next-line no-unused-vars
     constructor ( parameters = {} ) {
 
-         const _parameters = {
-             ...{},
-             ...parameters
-         }
+//         const _parameters = {
+//             ...{},
+//             ...parameters
+//         }
 
         // bind keyEvents
         document.addEventListener( 'keydown', TKeyboardController.onKeyDown, false )
