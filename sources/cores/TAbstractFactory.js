@@ -23,12 +23,14 @@ class TAbstractFactory extends TStore {
 
     }
 
-    // eslint-disable-next-line no-unused-vars
+
     /**
      * The create factory method. It allow to automate Class creation by constructor key, and parameters to pass for initialized the instance.
+     * @abstract
      * @param {*} key
      * @param parameters
      */
+    // eslint-disable-next-line no-unused-vars
     create ( key, ...parameters ) {
 
         // Need to be reimplemented

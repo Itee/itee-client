@@ -60,8 +60,9 @@ class AbstractWorker {
         } else if ( isArrayBuffer( arrayBuffer ) ) {
             postMessage( new WorkerMessageData( type, arrayBuffer ).toJSON(), [ arrayBuffer ] )
         } else {
-            console.error( 'INVALID DATA' )
+            throw new TypeError(`AbstractWorker.postData: Unable to post data of type [${type}].`)
         }
+
     }
 
     /**
