@@ -1,0 +1,956 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Itee-Client Source: sources/loggers/TLogger.js</title>
+
+	<!--[if lt IE 9]>
+	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+	<![endif]-->
+	<link type="text/css" rel="stylesheet" href="styles/sunlight.dark.css">
+
+	<link type="text/css" rel="stylesheet" href="styles/site.cyborg.css">
+
+</head>
+
+<body>
+
+<div class="navbar navbar-default navbar-fixed-top ">
+<div class="container">
+	<div class="navbar-header">
+		<a class="navbar-brand" href="index.html">Itee-Client</a>
+		<button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#topNavigation">
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+			<span class="icon-bar"></span>
+        </button>
+	</div>
+	<div class="navbar-collapse collapse" id="topNavigation">
+		<ul class="nav navbar-nav">
+			
+			<li class="dropdown">
+				<a href="modules.list.html" class="dropdown-toggle" data-toggle="dropdown">Modules<b class="caret"></b></a>
+				<ul class="dropdown-menu inline">
+					<li><a href="module-Building.html">Building</a></li><li><a href="module-Config-EsLint.html">Config-EsLint</a></li><li><a href="module-Config-JsDoc.html">Config-JsDoc</a></li><li><a href="module-Config-Karma-Benchs.html">Config-Karma-Benchs</a></li><li><a href="module-Config-Karma-Units.html">Config-Karma-Units</a></li><li><a href="module-Config-Rollup.html">Config-Rollup</a></li><li><a href="module-Config-Rollup-Test.html">Config-Rollup-Test</a></li><li><a href="module-InputDevice.html">InputDevice</a></li><li><a href="module-Loaders.html">Loaders</a></li><li><a href="module-Loggers.html">Loggers</a></li><li><a href="module-Managers.html">Managers</a></li><li><a href="module-WebAPI.html">WebAPI</a></li><li><a href="module-WebAPI_Messages.html">WebAPI/Messages</a></li><li><a href="module-Workers.html">Workers</a></li><li><a href="module-Workers_Messages.html">Workers/Messages</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
+				<ul class="dropdown-menu inline">
+					<li><a href="AbstractWebAPI.html">AbstractWebAPI</a></li><li><a href="AbstractWorker.html">AbstractWorker</a></li><li><a href="IdGenerator.html">IdGenerator</a></li><li><a href="TAbstractFactory.html">TAbstractFactory</a></li><li><a href="TBinaryReader.html">TBinaryReader</a></li><li><a href="TCloningFactory.html">TCloningFactory</a></li><li><a href="TDataBaseManager.html">TDataBaseManager</a></li><li><a href="TIdFactory.html">TIdFactory</a></li><li><a href="TInstancingFactory.html">TInstancingFactory</a></li><li><a href="TKeyboardController.html">TKeyboardController</a></li><li><a href="TLogger.html">TLogger</a></li><li><a href="TMouseController.html">TMouseController</a></li><li><a href="TStore.html">TStore</a></li><li><a href="WebAPIMessage.html">WebAPIMessage</a></li><li><a href="WebAPIMessageData.html">WebAPIMessageData</a></li><li><a href="WebAPIMessageError.html">WebAPIMessageError</a></li><li><a href="WebAPIMessageProgress.html">WebAPIMessageProgress</a></li><li><a href="WebAPIMessageReady.html">WebAPIMessageReady</a></li><li><a href="WebAPIMessageRequest.html">WebAPIMessageRequest</a></li><li><a href="WebApiMessageResponse.html">WebApiMessageResponse</a></li><li><a href="WorkerMessage.html">WorkerMessage</a></li>
+				</ul>
+			</li>
+			
+			<li class="dropdown">
+				<a href="global.html" class="dropdown-toggle" data-toggle="dropdown">Global<b class="caret"></b></a>
+				<ul class="dropdown-menu inline">
+					<li><a href="global.html#Byte">Byte</a></li><li><a href="global.html#DefaultLogger">DefaultLogger</a></li><li><a href="global.html#Endianness">Endianness</a></li><li><a href="global.html#Enum">Enum</a></li><li><a href="global.html#FileFormat">FileFormat</a></li><li><a href="global.html#HttpStatusCode">HttpStatusCode</a></li><li><a href="global.html#HttpVerb">HttpVerb</a></li><li><a href="global.html">Keys</a></li><li><a href="global.html#LogLevel">LogLevel</a></li><li><a href="global.html#LogType">LogType</a></li><li><a href="global.html#MimeType">MimeType</a></li><li><a href="global.html#Mouse">Mouse</a></li><li><a href="global.html#npmrunbench">npm run bench</a></li><li><a href="global.html#npmrunbuild">npm run build</a></li><li><a href="global.html#npmrunbuild-script">npm run build-script</a></li><li><a href="global.html#npmrunbuild-test">npm run build-test</a></li><li><a href="global.html#npmrunclean">npm run clean</a></li><li><a href="global.html#npmrundoc">npm run doc</a></li><li><a href="global.html#npmrunhelpdefault">npm run help ( default )</a></li><li><a href="global.html#npmrunlint">npm run lint</a></li><li><a href="global.html#npmrunpatch">npm run patch</a></li><li><a href="global.html#npmrunrelease">npm run release</a></li><li><a href="global.html#npmruntest">npm run test</a></li><li><a href="global.html#npmrununit">npm run unit</a></li><li><a href="global.html#RequestType">RequestType</a></li><li><a href="global.html#ResponseType">ResponseType</a></li><li><a href="global.html#TIdFactoryType">TIdFactoryType</a></li>
+				</ul>
+			</li>
+			
+		</ul>
+        
+            <div class="col-sm-3 col-md-3">
+                <form class="navbar-form" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search" name="q" id="search-input">
+                        <div class="input-group-btn">
+                            <button class="btn btn-default" id="search-submit"><i class="glyphicon glyphicon-search"></i></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        
+	</div>
+
+</div>
+</div>
+
+
+<div class="container" id="toc-content">
+<div class="row">
+
+	
+	<div class="col-md-12">
+	
+		<div id="main">
+			
+
+		<h1 class="page-title">Source: sources/loggers/TLogger.js</h1>
+    
+<section>
+    <article>
+        <pre
+            class="sunlight-highlight-javascript linenums">/* eslint-env browser */
+
+import { toEnum } from 'itee-utils'
+import {
+    isArrayOfObject,
+    isArrayOfString,
+    isNull,
+    isObject,
+    isString,
+    isUndefined
+}                 from 'itee-validators'
+
+/**
+ * @typedef {Enum} Keys
+ *
+ * @constant
+ * @type {Keys}
+ * @deprecated
+ * @inner
+ * @description Keys contains common keyboard key values, this allow to write semantic code instead of integer when dealing with key codes.
+ */
+const LogOutput = toEnum( {
+    Console:  1,
+    Html:     2,
+    Toast:    4,
+    File:     8,
+    Database: 16,
+    All:      255
+} )
+
+/**
+ * @typedef {Enum} LogType
+ *
+ * @constant
+ * @type {LogType}
+ * @deprecated
+ * @description Keys contains common keyboard key values, this allow to write semantic code instead of integer when dealing with key codes.
+ */
+const LogType = toEnum( {
+    Message:  0,
+    Progress: 1,
+    Time:     2
+} )
+
+/**
+ * @typedef {Enum} LogLevel
+ * @property {Number} None=0 - No log allowed
+ * @property {Number} Debug=1 - Allow Debug log entry
+ * @property {Number} Info=2 - Allow Info log entry
+ * @property {Number} Warning=4 - Allow Warning log entry
+ * @property {Number} Error=8 - Allow Error log entry
+ * @property {Number} All=255 - Allow all log entry
+ *
+ * @constant
+ * @type {LogLevel}
+ * @description LogLevel is a flag that allow to set which type of log is allowed
+ */
+const LogLevel = toEnum( {
+    None:    0,
+    Debug:   1,
+    Info:    2,
+    Warning: 4,
+    Error:   8,
+    All:     255
+} )
+
+/**
+ * @class
+ * @classdesc TLogger is a fairly interface for log everthing you need, in every place you want.
+ * It can filter log input in function of severity based on LogLevel enum, and can send log to many different output like console, database, or UI.
+ */
+class TLogger {
+
+    /**
+     * @param level
+     * @return {string}
+     * @private
+     */
+    static _levelToString ( level ) {
+
+        let levelString = ''
+
+        switch ( level ) {
+
+            case LogLevel.Info:
+                levelString = 'info'
+                break
+
+            case LogLevel.Warning:
+                levelString = 'warning'
+                break
+
+            case LogLevel.Error:
+                levelString = 'error'
+                break
+
+            default:
+                levelString = 'unknownLogLevel'
+                break
+
+        }
+
+        return levelString
+
+    }
+
+    /**
+     * @constructor
+     * @param {string} level - String who represent the gravity level of message between "error | warn (for warning) | other (will display like info message)"
+     * @param {string} message - the to display
+     */
+    constructor ( parameters = {} ) {
+
+        const _parameters = {
+            ...{
+                outputLevel: LogLevel.Error,
+                outputs:     LogOutput.Console
+            }, ...parameters
+        }
+
+        this.outputLevel = _parameters.outputLevel
+        this.outputs     = _parameters.outputs
+
+        this._logsArray    = []
+        this._timers       = {}
+        this._counterTrace = 0
+
+    }
+
+    /**
+     *
+     * @return {*}
+     */
+    get outputLevel () {
+        return this._outputLevel
+    }
+
+    set outputLevel ( value ) {
+
+        const memberName = 'OutputLevel'
+        const expect     = 'Expect a value from LogLevel enum.'
+
+        if ( isNull( value ) ) { throw new Error( `${memberName} cannot be null ! ${expect}` ) }
+        if ( isUndefined( value ) ) { throw new Error( `${memberName} cannot be undefined ! ${expect}` ) }
+        //        if ( !Object.keys( LogLevel ).includes( value ) ) { throw new Error( `${memberName} cannot be an instance of ${value.constructor.name}. ${expect}` ) }
+
+        this._outputLevel = value
+
+    }
+
+    /**
+     *
+     * @return {*}
+     */
+    get outputs () {
+        return this._outputs
+    }
+
+    set outputs ( value ) {
+
+        const memberName = 'Output'
+        const expect     = 'Expect a value from LogOutput enum.'
+
+        if ( isNull( value ) ) { throw new Error( `${memberName} cannot be null ! ${expect}` ) }
+        if ( isUndefined( value ) ) { throw new Error( `${memberName} cannot be undefined ! ${expect}` ) }
+        //        if ( !Object.keys( LogOutput ).includes( value ) ) { throw new Error( `${memberName} cannot be an instance of ${value.constructor.name}. ${expect}` ) }
+
+        this._outputs = value
+
+    }
+
+    /**
+     *
+     * @param level
+     * @param datas
+     * @return {*}
+     * @private
+     */
+    _formatTrace ( level, datas ) {
+
+        const levelString = TLogger._levelToString( level )
+        const tmpLevel    = `${levelString}_${this._counterTrace}`
+
+        if ( isString( datas ) ) {
+
+            this._logsArray[ tmpLevel ] = datas
+
+        } else if ( isObject( datas ) ) {
+
+            this._logsArray[ tmpLevel ] = TLogger._formatObjectError( datas )
+
+        } else if ( isArrayOfString( datas ) ) {
+
+            this._logsArray[ tmpLevel ] = datas.toString()
+
+        } else if ( isArrayOfObject( datas ) ) {
+
+            this._logsArray[ tmpLevel ] = ''
+
+            for ( let dataIndex = 0, numberOfDatas = datas.length ; dataIndex &lt; numberOfDatas ; dataIndex++ ) {
+                this._formatTrace( level, datas[ dataIndex ] )
+            }
+
+        } else {
+
+            this._logsArray[ tmpLevel ] = ( datas ) ? datas.toString() : 'Empty log data !'
+
+        }
+
+        this._counterTrace++
+        return this._logsArray[ tmpLevel ]
+
+    }
+
+    // Todo: Use listener models
+    /**
+     *
+     * @param message
+     */
+    dispatch ( message ) {
+
+        const type = message.type
+        switch ( type ) {
+
+            case LogType.Message:
+                this._dispatchMessage( message )
+                break
+
+            case LogType.Progress:
+                this._dispatchProgress( message )
+                break
+
+            case LogType.Time:
+                this._dispatchTime( message )
+                break
+
+            default:
+                throw new RangeError( `Invalid switch parameter: ${type}` )
+
+        }
+
+    }
+
+    /**
+     *
+     * @param message
+     * @private
+     */
+    _dispatchMessage ( message ) {
+
+        const level = message.level
+        const data  = message.message
+
+        // Root message in function of gravity
+        switch ( level ) {
+
+            case LogLevel.Error:
+                if ( this.outputLevel &amp; LogLevel.Error ) {
+                    this._dispatchErrorMessage( data )
+                }
+                break
+
+            case LogLevel.Warning:
+                if ( this.outputLevel &amp; LogLevel.Warning ) {
+                    this._dispatchWarningMessage( data )
+                }
+                break
+
+            case LogLevel.Info:
+                if ( this.outputLevel &amp; LogLevel.Info ) {
+                    this._dispatchInfoMessage( data )
+                }
+                break
+
+            case LogLevel.Debug:
+                if ( this.outputLevel &amp; LogLevel.Debug ) {
+                    this._dispatchDebugMessage( data )
+                }
+                break
+
+            // For "Debug" output, don't store trace like this !
+            default:
+                throw new RangeError( `Invalid switch parameter: ${level}` )
+
+        }
+
+    }
+
+    /**
+     *
+     * @param errorMessage
+     * @private
+     */
+    _dispatchErrorMessage ( errorMessage ) {
+
+        if ( this.outputs &amp; LogOutput.Console ) {
+
+            console.error( errorMessage )
+
+        }
+
+        if ( this.outputs &amp; LogOutput.Html ) {
+
+            const span = document.createElement( 'span' )
+            span.classList.add( 'log-error' )
+            span.innerText = errorMessage
+            document.body.appendChild( span )
+
+        }
+
+        if ( this.outputs &amp; LogOutput.Toast ) {
+
+            // Todo: implement TToast
+
+        }
+
+        if ( this.outputs &amp; LogOutput.File ) {
+
+            // Todo: implement file
+
+        }
+
+        if ( this.outputs &amp; LogOutput.Database ) {
+
+            // Todo: implement db
+
+        }
+
+    }
+
+    /**
+     *
+     * @param warnMessage
+     * @private
+     */
+    _dispatchWarningMessage ( warnMessage ) {
+
+        if ( this.outputs &amp; LogOutput.Console ) {
+
+            console.warn( warnMessage )
+
+        }
+
+        if ( this.outputs &amp; LogOutput.Html ) {
+
+            const span = document.createElement( 'span' )
+            span.classList.add( 'log-warning' )
+            span.innerText = warnMessage
+            document.body.appendChild( span )
+
+        }
+
+        if ( this.outputs &amp; LogOutput.Toast ) {
+
+            // Todo: implement TToast
+
+        }
+
+        if ( this.outputs &amp; LogOutput.File ) {
+
+            // Todo: implement file
+
+        }
+
+        if ( this.outputs &amp; LogOutput.Database ) {
+
+            // Todo: implement db
+
+        }
+
+    }
+
+    /**
+     *
+     * @param infoMessage
+     * @private
+     */
+    _dispatchInfoMessage ( infoMessage ) {
+
+        if ( this.outputs &amp; LogOutput.Console ) {
+
+            console.log( infoMessage )
+
+        }
+
+        if ( this.outputs &amp; LogOutput.Html ) {
+
+            const span = document.createElement( 'span' )
+            span.classList.add( 'log-info' )
+            span.innerText = infoMessage
+            document.body.appendChild( span )
+
+        }
+
+        if ( this.outputs &amp; LogOutput.Toast ) {
+
+            // Todo: implement TToast
+
+        }
+
+        if ( this.outputs &amp; LogOutput.File ) {
+
+            // Todo: implement file
+
+        }
+
+        if ( this.outputs &amp; LogOutput.Database ) {
+
+            // Todo: implement db
+
+        }
+
+    }
+
+    /**
+     *
+     * @param debugMessage
+     * @private
+     */
+    _dispatchDebugMessage ( debugMessage ) {
+
+        if ( this.outputs &amp; LogOutput.Console ) {
+
+            console.log( debugMessage )
+
+        }
+
+        if ( this.outputs &amp; LogOutput.Html ) {
+
+            const span = document.createElement( 'span' )
+            span.classList.add( 'log-info' )
+            span.innerText = debugMessage
+            document.body.appendChild( span )
+
+        }
+
+        if ( this.outputs &amp; LogOutput.Toast ) {
+
+            // Todo: implement TToast
+
+        }
+
+        if ( this.outputs &amp; LogOutput.File ) {
+
+            // Todo: implement file
+
+        }
+
+        if ( this.outputs &amp; LogOutput.Database ) {
+
+            // Todo: implement db
+
+        }
+
+    }
+
+    /**
+     *
+     * @param progress
+     * @private
+     */
+    _dispatchProgress ( progress ) {
+
+        const level          = progress.level
+        let formattedMessage = progress.message
+
+        // Root message in function of gravity
+        switch ( level ) {
+
+            case LogLevel.Info:
+                if ( this.outputLevel &amp; LogLevel.Info ) {
+                    this._dispatchInfoProgress( formattedMessage )
+                }
+                break
+
+            case LogLevel.Debug:
+                if ( this.outputLevel &amp; LogLevel.Debug ) {
+                    this._dispatchDebugProgress( formattedMessage )
+                }
+                break
+
+            // For "Debug" output, don't store trace like this !
+            default:
+                throw new RangeError( `Invalid progress level parameter: ${level}` )
+
+        }
+
+    }
+
+    /**
+     *
+     * @param infoProgress
+     * @private
+     */
+    _dispatchInfoProgress ( infoProgress ) {
+
+        if ( this.outputs &amp; LogOutput.Console ) {
+
+            console.log( infoProgress )
+
+        }
+
+        if ( this.outputs &amp; LogOutput.Html ) {
+
+            const span = document.createElement( 'span' )
+            span.classList.add( 'log-info' )
+            span.innerText = infoProgress
+            document.body.appendChild( span )
+
+        }
+
+        if ( this.outputs &amp; LogOutput.Toast ) {
+
+            // Todo: implement TToast
+
+        }
+
+        if ( this.outputs &amp; LogOutput.File ) {
+
+            // Todo: implement file
+
+        }
+
+        if ( this.outputs &amp; LogOutput.Database ) {
+
+            // Todo: implement db
+
+        }
+
+    }
+
+    /**
+     *
+     * @param debugProgress
+     * @private
+     */
+    _dispatchDebugProgress ( debugProgress ) {
+
+        if ( this.outputs &amp; LogOutput.Console ) {
+
+            console.log( debugProgress )
+
+        }
+
+        if ( this.outputs &amp; LogOutput.Html ) {
+
+            const span = document.createElement( 'span' )
+            span.classList.add( 'log-info' )
+            span.innerText = debugProgress
+            document.body.appendChild( span )
+
+        }
+
+        if ( this.outputs &amp; LogOutput.Toast ) {
+
+            // Todo: implement TToast
+
+        }
+
+        if ( this.outputs &amp; LogOutput.File ) {
+
+            // Todo: implement file
+
+        }
+
+        if ( this.outputs &amp; LogOutput.Database ) {
+
+            // Todo: implement db
+
+        }
+
+    }
+
+    /**
+     *
+     * @param time
+     * @private
+     */
+    _dispatchTime ( time ) {
+
+        console.log( time.message )
+
+    }
+
+    /**
+     *
+     * @param debug
+     */
+    debug ( debug ) {
+
+        this.dispatch( {
+            type:    LogType.Message,
+            level:   LogLevel.Debug,
+            message: debug
+        } )
+
+    }
+
+    /**
+     *
+     * @param info
+     */
+    log ( info ) {
+
+        this.dispatch( {
+            type:    LogType.Message,
+            level:   LogLevel.Info,
+            message: info
+        } )
+
+    }
+
+    /**
+     *
+     * @param warning
+     */
+    warn ( warning ) {
+
+        this.dispatch( {
+            type:    LogType.Message,
+            level:   LogLevel.Warning,
+            message: warning
+        } )
+
+    }
+
+    /**
+     *
+     * @param error
+     */
+    error ( error ) {
+
+        this.dispatch( {
+            type:    LogType.Message,
+            level:   LogLevel.Error,
+            message: error
+        } )
+
+    }
+
+    /**
+     *
+     * @param progress
+     */
+    progress ( progress ) {
+
+        progress.preventDefault()
+        if ( progress.cancelable ) {
+            progress.stopImmediatePropagation()
+        }
+
+        if ( progress.lengthComputable ) {
+
+            const type        = progress.type
+            const loaded      = progress.loaded
+            const total       = progress.total
+            const advancement = Math.round( ( loaded / total ) * 10000 ) / 100
+            const message     = `${type}: ${advancement}% [${loaded}/${total}]`
+
+            this.dispatch( {
+                type:    LogType.Progress,
+                level:   LogLevel.Info,
+                message: message
+            } )
+
+        }
+
+    }
+
+    /**
+     *
+     * @param key
+     */
+    startChronoFor ( key ) {
+
+        this._timers[ key ] = new Date().getTime()
+
+    }
+
+    /**
+     *
+     * @param key
+     */
+    stopChronoFor ( key ) {
+
+        const deltaTime = ( new Date().getTime() - this._timers[ key ] )
+        const message   = `${key} take ${deltaTime}ms.`
+
+        this.dispatch( {
+            type:    LogType.Time,
+            level:   LogLevel.Debug,
+            message: message
+        } )
+
+    }
+
+    /**
+     *
+     * @param value
+     * @return {TLogger}
+     */
+    setOutputLevel ( value ) {
+
+        this.outputLevel = value
+        return this
+
+    }
+
+    /**
+     *
+     * @param value
+     * @return {TLogger}
+     */
+    setOutput ( value ) {
+
+        this.outputs = value
+        return this
+
+    }
+
+}
+
+/**
+ * A default logger instance that can be use everywhere it is needed.
+ * @type {TLogger}
+ */
+const DefaultLogger = new TLogger()
+
+export {
+    TLogger,
+    DefaultLogger,
+    LogLevel,
+    LogType,
+    LogOutput
+}
+</pre>
+    </article>
+</section>
+
+
+
+
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	
+
+</div>
+</div>
+
+
+    <div class="modal fade" id="searchResults">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title">Search results</h4>
+          </div>
+          <div class="modal-body"></div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div>
+
+
+<footer>
+
+
+	<span class="copyright">
+	Copyright 2020 <a href="https://github.com/Itee">Itee</a> (Tristan Valcke)
+	</span>
+
+<span class="jsdoc-message">
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.4</a>
+	
+	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
+</span>
+</footer>
+
+<script src="scripts/docstrap.lib.js"></script>
+<script src="scripts/toc.js"></script>
+
+    <script type="text/javascript" src="scripts/fulltext-search-ui.js"></script>
+
+
+<script>
+$( function () {
+	$( "[id*='$']" ).each( function () {
+		var $this = $( this );
+
+		$this.attr( "id", $this.attr( "id" ).replace( "$", "__" ) );
+	} );
+
+	$( ".tutorial-section pre, .readme-section pre, pre.prettyprint.source" ).each( function () {
+		var $this = $( this );
+
+		var example = $this.find( "code" );
+		exampleText = example.html();
+		var lang = /{@lang (.*?)}/.exec( exampleText );
+		if ( lang && lang[1] ) {
+			exampleText = exampleText.replace( lang[0], "" );
+			example.html( exampleText );
+			lang = lang[1];
+		} else {
+			var langClassMatch = example.parent()[0].className.match(/lang\-(\S+)/);
+			lang = langClassMatch ? langClassMatch[1] : "javascript";
+		}
+
+		if ( lang ) {
+
+			$this
+			.addClass( "sunlight-highlight-" + lang )
+			.addClass( "linenums" )
+			.html( example.html() );
+
+		}
+	} );
+
+	Sunlight.highlightAll( {
+		lineNumbers : true,
+		showMenu : true,
+		enableDoclinks : true
+	} );
+
+	$.catchAnchorLinks( {
+        navbarOffset: 10
+	} );
+	$( "#toc" ).toc( {
+		anchorName  : function ( i, heading, prefix ) {
+			return $( heading ).attr( "id" ) || ( prefix + i );
+		},
+		selectors   : "#toc-content h1,#toc-content h2,#toc-content h3,#toc-content h4",
+		showAndHide : false,
+		smoothScrolling: true
+	} );
+
+	$( "#main span[id^='toc']" ).addClass( "toc-shim" );
+	$( '.dropdown-toggle' ).dropdown();
+
+    $( "table" ).each( function () {
+      var $this = $( this );
+      $this.addClass('table');
+    } );
+
+} );
+</script>
+
+
+
+<!--Navigation and Symbol Display-->
+
+
+<!--Google Analytics-->
+
+
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            SearcherDisplay.init();
+        });
+    </script>
+
+
+</body>
+</html>

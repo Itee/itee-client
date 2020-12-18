@@ -1,3 +1,20 @@
+# [7.2.0](https://github.com/Itee/itee-client/compare/v7.1.4...v7.2.0) (2020-12-18)
+
+
+### Bug Fixes
+
+* **abstractwebapi:** add unreachable flag on origin that cannot be reached ([011872b](https://github.com/Itee/itee-client/commit/011872beec8647e626c22b1829fa694e31882453))
+* **abstractwebapi:** move some members before internal setters to avoid bad initialization ([75f4681](https://github.com/Itee/itee-client/commit/75f468171f2c56578e9caa51c51865dfe9892be5))
+* **abstractwebapi:** test if response exist before trying to access his members ([6ceb1ea](https://github.com/Itee/itee-client/commit/6ceb1ea809ef6b2444fd0d4fd321de1cfefb979d))
+* **eslint:** fix eslint error ([ef75cd6](https://github.com/Itee/itee-client/commit/ef75cd685ba157e85c9cdf94614c27684b28ce95))
+* **package:** add missing package-lock ([dbf87bf](https://github.com/Itee/itee-client/commit/dbf87bf088b33b53a26050cafe546911654e86e7))
+
+
+### Features
+
+* **webapi:** add webapi support and abstract class ([9c206ae](https://github.com/Itee/itee-client/commit/9c206aefbd028948d5ec15243fbdf8bff78702a2))
+* **worker:** add worker support and abstract classes ([c869fc6](https://github.com/Itee/itee-client/commit/c869fc67966b45fbb1299936e503f88a77465691))
+
 ## [7.1.4](https://github.com/Itee/itee-client/compare/v7.1.3...v7.1.4) (2020-07-21)
 
 
