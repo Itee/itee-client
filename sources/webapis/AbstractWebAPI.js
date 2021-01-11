@@ -49,7 +49,7 @@ class AbstractWebAPI {
                 allowAnyOrigins: false,
                 allowedOrigins:  [],
                 //                targetOrigin:    '',
-                requestTimeout:  2000
+                requestTimeout: 2000
             },
             ...parameters
         }
@@ -567,7 +567,7 @@ class AbstractWebAPI {
      *
      * @param originId
      * @param request
-     * @returns {PromiseConstructor}
+     * @returns {Promise}
      */
     postRequestTo ( originId, request ) {
 
@@ -602,7 +602,7 @@ class AbstractWebAPI {
                             } else {
 
                                 resovle( result )
-                                
+
                             }
 
                         } else {
@@ -614,7 +614,7 @@ class AbstractWebAPI {
                     } else if ( currentWaitingTime >= this.requestTimeout ) {
 
                         clearInterval( intervalId )
-                        reject( new Error( `Request timeout for ${JSON.stringify(request)}` ) )
+                        reject( new Error( `Request timeout for ${ JSON.stringify( request ) }` ) )
 
                     } else {
 
