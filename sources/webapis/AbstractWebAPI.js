@@ -298,7 +298,7 @@ class AbstractWebAPI {
      * @param event
      * @private
      */
-    _onMessage ( event ) {
+    async _onMessage ( event ) {
 
         // Is allowed origin
         if ( this._isNotAllowedForAllOrigins() && this._isNotAllowedOrigin( event.origin ) ) {
@@ -307,24 +307,24 @@ class AbstractWebAPI {
         }
 
         // In case we are not in embbeded iframe or the origin is not an iframe set the origin window as the source event
-        const origin = this._getAllowedOriginByURI( event.origin )
-        if ( origin === null ) {
-            this._allowedOrigins.push( {
-                id:           origin.id || `origin_${ Math.random().toString().slice( 2 ) }`,
-                uri:          origin.uri,
+        let origin = this._getAllowedOriginByURI( event.origin )
+        if ( isNotDefined( origin ) ) {
+            origin = {
+                id:           `origin_${ Math.random().toString().slice( 2 ) }`,
+                uri:          event.origin,
                 methods:      [ '*' ],
                 window:       event.source,
                 messageQueue: [],
-                isReady:      true
-            } )
-        }
-        if ( origin.window === null ) {
+                isReady:      false
+            }
+            this._allowedOrigins.push( origin )
+        } else if ( origin.window === null ) {
             origin.window = event.source
         }
 
         try {
 
-            this._dispatchMessageFrom( origin, JSON.parse( event.data ) )
+            await this._dispatchMessageFrom( origin, JSON.parse( event.data ) )
 
         } catch ( error ) {
 
@@ -340,7 +340,7 @@ class AbstractWebAPI {
      * @param message
      * @private
      */
-    _dispatchMessageFrom ( origin, message ) {
+    async _dispatchMessageFrom ( origin, message ) {
 
         if ( isNotDefined( message ) ) { throw new ReferenceError( `[${ this._origin }]: Message cannot be null or undefined ! Expect a json object.` ) }
 
@@ -369,7 +369,7 @@ class AbstractWebAPI {
         } else if ( messageType === '_request' ) {
 
             console.log( `[${ this._origin }]: Recieve '_request' message from [${ origin.uri }].` )
-            this.onRequestFrom( origin, message )
+            await this.onRequestFrom( origin, message )
 
         } else {
 
@@ -407,22 +407,23 @@ class AbstractWebAPI {
      * @param origin
      * @param request
      */
-    onRequestFrom ( origin, request ) {
+    async onRequestFrom ( origin, request ) {
 
         const method = request.method
         if ( this._isNotAllowedForAllMethods( origin ) && this._isNotAllowedMethod( origin, method ) ) { throw new Error( `[${ this._origin }]: Origin [${ origin }] try to access an unallowed method named ${ method }.` ) }
-        if ( this._methodNotExist( method ) ) { throw new ReferenceError( `[${ this._origin }]: Origin [${ origin }] try to access an unexisting method named ${ method }.` ) }
+        if ( this._methodNotExist( method ) ) { throw new ReferenceError( `[${ this._origin }]: Origin [${ origin.uri }] try to access an unexisting method named "${ method }".` ) }
 
         const parameters = request.parameters
-        let response
+        let message
 
         try {
-            const result = this[ method ]( ...parameters )
-            response     = new WebApiMessageResponse( request, result )
+            const result = await this[ method ]( ...parameters )
+            message      = new WebAPIMessageData( result )
         } catch ( error ) {
-            response = new WebApiMessageResponse( request, error )
+            message = new WebAPIMessageError( error )
         }
 
+        const response = new WebApiMessageResponse( request, message )
         this.postMessageTo( origin.id, response )
 
     }
