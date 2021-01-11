@@ -588,16 +588,33 @@ class AbstractWebAPI {
                         this._responses.delete( request.id )
                         clearInterval( intervalId )
 
-                        if ( response && response.type === 'error' ) {
-                            reject( response )
+                        const result = response.result
+                        if ( isDefined( result ) ) {
+
+                            if ( result.type === '_error' ) {
+
+                                reject( result.message )
+
+                            } else if ( result.type === '_data' ) {
+
+                                resovle( result.data )
+
+                            } else {
+
+                                resovle( result )
+                                
+                            }
+
                         } else {
-                            resovle( response )
+
+                            resovle()
+
                         }
 
                     } else if ( currentWaitingTime >= this.requestTimeout ) {
 
                         clearInterval( intervalId )
-                        reject( new Error( `[${ this._origin }]: Request Timeout: ${ request }` ) )
+                        reject( new Error( `Request timeout for ${JSON.stringify(request)}` ) )
 
                     } else {
 
