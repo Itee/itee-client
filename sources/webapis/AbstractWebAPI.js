@@ -634,12 +634,12 @@ class AbstractWebAPI {
 
             if ( !force && !origin.isReady ) {
 
-                console.warn( `[${ this._origin }]: Origin "${ origin.id }" is not ready yet !` )
+                console.warn( `[${ this._origin }]: Origin "${ origin.uri }" is not ready yet !` )
                 origin.messageQueue.push( message )
 
             } else if ( force && !origin.window ) {
 
-                console.error( `[${ this._origin }]: Origin "${ origin.id }" is unreachable !` )
+                console.error( `[${ this._origin }]: Origin "${ origin.uri }" is unreachable !` )
                 origin.isUnreachable = true
                 origin.messageQueue.push( message )
 
