@@ -1,3 +1,16 @@
+# [7.3.0](https://github.com/Itee/itee-client/compare/v7.2.0...v7.3.0) (2021-01-21)
+
+
+### Bug Fixes
+
+* **abstractwebapi:** fix response dispatch ([f7e219a](https://github.com/Itee/itee-client/commit/f7e219a0be396e4c2dc1551f4dd65986aeddebde))
+* **abstractwebapi:** use correct origin uri in warning message ([ddfcc7d](https://github.com/Itee/itee-client/commit/ddfcc7d10ca0eec9a1d352cc3d82e523b8630485))
+
+
+### Features
+
+* **abstractwebapi:** add allow any origins notion to allow by default all origin and remove target ([010a871](https://github.com/Itee/itee-client/commit/010a871b15079c02d642cc50bfcbfa02ab45052f))
+
 # [7.2.0](https://github.com/Itee/itee-client/compare/v7.1.4...v7.2.0) (2020-12-18)
 
 

@@ -1,4 +1,4 @@
-console.log('Itee.Client v7.2.0 - EsModule')
+console.log('Itee.Client v7.3.0 - EsModule')
 import { toEnum } from 'itee-utils';
 import { isString, isFunction, isNull, isUndefined, isNotObject, isNotBoolean, isNotArray, isNotUndefined, isObject, isArrayOfString, isArrayOfObject, isNotArrayBuffer, isNotNumber, isNotString, isEmptyString, isBlankString, isNumberPositive, isNumberNegative, isZero, isArray, isNotEmptyArray, isArrayOfSingleElement, isNotEmptyObject, isNotEmptyString, isNotBlankString, isEmptyObject, isNotDefined, isDefined, isFalse, isArrayBuffer } from 'itee-validators';
 
@@ -4485,6 +4485,7 @@ class AbstractWebAPI {
     /**
      * @constructor
      * @param {Object} parameters - An object containing all parameters to pass through the inheritance chain to initialize this instance
+     * @param {Boolean} [parameters.allowAnyOrigins=false] - A boolean to allow or not any origins calls
      * @param {Array<AllowedOrigin>} [parameters.allowedOrigins=[]] - An array containing configured allowed origins
      * @param {String} [parameters.targetOrigin=''] - The current selected target origins on which will be send all requests
      * @param {Number} [parameters.requestTimeout=2000] - The request timeout before throw an error
@@ -4493,9 +4494,10 @@ class AbstractWebAPI {
 
         const _parameters = {
             ...{
-                allowedOrigins: [],
-                targetOrigin:   '',
-                requestTimeout: 2000
+                allowAnyOrigins: false,
+                allowedOrigins:  [],
+                //                targetOrigin:    '',
+                requestTimeout:  2000
             },
             ...parameters
         };
@@ -4508,9 +4510,10 @@ class AbstractWebAPI {
         window.addEventListener( 'message', this._onMessage.bind( this ), false );
 
         // Public stuff
-        this.allowedOrigins = _parameters.allowedOrigins;
-        this.targetOrigin   = _parameters.targetOrigin; // Todo: defaulting targetOrigin to the first allowedOrigins if exist
-        this.requestTimeout = _parameters.requestTimeout;
+        this.allowAnyOrigins = _parameters.allowAnyOrigins;
+        this.allowedOrigins  = _parameters.allowedOrigins;
+        //        this.targetOrigin    = _parameters.targetOrigin // Todo: defaulting targetOrigin to the first allowedOrigins if exist
+        this.requestTimeout  = _parameters.requestTimeout;
 
         // Emit onReady event
         this._broadCastReadyMessage();
@@ -4530,16 +4533,20 @@ class AbstractWebAPI {
 
         const _allowedOrigins = Array.isArray( value ) ? value : [ value ];
         for ( let originIndex = 0, numberOfOrigins = _allowedOrigins.length ; originIndex < numberOfOrigins ; originIndex++ ) {
+
             const origin = _allowedOrigins[ originIndex ];
             this._allowedOrigins.push( {
-                id:           origin.id,
+                id:           origin.id || `origin_${ Math.random().toString().slice( 2 ) }`,
                 uri:          origin.uri,
                 methods:      origin.methods,
                 window:       this._getOriginWindow( origin.uri ),
                 messageQueue: [],
                 isReady:      false
             } );
+
         }
+
+        this._broadCastReadyMessage();
 
     }
 
@@ -4547,24 +4554,24 @@ class AbstractWebAPI {
      *
      * @returns {*}
      */
-    get targetOrigin () {
-        return this._targetOrigin
-    }
-
-    set targetOrigin ( value ) {
-
-        const expectation = 'Expect a valid string origin id !';
-
-        if ( isUndefined( value ) ) { throw new ReferenceError( `[${ this._origin }]: Target origin cannot be undefined. ${ expectation }` ) }
-        if ( isNull( value ) ) { throw new ReferenceError( `[${ this._origin }]: Target origin cannot be null. ${ expectation }` ) }
-        if ( isNotString( value ) ) { throw new ReferenceError( `[${ this._origin }]: Target origin is invalid. ${ expectation }` ) }
-
-        const allowedOriginsIds = this.allowedOrigins.map( origin => origin.id );
-        if ( !allowedOriginsIds.includes( value ) ) { throw new ReferenceError( `[${ this._origin }]: Provided target origin is not contain in current allowedOrigins. ${ expectation }` ) }
-
-        this._targetOrigin = value;
-
-    }
+    //    get targetOrigin () {
+    //        return this._targetOrigin
+    //    }
+    //
+    //    set targetOrigin ( value ) {
+    //
+    //        const expectation = 'Expect a valid string origin id !'
+    //
+    //        if ( isUndefined( value ) ) { throw new ReferenceError( `[${ this._origin }]: Target origin cannot be undefined. ${ expectation }` ) }
+    //        if ( isNull( value ) ) { throw new ReferenceError( `[${ this._origin }]: Target origin cannot be null. ${ expectation }` ) }
+    //        if ( isNotString( value ) ) { throw new ReferenceError( `[${ this._origin }]: Target origin is invalid. ${ expectation }` ) }
+    //
+    //        const allowedOriginsIds = this.allowedOrigins.map( origin => origin.id )
+    //        if ( !allowedOriginsIds.includes( value ) ) { throw new ReferenceError( `[${ this._origin }]: Provided target origin is not contain in current allowedOrigins. ${ expectation }` ) }
+    //
+    //        this._targetOrigin = value
+    //
+    //    }
 
     /**
      *
@@ -4625,6 +4632,16 @@ class AbstractWebAPI {
         } catch ( e ) {
             return true
         }
+
+    }
+
+    _isNotAllowedForAllOrigins () {
+        return !this.allowAnyOrigins
+    }
+
+    _isNotAllowedOrigin ( originURI ) {
+
+        return !this._allowedOrigins.map( allowedOrigin => allowedOrigin.uri ).includes( originURI )
 
     }
 
@@ -4729,23 +4746,33 @@ class AbstractWebAPI {
      * @param event
      * @private
      */
-    _onMessage ( event ) {
+    async _onMessage ( event ) {
 
         // Is allowed origin
-        const origin = this._getAllowedOriginByURI( event.origin );
-        if ( origin === undefined ) {
+        if ( this._isNotAllowedForAllOrigins() && this._isNotAllowedOrigin( event.origin ) ) {
             console.warn( `[${ this._origin }]: An unallowed origin [${ event.origin }] try to access the web api.` );
             return
         }
 
         // In case we are not in embbeded iframe or the origin is not an iframe set the origin window as the source event
-        if ( origin.window === null ) {
-            this._getAllowedOriginById( origin.id ).window = event.source;
+        let origin = this._getAllowedOriginByURI( event.origin );
+        if ( isNotDefined( origin ) ) {
+            origin = {
+                id:           `origin_${ Math.random().toString().slice( 2 ) }`,
+                uri:          event.origin,
+                methods:      [ '*' ],
+                window:       event.source,
+                messageQueue: [],
+                isReady:      false
+            };
+            this._allowedOrigins.push( origin );
+        } else if ( origin.window === null ) {
+            origin.window = event.source;
         }
 
         try {
 
-            this._dispatchMessageFrom( origin, JSON.parse( event.data ) );
+            await this._dispatchMessageFrom( origin, JSON.parse( event.data ) );
 
         } catch ( error ) {
 
@@ -4761,7 +4788,7 @@ class AbstractWebAPI {
      * @param message
      * @private
      */
-    _dispatchMessageFrom ( origin, message ) {
+    async _dispatchMessageFrom ( origin, message ) {
 
         if ( isNotDefined( message ) ) { throw new ReferenceError( `[${ this._origin }]: Message cannot be null or undefined ! Expect a json object.` ) }
 
@@ -4790,7 +4817,7 @@ class AbstractWebAPI {
         } else if ( messageType === '_request' ) {
 
             console.log( `[${ this._origin }]: Recieve '_request' message from [${ origin.uri }].` );
-            this.onRequestFrom( origin, message );
+            await this.onRequestFrom( origin, message );
 
         } else {
 
@@ -4828,22 +4855,23 @@ class AbstractWebAPI {
      * @param origin
      * @param request
      */
-    onRequestFrom ( origin, request ) {
+    async onRequestFrom ( origin, request ) {
 
         const method = request.method;
         if ( this._isNotAllowedForAllMethods( origin ) && this._isNotAllowedMethod( origin, method ) ) { throw new Error( `[${ this._origin }]: Origin [${ origin }] try to access an unallowed method named ${ method }.` ) }
-        if ( this._methodNotExist( method ) ) { throw new ReferenceError( `[${ this._origin }]: Origin [${ origin }] try to access an unexisting method named ${ method }.` ) }
+        if ( this._methodNotExist( method ) ) { throw new ReferenceError( `[${ this._origin }]: Origin [${ origin.uri }] try to access an unexisting method named "${ method }".` ) }
 
         const parameters = request.parameters;
-        let response;
+        let message;
 
         try {
-            const result = this[ method ]( ...parameters );
-            response     = new WebApiMessageResponse( request, result );
+            const result = await this[ method ]( ...parameters );
+            message      = new WebAPIMessageData( result );
         } catch ( error ) {
-            response = new WebApiMessageResponse( request, error );
+            message = new WebAPIMessageError( error );
         }
 
+        const response = new WebApiMessageResponse( request, message );
         this.postMessageTo( origin.id, response );
 
     }
@@ -4987,7 +5015,7 @@ class AbstractWebAPI {
      *
      * @param originId
      * @param request
-     * @returns {PromiseConstructor}
+     * @returns {Promise}
      */
     postRequestTo ( originId, request ) {
 
@@ -5008,16 +5036,33 @@ class AbstractWebAPI {
                         this._responses.delete( request.id );
                         clearInterval( intervalId );
 
-                        if ( response && response.type === 'error' ) {
-                            reject( response );
+                        const result = response.result;
+                        if ( isDefined( result ) ) {
+
+                            if ( result.type === '_error' ) {
+
+                                reject( result.message );
+
+                            } else if ( result.type === '_data' ) {
+
+                                resovle( result.data );
+
+                            } else {
+
+                                resovle( result );
+
+                            }
+
                         } else {
-                            resovle( response );
+
+                            resovle();
+
                         }
 
                     } else if ( currentWaitingTime >= this.requestTimeout ) {
 
                         clearInterval( intervalId );
-                        reject( new Error( `[${ this._origin }]: Request Timeout: ${ request }` ) );
+                        reject( new Error( `Request timeout for ${ JSON.stringify( request ) }` ) );
 
                     } else {
 
@@ -5055,12 +5100,12 @@ class AbstractWebAPI {
 
             if ( !force && !origin.isReady ) {
 
-                console.warn( `[${ this._origin }]: Origin "${ origin.id }" is not ready yet !` );
+                console.warn( `[${ this._origin }]: Origin "${ origin.uri }" is not ready yet !` );
                 origin.messageQueue.push( message );
 
             } else if ( force && !origin.window ) {
 
-                console.error( `[${ this._origin }]: Origin "${ origin.id }" is unreachable !` );
+                console.error( `[${ this._origin }]: Origin "${ origin.uri }" is unreachable !` );
                 origin.isUnreachable = true;
                 origin.messageQueue.push( message );
 
