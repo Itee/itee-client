@@ -1,4 +1,4 @@
-console.log('Itee.Client v7.1.4 - CommonJs')
+console.log('Itee.Client v7.3.0 - CommonJs')
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -7,18 +7,47 @@ var iteeUtils = require('itee-utils');
 var iteeValidators = require('itee-validators');
 
 /**
- * @author [Tristan Valcke]{@link https://github.com/Itee}
- * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ * A freezed javascript object used like an enum.
+ * @typedef {object} Enum
+ * @constant
+ * @example
+ * var Meal = toEnum( {
+ *     Food: 'Tartiflette',
+ *     Drink: 'Saint-Emilion',
+ *     Dessert: 'Mousse au chocolat'
+ * } )
  *
- * @class ClassName
- * @classdesc Todo...
- * @example Todo...
+ * if( Foo.includes('Tartiflette') {
+ *     // Happy
+ * }
+ *
+ * var myDrink = 'coke'
+ * if( myDrink === Meal.Drink ) {
+ *
+ * } else {
+ *     // Your life is a pain
+ * }
+ *
+ * var MealTypes = Meal.types
+ * // ['Tartiflette', 'Saint-Emilion', 'Mousse au chocolat' ]
  *
  */
 
 /**
- * The FileFormat Enum give some commonly used file format in 3d context
- * @type {Enum}
+ * @typedef {Enum} FileFormat
+ * @property {String} Asc="asc" - The ascii file format
+ * @property {String} Dae="dae" - The dae file format
+ * @property {String} Dbf="dbf" - The dbf file format
+ * @property {String} Fbx="fbx" - The fbx file format
+ * @property {String} Mtl="mtl" - The material file format
+ * @property {String} Json="json" - The json file format
+ * @property {String} Obj="obj" - The object file format
+ * @property {String} Shp="shp" - The shape file format
+ * @property {String} Stl="stl" - The stereolithographie file format
+ *
+ * @constant
+ * @type {FileFormat}
+ * @description The FileFormat Enum give some commonly used file format in 3d context
  */
 const FileFormat = iteeUtils.toEnum( {
     Asc:  { value: 'asc' },
@@ -219,10 +248,10 @@ const HttpStatusCode = iteeUtils.toEnum( {
 
 /**
  * @typedef {Enum} HttpVerb
- * @property {string} Create="PUT" - Corresponding to the create http verb for an itee server, namely "PUT".
- * @property {string} Read="POST" - Corresponding to the read http verb for an itee server, namely "POST".
- * @property {string} Update="PATCH" - Corresponding to the update http verb for an itee server, namely "PATCH".
- * @property {string} Delete="DELETE" - Corresponding to the delete http verb for an itee server, namely "DELETE".
+ * @property {String} Create="PUT" - Corresponding to the create http verb for an itee server, namely "PUT".
+ * @property {String} Read="POST" - Corresponding to the read http verb for an itee server, namely "POST".
+ * @property {String} Update="PATCH" - Corresponding to the update http verb for an itee server, namely "PATCH".
+ * @property {String} Delete="DELETE" - Corresponding to the delete http verb for an itee server, namely "DELETE".
  *
  * @constant
  * @type {HttpVerb}
@@ -237,8 +266,15 @@ const HttpVerb = iteeUtils.toEnum( {
 } );
 
 /**
- * The Keys Enum give the associated key_code
- * @type {Enum}
+ * @typedef {Enum} Keys
+ * @property {Number} BACKSPACE=8 - The backspace key code
+ * @property {Number} TAB=9 - The tab key code
+ * @property {Number} ENTER=13 - The enter key code
+ * @property {Number} Etc...=* - All the rest
+ *
+ * @constant
+ * @type {Keys}
+ * @description Keys contains common keyboard key values, this allow to write semantic code instead of integer when dealing with key codes.
  */
 const Keys = iteeUtils.toEnum( {
     BACKSPACE:            { value: 8 },
@@ -342,29 +378,42 @@ const Keys = iteeUtils.toEnum( {
     SINGLE_QUOTE:         { value: 222 }
 } );
 
-// Todo
+/**
+ * @typedef {Enum} MimeType
+ * @property {Number} ...
+ *
+ * @constant
+ * @type {MimeType}
+ * @description Todo...
+ */
 const MimeType = iteeUtils.toEnum( {} );
 
 /**
- * This Enum expose 4 common state of mouse button.
- * Wheel, Left, Middle and Right
- * @type {Enum}
+ * @typedef {Enum} Mouse
+ * @property {Number} Wheel=-1 - The enter key code
+ * @property {Number} Left=0 - The enter key code
+ * @property {Number} Middle=1 - The enter key code
+ * @property {Number} Right=2 - The enter key code
+ *
+ * @constant
+ * @type {Mouse}
+ * @description This Mouse Enum expose 4 common state of mouse button values (Wheel, Left, Middle and Right), this allow to write semantic code instead of integer when dealing with mouse button codes.
  */
 const Mouse = iteeUtils.toEnum( {
-    WHEEL:  { value: -1 },
-    LEFT:   { value: 0 },
-    MIDDLE: { value: 1 },
-    RIGHT:  { value: 2 }
+    Wheel:  { value: -1 },
+    Left:   { value: 0 },
+    Middle: { value: 1 },
+    Right:  { value: 2 }
 } );
 
 /**
  * @typedef {Enum} ResponseType
- * @property {string} ArrayBuffer="arraybuffer" - The "arraybuffer" server response type.
- * @property {string} Blob="blob" - The "blob" server response type.
- * @property {string} Document="document" - The "document" server response type.
- * @property {string} Json="json" - The "json" server response type.
- * @property {string} DOMString="text" - The "text" server response type.
- * @property {string} Default="text" - The "" server response type ( equivalent to DOMString ).
+ * @property {String} ArrayBuffer="arraybuffer" - The "arraybuffer" server response type.
+ * @property {String} Blob="blob" - The "blob" server response type.
+ * @property {String} Document="document" - The "document" server response type.
+ * @property {String} Json="json" - The "json" server response type.
+ * @property {String} DOMString="text" - The "text" server response type.
+ * @property {String} Default="text" - The "" server response type ( equivalent to DOMString ).
  *
  * @constant
  * @type {ResponseType}
@@ -381,23 +430,25 @@ const ResponseType = iteeUtils.toEnum( {
 } );
 
 /**
- * @author [Tristan Valcke]{@link https://github.com/Itee}
- * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ * @class
+ * @classdesc TStore is a simple javascript object whose purpose is to store some ket/value data to future usage. It could be enable/disable.
  *
- * @class TCache
- * @classdesc TCache is a simple javascript object whose purpose is to store some ket/value data to future usage. It could be enable/disable.
- *
- * @example
+ * @example {@lang javascript}
  * var cache = new TCache()
  * cache.add( 'foo', 'bar' )
  * TLogger.log( cache.get('foo') ) // 'bar'
- */
-
-/**
- * @class Super class cache!
+ *
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  */
 class TStore {
 
+    /**
+     *
+     * @param value
+     * @param validators
+     * @private
+     */
     static _validate ( value, validators ) {
 
         for ( let validatorIndex = 0, numberOfValidators = validators.length ; validatorIndex < numberOfValidators ; validatorIndex++ ) {
@@ -423,6 +474,11 @@ class TStore {
 
     /**
      * @constructor
+     * @param {Object} [parameters={}]
+     * @param {Object} [parameters.collection={}]
+     * @param {Boolean} [parameters.allowOverride=false]
+     * @param {Array.<function>} [parameters.keyValidators=[]]
+     * @param {Array.<function>} [parameters.valueValidators=[]]
      */
     constructor ( parameters = {} ) {
 
@@ -442,6 +498,10 @@ class TStore {
 
     }
 
+    /**
+     *
+     * @return {{}}
+     */
     get collection () {
 
         return this._collection
@@ -461,6 +521,10 @@ class TStore {
 
     }
 
+    /**
+     *
+     * @return {*}
+     */
     get allowOverride () {
 
         return this._allowOverride
@@ -480,6 +544,10 @@ class TStore {
 
     }
 
+    /**
+     *
+     * @return {*}
+     */
     get keyValidators () {
 
         return this._keyValidators
@@ -499,6 +567,10 @@ class TStore {
 
     }
 
+    /**
+     *
+     * @return {*}
+     */
     get valueValidators () {
         return this._valueValidators
     }
@@ -516,18 +588,31 @@ class TStore {
 
     }
 
+    /**
+     *
+     * @return {string[]}
+     */
     get keys () {
 
         return Object.keys( this._collection )
 
     }
 
+    /**
+     *
+     * @return {unknown[] | any[]}
+     */
     get values () {
 
         return Object.values( this._collection )
 
     }
 
+    /**
+     *
+     * @param value
+     * @return {TStore} The current instance (this)
+     */
     setCollection ( value ) {
 
         this.collection = value;
@@ -535,6 +620,11 @@ class TStore {
 
     }
 
+    /**
+     *
+     * @param value
+     * @return {TStore} The current instance (this)
+     */
     setAllowOverride ( value ) {
 
         this.allowOverride = value;
@@ -542,6 +632,11 @@ class TStore {
 
     }
 
+    /**
+     *
+     * @param value
+     * @return {TStore} The current instance (this)
+     */
     setKeyValidators ( value ) {
 
         this.keyValidators( value );
@@ -549,6 +644,11 @@ class TStore {
 
     }
 
+    /**
+     *
+     * @param value
+     * @return {TStore} The current instance (this)
+     */
     setValueValidators ( value ) {
 
         this.valueValidators( value );
@@ -561,9 +661,10 @@ class TStore {
      * In case the key already exist, the value will be overwritten if force params is true or this
      * allow overriding else it throw an TypeError.
      *
-     * @param key
-     * @param value
-     * @param force
+     * @param {*} key
+     * @param {*} value
+     * @param {Boolean} force
+     * @return {TStore} The current instance (this)
      */
     add ( key, value, force = false ) {
 
@@ -580,6 +681,11 @@ class TStore {
 
     }
 
+    /**
+     *
+     * @param key
+     * @return {boolean}
+     */
     contain ( key ) {
 
         return iteeValidators.isNotUndefined( this._collection[ key ] )
@@ -602,6 +708,7 @@ class TStore {
      * Remove to value from the cache. Does nothing if the key does not exist.
      *
      * @param key
+     * @return {TStore} The current instance (this)
      */
     remove ( key ) {
 
@@ -613,6 +720,7 @@ class TStore {
 
     /**
      * Clear the cache and reset collection to an empty object.
+     * @return {TStore} The current instance (this)
      */
     clear () {
 
@@ -625,17 +733,20 @@ class TStore {
 }
 
 /**
+ * @class
+ * @classdesc The abstract class to create factory
+ * @abstract
+ * @extends TStore
+ *
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
- *
- * @file Todo
- *
- * @example Todo
- *
  */
-
 class TAbstractFactory extends TStore {
 
+    /**
+     * @constructor
+     * @param parameters
+     */
     constructor ( parameters = {} ) {
 
         const _parameters = { ...{}, ...parameters };
@@ -644,6 +755,13 @@ class TAbstractFactory extends TStore {
 
     }
 
+
+    /**
+     * The create factory method. It allow to automate Class creation by constructor key, and parameters to pass for initialized the instance.
+     * @abstract
+     * @param {*} key
+     * @param parameters
+     */
     // eslint-disable-next-line no-unused-vars
     create ( key, ...parameters ) {
 
@@ -654,17 +772,18 @@ class TAbstractFactory extends TStore {
 }
 
 /**
+ * @class
+ * @classdesc The TCloningFactory is a kind a factory that performe instanciation by cloning a base instance.
+ * @extends TAbstractFactory
+ *
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
- *
- * @file Todo
- *
- * @example Todo
- *
  */
-
 class TCloningFactory extends TAbstractFactory {
 
+    /**
+     * @param parameters
+     */
     constructor ( parameters = {} ) {
 
         const _parameters = { ...{}, ...parameters };
@@ -673,6 +792,12 @@ class TCloningFactory extends TAbstractFactory {
 
     }
 
+    /**
+     *
+     * @param key
+     * @param parameters
+     * @returns {*}
+     */
     create ( key, ...parameters ) {
         super.create( key, ...parameters );
 
@@ -682,17 +807,19 @@ class TCloningFactory extends TAbstractFactory {
 }
 
 /**
+ * @class
+ * @classdesc The TInstancingFactory is a kind a factory that performe instanciation based on registred constructor.
+ * @extends TAbstractFactory
+ *
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
- *
- * @file Todo
- *
- * @example Todo
- *
  */
-
 class TInstancingFactory extends TAbstractFactory {
 
+    /**
+     * The ctor description
+     * @param parameters
+     */
     constructor ( parameters = {} ) {
 
         const _parameters = { ...{}, ...parameters };
@@ -701,6 +828,12 @@ class TInstancingFactory extends TAbstractFactory {
 
     }
 
+    /**
+     *
+     * @param key
+     * @param parameters
+     * @returns {*}
+     */
     create ( key, ...parameters ) {
         super.create( key, ...parameters );
 
@@ -710,19 +843,16 @@ class TInstancingFactory extends TAbstractFactory {
 
 }
 
-/**
- * @author [Tristan Valcke]{@link https://github.com/Itee}
- * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
- *
- * @class Todo...
- * @classdesc Todo...
- * @example Todo...
- *
- */
+/* eslint-env browser */
 
 /**
+ * @typedef {Enum} Keys
  *
- * @type {Object}
+ * @constant
+ * @type {Keys}
+ * @deprecated
+ * @inner
+ * @description Keys contains common keyboard key values, this allow to write semantic code instead of integer when dealing with key codes.
  */
 const LogOutput = iteeUtils.toEnum( {
     Console:  1,
@@ -733,6 +863,14 @@ const LogOutput = iteeUtils.toEnum( {
     All:      255
 } );
 
+/**
+ * @typedef {Enum} LogType
+ *
+ * @constant
+ * @type {LogType}
+ * @deprecated
+ * @description Keys contains common keyboard key values, this allow to write semantic code instead of integer when dealing with key codes.
+ */
 const LogType = iteeUtils.toEnum( {
     Message:  0,
     Progress: 1,
@@ -740,8 +878,17 @@ const LogType = iteeUtils.toEnum( {
 } );
 
 /**
+ * @typedef {Enum} LogLevel
+ * @property {Number} None=0 - No log allowed
+ * @property {Number} Debug=1 - Allow Debug log entry
+ * @property {Number} Info=2 - Allow Info log entry
+ * @property {Number} Warning=4 - Allow Warning log entry
+ * @property {Number} Error=8 - Allow Error log entry
+ * @property {Number} All=255 - Allow all log entry
  *
- * @type {Object}
+ * @constant
+ * @type {LogLevel}
+ * @description LogLevel is a flag that allow to set which type of log is allowed
  */
 const LogLevel = iteeUtils.toEnum( {
     None:    0,
@@ -752,20 +899,14 @@ const LogLevel = iteeUtils.toEnum( {
     All:     255
 } );
 
-/*
- *  Allow to toast an message or error to user
- *  @level String who represent the gravity level of message between "error | warn (for warning) | other (will display like info message)"
- *  @message String message to display
- */
 /**
- *
- * @param outputs
- * @constructor
+ * @class
+ * @classdesc TLogger is a fairly interface for log everthing you need, in every place you want.
+ * It can filter log input in function of severity based on LogLevel enum, and can send log to many different output like console, database, or UI.
  */
 class TLogger {
 
     /**
-     *
      * @param level
      * @return {string}
      * @private
@@ -798,6 +939,11 @@ class TLogger {
 
     }
 
+    /**
+     * @constructor
+     * @param {string} level - String who represent the gravity level of message between "error | warn (for warning) | other (will display like info message)"
+     * @param {string} message - the to display
+     */
     constructor ( parameters = {} ) {
 
         const _parameters = {
@@ -816,6 +962,10 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @return {*}
+     */
     get outputLevel () {
         return this._outputLevel
     }
@@ -833,6 +983,10 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @return {*}
+     */
     get outputs () {
         return this._outputs
     }
@@ -922,6 +1076,11 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param message
+     * @private
+     */
     _dispatchMessage ( message ) {
 
         const level = message.level;
@@ -962,6 +1121,11 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param errorMessage
+     * @private
+     */
     _dispatchErrorMessage ( errorMessage ) {
 
         if ( this.outputs & LogOutput.Console ) {
@@ -987,6 +1151,11 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param warnMessage
+     * @private
+     */
     _dispatchWarningMessage ( warnMessage ) {
 
         if ( this.outputs & LogOutput.Console ) {
@@ -1012,6 +1181,11 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param infoMessage
+     * @private
+     */
     _dispatchInfoMessage ( infoMessage ) {
 
         if ( this.outputs & LogOutput.Console ) {
@@ -1037,6 +1211,11 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param debugMessage
+     * @private
+     */
     _dispatchDebugMessage ( debugMessage ) {
 
         if ( this.outputs & LogOutput.Console ) {
@@ -1062,6 +1241,11 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param progress
+     * @private
+     */
     _dispatchProgress ( progress ) {
 
         const level          = progress.level;
@@ -1090,6 +1274,11 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param infoProgress
+     * @private
+     */
     _dispatchInfoProgress ( infoProgress ) {
 
         if ( this.outputs & LogOutput.Console ) {
@@ -1115,6 +1304,11 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param debugProgress
+     * @private
+     */
     _dispatchDebugProgress ( debugProgress ) {
 
         if ( this.outputs & LogOutput.Console ) {
@@ -1140,12 +1334,21 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param time
+     * @private
+     */
     _dispatchTime ( time ) {
 
         console.log( time.message );
 
     }
 
+    /**
+     *
+     * @param debug
+     */
     debug ( debug ) {
 
         this.dispatch( {
@@ -1198,6 +1401,10 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param progress
+     */
     progress ( progress ) {
 
         progress.preventDefault();
@@ -1223,12 +1430,20 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param key
+     */
     startChronoFor ( key ) {
 
         this._timers[ key ] = new Date().getTime();
 
     }
 
+    /**
+     *
+     * @param key
+     */
     stopChronoFor ( key ) {
 
         const deltaTime = ( new Date().getTime() - this._timers[ key ] );
@@ -1242,6 +1457,11 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param value
+     * @return {TLogger}
+     */
     setOutputLevel ( value ) {
 
         this.outputLevel = value;
@@ -1249,6 +1469,11 @@ class TLogger {
 
     }
 
+    /**
+     *
+     * @param value
+     * @return {TLogger}
+     */
     setOutput ( value ) {
 
         this.outputs = value;
@@ -1258,30 +1483,33 @@ class TLogger {
 
 }
 
+/**
+ * A default logger instance that can be use everywhere it is needed.
+ * @type {TLogger}
+ */
 const DefaultLogger = new TLogger();
 
+/* eslint-env browser */
+
 /**
+ * @class
+ * @classdesc TKeyboardController allow single source of thruth for keyboard state checking (based on Lee Stemkoski work).
+ * See TKeyboardController.k object data below for names of keys whose state can be polled
+ *
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ * @example {@lang javascript}
+ * // (1) create a global variable:
+ * var keyboard = new TKeyboardController();
  *
- * based on Lee Stemkoski work
+ * // (2) during main loop:
+ * keyboard.update();
  *
- * @class TFactory
- * @classdesc Todo...
- * @example Todo...
- * (1) create a global variable:
- *      var keyboard = new TKeyboardController();
- * (2) during main loop:
- *       keyboard.update();
- * (3) check state of keys:
- *       keyboard.down("A")    -- true for one update cycle after key is pressed
- *       keyboard.pressed("A") -- true as long as key is being pressed
- *       keyboard.up("A")      -- true for one update cycle after key is released
- *
- *  See TKeyboardController.k object data below for names of keys whose state can be polled
- *
+ * // (3) check state of keys:
+ * keyboard.down("A")    -- true for one update cycle after key is pressed
+ * keyboard.pressed("A") -- true as long as key is being pressed
+ * keyboard.up("A")      -- true for one update cycle after key is released
  */
-
 class TKeyboardController {
 
     /**
@@ -1322,13 +1550,17 @@ class TKeyboardController {
         }
     }
 
-    constructor ( /*parameters = {}*/ ) {
+    /**
+     *
+     * @param parameters
+     */
+    // eslint-disable-next-line no-unused-vars
+    constructor ( parameters = {} ) {
 
-        /*
-         const _parameters = {
-         ...{}, ...parameters
-         }
-         */
+//         const _parameters = {
+//             ...{},
+//             ...parameters
+//         }
 
         // bind keyEvents
         document.addEventListener( 'keydown', TKeyboardController.onKeyDown, false );
@@ -1403,44 +1635,58 @@ class TKeyboardController {
 
 }
 
+/**
+ *
+ * @type {Keys}
+ */
 TKeyboardController.k      = Keys;
-TKeyboardController.status = {};
 
 /**
- * @author [Tristan Valcke]{@link https://github.com/Itee}
- * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  *
- * @class Todo...
- * @classdesc Todo...
- * @example Todo...
- *
+ * @type {{}}
  */
+TKeyboardController.status = {};
 
 /* eslint-env browser */
 
+/**
+ * @class
+ * @classdesc TMouseController allow single source of thruth for mouse state checking
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ * @example
+ * (1) create a global variable:
+ *      var keyboard = new TKeyboardController();
+ * (2) during main loop:
+ *       keyboard.update();
+ * (3) check state of keys:
+ *       keyboard.down("A")    -- true for one update cycle after key is pressed
+ *       keyboard.pressed("A") -- true as long as key is being pressed
+ *       keyboard.up("A")      -- true for one update cycle after key is released
+ *
+ *  See TKeyboardController.k object data below for names of keys whose state can be polled
+ */
 class TMouseController {
 
+    /**
+     * @constructor
+     */
     constructor ( /*parameters = {}*/ ) {
 
     }
 
 }
 
-/**
- * @author [Tristan Valcke]{@link https://github.com/Itee}
- * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
- *
- * @class Todo...
- * @classdesc Todo...
- * @example Todo...
- *
- */
-
 /* eslint-env browser */
 
 /**
+ * @typedef {Enum} Endianness
+ * @property {Boolean} Little=true - The Little endianess
+ * @property {Number} Big=false - The Big endianess
  *
- * @type {Object}
+ * @constant
+ * @type {Endianness}
+ * @description Endianness enum allow semantic usage.
  */
 const Endianness = iteeUtils.toEnum( {
     Little: true,
@@ -1448,8 +1694,15 @@ const Endianness = iteeUtils.toEnum( {
 } );
 
 /**
+ * @typedef {Enum} Byte
+ * @property {Number} One=1 - Octet
+ * @property {Number} Two=2 - Doublet
+ * @property {Number} Four=4 - Quadlet
+ * @property {Number} Height=8 - Octlet
  *
- * @type {Object}
+ * @constant
+ * @type {Byte}
+ * @description Byte allow semantic meaning of quantity of bytes based on power of two.
  */
 const Byte = iteeUtils.toEnum( {
     One:    1,
@@ -1458,17 +1711,25 @@ const Byte = iteeUtils.toEnum( {
     Height: 8
 } );
 
-/**
- *
- * @param buffer
- * @param offset
- * @param length
- * @param endianness
- * @constructor
- */
 
+/**
+ * @class
+ * @classdesc TBinaryReader is design to perform fast binary read/write
+ *
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ */
 class TBinaryReader {
 
+    /**
+     * @constructor
+     * @param parameters
+     * @param parameters.buffer
+     * @param parameters.offset
+     * @param parameters.length
+     * @param parameters.endianness
+     * @constructor
+     */
     constructor ( parameters = {} ) {
 
         const _parameters = {
@@ -1489,6 +1750,10 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @returns {*}
+     */
     get buffer () {
         return this._buffer
     }
@@ -1510,6 +1775,10 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @returns {*}
+     */
     get offset () {
         return this._offset
     }
@@ -1533,6 +1802,10 @@ class TBinaryReader {
         return this._length
     }
 
+    /**
+     *
+     * @param value
+     */
     set length ( value ) {
 
         const memberName = 'Length';
@@ -1548,6 +1821,10 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @returns {*}
+     */
     get endianness () {
         return this._endianness
     }
@@ -1569,7 +1846,7 @@ class TBinaryReader {
      * @param buffer
      * @param offset
      * @param length
-     * @return {this}
+     * @returns {TBinaryReader}
      */
     setBuffer ( buffer, offset, length ) {
 
@@ -1581,6 +1858,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param value
+     * @returns {TBinaryReader}
+     */
     setOffset ( value ) {
 
         this.offset = value;
@@ -1588,6 +1870,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param value
+     * @returns {TBinaryReader}
+     */
     setLength ( value ) {
 
         this.length = value;
@@ -1598,7 +1885,7 @@ class TBinaryReader {
     /**
      *
      * @param endianess
-     * @return {this}
+     * @returns {TBinaryReader}
      */
     setEndianess ( endianess ) {
 
@@ -1610,7 +1897,7 @@ class TBinaryReader {
     /**
      *
      * @param increment
-     * @return {*}
+     * @returns {*}
      * @private
      */
     _getAndUpdateOffsetBy ( increment ) {
@@ -1633,7 +1920,7 @@ class TBinaryReader {
 
     /**
      *
-     * @return {boolean}
+     * @returns {boolean}
      */
     isEndOfFile () {
 
@@ -1644,7 +1931,7 @@ class TBinaryReader {
     /**
      *
      * @param offset
-     * @return {this}
+     * @returns {TBinaryReader}
      */
     skipOffsetTo ( offset ) {
 
@@ -1657,7 +1944,7 @@ class TBinaryReader {
     /**
      *
      * @param nBytes
-     * @return {this}
+     * @returns {TBinaryReader}
      */
     skipOffsetOf ( nBytes ) {
 
@@ -1667,12 +1954,21 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @returns {boolean}
+     */
     getBoolean () {
 
         return ( ( this.getUint8() & 1 ) === 1 )
 
     }
 
+    /**
+     *
+     * @param length
+     * @returns {Array}
+     */
     getBooleanArray ( length ) {
 
         const array = [];
@@ -1689,7 +1985,7 @@ class TBinaryReader {
 
     /**
      *
-     * @return {number}
+     * @returns {number}
      */
     getInt8 () {
 
@@ -1697,6 +1993,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param length
+     * @returns {Array}
+     */
     getInt8Array ( length ) {
 
         const array = [];
@@ -1713,7 +2014,7 @@ class TBinaryReader {
 
     /**
      *
-     * @return {number}
+     * @returns {number}
      */
     getUint8 () {
 
@@ -1721,6 +2022,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param length
+     * @returns {Array}
+     */
     getUint8Array ( length ) {
 
         const array = [];
@@ -1737,7 +2043,7 @@ class TBinaryReader {
 
     /**
      *
-     * @return {number}
+     * @returns {number}
      */
     getInt16 () {
 
@@ -1745,6 +2051,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param length
+     * @returns {Array}
+     */
     getInt16Array ( length ) {
 
         const array = [];
@@ -1761,7 +2072,7 @@ class TBinaryReader {
 
     /**
      *
-     * @return {number}
+     * @returns {number}
      */
     getUint16 () {
 
@@ -1769,6 +2080,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param length
+     * @returns {Array}
+     */
     getUint16Array ( length ) {
 
         const array = [];
@@ -1785,7 +2101,7 @@ class TBinaryReader {
 
     /**
      *
-     * @return {number}
+     * @returns {number}
      */
     getInt32 () {
 
@@ -1793,6 +2109,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param length
+     * @returns {Array}
+     */
     getInt32Array ( length ) {
 
         const array = [];
@@ -1809,7 +2130,7 @@ class TBinaryReader {
 
     /**
      *
-     * @return {number}
+     * @returns {number}
      */
     getUint32 () {
 
@@ -1817,6 +2138,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param length
+     * @returns {Array}
+     */
     getUint32Array ( length ) {
 
         const array = [];
@@ -1831,13 +2157,18 @@ class TBinaryReader {
 
     }
 
-    // From THREE.FBXLoader
-    // JavaScript doesn't support 64-bit integer so attempting to calculate by ourselves.
-    // 1 << 32 will return 1 so using multiply operation instead here.
-    // There'd be a possibility that this method returns wrong value if the value
-    // is out of the range between Number.MAX_SAFE_INTEGER and Number.MIN_SAFE_INTEGER.
-    // TODO: safely handle 64-bit integer
+    /**
+     *
+     * @returns {number}
+     */
     getInt64 () {
+
+        // From THREE.FBXLoader
+        // JavaScript doesn't support 64-bit integer so attempting to calculate by ourselves.
+        // 1 << 32 will return 1 so using multiply operation instead here.
+        // There'd be a possibility that this method returns wrong value if the value
+        // is out of the range between Number.MAX_SAFE_INTEGER and Number.MIN_SAFE_INTEGER.
+        // TODO: safely handle 64-bit integer
 
         let low  = null;
         let high = null;
@@ -1874,6 +2205,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param length
+     * @returns {Array}
+     */
     getInt64Array ( length ) {
 
         const array = [];
@@ -1888,8 +2224,13 @@ class TBinaryReader {
 
     }
 
-    // Note: see getInt64() comment
+
+    /**
+     *
+     * @returns {number}
+     */
     getUint64 () {
+        // Note: see getInt64() comment
 
         let low  = null;
         let high = null;
@@ -1910,6 +2251,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param length
+     * @returns {Array}
+     */
     getUint64Array ( length ) {
 
         const array = [];
@@ -1926,7 +2272,7 @@ class TBinaryReader {
 
     /**
      *
-     * @return {number}
+     * @returns {number}
      */
     getFloat32 () {
 
@@ -1934,6 +2280,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param length
+     * @returns {Array}
+     */
     getFloat32Array ( length ) {
 
         const array = [];
@@ -1958,6 +2309,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param length
+     * @returns {Array}
+     */
     getFloat64Array ( length ) {
 
         const array = [];
@@ -1974,7 +2330,7 @@ class TBinaryReader {
 
     /**
      *
-     * @return {string}
+     * @returns {string}
      */
     getChar () {
 
@@ -2011,6 +2367,11 @@ class TBinaryReader {
 
     }
 
+    /**
+     *
+     * @param size
+     * @returns {ArrayBuffer}
+     */
     getArrayBuffer ( size ) {
 
         const offset = this._getAndUpdateOffsetBy( size );
@@ -2037,6 +2398,9 @@ class TBinaryReader {
  *
  */
 
+/**
+ * @deprecated
+ */
 class IdGenerator {
 
     constructor () {
@@ -2052,6 +2416,10 @@ class IdGenerator {
 
 const Generate = new IdGenerator();
 
+/**
+ *
+ * @type {ReadonlyArray<unknown>}
+ */
 const RequestType = iteeUtils.toEnum( {
     CreateOne:   0,
     CreateMany:  1,
@@ -2069,8 +2437,15 @@ const RequestType = iteeUtils.toEnum( {
     DeleteAll:   13
 } );
 
+/**
+ * @class
+ */
 class TDataBaseManager {
 
+    /**
+     *
+     * @returns {number}
+     */
     static get requestId () {
         TDataBaseManager._requestId++;
         return TDataBaseManager._requestId
@@ -2111,6 +2486,10 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @returns {*}
+     */
     get basePath () {
         return this._basePath
     }
@@ -2127,6 +2506,10 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @returns {*}
+     */
     get responseType () {
         return this._responseType
     }
@@ -2136,12 +2519,16 @@ class TDataBaseManager {
         if ( iteeValidators.isNull( value ) ) { throw new Error( 'TDataBaseManager: responseType cannot be null !' ) }
         if ( iteeValidators.isNull( value ) ) { throw new TypeError( 'Response type cannot be null ! Expect a non empty string.' ) }
         if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( 'Response type cannot be undefined ! Expect a non empty string.' ) }
-//        if ( !( value instanceof ResponseType ) ) { throw new TypeError( `Response type cannot be an instance of ${value.constructor.name} ! Expect a value from ResponseType enum.` ) }
+        //        if ( !( value instanceof ResponseType ) ) { throw new TypeError( `Response type cannot be an instance of ${value.constructor.name} ! Expect a value from ResponseType enum.` ) }
 
         this._responseType = value;
 
     }
 
+    /**
+     *
+     * @returns {*}
+     */
     get bunchSize () {
         return this._bunchSize
     }
@@ -2157,6 +2544,10 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @returns {*}
+     */
     get requestAggregationTime () {
         return this._requestAggregationTime
     }
@@ -2183,6 +2574,10 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @returns {*}
+     */
     get requestsConcurrency () {
         return this._requestsConcurrency
     }
@@ -2209,6 +2604,10 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @returns {TLogger}
+     */
     get logger () {
         return this._logger
     }
@@ -2223,6 +2622,11 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param value
+     * @returns {TDataBaseManager}
+     */
     setBasePath ( value ) {
 
         this.basePath = value;
@@ -2230,6 +2634,11 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param value
+     * @returns {TDataBaseManager}
+     */
     setResponseType ( value ) {
 
         this.responseType = value;
@@ -2237,6 +2646,11 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param value
+     * @returns {TDataBaseManager}
+     */
     setBunchSize ( value ) {
 
         this.bunchSize = value;
@@ -2244,6 +2658,11 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param value
+     * @returns {TDataBaseManager}
+     */
     setRequestAggregationTime ( value ) {
 
         this.requestAggregationTime = value;
@@ -2251,6 +2670,11 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param value
+     * @returns {TDataBaseManager}
+     */
     setRequestsConcurrency ( value ) {
 
         this.requestsConcurrency = value;
@@ -2258,6 +2682,11 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param value
+     * @returns {TDataBaseManager}
+     */
     setLogger ( value ) {
 
         this.logger = value;
@@ -2265,6 +2694,9 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     */
     aggregateQueue () {
 
         clearTimeout( this._aggregationTimeoutId );
@@ -2302,6 +2734,9 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     */
     processQueue () {
 
         while ( this._requestQueue.length > 0 && this._processQueue.length < this._requestsConcurrency ) {
@@ -2347,9 +2782,7 @@ class TDataBaseManager {
 
     // Publics
     /**
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The create method allow to create a new ressource on the server. Providing a single object that match a database schema, or an array of them.
+     * The create method allow to create a new ressource on the server. Providing a single object that match a database schema, or an array of them.
      *
      * @param {object|array.<object>} data - The data to send for create new objects.
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
@@ -2383,9 +2816,7 @@ class TDataBaseManager {
     }
 
     /**
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The read method allow to retrieve data from the server, using a single id or an array of them.
+     * The read method allow to retrieve data from the server, using a single id or an array of them.
      *
      * @param {string|array.<string>} condition - The ids of objects to retrieve.
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
@@ -2431,9 +2862,7 @@ class TDataBaseManager {
     }
 
     /**
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The update method allow to update data on the server, using a single id or an array of them, and a corresponding object about the data to update.
+     * The update method allow to update data on the server, using a single id or an array of them, and a corresponding object about the data to update.
      *
      * @param {string|array.<string>} condition - The ids of objects to update.
      * @param {object} update - The update data ( need to match the related database schema ! ). In case of multiple ids they will be updated with the same given data.
@@ -2490,9 +2919,7 @@ class TDataBaseManager {
     }
 
     /**
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The delete method allow to remove data from the server, using a single id or an array of them.
+     * The delete method allow to remove data from the server, using a single id or an array of them.
      *
      * @param {string|array.<string>|object|null} condition - The ids of objects to delete.
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
@@ -2542,16 +2969,14 @@ class TDataBaseManager {
     //// Events
 
     /**
-     * @private
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The private _onLoad method allow to process the server response in an abstract way to check against error and wrong status code.
+     * The private _onLoad method allow to process the server response in an abstract way to check against error and wrong status code.
      * It will bind user callback on each type of returns, and dispatch in sub methods in function of the response type.
      *
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      * @param {object} loadEvent - The server response object to parse.
+     * @private
      */
     _onLoad ( request, onLoadCallback, onProgressCallback, onErrorCallback, loadEvent ) {
 
@@ -2658,13 +3083,11 @@ class TDataBaseManager {
     }
 
     /**
-     * @private
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The private _onProgress method will handle all progress event from server and submit them to the logger if exist else to the user onProgressCallback
+     * The private _onProgress method will handle all progress event from server and submit them to the logger if exist else to the user onProgressCallback
      *
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {object} progressEvent - The server progress event.
+     * @private
      */
     _onProgress ( onProgressCallback, progressEvent ) {
 
@@ -2681,13 +3104,11 @@ class TDataBaseManager {
     }
 
     /**
-     * @private
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The private _onError method will handle all error event from server and submit them to the logger if exist else to the user onErrorCallback
+     * The private _onError method will handle all error event from server and submit them to the logger if exist else to the user onErrorCallback
      *
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      * @param {object} errorEvent - A server error event
+     * @private
      */
     _onError ( request, onErrorCallback, errorEvent ) {
 
@@ -2705,6 +3126,15 @@ class TDataBaseManager {
 
     }
 
+    /**
+     * The private _onEnd method is call after all other callback and perform request type checking in view to upadte cache, waitingqueue and callback if needed,
+     * to finally close the request
+     *
+     * @param request
+     * @param onLoadCallback
+     * @param response
+     * @private
+     */
     _onEnd ( request, onLoadCallback, response ) {
 
         const type = request._type;
@@ -2749,7 +3179,16 @@ class TDataBaseManager {
     //// Data parsing
     // Expect that methods were reimplemented when TDataBaseManager is inherited
 
-    // Dispatch response to the correct handler in function of response type
+    /**
+     * Dispatch response to the correct handler in function of response type
+     *
+     * @param response
+     * @param responseType
+     * @param onLoadCallback
+     * @param onProgressCallback
+     * @param onErrorCallback
+     * @private
+     */
     _dispatchResponse ( response, responseType, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         switch ( responseType ) {
@@ -2800,6 +3239,7 @@ class TDataBaseManager {
 
     /**
      * Will remove the request from the process queue
+     *
      * @param request
      * @private
      */
@@ -2823,6 +3263,12 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param ids
+     * @returns {Object}
+     * @private
+     */
     _retrieveCachedValues ( ids ) {
 
         let results      = {};
@@ -2852,6 +3298,11 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param datas
+     * @private
+     */
     _updateCache ( datas ) {
 
         if ( iteeValidators.isNull( datas ) ) { throw new TypeError( 'Data cannot be null ! Expect an array of object.' ) }
@@ -2887,6 +3338,10 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @private
+     */
     _updateWaitingQueue () {
 
         const haveNoRequestToProcess = ( this._requestQueue.length === 0 && this._processQueue.length === 0 );
@@ -2931,12 +3386,10 @@ class TDataBaseManager {
     }
 
     /**
+     * The abstract private _onArrayBuffer method must be overridden in case the parser expect an array buffer as input data.
+     *
      * @private
      * @abstract
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The abstract private _onArrayBuffer method must be overridden in case the parser expect an array buffer as input data.
-     *
      * @param {ArrayBuffer} data - The retrieved data to parse.
      * @param {function} onSuccess - The onLoad callback, which is call when parser parse with success the data.
      * @param {function} onProgress - The onProgress callback, which is call during the parsing.
@@ -2946,12 +3399,10 @@ class TDataBaseManager {
     _onArrayBuffer ( data, onSuccess, onProgress, onError ) {}
 
     /**
+     * The abstract private _onBlob method must be overridden in case the parser expect a blob as input data.
+     *
      * @private
      * @abstract
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The abstract private _onBlob method must be overridden in case the parser expect a blob as input data.
-     *
      * @param {Blob} data - The retrieved data to parse.
      * @param {function} onSuccess - The onLoad callback, which is call when parser parse with success the data.
      * @param {function} onProgress - The onProgress callback, which is call during the parsing.
@@ -2961,12 +3412,10 @@ class TDataBaseManager {
     _onBlob ( data, onSuccess, onProgress, onError ) {}
 
     /**
+     * The abstract private _onJson method must be overridden in case the parser expect json as input data.
+     *
      * @private
      * @abstract
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The abstract private _onJson method must be overridden in case the parser expect json as input data.
-     *
      * @param {json} data - The retrieved data to parse.
      * @param {function} onSuccess - The onLoad callback, which is call when parser parse with success the data.
      * @param {function} onProgress - The onProgress callback, which is call during the parsing.
@@ -2976,12 +3425,10 @@ class TDataBaseManager {
     _onJson ( data, onSuccess, onProgress, onError ) {}
 
     /**
+     * The abstract private _onText method must be overridden in case the parser expect a string/text as input data.
+     *
      * @private
      * @abstract
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The abstract private _onText method must be overridden in case the parser expect a string/text as input data.
-     *
      * @param {string} data - The retrieved data to parse.
      * @param {function} onSuccess - The onLoad callback, which is call when parser parse with success the data.
      * @param {function} onProgress - The onProgress callback, which is call during the parsing.
@@ -2992,11 +3439,9 @@ class TDataBaseManager {
 
     // REST Api calls
     /**
-     * @private
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The private _create method allow to format a server request to create objects with the given data and get creation result with given callbacks.
+     * The private _create method allow to format a server request to create objects with the given data and get creation result with given callbacks.
      *
+     * @private
      * @param {object} data - The data to send.
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
@@ -3021,6 +3466,14 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param datas
+     * @param onLoadCallback
+     * @param onProgressCallback
+     * @param onErrorCallback
+     * @private
+     */
     _createMany ( datas, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
@@ -3041,11 +3494,9 @@ class TDataBaseManager {
     }
 
     /**
-     * @private
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The private _updateOne method will format a server request to get a single object with the given id.
+     * The private _updateOne method will format a server request to get a single object with the given id.
      *
+     * @private
      * @param {string} id - The object's id of the object to retrieve.
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
@@ -3068,18 +3519,18 @@ class TDataBaseManager {
 
             } else {
 
-                datas[ 'onLoadCallback' ] = onLoadCallback;
+                datas[ 'onLoadCallback' ]     = onLoadCallback;
                 datas[ 'onProgressCallback' ] = onProgressCallback;
-                datas[ 'onErrorCallback' ] = onErrorCallback;
+                datas[ 'onErrorCallback' ]    = onErrorCallback;
                 this._waitingQueue.push( datas );
 
             }
 
         } else {
 
-            datas[ 'onLoadCallback' ] = onLoadCallback;
+            datas[ 'onLoadCallback' ]     = onLoadCallback;
             datas[ 'onProgressCallback' ] = onProgressCallback;
-            datas[ 'onErrorCallback' ] = onErrorCallback;
+            datas[ 'onErrorCallback' ]    = onErrorCallback;
             this._waitingQueue.push( datas );
 
             try {
@@ -3098,11 +3549,9 @@ class TDataBaseManager {
     }
 
     /**
-     * @private
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The private _readMany method will format a server request to get objects with id in the ids array.
+     * The private _readMany method will format a server request to get objects with id in the ids array.
      *
+     * @private
      * @param {array.<string>} ids - The ids of objects to retrieve.
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
@@ -3125,18 +3574,18 @@ class TDataBaseManager {
 
             } else {
 
-                datas[ 'onLoadCallback' ] = onLoadCallback;
+                datas[ 'onLoadCallback' ]     = onLoadCallback;
                 datas[ 'onProgressCallback' ] = onProgressCallback;
-                datas[ 'onErrorCallback' ] = onErrorCallback;
+                datas[ 'onErrorCallback' ]    = onErrorCallback;
                 this._waitingQueue.push( datas );
 
             }
 
         } else {
 
-            datas[ 'onLoadCallback' ] = onLoadCallback;
+            datas[ 'onLoadCallback' ]     = onLoadCallback;
             datas[ 'onProgressCallback' ] = onProgressCallback;
-            datas[ 'onErrorCallback' ] = onErrorCallback;
+            datas[ 'onErrorCallback' ]    = onErrorCallback;
             this._waitingQueue.push( datas );
 
             const datasToRequest = datas.toRequest;
@@ -3164,6 +3613,15 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param query
+     * @param projection
+     * @param onLoadCallback
+     * @param onProgressCallback
+     * @param onErrorCallback
+     * @private
+     */
     _readWhere ( query, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         //        // Filter requested values by cached values
@@ -3196,6 +3654,14 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param projection
+     * @param onLoadCallback
+     * @param onProgressCallback
+     * @param onErrorCallback
+     * @private
+     */
     _readAll ( projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         //        const datas = {
@@ -3230,15 +3696,14 @@ class TDataBaseManager {
     }
 
     /**
-     * @private
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The private _updateOne method will format a server request to update a single object with the given id.
+     * The private _updateOne method will format a server request to update a single object with the given id.
      *
      * @param {string} id - The object's id of the object to update.
+     * @param update
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
+     * @private
      */
     _updateOne ( id, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
@@ -3262,15 +3727,14 @@ class TDataBaseManager {
     }
 
     /**
-     * @private
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The private _updateMany method will format a server request to update objects with id in the ids array.
+     * The private _updateMany method will format a server request to update objects with id in the ids array.
      *
      * @param {array.<string>} ids - The ids of objects to update.
+     * @param update
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
+     * @private
      */
     _updateMany ( ids, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
@@ -3294,6 +3758,15 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param query
+     * @param update
+     * @param onLoadCallback
+     * @param onProgressCallback
+     * @param onErrorCallback
+     * @private
+     */
     _updateWhere ( query, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
@@ -3316,6 +3789,14 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param update
+     * @param onLoadCallback
+     * @param onProgressCallback
+     * @param onErrorCallback
+     * @private
+     */
     _updateAll ( update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         const query = {};
@@ -3341,15 +3822,13 @@ class TDataBaseManager {
     }
 
     /**
-     * @private
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The private _deleteOne method will format a server request to delete a single object with the given id.
+     * The private _deleteOne method will format a server request to delete a single object with the given id.
      *
      * @param {string} id - The object's id of the object to delete.
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
+     * @private
      */
     _deleteOne ( id, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
@@ -3371,15 +3850,13 @@ class TDataBaseManager {
     }
 
     /**
-     * @private
-     * @function
-     * @memberOf TDataBaseManager.prototype
-     * @description The private _deleteMany method will format a server request to delete objects with id in the ids array.
+     * The private _deleteMany method will format a server request to delete objects with id in the ids array.
      *
      * @param {array.<string>} ids - The ids of objects to delete.
      * @param {function} onLoadCallback - The onLoad callback, which is call when server respond with success to the request.
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
+     * @private
      */
     _deleteMany ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
@@ -3402,6 +3879,14 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param query
+     * @param onLoadCallback
+     * @param onProgressCallback
+     * @param onErrorCallback
+     * @private
+     */
     _deleteWhere ( query, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
@@ -3423,6 +3908,13 @@ class TDataBaseManager {
 
     }
 
+    /**
+     *
+     * @param onLoadCallback
+     * @param onProgressCallback
+     * @param onErrorCallback
+     * @private
+     */
     _deleteAll ( onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         const query = {};
@@ -3449,23 +3941,44 @@ class TDataBaseManager {
 }
 
 // Static stuff
-
+/**
+ *
+ * @type {number}
+ * @private
+ */
 TDataBaseManager._requestId = 0;
 
+/**
+ *
+ * @type {Object}
+ * @private
+ */
 TDataBaseManager._requests = {
+    /**
+     * The global waiting queue to process
+     */
     waitingQueue: {},
+    /**
+     * The objects not requested yet
+     */
     toProcess:    {
         create: {},
         read:   {},
         update: {},
         delete: {}
     },
+    /**
+     * The object currently under request
+     */
     underProcess: {
         create: {},
         read:   {},
         update: {},
         delete: {}
     },
+    /**
+     * The objects already processed
+     */
     processed: {
         create: {},
         read:   {},
@@ -3475,21 +3988,18 @@ TDataBaseManager._requests = {
 };
 
 /**
- * @author [Tristan Valcke]{@link https://github.com/Itee}
- * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
- *
- * @file Todo
- *
- * @example Todo
- *
+ * @deprecated
+ * @type {ReadonlyArray<unknown>}
  */
-
 const TIdFactoryType = iteeUtils.toEnum( {
     Number: 0,
     String: 1,
     Uuid:   2
 } );
 
+/**
+ * @deprecated
+ */
 class TIdFactory {
 
     constructor ( type = TIdFactoryType.Number, base = null ) {
@@ -3549,6 +4059,1494 @@ class TIdFactory {
 
 }
 
+// Unique ID creation requires a high quality random # generator. In the browser we therefore
+// require the crypto API and do not support built-in fallback to lower quality random number
+// generators (like Math.random()).
+// getRandomValues needs to be invoked in a context where "this" is a Crypto implementation. Also,
+// find the complete implementation of crypto (msCrypto) on IE11.
+var getRandomValues = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto) || typeof msCrypto !== 'undefined' && typeof msCrypto.getRandomValues === 'function' && msCrypto.getRandomValues.bind(msCrypto);
+var rnds8 = new Uint8Array(16);
+function rng() {
+  if (!getRandomValues) {
+    throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
+  }
+
+  return getRandomValues(rnds8);
+}
+
+var REGEX = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
+
+function validate(uuid) {
+  return typeof uuid === 'string' && REGEX.test(uuid);
+}
+
+/**
+ * Convert array of 16 byte values to UUID string format of the form:
+ * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
+ */
+
+var byteToHex = [];
+
+for (var i = 0; i < 256; ++i) {
+  byteToHex.push((i + 0x100).toString(16).substr(1));
+}
+
+function stringify(arr) {
+  var offset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
+  // Note: Be careful editing this code!  It's been tuned for performance
+  // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
+  var uuid = (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase(); // Consistency check for valid UUID.  If this throws, it's likely due to one
+  // of the following:
+  // - One or more input array values don't map to a hex octet (leading to
+  // "undefined" in the uuid)
+  // - Invalid input values for the RFC `version` or `variant` fields
+
+  if (!validate(uuid)) {
+    throw TypeError('Stringified UUID is invalid');
+  }
+
+  return uuid;
+}
+
+function v4(options, buf, offset) {
+  options = options || {};
+  var rnds = options.random || (options.rng || rng)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
+
+  rnds[6] = rnds[6] & 0x0f | 0x40;
+  rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
+
+  if (buf) {
+    offset = offset || 0;
+
+    for (var i = 0; i < 16; ++i) {
+      buf[offset + i] = rnds[i];
+    }
+
+    return buf;
+  }
+
+  return stringify(rnds);
+}
+
+/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ */
+
+/**
+ * @typedef {Object} WebAPIMessageSerialized
+ * @property {string} id
+ * @property {string} type
+ */
+
+/**
+ * @class
+ * @classdesc The base class for all web api message
+ */
+class WebAPIMessage {
+
+    /**
+     * @static
+     * @type {boolean}
+     */
+    static isWebAPIMessage = true
+
+    /**
+     *
+     * @param {string} type
+     */
+    constructor ( type ) {
+        this._id  = v4();
+        this.type = type;
+    }
+
+    /**
+     *
+     */
+    get id () {
+        return this._id
+    }
+
+    /**
+     *
+     * @returns {string}
+     */
+    get type () {
+        return this._type
+    }
+
+    set type ( value ) {
+        if ( iteeValidators.isNotString( value ) ) { throw new ReferenceError( 'WebAPIMessage type cannot be null or undefined !' )}
+        if ( iteeValidators.isEmptyString( value ) ) { throw new TypeError( 'WebAPIMessage type cannot be an empty string !' )}
+
+        this._type = value;
+    }
+
+    /**
+     *
+     * @returns {{id: string, type: string}}
+     */
+    toJSON () {
+
+        return {
+            id:   this.id,
+            type: this.type
+        }
+
+    }
+
+}
+
+/**
+ * @typedef {Object} WebAPIMessageDataSerialized
+ * @property {object} data
+ * @instance
+ */
+
+/**
+ * @class
+ * @classdesc The web api message for serializable data transfert
+ * @extends WebAPIMessage
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ */
+class WebAPIMessageData extends WebAPIMessage {
+
+    /**
+     * @static
+     * @type {boolean}
+     */
+    static isWebAPIMessageData = true
+
+    /**
+     *
+     * @param data
+     */
+    constructor ( data ) {
+        super( '_data' );
+
+        this.data = data;
+    }
+
+    /**
+     *
+     * @returns {{data: *}}
+     */
+    toJSON () {
+
+        return {
+            ...super.toJSON(),
+            ...{
+                data: JSON.stringify( this.data )
+            }
+        }
+
+    }
+
+}
+
+/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ */
+
+class WebAPIMessageError extends WebAPIMessage {
+
+    static isWebAPIMessageError = true
+
+    /**
+     *
+     * @param error
+     */
+    constructor ( error ) {
+        super( '_error' );
+
+        this.message = error.message;
+        this.stack   = error.stack;
+    }
+
+    /**
+     *
+     * @returns {{stack: *, message: *}}
+     */
+    toJSON () {
+
+        return {
+            ...super.toJSON(),
+            ...{
+                message: this.message,
+                stack:   this.stack
+            }
+        }
+
+    }
+
+}
+
+/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ */
+
+/**
+ * @class
+ */
+class WebAPIMessageProgress extends WebAPIMessage {
+
+    static isWebAPIMessageProgress = true
+
+    /**
+     *
+     * @param loaded
+     * @param total
+     */
+    constructor ( loaded = 0, total = 0 ) {
+        super( '_progress' );
+
+        this.lengthComputable = false;
+        this.loaded           = loaded;
+        this.total            = total;
+    }
+
+    /**
+     *
+     * @returns {*}
+     */
+    get loaded () {
+        return this._loaded
+    }
+
+    set loaded ( value ) {
+        this._loaded = value;
+        this._checkIfLengthComputable();
+    }
+
+    /**
+     *
+     * @returns {*}
+     */
+    get total () {
+        return this._total
+    }
+
+    set total ( value ) {
+        this._total = value;
+        this._checkIfLengthComputable();
+    }
+
+    /**
+     *
+     * @private
+     */
+    _checkIfLengthComputable () {
+
+        this.lengthComputable = false;
+
+        if (
+            this._total > 0 &&
+            this._total < Number.MAX_SAFE_INTEGER &&
+            this._loaded >= 0 &&
+            this._loaded < Number.MAX_SAFE_INTEGER
+        ) {
+            this.lengthComputable = true;
+        }
+
+    }
+
+    /**
+     *
+     * @returns {{loaded: *, lengthComputable: boolean, total: *}}
+     */
+    toJSON () {
+
+        return {
+            ...super.toJSON(),
+            ...{
+                lengthComputable: this.lengthComputable,
+                loaded:           this.loaded,
+                total:            this.total
+            }
+        }
+
+    }
+
+}
+
+/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ */
+
+/**
+ * @class
+ * @classdesc Internal ready message to broadcast for prevent bad or dead messager
+ */
+class WebAPIMessageReady extends WebAPIMessage {
+
+    /**
+     * @static
+     * @type {boolean}
+     */
+    static isWebAPIMessageReady = true
+
+    /**
+     *
+     */
+    constructor () {
+        super( '_ready' );
+    }
+
+}
+
+/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ */
+
+/**
+ * @class
+ * @classdesc The message response to a message request
+ */
+class WebApiMessageResponse extends WebAPIMessage {
+
+    /**
+     *
+     * @type {boolean}
+     */
+    static isWebApiMessageResponse = true
+
+    /**
+     *
+     * @param request
+     * @param result
+     */
+    constructor ( request, result ) {
+        super( '_response' );
+
+        this.request = request;
+        this.result  = result;
+    }
+
+    /**
+     *
+     * @returns {*}
+     */
+    get request () {
+        return this._request
+    }
+
+    set request ( value ) {
+        if ( iteeValidators.isNull( value ) ) { return }
+        if ( iteeValidators.isUndefined( value ) ) { return }
+
+        this._request = value;
+    }
+
+    /**
+     *
+     * @returns {*}
+     */
+    get result () {
+        return this._result
+    }
+
+    set result ( value ) {
+        this._result = value;
+    }
+
+    /**
+     *
+     * @returns {{result: *, request: *}}
+     */
+    toJSON () {
+
+        return {
+            ...super.toJSON(),
+            ...{
+                request: this.request,
+                result:  this.result
+            }
+        }
+
+    }
+
+}
+
+/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ */
+
+/**
+ * A POJO object containg datas about a distant source to allow
+ * @typedef {Object} AllowedOrigin
+ * @property {string} id - The id to reference this origin as a human readable string
+ * @property {string} uri - The uri of the origin to allow
+ * @property {Array<String>} methods - An array of methods names that are allowed for this origins. To allow all methods use '*', in case no methods string were provide the origin won't be able to do
+ *     anything.
+ */
+
+/**
+ * @class
+ * @classdesc The abstract class to use standardized webapi.
+ * @abstract
+ */
+class AbstractWebAPI {
+
+    /**
+     * @constructor
+     * @param {Object} parameters - An object containing all parameters to pass through the inheritance chain to initialize this instance
+     * @param {Boolean} [parameters.allowAnyOrigins=false] - A boolean to allow or not any origins calls
+     * @param {Array<AllowedOrigin>} [parameters.allowedOrigins=[]] - An array containing configured allowed origins
+     * @param {String} [parameters.targetOrigin=''] - The current selected target origins on which will be send all requests
+     * @param {Number} [parameters.requestTimeout=2000] - The request timeout before throw an error
+     */
+    constructor ( parameters = {} ) {
+
+        const _parameters = {
+            ...{
+                allowAnyOrigins: false,
+                allowedOrigins:  [],
+                //                targetOrigin:    '',
+                requestTimeout:  2000
+            },
+            ...parameters
+        };
+
+        // Internal stuff
+        this._origin    = window.location.origin;
+        this._responses = new Map();
+
+        // Listen message from Window
+        window.addEventListener( 'message', this._onMessage.bind( this ), false );
+
+        // Public stuff
+        this.allowAnyOrigins = _parameters.allowAnyOrigins;
+        this.allowedOrigins  = _parameters.allowedOrigins;
+        //        this.targetOrigin    = _parameters.targetOrigin // Todo: defaulting targetOrigin to the first allowedOrigins if exist
+        this.requestTimeout  = _parameters.requestTimeout;
+
+        // Emit onReady event
+        this._broadCastReadyMessage();
+    }
+
+    /**
+     *
+     * @returns {Array<AllowedOrigin>}
+     */
+    get allowedOrigins () {
+        return this._allowedOrigins
+    }
+
+    set allowedOrigins ( value ) {
+
+        this._allowedOrigins = [];
+
+        const _allowedOrigins = Array.isArray( value ) ? value : [ value ];
+        for ( let originIndex = 0, numberOfOrigins = _allowedOrigins.length ; originIndex < numberOfOrigins ; originIndex++ ) {
+
+            const origin = _allowedOrigins[ originIndex ];
+            this._allowedOrigins.push( {
+                id:           origin.id || `origin_${ Math.random().toString().slice( 2 ) }`,
+                uri:          origin.uri,
+                methods:      origin.methods,
+                window:       this._getOriginWindow( origin.uri ),
+                messageQueue: [],
+                isReady:      false
+            } );
+
+        }
+
+        this._broadCastReadyMessage();
+
+    }
+
+    /**
+     *
+     * @returns {*}
+     */
+    //    get targetOrigin () {
+    //        return this._targetOrigin
+    //    }
+    //
+    //    set targetOrigin ( value ) {
+    //
+    //        const expectation = 'Expect a valid string origin id !'
+    //
+    //        if ( isUndefined( value ) ) { throw new ReferenceError( `[${ this._origin }]: Target origin cannot be undefined. ${ expectation }` ) }
+    //        if ( isNull( value ) ) { throw new ReferenceError( `[${ this._origin }]: Target origin cannot be null. ${ expectation }` ) }
+    //        if ( isNotString( value ) ) { throw new ReferenceError( `[${ this._origin }]: Target origin is invalid. ${ expectation }` ) }
+    //
+    //        const allowedOriginsIds = this.allowedOrigins.map( origin => origin.id )
+    //        if ( !allowedOriginsIds.includes( value ) ) { throw new ReferenceError( `[${ this._origin }]: Provided target origin is not contain in current allowedOrigins. ${ expectation }` ) }
+    //
+    //        this._targetOrigin = value
+    //
+    //    }
+
+    /**
+     *
+     * @returns {*}
+     */
+    get requestTimeout () {
+        return this._requestTimeout
+    }
+
+    set requestTimeout ( value ) {
+        if ( iteeValidators.isNull( value ) ) { throw new ReferenceError( `[${ this._origin }]: The request timeout cannot be null, expect to be 0 or a positive number.` )}
+        if ( iteeValidators.isUndefined( value ) ) { throw new ReferenceError( `[${ this._origin }]: The request timeout cannot be undefined, expect to be 0 or a positive number.` )}
+        if ( iteeValidators.isNotNumber( value ) ) { throw new ReferenceError( `[${ this._origin }]: The request timeout expect to be 0 or a positive number.` )}
+        if ( iteeValidators.isNumberNegative( value ) && !iteeValidators.isZero( value ) ) { throw new ReferenceError( `[${ this._origin }]: The request timeout expect to be 0 or a positive number.` )}
+
+        this._requestTimeout = value;
+    }
+
+    /**
+     *
+     * @param value
+     * @returns {AbstractWebAPI}
+     */
+    setAllowedOrigins ( value ) {
+        this.allowedOrigins = value;
+        return this
+    }
+
+    /**
+     *
+     * @param value
+     * @returns {AbstractWebAPI}
+     */
+    setTargetOrigin ( value ) {
+        this.targetOrigin = value;
+        return this
+    }
+
+    /**
+     *
+     * @param value
+     * @returns {AbstractWebAPI}
+     */
+    setRequestTimeout ( value ) {
+        this.requestTimeout = value;
+        return this
+    }
+
+    /**
+     *
+     * @returns {boolean}
+     * @private
+     */
+    _isInIframe () {
+
+        try {
+            return window.self !== window.top
+        } catch ( e ) {
+            return true
+        }
+
+    }
+
+    _isNotAllowedForAllOrigins () {
+        return !this.allowAnyOrigins
+    }
+
+    _isNotAllowedOrigin ( originURI ) {
+
+        return !this._allowedOrigins.map( allowedOrigin => allowedOrigin.uri ).includes( originURI )
+
+    }
+
+    /**
+     *
+     * @param origin
+     * @returns {boolean}
+     * @private
+     */
+    _isNotAllowedForAllMethods ( origin ) {
+        return ( origin.methods.indexOf( '*' ) === -1 )
+    }
+
+    /**
+     *
+     * @param origin
+     * @param methodName
+     * @returns {boolean}
+     * @private
+     */
+    _isNotAllowedMethod ( origin, methodName ) {
+        return ( origin.methods.indexOf( methodName ) === -1 )
+    }
+
+    /////////////////
+
+    /**
+     *
+     * @param methodName
+     * @returns {boolean}
+     * @private
+     */
+    _methodNotExist ( methodName ) {
+        return iteeValidators.isNotDefined( this[ methodName ] )
+    }
+
+    /**
+     *
+     * @param id
+     * @returns {T}
+     * @private
+     */
+    _getAllowedOriginById ( id ) {
+
+        return Object.values( this._allowedOrigins )
+                     .find( ( origin ) => {
+                         return origin.id === id
+                     } )
+
+    }
+
+    /**
+     *
+     * @param uri
+     * @returns {T}
+     * @private
+     */
+    _getAllowedOriginByURI ( uri ) {
+
+        return Object.values( this._allowedOrigins )
+                     .find( ( origin ) => {
+                         return origin.uri === uri
+                     } )
+
+    }
+
+    /////////////////
+
+    /**
+     *
+     * @param originURI
+     * @returns {WindowProxy}
+     * @private
+     */
+    _getOriginWindow ( originURI ) {
+
+        let originWindow = null;
+
+        if ( this._isInIframe() ) {
+
+            originWindow = window.parent;
+
+        } else {
+
+            const frames = document.getElementsByTagName( 'iframe' );
+            const frame  = Array.from( frames ).find( iframe => iframe.src.includes( originURI ) );
+            if ( iteeValidators.isNotDefined( frame ) ) {
+                console.warn( `[${ this._origin }]: Unable to find iframe for [${ originURI }] URI !` );
+                originWindow = null;
+            } else {
+                originWindow = frame.contentWindow;
+            }
+
+        }
+
+        return originWindow
+
+    }
+
+    /**
+     *
+     * @param event
+     * @private
+     */
+    async _onMessage ( event ) {
+
+        // Is allowed origin
+        if ( this._isNotAllowedForAllOrigins() && this._isNotAllowedOrigin( event.origin ) ) {
+            console.warn( `[${ this._origin }]: An unallowed origin [${ event.origin }] try to access the web api.` );
+            return
+        }
+
+        // In case we are not in embbeded iframe or the origin is not an iframe set the origin window as the source event
+        let origin = this._getAllowedOriginByURI( event.origin );
+        if ( iteeValidators.isNotDefined( origin ) ) {
+            origin = {
+                id:           `origin_${ Math.random().toString().slice( 2 ) }`,
+                uri:          event.origin,
+                methods:      [ '*' ],
+                window:       event.source,
+                messageQueue: [],
+                isReady:      false
+            };
+            this._allowedOrigins.push( origin );
+        } else if ( origin.window === null ) {
+            origin.window = event.source;
+        }
+
+        try {
+
+            await this._dispatchMessageFrom( origin, JSON.parse( event.data ) );
+
+        } catch ( error ) {
+
+            this.postErrorTo( origin.id, error );
+
+        }
+
+    }
+
+    /**
+     *
+     * @param origin
+     * @param message
+     * @private
+     */
+    async _dispatchMessageFrom ( origin, message ) {
+
+        if ( iteeValidators.isNotDefined( message ) ) { throw new ReferenceError( `[${ this._origin }]: Message cannot be null or undefined ! Expect a json object.` ) }
+
+        const messageType = message.type;
+
+        if ( messageType === '_ready' ) {
+
+            console.log( `[${ this._origin }]: Recieve '_ready' message from [${ origin.uri }].` );
+            this.onReadyFrom( origin, message );
+
+        } else if ( messageType === '_progress' ) {
+
+            console.log( `[${ this._origin }]: Recieve '_progress' message from [${ origin.uri }].` );
+            this.onProgressFrom( origin, message );
+
+        } else if ( messageType === '_error' ) {
+
+            console.log( `[${ this._origin }]: Recieve '_error' message from [${ origin.uri }].` );
+            this.onErrorFrom( origin, message );
+
+        } else if ( messageType === '_response' ) {
+
+            console.log( `[${ this._origin }]: Recieve '_response' message from [${ origin.uri }].` );
+            this.onResponseFrom( origin, message );
+
+        } else if ( messageType === '_request' ) {
+
+            console.log( `[${ this._origin }]: Recieve '_request' message from [${ origin.uri }].` );
+            await this.onRequestFrom( origin, message );
+
+        } else {
+
+            console.log( `[${ this._origin }]: Recieve 'custom' message from [${ origin.uri }].` );
+            this.onMessageFrom( origin, message );
+
+        }
+
+    }
+
+    /**
+     *
+     * @param origin
+     * @param message
+     */
+    // eslint-disable-next-line no-unused-vars
+    onReadyFrom ( origin, message ) {
+
+        if ( !origin.isReady ) {
+            origin.isReady = true;
+            const ready    = new WebAPIMessageReady();
+            this.postMessageTo( origin.id, ready, true );
+        }
+
+        // processMessageQueueOf
+        const messageQueue = origin.messageQueue;
+        for ( let messageIndex = messageQueue.length - 1 ; messageIndex >= 0 ; messageIndex-- ) {
+            this.postMessageTo( origin.id, messageQueue.shift() );
+        }
+
+    }
+
+    /**
+     *
+     * @param origin
+     * @param request
+     */
+    async onRequestFrom ( origin, request ) {
+
+        const method = request.method;
+        if ( this._isNotAllowedForAllMethods( origin ) && this._isNotAllowedMethod( origin, method ) ) { throw new Error( `[${ this._origin }]: Origin [${ origin }] try to access an unallowed method named ${ method }.` ) }
+        if ( this._methodNotExist( method ) ) { throw new ReferenceError( `[${ this._origin }]: Origin [${ origin.uri }] try to access an unexisting method named "${ method }".` ) }
+
+        const parameters = request.parameters;
+        let message;
+
+        try {
+            const result = await this[ method ]( ...parameters );
+            message      = new WebAPIMessageData( result );
+        } catch ( error ) {
+            message = new WebAPIMessageError( error );
+        }
+
+        const response = new WebApiMessageResponse( request, message );
+        this.postMessageTo( origin.id, response );
+
+    }
+
+    /**
+     *
+     * @param origin
+     * @param response
+     */
+    onResponseFrom ( origin, response ) {
+
+        this._responses.set( response.request.id, response );
+
+    }
+
+    /**
+     *
+     * @param origin
+     * @param progress
+     */
+    // eslint-disable-next-line no-unused-vars
+    onProgressFrom ( origin, progress ) {
+        // todo: emit progress base on request id ?
+    }
+
+    /**
+     *
+     * @param origin
+     * @param error
+     */
+    // eslint-disable-next-line no-unused-vars
+    onErrorFrom ( origin, error ) {
+        // todo: manage intternal error than allow user define handling
+    }
+
+    /**
+     *
+     * @param origin
+     * @param message
+     */
+    // eslint-disable-next-line no-unused-vars
+    onMessageFrom ( origin, message ) {
+        // Need to be reimplemented if needed
+    }
+
+    // Send
+
+    /**
+     *
+     * @private
+     */
+    _broadCastReadyMessage () {
+
+        const ready      = new WebAPIMessageReady();
+        const intervalId = setInterval( () => {
+
+            const allowedOrigins        = this.allowedOrigins;
+            const includeUnreadyOrigins = allowedOrigins.map( origin => origin.isReady ).includes( false );
+            if ( includeUnreadyOrigins ) {
+
+                Object.values( allowedOrigins )
+                      .forEach( ( origin ) => {
+
+                          if ( origin.isReady ) { return }
+                          if ( origin.isUnreachable ) { return }
+
+                          if ( iteeValidators.isDefined( origin.silent ) ) {
+                              if ( iteeValidators.isFalse( origin.silent ) ) {
+                                  this.postMessageTo( origin.id, ready, true );
+                              } else {
+                                  origin.isReady = true;
+                              }
+                          } else {
+                              this.postMessageTo( origin.id, ready, true );
+                          }
+
+                      } );
+
+            } else {
+
+                clearInterval( intervalId );
+
+            }
+
+        }, 1000 );
+
+    }
+
+    /**
+     *
+     * @param originId
+     * @param error
+     */
+    postErrorTo ( originId, error ) {
+
+        let _error = null;
+        if ( error.isWebAPIMessageError ) {
+            _error = error;
+        } else {
+            _error = new WebAPIMessageError( error );
+        }
+        this.postMessageTo( originId, _error.toJSON() );
+
+    }
+
+    /**
+     *
+     * @param originId
+     * @param progress
+     */
+    postProgressTo ( originId, progress ) {
+
+        let _progress = null;
+        if ( progress.isWebAPIMessageProgress ) {
+            _progress = progress;
+        } else {
+            _progress = new WebAPIMessageProgress( progress.loaded, progress.total );
+        }
+        this.postMessageTo( originId, _progress.toJSON() );
+
+    }
+
+    /**
+     *
+     * @param originId
+     * @param data
+     */
+    postDataTo ( originId, data ) {
+
+        let _data = null;
+        if ( data.isWebAPIMessageData ) {
+            _data = data;
+        } else {
+            _data = new WebAPIMessageData( data );
+        }
+        this.postMessageTo( originId, _data.toJSON() );
+
+    }
+
+    /**
+     *
+     * @param originId
+     * @param request
+     * @returns {Promise}
+     */
+    postRequestTo ( originId, request ) {
+
+        const refreshFrequency = 200;
+        let currentWaitingTime = 0;
+
+        return new Promise( ( resovle, reject ) => {
+
+            try {
+
+                this.postMessageTo( originId, request );
+
+                const intervalId = setInterval( () => {
+
+                    if ( this._responses.has( request.id ) ) {
+
+                        const response = this._responses.get( request.id );
+                        this._responses.delete( request.id );
+                        clearInterval( intervalId );
+
+                        const result = response.result;
+                        if ( iteeValidators.isDefined( result ) ) {
+
+                            if ( result.type === '_error' ) {
+
+                                reject( result.message );
+
+                            } else if ( result.type === '_data' ) {
+
+                                resovle( result.data );
+
+                            } else {
+
+                                resovle( result );
+
+                            }
+
+                        } else {
+
+                            resovle();
+
+                        }
+
+                    } else if ( currentWaitingTime >= this.requestTimeout ) {
+
+                        clearInterval( intervalId );
+                        reject( new Error( `Request timeout for ${ JSON.stringify( request ) }` ) );
+
+                    } else {
+
+                        currentWaitingTime += refreshFrequency;
+
+                    }
+
+                }, refreshFrequency );
+
+            } catch ( error ) {
+
+                reject( error );
+
+            }
+
+        } )
+
+    }
+
+    /**
+     *
+     * @param originId
+     * @param message
+     * @param force
+     */
+    postMessageTo ( originId, message, force = false ) {
+
+        if ( iteeValidators.isNotDefined( originId ) ) { throw new ReferenceError( `[${ this._origin }]: Unable to post message to null or undefined origin id !` ) }
+        if ( iteeValidators.isNotDefined( message ) ) { throw new ReferenceError( `[${ this._origin }]: Unable to post null or undefined message !` ) }
+
+        const origin = this._getAllowedOriginById( originId );
+        if ( iteeValidators.isNotDefined( origin ) ) { throw new ReferenceError( `[${ this._origin }]: Unable to retrieved origin with id: ${ originId }` ) }
+
+        try {
+
+            if ( !force && !origin.isReady ) {
+
+                console.warn( `[${ this._origin }]: Origin "${ origin.uri }" is not ready yet !` );
+                origin.messageQueue.push( message );
+
+            } else if ( force && !origin.window ) {
+
+                console.error( `[${ this._origin }]: Origin "${ origin.uri }" is unreachable !` );
+                origin.isUnreachable = true;
+                origin.messageQueue.push( message );
+
+            } else {
+
+                console.log( `[${ this._origin }]: Send message of type [${ message.type }] to  [${ origin.uri }]` );
+                origin.window.postMessage( JSON.stringify( message ), origin.uri );
+
+            }
+
+        } catch ( error ) {
+
+            console.error( error );
+
+        }
+
+    }
+
+}
+
+/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ */
+
+/**
+ * @class
+ * @classdesc Special message to request a distant method and expect result.
+ */
+class WebAPIMessageRequest extends WebAPIMessage {
+
+    /**
+     * @static
+     * @type {boolean}
+     */
+    static isWebAPIMessageRequest = true
+
+    /**
+     *
+     * @param method
+     * @param parameters
+     */
+    constructor ( method, parameters = [] ) {
+        super( '_request' );
+
+        this.method     = method;
+        this.parameters = parameters;
+    }
+
+    /**
+     *
+     * @returns {*}
+     */
+    get method () {
+        return this._method
+    }
+
+    set method ( value ) {
+        if ( iteeValidators.isNull( value ) ) { return }
+        if ( iteeValidators.isUndefined( value ) ) { return }
+        if ( iteeValidators.isNotString( value ) ) { return }
+
+        this._method = value;
+    }
+
+    /**
+     *
+     * @returns {*}
+     */
+    get parameters () {
+        return this._parameters
+    }
+
+    set parameters ( value ) {
+        if ( iteeValidators.isNotArray( value ) ) { return }
+
+        this._parameters = value;
+    }
+
+    /**
+     *
+     * @returns {{method: *, parameters: *}}
+     */
+    toJSON () {
+
+        return {
+            ...super.toJSON(),
+            ...{
+                method:     this.method,
+                parameters: this.parameters
+            }
+        }
+
+    }
+
+}
+
+/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ */
+
+class WorkerMessage {
+
+    static isWorkerMessage = true
+
+    constructor ( type ) {
+
+        this.type = type;
+
+    }
+
+    get type () {
+        return this._type
+    }
+
+    set type ( type ) {
+        this._type = type;
+    }
+
+    toJSON () {
+
+        return {
+            type: this.type
+        }
+
+    }
+
+}
+
+/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ */
+
+class WorkerMessageData extends WorkerMessage {
+
+    static isWorkerMessageData = true
+
+    constructor ( type, buffer ) {
+        super( type );
+
+        this.buffer = buffer;
+    }
+
+    toJSON () {
+
+        return {
+            ...super.toJSON(),
+            ...{
+                buffer: this.buffer
+            }
+        }
+
+    }
+
+}
+
+/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ */
+
+class WorkerMessageError extends WorkerMessage {
+
+    static isWorkerMessageError = true
+
+    constructor ( error ) {
+        super( 'error' );
+
+        this.message = error.message;
+        this.stack   = error.stack;
+    }
+
+    toJSON () {
+
+        return {
+            ...super.toJSON(),
+            ...{
+                message: this.message,
+                stack:   this.stack
+            }
+        }
+
+    }
+
+}
+
+/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ */
+
+class WorkerProgessMessage extends WorkerMessage {
+
+    static isWorkerMessageProgess = true
+
+    constructor ( loaded = 0, total = 0 ) {
+        super( 'progress' );
+
+        this.lengthComputable = false;
+        this.loaded           = loaded;
+        this.total            = total;
+    }
+
+    get loaded () {
+        return this._loaded
+    }
+
+    set loaded ( value ) {
+        this._loaded = value;
+        this._checkIfLengthComputable();
+    }
+
+    get total () {
+        return this._total
+    }
+
+    set total ( value ) {
+        this._total = value;
+        this._checkIfLengthComputable();
+    }
+
+    _checkIfLengthComputable () {
+
+        this.lengthComputable = false;
+
+        if (
+            this._total > 0 &&
+            this._total < Number.MAX_SAFE_INTEGER &&
+            this._loaded >= 0 &&
+            this._loaded < Number.MAX_SAFE_INTEGER
+        ) {
+            this.lengthComputable = true;
+        }
+
+    }
+
+    toJSON () {
+
+        return {
+            ...super.toJSON(),
+            ...{
+                lengthComputable: this.lengthComputable,
+                loaded:           this.loaded,
+                total:            this.total
+            }
+        }
+
+    }
+
+}
+
+/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ */
+
+/**
+ * @class
+ * @classdesc Base worker interface that allow messaging between callee and caller
+ */
+class AbstractWorker {
+
+    /**
+     *
+     * @param progress
+     */
+    postProgress ( progress ) {
+
+        if ( progress.isWorkerMessageProgess ) {
+            postMessage( progress.toJSON() );
+        } else {
+            postMessage( new WorkerProgessMessage( progress.loaded, progress.total ).toJSON() );
+        }
+
+    }
+
+    /**
+     *
+     * @param error
+     */
+    postError ( error ) {
+
+        if ( error.isWorkerMessageError ) {
+            postMessage( error.toJSON() );
+        } else {
+            postMessage( new WorkerMessageError( error ).toJSON() );
+        }
+
+    }
+
+    /**
+     *
+     * @param type
+     * @param arrayBuffer
+     */
+    postData ( type, arrayBuffer ) {
+
+        if ( iteeValidators.isArray( arrayBuffer ) ) {
+            postMessage( new WorkerMessageData( type, arrayBuffer ).toJSON(), [ ...arrayBuffer ] );
+        } else if ( iteeValidators.isArrayBuffer( arrayBuffer ) ) {
+            postMessage( new WorkerMessageData( type, arrayBuffer ).toJSON(), [ arrayBuffer ] );
+        } else {
+            throw new TypeError(`AbstractWorker.postData: Unable to post data of type [${type}].`)
+        }
+
+    }
+
+    /**
+     *
+     * @param message
+     * @returns {boolean}
+     */
+    onMessage ( message ) {
+
+        if ( iteeValidators.isNotDefined( message ) ) {
+            this.postError( new Error( 'Message event cannot be null or undefined !' ) );
+            return true
+        }
+
+        const data = message.data;
+        if ( iteeValidators.isNotDefined( data ) ) {
+            this.postError( new Error( 'Message data cannot be null or undefined !' ) );
+            return true
+        }
+
+        const dataType = data.type;
+        if ( iteeValidators.isNotDefined( dataType ) ) {
+            this.postError( new Error( 'Message data type cannot be null or undefined !' ) );
+            return true
+        }
+
+        if ( data.type === 'methodCall' ) {
+
+            const methodName = data.method;
+            if ( iteeValidators.isNotDefined( methodName ) ) {
+                this.postError( new Error( 'Message of type "methodCall" cannot have null, undefined or empty name !' ) );
+                return true
+            }
+
+            if ( iteeValidators.isNotString( methodName ) ) {
+                this.postError( new Error( 'Message of type "methodCall" expect name to be a string !' ) );
+                return true
+            }
+
+            if ( iteeValidators.isEmptyString( methodName ) ) {
+                this.postError( new Error( 'Message of type "methodCall" expect name to be a non empty string !' ) );
+                return true
+            }
+
+            const methodParameters = data.parameters || [];
+            if ( iteeValidators.isNotArray( methodParameters ) ) {
+                this.postError( new Error( 'Message of type "methodCall" expect parameters to be an array !' ) );
+                return true
+            }
+
+            this._invoke( methodName, methodParameters );
+            return true
+
+        }
+
+    }
+
+    /**
+     *
+     * @param name
+     * @param parameters
+     * @private
+     */
+    _invoke ( name, parameters = [] ) {
+
+        try {
+
+            const result = this[ name ]( ...parameters );
+            if ( result ) {
+                postMessage( {
+                    type:   name,
+                    result: result
+                } );
+            }
+
+        } catch ( error ) {
+            this.postError( error );
+        }
+
+    }
+
+}
+
+/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ */
+
+class WorkerMessageMethodCall extends WorkerMessage {
+
+    static isWorkerMessageMethodCall = true
+
+    constructor ( method, parameters = [] ) {
+        super( 'methodCall' );
+
+        this.method     = method;
+        this.parameters = parameters;
+    }
+
+    get method () {
+        return this._method
+    }
+
+    set method ( value ) {
+        if ( iteeValidators.isNull( value ) ) { return }
+        if ( iteeValidators.isUndefined( value ) ) { return }
+        if ( iteeValidators.isNotString( value ) ) { return }
+
+        this._method = value;
+    }
+
+    get parameters () {
+        return this._parameters
+    }
+
+    set parameters ( value ) {
+        if ( iteeValidators.isNotArray( value ) ) { return }
+
+        this._parameters = value;
+    }
+
+    toJSON () {
+
+        return {
+            ...super.toJSON(),
+            ...{
+                method:     this.method,
+                parameters: this.parameters
+            }
+        }
+
+    }
+
+}
+
+exports.AbstractWebAPI = AbstractWebAPI;
+exports.AbstractWorker = AbstractWorker;
 exports.Byte = Byte;
 exports.DefaultLogger = DefaultLogger;
 exports.Endianness = Endianness;
@@ -3570,4 +5568,16 @@ exports.TKeyboardController = TKeyboardController;
 exports.TLogger = TLogger;
 exports.TMouseController = TMouseController;
 exports.TStore = TStore;
+exports.WebAPIMessage = WebAPIMessage;
+exports.WebAPIMessageData = WebAPIMessageData;
+exports.WebAPIMessageError = WebAPIMessageError;
+exports.WebAPIMessageProgress = WebAPIMessageProgress;
+exports.WebAPIMessageReady = WebAPIMessageReady;
+exports.WebAPIMessageRequest = WebAPIMessageRequest;
+exports.WebApiMessageResponse = WebApiMessageResponse;
+exports.WorkerMessage = WorkerMessage;
+exports.WorkerMessageData = WorkerMessageData;
+exports.WorkerMessageError = WorkerMessageError;
+exports.WorkerMessageMethodCall = WorkerMessageMethodCall;
+exports.WorkerProgessMessage = WorkerProgessMessage;
 //# sourceMappingURL=itee-client.cjs.js.map
