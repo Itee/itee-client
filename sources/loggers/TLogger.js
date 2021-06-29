@@ -118,6 +118,7 @@ class TLogger {
             }, ...parameters
         }
 
+        this.isLogger    = true
         this.outputLevel = _parameters.outputLevel
         this.outputs     = _parameters.outputs
 
@@ -295,6 +296,7 @@ class TLogger {
 
         if ( this.outputs & LogOutput.Console ) {
 
+            // eslint-disable-next-line no-console
             console.error( errorMessage )
 
         }
@@ -337,6 +339,7 @@ class TLogger {
 
         if ( this.outputs & LogOutput.Console ) {
 
+            // eslint-disable-next-line no-console
             console.warn( warnMessage )
 
         }
@@ -379,6 +382,7 @@ class TLogger {
 
         if ( this.outputs & LogOutput.Console ) {
 
+            // eslint-disable-next-line no-console
             console.log( infoMessage )
 
         }
@@ -421,6 +425,7 @@ class TLogger {
 
         if ( this.outputs & LogOutput.Console ) {
 
+            // eslint-disable-next-line no-console
             console.log( debugMessage )
 
         }
@@ -496,6 +501,7 @@ class TLogger {
 
         if ( this.outputs & LogOutput.Console ) {
 
+            // eslint-disable-next-line no-console
             console.log( infoProgress )
 
         }
@@ -538,6 +544,7 @@ class TLogger {
 
         if ( this.outputs & LogOutput.Console ) {
 
+            // eslint-disable-next-line no-console
             console.log( debugProgress )
 
         }
@@ -578,6 +585,7 @@ class TLogger {
      */
     _dispatchTime ( time ) {
 
+        // eslint-disable-next-line no-console
         console.log( time.message )
 
     }
