@@ -1,3 +1,17 @@
+# [7.4.0](https://github.com/Itee/itee-client/compare/v7.3.0...v7.4.0) (2021-07-05)
+
+
+### Bug Fixes
+
+* **eslint:** fix eslint error ([c36537f](https://github.com/Itee/itee-client/commit/c36537f9c43aade0e830af39a0787b81ce7621e4))
+* **package:** apply npm audit fix ([1f68193](https://github.com/Itee/itee-client/commit/1f68193d603a66882f0acb028ae39a22f3d04de8))
+* **rollupconfig:** remove sourcemap in production ([893a513](https://github.com/Itee/itee-client/commit/893a513cd414ebf42fe116db7fc4fcdbc29d0293))
+
+
+### Features
+
+* **iteecore:** use TLogger from itee-core pacakge instead of local one ([f714873](https://github.com/Itee/itee-client/commit/f7148732f77f77b8984ebae4aabb1c59fe64ee19))
+
 # [7.3.0](https://github.com/Itee/itee-client/compare/v7.2.0...v7.3.0) (2021-01-21)
 
 
