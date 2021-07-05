@@ -53,7 +53,8 @@ function _computeIntro () {
 
     return '' +
         'if( iteeValidators === undefined ) { console.error(\'Itee.Client need Itee.Validators to be defined first. Please check your scripts loading order.\') }' + '\n' +
-        'if( iteeUtils === undefined ) { console.error(\'Itee.Client need Itee.Utils to be defined first. Please check your scripts loading order.\') }' + '\n'
+        'if( iteeUtils === undefined ) { console.error(\'Itee.Client need Itee.Utils to be defined first. Please check your scripts loading order.\') }' + '\n' +
+        'if( iteeCore === undefined ) { console.error(\'Itee.Client need Itee.Core to be defined first. Please check your scripts loading order.\') }' + '\n'
 
 }
 
@@ -91,7 +92,8 @@ function CreateRollupConfigs ( options ) {
                 input:    input,
                 external: [
                     'itee-validators',
-                    'itee-utils'
+                    'itee-utils',
+                    'itee-core'
                 ],
                 plugins: [
                     nodeResolve(),
@@ -118,7 +120,8 @@ function CreateRollupConfigs ( options ) {
                     name:    name,
                     globals: {
                         'itee-validators': 'Itee.Validators',
-                        'itee-utils':      'Itee.Utils'
+                        'itee-utils':      'Itee.Utils',
+                        'itee-core':       'Itee.Core'
                     },
 
                     // advanced options

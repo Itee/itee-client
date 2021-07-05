@@ -50,7 +50,8 @@ import { TStore } from '../cores/TStore'
 import {
     DefaultLogger,
     TLogger
-}                 from '../loggers/TLogger'
+}                 from 'itee-core'
+
 
 /**
  * @deprecated

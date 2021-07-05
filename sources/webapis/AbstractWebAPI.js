@@ -17,7 +17,7 @@ import { WebAPIMessageError }    from './messages/WebAPIMessageError'
 import { WebAPIMessageProgress } from './messages/WebAPIMessageProgress'
 import { WebAPIMessageReady }    from './messages/WebAPIMessageReady'
 import { WebApiMessageResponse } from './messages/WebAPIMessageResponse'
-import { DefaultLogger }         from '../loggers/TLogger'
+import { DefaultLogger }         from 'itee-core'
 
 /**
  * A POJO object containg datas about a distant source to allow
