@@ -1,4 +1,4 @@
-console.log('Itee.Client v7.4.0 - EsModule')
+console.log('Itee.Client v7.4.1 - EsModule')
 import { toEnum } from 'itee-utils';
 import { isString, isFunction, isNull, isUndefined, isNotObject, isNotBoolean, isNotArray, isNotUndefined, isNotArrayBuffer, isNotNumber, isNotString, isEmptyString, isBlankString, isNumberPositive, isNumberNegative, isZero, isArray, isNotEmptyArray, isArrayOfSingleElement, isObject, isNotEmptyObject, isNotEmptyString, isNotBlankString, isEmptyObject, isNotDefined, isDefined, isFalse, isArrayBuffer } from 'itee-validators';
 import { DefaultLogger, TLogger } from 'itee-core';
