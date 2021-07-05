@@ -1,3 +1,10 @@
+## [7.4.1](https://github.com/Itee/itee-client/compare/v7.4.0...v7.4.1) (2021-07-05)
+
+
+### Bug Fixes
+
+* **package:** miss some dependencies ([35ecf43](https://github.com/Itee/itee-client/commit/35ecf434530984f482e265d3945ab8f51ded4ba1))
+
 # [7.4.0](https://github.com/Itee/itee-client/compare/v7.3.0...v7.4.0) (2021-07-05)
 
 
