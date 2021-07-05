@@ -53,7 +53,8 @@ function _computeIntro () {
 
     return '' +
         'if( iteeValidators === undefined ) { console.error(\'Itee.Client need Itee.Validators to be defined first. Please check your scripts loading order.\') }' + '\n' +
-        'if( iteeUtils === undefined ) { console.error(\'Itee.Client need Itee.Utils to be defined first. Please check your scripts loading order.\') }' + '\n'
+        'if( iteeUtils === undefined ) { console.error(\'Itee.Client need Itee.Utils to be defined first. Please check your scripts loading order.\') }' + '\n' +
+        'if( iteeCore === undefined ) { console.error(\'Itee.Client need Itee.Core to be defined first. Please check your scripts loading order.\') }' + '\n'
 
 }
 
@@ -72,7 +73,6 @@ function CreateRollupConfigs ( options ) {
     const output    = options.output
     const formats   = options.format.split( ',' )
     const envs      = options.env.split( ',' )
-    const sourcemap = options.sourcemap
     const treeshake = options.treeshake
     const fileName  = path.basename( input, '.js' )
 
@@ -91,7 +91,8 @@ function CreateRollupConfigs ( options ) {
                 input:    input,
                 external: [
                     'itee-validators',
-                    'itee-utils'
+                    'itee-utils',
+                    'itee-core'
                 ],
                 plugins: [
                     nodeResolve(),
@@ -118,7 +119,8 @@ function CreateRollupConfigs ( options ) {
                     name:    name,
                     globals: {
                         'itee-validators': 'Itee.Validators',
-                        'itee-utils':      'Itee.Utils'
+                        'itee-utils':      'Itee.Utils',
+                        'itee-core':       'Itee.Core'
                     },
 
                     // advanced options
@@ -127,7 +129,7 @@ function CreateRollupConfigs ( options ) {
                     footer:    '',
                     intro:     ( !isProd && format === 'iife' ) ? _computeIntro() : '',
                     outro:     '',
-                    sourcemap: sourcemap,
+                    sourcemap: !isProd,
                     interop:   true,
 
                     // danger zone

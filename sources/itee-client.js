@@ -8,7 +8,6 @@
 export * from './cores/_cores'
 export * from './input_devices/_inputDevices'
 export * from './loaders/_loaders'
-export * from './loggers/_loggers'
 export * from './managers/_managers'
 export * from './utils/_utils'
 export * from './webapis/_webapis'

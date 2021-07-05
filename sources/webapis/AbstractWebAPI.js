@@ -17,6 +17,7 @@ import { WebAPIMessageError }    from './messages/WebAPIMessageError'
 import { WebAPIMessageProgress } from './messages/WebAPIMessageProgress'
 import { WebAPIMessageReady }    from './messages/WebAPIMessageReady'
 import { WebApiMessageResponse } from './messages/WebAPIMessageResponse'
+import { DefaultLogger }         from 'itee-core'
 
 /**
  * A POJO object containg datas about a distant source to allow
@@ -46,15 +47,17 @@ class AbstractWebAPI {
 
         const _parameters = {
             ...{
+                logger:          DefaultLogger,
                 allowAnyOrigins: false,
                 allowedOrigins:  [],
                 //                targetOrigin:    '',
-                requestTimeout: 2000
+                requestTimeout:  2000
             },
             ...parameters
         }
 
         // Internal stuff
+        this.logger    = _parameters.logger
         this._origin    = window.location.origin
         this._responses = new Map()
 
@@ -69,6 +72,17 @@ class AbstractWebAPI {
 
         // Emit onReady event
         this._broadCastReadyMessage()
+    }
+
+    get logger() {
+        return this._logger
+    }
+    set logger(value) {
+        if ( isNull( value ) ) { throw new ReferenceError( `[${ this._origin }]: The logger cannot be null, expect a TLogger.` )}
+        if ( isUndefined( value ) ) { throw new ReferenceError( `[${ this._origin }]: The logger cannot be undefined, expect a TLogger.` )}
+        if ( !value.isLogger ) { throw new ReferenceError( `[${ this._origin }]: The logger cannot be undefined, expect a TLogger.` )}
+
+        this._logger = value
     }
 
     /**
@@ -192,9 +206,7 @@ class AbstractWebAPI {
     }
 
     _isNotAllowedOrigin ( originURI ) {
-
         return !this._allowedOrigins.map( allowedOrigin => allowedOrigin.uri ).includes( originURI )
-
     }
 
     /**
@@ -281,7 +293,7 @@ class AbstractWebAPI {
             const frames = document.getElementsByTagName( 'iframe' )
             const frame  = Array.from( frames ).find( iframe => iframe.src.includes( originURI ) )
             if ( isNotDefined( frame ) ) {
-                console.warn( `[${ this._origin }]: Unable to find iframe for [${ originURI }] URI !` )
+                this.logger.warn( `[${ this._origin }]: Unable to find iframe for [${ originURI }] URI !` )
                 originWindow = null
             } else {
                 originWindow = frame.contentWindow
@@ -302,7 +314,7 @@ class AbstractWebAPI {
 
         // Is allowed origin
         if ( this._isNotAllowedForAllOrigins() && this._isNotAllowedOrigin( event.origin ) ) {
-            console.warn( `[${ this._origin }]: An unallowed origin [${ event.origin }] try to access the web api.` )
+            this.logger.warn( `[${ this._origin }]: An unallowed origin [${ event.origin }] try to access the web api.` )
             return
         }
 
@@ -348,32 +360,32 @@ class AbstractWebAPI {
 
         if ( messageType === '_ready' ) {
 
-            console.log( `[${ this._origin }]: Recieve '_ready' message from [${ origin.uri }].` )
+            this.logger.log( `[${ this._origin }]: Recieve '_ready' message from [${ origin.uri }].` )
             this.onReadyFrom( origin, message )
 
         } else if ( messageType === '_progress' ) {
 
-            console.log( `[${ this._origin }]: Recieve '_progress' message from [${ origin.uri }].` )
+            this.logger.log( `[${ this._origin }]: Recieve '_progress' message from [${ origin.uri }].` )
             this.onProgressFrom( origin, message )
 
         } else if ( messageType === '_error' ) {
 
-            console.log( `[${ this._origin }]: Recieve '_error' message from [${ origin.uri }].` )
+            this.logger.log( `[${ this._origin }]: Recieve '_error' message from [${ origin.uri }].` )
             this.onErrorFrom( origin, message )
 
         } else if ( messageType === '_response' ) {
 
-            console.log( `[${ this._origin }]: Recieve '_response' message from [${ origin.uri }].` )
+            this.logger.log( `[${ this._origin }]: Recieve '_response' message from [${ origin.uri }].` )
             this.onResponseFrom( origin, message )
 
         } else if ( messageType === '_request' ) {
 
-            console.log( `[${ this._origin }]: Recieve '_request' message from [${ origin.uri }].` )
+            this.logger.log( `[${ this._origin }]: Recieve '_request' message from [${ origin.uri }].` )
             await this.onRequestFrom( origin, message )
 
         } else {
 
-            console.log( `[${ this._origin }]: Recieve 'custom' message from [${ origin.uri }].` )
+            this.logger.log( `[${ this._origin }]: Recieve 'custom' message from [${ origin.uri }].` )
             this.onMessageFrom( origin, message )
 
         }
@@ -652,25 +664,25 @@ class AbstractWebAPI {
 
             if ( !force && !origin.isReady ) {
 
-                console.warn( `[${ this._origin }]: Origin "${ origin.uri }" is not ready yet !` )
+                this.logger.warn( `[${ this._origin }]: Origin "${ origin.uri }" is not ready yet !` )
                 origin.messageQueue.push( message )
 
             } else if ( force && !origin.window ) {
 
-                console.error( `[${ this._origin }]: Origin "${ origin.uri }" is unreachable !` )
+                this.logger.error( `[${ this._origin }]: Origin "${ origin.uri }" is unreachable !` )
                 origin.isUnreachable = true
                 origin.messageQueue.push( message )
 
             } else {
 
-                console.log( `[${ this._origin }]: Send message of type [${ message.type }] to  [${ origin.uri }]` )
+                this.logger.log( `[${ this._origin }]: Send message of type [${ message.type }] to  [${ origin.uri }]` )
                 origin.window.postMessage( JSON.stringify( message ), origin.uri )
 
             }
 
         } catch ( error ) {
 
-            console.error( error )
+            this.logger.error( error )
 
         }
 

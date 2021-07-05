@@ -1,30 +1,66 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Tests</title>
-        <style>
+	<head>
+		<meta charset="UTF-8">
+		<title>Tests</title>
+		<style>
             html, body, #mainContainer {
                 width:   100%;
                 height:  100%;
                 padding: 0;
                 margin:  0;
             }
-        </style>
-    </head>
-    <body>
-        <div id="mainContainer">
-            <div id="webglViewportContainer"></div>
-        </div>
-        <script src="../builds/itee-client.iife.js"></script>
-        <script>
-            const container  = document.getElementById( 'mainContainer' )
-            const parameters = {}
-            const onReady    = function onReady () {
-                alert( 'Ready !' )
-            }
+		</style>
+		<script src="../node_modules/itee-validators/builds/itee-validators.iife.js"></script>
+		<script src="../node_modules/itee-utils/builds/itee-utils.iife.js"></script>
+		<script src="../builds/itee-client.iife.js"></script>
+	</head>
+	<body>
+		<script>
+            const myEnum = Itee.Client.Mouse
+            console.log( `myEnum => ${ myEnum }` )
+            const myEnumIncludes = myEnum.includes( Itee.Client.Mouse.Right )
+            console.log( `myEnum.includes(Itee.Client.Mouse.Right) => ${ myEnumIncludes }` )
+            const myEnumString = myEnum.toString()
+            console.log( `myEnum.toString() => ${ myEnumString }` )
+            const myEnumTypes = myEnum.types()
+            console.log( `myEnum.types() => ${ myEnumTypes }` )
+            const myEnumKeys = Object.keys( myEnum )
+            console.log( `myEnum.keys() => ${ myEnumKeys }` )
+            const myEnumValues = Object.values( myEnum )
+            console.log( `myEnum.values() => ${ myEnumValues }` )
+            const myEnumEntries = Object.entries( myEnum )
+            console.log( `myEnum.entries() => ${ myEnumEntries }` )
 
-            const app = new Itee.TApplication( container, parameters, onReady )
-        </script>
-    </body>
+            //            const myLocalEnum = Itee.Utils.toEnum( {
+            //                Foo: 'foo',
+            //                Bar: 'bar',
+            //                Baz: 'baz'
+            //            } )
+            const myLocalEnum = Itee.Utils.toEnum( [ 'foo', 'bar' ] )
+            console.log( `myEnum => ${ myLocalEnum }` )
+            const myLocalEnumIncludes = myLocalEnum.includes( 'foo' )
+            console.log( `myEnum.includes('foo') => ${ myLocalEnumIncludes }` )
+            const myLocalEnumString = myLocalEnum.toString()
+            console.log( `myEnum.toString() => ${ myLocalEnumString }` )
+            const myLocalEnumTypes = myLocalEnum.types()
+            console.log( `myEnum.types() => ${ myLocalEnumTypes }` )
+            const myLocalEnumKeys = Object.keys( myLocalEnum )
+            console.log( `myEnum.keys() => ${ myLocalEnumKeys }` )
+            const myLocalEnumValues = Object.values( myLocalEnum )
+            console.log( `myEnum.values() => ${ myLocalEnumValues }` )
+            const myLocalEnumEntries = Object.entries( myLocalEnum )
+            console.log( `myEnum.entries() => ${ myLocalEnumEntries }` )
+
+            console.log( '...' )
+
+            const array1   = [ 'a', 'b', 'c' ]
+            const obj      = {}
+            const iterator = array1.forEach( ( value, index ) => {
+                obj[ value ] = index
+            } )
+            //            const obj      = Object.fromEntries( iterator )
+            console.log( obj )
+		</script>
+	</body>
 </html>
