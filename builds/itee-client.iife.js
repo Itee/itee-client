@@ -1,10 +1,11 @@
-console.log('Itee.Client v7.3.0 - Standalone')
+console.log('Itee.Client v7.4.0 - Standalone')
 this.Itee = this.Itee || {};
-this.Itee.Client = (function (exports, iteeUtils, iteeValidators) {
+this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	'use strict';
 
 	if( iteeValidators === undefined ) { console.error('Itee.Client need Itee.Validators to be defined first. Please check your scripts loading order.') }
 	if( iteeUtils === undefined ) { console.error('Itee.Client need Itee.Utils to be defined first. Please check your scripts loading order.') }
+	if( iteeCore === undefined ) { console.error('Itee.Client need Itee.Core to be defined first. Please check your scripts loading order.') }
 
 
 	/**
@@ -847,652 +848,6 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators) {
 	/* eslint-env browser */
 
 	/**
-	 * @typedef {Enum} Keys
-	 *
-	 * @constant
-	 * @type {Keys}
-	 * @deprecated
-	 * @inner
-	 * @description Keys contains common keyboard key values, this allow to write semantic code instead of integer when dealing with key codes.
-	 */
-	const LogOutput = iteeUtils.toEnum( {
-	    Console:  1,
-	    Html:     2,
-	    Toast:    4,
-	    File:     8,
-	    Database: 16,
-	    All:      255
-	} );
-
-	/**
-	 * @typedef {Enum} LogType
-	 *
-	 * @constant
-	 * @type {LogType}
-	 * @deprecated
-	 * @description Keys contains common keyboard key values, this allow to write semantic code instead of integer when dealing with key codes.
-	 */
-	const LogType = iteeUtils.toEnum( {
-	    Message:  0,
-	    Progress: 1,
-	    Time:     2
-	} );
-
-	/**
-	 * @typedef {Enum} LogLevel
-	 * @property {Number} None=0 - No log allowed
-	 * @property {Number} Debug=1 - Allow Debug log entry
-	 * @property {Number} Info=2 - Allow Info log entry
-	 * @property {Number} Warning=4 - Allow Warning log entry
-	 * @property {Number} Error=8 - Allow Error log entry
-	 * @property {Number} All=255 - Allow all log entry
-	 *
-	 * @constant
-	 * @type {LogLevel}
-	 * @description LogLevel is a flag that allow to set which type of log is allowed
-	 */
-	const LogLevel = iteeUtils.toEnum( {
-	    None:    0,
-	    Debug:   1,
-	    Info:    2,
-	    Warning: 4,
-	    Error:   8,
-	    All:     255
-	} );
-
-	/**
-	 * @class
-	 * @classdesc TLogger is a fairly interface for log everthing you need, in every place you want.
-	 * It can filter log input in function of severity based on LogLevel enum, and can send log to many different output like console, database, or UI.
-	 */
-	class TLogger {
-
-	    /**
-	     * @param level
-	     * @return {string}
-	     * @private
-	     */
-	    static _levelToString ( level ) {
-
-	        let levelString = '';
-
-	        switch ( level ) {
-
-	            case LogLevel.Info:
-	                levelString = 'info';
-	                break
-
-	            case LogLevel.Warning:
-	                levelString = 'warning';
-	                break
-
-	            case LogLevel.Error:
-	                levelString = 'error';
-	                break
-
-	            default:
-	                levelString = 'unknownLogLevel';
-	                break
-
-	        }
-
-	        return levelString
-
-	    }
-
-	    /**
-	     * @constructor
-	     * @param {string} level - String who represent the gravity level of message between "error | warn (for warning) | other (will display like info message)"
-	     * @param {string} message - the to display
-	     */
-	    constructor ( parameters = {} ) {
-
-	        const _parameters = {
-	            ...{
-	                outputLevel: LogLevel.Error,
-	                outputs:     LogOutput.Console
-	            }, ...parameters
-	        };
-
-	        this.outputLevel = _parameters.outputLevel;
-	        this.outputs     = _parameters.outputs;
-
-	        this._logsArray    = [];
-	        this._timers       = {};
-	        this._counterTrace = 0;
-
-	    }
-
-	    /**
-	     *
-	     * @return {*}
-	     */
-	    get outputLevel () {
-	        return this._outputLevel
-	    }
-
-	    set outputLevel ( value ) {
-
-	        const memberName = 'OutputLevel';
-	        const expect     = 'Expect a value from LogLevel enum.';
-
-	        if ( iteeValidators.isNull( value ) ) { throw new Error( `${memberName} cannot be null ! ${expect}` ) }
-	        if ( iteeValidators.isUndefined( value ) ) { throw new Error( `${memberName} cannot be undefined ! ${expect}` ) }
-	        //        if ( !Object.keys( LogLevel ).includes( value ) ) { throw new Error( `${memberName} cannot be an instance of ${value.constructor.name}. ${expect}` ) }
-
-	        this._outputLevel = value;
-
-	    }
-
-	    /**
-	     *
-	     * @return {*}
-	     */
-	    get outputs () {
-	        return this._outputs
-	    }
-
-	    set outputs ( value ) {
-
-	        const memberName = 'Output';
-	        const expect     = 'Expect a value from LogOutput enum.';
-
-	        if ( iteeValidators.isNull( value ) ) { throw new Error( `${memberName} cannot be null ! ${expect}` ) }
-	        if ( iteeValidators.isUndefined( value ) ) { throw new Error( `${memberName} cannot be undefined ! ${expect}` ) }
-	        //        if ( !Object.keys( LogOutput ).includes( value ) ) { throw new Error( `${memberName} cannot be an instance of ${value.constructor.name}. ${expect}` ) }
-
-	        this._outputs = value;
-
-	    }
-
-	    /**
-	     *
-	     * @param level
-	     * @param datas
-	     * @return {*}
-	     * @private
-	     */
-	    _formatTrace ( level, datas ) {
-
-	        const levelString = TLogger._levelToString( level );
-	        const tmpLevel    = `${levelString}_${this._counterTrace}`;
-
-	        if ( iteeValidators.isString( datas ) ) {
-
-	            this._logsArray[ tmpLevel ] = datas;
-
-	        } else if ( iteeValidators.isObject( datas ) ) {
-
-	            this._logsArray[ tmpLevel ] = TLogger._formatObjectError( datas );
-
-	        } else if ( iteeValidators.isArrayOfString( datas ) ) {
-
-	            this._logsArray[ tmpLevel ] = datas.toString();
-
-	        } else if ( iteeValidators.isArrayOfObject( datas ) ) {
-
-	            this._logsArray[ tmpLevel ] = '';
-
-	            for ( let dataIndex = 0, numberOfDatas = datas.length ; dataIndex < numberOfDatas ; dataIndex++ ) {
-	                this._formatTrace( level, datas[ dataIndex ] );
-	            }
-
-	        } else {
-
-	            this._logsArray[ tmpLevel ] = ( datas ) ? datas.toString() : 'Empty log data !';
-
-	        }
-
-	        this._counterTrace++;
-	        return this._logsArray[ tmpLevel ]
-
-	    }
-
-	    // Todo: Use listener models
-	    /**
-	     *
-	     * @param message
-	     */
-	    dispatch ( message ) {
-
-	        const type = message.type;
-	        switch ( type ) {
-
-	            case LogType.Message:
-	                this._dispatchMessage( message );
-	                break
-
-	            case LogType.Progress:
-	                this._dispatchProgress( message );
-	                break
-
-	            case LogType.Time:
-	                this._dispatchTime( message );
-	                break
-
-	            default:
-	                throw new RangeError( `Invalid switch parameter: ${type}` )
-
-	        }
-
-	    }
-
-	    /**
-	     *
-	     * @param message
-	     * @private
-	     */
-	    _dispatchMessage ( message ) {
-
-	        const level = message.level;
-	        const data  = message.message;
-
-	        // Root message in function of gravity
-	        switch ( level ) {
-
-	            case LogLevel.Error:
-	                if ( this.outputLevel & LogLevel.Error ) {
-	                    this._dispatchErrorMessage( data );
-	                }
-	                break
-
-	            case LogLevel.Warning:
-	                if ( this.outputLevel & LogLevel.Warning ) {
-	                    this._dispatchWarningMessage( data );
-	                }
-	                break
-
-	            case LogLevel.Info:
-	                if ( this.outputLevel & LogLevel.Info ) {
-	                    this._dispatchInfoMessage( data );
-	                }
-	                break
-
-	            case LogLevel.Debug:
-	                if ( this.outputLevel & LogLevel.Debug ) {
-	                    this._dispatchDebugMessage( data );
-	                }
-	                break
-
-	            // For "Debug" output, don't store trace like this !
-	            default:
-	                throw new RangeError( `Invalid switch parameter: ${level}` )
-
-	        }
-
-	    }
-
-	    /**
-	     *
-	     * @param errorMessage
-	     * @private
-	     */
-	    _dispatchErrorMessage ( errorMessage ) {
-
-	        if ( this.outputs & LogOutput.Console ) {
-
-	            console.error( errorMessage );
-
-	        }
-
-	        if ( this.outputs & LogOutput.Html ) {
-
-	            const span = document.createElement( 'span' );
-	            span.classList.add( 'log-error' );
-	            span.innerText = errorMessage;
-	            document.body.appendChild( span );
-
-	        }
-
-	        if ( this.outputs & LogOutput.Toast ) ;
-
-	        if ( this.outputs & LogOutput.File ) ;
-
-	        if ( this.outputs & LogOutput.Database ) ;
-
-	    }
-
-	    /**
-	     *
-	     * @param warnMessage
-	     * @private
-	     */
-	    _dispatchWarningMessage ( warnMessage ) {
-
-	        if ( this.outputs & LogOutput.Console ) {
-
-	            console.warn( warnMessage );
-
-	        }
-
-	        if ( this.outputs & LogOutput.Html ) {
-
-	            const span = document.createElement( 'span' );
-	            span.classList.add( 'log-warning' );
-	            span.innerText = warnMessage;
-	            document.body.appendChild( span );
-
-	        }
-
-	        if ( this.outputs & LogOutput.Toast ) ;
-
-	        if ( this.outputs & LogOutput.File ) ;
-
-	        if ( this.outputs & LogOutput.Database ) ;
-
-	    }
-
-	    /**
-	     *
-	     * @param infoMessage
-	     * @private
-	     */
-	    _dispatchInfoMessage ( infoMessage ) {
-
-	        if ( this.outputs & LogOutput.Console ) {
-
-	            console.log( infoMessage );
-
-	        }
-
-	        if ( this.outputs & LogOutput.Html ) {
-
-	            const span = document.createElement( 'span' );
-	            span.classList.add( 'log-info' );
-	            span.innerText = infoMessage;
-	            document.body.appendChild( span );
-
-	        }
-
-	        if ( this.outputs & LogOutput.Toast ) ;
-
-	        if ( this.outputs & LogOutput.File ) ;
-
-	        if ( this.outputs & LogOutput.Database ) ;
-
-	    }
-
-	    /**
-	     *
-	     * @param debugMessage
-	     * @private
-	     */
-	    _dispatchDebugMessage ( debugMessage ) {
-
-	        if ( this.outputs & LogOutput.Console ) {
-
-	            console.log( debugMessage );
-
-	        }
-
-	        if ( this.outputs & LogOutput.Html ) {
-
-	            const span = document.createElement( 'span' );
-	            span.classList.add( 'log-info' );
-	            span.innerText = debugMessage;
-	            document.body.appendChild( span );
-
-	        }
-
-	        if ( this.outputs & LogOutput.Toast ) ;
-
-	        if ( this.outputs & LogOutput.File ) ;
-
-	        if ( this.outputs & LogOutput.Database ) ;
-
-	    }
-
-	    /**
-	     *
-	     * @param progress
-	     * @private
-	     */
-	    _dispatchProgress ( progress ) {
-
-	        const level          = progress.level;
-	        let formattedMessage = progress.message;
-
-	        // Root message in function of gravity
-	        switch ( level ) {
-
-	            case LogLevel.Info:
-	                if ( this.outputLevel & LogLevel.Info ) {
-	                    this._dispatchInfoProgress( formattedMessage );
-	                }
-	                break
-
-	            case LogLevel.Debug:
-	                if ( this.outputLevel & LogLevel.Debug ) {
-	                    this._dispatchDebugProgress( formattedMessage );
-	                }
-	                break
-
-	            // For "Debug" output, don't store trace like this !
-	            default:
-	                throw new RangeError( `Invalid progress level parameter: ${level}` )
-
-	        }
-
-	    }
-
-	    /**
-	     *
-	     * @param infoProgress
-	     * @private
-	     */
-	    _dispatchInfoProgress ( infoProgress ) {
-
-	        if ( this.outputs & LogOutput.Console ) {
-
-	            console.log( infoProgress );
-
-	        }
-
-	        if ( this.outputs & LogOutput.Html ) {
-
-	            const span = document.createElement( 'span' );
-	            span.classList.add( 'log-info' );
-	            span.innerText = infoProgress;
-	            document.body.appendChild( span );
-
-	        }
-
-	        if ( this.outputs & LogOutput.Toast ) ;
-
-	        if ( this.outputs & LogOutput.File ) ;
-
-	        if ( this.outputs & LogOutput.Database ) ;
-
-	    }
-
-	    /**
-	     *
-	     * @param debugProgress
-	     * @private
-	     */
-	    _dispatchDebugProgress ( debugProgress ) {
-
-	        if ( this.outputs & LogOutput.Console ) {
-
-	            console.log( debugProgress );
-
-	        }
-
-	        if ( this.outputs & LogOutput.Html ) {
-
-	            const span = document.createElement( 'span' );
-	            span.classList.add( 'log-info' );
-	            span.innerText = debugProgress;
-	            document.body.appendChild( span );
-
-	        }
-
-	        if ( this.outputs & LogOutput.Toast ) ;
-
-	        if ( this.outputs & LogOutput.File ) ;
-
-	        if ( this.outputs & LogOutput.Database ) ;
-
-	    }
-
-	    /**
-	     *
-	     * @param time
-	     * @private
-	     */
-	    _dispatchTime ( time ) {
-
-	        console.log( time.message );
-
-	    }
-
-	    /**
-	     *
-	     * @param debug
-	     */
-	    debug ( debug ) {
-
-	        this.dispatch( {
-	            type:    LogType.Message,
-	            level:   LogLevel.Debug,
-	            message: debug
-	        } );
-
-	    }
-
-	    /**
-	     *
-	     * @param info
-	     */
-	    log ( info ) {
-
-	        this.dispatch( {
-	            type:    LogType.Message,
-	            level:   LogLevel.Info,
-	            message: info
-	        } );
-
-	    }
-
-	    /**
-	     *
-	     * @param warning
-	     */
-	    warn ( warning ) {
-
-	        this.dispatch( {
-	            type:    LogType.Message,
-	            level:   LogLevel.Warning,
-	            message: warning
-	        } );
-
-	    }
-
-	    /**
-	     *
-	     * @param error
-	     */
-	    error ( error ) {
-
-	        this.dispatch( {
-	            type:    LogType.Message,
-	            level:   LogLevel.Error,
-	            message: error
-	        } );
-
-	    }
-
-	    /**
-	     *
-	     * @param progress
-	     */
-	    progress ( progress ) {
-
-	        progress.preventDefault();
-	        if ( progress.cancelable ) {
-	            progress.stopImmediatePropagation();
-	        }
-
-	        if ( progress.lengthComputable ) {
-
-	            const type        = progress.type;
-	            const loaded      = progress.loaded;
-	            const total       = progress.total;
-	            const advancement = Math.round( ( loaded / total ) * 10000 ) / 100;
-	            const message     = `${type}: ${advancement}% [${loaded}/${total}]`;
-
-	            this.dispatch( {
-	                type:    LogType.Progress,
-	                level:   LogLevel.Info,
-	                message: message
-	            } );
-
-	        }
-
-	    }
-
-	    /**
-	     *
-	     * @param key
-	     */
-	    startChronoFor ( key ) {
-
-	        this._timers[ key ] = new Date().getTime();
-
-	    }
-
-	    /**
-	     *
-	     * @param key
-	     */
-	    stopChronoFor ( key ) {
-
-	        const deltaTime = ( new Date().getTime() - this._timers[ key ] );
-	        const message   = `${key} take ${deltaTime}ms.`;
-
-	        this.dispatch( {
-	            type:    LogType.Time,
-	            level:   LogLevel.Debug,
-	            message: message
-	        } );
-
-	    }
-
-	    /**
-	     *
-	     * @param value
-	     * @return {TLogger}
-	     */
-	    setOutputLevel ( value ) {
-
-	        this.outputLevel = value;
-	        return this
-
-	    }
-
-	    /**
-	     *
-	     * @param value
-	     * @return {TLogger}
-	     */
-	    setOutput ( value ) {
-
-	        this.outputs = value;
-	        return this
-
-	    }
-
-	}
-
-	/**
-	 * A default logger instance that can be use everywhere it is needed.
-	 * @type {TLogger}
-	 */
-	const DefaultLogger = new TLogger();
-
-	/* eslint-env browser */
-
-	/**
 	 * @class
 	 * @classdesc TKeyboardController allow single source of thruth for keyboard state checking (based on Lee Stemkoski work).
 	 * See TKeyboardController.k object data below for names of keys whose state can be polled
@@ -1631,7 +986,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators) {
 	        for ( var arg in TKeyboardController.status ) {
 	            list += ' ' + arg;
 	        }
-	        DefaultLogger.log( list );
+	        iteeCore.DefaultLogger.log( list );
 	    }
 
 	}
@@ -2399,6 +1754,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators) {
 	 *
 	 */
 
+
 	/**
 	 * @deprecated
 	 */
@@ -2465,7 +1821,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators) {
 	                bunchSize:              500,
 	                requestAggregationTime: 200,
 	                requestsConcurrency:    6,
-	                logger:                 DefaultLogger
+	                logger:                 iteeCore.DefaultLogger
 	            }, ...parameters
 	        };
 
@@ -2617,7 +1973,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators) {
 
 	        if ( iteeValidators.isNull( value ) ) { throw new TypeError( 'Progress manager cannot be null ! Expect an instance of TProgressManager.' ) }
 	        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( 'Progress manager cannot be undefined ! Expect an instance of TProgressManager.' ) }
-	        if ( !( value instanceof TLogger ) ) { throw new TypeError( `Progress manager cannot be an instance of ${value.constructor.name} ! Expect an instance of TProgressManager.` ) }
+	        if ( !( value instanceof iteeCore.TLogger ) ) { throw new TypeError( `Progress manager cannot be an instance of ${value.constructor.name} ! Expect an instance of TProgressManager.` ) }
 
 	        this._logger = value;
 
@@ -3380,7 +2736,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators) {
 	                this._waitingQueue.splice( requestIndex, 1 );
 	                demand.onLoadCallback( demand.results );
 
-	            }
+	            } else ;
 
 	        }
 
@@ -4063,13 +3419,18 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators) {
 	// Unique ID creation requires a high quality random # generator. In the browser we therefore
 	// require the crypto API and do not support built-in fallback to lower quality random number
 	// generators (like Math.random()).
-	// getRandomValues needs to be invoked in a context where "this" is a Crypto implementation. Also,
-	// find the complete implementation of crypto (msCrypto) on IE11.
-	var getRandomValues = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto) || typeof msCrypto !== 'undefined' && typeof msCrypto.getRandomValues === 'function' && msCrypto.getRandomValues.bind(msCrypto);
+	var getRandomValues;
 	var rnds8 = new Uint8Array(16);
 	function rng() {
+	  // lazy load so that environments that need to polyfill have a chance to do so
 	  if (!getRandomValues) {
-	    throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
+	    // getRandomValues needs to be invoked in a context where "this" is a Crypto implementation. Also,
+	    // find the complete implementation of crypto (msCrypto) on IE11.
+	    getRandomValues = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto) || typeof msCrypto !== 'undefined' && typeof msCrypto.getRandomValues === 'function' && msCrypto.getRandomValues.bind(msCrypto);
+
+	    if (!getRandomValues) {
+	      throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
+	    }
 	  }
 
 	  return getRandomValues(rnds8);
@@ -4499,6 +3860,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators) {
 
 	        const _parameters = {
 	            ...{
+	                logger:          iteeCore.DefaultLogger,
 	                allowAnyOrigins: false,
 	                allowedOrigins:  [],
 	                //                targetOrigin:    '',
@@ -4508,6 +3870,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators) {
 	        };
 
 	        // Internal stuff
+	        this.logger    = _parameters.logger;
 	        this._origin    = window.location.origin;
 	        this._responses = new Map();
 
@@ -4522,6 +3885,17 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators) {
 
 	        // Emit onReady event
 	        this._broadCastReadyMessage();
+	    }
+
+	    get logger() {
+	        return this._logger
+	    }
+	    set logger(value) {
+	        if ( iteeValidators.isNull( value ) ) { throw new ReferenceError( `[${ this._origin }]: The logger cannot be null, expect a TLogger.` )}
+	        if ( iteeValidators.isUndefined( value ) ) { throw new ReferenceError( `[${ this._origin }]: The logger cannot be undefined, expect a TLogger.` )}
+	        if ( !value.isLogger ) { throw new ReferenceError( `[${ this._origin }]: The logger cannot be undefined, expect a TLogger.` )}
+
+	        this._logger = value;
 	    }
 
 	    /**
@@ -4645,9 +4019,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators) {
 	    }
 
 	    _isNotAllowedOrigin ( originURI ) {
-
 	        return !this._allowedOrigins.map( allowedOrigin => allowedOrigin.uri ).includes( originURI )
-
 	    }
 
 	    /**
@@ -4734,7 +4106,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators) {
 	            const frames = document.getElementsByTagName( 'iframe' );
 	            const frame  = Array.from( frames ).find( iframe => iframe.src.includes( originURI ) );
 	            if ( iteeValidators.isNotDefined( frame ) ) {
-	                console.warn( `[${ this._origin }]: Unable to find iframe for [${ originURI }] URI !` );
+	                this.logger.warn( `[${ this._origin }]: Unable to find iframe for [${ originURI }] URI !` );
 	                originWindow = null;
 	            } else {
 	                originWindow = frame.contentWindow;
@@ -4755,7 +4127,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators) {
 
 	        // Is allowed origin
 	        if ( this._isNotAllowedForAllOrigins() && this._isNotAllowedOrigin( event.origin ) ) {
-	            console.warn( `[${ this._origin }]: An unallowed origin [${ event.origin }] try to access the web api.` );
+	            this.logger.warn( `[${ this._origin }]: An unallowed origin [${ event.origin }] try to access the web api.` );
 	            return
 	        }
 
@@ -4801,32 +4173,32 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators) {
 
 	        if ( messageType === '_ready' ) {
 
-	            console.log( `[${ this._origin }]: Recieve '_ready' message from [${ origin.uri }].` );
+	            this.logger.log( `[${ this._origin }]: Recieve '_ready' message from [${ origin.uri }].` );
 	            this.onReadyFrom( origin, message );
 
 	        } else if ( messageType === '_progress' ) {
 
-	            console.log( `[${ this._origin }]: Recieve '_progress' message from [${ origin.uri }].` );
+	            this.logger.log( `[${ this._origin }]: Recieve '_progress' message from [${ origin.uri }].` );
 	            this.onProgressFrom( origin, message );
 
 	        } else if ( messageType === '_error' ) {
 
-	            console.log( `[${ this._origin }]: Recieve '_error' message from [${ origin.uri }].` );
+	            this.logger.log( `[${ this._origin }]: Recieve '_error' message from [${ origin.uri }].` );
 	            this.onErrorFrom( origin, message );
 
 	        } else if ( messageType === '_response' ) {
 
-	            console.log( `[${ this._origin }]: Recieve '_response' message from [${ origin.uri }].` );
+	            this.logger.log( `[${ this._origin }]: Recieve '_response' message from [${ origin.uri }].` );
 	            this.onResponseFrom( origin, message );
 
 	        } else if ( messageType === '_request' ) {
 
-	            console.log( `[${ this._origin }]: Recieve '_request' message from [${ origin.uri }].` );
+	            this.logger.log( `[${ this._origin }]: Recieve '_request' message from [${ origin.uri }].` );
 	            await this.onRequestFrom( origin, message );
 
 	        } else {
 
-	            console.log( `[${ this._origin }]: Recieve 'custom' message from [${ origin.uri }].` );
+	            this.logger.log( `[${ this._origin }]: Recieve 'custom' message from [${ origin.uri }].` );
 	            this.onMessageFrom( origin, message );
 
 	        }
@@ -5105,25 +4477,25 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators) {
 
 	            if ( !force && !origin.isReady ) {
 
-	                console.warn( `[${ this._origin }]: Origin "${ origin.uri }" is not ready yet !` );
+	                this.logger.warn( `[${ this._origin }]: Origin "${ origin.uri }" is not ready yet !` );
 	                origin.messageQueue.push( message );
 
 	            } else if ( force && !origin.window ) {
 
-	                console.error( `[${ this._origin }]: Origin "${ origin.uri }" is unreachable !` );
+	                this.logger.error( `[${ this._origin }]: Origin "${ origin.uri }" is unreachable !` );
 	                origin.isUnreachable = true;
 	                origin.messageQueue.push( message );
 
 	            } else {
 
-	                console.log( `[${ this._origin }]: Send message of type [${ message.type }] to  [${ origin.uri }]` );
+	                this.logger.log( `[${ this._origin }]: Send message of type [${ message.type }] to  [${ origin.uri }]` );
 	                origin.window.postMessage( JSON.stringify( message ), origin.uri );
 
 	            }
 
 	        } catch ( error ) {
 
-	            console.error( error );
+	            this.logger.error( error );
 
 	        }
 
@@ -5549,7 +4921,6 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators) {
 	exports.AbstractWebAPI = AbstractWebAPI;
 	exports.AbstractWorker = AbstractWorker;
 	exports.Byte = Byte;
-	exports.DefaultLogger = DefaultLogger;
 	exports.Endianness = Endianness;
 	exports.FileFormat = FileFormat;
 	exports.HttpStatusCode = HttpStatusCode;
@@ -5566,7 +4937,6 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators) {
 	exports.TIdFactoryType = TIdFactoryType;
 	exports.TInstancingFactory = TInstancingFactory;
 	exports.TKeyboardController = TKeyboardController;
-	exports.TLogger = TLogger;
 	exports.TMouseController = TMouseController;
 	exports.TStore = TStore;
 	exports.WebAPIMessage = WebAPIMessage;
@@ -5582,7 +4952,9 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators) {
 	exports.WorkerMessageMethodCall = WorkerMessageMethodCall;
 	exports.WorkerProgessMessage = WorkerProgessMessage;
 
+	Object.defineProperty(exports, '__esModule', { value: true });
+
 	return exports;
 
-}({}, Itee.Utils, Itee.Validators));
+}({}, Itee.Utils, Itee.Validators, Itee.Core));
 //# sourceMappingURL=itee-client.iife.js.map
