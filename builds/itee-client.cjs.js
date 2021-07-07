@@ -1,6 +1,11 @@
 console.log('Itee.Client v7.4.1 - CommonJs')
 'use strict';
 
+if( iteeValidators === undefined ) { console.error('Itee.Client need Itee.Validators to be defined first. Please check your scripts loading order.') }
+if( iteeUtils === undefined ) { console.error('Itee.Client need Itee.Utils to be defined first. Please check your scripts loading order.') }
+if( iteeCore === undefined ) { console.error('Itee.Client need Itee.Core to be defined first. Please check your scripts loading order.') }
+
+
 Object.defineProperty(exports, '__esModule', { value: true });
 
 var iteeUtils = require('itee-utils');

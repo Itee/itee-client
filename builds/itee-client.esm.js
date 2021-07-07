@@ -1,4 +1,9 @@
 console.log('Itee.Client v7.4.1 - EsModule')
+if( iteeValidators === undefined ) { console.error('Itee.Client need Itee.Validators to be defined first. Please check your scripts loading order.') }
+if( iteeUtils === undefined ) { console.error('Itee.Client need Itee.Utils to be defined first. Please check your scripts loading order.') }
+if( iteeCore === undefined ) { console.error('Itee.Client need Itee.Core to be defined first. Please check your scripts loading order.') }
+
+
 import { toEnum } from 'itee-utils';
 import { isString, isFunction, isNull, isUndefined, isNotObject, isNotBoolean, isNotArray, isNotUndefined, isNotArrayBuffer, isNotNumber, isNotString, isEmptyString, isBlankString, isNumberPositive, isNumberNegative, isZero, isArray, isNotEmptyArray, isArrayOfSingleElement, isObject, isNotEmptyObject, isNotEmptyString, isNotBlankString, isEmptyObject, isNotDefined, isDefined, isFalse, isArrayBuffer } from 'itee-validators';
 import { DefaultLogger, TLogger } from 'itee-core';
