@@ -1,3 +1,12 @@
+## [7.4.2](https://github.com/Itee/itee-client/compare/v7.4.1...v7.4.2) (2021-07-08)
+
+
+### Bug Fixes
+
+* **package:** apply dependencies fix ([d6f5b4a](https://github.com/Itee/itee-client/commit/d6f5b4a756a85daa817c503a6ee8721df3e02b1a))
+* **package:** apply fix from dependencies ([ee04855](https://github.com/Itee/itee-client/commit/ee04855c4bc69f02afc26c9bb775940b374f0e8e))
+* **releaserc:** fix missing dev maps ([bbae34a](https://github.com/Itee/itee-client/commit/bbae34abc3f67b312458e897de7d9813a43c4301))
+
 ## [7.4.1](https://github.com/Itee/itee-client/compare/v7.4.0...v7.4.1) (2021-07-05)
 
 
