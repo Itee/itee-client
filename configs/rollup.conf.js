@@ -88,17 +88,17 @@ function CreateRollupConfigs ( options ) {
             const outputPath = ( isProd ) ? path.join( output, `${ fileName }.${ format }.min.js` ) : path.join( output, `${ fileName }.${ format }.js` )
 
             configs.push( {
-                input:     input,
-                external:  [
+                input:    input,
+                external: [
                     'itee-validators',
                     'itee-utils',
                     'itee-core'
                 ],
-                plugins:   [
+                plugins: [
                     nodeResolve(),
                     isProd && terser()
                 ],
-                onwarn:    ( {
+                onwarn: ( {
                     loc,
                     frame,
                     message
@@ -128,10 +128,10 @@ function CreateRollupConfigs ( options ) {
                     },
 
                     // advanced options
-                    paths:  {},
-                    banner: ( isProd ) ? '' : _computeBanner( name, format ),
-                    footer: '',
-                    intro:  ( !isProd && format === 'iife' ) ? _computeIntro() : '',
+                    paths:     {},
+                    banner:    ( isProd ) ? '' : _computeBanner( name, format ),
+                    footer:    '',
+                    intro:     ( !isProd && format === 'iife' ) ? _computeIntro() : '',
                     outro:     '',
                     sourcemap: !isProd,
                     interop:   true,
