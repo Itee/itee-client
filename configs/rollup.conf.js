@@ -12,10 +12,10 @@
 
 /* eslint-env node */
 
-const packageInfos = require( '../package' )
-const path         = require( 'path' )
-const nodeResolve = require( 'rollup-plugin-node-resolve' )
-const terser       = require( 'rollup-plugin-terser' ).terser
+const packageInfos    = require( '../package' )
+const path            = require( 'path' )
+const { nodeResolve } = require( '@rollup/plugin-node-resolve' )
+const terser          = require( 'rollup-plugin-terser' ).terser
 
 function _computeBanner ( name, format ) {
 
@@ -41,11 +41,11 @@ function _computeBanner ( name, format ) {
             break
 
         default:
-            throw new RangeError( `Invalid switch parameter: ${format}` )
+            throw new RangeError( `Invalid switch parameter: ${ format }` )
 
     }
 
-    return `console.log('${packageName} v${packageInfos.version} - ${prettyFormat}')`
+    return `console.log('${ packageName } v${ packageInfos.version } - ${ prettyFormat }')`
 
 }
 
@@ -85,29 +85,33 @@ function CreateRollupConfigs ( options ) {
             const env        = envs[ envIndex ]
             const isProd     = ( env.includes( 'prod' ) )
             const format     = formats[ formatIndex ]
-            const outputPath = ( isProd ) ? path.join( output, `${fileName}.${format}.min.js` ) : path.join( output, `${fileName}.${format}.js` )
+            const outputPath = ( isProd ) ? path.join( output, `${ fileName }.${ format }.min.js` ) : path.join( output, `${ fileName }.${ format }.js` )
 
             configs.push( {
-                input:    input,
-                external: [
+                input:     input,
+                external:  [
                     'itee-validators',
                     'itee-utils',
                     'itee-core'
                 ],
-                plugins: [
+                plugins:   [
                     nodeResolve(),
                     isProd && terser()
                 ],
-                onwarn: ( { loc, frame, message } ) => {
+                onwarn:    ( {
+                    loc,
+                    frame,
+                    message
+                } ) => {
 
                     // Ignore some errors
                     if ( message.includes( 'Circular dependency' ) ) { return }
                     if ( message.includes( 'plugin uglify is deprecated' ) ) { return }
 
                     if ( loc ) {
-                        process.stderr.write( `/!\\ ${loc.file} (${loc.line}:${loc.column}) ${frame} ${message}\n` )
+                        process.stderr.write( `/!\\ ${ loc.file } (${ loc.line }:${ loc.column }) ${ frame } ${ message }\n` )
                     } else {
-                        process.stderr.write( `/!\\ ${message}\n` )
+                        process.stderr.write( `/!\\ ${ message }\n` )
                     }
 
                 },
@@ -124,10 +128,10 @@ function CreateRollupConfigs ( options ) {
                     },
 
                     // advanced options
-                    paths:     {},
-                    banner:    ( isProd ) ? '' : _computeBanner( name, format ),
-                    footer:    '',
-                    intro:     ( !isProd && format === 'iife' ) ? _computeIntro() : '',
+                    paths:  {},
+                    banner: ( isProd ) ? '' : _computeBanner( name, format ),
+                    footer: '',
+                    intro:  ( !isProd && format === 'iife' ) ? _computeIntro() : '',
                     outro:     '',
                     sourcemap: !isProd,
                     interop:   true,
