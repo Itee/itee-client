@@ -1,3 +1,10 @@
+## [7.4.3](https://github.com/Itee/itee-client/compare/v7.4.2...v7.4.3) (2021-07-08)
+
+
+### Bug Fixes
+
+* **webapimessage:** fix uuidv4 import statement ([70c2fef](https://github.com/Itee/itee-client/commit/70c2fefd8a9785a9bff0cda5c9afb8d32d1685b7))
+
 ## [7.4.2](https://github.com/Itee/itee-client/compare/v7.4.1...v7.4.2) (2021-07-08)
 
 
