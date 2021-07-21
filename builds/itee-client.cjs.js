@@ -1,4 +1,4 @@
-console.log('Itee.Client v7.4.3 - CommonJs')
+console.log('Itee.Client v7.4.4 - CommonJs')
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });

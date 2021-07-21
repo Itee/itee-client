@@ -124,10 +124,27 @@ function CreateJsdocConfiguration () {
             private:     true
         },
         templates: {
-            cleverLinks:       false,
-            monospaceLinks:    false,
-            navType:           'inline',
-            theme:             'cyborg',
+            cleverLinks:    false,
+            monospaceLinks: false,
+            navType:        'inline',
+            theme:          [
+                                   'cerulean',
+                                   'cosmo',
+                                   'darkly',
+                                   'cyborg',
+                                   'flatly',
+                                   'journal',
+                                   'lumen',
+                                   'paper',
+                                   'readable',
+                                   'sandstone',
+                                   'simplex',
+                                   'slate',
+                                   'spacelab',
+                                   'superhero',
+                                   'united',
+                                   'yeti'
+                               ][ 3 ],
             syntaxTheme:       'dark',
             linenums:          true,
             collapseSymbols:   false,
@@ -135,7 +152,7 @@ function CreateJsdocConfiguration () {
             search:            true,
             systemName:        'Itee-Client',
             footer:            '',
-            copyright:         'Copyright 2020 &lt;a href="https://github.com/Itee">Itee&lt;/a> (Tristan Valcke)',
+            copyright:         'Copyright 2015-Present &lt;a href="https://github.com/Itee">Itee&lt;/a> (Tristan Valcke)',
             includeDate:       false,
             inverseNav:        false,
             outputSourceFiles: true,
@@ -185,7 +202,7 @@ module.exports = CreateJsdocConfiguration()
 
 
 	<span class="copyright">
-	Copyright 2020 <a href="https://github.com/Itee">Itee</a> (Tristan Valcke)
+	Copyright 2015-Present <a href="https://github.com/Itee">Itee</a> (Tristan Valcke)
 	</span>
 
 <span class="jsdoc-message">
