@@ -1,3 +1,10 @@
+## [7.4.4](https://github.com/Itee/itee-client/compare/v7.4.3...v7.4.4) (2021-07-21)
+
+
+### Bug Fixes
+
+* **readme:** fix readme tag ([f30659f](https://github.com/Itee/itee-client/commit/f30659fdf12022dd1fb0965d4bd04ce059612659))
+
 ## [7.4.3](https://github.com/Itee/itee-client/compare/v7.4.2...v7.4.3) (2021-07-08)
 
 

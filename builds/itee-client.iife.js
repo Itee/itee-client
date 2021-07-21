@@ -1,4 +1,4 @@
-console.log('Itee.Client v7.4.3 - Standalone')
+console.log('Itee.Client v7.4.4 - Standalone')
 this.Itee = this.Itee || {};
 this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	'use strict';
