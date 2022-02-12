@@ -26,9 +26,10 @@ function CreateEslintConfiguration () {
             'BigUint64Array': 'readonly'
         },
         parserOptions: {
-            parser:      'babel-eslint',
-            ecmaVersion: 2018,
-            sourceType:  'module'
+            parser:            '@babel/eslint-parser',
+            requireConfigFile: false,
+            ecmaVersion:       2018,
+            sourceType:        'module'
         },
         extends: [
             'eslint:recommended',
