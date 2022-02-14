@@ -1,3 +1,25 @@
+# [8.0.0](https://github.com/Itee/itee-client/compare/v7.4.4...v8.0.0) (2022-02-14)
+
+
+### Bug Fixes
+
+* **eslint:** add missing dev deps about @babel/core to be able to run eslint-parser ([88c6c8a](https://github.com/Itee/itee-client/commit/88c6c8ac75e606e578db968af40ebce33c65e10c))
+* **package:** apply npm audit fix ([7a526a7](https://github.com/Itee/itee-client/commit/7a526a77ec10b0090e6b8af6779b5b657d6b016e))
+* **package:** update dependencies to latest version ([4810e2b](https://github.com/Itee/itee-client/commit/4810e2b4be6ead4dffe965e2028f578f9348656a))
+* **workermessageprogress:** fix nameof exported workermessageprogress ([5fc21b2](https://github.com/Itee/itee-client/commit/5fc21b269f65c93540da9b0378d35a0f121d2032))
+
+
+### Code Refactoring
+
+* **webapi:** refactor the usage of webapi and improve capability and perfs ([33c03eb](https://github.com/Itee/itee-client/commit/33c03eb2b9ac3166b044722787d9a3690c2a8649))
+
+
+### BREAKING CHANGES
+
+* **webapi:** the class abstractwebapi is now webapi. And WebApiMessageResponse is now
+webAPIMessageResponse.
+* **workermessageprogress:** workerprogressmessage become workermessageprogress
+
 ## [7.4.4](https://github.com/Itee/itee-client/compare/v7.4.3...v7.4.4) (2021-07-21)
 
 

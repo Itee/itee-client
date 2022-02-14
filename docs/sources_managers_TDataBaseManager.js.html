@@ -40,7 +40,7 @@
 			<li class="dropdown">
 				<a href="classes.list.html" class="dropdown-toggle" data-toggle="dropdown">Classes<b class="caret"></b></a>
 				<ul class="dropdown-menu inline">
-					<li><a href="AbstractWebAPI.html">AbstractWebAPI</a></li><li><a href="AbstractWorker.html">AbstractWorker</a></li><li><a href="IdGenerator.html">IdGenerator</a></li><li><a href="TAbstractFactory.html">TAbstractFactory</a></li><li><a href="TBinaryReader.html">TBinaryReader</a></li><li><a href="TCloningFactory.html">TCloningFactory</a></li><li><a href="TDataBaseManager.html">TDataBaseManager</a></li><li><a href="TIdFactory.html">TIdFactory</a></li><li><a href="TInstancingFactory.html">TInstancingFactory</a></li><li><a href="TKeyboardController.html">TKeyboardController</a></li><li><a href="TMouseController.html">TMouseController</a></li><li><a href="TStore.html">TStore</a></li><li><a href="WebAPIMessage.html">WebAPIMessage</a></li><li><a href="WebAPIMessageData.html">WebAPIMessageData</a></li><li><a href="WebAPIMessageError.html">WebAPIMessageError</a></li><li><a href="WebAPIMessageProgress.html">WebAPIMessageProgress</a></li><li><a href="WebAPIMessageReady.html">WebAPIMessageReady</a></li><li><a href="WebAPIMessageRequest.html">WebAPIMessageRequest</a></li><li><a href="WebApiMessageResponse.html">WebApiMessageResponse</a></li><li><a href="WorkerMessage.html">WorkerMessage</a></li>
+					<li><a href="AbstractWorker.html">AbstractWorker</a></li><li><a href="IdGenerator.html">IdGenerator</a></li><li><a href="TAbstractFactory.html">TAbstractFactory</a></li><li><a href="TBinaryReader.html">TBinaryReader</a></li><li><a href="TCloningFactory.html">TCloningFactory</a></li><li><a href="TDataBaseManager.html">TDataBaseManager</a></li><li><a href="TIdFactory.html">TIdFactory</a></li><li><a href="TInstancingFactory.html">TInstancingFactory</a></li><li><a href="TKeyboardController.html">TKeyboardController</a></li><li><a href="TMouseController.html">TMouseController</a></li><li><a href="TStore.html">TStore</a></li><li><a href="WebAPI.html">WebAPI</a></li><li><a href="WebAPIMessage.html">WebAPIMessage</a></li><li><a href="WebAPIMessageData.html">WebAPIMessageData</a></li><li><a href="WebAPIMessageError.html">WebAPIMessageError</a></li><li><a href="WebAPIMessageProgress.html">WebAPIMessageProgress</a></li><li><a href="WebAPIMessageReady.html">WebAPIMessageReady</a></li><li><a href="WebAPIMessageRequest.html">WebAPIMessageRequest</a></li><li><a href="WebAPIMessageResponse.html">WebAPIMessageResponse</a></li><li><a href="WorkerMessage.html">WorkerMessage</a></li>
 				</ul>
 			</li>
 			
@@ -103,6 +103,10 @@
 
 /* eslint-env browser */
 
+import {
+    DefaultLogger,
+    TLogger
+}                 from 'itee-core'
 import { toEnum } from 'itee-utils'
 import {
     isArray,
@@ -133,10 +137,6 @@ import {
     ResponseType
 }                 from '../cores/TConstants'
 import { TStore } from '../cores/TStore'
-import {
-    DefaultLogger,
-    TLogger
-}                 from 'itee-core'
 
 
 /**
@@ -191,7 +191,6 @@ class TDataBaseManager {
         TDataBaseManager._requestId++
         return TDataBaseManager._requestId
     }
-
     /**
      *
      * @param parameters
@@ -226,7 +225,6 @@ class TDataBaseManager {
         this._idToRequest = []
 
     }
-
     /**
      *
      * @returns {*}
@@ -239,7 +237,7 @@ class TDataBaseManager {
 
         if ( isNull( value ) ) { throw new TypeError( 'Base path cannot be null ! Expect a non empty string.' ) }
         if ( isUndefined( value ) ) { throw new TypeError( 'Base path cannot be undefined ! Expect a non empty string.' ) }
-        if ( isNotString( value ) ) { throw new TypeError( `Base path cannot be an instance of ${value.constructor.name} ! Expect a non empty string.` ) }
+        if ( isNotString( value ) ) { throw new TypeError( `Base path cannot be an instance of ${ value.constructor.name } ! Expect a non empty string.` ) }
         if ( isEmptyString( value ) ) { throw new TypeError( 'Base path cannot be empty ! Expect a non empty string.' ) }
         if ( isBlankString( value ) ) { throw new TypeError( 'Base path cannot contain only whitespace ! Expect a non empty string.' ) }
 
@@ -278,7 +276,7 @@ class TDataBaseManager {
 
         if ( isNull( value ) ) { throw new TypeError( 'Bunch size cannot be null ! Expect a positive number.' ) }
         if ( isUndefined( value ) ) { throw new TypeError( 'Bunch size cannot be undefined ! Expect a positive number.' ) }
-        if ( isNotNumber( value ) ) { throw new TypeError( `Bunch size cannot be an instance of ${value.constructor.name} ! Expect a positive number.` ) }
+        if ( isNotNumber( value ) ) { throw new TypeError( `Bunch size cannot be an instance of ${ value.constructor.name } ! Expect a positive number.` ) }
         if ( !isNumberPositive( value ) ) { throw new TypeError( `Bunch size cannot be lower or equal to zero ! Expect a positive number.` ) }
 
         this._bunchSize = value
@@ -304,7 +302,7 @@ class TDataBaseManager {
         }
 
         if ( isNotNumber( value ) ) {
-            throw new TypeError( `Requests aggregation time cannot be an instance of ${value.constructor.name} ! Expect a positive number.` )
+            throw new TypeError( `Requests aggregation time cannot be an instance of ${ value.constructor.name } ! Expect a positive number.` )
         }
 
         if ( isNumberNegative( value ) ) {
@@ -334,7 +332,7 @@ class TDataBaseManager {
         }
 
         if ( isNotNumber( value ) ) {
-            throw new TypeError( `Minimum of simultaneous request cannot be an instance of ${value.constructor.name} ! Expect a positive number.` )
+            throw new TypeError( `Minimum of simultaneous request cannot be an instance of ${ value.constructor.name } ! Expect a positive number.` )
         }
 
         if ( isZero( value ) || isNumberNegative( value ) ) {
@@ -357,7 +355,7 @@ class TDataBaseManager {
 
         if ( isNull( value ) ) { throw new TypeError( 'Progress manager cannot be null ! Expect an instance of TProgressManager.' ) }
         if ( isUndefined( value ) ) { throw new TypeError( 'Progress manager cannot be undefined ! Expect an instance of TProgressManager.' ) }
-        if ( !( value instanceof TLogger ) ) { throw new TypeError( `Progress manager cannot be an instance of ${value.constructor.name} ! Expect an instance of TProgressManager.` ) }
+        if ( !( value instanceof TLogger ) ) { throw new TypeError( `Progress manager cannot be an instance of ${ value.constructor.name } ! Expect an instance of TProgressManager.` ) }
 
         this._logger = value
 
@@ -453,7 +451,7 @@ class TDataBaseManager {
                 if ( idBunch.length === this._bunchSize || idIndex === 0 ) {
 
                     this._requestQueue.push( {
-                        _id:        `readMany_${Generate.id}`,
+                        _id:        `readMany_${ Generate.id }`,
                         _timeStart: new Date(),
                         _type:      RequestType.ReadMany,
                         method:     HttpVerb.Read.value,
@@ -817,7 +815,7 @@ class TDataBaseManager {
                 break
 
             default:
-                throw new RangeError( `Unmanaged HttpStatusCode: ${status}` )
+                throw new RangeError( `Unmanaged HttpStatusCode: ${ status }` )
 
         }
 
@@ -909,7 +907,7 @@ class TDataBaseManager {
                 break
 
             default:
-                throw new RangeError( `Invalid request type: ${type}` )
+                throw new RangeError( `Invalid request type: ${ type }` )
 
         }
 
@@ -972,7 +970,7 @@ class TDataBaseManager {
                 break
 
             default:
-                throw new Error( `Unknown response type: ${responseType}` )
+                throw new Error( `Unknown response type: ${ responseType }` )
 
         }
 
@@ -991,10 +989,10 @@ class TDataBaseManager {
         if ( Window.Itee &amp;&amp; Window.Itee.Debug ) {
 
             const diff    = new Date().valueOf() - request._timeStart.valueOf()
-            const message = `${this.constructor.name} close request [${request._id}] on ${diff}ms.` +
-                `Waiting queue: ${this._waitingQueue.length}` +
-                `Request queue: ${this._requestQueue.length}` +
-                `Process queue: ${this._processQueue.length}` +
+            const message = `${ this.constructor.name } close request [${ request._id }] on ${ diff }ms.` +
+                `Waiting queue: ${ this._waitingQueue.length }` +
+                `Request queue: ${ this._requestQueue.length }` +
+                `Process queue: ${ this._processQueue.length }` +
                 `==========================`
             this.logger.debug( message )
 
@@ -1195,7 +1193,7 @@ class TDataBaseManager {
     _createOne ( data, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:          `createOne_${Generate.id}`,
+            _id:          `createOne_${ Generate.id }`,
             _timeStart:   new Date(),
             _type:        RequestType.CreateOne,
             method:       HttpVerb.Create.value,
@@ -1222,7 +1220,7 @@ class TDataBaseManager {
     _createMany ( datas, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:          `createMany_${Generate.id}`,
+            _id:          `createMany_${ Generate.id }`,
             _timeStart:   new Date(),
             _type:        RequestType.CreateMany,
             method:       HttpVerb.Create.value,
@@ -1380,7 +1378,7 @@ class TDataBaseManager {
         //        this._waitingQueue.push( datas )
 
         this._requestQueue.push( {
-            _id:        `readWhere_${Generate.id}`,
+            _id:        `readWhere_${ Generate.id }`,
             _timeStart: new Date(),
             _type:      RequestType.ReadWhere,
             method:     HttpVerb.Read.value,
@@ -1421,7 +1419,7 @@ class TDataBaseManager {
         const query = {}
 
         this._requestQueue.push( {
-            _id:        `readAll_${Generate.id}`,
+            _id:        `readAll_${ Generate.id }`,
             _timeStart: new Date(),
             _type:      RequestType.ReadAll,
             method:     HttpVerb.Read.value,
@@ -1453,11 +1451,11 @@ class TDataBaseManager {
     _updateOne ( id, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:        `updateOne_${Generate.id}`,
+            _id:        `updateOne_${ Generate.id }`,
             _timeStart: new Date(),
             _type:      RequestType.UpdateOne,
             method:     HttpVerb.Update.value,
-            url:        `${this._basePath}/${id}`,
+            url:        `${ this._basePath }/${ id }`,
             data:       {
                 update
             },
@@ -1484,7 +1482,7 @@ class TDataBaseManager {
     _updateMany ( ids, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:        `updateMany_${Generate.id}`,
+            _id:        `updateMany_${ Generate.id }`,
             _timeStart: new Date(),
             _type:      RequestType.UpdateMany,
             method:     HttpVerb.Update.value,
@@ -1515,7 +1513,7 @@ class TDataBaseManager {
     _updateWhere ( query, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:        `updateWhere_${Generate.id}`,
+            _id:        `updateWhere_${ Generate.id }`,
             _timeStart: new Date(),
             _type:      RequestType.UpdateWhere,
             method:     HttpVerb.Update.value,
@@ -1547,7 +1545,7 @@ class TDataBaseManager {
         const query = {}
 
         this._requestQueue.push( {
-            _id:        `updateAll_${Generate.id}`,
+            _id:        `updateAll_${ Generate.id }`,
             _timeStart: new Date(),
             _type:      RequestType.UpdateAll,
             method:     HttpVerb.Update.value,
@@ -1578,11 +1576,11 @@ class TDataBaseManager {
     _deleteOne ( id, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:          `deleteOne_${Generate.id}`,
+            _id:          `deleteOne_${ Generate.id }`,
             _timeStart:   new Date(),
             _type:        RequestType.DeleteOne,
             method:       HttpVerb.Delete.value,
-            url:          `${this._basePath}/${id}`,
+            url:          `${ this._basePath }/${ id }`,
             data:         null,
             onLoad:       onLoadCallback,
             onProgress:   onProgressCallback,
@@ -1606,7 +1604,7 @@ class TDataBaseManager {
     _deleteMany ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:        `deleteMany_${Generate.id}`,
+            _id:        `deleteMany_${ Generate.id }`,
             _timeStart: new Date(),
             _type:      RequestType.DeleteMany,
             method:     HttpVerb.Delete.value,
@@ -1635,7 +1633,7 @@ class TDataBaseManager {
     _deleteWhere ( query, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:        `deleteWhere_${Generate.id}`,
+            _id:        `deleteWhere_${ Generate.id }`,
             _timeStart: new Date(),
             _type:      RequestType.DeleteWhere,
             method:     HttpVerb.Delete.value,
@@ -1665,7 +1663,7 @@ class TDataBaseManager {
         const query = {}
 
         this._requestQueue.push( {
-            _id:        `deleteAll_${Generate.id}`,
+            _id:        `deleteAll_${ Generate.id }`,
             _timeStart: new Date(),
             _type:      RequestType.DeleteAll,
             method:     HttpVerb.Delete.value,
@@ -1777,7 +1775,7 @@ export { TDataBaseManager }
 	</span>
 
 <span class="jsdoc-message">
-	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.7</a>
+	Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.6.10</a>
 	
 	using the <a href="https://github.com/docstrap/docstrap">DocStrap template</a>.
 </span>
