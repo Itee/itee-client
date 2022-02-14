@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>FunctionMapCall</title>
+	</head>
+	<body>
+		<script>
+
+			function foo(){
+			    console.log('foo')
+			}
+			function bar(){
+			    console.log('bar')
+			}
+			function baz(){
+			    console.log('baz')
+			}
+
+			const functionMap = {
+			    foo,
+				bar,
+				baz
+			}
+
+			const existInMap = functionMap['foo']
+			if (existInMap) {
+			    console.log('foo exist')
+
+				// call
+				functionMap['foo']()
+
+			} else {
+			    console.error('foo NOT exit')
+			}
+
+
+
+		</script>
+	</body>
+</html>

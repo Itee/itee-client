@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Title</title>
+	</head>
+	<body>
+		<script>
+            class Valuable extends Object {
+                constructor ( value = null ) {
+                    super()
+                    this.value = value
+                }
+            }
+
+            class BooleanValue extends Valuable {
+
+                constructor () {
+                    super()
+                }
+
+                valueOf () {
+                    return Boolean( this.value )
+                }
+            }
+
+            class NumberValue extends Valuable {
+                constructor () {
+                    super()
+                }
+
+                valueOf () {
+                    return Number( this.value )
+                }
+            }
+
+            class StringValue extends Valuable {
+                constructor () {
+                    super()
+                }
+
+                toString () {
+                    return String( this.value )
+                }
+
+                valueOf () {
+                    return String( this.value )
+                }
+            }
+
+            class SymbolValue extends Valuable {
+                constructor () {
+                    super()
+                }
+
+                valueOf () {
+                    return Symbol( this.value )
+                }
+            }
+
+            class MyClass {
+
+                get myValueA () {
+                    return this._myValueA
+                }
+
+                set myValueA ( value ) {
+                    this._myValueA = value
+                }
+
+                getMyValueA ( target ) {
+                    target.value = this.myValueA
+                    return this
+                }
+
+                setMyValueA ( value ) {
+                    this.myValueA = value
+                    return this
+                }
+
+
+                get myValueB () {
+                    return this._myValueB
+                }
+
+                set myValueB ( value ) {
+                    this._myValueB = value
+                }
+
+                getMyValueB ( target = null ) {
+                    target.value = this.myValueB
+                    return this
+                }
+
+                setMyValueB ( value ) {
+                    this.myValueB = value
+                    return this
+                }
+
+                get myString () {
+                    return this._myString
+                }
+
+                set myString ( value ) {
+                    this._myString = value
+                }
+
+                getMyString ( target = null ) {
+                    target.value = this.myString
+                    return this
+                }
+
+                setMyString ( value ) {
+                    this.myString = value
+                    return this
+                }
+
+                constructor ( {
+                    myValueA = 42,
+                    myValueB = 123,
+                    myString = 'foobar'
+                } = {} ) {
+
+                    this.myValueA = myValueA
+                    this.myValueB = myValueB
+                    this.myString = myString
+
+                }
+
+                sayValues () {
+                    console.log( {
+                        A: this.myValueA,
+                        B: this.myValueB,
+                        S: this.myString
+                    } )
+                }
+
+            }
+
+            const myInstance = new MyClass()
+
+            // Setting linear
+            myInstance.myValueA = 456
+            myInstance.myValueB = 789
+            myInstance.sayValues()
+
+            // Getting linear
+            const a = myInstance.myValueA
+            const b = myInstance.myValueB
+            console.log( a + b )
+
+            // Setting chainable
+            myInstance.setMyValueA( 987 )
+                      .setMyValueB( 654 )
+                      .sayValues()
+
+            // Getting chainable
+            let a_c = new NumberValue(),
+                b_c = new NumberValue(),
+                c_c = new StringValue()
+
+            myInstance
+                .getMyValueA( a_c )
+                .getMyValueB( b_c )
+                .getMyString( c_c )
+
+            console.log( a_c )
+            console.log( b_c )
+            console.log( a_c + b_c )
+            console.log( c_c )
+            var bb = c_c;
+
+		</script>
+	</body>
+</html>
