@@ -12,7 +12,7 @@ import {
 }                               from 'itee-validators'
 import { WorkerMessageData }    from './messages/WorkerMessageData'
 import { WorkerMessageError }   from './messages/WorkerMessageError'
-import { WorkerProgessMessage } from './messages/WorkerMessageProgress'
+import { WorkerMessageProgress } from './messages/WorkerMessageProgress'
 
 /**
  * @class
@@ -29,7 +29,7 @@ class AbstractWorker {
         if ( progress.isWorkerMessageProgess ) {
             postMessage( progress.toJSON() )
         } else {
-            postMessage( new WorkerProgessMessage( progress.loaded, progress.total ).toJSON() )
+            postMessage( new WorkerMessageProgress( progress.loaded, progress.total ).toJSON() )
         }
 
     }

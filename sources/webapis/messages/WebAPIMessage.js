@@ -59,7 +59,7 @@ class WebAPIMessage {
 
     /**
      *
-     * @returns {{id: string, type: string}}
+     * @returns {{id: String, type: String}}
      */
     toJSON () {
 

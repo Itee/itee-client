@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%;">
+	<head>
+		<title>RealWorld4D</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<link rel="stylesheet" href="./bootstrap%205.0.2/css/bootstrap.css">
+	</head>
+	<body cz-shortcut-listen="true" style="height: 100%;">
+		<div class="container-fluid" style="height: 100%;">
+			<div class="row" style="height: 100%;">
+				<div id="actions" class="col-md-2 pt-2 pb-2" style="overflow-y: auto; background-color: rgb(0, 0, 0); height: 100%;">
+					<!-- ... -->
+				</div>
+				<iframe id="rw4dIframe" src="http://localhost:8080/?app=realworld&standalone=true&debug=true" class="col-md-10 p-0" style="height: 100%;"></iframe>
+			</div>
+		</div>
+		<script src="./bootstrap%205.0.2/js/bootstrap.js"></script>
+		<script src="./scripts/Three.iife.js"></script>
+		<script src="./scripts/itee-validators.iife.js"></script>
+		<script src="./scripts/itee-utils.iife.js"></script>
+		<script src="./scripts/itee-core.iife.js"></script>
+		<script src="../builds/itee-client.iife.js"></script>
+		<script>
+            const Validators      = Itee.Validators
+            const isDefined       = Validators.isDefined
+            const isNotDefined    = Validators.isNotDefined
+            const isString        = Validators.isString
+            const isArray         = Validators.isArray
+            const isObject        = Validators.isObject
+            const isNotEmptyArray = Validators.isNotEmptyArray
+
+            const Core     = Itee.Core
+            const LogLevel = Core.LogLevel
+
+            const Client             = Itee.Client
+            const AbstractWebAPI     = Client.AbstractWebAPI
+            const WebAPIMessageError = Client.WebAPIMessageError
+
+            ///////////////
+
+            class UIFactory {
+
+                static generateUIs ( uiDescriptors, options = {} ) {
+
+                    let uis = []
+
+                    for ( let uiDescriptor of uiDescriptors ) {
+                        const ui = UIFactory.generateUI( uiDescriptor, options )
+                        uis.push( ui )
+                    }
+
+                    return uis
+
+                }
+
+                static generateUI ( uiDescriptor, options = {} ) {
+
+                    let ui
+
+                    switch ( uiDescriptor.type ) {
+
+                        case 'btn':
+                            ui = UIFactory.createButton( uiDescriptor, options )
+                            break
+
+                        case 'btnGroup':
+                            ui = UIFactory.createButtonGroup( uiDescriptor, options )
+                            break
+
+                        case 'input':
+                            ui = UIFactory.createInput( uiDescriptor, options )
+                            break
+                        case 'textarea':
+                            ui = UIFactory.createTextarea( uiDescriptor, options )
+                            break
+
+                        case 'inputGroup':
+                            ui = UIFactory.createInputGroup( uiDescriptor, options )
+                            break
+
+                        case 'select':
+                            ui = UIFactory.createSelect( uiDescriptor, options )
+                            break
+
+                        case 'listGroup':
+                            ui = UIFactory.createListGroup( uiDescriptor, options )
+                            break
+
+                        case 'card':
+                            ui = UIFactory.createCard( uiDescriptor, options )
+                            break
+
+                        default:
+                            throw new RangeError( `Invalid uiDescriptor: ${ uiDescriptor }` )
+
+                    }
+
+                    return ui
+
+                }
+
+                static createButton ( uiDescriptor, { asListItem = false } = {} ) {
+
+                    let btn
+
+                    if ( asListItem ) {
+                        btn               = document.createElement( 'a' )
+                        btn.className     = ( isDefined( uiDescriptor.flavor ) )
+                            ? `list-group-item list-group-item-action list-group-item-${ uiDescriptor.flavor }`
+                            : 'list-group-item list-group-item-action'
+                        btn.innerText     = isDefined( uiDescriptor.text ) ? uiDescriptor.text : 'button'
+                        btn.id            = uiDescriptor.action
+                        btn.dataset.value = uiDescriptor.dataset ? JSON.stringify( uiDescriptor.dataset ) : null
+                    } else if ( uiDescriptor.isBlock ) {
+
+                        btn           = document.createElement( 'div' )
+                        btn.className = 'd-grid gap-2 mb-2'
+
+                        const _btn         = document.createElement( 'button' )
+                        _btn.className     = ( isDefined( uiDescriptor.flavor ) ) ? `btn btn-${ uiDescriptor.flavor }` : 'btn btn-primary'
+                        _btn.innerText     = isDefined( uiDescriptor.text ) ? uiDescriptor.text : 'button'
+                        _btn.id            = uiDescriptor.action
+                        _btn.dataset.value = uiDescriptor.dataset ? JSON.stringify( uiDescriptor.dataset ) : null
+                        btn.appendChild( _btn )
+
+                    } else {
+                        btn               = document.createElement( 'button' )
+                        btn.className     = ( isDefined( uiDescriptor.flavor ) ) ? `btn btn-${ uiDescriptor.flavor }` : 'btn btn-primary'
+                        btn.innerText     = isDefined( uiDescriptor.text ) ? uiDescriptor.text : 'button'
+                        btn.id            = uiDescriptor.action
+                        btn.dataset.value = uiDescriptor.dataset ? JSON.stringify( uiDescriptor.dataset ) : null
+                    }
+
+
+                    btn.addEventListener( 'click', UIFactory.ActionHandler )
+
+                    return btn
+
+                }
+
+                static createButtonGroup ( uiDescriptor, options ) {
+
+                    let buttonGroup       = document.createElement( 'div' )
+                    buttonGroup.className = 'btn-group'
+                    buttonGroup.role      = 'group'
+
+                    const children = UIFactory.generateUIs( uiDescriptor.children, options )
+                    for ( let child of children ) {
+                        buttonGroup.appendChild( child )
+                    }
+
+                    return buttonGroup
+
+                }
+
+                static createCard ( uiDescriptor, options ) {
+
+                    const card     = document.createElement( 'div' )
+                    card.className = 'card mx-2 my-2'
+
+                    if ( uiDescriptor.header ) {
+                        const header     = document.createElement( 'div' )
+                        header.className = 'card-header'
+                        header.innerText = uiDescriptor.header
+                        card.appendChild( header )
+                    }
+
+                    if ( uiDescriptor.text ) {
+                        const text     = document.createElement( 'p' )
+                        text.className = 'card-text'
+                        text.innerText = uiDescriptor.text
+                        card.appendChild( text )
+                    }
+
+                    if ( isNotEmptyArray( uiDescriptor.children ) ) {
+                        const children = UIFactory.generateUIs( uiDescriptor.children )
+                        for ( let child of children ) {
+                            card.appendChild( child )
+                        }
+                    }
+
+                    return card
+                }
+
+                static createListGroup ( uiDescriptor, options ) {
+
+                    const listGroup     = document.createElement( 'div' )
+                    listGroup.className = 'list-group list-group-flush'
+
+                    const children = UIFactory.generateUIs( uiDescriptor.children, { asListItem: true } )
+                    for ( let child of children ) {
+                        listGroup.appendChild( child )
+                    }
+
+                    return listGroup
+
+                }
+
+                static createInput ( uiDesciptor, options ) {
+
+                    let input
+
+                    if ( uiDesciptor.subType === 'checkbox' ) {
+
+                        input           = document.createElement( 'div' )
+                        input.className = 'form-check form-switch'
+
+                        const _input     = document.createElement( 'input' )
+                        _input.className = 'form-check-input'
+                        _input.type      = uiDesciptor.subType
+                        _input.id        = uiDesciptor.id
+                        input.appendChild( _input )
+
+                        if ( uiDesciptor.label ) {
+                            const label     = document.createElement( 'label' )
+                            label.className = 'form-check-label'
+                            label.innerText = uiDesciptor.label
+                            label.for       = uiDesciptor.id
+                            input.appendChild( label )
+                        }
+
+                    } else if ( uiDesciptor.subType === 'range' ) {
+
+                        input           = document.createElement( 'input' )
+                        input.id        = uiDesciptor.id
+                        input.type      = uiDesciptor.subType
+                        input.className = 'form-range'
+                        input.min       = uiDesciptor.min || '0'
+                        input.max       = uiDesciptor.max || '100'
+
+                    } else {
+
+                        if ( isDefined( uiDesciptor.label ) ) {
+
+                            input           = document.createElement( 'div' )
+                            input.className = 'input-group mb-1'
+
+                            const label     = document.createElement( 'span' )
+                            label.className = 'input-group-text'
+                            label.innerText = uiDesciptor.label
+                            input.appendChild( label )
+
+                            const _input     = document.createElement( 'input' )
+                            _input.className = 'form-control'
+                            _input.type      = uiDesciptor.subType
+                            _input.id        = uiDesciptor.id
+                            input.appendChild( _input )
+
+                        } else {
+
+                            input           = document.createElement( 'input' )
+                            input.className = 'form-control'
+                            input.type      = uiDesciptor.subType
+                            input.id        = uiDesciptor.id
+
+                        }
+
+                    }
+
+                    return input
+
+                }
+
+                static createInputGroup ( uiDescriptor, options ) {
+
+                    const inputGroup     = document.createElement( 'div' )
+                    inputGroup.className = 'input-group mt-2 mb-2'
+
+                    const children = UIFactory.generateUIs( uiDescriptor.children )
+                    for ( let child of children ) {
+                        inputGroup.appendChild( child )
+                    }
+
+                    return inputGroup
+
+                }
+
+                static createSelect ( uiDescriptor, options ) {
+
+                    const select     = document.createElement( 'select' )
+                    select.id        = uiDescriptor.id
+                    select.className = 'form-select mt-1 mb-1'
+
+                    for ( let option of uiDescriptor.options ) {
+                        const optionElement     = document.createElement( 'option' )
+                        optionElement.value     = option.value
+                        optionElement.innerText = option.label
+                        select.appendChild( optionElement )
+                    }
+
+                    return select
+                }
+
+                static createTextarea ( uiDescriptor, options ) {
+
+                    const textarea     = document.createElement( 'textarea' )
+                    textarea.id        = uiDescriptor.id
+                    textarea.className = 'form-control mt-2 mb-2'
+
+                    return textarea
+
+                }
+            }
+
+            UIFactory.ActionHandler = null
+
+            ///////////////
+
+
+            async function handleAction ( event ) {
+
+                const target = event.target || event.currentTarget
+                const action = target.id
+                const params = JSON.parse( target.dataset.value )
+
+                if ( action === 'switch' ) {
+
+                    await dispatchAction( params[ 0 ] )
+
+                } else {
+
+                    await automateDispatch( action, params )
+
+                }
+
+
+            }
+
+            async function dispatchAction ( action ) {
+
+                try {
+
+                    if ( action === 'complexCall' ) {
+
+                        const originIds = this.myWebApi.allowedOrigins.map( origin => origin.id )
+
+                        this.myWebApi.postErrorTo( 'MyIframeOrigin', 'This is a Error string' )
+                        this.myWebApi.postErrorTo( 'MyIframeOrigin', {
+                            name:    'MyPojoError',
+                            message: 'This is a pojo Error string'
+                        } )
+                        this.myWebApi.postErrorTo( 'MyIframeOrigin', new WebAPIMessageError( 'This is an instanced Error string' ) )
+
+                    }
+
+                } catch ( error ) {
+
+                    console.error( error )
+
+                }
+
+            }
+
+            async function automateDispatch ( action, params ) {
+
+                try {
+
+                    let result
+                    if ( isNotDefined( params ) ) {
+
+                        result = await myWebApi[ action ]()
+
+                    } else if ( isArray( params ) ) {
+
+                        const paramsToEval = params.filter( param => isString( param ) ).filter( param => param.startsWith( 'eval=>' ) )
+                        if ( isNotEmptyArray( paramsToEval ) ) {
+
+                            for ( let paramToEval of paramsToEval ) {
+                                const paramIndex     = params.indexOf( paramToEval )
+                                const cleanParam     = paramToEval.replace( 'eval=>', '' )
+                                const evaluatedParam = eval( cleanParam )
+                                params[ paramIndex ] = evaluatedParam
+                            }
+
+                        }
+                        result = await myWebApi[ action ]( ...params )
+
+                    } else if ( isDefined( params.inputs ) ) {
+
+                        const _params = getParamsFromInputs( params.inputs )
+                        result        = await myWebApi[ action ]( ..._params )
+
+                    } else {
+
+                        result = await myWebApi[ action ]()
+
+                    }
+
+                    if ( params && params.output ) {
+                        const outputElement = document.getElementById( params.output )
+                        outputElement.value = result
+                    }
+
+                    if ( result ) {
+                        console.log( result )
+                    } else {
+                        console.log( 'Success' )
+                    }
+
+                } catch ( error ) {
+                    console.error( error )
+                }
+
+            }
+
+            UIFactory.ActionHandler = handleAction.bind( this )
+
+            function getParamsFromInputs ( inputIds ) {
+                const params = []
+
+                for ( let inputId of inputIds ) {
+                    const inputElement = document.getElementById( inputId )
+                    let inputValue
+
+                    if ( inputElement.type === 'checkbox' ) {
+                        inputValue = inputElement.checked
+                    } else if ( inputElement.type === 'range' ) {
+                        inputValue = Number.parseInt( inputElement.value )
+                    } else {
+                        inputValue = inputElement.value
+                    }
+
+                    params.push( inputValue )
+                }
+
+                return params
+            }
+
+            ///////////////
+
+            this.myWebApi                    = new AbstractWebAPI( {
+                allowedOrigins: [
+                    //                    '*'
+                    {
+                        id:      'MyIframeOrigin',
+                        uri:     'http://localhost:8080',
+                        methods: [ '*' ]
+                    }
+                ]
+            } )
+            this.myWebApi.logger.outputLevel = LogLevel.All
+            this.myWebApi.targetOrigin       = 'MyIframeOrigin'
+            this.myWebApi.onMessageFrom      = ( origin, message ) => {
+                console.log( `MyWebApi recieve message from ${ origin }: ${ message }` )
+            }
+
+            ///////////////
+
+            const uiDescriptor = [
+                // API test
+                {
+                    type:     'card',
+                    header:   'API Base methods',
+                    children: [
+                        {
+                            type:     'card',
+                            header:   'Ready Messages',
+                            children: [
+                                {
+                                    type:     'listGroup',
+                                    children: [
+                                        {
+                                            type:    'btn',
+                                            text:    'null origin',
+                                            flavor:  'danger',
+                                            action:  'postReadyTo_null',
+                                            dataset: [
+                                                null
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'invalid origin',
+                                            flavor:  'danger',
+                                            action:  'postReadyTo',
+                                            dataset: [
+                                                'InvalidOrigin'
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'postReadyTo',
+                                            action:  'postReadyTo',
+                                            dataset: [
+                                                'MyIframeOrigin'
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'Post {_ready} message',
+                                            action:  'postReadyTo',
+                                            dataset: [
+                                                'MyIframeOrigin',
+                                                {
+                                                    type: '_ready'
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'Post WebAPIMessageReady message',
+                                            action:  'postReadyTo',
+                                            dataset: [
+                                                'MyIframeOrigin',
+                                                new Itee.Client.WebAPIMessageReady()
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            type:     'card',
+                            header:   'Error Messages',
+                            children: [
+                                {
+                                    type:     'listGroup',
+                                    children: [
+                                        {
+                                            type:    'btn',
+                                            text:    'null origin',
+                                            action:  'postErrorTo',
+                                            flavor:  'danger',
+                                            dataset: [
+                                                null
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'null error',
+                                            action:  'postErrorTo',
+                                            flavor:  'danger',
+                                            dataset: [
+                                                'MyIframeOrigin',
+                                                null
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'bad message (type number)',
+                                            flavor:  'danger',
+                                            action:  'postErrorTo',
+                                            dataset: [
+                                                'MyIframeOrigin',
+                                                42
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'bad message (type object)',
+                                            flavor:  'danger',
+                                            action:  'postErrorTo',
+                                            dataset: [
+                                                'MyIframeOrigin',
+                                                {
+                                                    foo: 'bar'
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'string error',
+                                            action:  'postErrorTo',
+                                            dataset: [
+                                                'MyIframeOrigin',
+                                                'this is a string error'
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'Post {error def} message',
+                                            action:  'postErrorTo',
+                                            dataset: [
+                                                'MyIframeOrigin',
+                                                {
+                                                    name:    'MyErrorName',
+                                                    message: 'My error message'
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'Post Error message',
+                                            action:  'postErrorTo',
+                                            dataset: [
+                                                'MyIframeOrigin',
+                                                'eval=>new Error( \'This is an error instance\' )'
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            type:     'card',
+                            header:   'Data Messages',
+                            children: [
+                                {
+                                    type:     'listGroup',
+                                    children: [
+                                        {
+                                            type:    'btn',
+                                            text:    'null origin',
+                                            action:  'postDataTo',
+                                            flavor:  'danger',
+                                            dataset: [
+                                                null
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'invalid origin',
+                                            action:  'postDataTo',
+                                            flavor:  'danger',
+                                            dataset: [
+                                                'InvalidOrigin'
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'null data',
+                                            action:  'postDataTo',
+                                            flavor:  'danger',
+                                            dataset: [
+                                                'MyIframeOrigin',
+                                                null
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'postDataTo',
+                                            action:  'postDataTo',
+                                            dataset: [
+                                                'MyIframeOrigin',
+                                                'this is a string data'
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'Post _data message',
+                                            action:  'postMessageTo',
+                                            dataset: [
+                                                'MyIframeOrigin',
+                                                {
+                                                    type: '_data'
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            type:     'card',
+                            header:   'Request Messages',
+                            children: [
+                                {
+                                    type:     'listGroup',
+                                    children: [
+                                        {
+                                            type:    'btn',
+                                            text:    'null origin',
+                                            action:  'postRequestTo',
+                                            flavor:  'danger',
+                                            dataset: [
+                                                null
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'null data',
+                                            action:  'postRequestTo',
+                                            flavor:  'danger',
+                                            dataset: [
+                                                'MyIframeOrigin',
+                                                null
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'bad data (number)',
+                                            action:  'postRequestTo',
+                                            flavor:  'danger',
+                                            dataset: [
+                                                'MyIframeOrigin',
+                                                42
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'bad data (string)',
+                                            action:  'postRequestTo',
+                                            flavor:  'danger',
+                                            dataset: [
+                                                'MyIframeOrigin',
+                                                'undefinedMethod'
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'request instance with invalid method name and without params',
+                                            action:  'postRequestTo',
+                                            flavor:  'danger',
+                                            dataset: [
+                                                'MyIframeOrigin',
+                                                'eval=>new Itee.Client.WebAPIMessageRequest(\'undefinedMethod\')'
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'request instance with valid method name but invalid params',
+                                            action:  'postRequestTo',
+                                            flavor:  'warning',
+                                            dataset: [
+                                                'MyIframeOrigin',
+                                                'postDataTo',
+                                                'InvalidOrigin'
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'Toggle toolbar',
+                                            action:  'postRequestTo',
+                                            flavor:  'success',
+                                            dataset: [
+                                                'MyIframeOrigin',
+                                                'toggleToolbar'
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'Get Sites Infos',
+                                            action:  'postRequestTo',
+                                            flavor:  'success',
+                                            dataset: [
+                                                'MyIframeOrigin',
+                                                'getSitesList'
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'Ping-Pong',
+                                            action:  'postRequestTo',
+                                            flavor:  'warning',
+                                            dataset: [
+                                                'MyIframeOrigin',
+                                                'postDataTo',
+                                                'IteeClient_WebApiTest',
+                                                'ping-pong'
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'Ping-Pong (BOOM)',
+                                            action:  'postRequestTo',
+                                            flavor:  'danger',
+                                            dataset: [
+                                                'MyIframeOrigin',
+                                                'postRequestTo',
+                                                'IteeClient_WebApiTest',
+                                                'postRequestTo',
+                                                'MyIframeOrigin'
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            type:     'card',
+                            header:   'Response Messages',
+                            children: [
+                                {
+                                    type:     'listGroup',
+                                    children: [
+                                        {
+                                            type:    'btn',
+                                            text:    'postResponseTo',
+                                            action:  'postResponseTo',
+                                            dataset: [
+                                                'MyIframeOrigin',
+                                                'this is a string data'
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'Post _data message',
+                                            action:  'postResponseTo',
+                                            dataset: [
+                                                'MyIframeOrigin',
+                                                {
+                                                    type: '_response'
+                                                }
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            type:     'card',
+                            header:   'Post Message To',
+                            children: [
+                                {
+                                    type:     'listGroup',
+                                    children: [
+                                        {
+                                            type:    'btn',
+                                            text:    'Post to null origin',
+                                            action:  'postMessageTo',
+                                            flavor:  'danger',
+                                            dataset: [
+                                                undefined
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'Post undefined message',
+                                            action:  'postMessageTo',
+                                            flavor:  'danger',
+                                            dataset: [
+                                                'MyIframeOrigin',
+                                                undefined
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'Post to unexisting origin',
+                                            action:  'postMessageTo',
+                                            flavor:  'danger',
+                                            dataset: [
+                                                'UnexistingOrigin',
+                                                'this is a message'
+                                            ]
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+
+                // Complex call
+                {
+                    type:     'card',
+                    header:   'Complex Api call',
+                    children: [
+                        {
+                            type:    'btn',
+                            text:    'Use switch',
+                            flavor:  'primary',
+                            action:  'switch',
+                            dataset: [
+                                'complexCall'
+                            ]
+                        }
+                    ]
+                },
+
+                // UI/2D
+                {
+                    type:     'card',
+                    header:   'UI/2D',
+                    children: [
+                        {
+                            type:     'card',
+                            header:   'Language',
+                            children: [
+
+                                {
+                                    type:     'inputGroup',
+                                    children: [
+                                        {
+                                            type:    'select',
+                                            id:      'select-lang',
+                                            options: [
+                                                {
+                                                    value: 'en',
+                                                    label: 'Anglais'
+                                                },
+                                                {
+                                                    value: 'fr',
+                                                    label: 'Français'
+                                                }
+                                            ]
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'Set',
+                                            action:  'setLanguage',
+                                            flavor:  'secondary',
+                                            dataset: {
+                                                inputs: [
+                                                    'select-lang'
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            type:     'card',
+                            header:   'Cursor 2D',
+                            children: [
+                                {
+                                    type:    'input',
+                                    subType: 'text',
+                                    label:   'Type',
+                                    id:      'input-cursor2d-name'
+                                },
+                                {
+                                    type:    'btn',
+                                    text:    'Set',
+                                    action:  'set2DCursorTo',
+                                    flavor:  'secondary',
+                                    dataset: {
+                                        inputs: [
+                                            'input-cursor2d-name'
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            type:     'card',
+                            header:   'Toolbar',
+                            children: [
+                                {
+                                    type:     'btnGroup',
+                                    children: [
+                                        {
+                                            type:   'btn',
+                                            text:   'Toggle',
+                                            action: 'toggleToolbar',
+                                            flavor: 'primary'
+                                        },
+                                        {
+                                            type:   'btn',
+                                            text:   'Show',
+                                            action: 'showToolbar',
+                                            flavor: 'success'
+                                        },
+                                        {
+                                            type:   'btn',
+                                            text:   'Hide',
+                                            action: 'hideToolbar',
+                                            flavor: 'danger'
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            type:     'card',
+                            header:   'Modal',
+                            children: [
+                                {
+                                    type:    'input',
+                                    subType: 'text',
+                                    label:   'Id',
+                                    id:      'input-modal-name'
+                                },
+                                {
+                                    type:     'btnGroup',
+                                    children: [
+                                        {
+                                            type:    'btn',
+                                            text:    'Show',
+                                            action:  'showModal',
+                                            flavor:  'success',
+                                            dataset: {
+                                                inputs: [
+                                                    'input-modal-name'
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'Hide',
+                                            action:  'hideModal',
+                                            flavor:  'danger',
+                                            dataset: {
+                                                inputs: [
+                                                    'input-modal-name'
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            type:     'card',
+                            header:   'Panel',
+                            children: [
+                                {
+                                    type:    'input',
+                                    subType: 'text',
+                                    label:   'Id',
+                                    id:      'input-panel-name'
+                                },
+                                {
+                                    type:     'btnGroup',
+                                    children: [
+                                        {
+                                            type:    'btn',
+                                            text:    'Show',
+                                            action:  'showPanel',
+                                            flavor:  'success',
+                                            dataset: {
+                                                inputs: [
+                                                    'input-panel-name'
+                                                ]
+                                            }
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'Hide',
+                                            action:  'hidePanel',
+                                            flavor:  'danger',
+                                            dataset: {
+                                                inputs: [
+                                                    'input-panel-name'
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            type:     'card',
+                            header:   'Footer',
+                            children: [
+                                {
+                                    type:     'btnGroup',
+                                    children: [
+                                        {
+                                            type:   'btn',
+                                            text:   'Toggle',
+                                            action: 'toggleFooter',
+                                            flavor: 'primary'
+                                        },
+                                        {
+                                            type:   'btn',
+                                            text:   'Show',
+                                            action: 'showFooter',
+                                            flavor: 'success'
+                                        },
+                                        {
+                                            type:   'btn',
+                                            text:   'Hide',
+                                            action: 'hideFooter',
+                                            flavor: 'danger'
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                },
+
+                // 3D
+                {
+                    type:     'card',
+                    header:   '3D',
+                    children: [
+                        {
+                            type:     'card',
+                            header:   'Cursor 3D',
+                            children: [
+                                {
+                                    type:    'select',
+                                    id:      'select-cursor3d-name',
+                                    options: [
+                                        {
+                                            value: 'None',
+                                            label: 'None'
+                                        },
+                                        {
+                                            value: 'Sphère',
+                                            label: 'Sphère'
+                                        },
+                                        {
+                                            value: 'Plan',
+                                            label: 'Plan'
+                                        },
+                                        {
+                                            value: 'Octahèdre',
+                                            label: 'Octahèdre'
+                                        }
+                                    ]
+                                },
+                                {
+                                    type:    'btn',
+                                    text:    'Set',
+                                    action:  'set3DCursorTo',
+                                    flavor:  'secondary',
+                                    dataset: {
+                                        inputs: [
+                                            'select-cursor3d-name'
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            type:     'card',
+                            header:   'setGridVisibility',
+                            children: [
+                                {
+                                    type:    'input',
+                                    subType: 'checkbox',
+                                    id:      'switch-grid-visibility'
+                                },
+                                {
+                                    type:    'btn',
+                                    text:    'Set',
+                                    action:  'setGridVisibility',
+                                    flavor:  'secondary',
+                                    dataset: {
+                                        inputs: [
+                                            'switch-grid-visibility'
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            type:     'card',
+                            header:   'BackgroundColor',
+                            children: [
+                                {
+                                    type:    'input',
+                                    subType: 'color',
+                                    id:      'input-bg-color'
+                                },
+                                {
+                                    type:    'btn',
+                                    text:    'Set',
+                                    action:  'setViewportBackgroundColor',
+                                    flavor:  'secondary',
+                                    dataset: {
+                                        inputs: [
+                                            'input-bg-color'
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            type:     'card',
+                            header:   'SkyBox',
+                            children: [
+                                {
+                                    type:    'input',
+                                    subType: 'text',
+                                    id:      'input-skybox'
+                                },
+                                {
+                                    type:    'btn',
+                                    text:    'Set',
+                                    action:  'setSkyBox',
+                                    flavor:  'secondary',
+                                    dataset: {
+                                        inputs: [
+                                            'input-skybox'
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            type:     'card',
+                            header:   'Loading Radius',
+                            children: [
+                                {
+                                    id:      'input-loading-radius',
+                                    type:    'input',
+                                    subType: 'range',
+                                    min:     '0',
+                                    max:     '1000'
+                                },
+                                {
+                                    type:    'btn',
+                                    text:    'Set',
+                                    action:  'setLoadingRadius',
+                                    flavor:  'secondary',
+                                    dataset: {
+                                        inputs: [
+                                            'input-loading-radius'
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            type:     'card',
+                            header:   'Visibility Radius',
+                            children: [
+                                {
+                                    id:      'input-visibility-radius',
+                                    type:    'input',
+                                    subType: 'range',
+                                    min:     '0',
+                                    max:     '1000'
+                                },
+                                {
+                                    type:    'btn',
+                                    text:    'Set',
+                                    action:  'setVisibilityRadius',
+                                    flavor:  'secondary',
+                                    dataset: {
+                                        inputs: [
+                                            'input-visibility-radius'
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            type:     'card',
+                            header:   'Memory Radius',
+                            children: [
+                                {
+                                    id:      'input-memory-radius',
+                                    type:    'input',
+                                    subType: 'range',
+                                    min:     '0',
+                                    max:     '1000'
+                                },
+                                {
+                                    type:    'btn',
+                                    text:    'Set',
+                                    action:  'setMemoryRadius',
+                                    flavor:  'secondary',
+                                    dataset: {
+                                        inputs: [
+                                            'input-visibility-radius'
+                                        ]
+                                    }
+                                }
+                            ]
+                        },
+                        {
+                            type:     'card',
+                            header:   'Data Model',
+                            children: [
+                                {
+                                    type:    'btn',
+                                    text:    'Get Sites infos',
+                                    action:  'getSitesInfos',
+                                    flavor:  'secondary',
+                                    dataset: {
+                                        output: 'output-sites'
+                                    }
+                                },
+                                {
+                                    id:   'output-sites',
+                                    type: 'textarea'
+                                },
+                                {
+                                    type:     'inputGroup',
+                                    children: [
+                                        {
+                                            type:    'input',
+                                            subType: 'text',
+                                            id:      'input-selection-site'
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'Download',
+                                            action:  'download',
+                                            flavor:  'secondary',
+                                            dataset: {
+                                                inputs: [
+                                                    'input-selection-site'
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    type:   'btn',
+                                    text:   'Clear Viewport',
+                                    action: 'clearViewport',
+                                    flavor: 'secondary'
+                                }
+                            ]
+                        },
+                        {
+                            type:     'card',
+                            header:   'Selection',
+                            children: [
+                                {
+                                    type:    'btn',
+                                    text:    'Get',
+                                    action:  'getSelection',
+                                    flavor:  'secondary',
+                                    dataset: {
+                                        output: 'output-selection-id'
+                                    }
+                                },
+                                {
+                                    id:   'output-selection-id',
+                                    type: 'textarea'
+                                },
+                                {
+                                    type:     'inputGroup',
+                                    children: [
+                                        {
+                                            type:    'input',
+                                            subType: 'text',
+                                            id:      'input-selection-id'
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'Set',
+                                            action:  'setSelectionById',
+                                            flavor:  'secondary',
+                                            dataset: {
+                                                inputs: [
+                                                    'input-selection-id'
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        },
+                        {
+                            type:     'card',
+                            header:   'Get Object By',
+                            children: [
+                                {
+                                    type:     'inputGroup',
+                                    children: [
+                                        {
+                                            type:    'input',
+                                            subType: 'text',
+                                            id:      'input-get-object-by-id'
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'Id',
+                                            action:  'getObjectById',
+                                            flavor:  'secondary',
+                                            dataset: {
+                                                inputs: [
+                                                    'input-get-object-by-id'
+                                                ],
+                                                output: 'output-get-object-by'
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    type:     'inputGroup',
+                                    children: [
+                                        {
+                                            type:    'input',
+                                            subType: 'text',
+                                            id:      'input-get-object-by-name'
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'Name',
+                                            action:  'getObjectByName',
+                                            flavor:  'secondary',
+                                            dataset: {
+                                                inputs: [
+                                                    'input-get-object-by-name'
+                                                ],
+                                                output: 'output-get-object-by'
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    type:     'inputGroup',
+                                    children: [
+                                        {
+                                            type:    'input',
+                                            subType: 'text',
+                                            id:      'input-get-object-by-prop-name'
+                                        },
+                                        {
+                                            type:    'input',
+                                            subType: 'text',
+                                            id:      'input-get-object-by-prop-value'
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'Prop',
+                                            action:  'getObjectByProperty',
+                                            flavor:  'secondary',
+                                            dataset: {
+                                                inputs: [
+                                                    'input-get-object-by-prop-name',
+                                                    'input-get-object-by-prop-value'
+                                                ],
+                                                output: 'output-get-object-by'
+                                            }
+                                        }
+                                    ]
+                                },
+                                {
+                                    id:   'output-get-object-by',
+                                    type: 'textarea'
+                                }
+                            ]
+                        },
+                        {
+                            type:     'card',
+                            header:   'Look At Object By Id',
+                            children: [
+                                {
+                                    type:     'inputGroup',
+                                    children: [
+                                        {
+                                            type:    'input',
+                                            subType: 'text',
+                                            id:      'input-lookat-object-by-id'
+                                        },
+                                        {
+                                            type:    'btn',
+                                            text:    'Id',
+                                            action:  'lookAtObjectById',
+                                            flavor:  'secondary',
+                                            dataset: {
+                                                inputs: [
+                                                    'input-lookat-object-by-id'
+                                                ]
+                                            }
+                                        }
+                                    ]
+                                }
+                            ]
+                        }
+                    ]
+                }
+            ]
+            const uis          = UIFactory.generateUIs( uiDescriptor )
+
+            const actionListElement = document.getElementById( 'actions' )
+            for ( let ui of uis ) {
+                actionListElement.appendChild( ui )
+            }
+
+		</script>
+	</body>
+</html>

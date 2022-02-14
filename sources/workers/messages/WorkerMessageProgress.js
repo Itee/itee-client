@@ -4,7 +4,7 @@
 
 import { WorkerMessage } from './WorkerMessage'
 
-class WorkerProgessMessage extends WorkerMessage {
+class WorkerMessageProgress extends WorkerMessage {
 
     static isWorkerMessageProgess = true
 
@@ -64,4 +64,4 @@ class WorkerProgessMessage extends WorkerMessage {
 
 }
 
-export { WorkerProgessMessage }
+export { WorkerMessageProgress }

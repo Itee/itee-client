@@ -12,7 +12,7 @@ import { WebAPIMessage } from './WebAPIMessage'
  * @class
  * @classdesc The message response to a message request
  */
-class WebApiMessageResponse extends WebAPIMessage {
+class WebAPIMessageResponse extends WebAPIMessage {
 
     /**
      *
@@ -77,4 +77,4 @@ class WebApiMessageResponse extends WebAPIMessage {
 
 }
 
-export { WebApiMessageResponse }
+export { WebAPIMessageResponse }

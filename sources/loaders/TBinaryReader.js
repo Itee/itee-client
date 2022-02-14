@@ -53,12 +53,11 @@ class TBinaryReader {
 
     /**
      * @constructor
-     * @param parameters
+     * @param [parameters]
      * @param parameters.buffer
      * @param parameters.offset
      * @param parameters.length
      * @param parameters.endianness
-     * @constructor
      */
     constructor ( parameters = {} ) {
 
