@@ -1,3 +1,10 @@
+## [8.0.1](https://github.com/Itee/itee-client/compare/v8.0.0...v8.0.1) (2022-02-14)
+
+
+### Bug Fixes
+
+* **package:** update deps to latest version ([c5c3b50](https://github.com/Itee/itee-client/commit/c5c3b5035f896b89212e29db5ada9315da739f37))
+
 # [8.0.0](https://github.com/Itee/itee-client/compare/v7.4.4...v8.0.0) (2022-02-14)
 
 
