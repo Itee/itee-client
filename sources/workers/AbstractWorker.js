@@ -9,9 +9,9 @@ import {
     isNotArray,
     isNotDefined,
     isNotString
-}                               from 'itee-validators'
-import { WorkerMessageData }    from './messages/WorkerMessageData'
-import { WorkerMessageError }   from './messages/WorkerMessageError'
+}                                from 'itee-validators'
+import { WorkerMessageData }     from './messages/WorkerMessageData'
+import { WorkerMessageError }    from './messages/WorkerMessageError'
 import { WorkerMessageProgress } from './messages/WorkerMessageProgress'
 
 /**
@@ -60,7 +60,7 @@ class AbstractWorker {
         } else if ( isArrayBuffer( arrayBuffer ) ) {
             postMessage( new WorkerMessageData( type, arrayBuffer ).toJSON(), [ arrayBuffer ] )
         } else {
-            throw new TypeError(`AbstractWorker.postData: Unable to post data of type [${type}].`)
+            throw new TypeError( `AbstractWorker.postData: Unable to post data of type [${ type }].` )
         }
 
     }

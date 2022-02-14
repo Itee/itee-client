@@ -1,4 +1,4 @@
-console.log('Itee.Client v7.4.4 - CommonJs')
+console.log('Itee.Client v8.0.0 - CommonJs')
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -464,7 +464,7 @@ class TStore {
                 } else if ( iteeValidators.isFunction( error ) ) {
                     throw new TypeError( error( value ) )
                 } else {
-                    throw new TypeError( `${value} is invalid.` )
+                    throw new TypeError( `${ value } is invalid.` )
                 }
 
             }
@@ -472,7 +472,6 @@ class TStore {
         }
 
     }
-
     /**
      * @constructor
      * @param {Object} [parameters={}]
@@ -498,7 +497,6 @@ class TStore {
         this.valueValidators = _parameters.valueValidators;
 
     }
-
     /**
      *
      * @return {{}}
@@ -508,20 +506,18 @@ class TStore {
         return this._collection
 
     }
-
     set collection ( value ) {
 
         const memberName = 'Collection';
         const expect     = 'Expect an object.';
 
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( iteeValidators.isNotObject( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( iteeValidators.isNotObject( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
 
         this._collection = value;
 
     }
-
     /**
      *
      * @return {*}
@@ -531,20 +527,18 @@ class TStore {
         return this._allowOverride
 
     }
-
     set allowOverride ( value ) {
 
         const memberName = 'Allow override';
         const expect     = 'Expect a boolean.';
 
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( iteeValidators.isNotBoolean( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( iteeValidators.isNotBoolean( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
 
         this._allowOverride = value;
 
     }
-
     /**
      *
      * @return {*}
@@ -554,20 +548,18 @@ class TStore {
         return this._keyValidators
 
     }
-
     set keyValidators ( value ) {
 
         const memberName = 'Keys validators';
         const expect     = 'Expect an array of TValidator or an empty array.';
 
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( iteeValidators.isNotArray( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( iteeValidators.isNotArray( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
 
         this._keyValidators = value;
 
     }
-
     /**
      *
      * @return {*}
@@ -575,20 +567,18 @@ class TStore {
     get valueValidators () {
         return this._valueValidators
     }
-
     set valueValidators ( value ) {
 
         const memberName = 'Values validators';
         const expect     = 'Expect an array of TValidator or an empty array.';
 
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( iteeValidators.isNotArray( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( iteeValidators.isNotArray( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
 
         this._valueValidators = value;
 
     }
-
     /**
      *
      * @return {string[]}
@@ -598,7 +588,6 @@ class TStore {
         return Object.keys( this._collection )
 
     }
-
     /**
      *
      * @return {unknown[] | any[]}
@@ -608,7 +597,6 @@ class TStore {
         return Object.values( this._collection )
 
     }
-
     /**
      *
      * @param value
@@ -670,7 +658,7 @@ class TStore {
     add ( key, value, force = false ) {
 
         if ( this.contain( key ) && ( !this._allowOverride && !force ) ) {
-            throw new TypeError( `Item with key (${key}) already exist in collection !` )
+            throw new TypeError( `Item with key (${ key }) already exist in collection !` )
         }
 
         TStore._validate( key, this._keyValidators );
@@ -877,7 +865,6 @@ class TKeyboardController {
             TKeyboardController.k[ keyCode ] :
             String.fromCharCode( keyCode )
     }
-
     /**
      *
      * @param event
@@ -888,7 +875,6 @@ class TKeyboardController {
             TKeyboardController.status[ key ].pressed = false;
         }
     }
-
     /**
      *
      * @param event
@@ -904,7 +890,6 @@ class TKeyboardController {
             };
         }
     }
-
     /**
      *
      * @param parameters
@@ -912,17 +897,16 @@ class TKeyboardController {
     // eslint-disable-next-line no-unused-vars
     constructor ( parameters = {} ) {
 
-//         const _parameters = {
-//             ...{},
-//             ...parameters
-//         }
+        //         const _parameters = {
+        //             ...{},
+        //             ...parameters
+        //         }
 
         // bind keyEvents
         document.addEventListener( 'keydown', TKeyboardController.onKeyDown, false );
         document.addEventListener( 'keyup', TKeyboardController.onKeyUp, false );
 
     }
-
     /**
      *
      */
@@ -994,7 +978,7 @@ class TKeyboardController {
  *
  * @type {Keys}
  */
-TKeyboardController.k      = Keys;
+TKeyboardController.k = Keys;
 
 /**
  *
@@ -1078,12 +1062,11 @@ class TBinaryReader {
 
     /**
      * @constructor
-     * @param parameters
+     * @param [parameters]
      * @param parameters.buffer
      * @param parameters.offset
      * @param parameters.length
      * @param parameters.endianness
-     * @constructor
      */
     constructor ( parameters = {} ) {
 
@@ -1118,9 +1101,9 @@ class TBinaryReader {
         const memberName = 'Buffer';
         const expect     = 'Expect an instance of ArrayBuffer.';
 
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( iteeValidators.isNotArrayBuffer( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( iteeValidators.isNotArrayBuffer( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
 
         this._buffer = value;
         this._offset = 0;
@@ -1143,9 +1126,9 @@ class TBinaryReader {
         const memberName = 'Offset';
         const expect     = 'Expect a number.';
 
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( iteeValidators.isNotNumber( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( iteeValidators.isNotNumber( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
 
         this._offset = value;
 
@@ -1166,9 +1149,9 @@ class TBinaryReader {
         const memberName = 'Length';
         const expect     = 'Expect a number.';
 
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( iteeValidators.isNotNumber( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( iteeValidators.isNotNumber( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
 
         this._length = value;
 
@@ -1189,9 +1172,9 @@ class TBinaryReader {
         const memberName = 'Endianness';
         const expect     = 'Expect a boolean.';
 
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( iteeValidators.isNotBoolean( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( iteeValidators.isNotBoolean( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
 
         this._endianness = value;
     }
@@ -1806,7 +1789,6 @@ class TDataBaseManager {
         TDataBaseManager._requestId++;
         return TDataBaseManager._requestId
     }
-
     /**
      *
      * @param parameters
@@ -1841,7 +1823,6 @@ class TDataBaseManager {
         this._idToRequest = [];
 
     }
-
     /**
      *
      * @returns {*}
@@ -1854,7 +1835,7 @@ class TDataBaseManager {
 
         if ( iteeValidators.isNull( value ) ) { throw new TypeError( 'Base path cannot be null ! Expect a non empty string.' ) }
         if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( 'Base path cannot be undefined ! Expect a non empty string.' ) }
-        if ( iteeValidators.isNotString( value ) ) { throw new TypeError( `Base path cannot be an instance of ${value.constructor.name} ! Expect a non empty string.` ) }
+        if ( iteeValidators.isNotString( value ) ) { throw new TypeError( `Base path cannot be an instance of ${ value.constructor.name } ! Expect a non empty string.` ) }
         if ( iteeValidators.isEmptyString( value ) ) { throw new TypeError( 'Base path cannot be empty ! Expect a non empty string.' ) }
         if ( iteeValidators.isBlankString( value ) ) { throw new TypeError( 'Base path cannot contain only whitespace ! Expect a non empty string.' ) }
 
@@ -1893,7 +1874,7 @@ class TDataBaseManager {
 
         if ( iteeValidators.isNull( value ) ) { throw new TypeError( 'Bunch size cannot be null ! Expect a positive number.' ) }
         if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( 'Bunch size cannot be undefined ! Expect a positive number.' ) }
-        if ( iteeValidators.isNotNumber( value ) ) { throw new TypeError( `Bunch size cannot be an instance of ${value.constructor.name} ! Expect a positive number.` ) }
+        if ( iteeValidators.isNotNumber( value ) ) { throw new TypeError( `Bunch size cannot be an instance of ${ value.constructor.name } ! Expect a positive number.` ) }
         if ( !iteeValidators.isNumberPositive( value ) ) { throw new TypeError( `Bunch size cannot be lower or equal to zero ! Expect a positive number.` ) }
 
         this._bunchSize = value;
@@ -1919,7 +1900,7 @@ class TDataBaseManager {
         }
 
         if ( iteeValidators.isNotNumber( value ) ) {
-            throw new TypeError( `Requests aggregation time cannot be an instance of ${value.constructor.name} ! Expect a positive number.` )
+            throw new TypeError( `Requests aggregation time cannot be an instance of ${ value.constructor.name } ! Expect a positive number.` )
         }
 
         if ( iteeValidators.isNumberNegative( value ) ) {
@@ -1949,7 +1930,7 @@ class TDataBaseManager {
         }
 
         if ( iteeValidators.isNotNumber( value ) ) {
-            throw new TypeError( `Minimum of simultaneous request cannot be an instance of ${value.constructor.name} ! Expect a positive number.` )
+            throw new TypeError( `Minimum of simultaneous request cannot be an instance of ${ value.constructor.name } ! Expect a positive number.` )
         }
 
         if ( iteeValidators.isZero( value ) || iteeValidators.isNumberNegative( value ) ) {
@@ -1972,7 +1953,7 @@ class TDataBaseManager {
 
         if ( iteeValidators.isNull( value ) ) { throw new TypeError( 'Progress manager cannot be null ! Expect an instance of TProgressManager.' ) }
         if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( 'Progress manager cannot be undefined ! Expect an instance of TProgressManager.' ) }
-        if ( !( value instanceof iteeCore.TLogger ) ) { throw new TypeError( `Progress manager cannot be an instance of ${value.constructor.name} ! Expect an instance of TProgressManager.` ) }
+        if ( !( value instanceof iteeCore.TLogger ) ) { throw new TypeError( `Progress manager cannot be an instance of ${ value.constructor.name } ! Expect an instance of TProgressManager.` ) }
 
         this._logger = value;
 
@@ -2068,7 +2049,7 @@ class TDataBaseManager {
                 if ( idBunch.length === this._bunchSize || idIndex === 0 ) {
 
                     this._requestQueue.push( {
-                        _id:        `readMany_${Generate.id}`,
+                        _id:        `readMany_${ Generate.id }`,
                         _timeStart: new Date(),
                         _type:      RequestType.ReadMany,
                         method:     HttpVerb.Read.value,
@@ -2432,7 +2413,7 @@ class TDataBaseManager {
                 break
 
             default:
-                throw new RangeError( `Unmanaged HttpStatusCode: ${status}` )
+                throw new RangeError( `Unmanaged HttpStatusCode: ${ status }` )
 
         }
 
@@ -2524,7 +2505,7 @@ class TDataBaseManager {
                 break
 
             default:
-                throw new RangeError( `Invalid request type: ${type}` )
+                throw new RangeError( `Invalid request type: ${ type }` )
 
         }
 
@@ -2587,7 +2568,7 @@ class TDataBaseManager {
                 break
 
             default:
-                throw new Error( `Unknown response type: ${responseType}` )
+                throw new Error( `Unknown response type: ${ responseType }` )
 
         }
 
@@ -2606,10 +2587,10 @@ class TDataBaseManager {
         if ( Window.Itee && Window.Itee.Debug ) {
 
             const diff    = new Date().valueOf() - request._timeStart.valueOf();
-            const message = `${this.constructor.name} close request [${request._id}] on ${diff}ms.` +
-                `Waiting queue: ${this._waitingQueue.length}` +
-                `Request queue: ${this._requestQueue.length}` +
-                `Process queue: ${this._processQueue.length}` +
+            const message = `${ this.constructor.name } close request [${ request._id }] on ${ diff }ms.` +
+                `Waiting queue: ${ this._waitingQueue.length }` +
+                `Request queue: ${ this._requestQueue.length }` +
+                `Process queue: ${ this._processQueue.length }` +
                 `==========================`;
             this.logger.debug( message );
 
@@ -2806,7 +2787,7 @@ class TDataBaseManager {
     _createOne ( data, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:          `createOne_${Generate.id}`,
+            _id:          `createOne_${ Generate.id }`,
             _timeStart:   new Date(),
             _type:        RequestType.CreateOne,
             method:       HttpVerb.Create.value,
@@ -2833,7 +2814,7 @@ class TDataBaseManager {
     _createMany ( datas, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:          `createMany_${Generate.id}`,
+            _id:          `createMany_${ Generate.id }`,
             _timeStart:   new Date(),
             _type:        RequestType.CreateMany,
             method:       HttpVerb.Create.value,
@@ -2991,7 +2972,7 @@ class TDataBaseManager {
         //        this._waitingQueue.push( datas )
 
         this._requestQueue.push( {
-            _id:        `readWhere_${Generate.id}`,
+            _id:        `readWhere_${ Generate.id }`,
             _timeStart: new Date(),
             _type:      RequestType.ReadWhere,
             method:     HttpVerb.Read.value,
@@ -3032,7 +3013,7 @@ class TDataBaseManager {
         const query = {};
 
         this._requestQueue.push( {
-            _id:        `readAll_${Generate.id}`,
+            _id:        `readAll_${ Generate.id }`,
             _timeStart: new Date(),
             _type:      RequestType.ReadAll,
             method:     HttpVerb.Read.value,
@@ -3064,11 +3045,11 @@ class TDataBaseManager {
     _updateOne ( id, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:        `updateOne_${Generate.id}`,
+            _id:        `updateOne_${ Generate.id }`,
             _timeStart: new Date(),
             _type:      RequestType.UpdateOne,
             method:     HttpVerb.Update.value,
-            url:        `${this._basePath}/${id}`,
+            url:        `${ this._basePath }/${ id }`,
             data:       {
                 update
             },
@@ -3095,7 +3076,7 @@ class TDataBaseManager {
     _updateMany ( ids, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:        `updateMany_${Generate.id}`,
+            _id:        `updateMany_${ Generate.id }`,
             _timeStart: new Date(),
             _type:      RequestType.UpdateMany,
             method:     HttpVerb.Update.value,
@@ -3126,7 +3107,7 @@ class TDataBaseManager {
     _updateWhere ( query, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:        `updateWhere_${Generate.id}`,
+            _id:        `updateWhere_${ Generate.id }`,
             _timeStart: new Date(),
             _type:      RequestType.UpdateWhere,
             method:     HttpVerb.Update.value,
@@ -3158,7 +3139,7 @@ class TDataBaseManager {
         const query = {};
 
         this._requestQueue.push( {
-            _id:        `updateAll_${Generate.id}`,
+            _id:        `updateAll_${ Generate.id }`,
             _timeStart: new Date(),
             _type:      RequestType.UpdateAll,
             method:     HttpVerb.Update.value,
@@ -3189,11 +3170,11 @@ class TDataBaseManager {
     _deleteOne ( id, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:          `deleteOne_${Generate.id}`,
+            _id:          `deleteOne_${ Generate.id }`,
             _timeStart:   new Date(),
             _type:        RequestType.DeleteOne,
             method:       HttpVerb.Delete.value,
-            url:          `${this._basePath}/${id}`,
+            url:          `${ this._basePath }/${ id }`,
             data:         null,
             onLoad:       onLoadCallback,
             onProgress:   onProgressCallback,
@@ -3217,7 +3198,7 @@ class TDataBaseManager {
     _deleteMany ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:        `deleteMany_${Generate.id}`,
+            _id:        `deleteMany_${ Generate.id }`,
             _timeStart: new Date(),
             _type:      RequestType.DeleteMany,
             method:     HttpVerb.Delete.value,
@@ -3246,7 +3227,7 @@ class TDataBaseManager {
     _deleteWhere ( query, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
-            _id:        `deleteWhere_${Generate.id}`,
+            _id:        `deleteWhere_${ Generate.id }`,
             _timeStart: new Date(),
             _type:      RequestType.DeleteWhere,
             method:     HttpVerb.Delete.value,
@@ -3276,7 +3257,7 @@ class TDataBaseManager {
         const query = {};
 
         this._requestQueue.push( {
-            _id:        `deleteAll_${Generate.id}`,
+            _id:        `deleteAll_${ Generate.id }`,
             _timeStart: new Date(),
             _type:      RequestType.DeleteAll,
             method:     HttpVerb.Delete.value,
@@ -3373,9 +3354,9 @@ class TIdFactory {
 
     set type ( value ) {
 
-        if ( iteeValidators.isNull( value ) ) { throw new Error( `Type cannot be null ! Expect an value from TIdFactoryType enum: ${TIdFactoryType.types()}` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new Error( `Type cannot be undefined ! Expect an value from TIdFactoryType enum: ${TIdFactoryType.types()}` ) }
-        if ( !TIdFactoryType.includes( value ) ) { throw new Error( `Invalide type ! Expect an value from TIdFactoryType enum: ${TIdFactoryType.types()}` ) }
+        if ( iteeValidators.isNull( value ) ) { throw new Error( `Type cannot be null ! Expect an value from TIdFactoryType enum: ${ TIdFactoryType.types() }` ) }
+        if ( iteeValidators.isUndefined( value ) ) { throw new Error( `Type cannot be undefined ! Expect an value from TIdFactoryType enum: ${ TIdFactoryType.types() }` ) }
+        if ( !TIdFactoryType.includes( value ) ) { throw new Error( `Invalide type ! Expect an value from TIdFactoryType enum: ${ TIdFactoryType.types() }` ) }
 
         this._type = value;
     }
@@ -3544,7 +3525,7 @@ class WebAPIMessage {
 
     /**
      *
-     * @returns {{id: string, type: string}}
+     * @returns {{id: String, type: String}}
      */
     toJSON () {
 
@@ -3611,7 +3592,10 @@ class WebAPIMessageData extends WebAPIMessage {
 class WebAPIMessageError extends WebAPIMessage {
 
     static isWebAPIMessageError = true
-
+    // Utils
+    static isError ( value ) {
+        return value instanceof Error || iteeValidators.isObject( value ) && ( iteeValidators.isDefined( value.name ) || iteeValidators.isDefined( value.message ) || iteeValidators.isDefined( value.stack ) )
+    }
     /**
      *
      * @param error
@@ -3619,22 +3603,1106 @@ class WebAPIMessageError extends WebAPIMessage {
     constructor ( error ) {
         super( '_error' );
 
-        this.message = error.message;
-        this.stack   = error.stack;
+        /**
+         * The internal error to send
+         * @type {{stack: string, name: string, message: string}}
+         */
+        this.error = error;
+    }
+    get error () {
+        return this._error
+    }
+    set error ( value ) {
+        if ( iteeValidators.isNotDefined( value ) ) { throw new ReferenceError( `Expect a string, or Error like. But got value of '${ typeof value }' type: ${ JSON.stringify( value, null, 4 ) }` ) }
+
+        if ( iteeValidators.isString( value ) ) {
+
+            this._error = {
+                name:    'UnknownError',
+                message: value
+            };
+
+        } else if ( WebAPIMessageError.isError( value ) ) {
+
+            this._error = {
+                name:    value.name,
+                message: value.message,
+                stack:   value.stack
+            };
+
+        } else {
+
+            throw new TypeError( `Expect a string, or Error like. But got value of '${ typeof value }' type: ${ JSON.stringify( value, null, 4 ) }` )
+
+        }
+
     }
 
+    // Serialization
     /**
      *
-     * @returns {{stack: *, message: *}}
+     * @returns {{id: String, type: String, name: String, stack: String, message: String}}
      */
     toJSON () {
 
         return {
             ...super.toJSON(),
             ...{
-                message: this.message,
-                stack:   this.stack
+                error: this.error
             }
+        }
+
+    }
+
+}
+
+/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ */
+
+/**
+ * @class
+ * @classdesc Internal ready message to broadcast for prevent bad or dead messager
+ */
+class WebAPIMessageReady extends WebAPIMessage {
+
+    /**
+     * @static
+     * @type {boolean}
+     */
+    static isWebAPIMessageReady = true
+
+    /**
+     *
+     */
+    constructor ( parameters = {} ) {
+        super( '_ready' );
+
+        const _parameters = {
+            ...{
+                isBind: false
+            },
+            ...parameters
+        };
+
+        this.isBind = _parameters.isBind;
+    }
+
+    get isBind () {
+        return this._isBind
+    }
+
+    set isBind ( value ) {
+        if ( iteeValidators.isNotDefined( value ) ) { throw new ReferenceError( 'WebAPIMessageReady isBind cannot be null or undefined ! Expect a boolean value.' )}
+        if ( iteeValidators.isNotBoolean( value ) ) { throw new TypeError( 'WebAPIMessageReady isBind expect a boolean value.' )}
+
+        this._isBind = value;
+    }
+
+    /**
+     *
+     * @returns {{id: String, type: String, isBind: Boolean}}
+     */
+    toJSON () {
+
+        return {
+            ...super.toJSON(),
+            ...{
+                isBind: this.isBind
+            }
+        }
+
+    }
+}
+
+/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ */
+
+/**
+ * @class
+ * @classdesc Special message to request a distant method and expect result.
+ */
+class WebAPIMessageRequest extends WebAPIMessage {
+
+    /**
+     * @static
+     * @type {boolean}
+     */
+    static isWebAPIMessageRequest = true
+
+    /**
+     *
+     * @param method
+     * @param parameters
+     */
+    constructor ( method, parameters = [] ) {
+        super( '_request' );
+
+        this.method     = method;
+        this.parameters = parameters;
+    }
+
+    /**
+     *
+     * @returns {String}
+     */
+    get method () {
+        return this._method
+    }
+
+    /**
+     *
+     * @param value {String}
+     */
+    set method ( value ) {
+        if ( iteeValidators.isNotDefined( value ) ) { throw new ReferenceError( 'Expect a string that represent a api method name, but got undefined or null value.' ) }
+        if ( iteeValidators.isNotString( value ) ) { throw new TypeError( `Expect a string that represent a api method name, but got value of '${ typeof value }' type: ${ JSON.stringify( value, null, 4 ) }` ) }
+        if ( iteeValidators.isEmptyString( value ) || iteeValidators.isBlankString( value ) ) { throw new TypeError( 'Expect a string that represent a api method name, but got empty or blank string.' ) }
+
+        this._method = value;
+    }
+
+    /**
+     *
+     * @returns {Array<*>}
+     */
+    get parameters () {
+        return this._parameters
+    }
+
+    /**
+     *
+     * @param value {Array<*>}
+     */
+    set parameters ( value ) {
+        if ( iteeValidators.isNotArray( value ) ) { throw new TypeError( `Expect an array of parameters, but got value of '${ typeof value }' type: ${ JSON.stringify( value, null, 4 ) }` ) }
+
+        this._parameters = value;
+    }
+
+    /**
+     *
+     * @returns {{method: String, parameters: Array<*>}}
+     */
+    toJSON () {
+
+        return {
+            ...super.toJSON(),
+            ...{
+                method:     this.method,
+                parameters: this.parameters
+            }
+        }
+
+    }
+
+}
+
+/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ */
+
+/**
+ * @class
+ * @classdesc The message response to a message request
+ */
+class WebAPIMessageResponse extends WebAPIMessage {
+
+    /**
+     *
+     * @type {boolean}
+     */
+    static isWebApiMessageResponse = true
+
+    /**
+     *
+     * @param request
+     * @param result
+     */
+    constructor ( request, result ) {
+        super( '_response' );
+
+        this.request = request;
+        this.result  = result;
+    }
+
+    /**
+     *
+     * @returns {*}
+     */
+    get request () {
+        return this._request
+    }
+
+    set request ( value ) {
+        if ( iteeValidators.isNull( value ) ) { return }
+        if ( iteeValidators.isUndefined( value ) ) { return }
+
+        this._request = value;
+    }
+
+    /**
+     *
+     * @returns {*}
+     */
+    get result () {
+        return this._result
+    }
+
+    set result ( value ) {
+        this._result = value;
+    }
+
+    /**
+     *
+     * @returns {{result: *, request: *}}
+     */
+    toJSON () {
+
+        return {
+            ...super.toJSON(),
+            ...{
+                request: this.request,
+                result:  this.result
+            }
+        }
+
+    }
+
+}
+
+/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ */
+
+class WebAPIOrigin {
+
+    constructor ( parameters = {} ) {
+
+        const _parameters = {
+            ...{
+                uri:            '',
+                allowedMethods: [ '*' ],
+                window:         null,
+                messageQueue:   [],
+                isReachable:    true,
+                isReady:        false
+            },
+            ...parameters,
+            ...{
+                id: iteeValidators.isDefined( parameters.id ) ? parameters.id : v4()
+            }
+        };
+
+        this._id            = _parameters.id;
+        this.uri            = _parameters.uri;
+        this.allowedMethods = _parameters.allowedMethods; // Todo: use Set instead
+        this.window         = _parameters.window;
+        this.isReachable    = _parameters.isReachable;
+        this.isReady        = _parameters.isReady;
+        this.messageQueue   = _parameters.messageQueue;
+
+    }
+
+    /**
+     *
+     */
+    get id () {
+        return this._id
+    }
+
+    get uri () {
+        return this._uri
+    }
+    set uri ( value ) {
+        if ( iteeValidators.isNotDefined( value ) ) { throw new ReferenceError( 'WebAPIOrigin uri cannot be null or undefined !' )}
+        if ( iteeValidators.isNotString( value ) ) { throw new TypeError( `WebAPIOrigin uri expect to be a string. Got '${ typeof value }' !` )}
+        if ( iteeValidators.isEmptyString( value ) ) { throw new RangeError( 'WebAPIOrigin uri cannot be an empty string !' )}
+
+        this._uri = value;
+    }
+    get allowedMethods () {
+        return this._allowedMethods
+    }
+    set allowedMethods ( value ) {
+        if ( iteeValidators.isNotDefined( value ) ) { throw new ReferenceError( 'WebAPIOrigin methods cannot be null or undefined ! Expect an array of method name.' )}
+        if ( iteeValidators.isNotArray( value ) ) { throw new TypeError( `WebAPIOrigin methods expect to be an array of method name (string).Got '${ typeof value }' !` )}
+        if ( iteeValidators.isEmptyArray( value ) ) { throw new RangeError( 'WebAPIOrigin methods cannot be an empty array ! Expect an array of method name.' )}
+
+        this._allowedMethods = value;
+    }
+    get window () {
+        return this._window
+    }
+    set window ( value ) {
+        //        if ( isNotDefined( value ) ) { throw new ReferenceError( 'WebAPIOrigin window cannot be null or undefined ! Expect a Window object.' )}
+        //        if ( isDefined( value ) && !( value instanceof Window ) ) { throw new TypeError( `WebAPIOrigin window expect to be a Window. Got '${ typeof value }' !` )}
+
+        this._window = value;
+    }
+    get isReady () {
+        return this._isReady
+    }
+    set isReady ( value ) {
+        if ( iteeValidators.isNotDefined( value ) ) { throw new ReferenceError( 'WebAPIOrigin isReady cannot be null or undefined !' )}
+        if ( iteeValidators.isNotBoolean( value ) ) { throw new TypeError( `WebAPIOrigin isReady expect a Boolean. Got '${ typeof value }' !` )}
+
+        this._isReady = value;
+    }
+    get isReachable () {
+        return this._isReachable
+    }
+    set isReachable ( value ) {
+        if ( iteeValidators.isNotDefined( value ) ) { throw new ReferenceError( 'WebAPIOrigin isReachable cannot be null or undefined !' )}
+        if ( iteeValidators.isNotBoolean( value ) ) { throw new TypeError( `WebAPIOrigin isReachable expect a Boolean. Got '${ typeof value }' !` )}
+
+        this._isReachable = value;
+    }
+    get messageQueue () {
+        return this._messageQueue
+    }
+    set messageQueue ( value ) {
+        this._messageQueue = value;
+    }
+    setUri ( value ) {
+        this.uri = value;
+        return this
+    }
+    setAllowedMethods ( arrayOfMethodNames ) {
+        this.allowedMethods = arrayOfMethodNames;
+        return this
+    }
+    addAllowedMethod ( methodName ) {
+        if ( !this.allowedMethods.includes( methodName ) ) {
+            this.allowedMethods.push( methodName );
+        }
+        return this
+    }
+    removeAllowedMethod ( methodName ) {
+        const index = this.allowedMethods.indexOf( methodName );
+        if ( index >= 0 ) {
+            this.allowedMethods.slice( index, methodName );
+        }
+        return this
+    }
+    setWindow ( value ) {
+        this.window = value;
+        return this
+    }
+    setReadyState ( value ) {
+        this.isReady = value;
+        return this
+    }
+    setReachableState ( value ) {
+        this.isReachable = value;
+        return this
+    }
+}
+
+/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ */
+
+/**
+ * A POJO object containg datas about a distant source to allow
+ * @typedef {Object} AllowedOrigin
+ * @property {string} id - The id to reference this origin as a human readable string
+ * @property {string} uri - The uri of the origin to allow
+ * @property {Array<String>} methods - An array of methods names that are allowed for this origins. To allow all methods use '*', in case no methods string were provide the origin won't be able to do
+ *     anything.
+ */
+
+/**
+ * @class
+ * @classdesc The abstract class to use standardized webapi.
+ * @abstract
+ */
+class WebAPI {
+
+    /**
+     * @constructor
+     * @param {Object} parameters - An object containing all parameters to pass through the inheritance chain to initialize this instance
+     * @param {Boolean} [parameters.allowAnyOrigins=false] - A boolean to allow or not any origins calls
+     * @param {Array<AllowedOrigin>} [parameters.allowedOrigins=[]] - An array containing configured allowed origins
+     * @param {Number} [parameters.requestTimeout=2000] - The request timeout before throw an error
+     */
+    constructor ( parameters = {} ) {
+
+        const _parameters = {
+            ...{
+                logger:               iteeCore.DefaultLogger,
+                allowedOrigins:       [],
+                requestTimeout:       2000,
+                methods:              this,
+                broadcastReadyOnInit: true
+            },
+            ...parameters
+        };
+
+        // Private stuff
+        this._localOriginUri  = window.location.origin;
+        this._awaitingRequest = new Map();
+
+        // Listen message from Window
+        window.addEventListener( 'message', this._onMessage.bind( this ), false );
+
+        // Public stuff
+        this.logger         = _parameters.logger;
+        this.allowedOrigins = _parameters.allowedOrigins;
+        this.requestTimeout = _parameters.requestTimeout;
+        this.methods        = _parameters.methods;
+
+        // Initiate connection to all origins
+        if ( _parameters.broadcastReadyOnInit ) {
+            this._broadcastReadyMessage();
+        }
+    }
+
+    /**
+     *
+     * @returns {TLogger}
+     */
+    get logger () {
+        return this._logger
+    }
+    /**
+     *
+     * @param value {TLogger}
+     */
+    set logger ( value ) {
+        if ( iteeValidators.isNull( value ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: The logger cannot be null, expect a TLogger.` )}
+        if ( iteeValidators.isUndefined( value ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: The logger cannot be undefined, expect a TLogger.` )}
+        if ( !value.isLogger ) { throw new ReferenceError( `[${ this._localOriginUri }]: The logger cannot be undefined, expect a TLogger.` )}
+
+        this._logger = value;
+    }
+    /**
+     *
+     * @returns {Array<WebAPIOrigin>}
+     */
+    get allowedOrigins () {
+        return this._allowedOrigins
+    }
+    /**
+     *
+     * @param value {Array<WebAPIOrigin>}
+     */
+    set allowedOrigins ( value ) {
+
+        this._allowedOrigins  = [];
+        const _allowedOrigins = iteeUtils.toArray( value );
+
+        // Special case for any origin
+        if ( _allowedOrigins.includes( '*' ) ) {
+            this.logger.warn( `[${ this._localOriginUri }]: This webApi is allowed for all origin and could lead to security concerne !` );
+            this._allowedOrigins.push( '*' );
+            return
+        }
+
+        // Create WebApiOrigin based on provided settings
+        for ( let allowedOrigin of _allowedOrigins ) {
+
+            const origin = new WebAPIOrigin( {
+                id:      allowedOrigin.id,
+                uri:     allowedOrigin.uri,
+                methods: allowedOrigin.methods,
+                window:  this._getOriginWindow( allowedOrigin.uri )
+            } );
+            this._allowedOrigins.push( origin );
+
+        }
+
+    }
+    /**
+     *
+     * @returns {Number}
+     */
+    get requestTimeout () {
+        return this._requestTimeout
+    }
+    /**
+     *
+     * @param value {Number}
+     */
+    set requestTimeout ( value ) {
+        if ( iteeValidators.isNull( value ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: The request timeout cannot be null, expect to be 0 or a positive number.` )}
+        if ( iteeValidators.isUndefined( value ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: The request timeout cannot be undefined, expect to be 0 or a positive number.` )}
+        if ( iteeValidators.isNotNumber( value ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: The request timeout expect to be 0 or a positive number.` )}
+        if ( iteeValidators.isNumberNegative( value ) && !iteeValidators.isZero( value ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: The request timeout expect to be 0 or a positive number.` )}
+
+        this._requestTimeout = value;
+    }
+    /**
+     *
+     * @returns {Array<Function>}
+     */
+    get methods () {
+        return this._methods
+    }
+    /**
+     *
+     * @param value Array<Function>
+     */
+    set methods ( value ) {
+        if ( iteeValidators.isNull( value ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: The methods cannot be null, expect any keyed collection of function.` )}
+        if ( iteeValidators.isUndefined( value ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: The methods cannot be undefined, expect any keyed collection of function.` )}
+        // Todo: isNotObject && isNotMap && isNotSet && isNotApi
+
+        this._methods = value;
+    }
+    /**
+     *
+     * @param value {TLogger}
+     * @returns {AbstractWebAPI}
+     */
+    setLogger ( value ) {
+        this.logger = value;
+        return this
+    }
+    /**
+     *
+     * @param value {Array<WebAPIOrigin>}
+     * @returns {AbstractWebAPI}
+     */
+    setAllowedOrigins ( value ) {
+        this.allowedOrigins = value;
+        return this
+    }
+    /**
+     *
+     * @param value {Number}
+     * @returns {AbstractWebAPI}
+     */
+    setRequestTimeout ( value ) {
+        this.requestTimeout = value;
+        return this
+    }
+    /**
+     *
+     * @param value Array<Function>
+     * @returns {AbstractWebAPI}
+     */
+    setMethods ( value ) {
+        this.methods = value;
+        return this
+    }
+
+    // Validators
+
+    /**
+     *
+     * @returns {boolean}
+     * @private
+     */
+    _isInIframe () {
+
+        try {
+            return window.self !== window.top
+        } catch ( e ) {
+            return true
+        }
+
+    }
+
+    /**
+     *
+     * @returns {boolean}
+     * @private
+     */
+    _isNotAllowedForAllOrigins () {
+
+        return !this._allowedOrigins.includes( '*' )
+        //        return !this.allowAnyOrigins
+    }
+
+    /**
+     *
+     * @param originURI
+     * @returns {boolean}
+     * @private
+     */
+    _isNotAllowedOrigin ( originURI ) {
+
+        return !this._allowedOrigins
+                    .filter( origin => origin !== '*' )
+                    .map( origin => origin.uri )
+                    .includes( originURI )
+
+    }
+
+    /**
+     *
+     * @param originURI
+     * @returns {boolean}
+     * @private
+     */
+    _isSameOrigin ( originURI ) {
+        return this._localOriginUri === originURI
+    }
+
+    /**
+     *
+     * @param origin {WebAPIOrigin}
+     * @returns {boolean}
+     * @private
+     */
+    _isNotAllowedForAllMethods ( origin ) {
+        return ( origin.allowedMethods.indexOf( '*' ) === -1 )
+    }
+
+    /**
+     *
+     * @param origin {WebAPIOrigin}
+     * @param methodName {string}
+     * @returns {boolean}
+     * @private
+     */
+    _isNotAllowedMethod ( origin, methodName ) {
+        return ( origin.allowedMethods.indexOf( methodName ) === -1 )
+    }
+
+    /**
+     *
+     * @param methodName
+     * @returns {boolean}
+     * @private
+     */
+    _methodNotExist ( methodName ) {
+        return iteeValidators.isNotDefined( this.methods[ methodName ] )
+    }
+
+    // Utils
+
+    /**
+     *
+     * @param propertyName
+     * @param value
+     * @returns {WebAPIOrigin}
+     * @private
+     */
+    _getAllowedOriginBy ( propertyName, value ) {
+        return this.allowedOrigins.find( origin => origin[ propertyName ] === value )
+    }
+
+    /**
+     *
+     * @param originURI
+     * @returns {Window}
+     * @private
+     */
+    _getOriginWindow ( originURI ) {
+
+        let originWindow;
+
+        if ( this._isInIframe() ) {
+
+            originWindow = window.parent;
+
+        } else {
+
+            const frames = document.getElementsByTagName( 'iframe' );
+            const frame  = Array.from( frames ).find( iframe => iframe.src.includes( originURI ) );
+            if ( iteeValidators.isNotDefined( frame ) ) {
+                this.logger.warn( `[${ this._localOriginUri }]: Unable to find iframe element for [${ originURI }] URI !` );
+                originWindow = null;
+            } else {
+                originWindow = frame.contentWindow;
+            }
+
+        }
+
+        return originWindow
+
+    }
+
+    /**
+     *
+     * @param origin {WebAPIOrigin}
+     * @private
+     */
+    _processMessageQueueOf ( origin ) {
+
+        const messageQueue = origin.messageQueue;
+        for ( let messageIndex = messageQueue.length - 1 ; messageIndex >= 0 ; messageIndex-- ) {
+            this.postMessageTo( origin.id, messageQueue.shift() );
+        }
+
+    }
+
+    /**
+     *
+     * @private
+     */
+    _broadcastReadyMessage () {
+
+        const ready       = new WebAPIMessageReady();
+        let checkInterval = 250;
+
+        const broadcast = () => {
+
+            const unreadyOrigins = this.allowedOrigins.filter( origin => !origin.isReady && origin.isReachable );
+            if ( iteeValidators.isEmptyArray( unreadyOrigins ) ) {
+                return
+            }
+
+            for ( let unreadyOrigin of unreadyOrigins ) {
+                this.postReadyTo( unreadyOrigin.id, ready );
+            }
+
+            checkInterval += checkInterval;
+            setTimeout( broadcast, checkInterval );
+
+        };
+        broadcast();
+
+    }
+
+    // Messaging
+
+    /**
+     *
+     * @param event
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _onMessage ( event ) {
+
+        // Is allowed origin
+        if ( this._isNotAllowedForAllOrigins() && this._isNotAllowedOrigin( event.origin ) ) {
+            this.logger.warn( `[${ this._localOriginUri }]: An unallowed origin [${ event.origin }] try to access the web api.` );
+            return
+        }
+
+        // Is self ?
+        if ( this._isSameOrigin( event.origin ) ) {
+            this.logger.warn( `[${ this._localOriginUri }]: A local origin try to access the web api... 
+                or... Am i talking to myself  ?
+                Said i (${ iteeValidators.isString( event.data ) ? event.data : JSON.stringify( event.data ) }) ?
+                Hummm... Ehhooo ! Who's there ?
+            ` );
+            return
+        }
+
+        // In case we are not in embbeded iframe or the origin is not an iframe set the origin window as the source event
+        let origin = this._getAllowedOriginBy( 'uri', event.origin );
+        if ( iteeValidators.isNotDefined( origin ) ) {
+
+            // If we are here, we are called by an unknown origin but we are allowed for all. So create a new one
+            origin = new WebAPIOrigin( {
+                uri:    event.origin,
+                window: event.source
+            } );
+            this.allowedOrigins.push( origin );
+
+        } else if ( iteeValidators.isNull( origin.window ) ) {
+
+            origin.window = event.source;
+
+        }
+
+        const eventData = event.data;
+        const message   = iteeValidators.isObject( eventData ) ? eventData : JSON.parse( eventData );
+        if ( iteeValidators.isNotDefined( message ) ) {
+            this.logger.error( `[${ this._localOriginUri }]: Recieve null or undefined message from [${ origin.uri }] ! Expect a json object.` );
+            return
+        }
+
+        await this._dispatchMessageFrom( origin, message );
+
+    }
+
+    /**
+     *
+     * @param origin
+     * @param message
+     * @private
+     */
+    async _dispatchMessageFrom ( origin, message ) {
+
+        this.logger.log( `[${ this._localOriginUri }]: Recieve message of type '${ message.type }' from [${ origin.uri }].` );
+
+        switch ( message.type ) {
+
+            case '_ready':
+                this._onReadyFrom( origin, message );
+                break
+
+            case '_request':
+                await this._onRequestFrom( origin, message );
+                break
+
+            case '_response':
+                this._onResponseFrom( origin, message );
+                break
+
+            case '_data':
+                this.onDataFrom( origin, message );
+                break
+
+            case '_error':
+                this.onErrorFrom( origin, message );
+                break
+
+            default:
+                this.onMessageFrom( origin, message );
+
+        }
+
+    }
+
+    /**
+     *
+     * @param origin
+     * @param message
+     */
+    _onReadyFrom ( origin, message ) {
+
+        if ( !origin.isReady ) {
+            origin.isReady = true;
+
+            // Avoid some ping-pong ready message
+            if ( !message.isBind ) {
+                const ready = new WebAPIMessageReady( { isBind: true } );
+                this.postMessageTo( origin.id, ready, true );
+            }
+        }
+
+        this._processMessageQueueOf( origin );
+
+    }
+
+    /**
+     *
+     * @param origin
+     * @param request
+     */
+    async _onRequestFrom ( origin, request ) {
+
+        let message;
+        const methodName = request.method;
+        const parameters = request.parameters;
+
+        if ( this._isNotAllowedForAllMethods( origin ) && this._isNotAllowedMethod( origin, methodName ) ) {
+
+            this.logger.error( `[${ this._localOriginUri }]: Origin [${ origin.uri }] try to access an unallowed method named '${ methodName }'.` );
+            message = new WebAPIMessageError( new RangeError( `Trying to access an unallowed method named '${ methodName }'.` ) );
+
+        } else if ( this._methodNotExist( methodName ) ) {
+
+            this.logger.error( `[${ this._localOriginUri }]: Origin [${ origin.uri }] try to access an unexisting method named '${ methodName }'.` );
+            message = new WebAPIMessageError( new RangeError( `Trying to access an unexisting method named '${ methodName }'.` ) );
+
+        } else {
+
+            try {
+                const result = await this.methods[ methodName ]( ...parameters );
+                message      = new WebAPIMessageData( result );
+            } catch ( error ) {
+                message = new WebAPIMessageError( error );
+            }
+
+        }
+
+        // To avoid unnecessary client timeout we need to respond with error or data in any case
+        this.postResponseTo( origin.id, request, message );
+
+    }
+
+    /**
+     *
+     * @param origin
+     * @param response
+     */
+    _onResponseFrom ( origin, response ) {
+
+        const requestId = response.request.id;
+        if ( !this._awaitingRequest.has( requestId ) ) { return }
+
+        const request = this._awaitingRequest.get( requestId );
+        this._awaitingRequest.delete( requestId );
+
+        clearTimeout( request.timeoutId );
+
+        const result = response.result;
+        if ( iteeValidators.isDefined( result ) ) {
+
+            if ( result.type === '_error' ) {
+                request.reject( result.error );
+            } else if ( result.type === '_data' ) {
+                request.resolve( result.data );
+            } else {
+                request.resolve( result );
+            }
+
+        } else {
+            request.resolve();
+        }
+
+    }
+
+    /**
+     *
+     * @param origin
+     * @param message
+     * @private
+     */
+    // eslint-disable-next-line no-unused-vars
+    onErrorFrom ( origin, message ) {
+        // Need to be reimplemented if needed
+        this.logger.error( `[${ this._localOriginUri }]: the origin [${ origin.uri }] send error => ${ JSON.stringify( message.error, null, 4 ) }. Need you to reimplement this method ?` );
+    }
+
+    /**
+     *
+     * @param origin
+     * @param message
+     */
+    // eslint-disable-next-line no-unused-vars
+    onDataFrom ( origin, message ) {
+        // Need to be reimplemented if needed
+        this.logger.log( `[${ this._localOriginUri }]: the origin [${ origin.uri }] send data => ${ JSON.stringify( message.data, null, 4 ) }. Need you to reimplement this method ?` );
+    }
+
+    /**
+     *
+     * @param origin
+     * @param message
+     */
+    // eslint-disable-next-line no-unused-vars
+    onMessageFrom ( origin, message ) {
+        // Need to be reimplemented if needed
+        this.logger.log( `[${ this._localOriginUri }]: the origin [${ origin.uri }] send custom message => ${ JSON.stringify( message, null, 4 ) }. Need you to reimplement this method ?` );
+    }
+
+    // Send
+
+    /**
+     *
+     * @param originId
+     * @param ready
+     */
+    postReadyTo ( originId, ready ) {
+
+        const _ready = ( ready && ready.constructor.isWebAPIMessageReady ) ? ready : new WebAPIMessageReady();
+        this.postMessageTo( originId, _ready, true );
+
+    }
+
+    /**
+     *
+     * @param originId
+     * @param request
+     * @param params
+     * @returns {Promise<unknown>}
+     */
+    postRequestTo ( originId, request, ...params ) {
+
+        const _request = ( request && request.constructor.isWebAPIMessageRequest ) ? request : new WebAPIMessageRequest( request, params );
+
+        return new Promise( ( resolve, reject ) => {
+
+            try {
+
+                this._awaitingRequest.set( _request.id, {
+                    request:   _request,
+                    resolve:   resolve,
+                    reject:    reject,
+                    timeoutId: setTimeout( () => {
+                        this._awaitingRequest.delete( _request.id );
+                        reject( new Error( `Request timeout for ${ JSON.stringify( _request, null, 4 ) }` ) );
+                        //Todo send abort to avoid future return that won't be processed
+                    }, this.requestTimeout )
+                } );
+
+                this.postMessageTo( originId, _request );
+
+            } catch ( error ) {
+
+                reject( error );
+
+            }
+
+        } )
+
+    }
+
+    /**
+     *
+     * @param originId
+     * @param request
+     * @param reponse
+     */
+    postResponseTo ( originId, request, reponse ) {
+
+        const _response = ( reponse && reponse.constructor.isWebAPIMessageResponse ) ? reponse : new WebAPIMessageResponse( request, reponse );
+        this.postMessageTo( originId, _response );
+
+    }
+
+    /**
+     *
+     * @param originId
+     * @param error {WebAPIMessageError|String}
+     */
+    postErrorTo ( originId, error ) {
+
+        const _error = ( error && error.constructor.isWebAPIMessageError ) ? error : new WebAPIMessageError( error );
+        this.postMessageTo( originId, _error );
+
+    }
+
+    /**
+     *
+     * @param originId
+     * @param data
+     */
+    postDataTo ( originId, data ) {
+
+        const _data = ( data && data.constructor.isWebAPIMessageData ) ? data : new WebAPIMessageData( data );
+        this.postMessageTo( originId, _data );
+
+    }
+
+    /**
+     *
+     * @param originId
+     * @param message
+     * @param force
+     */
+    postMessageTo ( originId, message, force = false ) {
+
+        if ( iteeValidators.isNotDefined( originId ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: Unable to post message to null or undefined origin id !` ) }
+        if ( iteeValidators.isNotDefined( message ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: Unable to post null or undefined message !` ) }
+
+        const origin = this._getAllowedOriginBy( 'id', originId );
+        if ( iteeValidators.isNotDefined( origin ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: Unable to retrieved origin with id: ${ originId }` ) }
+
+        try {
+
+            if ( !force && !origin.isReady ) {
+
+                this.logger.warn( `[${ this._localOriginUri }]: Origin [${ origin.uri }] is not ready yet !` );
+                origin.messageQueue.push( message );
+
+            } else if ( force && !origin.window ) {
+
+                this.logger.error( `[${ this._localOriginUri }]: Origin [${ origin.uri }] is unreachable !` );
+                //                origin.isUnreachable = true
+                origin.messageQueue.push( message );
+
+            } else {
+
+                this.logger.log( `[${ this._localOriginUri }]: Send message of type '${ message.type }' to [${ origin.uri }]` );
+                origin.window.postMessage( JSON.stringify( message ), origin.uri );
+
+            }
+
+        } catch ( error ) {
+
+            this.logger.error( error );
+
         }
 
     }
@@ -3722,855 +4790,6 @@ class WebAPIMessageProgress extends WebAPIMessage {
                 lengthComputable: this.lengthComputable,
                 loaded:           this.loaded,
                 total:            this.total
-            }
-        }
-
-    }
-
-}
-
-/**
- * @author [Tristan Valcke]{@link https://github.com/Itee}
- */
-
-/**
- * @class
- * @classdesc Internal ready message to broadcast for prevent bad or dead messager
- */
-class WebAPIMessageReady extends WebAPIMessage {
-
-    /**
-     * @static
-     * @type {boolean}
-     */
-    static isWebAPIMessageReady = true
-
-    /**
-     *
-     */
-    constructor () {
-        super( '_ready' );
-    }
-
-}
-
-/**
- * @author [Tristan Valcke]{@link https://github.com/Itee}
- */
-
-/**
- * @class
- * @classdesc The message response to a message request
- */
-class WebApiMessageResponse extends WebAPIMessage {
-
-    /**
-     *
-     * @type {boolean}
-     */
-    static isWebApiMessageResponse = true
-
-    /**
-     *
-     * @param request
-     * @param result
-     */
-    constructor ( request, result ) {
-        super( '_response' );
-
-        this.request = request;
-        this.result  = result;
-    }
-
-    /**
-     *
-     * @returns {*}
-     */
-    get request () {
-        return this._request
-    }
-
-    set request ( value ) {
-        if ( iteeValidators.isNull( value ) ) { return }
-        if ( iteeValidators.isUndefined( value ) ) { return }
-
-        this._request = value;
-    }
-
-    /**
-     *
-     * @returns {*}
-     */
-    get result () {
-        return this._result
-    }
-
-    set result ( value ) {
-        this._result = value;
-    }
-
-    /**
-     *
-     * @returns {{result: *, request: *}}
-     */
-    toJSON () {
-
-        return {
-            ...super.toJSON(),
-            ...{
-                request: this.request,
-                result:  this.result
-            }
-        }
-
-    }
-
-}
-
-/**
- * @author [Tristan Valcke]{@link https://github.com/Itee}
- */
-
-/**
- * A POJO object containg datas about a distant source to allow
- * @typedef {Object} AllowedOrigin
- * @property {string} id - The id to reference this origin as a human readable string
- * @property {string} uri - The uri of the origin to allow
- * @property {Array<String>} methods - An array of methods names that are allowed for this origins. To allow all methods use '*', in case no methods string were provide the origin won't be able to do
- *     anything.
- */
-
-/**
- * @class
- * @classdesc The abstract class to use standardized webapi.
- * @abstract
- */
-class AbstractWebAPI {
-
-    /**
-     * @constructor
-     * @param {Object} parameters - An object containing all parameters to pass through the inheritance chain to initialize this instance
-     * @param {Boolean} [parameters.allowAnyOrigins=false] - A boolean to allow or not any origins calls
-     * @param {Array<AllowedOrigin>} [parameters.allowedOrigins=[]] - An array containing configured allowed origins
-     * @param {String} [parameters.targetOrigin=''] - The current selected target origins on which will be send all requests
-     * @param {Number} [parameters.requestTimeout=2000] - The request timeout before throw an error
-     */
-    constructor ( parameters = {} ) {
-
-        const _parameters = {
-            ...{
-                logger:          iteeCore.DefaultLogger,
-                allowAnyOrigins: false,
-                allowedOrigins:  [],
-                //                targetOrigin:    '',
-                requestTimeout:  2000
-            },
-            ...parameters
-        };
-
-        // Internal stuff
-        this.logger    = _parameters.logger;
-        this._origin    = window.location.origin;
-        this._responses = new Map();
-
-        // Listen message from Window
-        window.addEventListener( 'message', this._onMessage.bind( this ), false );
-
-        // Public stuff
-        this.allowAnyOrigins = _parameters.allowAnyOrigins;
-        this.allowedOrigins  = _parameters.allowedOrigins;
-        //        this.targetOrigin    = _parameters.targetOrigin // Todo: defaulting targetOrigin to the first allowedOrigins if exist
-        this.requestTimeout  = _parameters.requestTimeout;
-
-        // Emit onReady event
-        this._broadCastReadyMessage();
-    }
-
-    get logger() {
-        return this._logger
-    }
-    set logger(value) {
-        if ( iteeValidators.isNull( value ) ) { throw new ReferenceError( `[${ this._origin }]: The logger cannot be null, expect a TLogger.` )}
-        if ( iteeValidators.isUndefined( value ) ) { throw new ReferenceError( `[${ this._origin }]: The logger cannot be undefined, expect a TLogger.` )}
-        if ( !value.isLogger ) { throw new ReferenceError( `[${ this._origin }]: The logger cannot be undefined, expect a TLogger.` )}
-
-        this._logger = value;
-    }
-
-    /**
-     *
-     * @returns {Array<AllowedOrigin>}
-     */
-    get allowedOrigins () {
-        return this._allowedOrigins
-    }
-
-    set allowedOrigins ( value ) {
-
-        this._allowedOrigins = [];
-
-        const _allowedOrigins = Array.isArray( value ) ? value : [ value ];
-        for ( let originIndex = 0, numberOfOrigins = _allowedOrigins.length ; originIndex < numberOfOrigins ; originIndex++ ) {
-
-            const origin = _allowedOrigins[ originIndex ];
-            this._allowedOrigins.push( {
-                id:           origin.id || `origin_${ Math.random().toString().slice( 2 ) }`,
-                uri:          origin.uri,
-                methods:      origin.methods,
-                window:       this._getOriginWindow( origin.uri ),
-                messageQueue: [],
-                isReady:      false
-            } );
-
-        }
-
-        this._broadCastReadyMessage();
-
-    }
-
-    /**
-     *
-     * @returns {*}
-     */
-    //    get targetOrigin () {
-    //        return this._targetOrigin
-    //    }
-    //
-    //    set targetOrigin ( value ) {
-    //
-    //        const expectation = 'Expect a valid string origin id !'
-    //
-    //        if ( isUndefined( value ) ) { throw new ReferenceError( `[${ this._origin }]: Target origin cannot be undefined. ${ expectation }` ) }
-    //        if ( isNull( value ) ) { throw new ReferenceError( `[${ this._origin }]: Target origin cannot be null. ${ expectation }` ) }
-    //        if ( isNotString( value ) ) { throw new ReferenceError( `[${ this._origin }]: Target origin is invalid. ${ expectation }` ) }
-    //
-    //        const allowedOriginsIds = this.allowedOrigins.map( origin => origin.id )
-    //        if ( !allowedOriginsIds.includes( value ) ) { throw new ReferenceError( `[${ this._origin }]: Provided target origin is not contain in current allowedOrigins. ${ expectation }` ) }
-    //
-    //        this._targetOrigin = value
-    //
-    //    }
-
-    /**
-     *
-     * @returns {*}
-     */
-    get requestTimeout () {
-        return this._requestTimeout
-    }
-
-    set requestTimeout ( value ) {
-        if ( iteeValidators.isNull( value ) ) { throw new ReferenceError( `[${ this._origin }]: The request timeout cannot be null, expect to be 0 or a positive number.` )}
-        if ( iteeValidators.isUndefined( value ) ) { throw new ReferenceError( `[${ this._origin }]: The request timeout cannot be undefined, expect to be 0 or a positive number.` )}
-        if ( iteeValidators.isNotNumber( value ) ) { throw new ReferenceError( `[${ this._origin }]: The request timeout expect to be 0 or a positive number.` )}
-        if ( iteeValidators.isNumberNegative( value ) && !iteeValidators.isZero( value ) ) { throw new ReferenceError( `[${ this._origin }]: The request timeout expect to be 0 or a positive number.` )}
-
-        this._requestTimeout = value;
-    }
-
-    /**
-     *
-     * @param value
-     * @returns {AbstractWebAPI}
-     */
-    setAllowedOrigins ( value ) {
-        this.allowedOrigins = value;
-        return this
-    }
-
-    /**
-     *
-     * @param value
-     * @returns {AbstractWebAPI}
-     */
-    setTargetOrigin ( value ) {
-        this.targetOrigin = value;
-        return this
-    }
-
-    /**
-     *
-     * @param value
-     * @returns {AbstractWebAPI}
-     */
-    setRequestTimeout ( value ) {
-        this.requestTimeout = value;
-        return this
-    }
-
-    /**
-     *
-     * @returns {boolean}
-     * @private
-     */
-    _isInIframe () {
-
-        try {
-            return window.self !== window.top
-        } catch ( e ) {
-            return true
-        }
-
-    }
-
-    _isNotAllowedForAllOrigins () {
-        return !this.allowAnyOrigins
-    }
-
-    _isNotAllowedOrigin ( originURI ) {
-        return !this._allowedOrigins.map( allowedOrigin => allowedOrigin.uri ).includes( originURI )
-    }
-
-    /**
-     *
-     * @param origin
-     * @returns {boolean}
-     * @private
-     */
-    _isNotAllowedForAllMethods ( origin ) {
-        return ( origin.methods.indexOf( '*' ) === -1 )
-    }
-
-    /**
-     *
-     * @param origin
-     * @param methodName
-     * @returns {boolean}
-     * @private
-     */
-    _isNotAllowedMethod ( origin, methodName ) {
-        return ( origin.methods.indexOf( methodName ) === -1 )
-    }
-
-    /////////////////
-
-    /**
-     *
-     * @param methodName
-     * @returns {boolean}
-     * @private
-     */
-    _methodNotExist ( methodName ) {
-        return iteeValidators.isNotDefined( this[ methodName ] )
-    }
-
-    /**
-     *
-     * @param id
-     * @returns {T}
-     * @private
-     */
-    _getAllowedOriginById ( id ) {
-
-        return Object.values( this._allowedOrigins )
-                     .find( ( origin ) => {
-                         return origin.id === id
-                     } )
-
-    }
-
-    /**
-     *
-     * @param uri
-     * @returns {T}
-     * @private
-     */
-    _getAllowedOriginByURI ( uri ) {
-
-        return Object.values( this._allowedOrigins )
-                     .find( ( origin ) => {
-                         return origin.uri === uri
-                     } )
-
-    }
-
-    /////////////////
-
-    /**
-     *
-     * @param originURI
-     * @returns {WindowProxy}
-     * @private
-     */
-    _getOriginWindow ( originURI ) {
-
-        let originWindow = null;
-
-        if ( this._isInIframe() ) {
-
-            originWindow = window.parent;
-
-        } else {
-
-            const frames = document.getElementsByTagName( 'iframe' );
-            const frame  = Array.from( frames ).find( iframe => iframe.src.includes( originURI ) );
-            if ( iteeValidators.isNotDefined( frame ) ) {
-                this.logger.warn( `[${ this._origin }]: Unable to find iframe for [${ originURI }] URI !` );
-                originWindow = null;
-            } else {
-                originWindow = frame.contentWindow;
-            }
-
-        }
-
-        return originWindow
-
-    }
-
-    /**
-     *
-     * @param event
-     * @private
-     */
-    async _onMessage ( event ) {
-
-        // Is allowed origin
-        if ( this._isNotAllowedForAllOrigins() && this._isNotAllowedOrigin( event.origin ) ) {
-            this.logger.warn( `[${ this._origin }]: An unallowed origin [${ event.origin }] try to access the web api.` );
-            return
-        }
-
-        // In case we are not in embbeded iframe or the origin is not an iframe set the origin window as the source event
-        let origin = this._getAllowedOriginByURI( event.origin );
-        if ( iteeValidators.isNotDefined( origin ) ) {
-            origin = {
-                id:           `origin_${ Math.random().toString().slice( 2 ) }`,
-                uri:          event.origin,
-                methods:      [ '*' ],
-                window:       event.source,
-                messageQueue: [],
-                isReady:      false
-            };
-            this._allowedOrigins.push( origin );
-        } else if ( origin.window === null ) {
-            origin.window = event.source;
-        }
-
-        try {
-
-            await this._dispatchMessageFrom( origin, JSON.parse( event.data ) );
-
-        } catch ( error ) {
-
-            this.postErrorTo( origin.id, error );
-
-        }
-
-    }
-
-    /**
-     *
-     * @param origin
-     * @param message
-     * @private
-     */
-    async _dispatchMessageFrom ( origin, message ) {
-
-        if ( iteeValidators.isNotDefined( message ) ) { throw new ReferenceError( `[${ this._origin }]: Message cannot be null or undefined ! Expect a json object.` ) }
-
-        const messageType = message.type;
-
-        if ( messageType === '_ready' ) {
-
-            this.logger.log( `[${ this._origin }]: Recieve '_ready' message from [${ origin.uri }].` );
-            this.onReadyFrom( origin, message );
-
-        } else if ( messageType === '_progress' ) {
-
-            this.logger.log( `[${ this._origin }]: Recieve '_progress' message from [${ origin.uri }].` );
-            this.onProgressFrom( origin, message );
-
-        } else if ( messageType === '_error' ) {
-
-            this.logger.log( `[${ this._origin }]: Recieve '_error' message from [${ origin.uri }].` );
-            this.onErrorFrom( origin, message );
-
-        } else if ( messageType === '_response' ) {
-
-            this.logger.log( `[${ this._origin }]: Recieve '_response' message from [${ origin.uri }].` );
-            this.onResponseFrom( origin, message );
-
-        } else if ( messageType === '_request' ) {
-
-            this.logger.log( `[${ this._origin }]: Recieve '_request' message from [${ origin.uri }].` );
-            await this.onRequestFrom( origin, message );
-
-        } else {
-
-            this.logger.log( `[${ this._origin }]: Recieve 'custom' message from [${ origin.uri }].` );
-            this.onMessageFrom( origin, message );
-
-        }
-
-    }
-
-    /**
-     *
-     * @param origin
-     * @param message
-     */
-    // eslint-disable-next-line no-unused-vars
-    onReadyFrom ( origin, message ) {
-
-        if ( !origin.isReady ) {
-            origin.isReady = true;
-            const ready    = new WebAPIMessageReady();
-            this.postMessageTo( origin.id, ready, true );
-        }
-
-        // processMessageQueueOf
-        const messageQueue = origin.messageQueue;
-        for ( let messageIndex = messageQueue.length - 1 ; messageIndex >= 0 ; messageIndex-- ) {
-            this.postMessageTo( origin.id, messageQueue.shift() );
-        }
-
-    }
-
-    /**
-     *
-     * @param origin
-     * @param request
-     */
-    async onRequestFrom ( origin, request ) {
-
-        const method = request.method;
-        if ( this._isNotAllowedForAllMethods( origin ) && this._isNotAllowedMethod( origin, method ) ) { throw new Error( `[${ this._origin }]: Origin [${ origin }] try to access an unallowed method named ${ method }.` ) }
-        if ( this._methodNotExist( method ) ) { throw new ReferenceError( `[${ this._origin }]: Origin [${ origin.uri }] try to access an unexisting method named "${ method }".` ) }
-
-        const parameters = request.parameters;
-        let message;
-
-        try {
-            const result = await this[ method ]( ...parameters );
-            message      = new WebAPIMessageData( result );
-        } catch ( error ) {
-            message = new WebAPIMessageError( error );
-        }
-
-        const response = new WebApiMessageResponse( request, message );
-        this.postMessageTo( origin.id, response );
-
-    }
-
-    /**
-     *
-     * @param origin
-     * @param response
-     */
-    onResponseFrom ( origin, response ) {
-
-        this._responses.set( response.request.id, response );
-
-    }
-
-    /**
-     *
-     * @param origin
-     * @param progress
-     */
-    // eslint-disable-next-line no-unused-vars
-    onProgressFrom ( origin, progress ) {
-        // todo: emit progress base on request id ?
-    }
-
-    /**
-     *
-     * @param origin
-     * @param error
-     */
-    // eslint-disable-next-line no-unused-vars
-    onErrorFrom ( origin, error ) {
-        // todo: manage intternal error than allow user define handling
-    }
-
-    /**
-     *
-     * @param origin
-     * @param message
-     */
-    // eslint-disable-next-line no-unused-vars
-    onMessageFrom ( origin, message ) {
-        // Need to be reimplemented if needed
-    }
-
-    // Send
-
-    /**
-     *
-     * @private
-     */
-    _broadCastReadyMessage () {
-
-        const ready      = new WebAPIMessageReady();
-        const intervalId = setInterval( () => {
-
-            const allowedOrigins        = this.allowedOrigins;
-            const includeUnreadyOrigins = allowedOrigins.map( origin => origin.isReady ).includes( false );
-            if ( includeUnreadyOrigins ) {
-
-                Object.values( allowedOrigins )
-                      .forEach( ( origin ) => {
-
-                          if ( origin.isReady ) { return }
-                          if ( origin.isUnreachable ) { return }
-
-                          if ( iteeValidators.isDefined( origin.silent ) ) {
-                              if ( iteeValidators.isFalse( origin.silent ) ) {
-                                  this.postMessageTo( origin.id, ready, true );
-                              } else {
-                                  origin.isReady = true;
-                              }
-                          } else {
-                              this.postMessageTo( origin.id, ready, true );
-                          }
-
-                      } );
-
-            } else {
-
-                clearInterval( intervalId );
-
-            }
-
-        }, 1000 );
-
-    }
-
-    /**
-     *
-     * @param originId
-     * @param error
-     */
-    postErrorTo ( originId, error ) {
-
-        let _error = null;
-        if ( error.isWebAPIMessageError ) {
-            _error = error;
-        } else {
-            _error = new WebAPIMessageError( error );
-        }
-        this.postMessageTo( originId, _error.toJSON() );
-
-    }
-
-    /**
-     *
-     * @param originId
-     * @param progress
-     */
-    postProgressTo ( originId, progress ) {
-
-        let _progress = null;
-        if ( progress.isWebAPIMessageProgress ) {
-            _progress = progress;
-        } else {
-            _progress = new WebAPIMessageProgress( progress.loaded, progress.total );
-        }
-        this.postMessageTo( originId, _progress.toJSON() );
-
-    }
-
-    /**
-     *
-     * @param originId
-     * @param data
-     */
-    postDataTo ( originId, data ) {
-
-        let _data = null;
-        if ( data.isWebAPIMessageData ) {
-            _data = data;
-        } else {
-            _data = new WebAPIMessageData( data );
-        }
-        this.postMessageTo( originId, _data.toJSON() );
-
-    }
-
-    /**
-     *
-     * @param originId
-     * @param request
-     * @returns {Promise}
-     */
-    postRequestTo ( originId, request ) {
-
-        const refreshFrequency = 200;
-        let currentWaitingTime = 0;
-
-        return new Promise( ( resovle, reject ) => {
-
-            try {
-
-                this.postMessageTo( originId, request );
-
-                const intervalId = setInterval( () => {
-
-                    if ( this._responses.has( request.id ) ) {
-
-                        const response = this._responses.get( request.id );
-                        this._responses.delete( request.id );
-                        clearInterval( intervalId );
-
-                        const result = response.result;
-                        if ( iteeValidators.isDefined( result ) ) {
-
-                            if ( result.type === '_error' ) {
-
-                                reject( result.message );
-
-                            } else if ( result.type === '_data' ) {
-
-                                resovle( result.data );
-
-                            } else {
-
-                                resovle( result );
-
-                            }
-
-                        } else {
-
-                            resovle();
-
-                        }
-
-                    } else if ( currentWaitingTime >= this.requestTimeout ) {
-
-                        clearInterval( intervalId );
-                        reject( new Error( `Request timeout for ${ JSON.stringify( request ) }` ) );
-
-                    } else {
-
-                        currentWaitingTime += refreshFrequency;
-
-                    }
-
-                }, refreshFrequency );
-
-            } catch ( error ) {
-
-                reject( error );
-
-            }
-
-        } )
-
-    }
-
-    /**
-     *
-     * @param originId
-     * @param message
-     * @param force
-     */
-    postMessageTo ( originId, message, force = false ) {
-
-        if ( iteeValidators.isNotDefined( originId ) ) { throw new ReferenceError( `[${ this._origin }]: Unable to post message to null or undefined origin id !` ) }
-        if ( iteeValidators.isNotDefined( message ) ) { throw new ReferenceError( `[${ this._origin }]: Unable to post null or undefined message !` ) }
-
-        const origin = this._getAllowedOriginById( originId );
-        if ( iteeValidators.isNotDefined( origin ) ) { throw new ReferenceError( `[${ this._origin }]: Unable to retrieved origin with id: ${ originId }` ) }
-
-        try {
-
-            if ( !force && !origin.isReady ) {
-
-                this.logger.warn( `[${ this._origin }]: Origin "${ origin.uri }" is not ready yet !` );
-                origin.messageQueue.push( message );
-
-            } else if ( force && !origin.window ) {
-
-                this.logger.error( `[${ this._origin }]: Origin "${ origin.uri }" is unreachable !` );
-                origin.isUnreachable = true;
-                origin.messageQueue.push( message );
-
-            } else {
-
-                this.logger.log( `[${ this._origin }]: Send message of type [${ message.type }] to  [${ origin.uri }]` );
-                origin.window.postMessage( JSON.stringify( message ), origin.uri );
-
-            }
-
-        } catch ( error ) {
-
-            this.logger.error( error );
-
-        }
-
-    }
-
-}
-
-/**
- * @author [Tristan Valcke]{@link https://github.com/Itee}
- */
-
-/**
- * @class
- * @classdesc Special message to request a distant method and expect result.
- */
-class WebAPIMessageRequest extends WebAPIMessage {
-
-    /**
-     * @static
-     * @type {boolean}
-     */
-    static isWebAPIMessageRequest = true
-
-    /**
-     *
-     * @param method
-     * @param parameters
-     */
-    constructor ( method, parameters = [] ) {
-        super( '_request' );
-
-        this.method     = method;
-        this.parameters = parameters;
-    }
-
-    /**
-     *
-     * @returns {*}
-     */
-    get method () {
-        return this._method
-    }
-
-    set method ( value ) {
-        if ( iteeValidators.isNull( value ) ) { return }
-        if ( iteeValidators.isUndefined( value ) ) { return }
-        if ( iteeValidators.isNotString( value ) ) { return }
-
-        this._method = value;
-    }
-
-    /**
-     *
-     * @returns {*}
-     */
-    get parameters () {
-        return this._parameters
-    }
-
-    set parameters ( value ) {
-        if ( iteeValidators.isNotArray( value ) ) { return }
-
-        this._parameters = value;
-    }
-
-    /**
-     *
-     * @returns {{method: *, parameters: *}}
-     */
-    toJSON () {
-
-        return {
-            ...super.toJSON(),
-            ...{
-                method:     this.method,
-                parameters: this.parameters
             }
         }
 
@@ -4670,7 +4889,7 @@ class WorkerMessageError extends WorkerMessage {
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
 
-class WorkerProgessMessage extends WorkerMessage {
+class WorkerMessageProgress extends WorkerMessage {
 
     static isWorkerMessageProgess = true
 
@@ -4749,7 +4968,7 @@ class AbstractWorker {
         if ( progress.isWorkerMessageProgess ) {
             postMessage( progress.toJSON() );
         } else {
-            postMessage( new WorkerProgessMessage( progress.loaded, progress.total ).toJSON() );
+            postMessage( new WorkerMessageProgress( progress.loaded, progress.total ).toJSON() );
         }
 
     }
@@ -4780,7 +4999,7 @@ class AbstractWorker {
         } else if ( iteeValidators.isArrayBuffer( arrayBuffer ) ) {
             postMessage( new WorkerMessageData( type, arrayBuffer ).toJSON(), [ arrayBuffer ] );
         } else {
-            throw new TypeError(`AbstractWorker.postData: Unable to post data of type [${type}].`)
+            throw new TypeError( `AbstractWorker.postData: Unable to post data of type [${ type }].` )
         }
 
     }
@@ -4917,7 +5136,6 @@ class WorkerMessageMethodCall extends WorkerMessage {
 
 }
 
-exports.AbstractWebAPI = AbstractWebAPI;
 exports.AbstractWorker = AbstractWorker;
 exports.Byte = Byte;
 exports.Endianness = Endianness;
@@ -4938,16 +5156,17 @@ exports.TInstancingFactory = TInstancingFactory;
 exports.TKeyboardController = TKeyboardController;
 exports.TMouseController = TMouseController;
 exports.TStore = TStore;
+exports.WebAPI = WebAPI;
 exports.WebAPIMessage = WebAPIMessage;
 exports.WebAPIMessageData = WebAPIMessageData;
 exports.WebAPIMessageError = WebAPIMessageError;
 exports.WebAPIMessageProgress = WebAPIMessageProgress;
 exports.WebAPIMessageReady = WebAPIMessageReady;
 exports.WebAPIMessageRequest = WebAPIMessageRequest;
-exports.WebApiMessageResponse = WebApiMessageResponse;
+exports.WebAPIMessageResponse = WebAPIMessageResponse;
 exports.WorkerMessage = WorkerMessage;
 exports.WorkerMessageData = WorkerMessageData;
 exports.WorkerMessageError = WorkerMessageError;
 exports.WorkerMessageMethodCall = WorkerMessageMethodCall;
-exports.WorkerProgessMessage = WorkerProgessMessage;
+exports.WorkerMessageProgress = WorkerMessageProgress;
 //# sourceMappingURL=itee-client.cjs.js.map

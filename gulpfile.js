@@ -142,7 +142,8 @@ gulp.task( 'lint', () => {
         'configs/**/*.js',
         'sources/**/*.js',
         'tests/**/*.js',
-        '!tests/builds/*.js'
+        '!tests/builds/*.js',
+        '!tests/WebApi/**/*.js'
     ]
 
     return gulp.src( filesToLint, { base: './' } )

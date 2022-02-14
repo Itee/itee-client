@@ -43,7 +43,7 @@ class TStore {
                 } else if ( isFunction( error ) ) {
                     throw new TypeError( error( value ) )
                 } else {
-                    throw new TypeError( `${value} is invalid.` )
+                    throw new TypeError( `${ value } is invalid.` )
                 }
 
             }
@@ -51,7 +51,6 @@ class TStore {
         }
 
     }
-
     /**
      * @constructor
      * @param {Object} [parameters={}]
@@ -77,7 +76,6 @@ class TStore {
         this.valueValidators = _parameters.valueValidators
 
     }
-
     /**
      *
      * @return {{}}
@@ -87,20 +85,18 @@ class TStore {
         return this._collection
 
     }
-
     set collection ( value ) {
 
         const memberName = 'Collection'
         const expect     = 'Expect an object.'
 
-        if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
-        if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( isNotObject( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( isNotObject( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
 
         this._collection = value
 
     }
-
     /**
      *
      * @return {*}
@@ -110,20 +106,18 @@ class TStore {
         return this._allowOverride
 
     }
-
     set allowOverride ( value ) {
 
         const memberName = 'Allow override'
         const expect     = 'Expect a boolean.'
 
-        if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
-        if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( isNotBoolean( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( isNotBoolean( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
 
         this._allowOverride = value
 
     }
-
     /**
      *
      * @return {*}
@@ -133,20 +127,18 @@ class TStore {
         return this._keyValidators
 
     }
-
     set keyValidators ( value ) {
 
         const memberName = 'Keys validators'
         const expect     = 'Expect an array of TValidator or an empty array.'
 
-        if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
-        if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( isNotArray( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( isNotArray( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
 
         this._keyValidators = value
 
     }
-
     /**
      *
      * @return {*}
@@ -154,20 +146,18 @@ class TStore {
     get valueValidators () {
         return this._valueValidators
     }
-
     set valueValidators ( value ) {
 
         const memberName = 'Values validators'
         const expect     = 'Expect an array of TValidator or an empty array.'
 
-        if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
-        if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( isNotArray( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( isNotArray( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
 
         this._valueValidators = value
 
     }
-
     /**
      *
      * @return {string[]}
@@ -177,7 +167,6 @@ class TStore {
         return Object.keys( this._collection )
 
     }
-
     /**
      *
      * @return {unknown[] | any[]}
@@ -187,7 +176,6 @@ class TStore {
         return Object.values( this._collection )
 
     }
-
     /**
      *
      * @param value
@@ -249,7 +237,7 @@ class TStore {
     add ( key, value, force = false ) {
 
         if ( this.contain( key ) && ( !this._allowOverride && !force ) ) {
-            throw new TypeError( `Item with key (${key}) already exist in collection !` )
+            throw new TypeError( `Item with key (${ key }) already exist in collection !` )
         }
 
         TStore._validate( key, this._keyValidators )

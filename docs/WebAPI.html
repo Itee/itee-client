@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Itee-Client Class: TBinaryReader</title>
+	<title>Itee-Client Class: WebAPI</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -79,16 +79,16 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Class: TBinaryReader</h1>
+	<h1 class="page-title">Class: WebAPI</h1>
 <section>
 
 <header>
     
         <h2>
-        TBinaryReader
+        WebAPI
         </h2>
         
-            <div class="class-description">TBinaryReader is design to perform fast binary read/write</div>
+            <div class="class-description">The abstract class to use standardized webapi.</div>
         
     
 </header>
@@ -100,7 +100,7 @@
         
 <hr>
 <dt>
-    <h4 class="name" id="TBinaryReader"><span class="type-signature"></span>new TBinaryReader( [parameters])</h4>
+    <h4 class="name" id="WebAPI"><span class="type-signature">&lt;abstract> </span>new WebAPI(parameters)</h4>
     
     
 </dt>
@@ -127,8 +127,6 @@
         <th>Type</th>
 
         
-        <th>Argument</th>
-        
 
         
 
@@ -146,6 +144,59 @@
 
             <td class="type">
             
+                
+<span class="param-type">Object</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last">An object containing all parameters to pass through the inheritance chain to initialize this instance
+                <h6 class="method-params-label method-subparams-label">Properties</h6>
+                
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Argument</th>
+        
+
+        
+        <th>Default</th>
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>allowAnyOrigins</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Boolean</span>
+
+
+
+            
             </td>
 
             
@@ -161,99 +212,94 @@
             
 
             
+                <td class="default">
+                
+                    false
+                
+                </td>
+            
 
-            <td class="description last">
-                <h6 class="method-params-label method-subparams-label">Properties</h6>
+            <td class="description last">A boolean to allow or not any origins calls</td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>allowedOrigins</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="global.html#AllowedOrigin">AllowedOrigin</a>></span>
+
+
+
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+                    &lt;optional><br>
                 
 
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
+                
 
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>buffer</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
+                
+                </td>
             
 
             
+                <td class="default">
+                
+                    []
+                
+                </td>
+            
 
-            <td class="description last"></td>
+            <td class="description last">An array containing configured allowed origins</td>
         </tr>
 
     
 
         <tr>
             
-                <td class="name"><code>offset</code></td>
+                <td class="name"><code>requestTimeout</code></td>
             
 
             <td class="type">
             
-            </td>
+                
+<span class="param-type">Number</span>
 
-            
 
-            
 
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>length</code></td>
-            
-
-            <td class="type">
             
             </td>
 
             
+                <td class="attributes">
+                
+                    &lt;optional><br>
+                
 
-            
+                
 
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>endianness</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
+                
+                </td>
             
 
             
+                <td class="default">
+                
+                    2000
+                
+                </td>
+            
 
-            <td class="description last"></td>
+            <td class="description last">The request timeout before throw an error</td>
         </tr>
 
     
@@ -290,23 +336,9 @@
 	
 
 	
-	<dt class="tag-author method-doc-label method-doc-details-label">Author:</dt>
-	<dd class="tag-author">
-		<ul>
-			<li><a href="https://github.com/Itee">Tristan Valcke</a></li>
-			</ul>
-	</dd>
-	
 
 	
 
-	
-	<dt class="tag-license method-doc-label method-doc-details-label">License:</dt>
-	<dd class="tag-license">
-		<ul class="dummy">
-			<li><a href="https://opensource.org/licenses/BSD-3-Clause">BSD-3-Clause</a></li>
-		</ul>
-	</dd>
 	
 
 	
@@ -318,8 +350,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-52">line 52</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-40">line 40</a>
 			</li>
 		</ul>
 	</dd>
@@ -367,8 +399,8 @@
         <dl>
             
 <hr>
-<dt class="name" id="buffer">
-    <h4 id="buffer"><span class="type-signature"></span>buffer<span class="type-signature"></span></h4>
+<dt class="name" id="allowedOrigins">
+    <h4 id="allowedOrigins"><span class="type-signature"></span>allowedOrigins<span class="type-signature"></span></h4>
 
     
 </dt>
@@ -412,8 +444,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-86">line 86</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-103">line 103</a>
 			</li>
 		</ul>
 	</dd>
@@ -433,8 +465,8 @@
         
             
 <hr>
-<dt class="name" id="endianness">
-    <h4 id="endianness"><span class="type-signature"></span>endianness<span class="type-signature"></span></h4>
+<dt class="name" id="allowedOrigins">
+    <h4 id="allowedOrigins"><span class="type-signature"></span>allowedOrigins<span class="type-signature"></span></h4>
 
     
 </dt>
@@ -478,8 +510,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-157">line 157</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-110">line 110</a>
 			</li>
 		</ul>
 	</dd>
@@ -499,8 +531,8 @@
         
             
 <hr>
-<dt class="name" id="length">
-    <h4 id="length"><span class="type-signature"></span>length<span class="type-signature"></span></h4>
+<dt class="name" id="logger">
+    <h4 id="logger"><span class="type-signature"></span>logger<span class="type-signature"></span></h4>
 
     
 </dt>
@@ -544,8 +576,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-138">line 138</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-85">line 85</a>
 			</li>
 		</ul>
 	</dd>
@@ -565,8 +597,8 @@
         
             
 <hr>
-<dt class="name" id="offset">
-    <h4 id="offset"><span class="type-signature"></span>offset<span class="type-signature"></span></h4>
+<dt class="name" id="logger">
+    <h4 id="logger"><span class="type-signature"></span>logger<span class="type-signature"></span></h4>
 
     
 </dt>
@@ -610,8 +642,272 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-111">line 111</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-92">line 92</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="methods">
+    <h4 id="methods"><span class="type-signature"></span>methods<span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+    
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-159">line 159</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="methods">
+    <h4 id="methods"><span class="type-signature"></span>methods<span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+    
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-166">line 166</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="requestTimeout">
+    <h4 id="requestTimeout"><span class="type-signature"></span>requestTimeout<span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+    
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-140">line 140</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt class="name" id="requestTimeout">
+    <h4 id="requestTimeout"><span class="type-signature"></span>requestTimeout<span class="type-signature"></span></h4>
+
+    
+</dt>
+<dd>
+    
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-147">line 147</a>
 			</li>
 		</ul>
 	</dd>
@@ -638,7 +934,91 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="_getAndUpdateOffsetBy"><span class="type-signature">&lt;private> </span>_getAndUpdateOffsetBy(increment)</h4>
+    <h4 class="name" id="_broadcastReadyMessage"><span class="type-signature">&lt;private> </span>_broadcastReadyMessage()</h4>
+    
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-356">line 356</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="_dispatchMessageFrom"><span class="type-signature">&lt;async, private> </span>_dispatchMessageFrom(origin, message)</h4>
     
     
 </dt>
@@ -677,7 +1057,25 @@
 
         <tr>
             
-                <td class="name"><code>increment</code></td>
+                <td class="name"><code>origin</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
             
 
             <td class="type">
@@ -732,112 +1130,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-232">line 232</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">*</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="_updateDataView"><span class="type-signature">&lt;private> </span>_updateDataView()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-244">line 244</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-440">line 440</a>
 			</li>
 		</ul>
 	</dd>
@@ -870,7 +1164,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getArrayBuffer"><span class="type-signature"></span>getArrayBuffer(size)</h4>
+    <h4 class="name" id="_getAllowedOriginBy"><span class="type-signature">&lt;private> </span>_getAllowedOriginBy(propertyName, value)</h4>
     
     
 </dt>
@@ -909,7 +1203,25 @@
 
         <tr>
             
-                <td class="name"><code>size</code></td>
+                <td class="name"><code>propertyName</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>value</code></td>
             
 
             <td class="type">
@@ -964,8 +1276,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-704">line 704</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-303">line 303</a>
 			</li>
 		</ul>
 	</dd>
@@ -1001,7 +1313,7 @@
     </dt>
     <dd>
         
-<span class="param-type">ArrayBuffer</span>
+<span class="param-type"><a href="WebAPIOrigin.html">WebAPIOrigin</a></span>
 
 
 
@@ -1018,7 +1330,155 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getBoolean"><span class="type-signature"></span>getBoolean()</h4>
+    <h4 class="name" id="_getOriginWindow"><span class="type-signature">&lt;private> </span>_getOriginWindow(originURI)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>originURI</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-313">line 313</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <h5>Returns:</h5>
+    
+            
+
+
+<dl>
+    <dt>
+        Type
+    </dt>
+    <dd>
+        
+<span class="param-type">Window</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="_isInIframe"><span class="type-signature">&lt;private> </span>_isInIframe()</h4>
     
     
 </dt>
@@ -1068,8 +1528,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-290">line 290</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-217">line 217</a>
 			</li>
 		</ul>
 	</dd>
@@ -1122,7 +1582,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getBooleanArray"><span class="type-signature"></span>getBooleanArray(length)</h4>
+    <h4 class="name" id="_isNotAllowedForAllMethods"><span class="type-signature">&lt;private> </span>_isNotAllowedForAllMethods(origin)</h4>
     
     
 </dt>
@@ -1161,10 +1621,16 @@
 
         <tr>
             
-                <td class="name"><code>length</code></td>
+                <td class="name"><code>origin</code></td>
             
 
             <td class="type">
+            
+                
+<span class="param-type"><a href="WebAPIOrigin.html">WebAPIOrigin</a></span>
+
+
+
             
             </td>
 
@@ -1216,8 +1682,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-301">line 301</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-269">line 269</a>
 			</li>
 		</ul>
 	</dd>
@@ -1253,7 +1719,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Array</span>
+<span class="param-type">boolean</span>
 
 
 
@@ -1270,7 +1736,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getChar"><span class="type-signature"></span>getChar()</h4>
+    <h4 class="name" id="_isNotAllowedForAllOrigins"><span class="type-signature">&lt;private> </span>_isNotAllowedForAllOrigins()</h4>
     
     
 </dt>
@@ -1320,8 +1786,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-664">line 664</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-232">line 232</a>
 			</li>
 		</ul>
 	</dd>
@@ -1357,36 +1823,110 @@
     </dt>
     <dd>
         
+<span class="param-type">boolean</span>
+
+
+
+    </dd>
+</dl>
+
+
+        
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="_isNotAllowedMethod"><span class="type-signature">&lt;private> </span>_isNotAllowedMethod(origin, methodName)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>origin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="WebAPIOrigin.html">WebAPIOrigin</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>methodName</code></td>
+            
+
+            <td class="type">
+            
+                
 <span class="param-type">string</span>
 
 
 
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
             
-<hr>
-<dt>
-    <h4 class="name" id="getFloat32"><span class="type-signature"></span>getFloat32()</h4>
-    
-    
-</dt>
-<dd>
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
 
     
+    </tbody>
+</table>
 
-    
-
-    
-
-    
     
 
     
@@ -1424,8 +1964,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-606">line 606</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-280">line 280</a>
 			</li>
 		</ul>
 	</dd>
@@ -1461,7 +2001,7 @@
     </dt>
     <dd>
         
-<span class="param-type">number</span>
+<span class="param-type">boolean</span>
 
 
 
@@ -1478,7 +2018,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getFloat32Array"><span class="type-signature"></span>getFloat32Array(length)</h4>
+    <h4 class="name" id="_isNotAllowedOrigin"><span class="type-signature">&lt;private> </span>_isNotAllowedOrigin(originURI)</h4>
     
     
 </dt>
@@ -1517,7 +2057,7 @@
 
         <tr>
             
-                <td class="name"><code>length</code></td>
+                <td class="name"><code>originURI</code></td>
             
 
             <td class="type">
@@ -1572,8 +2112,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-617">line 617</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-244">line 244</a>
 			</li>
 		</ul>
 	</dd>
@@ -1609,7 +2149,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Array</span>
+<span class="param-type">boolean</span>
 
 
 
@@ -1626,111 +2166,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getFloat64"><span class="type-signature"></span>getFloat64()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-635">line 635</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">number</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="getFloat64Array"><span class="type-signature"></span>getFloat64Array(length)</h4>
+    <h4 class="name" id="_isSameOrigin"><span class="type-signature">&lt;private> </span>_isSameOrigin(originURI)</h4>
     
     
 </dt>
@@ -1769,7 +2205,7 @@
 
         <tr>
             
-                <td class="name"><code>length</code></td>
+                <td class="name"><code>originURI</code></td>
             
 
             <td class="type">
@@ -1824,8 +2260,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-646">line 646</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-259">line 259</a>
 			</li>
 		</ul>
 	</dd>
@@ -1861,7 +2297,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Array</span>
+<span class="param-type">boolean</span>
 
 
 
@@ -1878,111 +2314,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getInt8"><span class="type-signature"></span>getInt8()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-319">line 319</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">number</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="getInt8Array"><span class="type-signature"></span>getInt8Array(length)</h4>
+    <h4 class="name" id="_methodNotExist"><span class="type-signature">&lt;private> </span>_methodNotExist(methodName)</h4>
     
     
 </dt>
@@ -2021,7 +2353,7 @@
 
         <tr>
             
-                <td class="name"><code>length</code></td>
+                <td class="name"><code>methodName</code></td>
             
 
             <td class="type">
@@ -2076,8 +2408,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-330">line 330</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-290">line 290</a>
 			</li>
 		</ul>
 	</dd>
@@ -2113,7 +2445,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Array</span>
+<span class="param-type">boolean</span>
 
 
 
@@ -2130,111 +2462,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getInt16"><span class="type-signature"></span>getInt16()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-377">line 377</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">number</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="getInt16Array"><span class="type-signature"></span>getInt16Array(length)</h4>
+    <h4 class="name" id="_onMessage"><span class="type-signature">&lt;async, private> </span>_onMessage(event)</h4>
     
     
 </dt>
@@ -2273,7 +2501,7 @@
 
         <tr>
             
-                <td class="name"><code>length</code></td>
+                <td class="name"><code>event</code></td>
             
 
             <td class="type">
@@ -2328,8 +2556,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-388">line 388</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-388">line 388</a>
 			</li>
 		</ul>
 	</dd>
@@ -2365,7 +2593,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Array</span>
+<span class="param-type">Promise.&lt;void></span>
 
 
 
@@ -2382,111 +2610,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getInt32"><span class="type-signature"></span>getInt32()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-435">line 435</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">number</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="getInt32Array"><span class="type-signature"></span>getInt32Array(length)</h4>
+    <h4 class="name" id="_onReadyFrom"><span class="type-signature"></span>_onReadyFrom(origin, message)</h4>
     
     
 </dt>
@@ -2525,7 +2649,25 @@
 
         <tr>
             
-                <td class="name"><code>length</code></td>
+                <td class="name"><code>origin</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
             
 
             <td class="type">
@@ -2580,8 +2722,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-446">line 446</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-478">line 478</a>
 			</li>
 		</ul>
 	</dd>
@@ -2606,26 +2748,6 @@
     
 
     
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Array</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
 
     
 </dd>
@@ -2634,111 +2756,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getInt64"><span class="type-signature"></span>getInt64()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-493">line 493</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">number</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="getInt64Array"><span class="type-signature"></span>getInt64Array(length)</h4>
+    <h4 class="name" id="_onRequestFrom"><span class="type-signature">&lt;async> </span>_onRequestFrom(origin, request)</h4>
     
     
 </dt>
@@ -2777,7 +2795,25 @@
 
         <tr>
             
-                <td class="name"><code>length</code></td>
+                <td class="name"><code>origin</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>request</code></td>
             
 
             <td class="type">
@@ -2832,8 +2868,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-542">line 542</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-499">line 499</a>
 			</li>
 		</ul>
 	</dd>
@@ -2858,26 +2894,6 @@
     
 
     
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Array</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
 
     
 </dd>
@@ -2886,7 +2902,1026 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getString"><span class="type-signature"></span>getString(length, trim)</h4>
+    <h4 class="name" id="_onResponseFrom"><span class="type-signature"></span>_onResponseFrom(origin, response)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>origin</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>response</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-536">line 536</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="_processMessageQueueOf"><span class="type-signature">&lt;private> </span>_processMessageQueueOf(origin)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>origin</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="WebAPIOrigin.html">WebAPIOrigin</a></span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-343">line 343</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="onDataFrom"><span class="type-signature"></span>onDataFrom(origin, message)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>origin</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-581">line 581</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="onErrorFrom"><span class="type-signature">&lt;private> </span>onErrorFrom(origin, message)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>origin</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-570">line 570</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="onMessageFrom"><span class="type-signature"></span>onMessageFrom(origin, message)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>origin</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>message</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-592">line 592</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="postDataTo"><span class="type-signature"></span>postDataTo(originId, data)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>originId</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>data</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-679">line 679</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="postErrorTo"><span class="type-signature"></span>postErrorTo(originId, error)</h4>
+    
+    
+</dt>
+<dd>
+
+    
+
+    
+
+    
+
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>originId</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>error</code></td>
+            
+
+            <td class="type">
+            
+                
+<span class="param-type"><a href="WebAPIMessageError.html">WebAPIMessageError</a></span>
+|
+
+<span class="param-type">String</span>
+
+
+
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
+    
+
+    
+<dl class="details">
+    
+
+	
+
+	
+
+	
+
+    
+
+    
+
+    
+
+    
+
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
+	<dd class="tag-source">
+		<ul class="dummy">
+			<li>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-667">line 667</a>
+			</li>
+		</ul>
+	</dd>
+	
+
+	
+
+	
+
+	
+</dl>
+
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+</dd>
+
+        
+            
+<hr>
+<dt>
+    <h4 class="name" id="postMessageTo"><span class="type-signature"></span>postMessageTo(originId, message, force)</h4>
     
     
 </dt>
@@ -2927,7 +3962,7 @@
 
         <tr>
             
-                <td class="name"><code>length</code></td>
+                <td class="name"><code>originId</code></td>
             
 
             <td class="type">
@@ -2949,7 +3984,7 @@
 
         <tr>
             
-                <td class="name"><code>trim</code></td>
+                <td class="name"><code>message</code></td>
             
 
             <td class="type">
@@ -2961,7 +3996,29 @@
             
                 <td class="default">
                 
-                    true
+                </td>
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>force</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+                <td class="default">
+                
+                    false
                 
                 </td>
             
@@ -3010,8 +4067,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-676">line 676</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-692">line 692</a>
 			</li>
 		</ul>
 	</dd>
@@ -3036,26 +4093,6 @@
     
 
     
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">string</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
 
     
 </dd>
@@ -3064,111 +4101,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getUint8"><span class="type-signature"></span>getUint8()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-348">line 348</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">number</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="getUint8Array"><span class="type-signature"></span>getUint8Array(length)</h4>
+    <h4 class="name" id="postReadyTo"><span class="type-signature"></span>postReadyTo(originId, ready)</h4>
     
     
 </dt>
@@ -3207,7 +4140,25 @@
 
         <tr>
             
-                <td class="name"><code>length</code></td>
+                <td class="name"><code>originId</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>ready</code></td>
             
 
             <td class="type">
@@ -3262,8 +4213,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-359">line 359</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-604">line 604</a>
 			</li>
 		</ul>
 	</dd>
@@ -3288,26 +4239,6 @@
     
 
     
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Array</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
 
     
 </dd>
@@ -3316,7 +4247,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getUint16"><span class="type-signature"></span>getUint16()</h4>
+    <h4 class="name" id="postRequestTo"><span class="type-signature"></span>postRequestTo(originId, request, params)</h4>
     
     
 </dt>
@@ -3329,6 +4260,114 @@
     
 
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params table table-striped">
+    <thead>
+    <tr>
+        
+        <th>Name</th>
+        
+
+        <th>Type</th>
+
+        
+        <th>Argument</th>
+        
+
+        
+
+        <th class="last">Description</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    
+
+        <tr>
+            
+                <td class="name"><code>originId</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>request</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>params</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+                <td class="attributes">
+                
+
+                
+
+                
+                    &lt;repeatable><br>
+                
+                </td>
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+    </tbody>
+</table>
+
     
 
     
@@ -3366,8 +4405,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-406">line 406</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-618">line 618</a>
 			</li>
 		</ul>
 	</dd>
@@ -3403,7 +4442,7 @@
     </dt>
     <dd>
         
-<span class="param-type">number</span>
+<span class="param-type">Promise.&lt;unknown></span>
 
 
 
@@ -3420,7 +4459,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getUint16Array"><span class="type-signature"></span>getUint16Array(length)</h4>
+    <h4 class="name" id="postResponseTo"><span class="type-signature"></span>postResponseTo(originId, request, reponse)</h4>
     
     
 </dt>
@@ -3459,7 +4498,43 @@
 
         <tr>
             
-                <td class="name"><code>length</code></td>
+                <td class="name"><code>originId</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>request</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>reponse</code></td>
             
 
             <td class="type">
@@ -3514,8 +4589,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-417">line 417</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-655">line 655</a>
 			</li>
 		</ul>
 	</dd>
@@ -3540,26 +4615,6 @@
     
 
     
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">Array</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
 
     
 </dd>
@@ -3568,111 +4623,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getUint32"><span class="type-signature"></span>getUint32()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-464">line 464</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">number</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="getUint32Array"><span class="type-signature"></span>getUint32Array(length)</h4>
+    <h4 class="name" id="setAllowedOrigins"><span class="type-signature"></span>setAllowedOrigins(value)</h4>
     
     
 </dt>
@@ -3711,10 +4662,16 @@
 
         <tr>
             
-                <td class="name"><code>length</code></td>
+                <td class="name"><code>value</code></td>
             
 
             <td class="type">
+            
+                
+<span class="param-type">Array.&lt;<a href="WebAPIOrigin.html">WebAPIOrigin</a>></span>
+
+
+
             
             </td>
 
@@ -3766,8 +4723,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-475">line 475</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-187">line 187</a>
 			</li>
 		</ul>
 	</dd>
@@ -3803,7 +4760,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Array</span>
+<span class="param-type">AbstractWebAPI</span>
 
 
 
@@ -3820,111 +4777,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="getUint64"><span class="type-signature"></span>getUint64()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-561">line 561</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">number</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="getUint64Array"><span class="type-signature"></span>getUint64Array(length)</h4>
+    <h4 class="name" id="setLogger"><span class="type-signature"></span>setLogger(value)</h4>
     
     
 </dt>
@@ -3963,10 +4816,16 @@
 
         <tr>
             
-                <td class="name"><code>length</code></td>
+                <td class="name"><code>value</code></td>
             
 
             <td class="type">
+            
+                
+<span class="param-type">TLogger</span>
+
+
+
             
             </td>
 
@@ -4018,8 +4877,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-588">line 588</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-178">line 178</a>
 			</li>
 		</ul>
 	</dd>
@@ -4055,7 +4914,7 @@
     </dt>
     <dd>
         
-<span class="param-type">Array</span>
+<span class="param-type">AbstractWebAPI</span>
 
 
 
@@ -4072,443 +4931,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="isEndOfFile"><span class="type-signature"></span>isEndOfFile()</h4>
-    
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-254">line 254</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type">boolean</span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="setBuffer"><span class="type-signature"></span>setBuffer(buffer, offset, length)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>buffer</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>offset</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>length</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-180">line 180</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="TBinaryReader.html">TBinaryReader</a></span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="setEndianess"><span class="type-signature"></span>setEndianess(endianess)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>endianess</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-219">line 219</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="TBinaryReader.html">TBinaryReader</a></span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="setLength"><span class="type-signature"></span>setLength(value)</h4>
+    <h4 class="name" id="setMethods"><span class="type-signature"></span>setMethods(value)</h4>
     
     
 </dt>
@@ -4558,7 +4981,7 @@
 
             
 
-            <td class="description last"></td>
+            <td class="description last">Array<Function></td>
         </tr>
 
     
@@ -4602,8 +5025,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-207">line 207</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-205">line 205</a>
 			</li>
 		</ul>
 	</dd>
@@ -4639,7 +5062,7 @@
     </dt>
     <dd>
         
-<span class="param-type"><a href="TBinaryReader.html">TBinaryReader</a></span>
+<span class="param-type">AbstractWebAPI</span>
 
 
 
@@ -4656,7 +5079,7 @@
             
 <hr>
 <dt>
-    <h4 class="name" id="setOffset"><span class="type-signature"></span>setOffset(value)</h4>
+    <h4 class="name" id="setRequestTimeout"><span class="type-signature"></span>setRequestTimeout(value)</h4>
     
     
 </dt>
@@ -4700,153 +5123,11 @@
 
             <td class="type">
             
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
+                
+<span class="param-type">Number</span>
 
 
 
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-195">line 195</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="TBinaryReader.html">TBinaryReader</a></span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="skipOffsetOf"><span class="type-signature"></span>skipOffsetOf(nBytes)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>nBytes</code></td>
-            
-
-            <td class="type">
             
             </td>
 
@@ -4898,8 +5179,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-278">line 278</a>
+				<a href="sources_webapis_WebAPI.js.html">sources/webapis/WebAPI.js</a>,
+				 <a href="sources_webapis_WebAPI.js.html#sunlight-1-line-196">line 196</a>
 			</li>
 		</ul>
 	</dd>
@@ -4935,155 +5216,7 @@
     </dt>
     <dd>
         
-<span class="param-type"><a href="TBinaryReader.html">TBinaryReader</a></span>
-
-
-
-    </dd>
-</dl>
-
-
-        
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="skipOffsetTo"><span class="type-signature"></span>skipOffsetTo(offset)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>offset</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="sources_loaders_TBinaryReader.js.html">sources/loaders/TBinaryReader.js</a>,
-				 <a href="sources_loaders_TBinaryReader.js.html#sunlight-1-line-265">line 265</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-    <h5>Returns:</h5>
-    
-            
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="TBinaryReader.html">TBinaryReader</a></span>
+<span class="param-type">AbstractWebAPI</span>
 
 
 

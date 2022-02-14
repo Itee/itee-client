@@ -92,9 +92,9 @@ class TBinaryReader {
         const memberName = 'Buffer'
         const expect     = 'Expect an instance of ArrayBuffer.'
 
-        if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
-        if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( isNotArrayBuffer( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( isNotArrayBuffer( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
 
         this._buffer = value
         this._offset = 0
@@ -117,9 +117,9 @@ class TBinaryReader {
         const memberName = 'Offset'
         const expect     = 'Expect a number.'
 
-        if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
-        if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( isNotNumber( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( isNotNumber( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
 
         this._offset = value
 
@@ -140,9 +140,9 @@ class TBinaryReader {
         const memberName = 'Length'
         const expect     = 'Expect a number.'
 
-        if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
-        if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( isNotNumber( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( isNotNumber( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
 
         this._length = value
 
@@ -163,9 +163,9 @@ class TBinaryReader {
         const memberName = 'Endianness'
         const expect     = 'Expect a boolean.'
 
-        if ( isNull( value ) ) { throw new TypeError( `${memberName} cannot be null ! ${expect}` ) }
-        if ( isUndefined( value ) ) { throw new TypeError( `${memberName} cannot be undefined ! ${expect}` ) }
-        if ( isNotBoolean( value ) ) { throw new TypeError( `${memberName} cannot be an instance of ${value.constructor.name} ! ${expect}` ) }
+        if ( isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( isNotBoolean( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
 
         this._endianness = value
     }
