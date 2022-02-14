@@ -98,16 +98,6 @@ class WebAPI {
     }
     /**
      *
-     * @param value {TLogger}
-     * @returns {AbstractWebAPI}
-     */
-    setLogger ( value ) {
-        this.logger = value
-        return this
-    }
-
-    /**
-     *
      * @returns {Array<WebAPIOrigin>}
      */
     get allowedOrigins () {
@@ -145,16 +135,6 @@ class WebAPI {
     }
     /**
      *
-     * @param value {Array<WebAPIOrigin>}
-     * @returns {AbstractWebAPI}
-     */
-    setAllowedOrigins ( value ) {
-        this.allowedOrigins = value
-        return this
-    }
-
-    /**
-     *
      * @returns {Number}
      */
     get requestTimeout () {
@@ -174,16 +154,6 @@ class WebAPI {
     }
     /**
      *
-     * @param value {Number}
-     * @returns {AbstractWebAPI}
-     */
-    setRequestTimeout ( value ) {
-        this.requestTimeout = value
-        return this
-    }
-
-    /**
-     *
      * @returns {Array<Function>}
      */
     get methods () {
@@ -199,6 +169,33 @@ class WebAPI {
         // Todo: isNotObject && isNotMap && isNotSet && isNotApi
 
         this._methods = value
+    }
+    /**
+     *
+     * @param value {TLogger}
+     * @returns {AbstractWebAPI}
+     */
+    setLogger ( value ) {
+        this.logger = value
+        return this
+    }
+    /**
+     *
+     * @param value {Array<WebAPIOrigin>}
+     * @returns {AbstractWebAPI}
+     */
+    setAllowedOrigins ( value ) {
+        this.allowedOrigins = value
+        return this
+    }
+    /**
+     *
+     * @param value {Number}
+     * @returns {AbstractWebAPI}
+     */
+    setRequestTimeout ( value ) {
+        this.requestTimeout = value
+        return this
     }
     /**
      *

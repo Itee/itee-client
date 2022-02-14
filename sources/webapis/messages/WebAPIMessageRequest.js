@@ -3,14 +3,12 @@
  */
 
 import {
+    isBlankString,
+    isEmptyString,
     isNotArray,
     isNotDefined,
-    isNotString,
-    isNull,
-    isUndefined,
-    isEmptyString,
-    isBlankString
-} from 'itee-validators'
+    isNotString
+}                        from 'itee-validators'
 import { WebAPIMessage } from './WebAPIMessage'
 
 /**
@@ -52,7 +50,7 @@ class WebAPIMessageRequest extends WebAPIMessage {
     set method ( value ) {
         if ( isNotDefined( value ) ) { throw new ReferenceError( 'Expect a string that represent a api method name, but got undefined or null value.' ) }
         if ( isNotString( value ) ) { throw new TypeError( `Expect a string that represent a api method name, but got value of '${ typeof value }' type: ${ JSON.stringify( value, null, 4 ) }` ) }
-        if ( isEmptyString( value ) || isBlankString(value) ) { throw new TypeError( 'Expect a string that represent a api method name, but got empty or blank string.' ) }
+        if ( isEmptyString( value ) || isBlankString( value ) ) { throw new TypeError( 'Expect a string that represent a api method name, but got empty or blank string.' ) }
 
         this._method = value
     }

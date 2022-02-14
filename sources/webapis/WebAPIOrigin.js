@@ -60,11 +60,6 @@ class WebAPIOrigin {
 
         this._uri = value
     }
-    setUri ( value ) {
-        this.uri = value
-        return this
-    }
-
     get allowedMethods () {
         return this._allowedMethods
     }
@@ -74,6 +69,43 @@ class WebAPIOrigin {
         if ( isEmptyArray( value ) ) { throw new RangeError( 'WebAPIOrigin methods cannot be an empty array ! Expect an array of method name.' )}
 
         this._allowedMethods = value
+    }
+    get window () {
+        return this._window
+    }
+    set window ( value ) {
+        //        if ( isNotDefined( value ) ) { throw new ReferenceError( 'WebAPIOrigin window cannot be null or undefined ! Expect a Window object.' )}
+        //        if ( isDefined( value ) && !( value instanceof Window ) ) { throw new TypeError( `WebAPIOrigin window expect to be a Window. Got '${ typeof value }' !` )}
+
+        this._window = value
+    }
+    get isReady () {
+        return this._isReady
+    }
+    set isReady ( value ) {
+        if ( isNotDefined( value ) ) { throw new ReferenceError( 'WebAPIOrigin isReady cannot be null or undefined !' )}
+        if ( isNotBoolean( value ) ) { throw new TypeError( `WebAPIOrigin isReady expect a Boolean. Got '${ typeof value }' !` )}
+
+        this._isReady = value
+    }
+    get isReachable () {
+        return this._isReachable
+    }
+    set isReachable ( value ) {
+        if ( isNotDefined( value ) ) { throw new ReferenceError( 'WebAPIOrigin isReachable cannot be null or undefined !' )}
+        if ( isNotBoolean( value ) ) { throw new TypeError( `WebAPIOrigin isReachable expect a Boolean. Got '${ typeof value }' !` )}
+
+        this._isReachable = value
+    }
+    get messageQueue () {
+        return this._messageQueue
+    }
+    set messageQueue ( value ) {
+        this._messageQueue = value
+    }
+    setUri ( value ) {
+        this.uri = value
+        return this
     }
     setAllowedMethods ( arrayOfMethodNames ) {
         this.allowedMethods = arrayOfMethodNames
@@ -92,54 +124,17 @@ class WebAPIOrigin {
         }
         return this
     }
-
-    get window () {
-        return this._window
-    }
-    set window ( value ) {
-        //        if ( isNotDefined( value ) ) { throw new ReferenceError( 'WebAPIOrigin window cannot be null or undefined ! Expect a Window object.' )}
-        //        if ( isDefined( value ) && !( value instanceof Window ) ) { throw new TypeError( `WebAPIOrigin window expect to be a Window. Got '${ typeof value }' !` )}
-
-        this._window = value
-    }
     setWindow ( value ) {
         this.window = value
         return this
-    }
-
-    get isReady () {
-        return this._isReady
-    }
-    set isReady ( value ) {
-        if ( isNotDefined( value ) ) { throw new ReferenceError( 'WebAPIOrigin isReady cannot be null or undefined !' )}
-        if ( isNotBoolean( value ) ) { throw new TypeError( `WebAPIOrigin isReady expect a Boolean. Got '${ typeof value }' !` )}
-
-        this._isReady = value
     }
     setReadyState ( value ) {
         this.isReady = value
         return this
     }
-
-    get isReachable () {
-        return this._isReachable
-    }
-    set isReachable ( value ) {
-        if ( isNotDefined( value ) ) { throw new ReferenceError( 'WebAPIOrigin isReachable cannot be null or undefined !' )}
-        if ( isNotBoolean( value ) ) { throw new TypeError( `WebAPIOrigin isReachable expect a Boolean. Got '${ typeof value }' !` )}
-
-        this._isReachable = value
-    }
     setReachableState ( value ) {
         this.isReachable = value
         return this
-    }
-
-    get messageQueue () {
-        return this._messageQueue
-    }
-    set messageQueue ( value ) {
-        this._messageQueue = value
     }
 }
 

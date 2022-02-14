@@ -13,7 +13,10 @@ import { WebAPIMessage } from './WebAPIMessage'
 class WebAPIMessageError extends WebAPIMessage {
 
     static isWebAPIMessageError = true
-
+    // Utils
+    static isError ( value ) {
+        return value instanceof Error || isObject( value ) && ( isDefined( value.name ) || isDefined( value.message ) || isDefined( value.stack ) )
+    }
     /**
      *
      * @param error
@@ -27,11 +30,9 @@ class WebAPIMessageError extends WebAPIMessage {
          */
         this.error = error
     }
-
     get error () {
         return this._error
     }
-
     set error ( value ) {
         if ( isNotDefined( value ) ) { throw new ReferenceError( `Expect a string, or Error like. But got value of '${ typeof value }' type: ${ JSON.stringify( value, null, 4 ) }` ) }
 
@@ -58,13 +59,7 @@ class WebAPIMessageError extends WebAPIMessage {
 
     }
 
-    // Utils
-    static isError ( value ) {
-        return value instanceof Error || isObject( value ) && ( isDefined( value.name ) || isDefined( value.message ) || isDefined( value.stack ) )
-    }
-
     // Serialization
-
     /**
      *
      * @returns {{id: String, type: String, name: String, stack: String, message: String}}

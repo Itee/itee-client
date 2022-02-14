@@ -1,7 +1,7 @@
 /* eslint-env browser */
 
-import { Keys }                     from '../cores/TConstants'
 import { DefaultLogger as TLogger } from 'itee-core'
+import { Keys }                     from '../cores/TConstants'
 
 /**
  * @class
@@ -34,7 +34,6 @@ class TKeyboardController {
             TKeyboardController.k[ keyCode ] :
             String.fromCharCode( keyCode )
     }
-
     /**
      *
      * @param event
@@ -45,7 +44,6 @@ class TKeyboardController {
             TKeyboardController.status[ key ].pressed = false
         }
     }
-
     /**
      *
      * @param event
@@ -61,7 +59,6 @@ class TKeyboardController {
             }
         }
     }
-
     /**
      *
      * @param parameters
@@ -69,17 +66,16 @@ class TKeyboardController {
     // eslint-disable-next-line no-unused-vars
     constructor ( parameters = {} ) {
 
-//         const _parameters = {
-//             ...{},
-//             ...parameters
-//         }
+        //         const _parameters = {
+        //             ...{},
+        //             ...parameters
+        //         }
 
         // bind keyEvents
         document.addEventListener( 'keydown', TKeyboardController.onKeyDown, false )
         document.addEventListener( 'keyup', TKeyboardController.onKeyUp, false )
 
     }
-
     /**
      *
      */
@@ -151,7 +147,7 @@ class TKeyboardController {
  *
  * @type {Keys}
  */
-TKeyboardController.k      = Keys
+TKeyboardController.k = Keys
 
 /**
  *
