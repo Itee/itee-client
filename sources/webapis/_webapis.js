@@ -6,6 +6,5 @@
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  */
 
-export * from './AbstractWebAPI'
-
+export * from './WebAPI'
 export * from './messages/_messages'
