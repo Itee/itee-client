@@ -1,4 +1,4 @@
-console.log('Itee.Client v8.0.1 - EsModule')
+console.log('Itee.Client v8.0.2 - EsModule')
 import { toEnum, toArray } from 'itee-utils';
 import { isString, isFunction, isNull, isUndefined, isNotObject, isNotBoolean, isNotArray, isNotUndefined, isNotArrayBuffer, isNotNumber, isNotString, isEmptyString, isBlankString, isNumberPositive, isNumberNegative, isZero, isArray, isNotEmptyArray, isArrayOfSingleElement, isObject, isNotEmptyObject, isNotEmptyString, isNotBlankString, isEmptyObject, isNotDefined, isDefined, isEmptyArray, isArrayBuffer } from 'itee-validators';
 import { DefaultLogger, TLogger } from 'itee-core';
@@ -4887,7 +4887,7 @@ class WorkerMessageError extends WorkerMessage {
 
 class WorkerMessageProgress extends WorkerMessage {
 
-    static isWorkerMessageProgess = true
+    static isWorkerMessageProgress = true
 
     constructor ( loaded = 0, total = 0 ) {
         super( 'progress' );
@@ -4961,7 +4961,7 @@ class AbstractWorker {
      */
     postProgress ( progress ) {
 
-        if ( progress.isWorkerMessageProgess ) {
+        if ( progress.isWorkerMessageProgress ) {
             postMessage( progress.toJSON() );
         } else {
             postMessage( new WorkerMessageProgress( progress.loaded, progress.total ).toJSON() );

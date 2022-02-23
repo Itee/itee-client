@@ -1,3 +1,10 @@
+## [8.0.2](https://github.com/Itee/itee-client/compare/v8.0.1...v8.0.2) (2022-02-23)
+
+
+### Bug Fixes
+
+* **workermessageprogress:** fix typo in class validator name ([1ea13b4](https://github.com/Itee/itee-client/commit/1ea13b4ceb9c4f1353388489f41b45f873ceea9e))
+
 ## [8.0.1](https://github.com/Itee/itee-client/compare/v8.0.0...v8.0.1) (2022-02-14)
 
 
