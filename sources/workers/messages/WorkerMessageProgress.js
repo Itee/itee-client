@@ -6,7 +6,7 @@ import { WorkerMessage } from './WorkerMessage'
 
 class WorkerMessageProgress extends WorkerMessage {
 
-    static isWorkerMessageProgess = true
+    static isWorkerMessageProgress = true
 
     constructor ( loaded = 0, total = 0 ) {
         super( 'progress' )

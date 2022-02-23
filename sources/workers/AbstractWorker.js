@@ -26,7 +26,7 @@ class AbstractWorker {
      */
     postProgress ( progress ) {
 
-        if ( progress.isWorkerMessageProgess ) {
+        if ( progress.isWorkerMessageProgress ) {
             postMessage( progress.toJSON() )
         } else {
             postMessage( new WorkerMessageProgress( progress.loaded, progress.total ).toJSON() )
