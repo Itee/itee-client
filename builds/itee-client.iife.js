@@ -1,4 +1,4 @@
-console.log('Itee.Client v8.0.1 - Standalone')
+console.log('Itee.Client v8.0.2 - Standalone')
 this.Itee = this.Itee || {};
 this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	'use strict';
@@ -4892,7 +4892,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 
 	class WorkerMessageProgress extends WorkerMessage {
 
-	    static isWorkerMessageProgess = true
+	    static isWorkerMessageProgress = true
 
 	    constructor ( loaded = 0, total = 0 ) {
 	        super( 'progress' );
@@ -4966,7 +4966,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	     */
 	    postProgress ( progress ) {
 
-	        if ( progress.isWorkerMessageProgess ) {
+	        if ( progress.isWorkerMessageProgress ) {
 	            postMessage( progress.toJSON() );
 	        } else {
 	            postMessage( new WorkerMessageProgress( progress.loaded, progress.total ).toJSON() );

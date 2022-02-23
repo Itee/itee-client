@@ -1,4 +1,4 @@
-console.log('Itee.Client v8.0.1 - CommonJs')
+console.log('Itee.Client v8.0.2 - CommonJs')
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -4891,7 +4891,7 @@ class WorkerMessageError extends WorkerMessage {
 
 class WorkerMessageProgress extends WorkerMessage {
 
-    static isWorkerMessageProgess = true
+    static isWorkerMessageProgress = true
 
     constructor ( loaded = 0, total = 0 ) {
         super( 'progress' );
@@ -4965,7 +4965,7 @@ class AbstractWorker {
      */
     postProgress ( progress ) {
 
-        if ( progress.isWorkerMessageProgess ) {
+        if ( progress.isWorkerMessageProgress ) {
             postMessage( progress.toJSON() );
         } else {
             postMessage( new WorkerMessageProgress( progress.loaded, progress.total ).toJSON() );
