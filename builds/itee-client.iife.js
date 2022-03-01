@@ -1,4 +1,4 @@
-console.log('Itee.Client v8.0.2 - Standalone')
+console.log('Itee.Client v8.1.0 - Standalone')
 this.Itee = this.Itee || {};
 this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	'use strict';
@@ -1045,10 +1045,10 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	 * @description Byte allow semantic meaning of quantity of bytes based on power of two.
 	 */
 	const Byte = iteeUtils.toEnum( {
-	    One:    1,
-	    Two:    2,
-	    Four:   4,
-	    Height: 8
+	    One:   1,
+	    Two:   2,
+	    Four:  4,
+	    Eight: 8
 	} );
 
 
@@ -1077,13 +1077,21 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	                offset:     0,
 	                length:     0,
 	                endianness: Endianness.Little
-	            }, ...parameters
+	            },
+	            ...parameters
 	        };
 
-	        this.buffer     = _parameters.buffer;
-	        this.offset     = _parameters.offset;
-	        this.length     = _parameters.length;
+	        this.buffer = _parameters.buffer;
+	        //        this.offset     = _parameters.offset
+	        //        this.length     = _parameters.length
 	        this.endianness = _parameters.endianness;
+
+	        // For bit reading use same approche than byte
+	        this._bits = {
+	            buffer: null,
+	            offset: null,
+	            length: null
+	        };
 
 	        this._updateDataView();
 
@@ -1267,29 +1275,202 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 
 	    }
 
+	    // Bits
+
+	    _isNullBitBuffer () {
+
+	        return this._bits.buffer === null
+
+	    }
+	    _nextBit () {
+	        this._bits.offset += 1;
+	    }
+	    _isEndOfBitBuffer () {
+
+	        return this._bits.offset === this._bits.length
+
+	    }
+	    _getBitAt ( bitOffset ) {
+
+	        return ( this._bits.buffer & ( 1 << bitOffset ) ) === 0 ? 0 : 1
+
+	    }
+	    _resetBits () {
+	        this._bits.buffer = null;
+	        this._bits.length = 0;
+	        this._bits.offset = 0;
+	    }
+
+	    skipBitOffsetTo ( bitOffset ) {
+
+	        if ( bitOffset > this._bits.length ) { throw new RangeError( 'Bit offset is out of range of the current bits field.' ) }
+
+	        this._bits.offset = bitOffset;
+
+	    }
+
+	    skipBitOffsetOf ( nBits ) {
+
+	        if ( this._bits.offset + nBits > this._bits.length ) { throw new RangeError( 'Bit offset is out of range of the current bits field.' ) }
+
+	        this._bits.offset += nBits;
+
+	    }
+
+	    getBit8 ( moveNext = true ) {
+
+	        if ( this._isNullBitBuffer() ) {
+	            this._bits.buffer = this.getUint8();
+	            this._bits.length = 8;
+	            this._bits.offset = 0;
+	        }
+
+	        const bitValue = this._getBitAt( this._bits.offset );
+
+	        if ( moveNext ) {
+	            this._nextBit();
+	            if ( this._isEndOfBitBuffer() ) {
+	                this._resetBits();
+	            }
+	        }
+
+	        return bitValue
+
+	    }
+
+	    getBits8 ( numberOfBitToRead, moveNext = true ) {
+
+	        const currentOffset = this._bits.offset;
+
+	        let bits = 0;
+
+	        // In last turn avoid bits reset if move next is false,
+	        // else the skipBitOffset will be based on reseted/null bit buffer
+	        for ( let i = 0 ; i < numberOfBitToRead ; i++ ) {
+	            if ( i === numberOfBitToRead - 1 ) {
+	                bits |= ( this.getBit8( moveNext ) << i );
+	            } else {
+	                bits |= ( this.getBit8() << i );
+	            }
+	        }
+
+	        if ( !moveNext ) {
+	            this.skipBitOffsetTo( currentOffset );
+	        }
+
+	        return bits
+
+	    }
+
+	    getBit16 ( moveNext = true ) {
+
+	        if ( this._isNullBitBuffer() || this._isEndOfBitBuffer() ) {
+	            this._bits.buffer = this.getUint16();
+	            this._bits.length = 16;
+	            this._bits.offset = 0;
+	        }
+
+	        const bitValue = this._getBitAt( this._bits.offset );
+
+	        if ( moveNext ) {
+	            this._nextBit();
+	            if ( this._isEndOfBitBuffer() ) {
+	                this._resetBits();
+	            }
+	        }
+
+	        return bitValue
+
+	    }
+
+	    getBits16 ( numberOfBitToRead, moveNext = true ) {
+
+	        const currentOffset = this._bits.offset;
+
+	        let bits = 0;
+
+	        // In last turn avoid bits reset if move next is false,
+	        // else the skipBitOffset will be based on reseted/null bit buffer
+	        for ( let i = 0 ; i < numberOfBitToRead ; i++ ) {
+	            if ( i === numberOfBitToRead - 1 ) {
+	                bits |= ( this.getBit16( moveNext ) << i );
+	            } else {
+	                bits |= ( this.getBit16() << i );
+	            }
+	        }
+
+	        if ( !moveNext ) {
+	            this.skipBitOffsetTo( currentOffset );
+	        }
+
+	        return bits
+
+	    }
+
+	    getBit32 ( moveNext = true ) {
+
+	        if ( this._isNullBitBuffer() || this._isEndOfBitBuffer() ) {
+	            this._bits.buffer = this.getUint32();
+	            this._bits.length = 32;
+	            this._bits.offset = 0;
+	        }
+
+	        const bitValue = this._getBitAt( this._bits.offset );
+
+	        if ( moveNext ) {
+	            this._nextBit();
+	            if ( this._isEndOfBitBuffer() ) {
+	                this._resetBits();
+	            }
+	        }
+
+	        return bitValue
+
+	    }
+
+	    getBits32 ( numberOfBitToRead, moveNext = true ) {
+
+	        const currentOffset = this._bits.offset;
+
+	        let bits = 0;
+
+	        // In last turn avoid bits reset if move next is false,
+	        // else the skipBitOffset will be based on reseted/null bit buffer
+	        for ( let i = 0 ; i < numberOfBitToRead ; i++ ) {
+	            if ( i === numberOfBitToRead - 1 ) {
+	                bits |= ( this.getBit32( moveNext ) << i );
+	            } else {
+	                bits |= ( this.getBit32() << i );
+	            }
+	        }
+
+	        if ( !moveNext ) {
+	            this.skipBitOffsetTo( currentOffset );
+	        }
+
+	        return bits
+
+	    }
+
+	    // Bytes
+
 	    /**
 	     *
 	     * @param offset
-	     * @returns {TBinaryReader}
 	     */
 	    skipOffsetTo ( offset ) {
 
 	        this._offset = offset;
-
-	        return this
 
 	    }
 
 	    /**
 	     *
 	     * @param nBytes
-	     * @returns {TBinaryReader}
 	     */
 	    skipOffsetOf ( nBytes ) {
 
 	        this._offset += nBytes;
-
-	        return this
 
 	    }
 
@@ -1297,20 +1478,22 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	     *
 	     * @returns {boolean}
 	     */
-	    getBoolean () {
+	    getBoolean ( moveNext = true ) {
 
-	        return ( ( this.getUint8() & 1 ) === 1 )
+	        return ( ( this.getUint8( moveNext ) & 1 ) === 1 )
 
 	    }
 
 	    /**
 	     *
 	     * @param length
+	     * @param moveNext
 	     * @returns {Array}
 	     */
-	    getBooleanArray ( length ) {
+	    getBooleanArray ( length, moveNext = true ) {
 
-	        const array = [];
+	        const currentOffset = this._offset;
+	        const array         = [];
 
 	        for ( let i = 0 ; i < length ; i++ ) {
 
@@ -1318,6 +1501,10 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 
 	        }
 
+	        if ( !moveNext ) {
+	            this._offset = currentOffset;
+	        }
+
 	        return array
 
 	    }
@@ -1326,20 +1513,23 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	     *
 	     * @returns {number}
 	     */
-	    getInt8 () {
+	    getInt8 ( moveNext = true ) {
 
-	        return this._dataView.getInt8( this._getAndUpdateOffsetBy( Byte.One ) )
+	        const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.One ) : this._offset;
+	        return this._dataView.getInt8( offset )
 
 	    }
 
 	    /**
 	     *
 	     * @param length
+	     * @param moveNext
 	     * @returns {Array}
 	     */
-	    getInt8Array ( length ) {
+	    getInt8Array ( length, moveNext = true ) {
 
-	        const array = [];
+	        const currentOffset = this._offset;
+	        const array         = [];
 
 	        for ( let i = 0 ; i < length ; i++ ) {
 
@@ -1347,6 +1537,10 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 
 	        }
 
+	        if ( !moveNext ) {
+	            this._offset = currentOffset;
+	        }
+
 	        return array
 
 	    }
@@ -1355,20 +1549,23 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	     *
 	     * @returns {number}
 	     */
-	    getUint8 () {
+	    getUint8 ( moveNext = true ) {
 
-	        return this._dataView.getUint8( this._getAndUpdateOffsetBy( Byte.One ) )
+	        const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.One ) : this._offset;
+	        return this._dataView.getUint8( offset )
 
 	    }
 
 	    /**
 	     *
 	     * @param length
+	     * @param moveNext
 	     * @returns {Array}
 	     */
-	    getUint8Array ( length ) {
+	    getUint8Array ( length, moveNext = true ) {
 
-	        const array = [];
+	        const currentOffset = this._offset;
+	        const array         = [];
 
 	        for ( let i = 0 ; i < length ; i++ ) {
 
@@ -1376,6 +1573,10 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 
 	        }
 
+	        if ( !moveNext ) {
+	            this._offset = currentOffset;
+	        }
+
 	        return array
 
 	    }
@@ -1384,20 +1585,23 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	     *
 	     * @returns {number}
 	     */
-	    getInt16 () {
+	    getInt16 ( moveNext = true ) {
 
-	        return this._dataView.getInt16( this._getAndUpdateOffsetBy( Byte.Two ), this._endianness )
+	        const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Two ) : this._offset;
+	        return this._dataView.getInt16( offset, this._endianness )
 
 	    }
 
 	    /**
 	     *
 	     * @param length
+	     * @param moveNext
 	     * @returns {Array}
 	     */
-	    getInt16Array ( length ) {
+	    getInt16Array ( length, moveNext = true ) {
 
-	        const array = [];
+	        const currentOffset = this._offset;
+	        const array         = [];
 
 	        for ( let i = 0 ; i < length ; i++ ) {
 
@@ -1405,6 +1609,10 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 
 	        }
 
+	        if ( !moveNext ) {
+	            this._offset = currentOffset;
+	        }
+
 	        return array
 
 	    }
@@ -1413,20 +1621,23 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	     *
 	     * @returns {number}
 	     */
-	    getUint16 () {
+	    getUint16 ( moveNext = true ) {
 
-	        return this._dataView.getUint16( this._getAndUpdateOffsetBy( Byte.Two ), this._endianness )
+	        const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Two ) : this._offset;
+	        return this._dataView.getUint16( offset, this._endianness )
 
 	    }
 
 	    /**
 	     *
 	     * @param length
+	     * @param moveNext
 	     * @returns {Array}
 	     */
-	    getUint16Array ( length ) {
+	    getUint16Array ( length, moveNext = true ) {
 
-	        const array = [];
+	        const currentOffset = this._offset;
+	        const array         = [];
 
 	        for ( let i = 0 ; i < length ; i++ ) {
 
@@ -1434,6 +1645,10 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 
 	        }
 
+	        if ( !moveNext ) {
+	            this._offset = currentOffset;
+	        }
+
 	        return array
 
 	    }
@@ -1442,20 +1657,23 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	     *
 	     * @returns {number}
 	     */
-	    getInt32 () {
+	    getInt32 ( moveNext = true ) {
 
-	        return this._dataView.getInt32( this._getAndUpdateOffsetBy( Byte.Four ), this._endianness )
+	        const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Four ) : this._offset;
+	        return this._dataView.getInt32( offset, this._endianness )
 
 	    }
 
 	    /**
 	     *
 	     * @param length
+	     * @param moveNext
 	     * @returns {Array}
 	     */
-	    getInt32Array ( length ) {
+	    getInt32Array ( length, moveNext = true ) {
 
-	        const array = [];
+	        const currentOffset = this._offset;
+	        const array         = [];
 
 	        for ( let i = 0 ; i < length ; i++ ) {
 
@@ -1463,33 +1681,8 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 
 	        }
 
-	        return array
-
-	    }
-
-	    /**
-	     *
-	     * @returns {number}
-	     */
-	    getUint32 () {
-
-	        return this._dataView.getUint32( this._getAndUpdateOffsetBy( Byte.Four ), this._endianness )
-
-	    }
-
-	    /**
-	     *
-	     * @param length
-	     * @returns {Array}
-	     */
-	    getUint32Array ( length ) {
-
-	        const array = [];
-
-	        for ( let i = 0 ; i < length ; i++ ) {
-
-	            array.push( this.getUint32() );
-
+	        if ( !moveNext ) {
+	            this._offset = currentOffset;
 	        }
 
 	        return array
@@ -1500,7 +1693,43 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	     *
 	     * @returns {number}
 	     */
-	    getInt64 () {
+	    getUint32 ( moveNext = true ) {
+
+	        const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Four ) : this._offset;
+	        return this._dataView.getUint32( offset, this._endianness )
+
+	    }
+
+	    /**
+	     *
+	     * @param length
+	     * @param moveNext
+	     * @returns {Array}
+	     */
+	    getUint32Array ( length, moveNext = true ) {
+
+	        const currentOffset = this._offset;
+	        const array         = [];
+
+	        for ( let i = 0 ; i < length ; i++ ) {
+
+	            array.push( this.getUint32() );
+
+	        }
+
+	        if ( !moveNext ) {
+	            this._offset = currentOffset;
+	        }
+
+	        return array
+
+	    }
+
+	    /**
+	     *
+	     * @returns {number}
+	     */
+	    getInt64 ( moveNext = true ) {
 
 	        // From THREE.FBXLoader
 	        // JavaScript doesn't support 64-bit integer so attempting to calculate by ourselves.
@@ -1514,13 +1743,27 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 
 	        if ( this._endianness === Endianness.Little ) {
 
-	            low  = this.getUint32();
-	            high = this.getUint32();
+	            if ( moveNext ) {
+	                low  = this.getUint32();
+	                high = this.getUint32();
+	            } else {
+	                const currentOffset = this._offset;
+	                low                 = this.getUint32();
+	                high                = this.getUint32();
+	                this.skipOffsetTo( currentOffset );
+	            }
 
 	        } else {
 
-	            high = this.getUint32();
-	            low  = this.getUint32();
+	            if ( moveNext ) {
+	                high = this.getUint32();
+	                low  = this.getUint32();
+	            } else {
+	                const currentOffset = this._offset;
+	                high                = this.getUint32();
+	                low                 = this.getUint32();
+	                this.skipOffsetTo( currentOffset );
+	            }
 
 	        }
 
@@ -1547,16 +1790,22 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	    /**
 	     *
 	     * @param length
+	     * @param moveNext
 	     * @returns {Array}
 	     */
-	    getInt64Array ( length ) {
+	    getInt64Array ( length, moveNext = true ) {
 
-	        const array = [];
+	        const currentOffset = this._offset;
+	        const array         = [];
 
 	        for ( let i = 0 ; i < length ; i++ ) {
 
 	            array.push( this.getInt64() );
 
+	        }
+
+	        if ( !moveNext ) {
+	            this._offset = currentOffset;
 	        }
 
 	        return array
@@ -1568,7 +1817,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	     *
 	     * @returns {number}
 	     */
-	    getUint64 () {
+	    getUint64 ( moveNext = true ) {
 	        // Note: see getInt64() comment
 
 	        let low  = null;
@@ -1576,13 +1825,27 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 
 	        if ( this._endianness === Endianness.Little ) {
 
-	            low  = this.getUint32();
-	            high = this.getUint32();
+	            if ( moveNext ) {
+	                low  = this.getUint32();
+	                high = this.getUint32();
+	            } else {
+	                const currentOffset = this._offset;
+	                low                 = this.getUint32();
+	                high                = this.getUint32();
+	                this.skipOffsetTo( currentOffset );
+	            }
 
 	        } else {
 
-	            high = this.getUint32();
-	            low  = this.getUint32();
+	            if ( moveNext ) {
+	                high = this.getUint32();
+	                low  = this.getUint32();
+	            } else {
+	                const currentOffset = this._offset;
+	                high                = this.getUint32();
+	                low                 = this.getUint32();
+	                this.skipOffsetTo( currentOffset );
+	            }
 
 	        }
 
@@ -1593,16 +1856,22 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	    /**
 	     *
 	     * @param length
+	     * @param moveNext
 	     * @returns {Array}
 	     */
-	    getUint64Array ( length ) {
+	    getUint64Array ( length, moveNext = true ) {
 
-	        const array = [];
+	        const currentOffset = this._offset;
+	        const array         = [];
 
 	        for ( let i = 0 ; i < length ; i++ ) {
 
 	            array.push( this.getUint64() );
 
+	        }
+
+	        if ( !moveNext ) {
+	            this._offset = currentOffset;
 	        }
 
 	        return array
@@ -1613,25 +1882,32 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	     *
 	     * @returns {number}
 	     */
-	    getFloat32 () {
+	    getFloat32 ( moveNext = true ) {
 
-	        return this._dataView.getFloat32( this._getAndUpdateOffsetBy( Byte.Four ), this._endianness )
+	        const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Four ) : this._offset;
+	        return this._dataView.getFloat32( offset, this._endianness )
 
 	    }
 
 	    /**
 	     *
 	     * @param length
+	     * @param moveNext
 	     * @returns {Array}
 	     */
-	    getFloat32Array ( length ) {
+	    getFloat32Array ( length, moveNext = true ) {
 
-	        const array = [];
+	        const currentOffset = this._offset;
+	        const array         = [];
 
 	        for ( let i = 0 ; i < length ; i++ ) {
 
 	            array.push( this.getFloat32() );
 
+	        }
+
+	        if ( !moveNext ) {
+	            this._offset = currentOffset;
 	        }
 
 	        return array
@@ -1642,25 +1918,32 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	     *
 	     * @return {number}
 	     */
-	    getFloat64 () {
+	    getFloat64 ( moveNext = true ) {
 
-	        return this._dataView.getFloat64( this._getAndUpdateOffsetBy( Byte.Height ), this._endianness )
+	        const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Eight ) : this._offset;
+	        return this._dataView.getFloat64( offset, this._endianness )
 
 	    }
 
 	    /**
 	     *
 	     * @param length
+	     * @param moveNext
 	     * @returns {Array}
 	     */
-	    getFloat64Array ( length ) {
+	    getFloat64Array ( length, moveNext = true ) {
 
-	        const array = [];
+	        const currentOffset = this._offset;
+	        const array         = [];
 
 	        for ( let i = 0 ; i < length ; i++ ) {
 
 	            array.push( this.getFloat64() );
 
+	        }
+
+	        if ( !moveNext ) {
+	            this._offset = currentOffset;
 	        }
 
 	        return array
@@ -1671,35 +1954,29 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	     *
 	     * @returns {string}
 	     */
-	    getChar () {
+	    getChar ( moveNext = true ) {
 
-	        return String.fromCharCode( this.getUint8() )
+	        return String.fromCharCode( this.getUint8( moveNext ) )
 
 	    }
 
 	    /**
 	     *
 	     * @param length
-	     * @param trim
+	     * @param moveNext
 	     * @return {string}
 	     */
-	    getString ( length, trim = true ) {
+	    getString ( length, moveNext = true ) {
 
-	        let string   = '';
-	        let charCode = null;
+	        const currentOffset = this._offset;
+	        let string          = '';
 
 	        for ( let i = 0 ; i < length ; i++ ) {
-	            charCode = this.getUint8();
-
-	            if ( charCode === 0 ) {
-	                continue
-	            }
-
-	            string += String.fromCharCode( charCode );
+	            string += String.fromCharCode( this.getUint8() );
 	        }
 
-	        if ( trim ) {
-	            string = string.trim();
+	        if ( !moveNext ) {
+	            this._offset = currentOffset;
 	        }
 
 	        return string

@@ -1,3 +1,10 @@
+# [8.1.0](https://github.com/Itee/itee-client/compare/v8.0.2...v8.1.0) (2022-03-01)
+
+
+### Features
+
+* **tbinaryreader:** add bit field managment. tbinaryreader is now able to read bit pet bit or bits ([932c30e](https://github.com/Itee/itee-client/commit/932c30e98a390a694e67dca4ee99e1ed04475c15))
+
 ## [8.0.2](https://github.com/Itee/itee-client/compare/v8.0.1...v8.0.2) (2022-02-23)
 
 
