@@ -1,3 +1,10 @@
+## [8.1.1](https://github.com/Itee/itee-client/compare/v8.1.0...v8.1.1) (2022-03-01)
+
+
+### Bug Fixes
+
+* **tbinaryreader:** fix skipBitOffsetTo and skipBitOffsetOf in case they reach end of bit field ([a97b1a2](https://github.com/Itee/itee-client/commit/a97b1a2050936f010312de5dc5e04f5ae907f485))
+
 # [8.1.0](https://github.com/Itee/itee-client/compare/v8.0.2...v8.1.0) (2022-03-01)
 
 

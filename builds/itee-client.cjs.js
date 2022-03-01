@@ -1,4 +1,4 @@
-console.log('Itee.Client v8.1.0 - CommonJs')
+console.log('Itee.Client v8.1.1 - CommonJs')
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -1289,6 +1289,9 @@ class TBinaryReader {
         return this._bits.offset === this._bits.length
 
     }
+    _isOutOfRangeBitOffset( offset ) {
+        return offset > this._bits.length
+    }
     _getBitAt ( bitOffset ) {
 
         return ( this._bits.buffer & ( 1 << bitOffset ) ) === 0 ? 0 : 1
@@ -1302,17 +1305,18 @@ class TBinaryReader {
 
     skipBitOffsetTo ( bitOffset ) {
 
-        if ( bitOffset > this._bits.length ) { throw new RangeError( 'Bit offset is out of range of the current bits field.' ) }
+        if ( this._isOutOfRangeBitOffset(bitOffset) ) { throw new RangeError( 'Bit offset is out of range of the current bits field.' ) }
 
         this._bits.offset = bitOffset;
+        if(this._isEndOfBitBuffer()) {
+            this._resetBits();
+        }
 
     }
 
     skipBitOffsetOf ( nBits ) {
 
-        if ( this._bits.offset + nBits > this._bits.length ) { throw new RangeError( 'Bit offset is out of range of the current bits field.' ) }
-
-        this._bits.offset += nBits;
+        this.skipBitOffsetTo(this._bits.offset + nBits);
 
     }
 
