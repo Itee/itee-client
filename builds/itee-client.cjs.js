@@ -1,4 +1,4 @@
-console.log('Itee.Client v8.1.1 - CommonJs')
+console.log('Itee.Client v8.1.2 - CommonJs')
 'use strict';
 
 Object.defineProperty(exports, '__esModule', { value: true });
@@ -1088,8 +1088,8 @@ class TBinaryReader {
         // For bit reading use same approche than byte
         this._bits = {
             buffer: null,
-            offset: null,
-            length: null
+            offset: 0,
+            length: 0
         };
 
         this._updateDataView();
@@ -1292,6 +1292,21 @@ class TBinaryReader {
     _isOutOfRangeBitOffset( offset ) {
         return offset > this._bits.length
     }
+    _readBit8() {
+        this._bits.buffer = this.getUint8();
+        this._bits.length = 8;
+        this._bits.offset = 0;
+    }
+    _readBit16() {
+        this._bits.buffer = this.getUint16();
+        this._bits.length = 16;
+        this._bits.offset = 0;
+    }
+    _readBit32() {
+        this._bits.buffer = this.getUint32();
+        this._bits.length = 32;
+        this._bits.offset = 0;
+    }
     _getBitAt ( bitOffset ) {
 
         return ( this._bits.buffer & ( 1 << bitOffset ) ) === 0 ? 0 : 1
@@ -1304,8 +1319,31 @@ class TBinaryReader {
     }
 
     skipBitOffsetTo ( bitOffset ) {
+        //todo is positive bitoffset
 
-        if ( this._isOutOfRangeBitOffset(bitOffset) ) { throw new RangeError( 'Bit offset is out of range of the current bits field.' ) }
+        // In case we start directly by a skip offset try to determine which kind of data is expected
+        if ( this._isNullBitBuffer() ) {
+
+            if (bitOffset <= 8) {
+
+                this._readBit8();
+
+            } else if (8 < bitOffset && bitOffset <= 16 ){
+
+                this._readBit16();
+
+            } else if (16 < bitOffset && bitOffset <= 32 ){
+
+                this._readBit32();
+
+            } else {
+
+                throw new RangeError( 'You cannot skip more than 32 bits. Please use skipOffsetOf instead !' )
+
+            }
+
+        }
+        else if ( this._isOutOfRangeBitOffset(bitOffset) ) { throw new RangeError( 'Bit offset is out of range of the current bits field.' ) }
 
         this._bits.offset = bitOffset;
         if(this._isEndOfBitBuffer()) {
@@ -1323,9 +1361,7 @@ class TBinaryReader {
     getBit8 ( moveNext = true ) {
 
         if ( this._isNullBitBuffer() ) {
-            this._bits.buffer = this.getUint8();
-            this._bits.length = 8;
-            this._bits.offset = 0;
+            this._readBit8();
         }
 
         const bitValue = this._getBitAt( this._bits.offset );
@@ -1367,10 +1403,8 @@ class TBinaryReader {
 
     getBit16 ( moveNext = true ) {
 
-        if ( this._isNullBitBuffer() || this._isEndOfBitBuffer() ) {
-            this._bits.buffer = this.getUint16();
-            this._bits.length = 16;
-            this._bits.offset = 0;
+        if ( this._isNullBitBuffer() ) {
+            this._readBit16();
         }
 
         const bitValue = this._getBitAt( this._bits.offset );
@@ -1412,10 +1446,8 @@ class TBinaryReader {
 
     getBit32 ( moveNext = true ) {
 
-        if ( this._isNullBitBuffer() || this._isEndOfBitBuffer() ) {
-            this._bits.buffer = this.getUint32();
-            this._bits.length = 32;
-            this._bits.offset = 0;
+        if ( this._isNullBitBuffer() ) {
+            this._readBit32();
         }
 
         const bitValue = this._getBitAt( this._bits.offset );
