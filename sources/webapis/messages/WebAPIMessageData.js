@@ -1,4 +1,5 @@
 import { WebAPIMessage } from './WebAPIMessage'
+import { isObject }      from 'itee-validators'
 
 /**
  * @typedef {Object} WebAPIMessageDataSerialized
@@ -32,14 +33,15 @@ class WebAPIMessageData extends WebAPIMessage {
 
     /**
      *
-     * @returns {{data: *}}
+     * @returns {{id: String, type: String, data: String}}
      */
     toJSON () {
 
+        const isPlainObject = this.data === Object( this.data )
         return {
             ...super.toJSON(),
             ...{
-                data: JSON.stringify( this.data )
+                data: isPlainObject ? JSON.stringify( this.data ) : this.data
             }
         }
 
