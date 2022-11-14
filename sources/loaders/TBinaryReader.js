@@ -241,6 +241,7 @@ class TBinaryReader {
 
         const currentOffset = this._offset
         this._offset += increment
+
         return currentOffset
 
     }
@@ -280,20 +281,20 @@ class TBinaryReader {
         return this._bits.offset === this._bits.length
 
     }
-    _isOutOfRangeBitOffset( offset ) {
+    _isOutOfRangeBitOffset ( offset ) {
         return offset > this._bits.length
     }
-    _readBit8() {
+    _readBit8 () {
         this._bits.buffer = this.getUint8()
         this._bits.length = 8
         this._bits.offset = 0
     }
-    _readBit16() {
+    _readBit16 () {
         this._bits.buffer = this.getUint16()
         this._bits.length = 16
         this._bits.offset = 0
     }
-    _readBit32() {
+    _readBit32 () {
         this._bits.buffer = this.getUint32()
         this._bits.length = 32
         this._bits.offset = 0
@@ -315,15 +316,15 @@ class TBinaryReader {
         // In case we start directly by a skip offset try to determine which kind of data is expected
         if ( this._isNullBitBuffer() ) {
 
-            if (bitOffset <= 8) {
+            if ( bitOffset <= 8 ) {
 
                 this._readBit8()
 
-            } else if (8 < bitOffset && bitOffset <= 16 ){
+            } else if ( 8 < bitOffset && bitOffset <= 16 ) {
 
                 this._readBit16()
 
-            } else if (16 < bitOffset && bitOffset <= 32 ){
+            } else if ( 16 < bitOffset && bitOffset <= 32 ) {
 
                 this._readBit32()
 
@@ -333,11 +334,10 @@ class TBinaryReader {
 
             }
 
-        }
-        else if ( this._isOutOfRangeBitOffset(bitOffset) ) { throw new RangeError( 'Bit offset is out of range of the current bits field.' ) }
+        } else if ( this._isOutOfRangeBitOffset( bitOffset ) ) { throw new RangeError( 'Bit offset is out of range of the current bits field.' ) }
 
         this._bits.offset = bitOffset
-        if(this._isEndOfBitBuffer()) {
+        if ( this._isEndOfBitBuffer() ) {
             this._resetBits()
         }
 
@@ -345,7 +345,7 @@ class TBinaryReader {
 
     skipBitOffsetOf ( nBits ) {
 
-        this.skipBitOffsetTo(this._bits.offset + nBits)
+        this.skipBitOffsetTo( this._bits.offset + nBits )
 
     }
 
@@ -837,7 +837,6 @@ class TBinaryReader {
         return array
 
     }
-
 
     /**
      *
