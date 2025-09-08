@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Itee-Client Source: sources/cores/TStore.js</title>
+	<title>Itee-Client Source: sources/loaders/TBinaryWriter.js</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -79,197 +79,153 @@
 		<div id="main">
 			
 
-		<h1 class="page-title">Source: sources/cores/TStore.js</h1>
+		<h1 class="page-title">Source: sources/loaders/TBinaryWriter.js</h1>
     
 <section>
     <article>
         <pre
             class="sunlight-highlight-javascript linenums">import {
-    isFunction,
-    isNotArray,
+    isNotArrayBuffer,
     isNotBoolean,
-    isNotObject,
-    isNotUndefined,
+    isNotNumber,
     isNull,
-    isString,
     isUndefined
 } from 'itee-validators'
+import {
+    Byte,
+    Endianness
+} from './TBinaryReader'
 
 /**
- * @class
- * @classdesc TStore is a simple javascript object whose purpose is to store some ket/value data to future usage. It could be enable/disable.
- *
- * @example {@lang javascript}
- * var cache = new TCache()
- * cache.add( 'foo', 'bar' )
- * TLogger.log( cache.get('foo') ) // 'bar'
- *
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  */
-class TStore {
+
+class TBinaryWriter {
+
+    /**
+     *
+     * @returns {*}
+     */
+    get buffer () {
+        return this._buffer
+    }
+
+    set buffer ( value ) {
+
+        const memberName = 'Buffer'
+        const expect     = 'Expect an instance of ArrayBuffer.'
+
+        if ( isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( isNotArrayBuffer( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
+
+        this._buffer = value
+        this._offset = 0
+        this._length = value.byteLength
+
+        this._updateDataView()
+
+    }
+
+    /**
+     *
+     * @returns {*}
+     */
+    get offset () {
+        return this._offset
+    }
+
+    set offset ( value ) {
+
+        const memberName = 'Offset'
+        const expect     = 'Expect a number.'
+
+        if ( isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( isNotNumber( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
+
+        this._offset = value
+
+        this._updateDataView()
+
+    }
 
     /**
      *
      * @param value
-     * @param validators
-     * @private
      */
-    static _validate ( value, validators ) {
-
-        for ( let validatorIndex = 0, numberOfValidators = validators.length ; validatorIndex &lt; numberOfValidators ; validatorIndex++ ) {
-
-            let validator = validators[ validatorIndex ]
-
-            if ( !validator.validator( value ) ) {
-
-                const error = validator.error
-                if ( isString( error ) ) {
-                    throw new TypeError( error )
-                } else if ( isFunction( error ) ) {
-                    throw new TypeError( error( value ) )
-                } else {
-                    throw new TypeError( `${ value } is invalid.` )
-                }
-
-            }
-
-        }
-
+    get length () {
+        return this._length
     }
-    /**
-     * @constructor
-     * @param {Object} [parameters={}]
-     * @param {Object} [parameters.collection={}]
-     * @param {Boolean} [parameters.allowOverride=false]
-     * @param {Array.&lt;function>} [parameters.keyValidators=[]]
-     * @param {Array.&lt;function>} [parameters.valueValidators=[]]
-     */
-    constructor ( parameters = {} ) {
 
-        const _parameters = {
-            ...{
-                collection:      {},
-                allowOverride:   false,
-                keyValidators:   [],
-                valueValidators: []
-            }, ...parameters
-        }
+    set length ( value ) {
 
-        this.collection      = _parameters.collection
-        this.allowOverride   = _parameters.allowOverride
-        this.keyValidators   = _parameters.keyValidators
-        this.valueValidators = _parameters.valueValidators
-
-    }
-    /**
-     *
-     * @return {{}}
-     */
-    get collection () {
-
-        return this._collection
-
-    }
-    set collection ( value ) {
-
-        const memberName = 'Collection'
-        const expect     = 'Expect an object.'
+        const memberName = 'Length'
+        const expect     = 'Expect a number.'
 
         if ( isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
         if ( isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
-        if ( isNotObject( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
+        if ( isNotNumber( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
 
-        this._collection = value
+        this._length = value
+
+        this._updateDataView()
 
     }
+
     /**
      *
-     * @return {*}
+     * @returns {*}
      */
-    get allowOverride () {
-
-        return this._allowOverride
-
+    get endianness () {
+        return this._endianness
     }
-    set allowOverride ( value ) {
 
-        const memberName = 'Allow override'
+    set endianness ( value ) {
+
+        const memberName = 'Endianness'
         const expect     = 'Expect a boolean.'
 
         if ( isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
         if ( isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
         if ( isNotBoolean( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
 
-        this._allowOverride = value
-
+        this._endianness = value
     }
+
+    constructor ( {
+        buffer = new ArrayBuffer( 1024 ),
+        endianness = Endianness.Little
+    } = {} ) {
+
+        this.buffer     = buffer
+        this.endianness = endianness
+
+        // Todo: For bit writing use same approche than byte
+        //        this._bits = {
+        //            buffer: null,
+        //            offset: 0,
+        //            length: 0
+        //        }
+
+        this._updateDataView()
+    }
+
+
     /**
      *
-     * @return {*}
+     * @param buffer
+     * @param offset
+     * @param length
+     * @returns {TBinaryReader}
      */
-    get keyValidators () {
+    setBuffer ( buffer, offset, length ) {
 
-        return this._keyValidators
+        this.buffer = buffer
+        this.offset = offset || 0
+        this.length = length || buffer.byteLength
 
-    }
-    set keyValidators ( value ) {
-
-        const memberName = 'Keys validators'
-        const expect     = 'Expect an array of TValidator or an empty array.'
-
-        if ( isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
-        if ( isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
-        if ( isNotArray( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
-
-        this._keyValidators = value
-
-    }
-    /**
-     *
-     * @return {*}
-     */
-    get valueValidators () {
-        return this._valueValidators
-    }
-    set valueValidators ( value ) {
-
-        const memberName = 'Values validators'
-        const expect     = 'Expect an array of TValidator or an empty array.'
-
-        if ( isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
-        if ( isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
-        if ( isNotArray( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
-
-        this._valueValidators = value
-
-    }
-    /**
-     *
-     * @return {string[]}
-     */
-    get keys () {
-
-        return Object.keys( this._collection )
-
-    }
-    /**
-     *
-     * @return {unknown[] | any[]}
-     */
-    get values () {
-
-        return Object.values( this._collection )
-
-    }
-    /**
-     *
-     * @param value
-     * @return {TStore} The current instance (this)
-     */
-    setCollection ( value ) {
-
-        this.collection = value
         return this
 
     }
@@ -277,11 +233,11 @@ class TStore {
     /**
      *
      * @param value
-     * @return {TStore} The current instance (this)
+     * @returns {TBinaryReader}
      */
-    setAllowOverride ( value ) {
+    setOffset ( value ) {
 
-        this.allowOverride = value
+        this.offset = value
         return this
 
     }
@@ -289,104 +245,284 @@ class TStore {
     /**
      *
      * @param value
-     * @return {TStore} The current instance (this)
+     * @returns {TBinaryReader}
      */
-    setKeyValidators ( value ) {
+    setLength ( value ) {
 
-        this.keyValidators( value )
+        this.length = value
         return this
 
     }
 
     /**
      *
-     * @param value
-     * @return {TStore} The current instance (this)
+     * @param endianess
+     * @returns {TBinaryReader}
      */
-    setValueValidators ( value ) {
+    setEndianess ( endianess ) {
 
-        this.valueValidators( value )
+        this.endianness = endianess
         return this
 
     }
 
     /**
-     * Allow to add new key value pair, the key cannot be null, undefined, or an empty string.
-     * In case the key already exist, the value will be overwritten if force params is true or this
-     * allow overriding else it throw an TypeError.
      *
-     * @param {*} key
-     * @param {*} value
-     * @param {Boolean} force
-     * @return {TStore} The current instance (this)
+     * @param increment
+     * @returns {*}
+     * @private
      */
-    add ( key, value, force = false ) {
+    _getAndUpdateOffsetBy ( increment ) {
 
-        if ( this.contain( key ) &amp;&amp; ( !this._allowOverride &amp;&amp; !force ) ) {
-            throw new TypeError( `Item with key (${ key }) already exist in collection !` )
+        const currentOffset = this._offset
+        this._offset += increment
+
+        // Manage buffer overflow, and auto-extend if needed
+        const bufferByteLength = this._buffer.byteLength
+        if ( this._offset >= bufferByteLength ) {
+
+            // Create new buffer and view with extended size
+            const newBuffer   = new ArrayBuffer( bufferByteLength + 1024 )
+            const newDataView = new DataView( newBuffer, 0, newBuffer.byteLength )
+
+            // Copy data from current to new
+            for ( let i = 0 ; i &lt; bufferByteLength ; i++ ) {
+                newDataView.setUint8( i, this._dataView.getUint8( i ) )
+            }
+
+            // Update local
+            this._buffer = newBuffer
+            this._dataView = newDataView
+
         }
 
-        TStore._validate( key, this._keyValidators )
-        TStore._validate( value, this._valueValidators )
-
-        this._collection[ key ] = value
-
-        return this
+        return currentOffset
 
     }
 
     /**
      *
-     * @param key
-     * @return {boolean}
+     * @private
      */
-    contain ( key ) {
+    _updateDataView () {
 
-        return isNotUndefined( this._collection[ key ] )
+        this._dataView = new DataView( this._buffer, this._offset, this._length )
 
     }
 
     /**
-     * Return the value associated to the key.
      *
-     * @param key
-     * @returns {*}
+     * @returns {boolean}
      */
-    get ( key ) {
+    isEndOfFile () {
 
-        return this._collection[ key ]
+        return ( this._offset === this._length )
 
     }
 
+    _iterArray ( values, func, moveNext ) {
+
+        const currentOffset = this._offset
+
+        for ( let value of values ) {
+            func( value )
+        }
+
+        if ( !moveNext ) {
+            this._offset = currentOffset
+        }
+
+    }
+
+    // Bytes
+
     /**
-     * Remove to value from the cache. Does nothing if the key does not exist.
      *
-     * @param key
-     * @return {TStore} The current instance (this)
+     * @param offset
      */
-    remove ( key ) {
+    skipOffsetTo ( offset ) {
 
-        delete this._collection[ key ]
-
-        return this
+        this._offset = offset
 
     }
 
     /**
-     * Clear the cache and reset collection to an empty object.
-     * @return {TStore} The current instance (this)
+     *
+     * @param nBytes
      */
-    clear () {
+    skipOffsetOf ( nBytes ) {
 
-        this._collection = {}
-
-        return this
+        this._offset += nBytes
 
     }
+
+    setBoolean ( value, moveNext = true ) {
+
+        this.setUint8( ( ( value &amp; 1 ) === 1 ), moveNext )
+
+    }
+
+    setBooleanArray ( values, moveNext = true ) {
+
+        this._iterArray( values, this.setBoolean.bind( this ), moveNext )
+
+    }
+
+    setInt8 ( value, moveNext = true ) {
+
+        const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.One ) : this._offset
+        this._dataView.setInt8( offset, value )
+
+    }
+
+    setInt8Array ( values, moveNext = true ) {
+
+        this._iterArray( values, this.setInt8.bind( this ), moveNext )
+
+    }
+
+    setUint8 ( value, moveNext = true ) {
+
+        const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.One ) : this._offset
+        this._dataView.setUint8( offset, value )
+
+    }
+
+    setUint8Array ( values, moveNext = true ) {
+
+        this._iterArray( values, this.setUint8.bind( this ), moveNext )
+
+    }
+
+    setInt16 ( value, moveNext = true ) {
+
+        const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Two ) : this._offset
+        this._dataView.setInt16( offset, value, this._endianness )
+
+    }
+
+    setInt16Array ( values, moveNext = true ) {
+
+        this._iterArray( values, this.setInt16.bind( this ), moveNext )
+
+    }
+
+    setUint16 ( value, moveNext = true ) {
+
+        const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Two ) : this._offset
+        this._dataView.setUint16( offset, value, this._endianness )
+
+    }
+
+    setUint16Array ( values, moveNext = true ) {
+
+        this._iterArray( values, this.setUint16.bind( this ), moveNext )
+
+    }
+
+    setInt32 ( value, moveNext = true ) {
+
+        const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Four ) : this._offset
+        this._dataView.setInt32( offset, value, this._endianness )
+
+    }
+
+    setInt32Array ( values, moveNext = true ) {
+
+        this._iterArray( values, this.setInt32.bind( this ), moveNext )
+
+    }
+
+    setUint32 ( value, moveNext = true ) {
+
+        const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Four ) : this._offset
+        this._dataView.setUint32( offset, value, this._endianness )
+
+    }
+
+    setUint32Array ( values, moveNext = true ) {
+
+        this._iterArray( values, this.setUint32.bind( this ), moveNext )
+
+    }
+
+    setInt64 ( /*value, moveNext = true*/ ) {
+
+        // From THREE.FBXLoader
+        // JavaScript doesn't support 64-bit integer so attempting to calculate by ourselves.
+        // 1 &lt;&lt; 32 will return 1 so using multiply operation instead here.
+        // There'd be a possibility that this method returns wrong value if the value
+        // is out of the range between Number.MAX_SAFE_INTEGER and Number.MIN_SAFE_INTEGER.
+        // TODO: safely handle 64-bit integer using bigint ?
+
+        throw new Error( 'Not implemented, sorry... any help is welcome !' )
+    }
+
+    setInt64Array ( values, moveNext = true ) {
+
+        this._iterArray( values, this.setInt64.bind( this ), moveNext )
+
+    }
+
+    setUint64 ( /*value, moveNext = true*/ ) {
+        // Note: see setInt64() comment
+        throw new Error( 'Not implemented, sorry... any help is welcome !' )
+    }
+
+    setUint64Array ( values, moveNext = true ) {
+
+        this._iterArray( values, this.setUint64.bind( this ), moveNext )
+
+    }
+
+    setFloat32 ( value, moveNext = true ) {
+
+        const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Four ) : this._offset
+        this._dataView.setFloat32( offset, value, this._endianness )
+
+    }
+
+    setFloat32Array ( values, moveNext = true ) {
+
+        this._iterArray( values, this.setFloat32.bind( this ), moveNext )
+
+    }
+
+    setFloat64 ( value, moveNext = true ) {
+
+        const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Eight ) : this._offset
+        this._dataView.setFloat64( offset, value, this._endianness )
+
+    }
+
+    setFloat64Array ( values, moveNext = true ) {
+
+        this._iterArray( values, this.setFloat64.bind( this ), moveNext )
+
+    }
+
+    setChar ( value, moveNext = true ) {
+
+        this.setUint8( value.charCodeAt( 0 ), moveNext )
+
+    }
+
+    setString ( values, moveNext = true ) {
+
+        this._iterArray( values, this.setChar.bind( this ), moveNext )
+
+    }
+
+    //    setArrayBuffer ( value, moveNext = true ) {
+    //
+    //        const offset = this._getAndUpdateOffsetBy( size )
+    //        this._dataView.buffer.slice( offset, offset + size )
+    //
+    //    }
 
 }
 
-export { TStore }
+export { TBinaryWriter }
 </pre>
     </article>
 </section>

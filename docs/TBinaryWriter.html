@@ -4,7 +4,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width">
-	<title>Itee-Client Class: TStore</title>
+	<title>Itee-Client Class: TBinaryWriter</title>
 
 	<!--[if lt IE 9]>
 	<script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -79,16 +79,14 @@
 		<div id="main">
 			
 
-	<h1 class="page-title">Class: TStore</h1>
+	<h1 class="page-title">Class: TBinaryWriter</h1>
 <section>
 
 <header>
     
         <h2>
-        TStore
+        TBinaryWriter
         </h2>
-        
-            <div class="class-description">TStore is a simple javascript object whose purpose is to store some ket/value data to future usage. It could be enable/disable.</div>
         
     
 </header>
@@ -100,7 +98,7 @@
         
 <hr>
 <dt>
-    <h4 class="name" id="TStore"><span class="type-signature"></span>new TStore( [parameters])</h4>
+    <h4 class="name" id="TBinaryWriter"><span class="type-signature"></span>new TBinaryWriter()</h4>
     
     
 </dt>
@@ -113,266 +111,6 @@
     
 
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Argument</th>
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>parameters</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    {}
-                
-                </td>
-            
-
-            <td class="description last">
-                <h6 class="method-params-label method-subparams-label">Properties</h6>
-                
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-        <th>Argument</th>
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>collection</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Object</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    {}
-                
-                </td>
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>allowOverride</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>keyValidators</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;function()></span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    []
-                
-                </td>
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>valueValidators</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Array.&lt;function()></span>
-
-
-
-            
-            </td>
-
-            
-                <td class="attributes">
-                
-                    &lt;optional><br>
-                
-
-                
-
-                
-                </td>
-            
-
-            
-                <td class="default">
-                
-                    []
-                
-                </td>
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-            </td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
     
 
     
@@ -424,8 +162,8 @@
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_cores_TStore.js.html">sources/cores/TStore.js</a>,
-				 <a href="sources_cores_TStore.js.html#sunlight-1-line-24">line 24</a>
+				<a href="sources_loaders_TBinaryWriter.js.html">sources/loaders/TBinaryWriter.js</a>,
+				 <a href="sources_loaders_TBinaryWriter.js.html#sunlight-1-line-18">line 18</a>
 			</li>
 		</ul>
 	</dd>
@@ -450,15 +188,6 @@
     
 
     
-
-    
-        <h5>Example</h5>
-        
-    <pre class="sunlight-highlight-javascript">
-var cache = new TCache()
-cache.add( &#x27;foo&#x27;, &#x27;bar&#x27; )
-TLogger.log( cache.get(&#x27;foo&#x27;) ) // &#x27;bar&#x27;</pre>
-
 
     
 </dd>
@@ -482,8 +211,8 @@ TLogger.log( cache.get(&#x27;foo&#x27;) ) // &#x27;bar&#x27;</pre>
         <dl>
             
 <hr>
-<dt class="name" id="allowOverride">
-    <h4 id="allowOverride"><span class="type-signature"></span>allowOverride<span class="type-signature"></span></h4>
+<dt class="name" id="buffer">
+    <h4 id="buffer"><span class="type-signature"></span>buffer<span class="type-signature"></span></h4>
 
     
 </dt>
@@ -527,8 +256,8 @@ TLogger.log( cache.get(&#x27;foo&#x27;) ) // &#x27;bar&#x27;</pre>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_cores_TStore.js.html">sources/cores/TStore.js</a>,
-				 <a href="sources_cores_TStore.js.html#sunlight-1-line-104">line 104</a>
+				<a href="sources_loaders_TBinaryWriter.js.html">sources/loaders/TBinaryWriter.js</a>,
+				 <a href="sources_loaders_TBinaryWriter.js.html#sunlight-1-line-24">line 24</a>
 			</li>
 		</ul>
 	</dd>
@@ -548,8 +277,8 @@ TLogger.log( cache.get(&#x27;foo&#x27;) ) // &#x27;bar&#x27;</pre>
         
             
 <hr>
-<dt class="name" id="collection">
-    <h4 id="collection"><span class="type-signature"></span>collection<span class="type-signature"></span></h4>
+<dt class="name" id="endianness">
+    <h4 id="endianness"><span class="type-signature"></span>endianness<span class="type-signature"></span></h4>
 
     
 </dt>
@@ -593,8 +322,8 @@ TLogger.log( cache.get(&#x27;foo&#x27;) ) // &#x27;bar&#x27;</pre>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_cores_TStore.js.html">sources/cores/TStore.js</a>,
-				 <a href="sources_cores_TStore.js.html#sunlight-1-line-83">line 83</a>
+				<a href="sources_loaders_TBinaryWriter.js.html">sources/loaders/TBinaryWriter.js</a>,
+				 <a href="sources_loaders_TBinaryWriter.js.html#sunlight-1-line-95">line 95</a>
 			</li>
 		</ul>
 	</dd>
@@ -614,8 +343,8 @@ TLogger.log( cache.get(&#x27;foo&#x27;) ) // &#x27;bar&#x27;</pre>
         
             
 <hr>
-<dt class="name" id="keys">
-    <h4 id="keys"><span class="type-signature"></span>keys<span class="type-signature"></span></h4>
+<dt class="name" id="length">
+    <h4 id="length"><span class="type-signature"></span>length<span class="type-signature"></span></h4>
 
     
 </dt>
@@ -659,8 +388,8 @@ TLogger.log( cache.get(&#x27;foo&#x27;) ) // &#x27;bar&#x27;</pre>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_cores_TStore.js.html">sources/cores/TStore.js</a>,
-				 <a href="sources_cores_TStore.js.html#sunlight-1-line-165">line 165</a>
+				<a href="sources_loaders_TBinaryWriter.js.html">sources/loaders/TBinaryWriter.js</a>,
+				 <a href="sources_loaders_TBinaryWriter.js.html#sunlight-1-line-72">line 72</a>
 			</li>
 		</ul>
 	</dd>
@@ -680,8 +409,8 @@ TLogger.log( cache.get(&#x27;foo&#x27;) ) // &#x27;bar&#x27;</pre>
         
             
 <hr>
-<dt class="name" id="keyValidators">
-    <h4 id="keyValidators"><span class="type-signature"></span>keyValidators<span class="type-signature"></span></h4>
+<dt class="name" id="offset">
+    <h4 id="offset"><span class="type-signature"></span>offset<span class="type-signature"></span></h4>
 
     
 </dt>
@@ -725,140 +454,8 @@ TLogger.log( cache.get(&#x27;foo&#x27;) ) // &#x27;bar&#x27;</pre>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_cores_TStore.js.html">sources/cores/TStore.js</a>,
-				 <a href="sources_cores_TStore.js.html#sunlight-1-line-125">line 125</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt class="name" id="values">
-    <h4 id="values"><span class="type-signature"></span>values<span class="type-signature"></span></h4>
-
-    
-</dt>
-<dd>
-    
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="sources_cores_TStore.js.html">sources/cores/TStore.js</a>,
-				 <a href="sources_cores_TStore.js.html#sunlight-1-line-174">line 174</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt class="name" id="valueValidators">
-    <h4 id="valueValidators"><span class="type-signature"></span>valueValidators<span class="type-signature"></span></h4>
-
-    
-</dt>
-<dd>
-    
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="sources_cores_TStore.js.html">sources/cores/TStore.js</a>,
-				 <a href="sources_cores_TStore.js.html#sunlight-1-line-146">line 146</a>
+				<a href="sources_loaders_TBinaryWriter.js.html">sources/loaders/TBinaryWriter.js</a>,
+				 <a href="sources_loaders_TBinaryWriter.js.html#sunlight-1-line-49">line 49</a>
 			</li>
 		</ul>
 	</dd>
@@ -885,7 +482,7 @@ TLogger.log( cache.get(&#x27;foo&#x27;) ) // &#x27;bar&#x27;</pre>
             
 <hr>
 <dt>
-    <h4 class="name" id="._validate"><span class="type-signature">&lt;private, static> </span>_validate(value, validators)</h4>
+    <h4 class="name" id="_getAndUpdateOffsetBy"><span class="type-signature">&lt;private> </span>_getAndUpdateOffsetBy(increment)</h4>
     
     
 </dt>
@@ -924,25 +521,7 @@ TLogger.log( cache.get(&#x27;foo&#x27;) ) // &#x27;bar&#x27;</pre>
 
         <tr>
             
-                <td class="name"><code>value</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>validators</code></td>
+                <td class="name"><code>increment</code></td>
             
 
             <td class="type">
@@ -997,212 +576,8 @@ TLogger.log( cache.get(&#x27;foo&#x27;) ) // &#x27;bar&#x27;</pre>
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_cores_TStore.js.html">sources/cores/TStore.js</a>,
-				 <a href="sources_cores_TStore.js.html#sunlight-1-line-32">line 32</a>
-			</li>
-		</ul>
-	</dd>
-	
-
-	
-
-	
-
-	
-</dl>
-
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-
-    
-</dd>
-
-        
-            
-<hr>
-<dt>
-    <h4 class="name" id="add"><span class="type-signature"></span>add(key, value, force)</h4>
-    
-    
-</dt>
-<dd>
-
-    
-    <div class="description">
-        Allow to add new key value pair, the key cannot be null, undefined, or an empty string.
-In case the key already exist, the value will be overwritten if force params is true or this
-allow overriding else it throw an TypeError.
-    </div>
-    
-
-    
-
-    
-
-    
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-        <th>Default</th>
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>key</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>value</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">*</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                </td>
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-
-        <tr>
-            
-                <td class="name"><code>force</code></td>
-            
-
-            <td class="type">
-            
-                
-<span class="param-type">Boolean</span>
-
-
-
-            
-            </td>
-
-            
-
-            
-                <td class="default">
-                
-                    false
-                
-                </td>
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
-    
-
-    
-<dl class="details">
-    
-
-	
-
-	
-
-	
-
-    
-
-    
-
-    
-
-    
-
-	
-
-	
-
-	
-
-	
-
-	
-
-
-
-	
-	<dt class="tag-source method-doc-label method-doc-details-label">Source:</dt>
-	<dd class="tag-source">
-		<ul class="dummy">
-			<li>
-				<a href="sources_cores_TStore.js.html">sources/cores/TStore.js</a>,
-				 <a href="sources_cores_TStore.js.html#sunlight-1-line-237">line 237</a>
+				<a href="sources_loaders_TBinaryWriter.js.html">sources/loaders/TBinaryWriter.js</a>,
+				 <a href="sources_loaders_TBinaryWriter.js.html#sunlight-1-line-189">line 189</a>
 			</li>
 		</ul>
 	</dd>
@@ -1230,10 +605,6 @@ allow overriding else it throw an TypeError.
     <h5>Returns:</h5>
     
             
-<div class="param-desc">
-    The current instance (this)
-</div>
-
 
 
 <dl>
@@ -1242,7 +613,7 @@ allow overriding else it throw an TypeError.
     </dt>
     <dd>
         
-<span class="param-type"><a href="TStore.html">TStore</a></span>
+<span class="param-type">*</span>
 
 
 
@@ -1259,16 +630,12 @@ allow overriding else it throw an TypeError.
             
 <hr>
 <dt>
-    <h4 class="name" id="clear"><span class="type-signature"></span>clear()</h4>
+    <h4 class="name" id="_updateDataView"><span class="type-signature">&lt;private> </span>_updateDataView()</h4>
     
     
 </dt>
 <dd>
 
-    
-    <div class="description">
-        Clear the cache and reset collection to an empty object.
-    </div>
     
 
     
@@ -1313,8 +680,8 @@ allow overriding else it throw an TypeError.
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_cores_TStore.js.html">sources/cores/TStore.js</a>,
-				 <a href="sources_cores_TStore.js.html#sunlight-1-line-293">line 293</a>
+				<a href="sources_loaders_TBinaryWriter.js.html">sources/loaders/TBinaryWriter.js</a>,
+				 <a href="sources_loaders_TBinaryWriter.js.html#sunlight-1-line-221">line 221</a>
 			</li>
 		</ul>
 	</dd>
@@ -1339,30 +706,6 @@ allow overriding else it throw an TypeError.
     
 
     
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    The current instance (this)
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="TStore.html">TStore</a></span>
-
-
-
-    </dd>
-</dl>
-
-
-        
 
     
 </dd>
@@ -1371,7 +714,7 @@ allow overriding else it throw an TypeError.
             
 <hr>
 <dt>
-    <h4 class="name" id="contain"><span class="type-signature"></span>contain(key)</h4>
+    <h4 class="name" id="isEndOfFile"><span class="type-signature"></span>isEndOfFile()</h4>
     
     
 </dt>
@@ -1384,50 +727,6 @@ allow overriding else it throw an TypeError.
     
 
     
-    
-        <h5>Parameters:</h5>
-        
-
-<table class="params table table-striped">
-    <thead>
-    <tr>
-        
-        <th>Name</th>
-        
-
-        <th>Type</th>
-
-        
-
-        
-
-        <th class="last">Description</th>
-    </tr>
-    </thead>
-
-    <tbody>
-    
-
-        <tr>
-            
-                <td class="name"><code>key</code></td>
-            
-
-            <td class="type">
-            
-            </td>
-
-            
-
-            
-
-            <td class="description last"></td>
-        </tr>
-
-    
-    </tbody>
-</table>
-
     
 
     
@@ -1465,8 +764,8 @@ allow overriding else it throw an TypeError.
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_cores_TStore.js.html">sources/cores/TStore.js</a>,
-				 <a href="sources_cores_TStore.js.html#sunlight-1-line-257">line 257</a>
+				<a href="sources_loaders_TBinaryWriter.js.html">sources/loaders/TBinaryWriter.js</a>,
+				 <a href="sources_loaders_TBinaryWriter.js.html#sunlight-1-line-231">line 231</a>
 			</li>
 		</ul>
 	</dd>
@@ -1519,16 +818,12 @@ allow overriding else it throw an TypeError.
             
 <hr>
 <dt>
-    <h4 class="name" id="get"><span class="type-signature"></span>get(key)</h4>
+    <h4 class="name" id="setBuffer"><span class="type-signature"></span>setBuffer(buffer, offset, length)</h4>
     
     
 </dt>
 <dd>
 
-    
-    <div class="description">
-        Return the value associated to the key.
-    </div>
     
 
     
@@ -1562,7 +857,43 @@ allow overriding else it throw an TypeError.
 
         <tr>
             
-                <td class="name"><code>key</code></td>
+                <td class="name"><code>buffer</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>offset</code></td>
+            
+
+            <td class="type">
+            
+            </td>
+
+            
+
+            
+
+            <td class="description last"></td>
+        </tr>
+
+    
+
+        <tr>
+            
+                <td class="name"><code>length</code></td>
             
 
             <td class="type">
@@ -1617,8 +948,8 @@ allow overriding else it throw an TypeError.
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_cores_TStore.js.html">sources/cores/TStore.js</a>,
-				 <a href="sources_cores_TStore.js.html#sunlight-1-line-269">line 269</a>
+				<a href="sources_loaders_TBinaryWriter.js.html">sources/loaders/TBinaryWriter.js</a>,
+				 <a href="sources_loaders_TBinaryWriter.js.html#sunlight-1-line-137">line 137</a>
 			</li>
 		</ul>
 	</dd>
@@ -1654,7 +985,7 @@ allow overriding else it throw an TypeError.
     </dt>
     <dd>
         
-<span class="param-type">*</span>
+<span class="param-type"><a href="TBinaryReader.html">TBinaryReader</a></span>
 
 
 
@@ -1671,16 +1002,12 @@ allow overriding else it throw an TypeError.
             
 <hr>
 <dt>
-    <h4 class="name" id="remove"><span class="type-signature"></span>remove(key)</h4>
+    <h4 class="name" id="setEndianess"><span class="type-signature"></span>setEndianess(endianess)</h4>
     
     
 </dt>
 <dd>
 
-    
-    <div class="description">
-        Remove to value from the cache. Does nothing if the key does not exist.
-    </div>
     
 
     
@@ -1714,7 +1041,7 @@ allow overriding else it throw an TypeError.
 
         <tr>
             
-                <td class="name"><code>key</code></td>
+                <td class="name"><code>endianess</code></td>
             
 
             <td class="type">
@@ -1769,8 +1096,8 @@ allow overriding else it throw an TypeError.
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_cores_TStore.js.html">sources/cores/TStore.js</a>,
-				 <a href="sources_cores_TStore.js.html#sunlight-1-line-281">line 281</a>
+				<a href="sources_loaders_TBinaryWriter.js.html">sources/loaders/TBinaryWriter.js</a>,
+				 <a href="sources_loaders_TBinaryWriter.js.html#sunlight-1-line-176">line 176</a>
 			</li>
 		</ul>
 	</dd>
@@ -1798,10 +1125,6 @@ allow overriding else it throw an TypeError.
     <h5>Returns:</h5>
     
             
-<div class="param-desc">
-    The current instance (this)
-</div>
-
 
 
 <dl>
@@ -1810,7 +1133,7 @@ allow overriding else it throw an TypeError.
     </dt>
     <dd>
         
-<span class="param-type"><a href="TStore.html">TStore</a></span>
+<span class="param-type"><a href="TBinaryReader.html">TBinaryReader</a></span>
 
 
 
@@ -1827,7 +1150,7 @@ allow overriding else it throw an TypeError.
             
 <hr>
 <dt>
-    <h4 class="name" id="setAllowOverride"><span class="type-signature"></span>setAllowOverride(value)</h4>
+    <h4 class="name" id="setLength"><span class="type-signature"></span>setLength(value)</h4>
     
     
 </dt>
@@ -1921,8 +1244,8 @@ allow overriding else it throw an TypeError.
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_cores_TStore.js.html">sources/cores/TStore.js</a>,
-				 <a href="sources_cores_TStore.js.html#sunlight-1-line-196">line 196</a>
+				<a href="sources_loaders_TBinaryWriter.js.html">sources/loaders/TBinaryWriter.js</a>,
+				 <a href="sources_loaders_TBinaryWriter.js.html#sunlight-1-line-164">line 164</a>
 			</li>
 		</ul>
 	</dd>
@@ -1950,10 +1273,6 @@ allow overriding else it throw an TypeError.
     <h5>Returns:</h5>
     
             
-<div class="param-desc">
-    The current instance (this)
-</div>
-
 
 
 <dl>
@@ -1962,7 +1281,7 @@ allow overriding else it throw an TypeError.
     </dt>
     <dd>
         
-<span class="param-type"><a href="TStore.html">TStore</a></span>
+<span class="param-type"><a href="TBinaryReader.html">TBinaryReader</a></span>
 
 
 
@@ -1979,7 +1298,7 @@ allow overriding else it throw an TypeError.
             
 <hr>
 <dt>
-    <h4 class="name" id="setCollection"><span class="type-signature"></span>setCollection(value)</h4>
+    <h4 class="name" id="setOffset"><span class="type-signature"></span>setOffset(value)</h4>
     
     
 </dt>
@@ -2073,8 +1392,8 @@ allow overriding else it throw an TypeError.
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_cores_TStore.js.html">sources/cores/TStore.js</a>,
-				 <a href="sources_cores_TStore.js.html#sunlight-1-line-184">line 184</a>
+				<a href="sources_loaders_TBinaryWriter.js.html">sources/loaders/TBinaryWriter.js</a>,
+				 <a href="sources_loaders_TBinaryWriter.js.html#sunlight-1-line-152">line 152</a>
 			</li>
 		</ul>
 	</dd>
@@ -2102,10 +1421,6 @@ allow overriding else it throw an TypeError.
     <h5>Returns:</h5>
     
             
-<div class="param-desc">
-    The current instance (this)
-</div>
-
 
 
 <dl>
@@ -2114,7 +1429,7 @@ allow overriding else it throw an TypeError.
     </dt>
     <dd>
         
-<span class="param-type"><a href="TStore.html">TStore</a></span>
+<span class="param-type"><a href="TBinaryReader.html">TBinaryReader</a></span>
 
 
 
@@ -2131,7 +1446,7 @@ allow overriding else it throw an TypeError.
             
 <hr>
 <dt>
-    <h4 class="name" id="setKeyValidators"><span class="type-signature"></span>setKeyValidators(value)</h4>
+    <h4 class="name" id="skipOffsetOf"><span class="type-signature"></span>skipOffsetOf(nBytes)</h4>
     
     
 </dt>
@@ -2170,7 +1485,7 @@ allow overriding else it throw an TypeError.
 
         <tr>
             
-                <td class="name"><code>value</code></td>
+                <td class="name"><code>nBytes</code></td>
             
 
             <td class="type">
@@ -2225,8 +1540,8 @@ allow overriding else it throw an TypeError.
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_cores_TStore.js.html">sources/cores/TStore.js</a>,
-				 <a href="sources_cores_TStore.js.html#sunlight-1-line-208">line 208</a>
+				<a href="sources_loaders_TBinaryWriter.js.html">sources/loaders/TBinaryWriter.js</a>,
+				 <a href="sources_loaders_TBinaryWriter.js.html#sunlight-1-line-267">line 267</a>
 			</li>
 		</ul>
 	</dd>
@@ -2251,30 +1566,6 @@ allow overriding else it throw an TypeError.
     
 
     
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    The current instance (this)
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="TStore.html">TStore</a></span>
-
-
-
-    </dd>
-</dl>
-
-
-        
 
     
 </dd>
@@ -2283,7 +1574,7 @@ allow overriding else it throw an TypeError.
             
 <hr>
 <dt>
-    <h4 class="name" id="setValueValidators"><span class="type-signature"></span>setValueValidators(value)</h4>
+    <h4 class="name" id="skipOffsetTo"><span class="type-signature"></span>skipOffsetTo(offset)</h4>
     
     
 </dt>
@@ -2322,7 +1613,7 @@ allow overriding else it throw an TypeError.
 
         <tr>
             
-                <td class="name"><code>value</code></td>
+                <td class="name"><code>offset</code></td>
             
 
             <td class="type">
@@ -2377,8 +1668,8 @@ allow overriding else it throw an TypeError.
 	<dd class="tag-source">
 		<ul class="dummy">
 			<li>
-				<a href="sources_cores_TStore.js.html">sources/cores/TStore.js</a>,
-				 <a href="sources_cores_TStore.js.html#sunlight-1-line-220">line 220</a>
+				<a href="sources_loaders_TBinaryWriter.js.html">sources/loaders/TBinaryWriter.js</a>,
+				 <a href="sources_loaders_TBinaryWriter.js.html#sunlight-1-line-257">line 257</a>
 			</li>
 		</ul>
 	</dd>
@@ -2403,30 +1694,6 @@ allow overriding else it throw an TypeError.
     
 
     
-    <h5>Returns:</h5>
-    
-            
-<div class="param-desc">
-    The current instance (this)
-</div>
-
-
-
-<dl>
-    <dt>
-        Type
-    </dt>
-    <dd>
-        
-<span class="param-type"><a href="TStore.html">TStore</a></span>
-
-
-
-    </dd>
-</dl>
-
-
-        
 
     
 </dd>

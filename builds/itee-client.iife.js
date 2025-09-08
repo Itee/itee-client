@@ -1,6 +1,6 @@
-console.log('Itee.Client v8.1.2 - Standalone')
+console.log('Itee.Core v8.1.2 - Standalone')
 this.Itee = this.Itee || {};
-this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
+this.Itee.Core = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	'use strict';
 
 	if( iteeValidators === undefined ) { console.error('Itee.Client need Itee.Validators to be defined first. Please check your scripts loading order.') }
@@ -1017,6 +1017,40 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 
 	}
 
+	//import { DefaultBinarySerializer } from './TBinarySerializer'
+
+	class TBinaryConverter {
+
+	    constructor ( targetType, serializer = null ) {
+	//    constructor ( targetType, serializer = DefaultBinarySerializer ) {
+
+	        this.targetCtor = targetType;
+	        this.serializer = serializer;
+
+	    }
+
+	    /**
+	     *
+	     * @param {TBinaryWriter} writer
+	     * @param instance
+	     * @param options
+	     */
+	    to ( writer, instance, options = {} ) { }
+
+	    /**
+	     *
+	     * @param {TBinaryReader} reader
+	     * @param options
+	     * @returns {*}
+	     */
+	    from ( reader, options = {} ) {
+
+	        return new this.targetCtor()
+
+	    }
+
+	}
+
 	/* eslint-env browser */
 
 	/**
@@ -1231,12 +1265,12 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 
 	    /**
 	     *
-	     * @param endianess
+	     * @param endianness
 	     * @returns {TBinaryReader}
 	     */
-	    setEndianess ( endianess ) {
+	    setEndianness ( endianness ) {
 
-	        this.endianness = endianess;
+	        this.endianness = endianness;
 	        return this
 
 	    }
@@ -1251,6 +1285,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 
 	        const currentOffset = this._offset;
 	        this._offset += increment;
+
 	        return currentOffset
 
 	    }
@@ -1290,20 +1325,20 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	        return this._bits.offset === this._bits.length
 
 	    }
-	    _isOutOfRangeBitOffset( offset ) {
+	    _isOutOfRangeBitOffset ( offset ) {
 	        return offset > this._bits.length
 	    }
-	    _readBit8() {
+	    _readBit8 () {
 	        this._bits.buffer = this.getUint8();
 	        this._bits.length = 8;
 	        this._bits.offset = 0;
 	    }
-	    _readBit16() {
+	    _readBit16 () {
 	        this._bits.buffer = this.getUint16();
 	        this._bits.length = 16;
 	        this._bits.offset = 0;
 	    }
-	    _readBit32() {
+	    _readBit32 () {
 	        this._bits.buffer = this.getUint32();
 	        this._bits.length = 32;
 	        this._bits.offset = 0;
@@ -1325,15 +1360,15 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	        // In case we start directly by a skip offset try to determine which kind of data is expected
 	        if ( this._isNullBitBuffer() ) {
 
-	            if (bitOffset <= 8) {
+	            if ( bitOffset <= 8 ) {
 
 	                this._readBit8();
 
-	            } else if (8 < bitOffset && bitOffset <= 16 ){
+	            } else if ( 8 < bitOffset && bitOffset <= 16 ) {
 
 	                this._readBit16();
 
-	            } else if (16 < bitOffset && bitOffset <= 32 ){
+	            } else if ( 16 < bitOffset && bitOffset <= 32 ) {
 
 	                this._readBit32();
 
@@ -1343,11 +1378,10 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 
 	            }
 
-	        }
-	        else if ( this._isOutOfRangeBitOffset(bitOffset) ) { throw new RangeError( 'Bit offset is out of range of the current bits field.' ) }
+	        } else if ( this._isOutOfRangeBitOffset( bitOffset ) ) { throw new RangeError( 'Bit offset is out of range of the current bits field.' ) }
 
 	        this._bits.offset = bitOffset;
-	        if(this._isEndOfBitBuffer()) {
+	        if ( this._isEndOfBitBuffer() ) {
 	            this._resetBits();
 	        }
 
@@ -1355,7 +1389,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 
 	    skipBitOffsetOf ( nBits ) {
 
-	        this.skipBitOffsetTo(this._bits.offset + nBits);
+	        this.skipBitOffsetTo( this._bits.offset + nBits );
 
 	    }
 
@@ -1848,7 +1882,6 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 
 	    }
 
-
 	    /**
 	     *
 	     * @returns {number}
@@ -2032,6 +2065,885 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	    }
 
 	}
+
+	class NullBinaryConverter extends TBinaryConverter {
+	    constructor ( serializer ) { super( null, serializer ); }
+
+	    to ( writer, instance, options = {} ) {}
+
+	    from ( reader, options = {} ) {
+	        return null
+	    }
+	}
+
+	class UndefinedBinaryConverter extends TBinaryConverter {
+	    constructor ( serializer ) { super( null, serializer ); }
+
+	    to ( writer, instance, options = {} ) {}
+
+	    from ( reader, options = {} ) {
+	        return undefined
+	    }
+	}
+
+	/**
+	 * @author [Tristan Valcke]{@link https://github.com/Itee}
+	 * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+	 */
+
+	class BooleanBinaryConverter extends TBinaryConverter {
+
+	    constructor ( serializer ) { super( Boolean, serializer ); }
+
+	    to ( writer, instance, options = {} ) {
+
+	        writer.setBoolean( instance );
+
+	    }
+
+	    from ( reader, options = {} ) {
+
+	        return reader.getBoolean()
+
+	    }
+	}
+
+	class NumberBinaryConverter extends TBinaryConverter {
+	    constructor ( serializer ) { super( Number, serializer ); }
+
+	    to ( writer, instance, options = {} ) {
+	        writer.setFloat64( instance );
+	    }
+
+	    from ( reader, options = {} ) {
+	        return reader.getFloat64()
+	    }
+	}
+
+	/**
+	 * @author [Tristan Valcke]{@link https://github.com/Itee}
+	 * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+	 */
+
+	class StringBinaryConverter extends TBinaryConverter {
+
+	    constructor ( serializer ) { super( String, serializer ); }
+
+	    to ( writer, instance, options = {} ) {
+
+	        writer.setUint32( instance.length );
+	        writer.setString( instance );
+
+	    }
+
+	    from ( reader, options = {} ) {
+
+	        const stringLength = reader.getUint32();
+	        return reader.getString( stringLength )
+
+	    }
+	}
+
+	// import { DefaultBinarySerializer } from '../TBinarySerializer'
+
+	class DateBinaryConverter extends TBinaryConverter {
+	    constructor ( serializer ) { super( Date, serializer ); }
+
+	    to ( writer, instance, options = {} ) {
+	        const utc = instance.toUTCString();
+	        this.serializer._serialize( utc );
+	//        DefaultBinarySerializer._serialize( utc )
+	    }
+
+	    from ( reader, options = {} ) {
+	        const utcString = this.serializer._deserialize();
+	//        const utcString = DefaultBinarySerializer._deserialize()
+	        return new Date( utcString )
+	    }
+	}
+
+	class RegExBinaryConverter extends TBinaryConverter {
+	    constructor ( serializer ) { super( RegExp, serializer ); }
+
+	    from ( reader, options = {} ) {
+	        return new RegExp()
+	    }
+	}
+
+	// import { DefaultBinarySerializer } from '../TBinarySerializer'
+
+	class ArrayBinaryConverter extends TBinaryConverter {
+	    constructor ( serializer ) { super( Array, serializer ); }
+
+	    to ( writer, instance, options = {} ) {
+
+	        const numberOfElements = instance.length;
+	        writer.setUint32( numberOfElements );
+	        for ( let instanceElement of instance ) {
+	            //            DefaultBinarySerializer._serialize( instanceElement )
+	            this.serializer._serialize( instanceElement );
+	        }
+
+	    }
+	    from ( reader, options = {} ) {
+
+	        const numberOfElements = reader.getUint32();
+	        const result           = [];
+	        for ( let i = 0 ; i < numberOfElements ; i++ ) {
+	            //            const element = DefaultBinarySerializer._deserialize()
+	            const element = this.serializer._deserialize();
+	            result.push( element );
+	        }
+
+	        return result
+
+	    }
+	}
+
+	// import { DefaultBinarySerializer } from '../TBinarySerializer'
+
+	class ObjectBinaryConverter extends TBinaryConverter {
+	    constructor ( subType, serializer ) { super( subType || Object, serializer ); }
+
+	    to ( writer, instance, options = {} ) {
+
+	        // Keep only writable properties from instance
+	        // Read-only property are considered as it ! And won't be serialized.
+	        const descriptors             = Object.getOwnPropertyDescriptors( instance );
+	        const writablePropertyEntries = Object.entries( descriptors )
+	                                              .filter( ( [ key, value ] ) => value.writable && value.enumerable );
+
+	        // Store number of writable properties of object for future deserialization loop
+	        writer.setUint8( writablePropertyEntries.length );
+
+	        for ( let [ key, property ] of writablePropertyEntries ) {
+	            //            console.log( key, property.value )
+
+	            writer.setUint32( key.length );
+	            writer.setString( key );
+
+	            // target private method to allow buffer clipping on serialization
+	            this.serializer._serialize( property.value );
+	//            DefaultBinarySerializer._serialize( property.value )
+	        }
+
+	        //        const instanceKeys = Object.keys( instance )
+	        //        console.log( instanceKeys )
+	        //
+	        //        const instanceEntries = Object.entries( instance )
+	        //        console.log( instanceEntries )
+	        //
+	        //        const descriptors = Object.getOwnPropertyDescriptors( instance )
+	        //        for ( let descriptor in descriptors ) {
+	        //            if ( !instanceKeys.includes( descriptor ) ) { continue }
+	        //
+	        //
+	        //            if ( !descriptor.writable ) { continue }
+	        //
+	        //
+	        //        }
+	        //
+	        //        const descKeys = Object.keys( descriptors )
+	        //        console.log( descKeys )
+	        //
+	        //        const descEntries = Object.entries( descriptors )
+	        //        console.log( descEntries )
+	        //
+	        //        const filteredVals = Object.values( descriptors )
+	        //                                   .filter( value => value.writable )
+	        //        console.log( filteredVals )
+	        //
+	        //        const filtered = descEntries.filter( ( [ key, value ] ) => value.writable && value.enumerable )
+	        //        console.log( filtered )
+
+	        // Store number of object keys for deserialization loop
+	        //        const keys = Object.keys( instance )
+	        //        writer.setUint8( keys.length )
+	        //
+	        //        for ( let key of keys ) {
+	        //            if ( !instance.hasOwnProperty( key ) ) { continue }
+	        //
+	        //            writer.setUint32( key.length )
+	        //            writer.setString( key )
+	        //
+	        //            TBinarySerializer.serialize( instance[ key ] )
+	        //        }
+
+	    }
+
+	    from ( reader, options = {} ) {
+	        const instance = super.from( reader, options );
+
+
+	        //        const descriptors        = Object.getOwnPropertyDescriptors( instance )
+	        //        const result             = {}
+	        const numberOfProperties = reader.getUint8();
+	        for ( let i = 0 ; i < numberOfProperties ; i++ ) {
+	            const keyLength = reader.getUint32();
+	            const keyName   = reader.getString( keyLength );
+
+	            instance[ keyName ] = this.serializer._deserialize();
+	//            instance[ keyName ] = DefaultBinarySerializer._deserialize()
+	            //
+	            //            const descriptor = descriptors[ keyName ]
+	            //
+	            //            if ( descriptor.writable ) {
+	            //                instance[ keyName ] = TBinarySerializer._deserialize()
+	            //            } else {
+	            //                var deseri = TBinarySerializer._deserialize()
+	            //            }
+	        }
+	        return instance
+
+	    }
+	}
+
+	/**
+	 * @author [Tristan Valcke]{@link https://github.com/Itee}
+	 * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+	 */
+
+	class TBinaryWriter {
+
+	    /**
+	     *
+	     * @returns {*}
+	     */
+	    get buffer () {
+	        return this._buffer
+	    }
+
+	    set buffer ( value ) {
+
+	        const memberName = 'Buffer';
+	        const expect     = 'Expect an instance of ArrayBuffer.';
+
+	        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+	        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+	        if ( iteeValidators.isNotArrayBuffer( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
+
+	        this._buffer = value;
+	        this._offset = 0;
+	        this._length = value.byteLength;
+
+	        this._updateDataView();
+
+	    }
+
+	    /**
+	     *
+	     * @returns {*}
+	     */
+	    get offset () {
+	        return this._offset
+	    }
+
+	    set offset ( value ) {
+
+	        const memberName = 'Offset';
+	        const expect     = 'Expect a number.';
+
+	        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+	        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+	        if ( iteeValidators.isNotNumber( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
+
+	        this._offset = value;
+
+	        this._updateDataView();
+
+	    }
+
+	    /**
+	     *
+	     * @param value
+	     */
+	    get length () {
+	        return this._length
+	    }
+
+	    set length ( value ) {
+
+	        const memberName = 'Length';
+	        const expect     = 'Expect a number.';
+
+	        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+	        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+	        if ( iteeValidators.isNotNumber( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
+
+	        this._length = value;
+
+	        this._updateDataView();
+
+	    }
+
+	    /**
+	     *
+	     * @returns {*}
+	     */
+	    get endianness () {
+	        return this._endianness
+	    }
+
+	    set endianness ( value ) {
+
+	        const memberName = 'Endianness';
+	        const expect     = 'Expect a boolean.';
+
+	        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+	        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+	        if ( iteeValidators.isNotBoolean( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
+
+	        this._endianness = value;
+	    }
+
+	    constructor ( {
+	        buffer = new ArrayBuffer( 1024 ),
+	        endianness = Endianness.Little
+	    } = {} ) {
+
+	        this.buffer     = buffer;
+	        this.endianness = endianness;
+
+	        // Todo: For bit writing use same approche than byte
+	        //        this._bits = {
+	        //            buffer: null,
+	        //            offset: 0,
+	        //            length: 0
+	        //        }
+
+	        this._updateDataView();
+	    }
+
+
+	    /**
+	     *
+	     * @param buffer
+	     * @param offset
+	     * @param length
+	     * @returns {TBinaryReader}
+	     */
+	    setBuffer ( buffer, offset, length ) {
+
+	        this.buffer = buffer;
+	        this.offset = offset || 0;
+	        this.length = length || buffer.byteLength;
+
+	        return this
+
+	    }
+
+	    /**
+	     *
+	     * @param value
+	     * @returns {TBinaryReader}
+	     */
+	    setOffset ( value ) {
+
+	        this.offset = value;
+	        return this
+
+	    }
+
+	    /**
+	     *
+	     * @param value
+	     * @returns {TBinaryReader}
+	     */
+	    setLength ( value ) {
+
+	        this.length = value;
+	        return this
+
+	    }
+
+	    /**
+	     *
+	     * @param endianess
+	     * @returns {TBinaryReader}
+	     */
+	    setEndianess ( endianess ) {
+
+	        this.endianness = endianess;
+	        return this
+
+	    }
+
+	    /**
+	     *
+	     * @param increment
+	     * @returns {*}
+	     * @private
+	     */
+	    _getAndUpdateOffsetBy ( increment ) {
+
+	        const currentOffset = this._offset;
+	        this._offset += increment;
+
+	        // Manage buffer overflow, and auto-extend if needed
+	        const bufferByteLength = this._buffer.byteLength;
+	        if ( this._offset >= bufferByteLength ) {
+
+	            // Create new buffer and view with extended size
+	            const newBuffer   = new ArrayBuffer( bufferByteLength + 1024 );
+	            const newDataView = new DataView( newBuffer, 0, newBuffer.byteLength );
+
+	            // Copy data from current to new
+	            for ( let i = 0 ; i < bufferByteLength ; i++ ) {
+	                newDataView.setUint8( i, this._dataView.getUint8( i ) );
+	            }
+
+	            // Update local
+	            this._buffer = newBuffer;
+	            this._dataView = newDataView;
+
+	        }
+
+	        return currentOffset
+
+	    }
+
+	    /**
+	     *
+	     * @private
+	     */
+	    _updateDataView () {
+
+	        this._dataView = new DataView( this._buffer, this._offset, this._length );
+
+	    }
+
+	    /**
+	     *
+	     * @returns {boolean}
+	     */
+	    isEndOfFile () {
+
+	        return ( this._offset === this._length )
+
+	    }
+
+	    _iterArray ( values, func, moveNext ) {
+
+	        const currentOffset = this._offset;
+
+	        for ( let value of values ) {
+	            func( value );
+	        }
+
+	        if ( !moveNext ) {
+	            this._offset = currentOffset;
+	        }
+
+	    }
+
+	    // Bytes
+
+	    /**
+	     *
+	     * @param offset
+	     */
+	    skipOffsetTo ( offset ) {
+
+	        this._offset = offset;
+
+	    }
+
+	    /**
+	     *
+	     * @param nBytes
+	     */
+	    skipOffsetOf ( nBytes ) {
+
+	        this._offset += nBytes;
+
+	    }
+
+	    setBoolean ( value, moveNext = true ) {
+
+	        this.setUint8( ( ( value & 1 ) === 1 ), moveNext );
+
+	    }
+
+	    setBooleanArray ( values, moveNext = true ) {
+
+	        this._iterArray( values, this.setBoolean.bind( this ), moveNext );
+
+	    }
+
+	    setInt8 ( value, moveNext = true ) {
+
+	        const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.One ) : this._offset;
+	        this._dataView.setInt8( offset, value );
+
+	    }
+
+	    setInt8Array ( values, moveNext = true ) {
+
+	        this._iterArray( values, this.setInt8.bind( this ), moveNext );
+
+	    }
+
+	    setUint8 ( value, moveNext = true ) {
+
+	        const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.One ) : this._offset;
+	        this._dataView.setUint8( offset, value );
+
+	    }
+
+	    setUint8Array ( values, moveNext = true ) {
+
+	        this._iterArray( values, this.setUint8.bind( this ), moveNext );
+
+	    }
+
+	    setInt16 ( value, moveNext = true ) {
+
+	        const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Two ) : this._offset;
+	        this._dataView.setInt16( offset, value, this._endianness );
+
+	    }
+
+	    setInt16Array ( values, moveNext = true ) {
+
+	        this._iterArray( values, this.setInt16.bind( this ), moveNext );
+
+	    }
+
+	    setUint16 ( value, moveNext = true ) {
+
+	        const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Two ) : this._offset;
+	        this._dataView.setUint16( offset, value, this._endianness );
+
+	    }
+
+	    setUint16Array ( values, moveNext = true ) {
+
+	        this._iterArray( values, this.setUint16.bind( this ), moveNext );
+
+	    }
+
+	    setInt32 ( value, moveNext = true ) {
+
+	        const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Four ) : this._offset;
+	        this._dataView.setInt32( offset, value, this._endianness );
+
+	    }
+
+	    setInt32Array ( values, moveNext = true ) {
+
+	        this._iterArray( values, this.setInt32.bind( this ), moveNext );
+
+	    }
+
+	    setUint32 ( value, moveNext = true ) {
+
+	        const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Four ) : this._offset;
+	        this._dataView.setUint32( offset, value, this._endianness );
+
+	    }
+
+	    setUint32Array ( values, moveNext = true ) {
+
+	        this._iterArray( values, this.setUint32.bind( this ), moveNext );
+
+	    }
+
+	    setInt64 ( /*value, moveNext = true*/ ) {
+
+	        // From THREE.FBXLoader
+	        // JavaScript doesn't support 64-bit integer so attempting to calculate by ourselves.
+	        // 1 << 32 will return 1 so using multiply operation instead here.
+	        // There'd be a possibility that this method returns wrong value if the value
+	        // is out of the range between Number.MAX_SAFE_INTEGER and Number.MIN_SAFE_INTEGER.
+	        // TODO: safely handle 64-bit integer using bigint ?
+
+	        throw new Error( 'Not implemented, sorry... any help is welcome !' )
+	    }
+
+	    setInt64Array ( values, moveNext = true ) {
+
+	        this._iterArray( values, this.setInt64.bind( this ), moveNext );
+
+	    }
+
+	    setUint64 ( /*value, moveNext = true*/ ) {
+	        // Note: see setInt64() comment
+	        throw new Error( 'Not implemented, sorry... any help is welcome !' )
+	    }
+
+	    setUint64Array ( values, moveNext = true ) {
+
+	        this._iterArray( values, this.setUint64.bind( this ), moveNext );
+
+	    }
+
+	    setFloat32 ( value, moveNext = true ) {
+
+	        const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Four ) : this._offset;
+	        this._dataView.setFloat32( offset, value, this._endianness );
+
+	    }
+
+	    setFloat32Array ( values, moveNext = true ) {
+
+	        this._iterArray( values, this.setFloat32.bind( this ), moveNext );
+
+	    }
+
+	    setFloat64 ( value, moveNext = true ) {
+
+	        const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Eight ) : this._offset;
+	        this._dataView.setFloat64( offset, value, this._endianness );
+
+	    }
+
+	    setFloat64Array ( values, moveNext = true ) {
+
+	        this._iterArray( values, this.setFloat64.bind( this ), moveNext );
+
+	    }
+
+	    setChar ( value, moveNext = true ) {
+
+	        this.setUint8( value.charCodeAt( 0 ), moveNext );
+
+	    }
+
+	    setString ( values, moveNext = true ) {
+
+	        this._iterArray( values, this.setChar.bind( this ), moveNext );
+
+	    }
+
+	    //    setArrayBuffer ( value, moveNext = true ) {
+	    //
+	    //        const offset = this._getAndUpdateOffsetBy( size )
+	    //        this._dataView.buffer.slice( offset, offset + size )
+	    //
+	    //    }
+
+	}
+
+	/**
+	 * @author [Tristan Valcke]{@link https://github.com/Itee}
+	 * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+	 */
+
+	//const BinaryType = toEnum( {
+	//    Null:        0,
+	//    Boolean:     1,
+	//    Number:      2,
+	//    String:      3,
+	//    Date:        4,
+	//    RegExp:      5,
+	//    Object:      6,
+	//    Array:       7,
+	//    UserDefined: 8
+	//} )
+
+	const BinaryType = {
+	    Null:        0,
+	    Undefined:   1,
+	    Boolean:     2,
+	    Number:      3,
+	    String:      4,
+	    Date:        5,
+	    RegEx:       6,
+	    Array:       7,
+	    Object:      8,
+	    UserDefined: 255
+	};
+
+	function isDate ( value ) {
+	    switch ( typeof value ) {
+	        case 'number':
+	            return true
+	        case 'string':
+	            return !isNaN( Date.parse( value ) )
+	        case 'object':
+	            if ( value instanceof Date ) {
+	                return !isNaN( value.getTime() )
+	            } else {
+	                return false
+	            }
+	        default:
+	            return false
+	    }
+	}
+
+	function isRegEx ( value ) {
+	    return value instanceof RegExp
+	}
+
+	class TBinarySerializer {
+
+	    constructor () {
+
+	        this.reader = new TBinaryReader();
+	        this.writer = new TBinaryWriter();
+
+	        this.converters = new Map( [
+	            [ BinaryType.Null, new NullBinaryConverter(this) ],
+	            [ BinaryType.Undefined, new UndefinedBinaryConverter(this) ],
+	            [ BinaryType.Boolean, new BooleanBinaryConverter(this) ],
+	            [ BinaryType.Number, new NumberBinaryConverter(this) ],
+	            [ BinaryType.String, new StringBinaryConverter(this) ],
+	            [ BinaryType.Date, new DateBinaryConverter(this) ],
+	            [ BinaryType.RegEx, new RegExBinaryConverter(this) ],
+	            [ BinaryType.Array, new ArrayBinaryConverter(this) ],
+	            [ BinaryType.Object, new ObjectBinaryConverter(null, this) ],
+	            [ BinaryType.UserDefined, new Map( [] ) ]
+	        ] );
+
+	        //        this.converters.set( BinaryType.Boolean, new BooleanBinaryConverter() )
+	        //        this.converters.set( 'String', new StringBinaryConverter() )
+	    }
+
+	    addConverter ( converter ) {
+
+	        converter.serializer = this;
+
+	        const userDefinedConverters = this.converters.get( BinaryType.UserDefined );
+	        userDefinedConverters.set( converter.targetCtor.name, converter );
+
+	    }
+	    removeConverter ( converter ) {
+	        const userDefinedConverters = this.converters.get( BinaryType.UserDefined );
+	        userDefinedConverters.remove( converter.targetCtor.name );
+	    }
+
+	    serialize ( instance, options = {} ) {
+
+	        // Reset writer buffer
+	        this.writer.buffer = new ArrayBuffer( 1024 );
+	        const buffer       = this._serialize( instance );
+
+	//        // Clip buffer to current offset
+	//        const writerOffset = this.writer.offset
+	//        console.log( writerOffset )
+	//        const clippedBuffer = buffer.slice( 0, writerOffset )
+	//
+	//        return clippedBuffer
+	//
+
+	        // Clip buffer to current writer offset
+	        return buffer.slice( 0, this.writer.offset )
+	    }
+	    _serialize ( instance ) {
+	        const binaryType = this._getBinaryTypeOf( instance );
+
+	        // Prepend internal binary type for deserialization process to be able to target correct converter
+	        this.writer.setUint8( binaryType );
+
+	        // Get local converters and in case where binary type is userdefined, search in specific converter or use default (unoptimized)
+	        let converter = this.converters.get( binaryType );
+	        if ( binaryType === BinaryType.UserDefined ) {
+
+	            // Prepend class name for deserialization (like BinaryType for primitives)
+	            const ctor     = instance.constructor;
+	            const ctorName = ctor.name;
+	            this.writer.setUint8( ctorName.length );
+	            this.writer.setString( ctorName );
+
+	            if ( !converter.has( ctorName ) ) {
+	                console.info( `Need to create new converter for ${ ctorName } serialization. The serialization of this class could be optimized using it's own dedicated serializer that extend TBinaryConverter and add it to serializer converters.` );
+	                converter.set( ctorName, new ObjectBinaryConverter( ctor, this ) );
+	            }
+	            converter = converter.get( ctorName );
+	        }
+
+	        converter.to( this.writer, instance );
+
+	        return this.writer.buffer
+	    }
+	    _getBinaryTypeOf ( instance ) {
+	        let binaryType;
+	        if ( iteeValidators.isNull( instance ) ) {
+	            binaryType = BinaryType.Null;
+	        } else if ( iteeValidators.isUndefined( instance ) ) {
+	            binaryType = BinaryType.Undefined;
+	        } else if ( iteeValidators.isBoolean( instance ) ) {
+	            binaryType = BinaryType.Boolean;
+	        } else if ( iteeValidators.isNumber( instance ) ) {
+	            binaryType = BinaryType.Number;
+	        } else if ( iteeValidators.isString( instance ) ) {
+	            binaryType = BinaryType.String;
+	        } else if ( isDate( instance ) ) {
+	            binaryType = BinaryType.Date;
+	        } else if ( isRegEx( instance ) ) {
+	            binaryType = BinaryType.RegEx;
+	        } else if ( iteeValidators.isArray( instance ) ) {
+	            binaryType = BinaryType.Array;
+	        } else if ( iteeValidators.isObject( instance ) ) { // Todo: care it should be isPlainObject !!!
+	            binaryType = BinaryType.Object;
+	        } else { // UserDefined check in registered converters
+	            binaryType = BinaryType.UserDefined;
+	        }
+
+	        return binaryType
+	    }
+
+	    deserialize ( buffer ) {
+	        if ( iteeValidators.isNotDefined( buffer ) || buffer.length === 0 ) { return }
+
+	        // Reset writer buffer
+	        this.reader.setBuffer( buffer, 0, buffer.length );
+
+	        return this._deserialize()
+
+	    }
+	    _deserialize () {
+
+	        const binaryType = this.reader.getUint8();
+
+	        let converter = this.converters.get( binaryType );
+	        if ( binaryType === BinaryType.UserDefined ) {
+
+	            const ctorNameLength = this.reader.getUint8();
+	            const ctorName       = this.reader.getString( ctorNameLength );
+
+	            // var ctor = this._getCtorOf( ctorName )
+
+	            converter = converter.has( ctorName )
+	                ? converter.get( ctorName )
+	                : null; //converter.get( null )
+
+	            // Get specific or create default converter for userdefined type
+	            //            const ctorNameLength = this.reader.getUint8()
+	            //            const ctorName = this.reader.getString( ctorNameLength )
+	            //
+	            //            if ( !converter.has( ctorName ) ) {
+	            //                console.info( `Need to create new converter for ${ ctorName } serialization. The serialization of this class could be optimized using it's own dedicated serializer that extend TBinaryConverter and add it to serializer
+	            // converters.` ) converter.set( ctorName, new ObjectBinaryConverter( ctor ) ) } converter = converter.get( ctorName )
+	        }
+
+	        if ( !converter ) {
+	            throw new TypeError( `Unable to found appropriate converter for deserialize type: ${ binaryType }` )
+	        }
+
+	        return converter.from( this.reader )
+
+	    }
+	    // _getCtorOf ( typeName ) {
+	    //     var stringToFunction = function ( str ) {
+	    //         var arr = str.split( '.' )
+	    //
+	    //         var fn = ( window || this )
+	    //         for ( var i = 0, len = arr.length ; i < len ; i++ ) {
+	    //             fn = fn[ arr[ i ] ]
+	    //         }
+	    //
+	    //         if ( typeof fn !== 'function' ) {
+	    //             throw new Error( 'function not found' )
+	    //         }
+	    //
+	    //         return fn
+	    //     }
+	    // }
+
+	}
+
+	const binarySerializerInstance = new TBinarySerializer();
 
 	/**
 	 * @author [Tristan Valcke]{@link https://github.com/Itee}
@@ -3884,14 +4796,15 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 
 	    /**
 	     *
-	     * @returns {{data: *}}
+	     * @returns {{id: String, type: String, data: String}}
 	     */
 	    toJSON () {
 
+	        const isPlainObject = this.data === Object( this.data );
 	        return {
 	            ...super.toJSON(),
 	            ...{
-	                data: JSON.stringify( this.data )
+	                data: isPlainObject ? JSON.stringify( this.data ) : this.data
 	            }
 	        }
 
@@ -3963,6 +4876,61 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	            ...super.toJSON(),
 	            ...{
 	                error: this.error
+	            }
+	        }
+
+	    }
+
+	}
+
+	/**
+	 * @author [Tristan Valcke]{@link https://github.com/Itee}
+	 * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+	 */
+
+	/**
+	 * @typedef {Object} WebAPIMessageDataSerialized
+	 * @property {object} data
+	 * @instance
+	 */
+
+	/**
+	 * @class
+	 * @classdesc The web api message for serializable data transfert
+	 * @extends WebAPIMessage
+	 * @author [Tristan Valcke]{@link https://github.com/Itee}
+	 */
+	class WebAPIMessageEvent extends WebAPIMessage {
+
+	    /**
+	     * @static
+	     * @type {boolean}
+	     */
+	    static isWebAPIMessageEvent = true
+
+	    /**
+	     *
+	     * @param data
+	     */
+	    constructor ( name, data ) {
+	        super( '_event' );
+
+	        this.name = name;
+	        this.data = data;
+	    }
+
+	    /**
+	     *
+	     * @returns {{id: String, type: String, data: String}}
+	     */
+	    toJSON () {
+
+	        const isPlainObject = this.data === Object( this.data );
+	        return {
+	            ...super.toJSON(),
+	            ...{
+	                name: this.name,
+	                data: isPlainObject ? JSON.stringify( this.data ) : this.data
 	            }
 	        }
 
@@ -4358,6 +5326,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	        // Private stuff
 	        this._localOriginUri  = window.location.origin;
 	        this._awaitingRequest = new Map();
+	        this._eventListeners  = {}; //"eventName" : [ callback1, ... ]
 
 	        // Listen message from Window
 	        window.addEventListener( 'message', this._onMessage.bind( this ), false );
@@ -4409,6 +5378,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	        const _allowedOrigins = iteeUtils.toArray( value );
 
 	        // Special case for any origin
+	        // Todo: should log error in production and cancel '*'
 	        if ( _allowedOrigins.includes( '*' ) ) {
 	            this.logger.warn( `[${ this._localOriginUri }]: This webApi is allowed for all origin and could lead to security concerne !` );
 	            this._allowedOrigins.push( '*' );
@@ -4503,6 +5473,23 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	        return this
 	    }
 
+	    addEventListener ( eventName, listener ) {
+	        if ( iteeValidators.isNotDefined( this._eventListeners[ eventName ] ) ) {
+	            this._eventListeners[ eventName ] = [];
+	        }
+
+	        this._eventListeners[ eventName ].push( listener );
+	    }
+	    removeListener ( eventName, listener ) {
+	        if ( iteeValidators.isNotDefined( this._eventListeners[ eventName ] ) ) {
+	            return
+	        }
+
+	        const index = this._eventListeners[ eventName ].indexOf( listener );
+	        if ( index > -1 ) {
+	            this._eventListeners[ eventName ].splice( index, 1 );
+	        }
+	    }
 	    // Validators
 
 	    /**
@@ -4755,6 +5742,10 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	                this.onDataFrom( origin, message );
 	                break
 
+	            case '_event':
+	                this.onEventFrom( origin, message );
+	                break
+
 	            case '_error':
 	                this.onErrorFrom( origin, message );
 	                break
@@ -4890,6 +5881,12 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	        this.logger.log( `[${ this._localOriginUri }]: the origin [${ origin.uri }] send custom message => ${ JSON.stringify( message, null, 4 ) }. Need you to reimplement this method ?` );
 	    }
 
+	    onEventFrom ( origin, event ) {
+	        const listeners = this._eventListeners[ event.name ];
+	        for ( const listener of listeners ) {
+	            listener( event.data );
+	        }
+	    }
 	    // Send
 
 	    /**
@@ -5021,6 +6018,19 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 
 	    }
 
+	    postEvent ( name = 'DefaultEventName', data ) {
+
+	        const _data = ( data && data.constructor.isWebAPIMessageEvent ) ? data : new WebAPIMessageEvent( name, data );
+
+	        // Broadcast to all potential listener
+	        const allowedOrigins = this._allowedOrigins.filter( origin => origin !== '*' );
+	        for ( let i = 0 ; i < allowedOrigins.length ; i++ ) {
+	            const allowedOrigin = allowedOrigins[ i ];
+	            const originId      = allowedOrigin.id;
+	            this.postMessageTo( originId, _data );
+	        }
+
+	    }
 	}
 
 	/**
@@ -5451,7 +6461,11 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	}
 
 	exports.AbstractWorker = AbstractWorker;
+	exports.ArrayBinaryConverter = ArrayBinaryConverter;
+	exports.BinaryType = BinaryType;
 	exports.Byte = Byte;
+	exports.DateBinaryConverter = DateBinaryConverter;
+	exports.DefaultBinarySerializer = binarySerializerInstance;
 	exports.Endianness = Endianness;
 	exports.FileFormat = FileFormat;
 	exports.HttpStatusCode = HttpStatusCode;
@@ -5459,9 +6473,17 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	exports.Keys = Keys;
 	exports.MimeType = MimeType;
 	exports.Mouse = Mouse;
+	exports.NullBinaryConverter = NullBinaryConverter;
+	exports.NumberBinaryConverter = NumberBinaryConverter;
+	exports.ObjectBinaryConverter = ObjectBinaryConverter;
+	exports.RegExBinaryConverter = RegExBinaryConverter;
 	exports.ResponseType = ResponseType;
+	exports.StringBinaryConverter = StringBinaryConverter;
 	exports.TAbstractFactory = TAbstractFactory;
+	exports.TBinaryConverter = TBinaryConverter;
 	exports.TBinaryReader = TBinaryReader;
+	exports.TBinarySerializer = TBinarySerializer;
+	exports.TBinaryWriter = TBinaryWriter;
 	exports.TCloningFactory = TCloningFactory;
 	exports.TDataBaseManager = TDataBaseManager;
 	exports.TIdFactory = TIdFactory;
@@ -5470,6 +6492,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	exports.TKeyboardController = TKeyboardController;
 	exports.TMouseController = TMouseController;
 	exports.TStore = TStore;
+	exports.UndefinedBinaryConverter = UndefinedBinaryConverter;
 	exports.WebAPI = WebAPI;
 	exports.WebAPIMessage = WebAPIMessage;
 	exports.WebAPIMessageData = WebAPIMessageData;
