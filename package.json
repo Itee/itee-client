@@ -100,7 +100,7 @@
     "karma-opera-launcher": "^1.0.0",
     "karma-safari-launcher": "^1.0.0",
     "minimist": "^1.2.5",
-    "mocha": "^9.2.0",
+    "mocha": "^10.8.2",
     "mochawesome": "^7.0.1",
     "rollup": "^2.67.2",
     "rollup-plugin-terser": "^7.0.2",
