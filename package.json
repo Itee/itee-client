@@ -32,7 +32,7 @@
     "url": "https://github.com/Itee/itee-client/issues"
   },
   "engines": {
-    "node": ">=8.16.0"
+    "node": ">=18"
   },
   "os": [
     "win32",
