@@ -1,4 +1,4 @@
-console.log('Itee.Core v8.1.2 - EsModule')
+console.log('Itee.Core v8.2.0 - EsModule')
 import { toEnum, toArray } from 'itee-utils';
 import { isString, isFunction, isNull, isUndefined, isNotObject, isNotBoolean, isNotArray, isNotUndefined, isNotArrayBuffer, isNotNumber, isBoolean, isNumber, isArray, isObject, isNotDefined, isNotString, isEmptyString, isBlankString, isNumberPositive, isNumberNegative, isZero, isNotEmptyArray, isArrayOfSingleElement, isNotEmptyObject, isNotEmptyString, isNotBlankString, isEmptyObject, isDefined, isEmptyArray, isArrayBuffer } from 'itee-validators';
 import { DefaultLogger, TLogger } from 'itee-core';

@@ -1,3 +1,18 @@
+# [8.2.0](https://github.com/Itee/itee-client/compare/v8.1.2...v8.2.0) (2025-09-08)
+
+
+### Bug Fixes
+
+* **global:** apply some lint fixes ([1ed726f](https://github.com/Itee/itee-client/commit/1ed726f30739549ae0efad1c9137250c28e2e2dd))
+* **package:** downgrade karma to v4 to fix npm install ([743e862](https://github.com/Itee/itee-client/commit/743e862da0a512ff763eec5d5959f1441c6df39d))
+* **webapimessagedata:** fix too permissive type check for toJSON serialization ([cfbb1fc](https://github.com/Itee/itee-client/commit/cfbb1fcfb2923a7a0ed9b7279d2a0b5ec257f37f))
+
+
+### Features
+
+* **binaryserializer:** add new classes to manage binary input/output ([d39ba8a](https://github.com/Itee/itee-client/commit/d39ba8a7e948a5ea733c71db0354352c485d1e0f))
+* **webapi:** add events management in WebAPI ([6805802](https://github.com/Itee/itee-client/commit/68058029f9ec5ea7d000f7b54deece432667507a))
+
 ## [8.1.2](https://github.com/Itee/itee-client/compare/v8.1.1...v8.1.2) (2022-03-03)
 
 
