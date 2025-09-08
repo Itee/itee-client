@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>Tests</title>
+		<style>
+            html, body, #mainContainer {
+                width:   100%;
+                height:  100%;
+                padding: 0;
+                margin:  0;
+            }
+		</style>
+		<script src="../node_modules/three-full/builds/Three.iife.js"></script>
+		<script src="../node_modules/itee-validators/builds/itee-validators.iife.js"></script>
+		<script src="../node_modules/itee-utils/builds/itee-utils.iife.js"></script>
+		<script src="../node_modules/itee-core/builds/itee-core.iife.js"></script>
+		<script src="../builds/itee-client.iife.js"></script>
+	</head>
+	<body>
+		<script>
+            const BinarySerializer = new Itee.Client.TBinarySerializer()
+
+            function SerializationTest ( value ) {
+
+                const serializeStartTime = performance.now()
+                const buffer             = BinarySerializer.serialize( value )
+                const serializeEndTime   = performance.now()
+
+                const deserializeStartTime = performance.now()
+                const result               = BinarySerializer.deserialize( buffer )
+                const deserializeEndTime   = performance.now()
+
+                const stringifyStartTime = performance.now()
+                const json               = JSON.stringify( value )
+                const stringifyEndTime   = performance.now()
+
+                const parseStartTime = performance.now()
+                const jsonResult     = JSON.parse( json )
+                const parseEndTime   = performance.now()
+
+                console.log( value )
+                console.log( `Serialize:            ${ serializeEndTime - serializeStartTime } milliseconds` )
+                console.log( `Deserialize:          ${ deserializeEndTime - deserializeStartTime } milliseconds` )
+                console.log( `buffer.byteLength:    ${ buffer.byteLength } bytes` )
+                console.log( `buffer:              `, buffer )
+                console.log( `Stringify:            ${ stringifyEndTime - stringifyStartTime } milliseconds` )
+                console.log( `Parse:                ${ parseEndTime - parseStartTime } milliseconds` )
+                console.log( `json.length:          ${ json.length } bytes` )
+                console.log( `json:                `, json )
+                console.log( ` ` )
+
+            }
+
+
+            // Todo: use itee-utils test stuff ?
+            SerializationTest( null )
+//            SerializationTest( undefined )
+            SerializationTest( true )
+            SerializationTest( 123 )
+            SerializationTest( -456 )
+            SerializationTest( 7.89 )
+            SerializationTest( 7.89 )
+            SerializationTest( 'Foobar' )
+            SerializationTest( new Date( Date.now() ) )
+            SerializationTest( new RegExp( /[0-9]/g ) )
+            SerializationTest( {
+                foo: 'bar',
+                baz: 123
+            } )
+            SerializationTest( [ true, 'two', 3 ] )
+            SerializationTest( [
+                6.5182086218,
+                41.0112637547,
+                6.9469104223,
+                93.1938795299,
+                81.0303094527,
+                72.2487988883,
+                36.2118690192,
+                91.5077547019,
+                44.0205717604,
+                59.2715562518,
+                4.8797091264,
+                47.9384268569,
+                55.8712084991,
+                31.2669470018,
+                36.1484415066,
+                84.9338309457,
+                93.8454681932,
+                86.98502095,
+                69.6627830698,
+                98.1491604145,
+                52.5299231901,
+                12.7743972609,
+                19.7671160115,
+                41.8774914001,
+                95.408623574,
+                52.2555473606,
+                15.4104096817,
+                35.4425460316,
+                19.6490866903,
+                91.1663314589,
+                69.4145770927,
+                20.8292078086,
+                71.6282402652,
+                63.1787833926,
+                7.5570159948,
+                31.9110829713,
+                78.1697564992,
+                43.5105572639,
+                38.7762750591,
+                78.2690810167,
+                53.2838843494,
+                32.1693417547,
+                28.0722665731,
+                43.4237086393,
+                89.8822663719,
+                17.1047868622,
+                14.5412774764,
+                9.1975155129,
+                71.2327547736,
+                6.5126523168,
+                60.1964699767,
+                74.5930252232,
+                52.1771527781,
+                55.9127371371,
+                8.0921993643,
+                79.1493420592,
+                78.2829701194,
+                28.483945315,
+                94.1798704272,
+                58.1085371622,
+                57.4924988744,
+                63.5477971661,
+                83.7086446843,
+                46.2958719955,
+                37.1710537393,
+                42.9011555071,
+                83.7131080393,
+                86.6175303821,
+                47.7512807645,
+                13.2022405785,
+                53.8324782526,
+                35.4305602328,
+                19.7246996168,
+                33.4495215404,
+                25.2500206648,
+                41.6168170444,
+                72.647413818,
+                2.5176540811,
+                76.2664951502,
+                2.065021989,
+                59.3214749444,
+                71.4637285343,
+                69.9504902325,
+                40.0369250733,
+                60.5674777336,
+                8.8907399522,
+                51.0991159818,
+                84.8239926634,
+                51.579281071,
+                62.7267010485,
+                59.4868356616,
+                83.0601791432,
+                95.2777463292,
+                99.2120859847,
+                28.5564055688,
+                11.0601076749,
+                10.8427964332,
+                92.4677806173,
+                85.8533643311,
+                51.5678008099,
+                53.0195035623,
+                11.8893686002,
+                62.5394051757,
+                18.178420188,
+                42.6292633403,
+                29.2452183311,
+                38.9607868325,
+                54.8013518619,
+                75.2581684381,
+                80.4913258373,
+                40.4234082962,
+                84.1787769288,
+                90.0838382226,
+                70.9804590857,
+                71.4993635502,
+                53.7687856624,
+                5.1577484217,
+                95.1460794295,
+                38.3907465308,
+                16.6869741765,
+                3.6577671853,
+                42.2205082901,
+                12.0225678794,
+                50.5847131357,
+                83.0750235399,
+                70.5686515391,
+                49.1721100799,
+                63.0022981716,
+                77.0522833807,
+                57.5647149801,
+                87.5978786743,
+                95.701276441,
+                57.6478078918,
+                51.264538197,
+                22.0656737942,
+                6.0233341642,
+                90.2665085589,
+                39.4211204226,
+                81.0469496469,
+                11.233973744,
+                27.3519218286,
+                95.2059540712,
+                12.2527726843,
+                96.4103374967,
+                80.2115505828,
+                11.3921544516,
+                31.9620399386,
+                12.8550230138,
+                60.5554805019,
+                21.416456585,
+                28.4372600631,
+                81.7926110624,
+                41.8423854331,
+                61.118018183,
+                36.2040842176,
+                59.0157419457,
+                85.999709758,
+                67.8550394,
+                91.0738184238,
+                7.4505337344,
+                2.4432773848,
+                57.3574241821,
+                77.8872859347,
+                24.0889335075,
+                37.9553497438,
+                5.7654362092,
+                19.030692853,
+                71.0430213385,
+                93.1616027486,
+                71.0571910548,
+                5.5730993885,
+                44.0630616392,
+                48.5321359683,
+                95.3363055402,
+                38.6558979334,
+                44.5045572415,
+                78.7950560943,
+                56.6652098506,
+                11.6276085324,
+                6.7832091375,
+                69.7037078378,
+                41.7528101503,
+                89.811196831,
+                99.9344365606,
+                89.6870869043,
+                1.2982942733,
+                71.5051510951,
+                53.6195156219,
+                85.2172474918,
+                79.7021245126,
+                2.7629500123,
+                37.4651864313,
+                31.7012413422,
+                30.4382106538,
+                39.2465207108,
+                47.6838011591,
+                73.3320459595,
+                30.5508389825,
+                13.9151911768,
+                46.9158606324
+            ] )
+
+            {
+                class MyClass {
+                    constructor () {
+                        this.foo = 'i\'m fool'
+                        this.bar = 123
+                        this.baz = true
+                    }
+                }
+
+                const instance = new MyClass()
+
+                SerializationTest( instance )
+            }
+
+			/*
+			 {
+			 const camera = new Three.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 100000 )
+			 camera.name  = 'MykikiCamera'
+			 camera.position.set( 1.23, 4.56, 7.89 )
+
+			 // Default
+			 //                const buffer                   = BinarySerializer.serialize( camera )
+			 //                const result                   = BinarySerializer.deserialize( buffer )
+			 //                console.log( buffer.byteLength )
+			 //                console.log( result )
+			 //
+			 //                const json = JSON.stringify(camera)
+			 //                const jsonResult = JSON.parse(json)
+			 //                console.log( json.length )
+			 //                console.log( jsonResult )
+
+			 // VS
+			 // Specific
+
+			 const cameraConverter = new Itee.Client.PerspectiveCameraBinaryConverter()
+			 BinarySerializer.addConverter( cameraConverter )
+
+			 const buffer2 = BinarySerializer.serialize( camera )
+			 const result2 = BinarySerializer.deserialize( buffer2 )
+			 console.log( result2 )
+			 console.log( buffer2.byteLength )
+
+			 const json       = JSON.stringify( camera )
+			 const jsonResult = JSON.parse( json )
+			 console.log( jsonResult )
+			 console.log( json.length )
+			 }
+
+			 */
+
+            console.log( 'Done' )
+		</script>
+	</body>
+</html>

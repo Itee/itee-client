@@ -18,6 +18,7 @@ import {
 }                                from 'itee-validators'
 import { WebAPIMessageData }     from './messages/WebAPIMessageData'
 import { WebAPIMessageError }    from './messages/WebAPIMessageError'
+import { WebAPIMessageEvent }    from './messages/WebAPIMessageEvent'
 import { WebAPIMessageReady }    from './messages/WebAPIMessageReady'
 import { WebAPIMessageRequest }  from './messages/WebAPIMessageRequest'
 import { WebAPIMessageResponse } from './messages/WebAPIMessageResponse'
@@ -62,6 +63,7 @@ class WebAPI {
         // Private stuff
         this._localOriginUri  = window.location.origin
         this._awaitingRequest = new Map()
+        this._eventListeners  = {} //"eventName" : [ callback1, ... ]
 
         // Listen message from Window
         window.addEventListener( 'message', this._onMessage.bind( this ), false )
@@ -113,6 +115,7 @@ class WebAPI {
         const _allowedOrigins = toArray( value )
 
         // Special case for any origin
+        // Todo: should log error in production and cancel '*'
         if ( _allowedOrigins.includes( '*' ) ) {
             this.logger.warn( `[${ this._localOriginUri }]: This webApi is allowed for all origin and could lead to security concerne !` )
             this._allowedOrigins.push( '*' )
@@ -207,6 +210,23 @@ class WebAPI {
         return this
     }
 
+    addEventListener ( eventName, listener ) {
+        if ( isNotDefined( this._eventListeners[ eventName ] ) ) {
+            this._eventListeners[ eventName ] = []
+        }
+
+        this._eventListeners[ eventName ].push( listener )
+    }
+    removeListener ( eventName, listener ) {
+        if ( isNotDefined( this._eventListeners[ eventName ] ) ) {
+            return
+        }
+
+        const index = this._eventListeners[ eventName ].indexOf( listener )
+        if ( index > -1 ) {
+            this._eventListeners[ eventName ].splice( index, 1 )
+        }
+    }
     // Validators
 
     /**
@@ -459,6 +479,10 @@ class WebAPI {
                 this.onDataFrom( origin, message )
                 break
 
+            case '_event':
+                this.onEventFrom( origin, message )
+                break
+
             case '_error':
                 this.onErrorFrom( origin, message )
                 break
@@ -594,6 +618,12 @@ class WebAPI {
         this.logger.log( `[${ this._localOriginUri }]: the origin [${ origin.uri }] send custom message => ${ JSON.stringify( message, null, 4 ) }. Need you to reimplement this method ?` )
     }
 
+    onEventFrom ( origin, event ) {
+        const listeners = this._eventListeners[ event.name ]
+        for ( const listener of listeners ) {
+            listener( event.data )
+        }
+    }
     // Send
 
     /**
@@ -725,6 +755,19 @@ class WebAPI {
 
     }
 
+    postEvent ( name = 'DefaultEventName', data ) {
+
+        const _data = ( data && data.constructor.isWebAPIMessageEvent ) ? data : new WebAPIMessageEvent( name, data )
+
+        // Broadcast to all potential listener
+        const allowedOrigins = this._allowedOrigins.filter( origin => origin !== '*' )
+        for ( let i = 0 ; i < allowedOrigins.length ; i++ ) {
+            const allowedOrigin = allowedOrigins[ i ]
+            const originId      = allowedOrigin.id
+            this.postMessageTo( originId, _data )
+        }
+
+    }
 }
 
 export { WebAPI }

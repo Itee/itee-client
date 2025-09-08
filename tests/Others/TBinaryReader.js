@@ -16,6 +16,7 @@ const g = 32
 const h = 64
 const i = 128
 
+/* eslint-disable no-console */
 {
     console.log( `A: ${ byteToBits( a ) }` )
     console.log( `B: ${ byteToBits( b ) }` )
@@ -99,3 +100,4 @@ const i = 128
     bitArray16[ 0 ]  = binaryReader.getBit16()
     console.log( bitArray16 )
 }
+/* eslint-enable no-console */
