@@ -1,5 +1,4 @@
 import { WebAPIMessage } from './WebAPIMessage'
-import { isObject }      from 'itee-validators'
 
 /**
  * @typedef {Object} WebAPIMessageDataSerialized

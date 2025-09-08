@@ -59,6 +59,8 @@ function isDate ( value ) {
         case 'object':
             if ( value instanceof Date ) {
                 return !isNaN( value.getTime() )
+            } else {
+                return false
             }
         default:
             return false
@@ -196,7 +198,7 @@ class TBinarySerializer {
             const ctorNameLength = this.reader.getUint8()
             const ctorName       = this.reader.getString( ctorNameLength )
 
-            var ctor = this._getCtorOf( ctorName )
+            // var ctor = this._getCtorOf( ctorName )
 
             converter = converter.has( ctorName )
                 ? converter.get( ctorName )
@@ -212,28 +214,28 @@ class TBinarySerializer {
         }
 
         if ( !converter ) {
-            throw new TypeError( `Unable to found appropriate converter for deserialize type: ${ type }` )
+            throw new TypeError( `Unable to found appropriate converter for deserialize type: ${ binaryType }` )
         }
 
         return converter.from( this.reader )
 
     }
-    _getCtorOf ( typeName ) {
-        var stringToFunction = function ( str ) {
-            var arr = str.split( '.' )
-
-            var fn = ( window || this )
-            for ( var i = 0, len = arr.length ; i < len ; i++ ) {
-                fn = fn[ arr[ i ] ]
-            }
-
-            if ( typeof fn !== 'function' ) {
-                throw new Error( 'function not found' )
-            }
-
-            return fn
-        }
-    }
+    // _getCtorOf ( typeName ) {
+    //     var stringToFunction = function ( str ) {
+    //         var arr = str.split( '.' )
+    //
+    //         var fn = ( window || this )
+    //         for ( var i = 0, len = arr.length ; i < len ; i++ ) {
+    //             fn = fn[ arr[ i ] ]
+    //         }
+    //
+    //         if ( typeof fn !== 'function' ) {
+    //             throw new Error( 'function not found' )
+    //         }
+    //
+    //         return fn
+    //     }
+    // }
 
 }
 

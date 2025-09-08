@@ -221,12 +221,12 @@ class TBinaryReader {
 
     /**
      *
-     * @param endianess
+     * @param endianness
      * @returns {TBinaryReader}
      */
-    setEndianess ( endianess ) {
+    setEndianness ( endianness ) {
 
-        this.endianness = endianess
+        this.endianness = endianness
         return this
 
     }

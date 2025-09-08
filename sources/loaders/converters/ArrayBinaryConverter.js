@@ -1,5 +1,5 @@
 import { TBinaryConverter }        from '../TBinaryConverter'
-import { DefaultBinarySerializer } from '../TBinarySerializer'
+// import { DefaultBinarySerializer } from '../TBinarySerializer'
 
 class ArrayBinaryConverter extends TBinaryConverter {
     constructor ( serializer ) { super( Array, serializer ) }
