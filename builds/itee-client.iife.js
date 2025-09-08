@@ -1,4 +1,4 @@
-console.log('Itee.Core v8.2.0 - Standalone')
+console.log('Itee.Core v8.2.1 - Standalone')
 this.Itee = this.Itee || {};
 this.Itee.Core = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	'use strict';
