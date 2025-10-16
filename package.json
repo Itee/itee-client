@@ -82,6 +82,7 @@
     "eslint-plugin-mocha": "^10.0.3",
     "eslint-plugin-vue": "^8.4.1",
     "fancy-log": "^2.0.0",
+    "figlet": "^1.9.3",
     "glob": "^8.0.3",
     "gulp": "^4.0.2",
     "gulp-eslint": "^6.0.0",
