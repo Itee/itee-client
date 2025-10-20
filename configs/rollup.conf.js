@@ -157,7 +157,7 @@ function CreateRollupConfigs( options ) {
                     nodeResolve(),
                     isProd && terser()
                 ],
-                onwarn:    ( {
+                onwarn: ( {
                     loc,
                     frame,
                     message
