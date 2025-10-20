@@ -1,3 +1,13 @@
+# [v8.3.0](https://github.com/Itee/itee-client/compare/v8.2.1...v8.3.0) (2025-10-20)
+
+## ✨ New Features
+- [`45b3c3b`](https://github.com/Itee/itee-client/commit/45b3c3b)  (package) use cz-emoji in favor of cz-conventional-changlog 
+- [`68705cc`](https://github.com/Itee/itee-client/commit/68705cc)  (gulpfile) split gulpfile tasks into sub-tasks files 
+
+## 🐛 Bug Fixes
+- [`904b2df`](https://github.com/Itee/itee-client/commit/904b2df)  (gulpfile) fix gulp.conf file extension 
+- [`7049ad9`](https://github.com/Itee/itee-client/commit/7049ad9)  (rollup.conf) fix removed parameter name to fix iife generation
+
 ## [8.2.1](https://github.com/Itee/itee-client/compare/v8.2.0...v8.2.1) (2025-09-08)
 
 
