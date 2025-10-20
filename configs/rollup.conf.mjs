@@ -2,7 +2,7 @@
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  *
- * @module Config-Rollup
+ * @module configs/Rollup
  * @description The file manage the rollup configuration for build the library using differents arguments. It allow to build with two type of environment (dev and prod), and differents output format.
  * Use npm run help to display all available build options.
  *
@@ -10,13 +10,27 @@
  * @requires {@link module: [rollup-plugin-terser]{@link https://github.com/TrySound/rollup-plugin-terser}}
  */
 
-/* eslint-env node */
+import { readFileSync }  from 'fs'
+import {
+    dirname,
+    join,
+    basename
+}                        from 'path'
+import commonjs          from '@rollup/plugin-commonjs'
+import nodeResolve       from '@rollup/plugin-node-resolve'
+import { terser }        from 'rollup-plugin-terser'
+import cleanup           from 'rollup-plugin-cleanup'
+import replace           from 'rollup-plugin-re'
+import figlet            from 'figlet'
+import { fileURLToPath } from 'url'
 
-const packageInfos    = require( '../package' )
-const path            = require( 'path' )
-const { nodeResolve } = require( '@rollup/plugin-node-resolve' )
-const terser          = require( 'rollup-plugin-terser' ).terser
-const figlet          = require( 'figlet' )
+const __filename   = fileURLToPath( import.meta.url )
+const __dirname    = dirname( __filename )
+const packagePath  = join( __dirname, '..', 'package.json' )
+const packageData  = readFileSync( packagePath )
+const packageInfos = JSON.parse( packageData )
+
+// Utils
 
 function getPrettyPackageName() {
 
@@ -105,13 +119,73 @@ function _computeBanner( format ) {
 
 }
 
-
-function _computeIntro () {
+function _computeIntro() {
 
     return '' +
-        'if( iteeValidators === undefined ) { console.error(\'Itee.Client need Itee.Validators to be defined first. Please check your scripts loading order.\') }' + '\n' +
-        'if( iteeUtils === undefined ) { console.error(\'Itee.Client need Itee.Utils to be defined first. Please check your scripts loading order.\') }' + '\n' +
-        'if( iteeCore === undefined ) { console.error(\'Itee.Client need Itee.Core to be defined first. Please check your scripts loading order.\') }' + '\n'
+        'if( iteeValidators === undefined ) { throw new Error(\'Itee.Client need Itee.Validators to be defined first. Please check your scripts loading order.\') }' + '\n' +
+        'if( iteeUtils === undefined ) { throw new Error(\'Itee.Client need Itee.Utils to be defined first. Please check your scripts loading order.\') }' + '\n' +
+        'if( iteeCore === undefined ) { throw new Error(\'Itee.Client need Itee.Core to be defined first. Please check your scripts loading order.\') }' + '\n'
+
+}
+
+// Configs
+
+const configs = {
+    'benchmarks-backend':  {
+        input:     `tests/benchmarks/${packageInfos.name}.benchs.js`,
+        plugins:   [],
+        treeshake: true,
+        output:    {
+            indent: '\t',
+            format: 'cjs',
+            name:   'Itee.Benchs',
+            file:   `tests/benchmarks/builds/${packageInfos.name}.benchs.cjs.js`
+        }
+    },
+    'benchmarks-frontend': {
+        input:     `tests/benchmarks/${packageInfos.name}.benchs.js`,
+        plugins:   [],
+        treeshake: true,
+        output:    {
+            indent: '\t',
+            format: 'iife',
+            name:   'Itee.Benchs',
+            file:   `tests/benchmarks/builds/${packageInfos.name}.benchs.iife.js`
+        }
+    },
+    'units-backend':       {
+        input:     `tests/units/${packageInfos.name}.units.js`,
+        external:  [ 'chai' ],
+        plugins:   [],
+        treeshake: true,
+        output:    {
+            indent: '\t',
+            format: 'cjs',
+            name:   'Itee.Units',
+            file:   `tests/units/builds/${packageInfos.name}.units.cjs.js`
+        }
+    },
+    'units-frontend':      {
+        input:     `tests/units/${packageInfos.name}.units.js`,
+        external:  [ 'chai', 'mocha' ],
+        plugins:   [],
+        treeshake: true,
+        output:    {
+            indent:  '\t',
+            format:  'iife',
+            name:    'Itee.Units',
+            globals: {
+                'chai':  'chai',
+                'mocha': 'mocha'
+            },
+            file: `tests/units/builds/${packageInfos.name}.units.iife.js`
+        }
+    },
+}
+
+function getRollupConfigurationFor( bundleName ) {
+
+    return configs[ bundleName ]
 
 }
 
@@ -133,7 +207,7 @@ function CreateRollupConfigs( options ) {
               treeshake
           }        = options
     const name     = getPrettyPackageName()
-    const fileName = path.basename( input, '.js' )
+    const fileName = basename( input, '.js' )
 
     const configs = []
 
@@ -144,16 +218,16 @@ function CreateRollupConfigs( options ) {
             const env        = envs[ envIndex ]
             const isProd     = ( env.includes( 'prod' ) )
             const format     = formats[ formatIndex ]
-            const outputPath = ( isProd ) ? path.join( output, `${ fileName }.${ format }.min.js` ) : path.join( output, `${ fileName }.${ format }.js` )
+            const outputPath = ( isProd ) ? join( output, `${ fileName }.${ format }.min.js` ) : join( output, `${ fileName }.${ format }.js` )
 
             configs.push( {
-                input:    input,
-                external: [
+                input:     input,
+                external:  [
                     'itee-validators',
                     'itee-utils',
                     'itee-core'
                 ],
-                plugins: [
+                plugins:   [
                     nodeResolve(),
                     isProd && terser()
                 ],
@@ -211,5 +285,8 @@ function CreateRollupConfigs( options ) {
 
 }
 
-module.exports = CreateRollupConfigs
+export {
+    getRollupConfigurationFor,
+    CreateRollupConfigs
+}
 
