@@ -47,7 +47,7 @@ const config = {
     'builds':             {
         input:     join( __dirname, '../sources', `${ packageInfos.name }.js` ),
         output:    join( __dirname, '../builds' ),
-        formats:   [ 'esm', 'iife' ],
+        formats:   [ 'esm', 'cjs', 'iife' ],
         envs:      [ 'dev', 'prod' ],
         sourcemap: true,
         treeshake: true
