@@ -239,7 +239,7 @@ class TBinarySerializer {
 
 }
 
-const binarySerializerInstance = new TBinarySerializer()
+const binarySerializerInstance = /*#__PURE__*/new TBinarySerializer()
 
 export {
     binarySerializerInstance as DefaultBinarySerializer,
