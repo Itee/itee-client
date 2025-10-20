@@ -51,6 +51,10 @@ const BinaryType = {
 }
 
 function isDate ( value ) {
+    if(isNotDefined( value )){
+        return false
+    }
+
     switch ( typeof value ) {
         case 'number':
             return true
@@ -68,6 +72,10 @@ function isDate ( value ) {
 }
 
 function isRegEx ( value ) {
+    if(isNotDefined( value )){
+        return false
+    }
+
     return value instanceof RegExp
 }
 
@@ -239,7 +247,7 @@ class TBinarySerializer {
 
 }
 
-const binarySerializerInstance = new TBinarySerializer()
+const binarySerializerInstance = /*#__PURE__*/new TBinarySerializer()
 
 export {
     binarySerializerInstance as DefaultBinarySerializer,

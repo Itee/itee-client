@@ -18,7 +18,7 @@ import {
  * @type {Endianness}
  * @description Endianness enum allow semantic usage.
  */
-const Endianness = toEnum( {
+const Endianness = /*#__PURE__*/toEnum( {
     Little: true,
     Big:    false
 } )
@@ -34,7 +34,7 @@ const Endianness = toEnum( {
  * @type {Byte}
  * @description Byte allow semantic meaning of quantity of bytes based on power of two.
  */
-const Byte = toEnum( {
+const Byte = /*#__PURE__*/toEnum( {
     One:   1,
     Two:   2,
     Four:  4,

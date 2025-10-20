@@ -75,7 +75,7 @@ const Generate = new IdGenerator()
  *
  * @type {ReadonlyArray<unknown>}
  */
-const RequestType = toEnum( {
+const RequestType = /*#__PURE__*/toEnum( {
     CreateOne:   0,
     CreateMany:  1,
     ReadOne:     2,

@@ -10,7 +10,7 @@ import {
  * @deprecated
  * @type {ReadonlyArray<unknown>}
  */
-const TIdFactoryType = toEnum( {
+const TIdFactoryType = /*#__PURE__*/toEnum( {
     Number: 0,
     String: 1,
     Uuid:   2
