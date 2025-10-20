@@ -128,7 +128,7 @@ import { toEnum } from 'itee-utils'
  * @type {FileFormat}
  * @description The FileFormat Enum give some commonly used file format in 3d context
  */
-const FileFormat = toEnum( {
+const FileFormat = /*#__PURE__*/toEnum( {
     Asc:  { value: 'asc' },
     Dae:  { value: 'dae' },
     Dbf:  { value: 'dbf' },
@@ -232,7 +232,7 @@ const FileFormat = toEnum( {
  * @description HttpStatusCode contains all http status code available to check and process correctly server response.
  * @see {@link https://en.wikipedia.org/wiki/List_of_HTTP_status_codes} for further information.
  */
-const HttpStatusCode = toEnum( {
+const HttpStatusCode = /*#__PURE__*/toEnum( {
 
     // 100
     Continue:           { value: 100 },
@@ -337,7 +337,7 @@ const HttpStatusCode = toEnum( {
  * @description HttpVerb contains the CRUD actions with corresponding http verb to request an itee server.
  * @see {@link https://en.wikipedia.org/wiki/Create,_read,_update_and_delete} for further information.
  */
-const HttpVerb = toEnum( {
+const HttpVerb = /*#__PURE__*/toEnum( {
     Create: { value: 'PUT' },
     Read:   { value: 'POST' },
     Update: { value: 'PATCH' },
@@ -355,7 +355,7 @@ const HttpVerb = toEnum( {
  * @type {Keys}
  * @description Keys contains common keyboard key values, this allow to write semantic code instead of integer when dealing with key codes.
  */
-const Keys = toEnum( {
+const Keys = /*#__PURE__*/toEnum( {
     BACKSPACE:            { value: 8 },
     TAB:                  { value: 9 },
     ENTER:                { value: 13 },
@@ -465,7 +465,7 @@ const Keys = toEnum( {
  * @type {MimeType}
  * @description Todo...
  */
-const MimeType = toEnum( {} )
+const MimeType = /*#__PURE__*/toEnum( {} )
 
 /**
  * @typedef {Enum} Mouse
@@ -478,7 +478,7 @@ const MimeType = toEnum( {} )
  * @type {Mouse}
  * @description This Mouse Enum expose 4 common state of mouse button values (Wheel, Left, Middle and Right), this allow to write semantic code instead of integer when dealing with mouse button codes.
  */
-const Mouse = toEnum( {
+const Mouse = /*#__PURE__*/toEnum( {
     Wheel:  { value: -1 },
     Left:   { value: 0 },
     Middle: { value: 1 },
@@ -499,7 +499,7 @@ const Mouse = toEnum( {
  * @description ResponseType allow to filter wich type of response is recieved from the server.
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType} for further information.
  */
-const ResponseType = toEnum( {
+const ResponseType = /*#__PURE__*/toEnum( {
     ArrayBuffer: { value: 'arraybuffer' },
     Blob:        { value: 'blob' },
     Document:    { value: 'document' },

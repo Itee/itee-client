@@ -1,4 +1,13 @@
-console.log('Itee.Core v8.2.1 - EsModule')
+/**
+ * ┳      ┏┓┓•         ┏┓ ┏┓ ┓      ┏┓ ┳┳┓   ┓  ┓  
+ * ┃╋┏┓┏┓ ┃ ┃┓┏┓┏┓╋  ┓┏┣┫ ┏┛ ┃  ━━  ┣ ┏┃┃┃┏┓┏┫┓┏┃┏┓
+ * ┻┗┗ ┗ •┗┛┗┗┗ ┛┗┗  ┗┛┗┛•┗━•┻      ┗┛┛┛ ┗┗┛┗┻┗┻┗┗ 
+ *                                                 
+ * @desc    The client side of the Itee solution for 3d web, this package is design to work with an Itee server.
+ * @author  [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ * 
+ */
 import { toEnum, toArray } from 'itee-utils';
 import { isString, isFunction, isNull, isUndefined, isNotObject, isNotBoolean, isNotArray, isNotUndefined, isNotArrayBuffer, isNotNumber, isBoolean, isNumber, isArray, isObject, isNotDefined, isNotString, isEmptyString, isBlankString, isNumberPositive, isNumberNegative, isZero, isNotEmptyArray, isArrayOfSingleElement, isNotEmptyObject, isNotEmptyString, isNotBlankString, isEmptyObject, isDefined, isEmptyArray, isArrayBuffer } from 'itee-validators';
 import { DefaultLogger, TLogger } from 'itee-core';
@@ -46,7 +55,7 @@ import { DefaultLogger, TLogger } from 'itee-core';
  * @type {FileFormat}
  * @description The FileFormat Enum give some commonly used file format in 3d context
  */
-const FileFormat = toEnum( {
+const FileFormat = /*#__PURE__*/toEnum( {
     Asc:  { value: 'asc' },
     Dae:  { value: 'dae' },
     Dbf:  { value: 'dbf' },
@@ -150,7 +159,7 @@ const FileFormat = toEnum( {
  * @description HttpStatusCode contains all http status code available to check and process correctly server response.
  * @see {@link https://en.wikipedia.org/wiki/List_of_HTTP_status_codes} for further information.
  */
-const HttpStatusCode = toEnum( {
+const HttpStatusCode = /*#__PURE__*/toEnum( {
 
     // 100
     Continue:           { value: 100 },
@@ -255,7 +264,7 @@ const HttpStatusCode = toEnum( {
  * @description HttpVerb contains the CRUD actions with corresponding http verb to request an itee server.
  * @see {@link https://en.wikipedia.org/wiki/Create,_read,_update_and_delete} for further information.
  */
-const HttpVerb = toEnum( {
+const HttpVerb = /*#__PURE__*/toEnum( {
     Create: { value: 'PUT' },
     Read:   { value: 'POST' },
     Update: { value: 'PATCH' },
@@ -273,7 +282,7 @@ const HttpVerb = toEnum( {
  * @type {Keys}
  * @description Keys contains common keyboard key values, this allow to write semantic code instead of integer when dealing with key codes.
  */
-const Keys = toEnum( {
+const Keys = /*#__PURE__*/toEnum( {
     BACKSPACE:            { value: 8 },
     TAB:                  { value: 9 },
     ENTER:                { value: 13 },
@@ -383,7 +392,7 @@ const Keys = toEnum( {
  * @type {MimeType}
  * @description Todo...
  */
-const MimeType = toEnum( {} );
+const MimeType = /*#__PURE__*/toEnum( {} );
 
 /**
  * @typedef {Enum} Mouse
@@ -396,7 +405,7 @@ const MimeType = toEnum( {} );
  * @type {Mouse}
  * @description This Mouse Enum expose 4 common state of mouse button values (Wheel, Left, Middle and Right), this allow to write semantic code instead of integer when dealing with mouse button codes.
  */
-const Mouse = toEnum( {
+const Mouse = /*#__PURE__*/toEnum( {
     Wheel:  { value: -1 },
     Left:   { value: 0 },
     Middle: { value: 1 },
@@ -417,7 +426,7 @@ const Mouse = toEnum( {
  * @description ResponseType allow to filter wich type of response is recieved from the server.
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType} for further information.
  */
-const ResponseType = toEnum( {
+const ResponseType = /*#__PURE__*/toEnum( {
     ArrayBuffer: { value: 'arraybuffer' },
     Blob:        { value: 'blob' },
     Document:    { value: 'document' },
@@ -1057,7 +1066,7 @@ class TBinaryConverter {
  * @type {Endianness}
  * @description Endianness enum allow semantic usage.
  */
-const Endianness = toEnum( {
+const Endianness = /*#__PURE__*/toEnum( {
     Little: true,
     Big:    false
 } );
@@ -1073,7 +1082,7 @@ const Endianness = toEnum( {
  * @type {Byte}
  * @description Byte allow semantic meaning of quantity of bytes based on power of two.
  */
-const Byte = toEnum( {
+const Byte = /*#__PURE__*/toEnum( {
     One:   1,
     Two:   2,
     Four:  4,
@@ -2750,6 +2759,10 @@ const BinaryType = {
 };
 
 function isDate ( value ) {
+    if(isNotDefined( value )){
+        return false
+    }
+
     switch ( typeof value ) {
         case 'number':
             return true
@@ -2767,6 +2780,10 @@ function isDate ( value ) {
 }
 
 function isRegEx ( value ) {
+    if(isNotDefined( value )){
+        return false
+    }
+
     return value instanceof RegExp
 }
 
@@ -2938,7 +2955,7 @@ class TBinarySerializer {
 
 }
 
-const binarySerializerInstance = new TBinarySerializer();
+const binarySerializerInstance = /*#__PURE__*/new TBinarySerializer();
 
 /**
  * @author [Tristan Valcke]{@link https://github.com/Itee}
@@ -2980,7 +2997,7 @@ const Generate = new IdGenerator();
  *
  * @type {ReadonlyArray<unknown>}
  */
-const RequestType = toEnum( {
+const RequestType = /*#__PURE__*/toEnum( {
     CreateOne:   0,
     CreateMany:  1,
     ReadOne:     2,
@@ -4549,7 +4566,7 @@ TDataBaseManager._requests = {
  * @deprecated
  * @type {ReadonlyArray<unknown>}
  */
-const TIdFactoryType = toEnum( {
+const TIdFactoryType = /*#__PURE__*/toEnum( {
     Number: 0,
     String: 1,
     Uuid:   2

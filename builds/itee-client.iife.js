@@ -1,6 +1,15 @@
-console.log('Itee.Core v8.2.1 - Standalone')
+/**
+ * ┳      ┏┓┓•         ┏┓ ┏┓ ┓      ┏┓      ┓  ┓      
+ * ┃╋┏┓┏┓ ┃ ┃┓┏┓┏┓╋  ┓┏┣┫ ┏┛ ┃  ━━  ┗┓╋┏┓┏┓┏┫┏┓┃┏┓┏┓┏┓
+ * ┻┗┗ ┗ •┗┛┗┗┗ ┛┗┗  ┗┛┗┛•┗━•┻      ┗┛┗┗┻┛┗┗┻┗┻┗┗┛┛┗┗ 
+ *                                                    
+ * @desc    The client side of the Itee solution for 3d web, this package is design to work with an Itee server.
+ * @author  [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ * 
+ */
 this.Itee = this.Itee || {};
-this.Itee.Core = (function (exports, iteeUtils, iteeValidators, iteeCore) {
+this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	'use strict';
 
 	if( iteeValidators === undefined ) { console.error('Itee.Client need Itee.Validators to be defined first. Please check your scripts loading order.') }
@@ -51,7 +60,7 @@ this.Itee.Core = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	 * @type {FileFormat}
 	 * @description The FileFormat Enum give some commonly used file format in 3d context
 	 */
-	const FileFormat = iteeUtils.toEnum( {
+	const FileFormat = /*#__PURE__*/iteeUtils.toEnum( {
 	    Asc:  { value: 'asc' },
 	    Dae:  { value: 'dae' },
 	    Dbf:  { value: 'dbf' },
@@ -155,7 +164,7 @@ this.Itee.Core = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	 * @description HttpStatusCode contains all http status code available to check and process correctly server response.
 	 * @see {@link https://en.wikipedia.org/wiki/List_of_HTTP_status_codes} for further information.
 	 */
-	const HttpStatusCode = iteeUtils.toEnum( {
+	const HttpStatusCode = /*#__PURE__*/iteeUtils.toEnum( {
 
 	    // 100
 	    Continue:           { value: 100 },
@@ -260,7 +269,7 @@ this.Itee.Core = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	 * @description HttpVerb contains the CRUD actions with corresponding http verb to request an itee server.
 	 * @see {@link https://en.wikipedia.org/wiki/Create,_read,_update_and_delete} for further information.
 	 */
-	const HttpVerb = iteeUtils.toEnum( {
+	const HttpVerb = /*#__PURE__*/iteeUtils.toEnum( {
 	    Create: { value: 'PUT' },
 	    Read:   { value: 'POST' },
 	    Update: { value: 'PATCH' },
@@ -278,7 +287,7 @@ this.Itee.Core = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	 * @type {Keys}
 	 * @description Keys contains common keyboard key values, this allow to write semantic code instead of integer when dealing with key codes.
 	 */
-	const Keys = iteeUtils.toEnum( {
+	const Keys = /*#__PURE__*/iteeUtils.toEnum( {
 	    BACKSPACE:            { value: 8 },
 	    TAB:                  { value: 9 },
 	    ENTER:                { value: 13 },
@@ -388,7 +397,7 @@ this.Itee.Core = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	 * @type {MimeType}
 	 * @description Todo...
 	 */
-	const MimeType = iteeUtils.toEnum( {} );
+	const MimeType = /*#__PURE__*/iteeUtils.toEnum( {} );
 
 	/**
 	 * @typedef {Enum} Mouse
@@ -401,7 +410,7 @@ this.Itee.Core = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	 * @type {Mouse}
 	 * @description This Mouse Enum expose 4 common state of mouse button values (Wheel, Left, Middle and Right), this allow to write semantic code instead of integer when dealing with mouse button codes.
 	 */
-	const Mouse = iteeUtils.toEnum( {
+	const Mouse = /*#__PURE__*/iteeUtils.toEnum( {
 	    Wheel:  { value: -1 },
 	    Left:   { value: 0 },
 	    Middle: { value: 1 },
@@ -422,7 +431,7 @@ this.Itee.Core = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	 * @description ResponseType allow to filter wich type of response is recieved from the server.
 	 * @see {@link https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/responseType} for further information.
 	 */
-	const ResponseType = iteeUtils.toEnum( {
+	const ResponseType = /*#__PURE__*/iteeUtils.toEnum( {
 	    ArrayBuffer: { value: 'arraybuffer' },
 	    Blob:        { value: 'blob' },
 	    Document:    { value: 'document' },
@@ -1062,7 +1071,7 @@ this.Itee.Core = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	 * @type {Endianness}
 	 * @description Endianness enum allow semantic usage.
 	 */
-	const Endianness = iteeUtils.toEnum( {
+	const Endianness = /*#__PURE__*/iteeUtils.toEnum( {
 	    Little: true,
 	    Big:    false
 	} );
@@ -1078,7 +1087,7 @@ this.Itee.Core = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	 * @type {Byte}
 	 * @description Byte allow semantic meaning of quantity of bytes based on power of two.
 	 */
-	const Byte = iteeUtils.toEnum( {
+	const Byte = /*#__PURE__*/iteeUtils.toEnum( {
 	    One:   1,
 	    Two:   2,
 	    Four:  4,
@@ -2755,6 +2764,10 @@ this.Itee.Core = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	};
 
 	function isDate ( value ) {
+	    if(iteeValidators.isNotDefined( value )){
+	        return false
+	    }
+
 	    switch ( typeof value ) {
 	        case 'number':
 	            return true
@@ -2772,6 +2785,10 @@ this.Itee.Core = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	}
 
 	function isRegEx ( value ) {
+	    if(iteeValidators.isNotDefined( value )){
+	        return false
+	    }
+
 	    return value instanceof RegExp
 	}
 
@@ -2943,7 +2960,7 @@ this.Itee.Core = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 
 	}
 
-	const binarySerializerInstance = new TBinarySerializer();
+	const binarySerializerInstance = /*#__PURE__*/new TBinarySerializer();
 
 	/**
 	 * @author [Tristan Valcke]{@link https://github.com/Itee}
@@ -2985,7 +3002,7 @@ this.Itee.Core = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	 *
 	 * @type {ReadonlyArray<unknown>}
 	 */
-	const RequestType = iteeUtils.toEnum( {
+	const RequestType = /*#__PURE__*/iteeUtils.toEnum( {
 	    CreateOne:   0,
 	    CreateMany:  1,
 	    ReadOne:     2,
@@ -4554,7 +4571,7 @@ this.Itee.Core = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	 * @deprecated
 	 * @type {ReadonlyArray<unknown>}
 	 */
-	const TIdFactoryType = iteeUtils.toEnum( {
+	const TIdFactoryType = /*#__PURE__*/iteeUtils.toEnum( {
 	    Number: 0,
 	    String: 1,
 	    Uuid:   2
