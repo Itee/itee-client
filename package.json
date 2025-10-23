@@ -100,7 +100,7 @@
     "karma-mocha-reporter": "^2.2.5",
     "karma-opera-launcher": "^1.0.0",
     "karma-safari-launcher": "^1.0.0",
-    "mocha": "^10.8.2",
+    "mocha": "^11.7.4",
     "mochawesome": "^7.0.1",
     "rollup": "^2.67.2",
     "rollup-plugin-cleanup": "^3.2.1",
