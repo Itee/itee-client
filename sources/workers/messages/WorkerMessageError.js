@@ -8,14 +8,14 @@ class WorkerMessageError extends WorkerMessage {
 
     static isWorkerMessageError = true
 
-    constructor ( error ) {
+    constructor( error ) {
         super( 'error' )
 
         this.message = error.message
         this.stack   = error.stack
     }
 
-    toJSON () {
+    toJSON() {
 
         return {
             ...super.toJSON(),

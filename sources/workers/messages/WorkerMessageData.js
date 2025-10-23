@@ -8,13 +8,13 @@ class WorkerMessageData extends WorkerMessage {
 
     static isWorkerMessageData = true
 
-    constructor ( type, buffer ) {
+    constructor( type, buffer ) {
         super( type )
 
         this.buffer = buffer
     }
 
-    toJSON () {
+    toJSON() {
 
         return {
             ...super.toJSON(),

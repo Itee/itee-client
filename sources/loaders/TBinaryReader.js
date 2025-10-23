@@ -59,7 +59,7 @@ class TBinaryReader {
      * @param parameters.length
      * @param parameters.endianness
      */
-    constructor ( parameters = {} ) {
+    constructor( parameters = {} ) {
 
         const _parameters = {
             ...{
@@ -91,11 +91,11 @@ class TBinaryReader {
      *
      * @returns {*}
      */
-    get buffer () {
+    get buffer() {
         return this._buffer
     }
 
-    set buffer ( value ) {
+    set buffer( value ) {
 
         const memberName = 'Buffer'
         const expect     = 'Expect an instance of ArrayBuffer.'
@@ -116,11 +116,11 @@ class TBinaryReader {
      *
      * @returns {*}
      */
-    get offset () {
+    get offset() {
         return this._offset
     }
 
-    set offset ( value ) {
+    set offset( value ) {
 
         const memberName = 'Offset'
         const expect     = 'Expect a number.'
@@ -135,7 +135,7 @@ class TBinaryReader {
 
     }
 
-    get length () {
+    get length() {
         return this._length
     }
 
@@ -143,7 +143,7 @@ class TBinaryReader {
      *
      * @param value
      */
-    set length ( value ) {
+    set length( value ) {
 
         const memberName = 'Length'
         const expect     = 'Expect a number.'
@@ -162,11 +162,11 @@ class TBinaryReader {
      *
      * @returns {*}
      */
-    get endianness () {
+    get endianness() {
         return this._endianness
     }
 
-    set endianness ( value ) {
+    set endianness( value ) {
 
         const memberName = 'Endianness'
         const expect     = 'Expect a boolean.'
@@ -185,7 +185,7 @@ class TBinaryReader {
      * @param length
      * @returns {TBinaryReader}
      */
-    setBuffer ( buffer, offset, length ) {
+    setBuffer( buffer, offset, length ) {
 
         this.buffer = buffer
         this.offset = offset || 0
@@ -200,7 +200,7 @@ class TBinaryReader {
      * @param value
      * @returns {TBinaryReader}
      */
-    setOffset ( value ) {
+    setOffset( value ) {
 
         this.offset = value
         return this
@@ -212,7 +212,7 @@ class TBinaryReader {
      * @param value
      * @returns {TBinaryReader}
      */
-    setLength ( value ) {
+    setLength( value ) {
 
         this.length = value
         return this
@@ -224,7 +224,7 @@ class TBinaryReader {
      * @param endianness
      * @returns {TBinaryReader}
      */
-    setEndianness ( endianness ) {
+    setEndianness( endianness ) {
 
         this.endianness = endianness
         return this
@@ -237,7 +237,7 @@ class TBinaryReader {
      * @returns {*}
      * @private
      */
-    _getAndUpdateOffsetBy ( increment ) {
+    _getAndUpdateOffsetBy( increment ) {
 
         const currentOffset = this._offset
         this._offset += increment
@@ -250,7 +250,7 @@ class TBinaryReader {
      *
      * @private
      */
-    _updateDataView () {
+    _updateDataView() {
 
         this._dataView = new DataView( this._buffer, this._offset, this._length )
 
@@ -260,7 +260,7 @@ class TBinaryReader {
      *
      * @returns {boolean}
      */
-    isEndOfFile () {
+    isEndOfFile() {
 
         return ( this._offset === this._length )
 
@@ -268,49 +268,49 @@ class TBinaryReader {
 
     // Bits
 
-    _isNullBitBuffer () {
+    _isNullBitBuffer() {
 
         return this._bits.buffer === null
 
     }
-    _nextBit () {
+    _nextBit() {
         this._bits.offset += 1
     }
-    _isEndOfBitBuffer () {
+    _isEndOfBitBuffer() {
 
         return this._bits.offset === this._bits.length
 
     }
-    _isOutOfRangeBitOffset ( offset ) {
+    _isOutOfRangeBitOffset( offset ) {
         return offset > this._bits.length
     }
-    _readBit8 () {
+    _readBit8() {
         this._bits.buffer = this.getUint8()
         this._bits.length = 8
         this._bits.offset = 0
     }
-    _readBit16 () {
+    _readBit16() {
         this._bits.buffer = this.getUint16()
         this._bits.length = 16
         this._bits.offset = 0
     }
-    _readBit32 () {
+    _readBit32() {
         this._bits.buffer = this.getUint32()
         this._bits.length = 32
         this._bits.offset = 0
     }
-    _getBitAt ( bitOffset ) {
+    _getBitAt( bitOffset ) {
 
         return ( this._bits.buffer & ( 1 << bitOffset ) ) === 0 ? 0 : 1
 
     }
-    _resetBits () {
+    _resetBits() {
         this._bits.buffer = null
         this._bits.length = 0
         this._bits.offset = 0
     }
 
-    skipBitOffsetTo ( bitOffset ) {
+    skipBitOffsetTo( bitOffset ) {
         //todo is positive bitoffset
 
         // In case we start directly by a skip offset try to determine which kind of data is expected
@@ -343,13 +343,13 @@ class TBinaryReader {
 
     }
 
-    skipBitOffsetOf ( nBits ) {
+    skipBitOffsetOf( nBits ) {
 
         this.skipBitOffsetTo( this._bits.offset + nBits )
 
     }
 
-    getBit8 ( moveNext = true ) {
+    getBit8( moveNext = true ) {
 
         if ( this._isNullBitBuffer() ) {
             this._readBit8()
@@ -368,7 +368,7 @@ class TBinaryReader {
 
     }
 
-    getBits8 ( numberOfBitToRead, moveNext = true ) {
+    getBits8( numberOfBitToRead, moveNext = true ) {
 
         const currentOffset = this._bits.offset
 
@@ -392,7 +392,7 @@ class TBinaryReader {
 
     }
 
-    getBit16 ( moveNext = true ) {
+    getBit16( moveNext = true ) {
 
         if ( this._isNullBitBuffer() ) {
             this._readBit16()
@@ -411,7 +411,7 @@ class TBinaryReader {
 
     }
 
-    getBits16 ( numberOfBitToRead, moveNext = true ) {
+    getBits16( numberOfBitToRead, moveNext = true ) {
 
         const currentOffset = this._bits.offset
 
@@ -435,7 +435,7 @@ class TBinaryReader {
 
     }
 
-    getBit32 ( moveNext = true ) {
+    getBit32( moveNext = true ) {
 
         if ( this._isNullBitBuffer() ) {
             this._readBit32()
@@ -454,7 +454,7 @@ class TBinaryReader {
 
     }
 
-    getBits32 ( numberOfBitToRead, moveNext = true ) {
+    getBits32( numberOfBitToRead, moveNext = true ) {
 
         const currentOffset = this._bits.offset
 
@@ -484,7 +484,7 @@ class TBinaryReader {
      *
      * @param offset
      */
-    skipOffsetTo ( offset ) {
+    skipOffsetTo( offset ) {
 
         this._offset = offset
 
@@ -494,7 +494,7 @@ class TBinaryReader {
      *
      * @param nBytes
      */
-    skipOffsetOf ( nBytes ) {
+    skipOffsetOf( nBytes ) {
 
         this._offset += nBytes
 
@@ -504,7 +504,7 @@ class TBinaryReader {
      *
      * @returns {boolean}
      */
-    getBoolean ( moveNext = true ) {
+    getBoolean( moveNext = true ) {
 
         return ( ( this.getUint8( moveNext ) & 1 ) === 1 )
 
@@ -516,7 +516,7 @@ class TBinaryReader {
      * @param moveNext
      * @returns {Array}
      */
-    getBooleanArray ( length, moveNext = true ) {
+    getBooleanArray( length, moveNext = true ) {
 
         const currentOffset = this._offset
         const array         = []
@@ -539,7 +539,7 @@ class TBinaryReader {
      *
      * @returns {number}
      */
-    getInt8 ( moveNext = true ) {
+    getInt8( moveNext = true ) {
 
         const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.One ) : this._offset
         return this._dataView.getInt8( offset )
@@ -552,7 +552,7 @@ class TBinaryReader {
      * @param moveNext
      * @returns {Array}
      */
-    getInt8Array ( length, moveNext = true ) {
+    getInt8Array( length, moveNext = true ) {
 
         const currentOffset = this._offset
         const array         = []
@@ -575,7 +575,7 @@ class TBinaryReader {
      *
      * @returns {number}
      */
-    getUint8 ( moveNext = true ) {
+    getUint8( moveNext = true ) {
 
         const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.One ) : this._offset
         return this._dataView.getUint8( offset )
@@ -588,7 +588,7 @@ class TBinaryReader {
      * @param moveNext
      * @returns {Array}
      */
-    getUint8Array ( length, moveNext = true ) {
+    getUint8Array( length, moveNext = true ) {
 
         const currentOffset = this._offset
         const array         = []
@@ -611,7 +611,7 @@ class TBinaryReader {
      *
      * @returns {number}
      */
-    getInt16 ( moveNext = true ) {
+    getInt16( moveNext = true ) {
 
         const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Two ) : this._offset
         return this._dataView.getInt16( offset, this._endianness )
@@ -624,7 +624,7 @@ class TBinaryReader {
      * @param moveNext
      * @returns {Array}
      */
-    getInt16Array ( length, moveNext = true ) {
+    getInt16Array( length, moveNext = true ) {
 
         const currentOffset = this._offset
         const array         = []
@@ -647,7 +647,7 @@ class TBinaryReader {
      *
      * @returns {number}
      */
-    getUint16 ( moveNext = true ) {
+    getUint16( moveNext = true ) {
 
         const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Two ) : this._offset
         return this._dataView.getUint16( offset, this._endianness )
@@ -660,7 +660,7 @@ class TBinaryReader {
      * @param moveNext
      * @returns {Array}
      */
-    getUint16Array ( length, moveNext = true ) {
+    getUint16Array( length, moveNext = true ) {
 
         const currentOffset = this._offset
         const array         = []
@@ -683,7 +683,7 @@ class TBinaryReader {
      *
      * @returns {number}
      */
-    getInt32 ( moveNext = true ) {
+    getInt32( moveNext = true ) {
 
         const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Four ) : this._offset
         return this._dataView.getInt32( offset, this._endianness )
@@ -696,7 +696,7 @@ class TBinaryReader {
      * @param moveNext
      * @returns {Array}
      */
-    getInt32Array ( length, moveNext = true ) {
+    getInt32Array( length, moveNext = true ) {
 
         const currentOffset = this._offset
         const array         = []
@@ -719,7 +719,7 @@ class TBinaryReader {
      *
      * @returns {number}
      */
-    getUint32 ( moveNext = true ) {
+    getUint32( moveNext = true ) {
 
         const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Four ) : this._offset
         return this._dataView.getUint32( offset, this._endianness )
@@ -732,7 +732,7 @@ class TBinaryReader {
      * @param moveNext
      * @returns {Array}
      */
-    getUint32Array ( length, moveNext = true ) {
+    getUint32Array( length, moveNext = true ) {
 
         const currentOffset = this._offset
         const array         = []
@@ -755,7 +755,7 @@ class TBinaryReader {
      *
      * @returns {number}
      */
-    getInt64 ( moveNext = true ) {
+    getInt64( moveNext = true ) {
 
         // From THREE.FBXLoader
         // JavaScript doesn't support 64-bit integer so attempting to calculate by ourselves.
@@ -819,7 +819,7 @@ class TBinaryReader {
      * @param moveNext
      * @returns {Array}
      */
-    getInt64Array ( length, moveNext = true ) {
+    getInt64Array( length, moveNext = true ) {
 
         const currentOffset = this._offset
         const array         = []
@@ -842,7 +842,7 @@ class TBinaryReader {
      *
      * @returns {number}
      */
-    getUint64 ( moveNext = true ) {
+    getUint64( moveNext = true ) {
         // Note: see getInt64() comment
 
         let low  = null
@@ -884,7 +884,7 @@ class TBinaryReader {
      * @param moveNext
      * @returns {Array}
      */
-    getUint64Array ( length, moveNext = true ) {
+    getUint64Array( length, moveNext = true ) {
 
         const currentOffset = this._offset
         const array         = []
@@ -907,7 +907,7 @@ class TBinaryReader {
      *
      * @returns {number}
      */
-    getFloat32 ( moveNext = true ) {
+    getFloat32( moveNext = true ) {
 
         const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Four ) : this._offset
         return this._dataView.getFloat32( offset, this._endianness )
@@ -920,7 +920,7 @@ class TBinaryReader {
      * @param moveNext
      * @returns {Array}
      */
-    getFloat32Array ( length, moveNext = true ) {
+    getFloat32Array( length, moveNext = true ) {
 
         const currentOffset = this._offset
         const array         = []
@@ -943,7 +943,7 @@ class TBinaryReader {
      *
      * @return {number}
      */
-    getFloat64 ( moveNext = true ) {
+    getFloat64( moveNext = true ) {
 
         const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Eight ) : this._offset
         return this._dataView.getFloat64( offset, this._endianness )
@@ -956,7 +956,7 @@ class TBinaryReader {
      * @param moveNext
      * @returns {Array}
      */
-    getFloat64Array ( length, moveNext = true ) {
+    getFloat64Array( length, moveNext = true ) {
 
         const currentOffset = this._offset
         const array         = []
@@ -979,7 +979,7 @@ class TBinaryReader {
      *
      * @returns {string}
      */
-    getChar ( moveNext = true ) {
+    getChar( moveNext = true ) {
 
         return String.fromCharCode( this.getUint8( moveNext ) )
 
@@ -991,7 +991,7 @@ class TBinaryReader {
      * @param moveNext
      * @return {string}
      */
-    getString ( length, moveNext = true ) {
+    getString( length, moveNext = true ) {
 
         const currentOffset = this._offset
         let string          = ''
@@ -1013,7 +1013,7 @@ class TBinaryReader {
      * @param size
      * @returns {ArrayBuffer}
      */
-    getArrayBuffer ( size ) {
+    getArrayBuffer( size ) {
 
         const offset = this._getAndUpdateOffsetBy( size )
         return this._dataView.buffer.slice( offset, offset + size )

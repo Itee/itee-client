@@ -1,10 +1,11 @@
-import { TBinaryConverter }        from '../TBinaryConverter'
+import { TBinaryConverter } from '../TBinaryConverter'
+
 // import { DefaultBinarySerializer } from '../TBinarySerializer'
 
 class ObjectBinaryConverter extends TBinaryConverter {
-    constructor ( subType, serializer ) { super( subType || Object, serializer ) }
+    constructor( subType, serializer ) { super( subType || Object, serializer ) }
 
-    to ( writer, instance, options = {} ) {
+    to( writer, instance, options = {} ) {
 
         // Keep only writable properties from instance
         // Read-only property are considered as it ! And won't be serialized.
@@ -70,7 +71,7 @@ class ObjectBinaryConverter extends TBinaryConverter {
 
     }
 
-    from ( reader, options = {} ) {
+    from( reader, options = {} ) {
         const instance = super.from( reader, options )
 
 

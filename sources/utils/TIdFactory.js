@@ -21,7 +21,7 @@ const TIdFactoryType = /*#__PURE__*/toEnum( {
  */
 class TIdFactory {
 
-    constructor ( type = TIdFactoryType.Number, base = null ) {
+    constructor( type = TIdFactoryType.Number, base = null ) {
 
         this.type = type
         this.base = base
@@ -30,11 +30,11 @@ class TIdFactory {
 
     }
 
-    get type () {
+    get type() {
         return this._type
     }
 
-    set type ( value ) {
+    set type( value ) {
 
         if ( isNull( value ) ) { throw new Error( `Type cannot be null ! Expect an value from TIdFactoryType enum: ${ TIdFactoryType.types() }` ) }
         if ( isUndefined( value ) ) { throw new Error( `Type cannot be undefined ! Expect an value from TIdFactoryType enum: ${ TIdFactoryType.types() }` ) }
@@ -43,11 +43,11 @@ class TIdFactory {
         this._type = value
     }
 
-    get base () {
+    get base() {
         return this._base
     }
 
-    set base ( value ) {
+    set base( value ) {
 
         if ( isUndefined( value ) ) { throw new Error( 'Base cannot be undefined ! Expect an instance of Object3D.' ) }
 
@@ -58,21 +58,21 @@ class TIdFactory {
         this._base = value
     }
 
-    setType ( value ) {
+    setType( value ) {
 
         this.type = value
         return this
 
     }
 
-    setBase ( value ) {
+    setBase( value ) {
 
         this.base = value
         return this
 
     }
 
-    createId () {
+    createId() {
         return this._base + this._counter++
     }
 

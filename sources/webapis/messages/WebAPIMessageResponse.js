@@ -25,7 +25,7 @@ class WebAPIMessageResponse extends WebAPIMessage {
      * @param request
      * @param result
      */
-    constructor ( request, result ) {
+    constructor( request, result ) {
         super( '_response' )
 
         this.request = request
@@ -36,11 +36,11 @@ class WebAPIMessageResponse extends WebAPIMessage {
      *
      * @returns {*}
      */
-    get request () {
+    get request() {
         return this._request
     }
 
-    set request ( value ) {
+    set request( value ) {
         if ( isNull( value ) ) { return }
         if ( isUndefined( value ) ) { return }
 
@@ -51,11 +51,11 @@ class WebAPIMessageResponse extends WebAPIMessage {
      *
      * @returns {*}
      */
-    get result () {
+    get result() {
         return this._result
     }
 
-    set result ( value ) {
+    set result( value ) {
         this._result = value
     }
 
@@ -63,7 +63,7 @@ class WebAPIMessageResponse extends WebAPIMessage {
      *
      * @returns {{result: *, request: *}}
      */
-    toJSON () {
+    toJSON() {
 
         return {
             ...super.toJSON(),

@@ -6,15 +6,15 @@ import { TBinaryConverter } from '../TBinaryConverter'
 
 class BooleanBinaryConverter extends TBinaryConverter {
 
-    constructor ( serializer ) { super( Boolean, serializer ) }
+    constructor( serializer ) { super( Boolean, serializer ) }
 
-    to ( writer, instance, options = {} ) {
+    to( writer, instance, options = {} ) {
 
         writer.setBoolean( instance )
 
     }
 
-    from ( reader, options = {} ) {
+    from( reader, options = {} ) {
 
         return reader.getBoolean()
 

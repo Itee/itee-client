@@ -1,13 +1,13 @@
 import { TBinaryConverter } from '../TBinaryConverter'
 
 class NumberBinaryConverter extends TBinaryConverter {
-    constructor ( serializer ) { super( Number, serializer ) }
+    constructor( serializer ) { super( Number, serializer ) }
 
-    to ( writer, instance, options = {} ) {
+    to( writer, instance, options = {} ) {
         writer.setFloat64( instance )
     }
 
-    from ( reader, options = {} ) {
+    from( reader, options = {} ) {
         return reader.getFloat64()
     }
 }

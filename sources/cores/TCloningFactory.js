@@ -13,7 +13,7 @@ class TCloningFactory extends TAbstractFactory {
     /**
      * @param parameters
      */
-    constructor ( parameters = {} ) {
+    constructor( parameters = {} ) {
 
         const _parameters = { ...{}, ...parameters }
 
@@ -27,7 +27,7 @@ class TCloningFactory extends TAbstractFactory {
      * @param parameters
      * @returns {*}
      */
-    create ( key, ...parameters ) {
+    create( key, ...parameters ) {
         super.create( key, ...parameters )
 
         return this.get( key ).clone( ...parameters )

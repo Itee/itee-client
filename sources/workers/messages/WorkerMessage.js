@@ -6,21 +6,21 @@ class WorkerMessage {
 
     static isWorkerMessage = true
 
-    constructor ( type ) {
+    constructor( type ) {
 
         this.type = type
 
     }
 
-    get type () {
+    get type() {
         return this._type
     }
 
-    set type ( type ) {
+    set type( type ) {
         this._type = type
     }
 
-    toJSON () {
+    toJSON() {
 
         return {
             type: this.type

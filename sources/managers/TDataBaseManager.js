@@ -58,11 +58,11 @@ import { TStore } from '../cores/TStore'
  */
 class IdGenerator {
 
-    constructor () {
+    constructor() {
         this._id = 0
     }
 
-    get id () {
+    get id() {
         this._id += 1
         return this._id
     }
@@ -99,17 +99,9 @@ class TDataBaseManager {
 
     /**
      *
-     * @returns {number}
-     */
-    static get requestId () {
-        TDataBaseManager._requestId++
-        return TDataBaseManager._requestId
-    }
-    /**
-     *
      * @param parameters
      */
-    constructor ( parameters = {} ) {
+    constructor( parameters = {} ) {
 
         const _parameters = {
             ...{
@@ -141,13 +133,21 @@ class TDataBaseManager {
     }
     /**
      *
+     * @returns {number}
+     */
+    static get requestId() {
+        TDataBaseManager._requestId++
+        return TDataBaseManager._requestId
+    }
+    /**
+     *
      * @returns {*}
      */
-    get basePath () {
+    get basePath() {
         return this._basePath
     }
 
-    set basePath ( value ) {
+    set basePath( value ) {
 
         if ( isNull( value ) ) { throw new TypeError( 'Base path cannot be null ! Expect a non empty string.' ) }
         if ( isUndefined( value ) ) { throw new TypeError( 'Base path cannot be undefined ! Expect a non empty string.' ) }
@@ -163,11 +163,11 @@ class TDataBaseManager {
      *
      * @returns {*}
      */
-    get responseType () {
+    get responseType() {
         return this._responseType
     }
 
-    set responseType ( value ) {
+    set responseType( value ) {
 
         if ( isNull( value ) ) { throw new Error( 'TDataBaseManager: responseType cannot be null !' ) }
         if ( isNull( value ) ) { throw new TypeError( 'Response type cannot be null ! Expect a non empty string.' ) }
@@ -182,11 +182,11 @@ class TDataBaseManager {
      *
      * @returns {*}
      */
-    get bunchSize () {
+    get bunchSize() {
         return this._bunchSize
     }
 
-    set bunchSize ( value ) {
+    set bunchSize( value ) {
 
         if ( isNull( value ) ) { throw new TypeError( 'Bunch size cannot be null ! Expect a positive number.' ) }
         if ( isUndefined( value ) ) { throw new TypeError( 'Bunch size cannot be undefined ! Expect a positive number.' ) }
@@ -201,11 +201,11 @@ class TDataBaseManager {
      *
      * @returns {*}
      */
-    get requestAggregationTime () {
+    get requestAggregationTime() {
         return this._requestAggregationTime
     }
 
-    set requestAggregationTime ( value ) {
+    set requestAggregationTime( value ) {
 
         if ( isNull( value ) ) {
             throw new TypeError( 'Requests aggregation time cannot be null ! Expect a positive number.' )
@@ -231,11 +231,11 @@ class TDataBaseManager {
      *
      * @returns {*}
      */
-    get requestsConcurrency () {
+    get requestsConcurrency() {
         return this._requestsConcurrency
     }
 
-    set requestsConcurrency ( value ) {
+    set requestsConcurrency( value ) {
 
         if ( isNull( value ) ) {
             throw new TypeError( 'Minimum of simultaneous request cannot be null ! Expect a positive number.' )
@@ -261,11 +261,11 @@ class TDataBaseManager {
      *
      * @returns {TLogger}
      */
-    get logger () {
+    get logger() {
         return this._logger
     }
 
-    set logger ( value ) {
+    set logger( value ) {
 
         if ( isNull( value ) ) { throw new TypeError( 'Progress manager cannot be null ! Expect an instance of TProgressManager.' ) }
         if ( isUndefined( value ) ) { throw new TypeError( 'Progress manager cannot be undefined ! Expect an instance of TProgressManager.' ) }
@@ -280,7 +280,7 @@ class TDataBaseManager {
      * @param value
      * @returns {TDataBaseManager}
      */
-    setBasePath ( value ) {
+    setBasePath( value ) {
 
         this.basePath = value
         return this
@@ -292,7 +292,7 @@ class TDataBaseManager {
      * @param value
      * @returns {TDataBaseManager}
      */
-    setResponseType ( value ) {
+    setResponseType( value ) {
 
         this.responseType = value
         return this
@@ -304,7 +304,7 @@ class TDataBaseManager {
      * @param value
      * @returns {TDataBaseManager}
      */
-    setBunchSize ( value ) {
+    setBunchSize( value ) {
 
         this.bunchSize = value
         return this
@@ -316,7 +316,7 @@ class TDataBaseManager {
      * @param value
      * @returns {TDataBaseManager}
      */
-    setRequestAggregationTime ( value ) {
+    setRequestAggregationTime( value ) {
 
         this.requestAggregationTime = value
         return this
@@ -328,7 +328,7 @@ class TDataBaseManager {
      * @param value
      * @returns {TDataBaseManager}
      */
-    setRequestsConcurrency ( value ) {
+    setRequestsConcurrency( value ) {
 
         this.requestsConcurrency = value
         return this
@@ -340,7 +340,7 @@ class TDataBaseManager {
      * @param value
      * @returns {TDataBaseManager}
      */
-    setLogger ( value ) {
+    setLogger( value ) {
 
         this.logger = value
         return this
@@ -350,7 +350,7 @@ class TDataBaseManager {
     /**
      *
      */
-    aggregateQueue () {
+    aggregateQueue() {
 
         clearTimeout( this._aggregationTimeoutId )
 
@@ -390,7 +390,7 @@ class TDataBaseManager {
     /**
      *
      */
-    processQueue () {
+    processQueue() {
 
         while ( this._requestQueue.length > 0 && this._processQueue.length < this._requestsConcurrency ) {
 
@@ -399,7 +399,8 @@ class TDataBaseManager {
 
             const request              = new XMLHttpRequest()
             request.onloadstart        = _onLoadStart.bind( this )
-            request.onload             = this._onLoad.bind( this,
+            request.onload             = this._onLoad.bind(
+                this,
                 requestSkull,
                 this._onEnd.bind( this, requestSkull, requestSkull.onLoad ),
                 this._onProgress.bind( this, requestSkull.onProgress ),
@@ -421,15 +422,15 @@ class TDataBaseManager {
 
         }
 
-        function _onLoadStart ( loadStartEvent ) { this.logger.progress( loadStartEvent ) }
+        function _onLoadStart( loadStartEvent ) { this.logger.progress( loadStartEvent ) }
 
-        function _onLoadEnd ( loadEndEvent ) { this.logger.progress( loadEndEvent ) }
+        function _onLoadEnd( loadEndEvent ) { this.logger.progress( loadEndEvent ) }
 
-        function _onReadyStateChange ( readyStateEvent ) { this.logger.debug( readyStateEvent ) }
+        function _onReadyStateChange( readyStateEvent ) { this.logger.debug( readyStateEvent ) }
 
-        function _onAbort ( abortEvent ) { this.logger.error( abortEvent ) }
+        function _onAbort( abortEvent ) { this.logger.error( abortEvent ) }
 
-        function _onTimeout ( timeoutEvent ) { this.logger.error( timeoutEvent ) }
+        function _onTimeout( timeoutEvent ) { this.logger.error( timeoutEvent ) }
 
     }
 
@@ -442,7 +443,7 @@ class TDataBaseManager {
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      */
-    create ( data, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    create( data, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         if ( isArray( data ) && isNotEmptyArray( data ) ) {
 
@@ -476,7 +477,7 @@ class TDataBaseManager {
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      */
-    read ( condition, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    read( condition, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         if ( isString( condition ) && isNotEmptyString( condition ) && isNotBlankString( condition ) ) {
 
@@ -523,7 +524,7 @@ class TDataBaseManager {
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      */
-    update ( condition, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    update( condition, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         if ( isNotDefined( update ) ) {
             onErrorCallback( 'TDataBaseManager.update: Update data cannot be null or undefined !' )
@@ -579,7 +580,7 @@ class TDataBaseManager {
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      */
-    delete ( condition, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    delete( condition, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         if ( isString( condition ) && isNotEmptyString( condition ) && isNotBlankString( condition ) ) {
 
@@ -631,7 +632,7 @@ class TDataBaseManager {
      * @param {object} loadEvent - The server response object to parse.
      * @private
      */
-    _onLoad ( request, onLoadCallback, onProgressCallback, onErrorCallback, loadEvent ) {
+    _onLoad( request, onLoadCallback, onProgressCallback, onErrorCallback, loadEvent ) {
 
         const target       = loadEvent.target
         const status       = target.status
@@ -742,7 +743,7 @@ class TDataBaseManager {
      * @param {object} progressEvent - The server progress event.
      * @private
      */
-    _onProgress ( onProgressCallback, progressEvent ) {
+    _onProgress( onProgressCallback, progressEvent ) {
 
         if ( isDefined( this.logger ) ) {
 
@@ -763,7 +764,7 @@ class TDataBaseManager {
      * @param {object} errorEvent - A server error event
      * @private
      */
-    _onError ( request, onErrorCallback, errorEvent ) {
+    _onError( request, onErrorCallback, errorEvent ) {
 
         this._closeRequest( request )
 
@@ -788,7 +789,7 @@ class TDataBaseManager {
      * @param response
      * @private
      */
-    _onEnd ( request, onLoadCallback, response ) {
+    _onEnd( request, onLoadCallback, response ) {
 
         const type = request._type
 
@@ -842,7 +843,7 @@ class TDataBaseManager {
      * @param onErrorCallback
      * @private
      */
-    _dispatchResponse ( response, responseType, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _dispatchResponse( response, responseType, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         switch ( responseType ) {
 
@@ -896,7 +897,7 @@ class TDataBaseManager {
      * @param request
      * @private
      */
-    _closeRequest ( request ) {
+    _closeRequest( request ) {
 
         this._processQueue.splice( this._processQueue.indexOf( request ), 1 )
 
@@ -922,7 +923,7 @@ class TDataBaseManager {
      * @returns {Object}
      * @private
      */
-    _retrieveCachedValues ( ids ) {
+    _retrieveCachedValues( ids ) {
 
         let results      = {}
         let underRequest = []
@@ -956,7 +957,7 @@ class TDataBaseManager {
      * @param datas
      * @private
      */
-    _updateCache ( datas ) {
+    _updateCache( datas ) {
 
         if ( isNull( datas ) ) { throw new TypeError( 'Data cannot be null ! Expect an array of object.' ) }
         if ( isUndefined( datas ) ) { throw new TypeError( 'Data cannot be undefined ! Expect an array of object.' ) }
@@ -995,7 +996,7 @@ class TDataBaseManager {
      *
      * @private
      */
-    _updateWaitingQueue () {
+    _updateWaitingQueue() {
 
         const haveNoRequestToProcess = ( this._requestQueue.length === 0 && this._processQueue.length === 0 )
 
@@ -1053,7 +1054,7 @@ class TDataBaseManager {
      * @param {function} onError - The onError callback, which is call when parser throw an error during parsing.
      */
     // eslint-disable-next-line no-unused-vars
-    _onArrayBuffer ( data, onSuccess, onProgress, onError ) {}
+    _onArrayBuffer( data, onSuccess, onProgress, onError ) {}
 
     /**
      * The abstract private _onBlob method must be overridden in case the parser expect a blob as input data.
@@ -1066,7 +1067,7 @@ class TDataBaseManager {
      * @param {function} onError - The onError callback, which is call when parser throw an error during parsing.
      */
     // eslint-disable-next-line no-unused-vars
-    _onBlob ( data, onSuccess, onProgress, onError ) {}
+    _onBlob( data, onSuccess, onProgress, onError ) {}
 
     /**
      * The abstract private _onJson method must be overridden in case the parser expect json as input data.
@@ -1079,7 +1080,7 @@ class TDataBaseManager {
      * @param {function} onError - The onError callback, which is call when parser throw an error during parsing.
      */
     // eslint-disable-next-line no-unused-vars
-    _onJson ( data, onSuccess, onProgress, onError ) {}
+    _onJson( data, onSuccess, onProgress, onError ) {}
 
     /**
      * The abstract private _onText method must be overridden in case the parser expect a string/text as input data.
@@ -1092,7 +1093,7 @@ class TDataBaseManager {
      * @param {function} onError - The onError callback, which is call when parser throw an error during parsing.
      */
     // eslint-disable-next-line no-unused-vars
-    _onText ( data, onSuccess, onProgress, onError ) {}
+    _onText( data, onSuccess, onProgress, onError ) {}
 
     // REST Api calls
     /**
@@ -1104,7 +1105,7 @@ class TDataBaseManager {
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      */
-    _createOne ( data, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _createOne( data, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
             _id:          `createOne_${ Generate.id }`,
@@ -1131,7 +1132,7 @@ class TDataBaseManager {
      * @param onErrorCallback
      * @private
      */
-    _createMany ( datas, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _createMany( datas, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
             _id:          `createMany_${ Generate.id }`,
@@ -1159,7 +1160,7 @@ class TDataBaseManager {
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      */
-    _readOne ( id, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _readOne( id, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         // Filter requested values by cached values
         const datas = this._retrieveCachedValues( [ id ] )
@@ -1214,7 +1215,7 @@ class TDataBaseManager {
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      */
-    _readMany ( ids, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _readMany( ids, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         // Filter requested values by cached values
         const datas = this._retrieveCachedValues( ids )
@@ -1279,7 +1280,7 @@ class TDataBaseManager {
      * @param onErrorCallback
      * @private
      */
-    _readWhere ( query, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _readWhere( query, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         //        // Filter requested values by cached values
         //                const datas = {
@@ -1319,7 +1320,7 @@ class TDataBaseManager {
      * @param onErrorCallback
      * @private
      */
-    _readAll ( projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _readAll( projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         //        const datas = {
         //            results: {},
@@ -1362,7 +1363,7 @@ class TDataBaseManager {
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      * @private
      */
-    _updateOne ( id, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _updateOne( id, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
             _id:        `updateOne_${ Generate.id }`,
@@ -1393,7 +1394,7 @@ class TDataBaseManager {
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      * @private
      */
-    _updateMany ( ids, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _updateMany( ids, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
             _id:        `updateMany_${ Generate.id }`,
@@ -1424,7 +1425,7 @@ class TDataBaseManager {
      * @param onErrorCallback
      * @private
      */
-    _updateWhere ( query, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _updateWhere( query, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
             _id:        `updateWhere_${ Generate.id }`,
@@ -1454,7 +1455,7 @@ class TDataBaseManager {
      * @param onErrorCallback
      * @private
      */
-    _updateAll ( update, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _updateAll( update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         const query = {}
 
@@ -1487,7 +1488,7 @@ class TDataBaseManager {
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      * @private
      */
-    _deleteOne ( id, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _deleteOne( id, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
             _id:          `deleteOne_${ Generate.id }`,
@@ -1515,7 +1516,7 @@ class TDataBaseManager {
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      * @private
      */
-    _deleteMany ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _deleteMany( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
             _id:        `deleteMany_${ Generate.id }`,
@@ -1544,7 +1545,7 @@ class TDataBaseManager {
      * @param onErrorCallback
      * @private
      */
-    _deleteWhere ( query, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _deleteWhere( query, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
             _id:        `deleteWhere_${ Generate.id }`,
@@ -1572,7 +1573,7 @@ class TDataBaseManager {
      * @param onErrorCallback
      * @private
      */
-    _deleteAll ( onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _deleteAll( onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         const query = {}
 

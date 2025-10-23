@@ -16,7 +16,7 @@ class WebAPIMessageProgress extends WebAPIMessage {
      * @param loaded
      * @param total
      */
-    constructor ( loaded = 0, total = 0 ) {
+    constructor( loaded = 0, total = 0 ) {
         super( '_progress' )
 
         this.lengthComputable = false
@@ -28,11 +28,11 @@ class WebAPIMessageProgress extends WebAPIMessage {
      *
      * @returns {*}
      */
-    get loaded () {
+    get loaded() {
         return this._loaded
     }
 
-    set loaded ( value ) {
+    set loaded( value ) {
         this._loaded = value
         this._checkIfLengthComputable()
     }
@@ -41,11 +41,11 @@ class WebAPIMessageProgress extends WebAPIMessage {
      *
      * @returns {*}
      */
-    get total () {
+    get total() {
         return this._total
     }
 
-    set total ( value ) {
+    set total( value ) {
         this._total = value
         this._checkIfLengthComputable()
     }
@@ -54,7 +54,7 @@ class WebAPIMessageProgress extends WebAPIMessage {
      *
      * @private
      */
-    _checkIfLengthComputable () {
+    _checkIfLengthComputable() {
 
         this.lengthComputable = false
 
@@ -73,7 +73,7 @@ class WebAPIMessageProgress extends WebAPIMessage {
      *
      * @returns {{loaded: *, lengthComputable: boolean, total: *}}
      */
-    toJSON () {
+    toJSON() {
 
         return {
             ...super.toJSON(),

@@ -6,16 +6,16 @@ import { TBinaryConverter } from '../TBinaryConverter'
 
 class StringBinaryConverter extends TBinaryConverter {
 
-    constructor ( serializer ) { super( String, serializer ) }
+    constructor( serializer ) { super( String, serializer ) }
 
-    to ( writer, instance, options = {} ) {
+    to( writer, instance, options = {} ) {
 
         writer.setUint32( instance.length )
         writer.setString( instance )
 
     }
 
-    from ( reader, options = {} ) {
+    from( reader, options = {} ) {
 
         const stringLength = reader.getUint32()
         return reader.getString( stringLength )
