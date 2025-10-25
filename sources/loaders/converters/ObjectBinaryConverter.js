@@ -10,8 +10,8 @@ class ObjectBinaryConverter extends TBinaryConverter {
         // Keep only writable properties from instance
         // Read-only property are considered as it ! And won't be serialized.
         const descriptors             = Object.getOwnPropertyDescriptors( instance )
-        const writablePropertyEntries = Object.entries( descriptors )
-                                              .filter( ( [ key, value ] ) => value.writable && value.enumerable )
+        const writablePropertyEntries = Object.values( descriptors )
+                                              .filter( ( value ) => value.writable && value.enumerable )
 
         // Store number of writable properties of object for future deserialization loop
         writer.setUint8( writablePropertyEntries.length )

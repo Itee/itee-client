@@ -238,7 +238,7 @@ class WebAPI {
 
         try {
             return window.self !== window.top
-        } catch ( e ) {
+        } catch ( error ) {
             return true
         }
 
@@ -590,7 +590,7 @@ class WebAPI {
      * @param message
      * @private
      */
-    // eslint-disable-next-line no-unused-vars
+     
     onErrorFrom( origin, message ) {
         // Need to be reimplemented if needed
         this.logger.error( `[${ this._localOriginUri }]: the origin [${ origin.uri }] send error => ${ JSON.stringify( message.error, null, 4 ) }. Need you to reimplement this method ?` )
@@ -601,7 +601,7 @@ class WebAPI {
      * @param origin
      * @param message
      */
-    // eslint-disable-next-line no-unused-vars
+     
     onDataFrom( origin, message ) {
         // Need to be reimplemented if needed
         this.logger.log( `[${ this._localOriginUri }]: the origin [${ origin.uri }] send data => ${ JSON.stringify( message.data, null, 4 ) }. Need you to reimplement this method ?` )
@@ -612,7 +612,7 @@ class WebAPI {
      * @param origin
      * @param message
      */
-    // eslint-disable-next-line no-unused-vars
+     
     onMessageFrom( origin, message ) {
         // Need to be reimplemented if needed
         this.logger.log( `[${ this._localOriginUri }]: the origin [${ origin.uri }] send custom message => ${ JSON.stringify( message, null, 4 ) }. Need you to reimplement this method ?` )

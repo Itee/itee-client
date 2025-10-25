@@ -1305,7 +1305,7 @@ this.Itee.Core = (function (exports, threeFull, iteeUtils, iteeValidators) {
 
 	        if ( this.outputs & LogOutput.Console ) {
 
-	            // eslint-disable-next-line no-console
+	             
 	            console.error( errorMessage );
 
 	        }
@@ -1336,7 +1336,7 @@ this.Itee.Core = (function (exports, threeFull, iteeUtils, iteeValidators) {
 
 	        if ( this.outputs & LogOutput.Console ) {
 
-	            // eslint-disable-next-line no-console
+	             
 	            console.warn( warnMessage );
 
 	        }
@@ -1367,7 +1367,7 @@ this.Itee.Core = (function (exports, threeFull, iteeUtils, iteeValidators) {
 
 	        if ( this.outputs & LogOutput.Console ) {
 
-	            // eslint-disable-next-line no-console
+	             
 	            console.log( infoMessage );
 
 	        }
@@ -1398,7 +1398,7 @@ this.Itee.Core = (function (exports, threeFull, iteeUtils, iteeValidators) {
 
 	        if ( this.outputs & LogOutput.Console ) {
 
-	            // eslint-disable-next-line no-console
+	             
 	            console.log( debugMessage );
 
 	        }
@@ -1462,7 +1462,7 @@ this.Itee.Core = (function (exports, threeFull, iteeUtils, iteeValidators) {
 
 	        if ( this.outputs & LogOutput.Console ) {
 
-	            // eslint-disable-next-line no-console
+	             
 	            console.log( infoProgress );
 
 	        }
@@ -1493,7 +1493,7 @@ this.Itee.Core = (function (exports, threeFull, iteeUtils, iteeValidators) {
 
 	        if ( this.outputs & LogOutput.Console ) {
 
-	            // eslint-disable-next-line no-console
+	             
 	            console.log( debugProgress );
 
 	        }
@@ -1522,7 +1522,7 @@ this.Itee.Core = (function (exports, threeFull, iteeUtils, iteeValidators) {
 	     */
 	    _dispatchTime ( time ) {
 
-	        // eslint-disable-next-line no-console
+	         
 	        console.log( time.message );
 
 	    }

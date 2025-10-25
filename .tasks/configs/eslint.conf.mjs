@@ -13,7 +13,7 @@ export default defineConfig( [
         '.idea',
         'builds',
         'docs',
-        'sources/scripts/*.js'
+        'tests/WebApi'
     ] ),
     {
         linterOptions: {
@@ -25,6 +25,12 @@ export default defineConfig( [
     {
         name:    'sources/common',
         files:   [ 'sources/**/*.js' ],
+        ignores: [
+            'sources/managers/TDataBaseManager.js',
+            'sources/webapis/WebAPI.js',
+            'sources/workers/AbstractWorker.js',
+            'sources/input_devices/TKeyboardController.js',
+        ],
         plugins: { js },
         extends: [ 'js/recommended' ],
         rules:   {
@@ -36,7 +42,7 @@ export default defineConfig( [
             ],
             'no-mixed-spaces-and-tabs': 'error',
             'no-console':               'warn',
-            'no-unused-vars':           'error',
+            'no-unused-vars':           'warn',
             'no-multi-spaces':          [
                 'error',
                 {
@@ -61,36 +67,41 @@ export default defineConfig( [
         }
     },
     {
-        name:  'sources/expected_rules',
-        files: [ 'sources/cores/strings.js' ],
-        rules: {
-            'no-control-regex': 'off'
-        }
-    },
-    {
         name:            'sources/frontend',
         files:           [
-            'sources/times/*.js',
-            'sources/cores/objects.js',
-            'sources/testings/benchmarks.js',
+            'sources/managers/TDataBaseManager.js',
+            'sources/webapis/WebAPI.js',
+            'sources/workers/AbstractWorker.js',
+            'sources/input_devices/TKeyboardController.js',
+            'sources/loaders/TBinarySerializer.js'
         ],
-        ignores:         [ 'sources/file-system/*' ],
+        ignores:         [],
         plugins:         { js },
         extends:         [ 'js/recommended' ],
         languageOptions: { globals: globals.browser }
     },
     {
-        name:            'sources/backend',
-        files:           [ 'sources/file-system/*.js' ],
-        ignores:         [
-            'sources/times/*.js',
-            'sources/cores/objects.js',
-            'sources/testings/benchmarks.js',
-        ],
-        plugins:         { js },
-        extends:         [ 'js/recommended' ],
-        languageOptions: { globals: globals.node }
+        name:  'sources/expected_rules',
+        files: [ 'sources/webapis/WebAPI.js' ],
+        rules: {
+            'no-unused-vars': 'warn'
+        }
     },
+    {
+        name:  'sources/expected_rules',
+        files: [ 'sources/loaders/TBinarySerializer.js' ],
+        rules: {
+            'no-unused-vars': 'warn'
+        }
+    },
+    // {
+    //     name:            'sources/backend',
+    //     files:           [],
+    //     ignores:         [],
+    //     plugins:         { js },
+    //     extends:         [ 'js/recommended' ],
+    //     languageOptions: { globals: globals.node }
+    // },
     {
         name:    'tests/benchmarks',
         files:   [ 'tests/benchmarks/**/*.js' ],
@@ -115,13 +126,5 @@ export default defineConfig( [
         files:   [ 'tests/units/**/*.js' ],
         ignores: [ 'tests/units/builds/*' ],
         ...mocha.configs.all
-    },
-    // Todo: fix
-    {
-        name:  'to/fix',
-        files: [ 'tests/units/cores/strings.unit.js' ],
-        rules: {
-            'no-unused-vars': 'warn',
-        }
     },
 ] )

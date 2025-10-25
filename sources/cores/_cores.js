@@ -6,8 +6,8 @@
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  */
 
-export *                      from './TConstants'
-export { TStore }             from './TStore'
-export { TAbstractFactory }   from './TAbstractFactory'
-export { TCloningFactory }    from './TCloningFactory'
+export * from './TConstants'
+export { TStore } from './TStore'
+export { TAbstractFactory } from './TAbstractFactory'
+export { TCloningFactory } from './TCloningFactory'
 export { TInstancingFactory } from './TInstancingFactory'

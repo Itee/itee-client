@@ -20127,7 +20127,7 @@ var Three = (function (exports) {
 
   				var masterPhysics = this._getMasterPhysics();
 
-  				if ( masterPhysics !== null ) { world = masterPhysics.world; } // eslint-disable-line no-undef
+  				if ( masterPhysics !== null ) { world = masterPhysics.world; }  
 
   			}
 
@@ -21551,7 +21551,7 @@ var Three = (function (exports) {
 
   	if ( typeof __THREE_DEVTOOLS__ !== 'undefined' ) {
 
-  		__THREE_DEVTOOLS__.dispatchEvent( new CustomEvent( 'observe', { detail: this } ) ); // eslint-disable-line no-undef
+  		__THREE_DEVTOOLS__.dispatchEvent( new CustomEvent( 'observe', { detail: this } ) );  
 
   	}
 
@@ -45880,7 +45880,7 @@ var Three = (function (exports) {
 
   			try {
 
-  				zip = new JSZip( data ); // eslint-disable-line no-undef
+  				zip = new JSZip( data );  
 
   			} catch ( e ) {
 
@@ -47275,7 +47275,7 @@ var Three = (function (exports) {
 
   				try {
 
-  					zip = new JSZip( data ); // eslint-disable-line no-undef
+  					zip = new JSZip( data );  
 
   				} catch ( e ) {
 
@@ -59892,7 +59892,7 @@ var Three = (function (exports) {
 
   			}
 
-  			var inflate = new Zlib.Inflate( compressed, { resize: true, verify: true } ); // eslint-disable-line no-undef
+  			var inflate = new Zlib.Inflate( compressed, { resize: true, verify: true } );  
 
   			var rawBuffer = new Uint8Array( inflate.decompress().buffer );
   			var tmpBuffer = new Uint8Array( rawBuffer.length );
@@ -64380,7 +64380,7 @@ var Three = (function (exports) {
 
   					}
 
-  					var inflate = new Zlib.Inflate( new Uint8Array( reader.getArrayBuffer( compressedLength ) ) ); // eslint-disable-line no-undef
+  					var inflate = new Zlib.Inflate( new Uint8Array( reader.getArrayBuffer( compressedLength ) ) );  
   					var reader2 = new BinaryReader( inflate.decompress().buffer );
 
   					switch ( type ) {
@@ -66132,7 +66132,7 @@ var Three = (function (exports) {
 
   		};
 
-  		/*eslint-disable*/
+  		 
   		Object.defineProperties(
   			this,
   			{	
@@ -66172,7 +66172,7 @@ var Three = (function (exports) {
   			}
   		);
 
-  		/*eslint-enable*/
+  		 
   		delete this.metalness;
   		delete this.roughness;
   		delete this.metalnessMap;
@@ -69385,7 +69385,7 @@ var Three = (function (exports) {
 
   		//
 
-  		var zip = new JSZip( data ); // eslint-disable-line no-undef
+  		var zip = new JSZip( data );  
 
   		if ( zip.files[ 'doc.kml' ] ) {
 
@@ -87646,7 +87646,7 @@ var Three = (function (exports) {
 
   			// we need to decompress the datastream
   			// here we start the unzipping and get a typed Uint8Array back
-  			var inflate = new Zlib.Gunzip( new Uint8Array( _data ) ); // eslint-disable-line no-undef
+  			var inflate = new Zlib.Gunzip( new Uint8Array( _data ) );  
   			_data = inflate.decompress();
 
   		} else if ( headerObject.encoding === 'ascii' || headerObject.encoding === 'text' || headerObject.encoding === 'txt' || headerObject.encoding === 'hex' ) {
@@ -101506,7 +101506,7 @@ var Three = (function (exports) {
 
   					for ( var i = 0; i < dataOffsets.length - 1; i ++ ) {
 
-  						var inflate = new Zlib.Inflate( byteData.slice( dataOffsets[ i ], dataOffsets[ i + 1 ] ), { resize: true, verify: true } ); // eslint-disable-line no-undef
+  						var inflate = new Zlib.Inflate( byteData.slice( dataOffsets[ i ], dataOffsets[ i + 1 ] ), { resize: true, verify: true } );  
   						content = inflate.decompress();
   						content = content.buffer;
 
@@ -101622,7 +101622,7 @@ var Three = (function (exports) {
 
   				try {
 
-  					dom = new ActiveXObject( 'Microsoft.XMLDOM' ); // eslint-disable-line no-undef
+  					dom = new ActiveXObject( 'Microsoft.XMLDOM' );  
   					dom.async = false;
 
   					if ( ! dom.loadXML( /* xml */ ) ) {
@@ -138745,10 +138745,10 @@ var Three = (function (exports) {
 
   	}
 
-  	/* eslint-disable no-undef */
+  	 
   	var isWebGL2 = ( typeof WebGL2RenderingContext !== 'undefined' && gl instanceof WebGL2RenderingContext ) ||
   		( typeof WebGL2ComputeRenderingContext !== 'undefined' && gl instanceof WebGL2ComputeRenderingContext );
-  	/* eslint-enable no-undef */
+  	 
 
   	var precision = parameters.precision !== undefined ? parameters.precision : 'highp';
   	var maxPrecision = getMaxPrecision( precision );
@@ -146023,7 +146023,7 @@ var Three = (function (exports) {
   				stencil:   attributes.stencil
   			};
 
-  			// eslint-disable-next-line no-undef
+  			 
   			var baseLayer = new XRWebGLLayer( session, gl, layerInit );
 
   			session.updateRenderState( { baseLayer: baseLayer } );
@@ -149130,7 +149130,7 @@ var Three = (function (exports) {
 
   	if ( typeof __THREE_DEVTOOLS__ !== 'undefined' ) {
 
-  		__THREE_DEVTOOLS__.dispatchEvent( new CustomEvent( 'observe', { detail: this } ) ); // eslint-disable-line no-undef
+  		__THREE_DEVTOOLS__.dispatchEvent( new CustomEvent( 'observe', { detail: this } ) );  
 
   	}
 

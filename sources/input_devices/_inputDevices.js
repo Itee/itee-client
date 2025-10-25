@@ -7,5 +7,5 @@
  */
 
 export { TKeyboardController } from './TKeyboardController'
-export { TMouseController }    from './TMouseController'
+export { TMouseController } from './TMouseController'
 

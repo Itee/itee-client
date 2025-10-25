@@ -1111,7 +1111,7 @@ this.Itee.Utils = (function (exports, iteeValidators) {
 	 */
 	function removeDiacritics ( string ) {
 
-	    // eslint-disable-next-line
+	     
 	    return string.replace( /[^\u0000-\u007E]/g, a => diacriticsMap[ a ] || a )
 
 	}
