@@ -10,8 +10,6 @@
  */
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
-
 var iteeUtils = require('itee-utils');
 var iteeValidators = require('itee-validators');
 var iteeCore = require('itee-core');
@@ -842,6 +840,7 @@ class TInstancingFactory extends TAbstractFactory {
 }
 
 /* eslint-env browser */
+
 
 /**
  * @class
@@ -2727,6 +2726,7 @@ class TBinaryWriter {
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  */
 
+
 //const BinaryType = toEnum( {
 //    Null:        0,
 //    Boolean:     1,
@@ -2967,6 +2967,7 @@ const binarySerializerInstance = /*#__PURE__*/new TBinarySerializer();
  * @example Todo
  *
  */
+
 
 
 /**
@@ -4690,22 +4691,13 @@ function v4(options, buf, offset) {
   rnds[6] = rnds[6] & 0x0f | 0x40;
   rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
 
-  if (buf) {
-    offset = offset || 0;
-
-    for (var i = 0; i < 16; ++i) {
-      buf[offset + i] = rnds[i];
-    }
-
-    return buf;
-  }
-
   return stringify(rnds);
 }
 
 /**
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
+
 
 /**
  * @typedef {Object} WebAPIMessageSerialized
@@ -4823,6 +4815,7 @@ class WebAPIMessageData extends WebAPIMessage {
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
 
+
 class WebAPIMessageError extends WebAPIMessage {
 
     static isWebAPIMessageError = true
@@ -4894,6 +4887,7 @@ class WebAPIMessageError extends WebAPIMessage {
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  */
 
+
 /**
  * @typedef {Object} WebAPIMessageDataSerialized
  * @property {object} data
@@ -4947,6 +4941,7 @@ class WebAPIMessageEvent extends WebAPIMessage {
 /**
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
+
 
 /**
  * @class
@@ -5006,6 +5001,7 @@ class WebAPIMessageReady extends WebAPIMessage {
 /**
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
+
 
 /**
  * @class
@@ -5091,6 +5087,7 @@ class WebAPIMessageRequest extends WebAPIMessage {
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
 
+
 /**
  * @class
  * @classdesc The message response to a message request
@@ -5164,6 +5161,7 @@ class WebAPIMessageResponse extends WebAPIMessage {
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  */
+
 
 class WebAPIOrigin {
 
@@ -5292,6 +5290,7 @@ class WebAPIOrigin {
 /**
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
+
 
 /**
  * A POJO object containg datas about a distant source to allow
@@ -6043,6 +6042,7 @@ class WebAPI {
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
 
+
 /**
  * @class
  */
@@ -6163,6 +6163,7 @@ class WorkerMessage {
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
 
+
 class WorkerMessageData extends WorkerMessage {
 
     static isWorkerMessageData = true
@@ -6189,6 +6190,7 @@ class WorkerMessageData extends WorkerMessage {
 /**
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
+
 
 class WorkerMessageError extends WorkerMessage {
 
@@ -6218,6 +6220,7 @@ class WorkerMessageError extends WorkerMessage {
 /**
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
+
 
 class WorkerMessageProgress extends WorkerMessage {
 
@@ -6282,6 +6285,7 @@ class WorkerMessageProgress extends WorkerMessage {
 /**
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
+
 
 /**
  * @class
@@ -6418,6 +6422,7 @@ class AbstractWorker {
 /**
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
+
 
 class WorkerMessageMethodCall extends WorkerMessage {
 

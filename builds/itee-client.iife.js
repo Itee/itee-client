@@ -844,6 +844,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 
 	/* eslint-env browser */
 
+
 	/**
 	 * @class
 	 * @classdesc TKeyboardController allow single source of thruth for keyboard state checking (based on Lee Stemkoski work).
@@ -2728,6 +2729,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	 * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
 	 */
 
+
 	//const BinaryType = toEnum( {
 	//    Null:        0,
 	//    Boolean:     1,
@@ -2968,6 +2970,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	 * @example Todo
 	 *
 	 */
+
 
 
 	/**
@@ -4691,22 +4694,13 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	  rnds[6] = rnds[6] & 0x0f | 0x40;
 	  rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
 
-	  if (buf) {
-	    offset = offset || 0;
-
-	    for (var i = 0; i < 16; ++i) {
-	      buf[offset + i] = rnds[i];
-	    }
-
-	    return buf;
-	  }
-
 	  return stringify(rnds);
 	}
 
 	/**
 	 * @author [Tristan Valcke]{@link https://github.com/Itee}
 	 */
+
 
 	/**
 	 * @typedef {Object} WebAPIMessageSerialized
@@ -4824,6 +4818,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	 * @author [Tristan Valcke]{@link https://github.com/Itee}
 	 */
 
+
 	class WebAPIMessageError extends WebAPIMessage {
 
 	    static isWebAPIMessageError = true
@@ -4895,6 +4890,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	 * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
 	 */
 
+
 	/**
 	 * @typedef {Object} WebAPIMessageDataSerialized
 	 * @property {object} data
@@ -4948,6 +4944,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	/**
 	 * @author [Tristan Valcke]{@link https://github.com/Itee}
 	 */
+
 
 	/**
 	 * @class
@@ -5007,6 +5004,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	/**
 	 * @author [Tristan Valcke]{@link https://github.com/Itee}
 	 */
+
 
 	/**
 	 * @class
@@ -5092,6 +5090,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	 * @author [Tristan Valcke]{@link https://github.com/Itee}
 	 */
 
+
 	/**
 	 * @class
 	 * @classdesc The message response to a message request
@@ -5165,6 +5164,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	 * @author [Tristan Valcke]{@link https://github.com/Itee}
 	 * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
 	 */
+
 
 	class WebAPIOrigin {
 
@@ -5293,6 +5293,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	/**
 	 * @author [Tristan Valcke]{@link https://github.com/Itee}
 	 */
+
 
 	/**
 	 * A POJO object containg datas about a distant source to allow
@@ -6044,6 +6045,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	 * @author [Tristan Valcke]{@link https://github.com/Itee}
 	 */
 
+
 	/**
 	 * @class
 	 */
@@ -6164,6 +6166,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	 * @author [Tristan Valcke]{@link https://github.com/Itee}
 	 */
 
+
 	class WorkerMessageData extends WorkerMessage {
 
 	    static isWorkerMessageData = true
@@ -6190,6 +6193,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	/**
 	 * @author [Tristan Valcke]{@link https://github.com/Itee}
 	 */
+
 
 	class WorkerMessageError extends WorkerMessage {
 
@@ -6219,6 +6223,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	/**
 	 * @author [Tristan Valcke]{@link https://github.com/Itee}
 	 */
+
 
 	class WorkerMessageProgress extends WorkerMessage {
 
@@ -6283,6 +6288,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	/**
 	 * @author [Tristan Valcke]{@link https://github.com/Itee}
 	 */
+
 
 	/**
 	 * @class
@@ -6420,6 +6426,7 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	 * @author [Tristan Valcke]{@link https://github.com/Itee}
 	 */
 
+
 	class WorkerMessageMethodCall extends WorkerMessage {
 
 	    static isWorkerMessageMethodCall = true
@@ -6513,8 +6520,6 @@ this.Itee.Client = (function (exports, iteeUtils, iteeValidators, iteeCore) {
 	exports.WorkerMessageError = WorkerMessageError;
 	exports.WorkerMessageMethodCall = WorkerMessageMethodCall;
 	exports.WorkerMessageProgress = WorkerMessageProgress;
-
-	Object.defineProperty(exports, '__esModule', { value: true });
 
 	return exports;
 
