@@ -108,6 +108,11 @@ export default defineConfig( [
         ignores: [ 'tests/benchmarks/builds/*' ],
         plugins: { js },
         extends: [ 'js/recommended' ],
+        languageOptions: {
+            globals: {
+                Benchmark: 'readonly'
+            },
+        }
     },
     {
         name:            'tests/units',
