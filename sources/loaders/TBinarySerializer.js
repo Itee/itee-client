@@ -250,6 +250,8 @@ class TBinarySerializer {
 const binarySerializerInstance = /*#__PURE__*/new TBinarySerializer()
 
 export {
+    isDate,
+    isRegEx,
     binarySerializerInstance as DefaultBinarySerializer,
     TBinarySerializer,
     BinaryType
