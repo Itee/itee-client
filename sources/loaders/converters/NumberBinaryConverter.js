@@ -1,4 +1,4 @@
-import { TBinaryConverter } from '../TBinaryConverter'
+import { TBinaryConverter } from '../TBinaryConverter.js'
 
 class NumberBinaryConverter extends TBinaryConverter {
     constructor( serializer ) { super( Number, serializer ) }

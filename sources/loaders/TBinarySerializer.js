@@ -13,17 +13,17 @@ import {
     isString,
     isUndefined
 }                                   from 'itee-validators'
-import { ArrayBinaryConverter }     from './converters/ArrayBinaryConverter'
-import { BooleanBinaryConverter }   from './converters/BooleanBinaryConverter'
-import { DateBinaryConverter }      from './converters/DateBinaryConverter'
-import { NullBinaryConverter }      from './converters/NullBinaryConverter'
-import { NumberBinaryConverter }    from './converters/NumberBinaryConverter'
-import { ObjectBinaryConverter }    from './converters/ObjectBinaryConverter'
-import { RegExBinaryConverter }     from './converters/RegExBinaryConverter'
-import { StringBinaryConverter }    from './converters/StringBinaryConverter'
-import { UndefinedBinaryConverter } from './converters/UndefinedBinaryConverter'
-import { TBinaryReader }            from './TBinaryReader'
-import { TBinaryWriter }            from './TBinaryWriter'
+import { ArrayBinaryConverter }     from './converters/ArrayBinaryConverter.js'
+import { BooleanBinaryConverter }   from './converters/BooleanBinaryConverter.js'
+import { DateBinaryConverter }      from './converters/DateBinaryConverter.js'
+import { NullBinaryConverter }      from './converters/NullBinaryConverter.js'
+import { NumberBinaryConverter }    from './converters/NumberBinaryConverter.js'
+import { ObjectBinaryConverter }    from './converters/ObjectBinaryConverter.js'
+import { RegExBinaryConverter }     from './converters/RegExBinaryConverter.js'
+import { StringBinaryConverter }    from './converters/StringBinaryConverter.js'
+import { UndefinedBinaryConverter } from './converters/UndefinedBinaryConverter.js'
+import { TBinaryReader }            from './TBinaryReader.js'
+import { TBinaryWriter }            from './TBinaryWriter.js'
 
 //const BinaryType = toEnum( {
 //    Null:        0,

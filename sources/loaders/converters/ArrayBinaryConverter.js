@@ -1,4 +1,4 @@
-import { TBinaryConverter } from '../TBinaryConverter'
+import { TBinaryConverter } from '../TBinaryConverter.js'
 
 // import { DefaultBinarySerializer } from '../TBinarySerializer'
 

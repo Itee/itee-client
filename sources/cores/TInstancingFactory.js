@@ -1,4 +1,4 @@
-import { TAbstractFactory } from './TAbstractFactory'
+import { TAbstractFactory } from './TAbstractFactory.js'
 
 /**
  * @class

@@ -8,7 +8,7 @@ import {
     isObject,
     isString
 }                        from 'itee-validators'
-import { WebAPIMessage } from './WebAPIMessage'
+import { WebAPIMessage } from './WebAPIMessage.js'
 
 class WebAPIMessageError extends WebAPIMessage {
 

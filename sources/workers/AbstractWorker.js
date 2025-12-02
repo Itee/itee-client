@@ -10,9 +10,9 @@ import {
     isNotDefined,
     isNotString
 }                                from 'itee-validators'
-import { WorkerMessageData }     from './messages/WorkerMessageData'
-import { WorkerMessageError }    from './messages/WorkerMessageError'
-import { WorkerMessageProgress } from './messages/WorkerMessageProgress'
+import { WorkerMessageData }     from './messages/WorkerMessageData.js'
+import { WorkerMessageError }    from './messages/WorkerMessageError.js'
+import { WorkerMessageProgress } from './messages/WorkerMessageProgress.js'
 
 /**
  * @class

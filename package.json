@@ -23,6 +23,7 @@
     "type": "git",
     "url":  "https://github.com/Itee/itee-client"
   },
+  "type":            "module",
   "main":            "builds/itee-client.cjs.js",
   "module":          "builds/itee-client.esm.js",
   "browser":         "builds/itee-client.iife.js",

@@ -1,7 +1,7 @@
 /* eslint-env browser */
 
 import { DefaultLogger as TLogger } from 'itee-core'
-import { Keys }                     from '../cores/TConstants'
+import { Keys }                     from '../cores/TConstants.js'
 
 /**
  * @class

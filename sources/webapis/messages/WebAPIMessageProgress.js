@@ -2,7 +2,7 @@
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
 
-import { WebAPIMessage } from './WebAPIMessage'
+import { WebAPIMessage } from './WebAPIMessage.js'
 
 /**
  * @class

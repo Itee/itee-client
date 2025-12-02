@@ -8,7 +8,7 @@ import {
 import {
     Byte,
     Endianness
-} from './TBinaryReader'
+} from './TBinaryReader.js'
 
 /**
  * @author [Tristan Valcke]{@link https://github.com/Itee}

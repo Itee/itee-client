@@ -49,8 +49,8 @@ import {
     HttpStatusCode,
     HttpVerb,
     ResponseType
-}                 from '../cores/TConstants'
-import { TStore } from '../cores/TStore'
+}                 from '../cores/TConstants.js'
+import { TStore } from '../cores/TStore.js'
 
 
 /**

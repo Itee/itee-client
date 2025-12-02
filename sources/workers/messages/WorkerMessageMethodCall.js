@@ -8,7 +8,7 @@ import {
     isNull,
     isUndefined
 }                        from 'itee-validators'
-import { WorkerMessage } from './WorkerMessage'
+import { WorkerMessage } from './WorkerMessage.js'
 
 class WorkerMessageMethodCall extends WorkerMessage {
 

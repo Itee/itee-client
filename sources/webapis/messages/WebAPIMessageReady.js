@@ -6,7 +6,7 @@ import {
     isNotBoolean,
     isNotDefined
 }                        from 'itee-validators'
-import { WebAPIMessage } from './WebAPIMessage'
+import { WebAPIMessage } from './WebAPIMessage.js'
 
 /**
  * @class

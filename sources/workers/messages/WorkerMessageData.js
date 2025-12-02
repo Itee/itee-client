@@ -2,7 +2,7 @@
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
 
-import { WorkerMessage } from './WorkerMessage'
+import { WorkerMessage } from './WorkerMessage.js'
 
 class WorkerMessageData extends WorkerMessage {
 

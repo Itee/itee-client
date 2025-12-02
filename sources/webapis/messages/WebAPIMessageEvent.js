@@ -3,7 +3,7 @@
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  */
 
-import { WebAPIMessage } from './WebAPIMessage'
+import { WebAPIMessage } from './WebAPIMessage.js'
 
 /**
  * @typedef {Object} WebAPIMessageDataSerialized

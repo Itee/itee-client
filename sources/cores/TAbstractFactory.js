@@ -1,4 +1,4 @@
-import { TStore } from './TStore'
+import { TStore } from './TStore.js'
 
 /**
  * @class

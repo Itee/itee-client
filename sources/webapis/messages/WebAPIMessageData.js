@@ -1,4 +1,4 @@
-import { WebAPIMessage } from './WebAPIMessage'
+import { WebAPIMessage } from './WebAPIMessage.js'
 
 /**
  * @typedef {Object} WebAPIMessageDataSerialized

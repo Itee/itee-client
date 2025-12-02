@@ -7,8 +7,8 @@
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  */
 
-export * from './WorkerMessage'
-export * from './WorkerMessageData'
-export * from './WorkerMessageError'
-export * from './WorkerMessageMethodCall'
-export * from './WorkerMessageProgress'
+export * from './WorkerMessage.js'
+export * from './WorkerMessageData.js'
+export * from './WorkerMessageError.js'
+export * from './WorkerMessageMethodCall.js'
+export * from './WorkerMessageProgress.js'

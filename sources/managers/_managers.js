@@ -7,4 +7,4 @@
  */
 /* eslint-env browser */
 
-export { TDataBaseManager } from './TDataBaseManager'
+export { TDataBaseManager } from './TDataBaseManager.js'
