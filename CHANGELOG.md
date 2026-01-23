@@ -1,3 +1,5 @@
+# [v10.0.1](https://github.com/Itee/client/compare/v10.0.0...v10.0.1) (2026-01-23)
+
 # [v10.0.0](https://github.com/Itee/client/compare/v9.0.0...v10.0.0) (2026-01-23)
 
 ## 🐛 Bug Fixes
