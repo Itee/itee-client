@@ -8,20 +8,16 @@ import {
     isObject,
     isString
 }                        from 'itee-validators'
-import { WebAPIMessage } from './WebAPIMessage'
+import { WebAPIMessage } from './WebAPIMessage.js'
 
 class WebAPIMessageError extends WebAPIMessage {
 
     static isWebAPIMessageError = true
-    // Utils
-    static isError ( value ) {
-        return value instanceof Error || isObject( value ) && ( isDefined( value.name ) || isDefined( value.message ) || isDefined( value.stack ) )
-    }
     /**
      *
      * @param error
      */
-    constructor ( error ) {
+    constructor( error ) {
         super( '_error' )
 
         /**
@@ -30,10 +26,10 @@ class WebAPIMessageError extends WebAPIMessage {
          */
         this.error = error
     }
-    get error () {
+    get error() {
         return this._error
     }
-    set error ( value ) {
+    set error( value ) {
         if ( isNotDefined( value ) ) { throw new ReferenceError( `Expect a string, or Error like. But got value of '${ typeof value }' type: ${ JSON.stringify( value, null, 4 ) }` ) }
 
         if ( isString( value ) ) {
@@ -58,13 +54,16 @@ class WebAPIMessageError extends WebAPIMessage {
         }
 
     }
-
+    // Utils
+    static isError( value ) {
+        return value instanceof Error || isObject( value ) && ( isDefined( value.name ) || isDefined( value.message ) || isDefined( value.stack ) )
+    }
     // Serialization
     /**
      *
      * @returns {{id: String, type: String, name: String, stack: String, message: String}}
      */
-    toJSON () {
+    toJSON() {
 
         return {
             ...super.toJSON(),

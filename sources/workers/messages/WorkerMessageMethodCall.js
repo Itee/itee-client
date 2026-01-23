@@ -8,24 +8,24 @@ import {
     isNull,
     isUndefined
 }                        from 'itee-validators'
-import { WorkerMessage } from './WorkerMessage'
+import { WorkerMessage } from './WorkerMessage.js'
 
 class WorkerMessageMethodCall extends WorkerMessage {
 
     static isWorkerMessageMethodCall = true
 
-    constructor ( method, parameters = [] ) {
+    constructor( method, parameters = [] ) {
         super( 'methodCall' )
 
         this.method     = method
         this.parameters = parameters
     }
 
-    get method () {
+    get method() {
         return this._method
     }
 
-    set method ( value ) {
+    set method( value ) {
         if ( isNull( value ) ) { return }
         if ( isUndefined( value ) ) { return }
         if ( isNotString( value ) ) { return }
@@ -33,17 +33,17 @@ class WorkerMessageMethodCall extends WorkerMessage {
         this._method = value
     }
 
-    get parameters () {
+    get parameters() {
         return this._parameters
     }
 
-    set parameters ( value ) {
+    set parameters( value ) {
         if ( isNotArray( value ) ) { return }
 
         this._parameters = value
     }
 
-    toJSON () {
+    toJSON() {
 
         return {
             ...super.toJSON(),

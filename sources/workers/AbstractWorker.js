@@ -10,9 +10,9 @@ import {
     isNotDefined,
     isNotString
 }                                from 'itee-validators'
-import { WorkerMessageData }     from './messages/WorkerMessageData'
-import { WorkerMessageError }    from './messages/WorkerMessageError'
-import { WorkerMessageProgress } from './messages/WorkerMessageProgress'
+import { WorkerMessageData }     from './messages/WorkerMessageData.js'
+import { WorkerMessageError }    from './messages/WorkerMessageError.js'
+import { WorkerMessageProgress } from './messages/WorkerMessageProgress.js'
 
 /**
  * @class
@@ -24,7 +24,7 @@ class AbstractWorker {
      *
      * @param progress
      */
-    postProgress ( progress ) {
+    postProgress( progress ) {
 
         if ( progress.isWorkerMessageProgress ) {
             postMessage( progress.toJSON() )
@@ -38,7 +38,7 @@ class AbstractWorker {
      *
      * @param error
      */
-    postError ( error ) {
+    postError( error ) {
 
         if ( error.isWorkerMessageError ) {
             postMessage( error.toJSON() )
@@ -53,7 +53,7 @@ class AbstractWorker {
      * @param type
      * @param arrayBuffer
      */
-    postData ( type, arrayBuffer ) {
+    postData( type, arrayBuffer ) {
 
         if ( isArray( arrayBuffer ) ) {
             postMessage( new WorkerMessageData( type, arrayBuffer ).toJSON(), [ ...arrayBuffer ] )
@@ -70,7 +70,7 @@ class AbstractWorker {
      * @param message
      * @returns {boolean}
      */
-    onMessage ( message ) {
+    onMessage( message ) {
 
         if ( isNotDefined( message ) ) {
             this.postError( new Error( 'Message event cannot be null or undefined !' ) )
@@ -126,7 +126,7 @@ class AbstractWorker {
      * @param parameters
      * @private
      */
-    _invoke ( name, parameters = [] ) {
+    _invoke( name, parameters = [] ) {
 
         try {
 

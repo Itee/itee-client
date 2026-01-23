@@ -3,7 +3,7 @@
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  */
 
-import { WebAPIMessage } from './WebAPIMessage'
+import { WebAPIMessage } from './WebAPIMessage.js'
 
 /**
  * @typedef {Object} WebAPIMessageDataSerialized
@@ -29,7 +29,7 @@ class WebAPIMessageEvent extends WebAPIMessage {
      *
      * @param data
      */
-    constructor ( name, data ) {
+    constructor( name, data ) {
         super( '_event' )
 
         this.name = name
@@ -40,7 +40,7 @@ class WebAPIMessageEvent extends WebAPIMessage {
      *
      * @returns {{id: String, type: String, data: String}}
      */
-    toJSON () {
+    toJSON() {
 
         const isPlainObject = this.data === Object( this.data )
         return {

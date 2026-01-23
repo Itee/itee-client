@@ -16,7 +16,7 @@ import { v4 as uuidv4 } from 'uuid'
 
 class WebAPIOrigin {
 
-    constructor ( parameters = {} ) {
+    constructor( parameters = {} ) {
 
         const _parameters = {
             ...{
@@ -46,93 +46,93 @@ class WebAPIOrigin {
     /**
      *
      */
-    get id () {
+    get id() {
         return this._id
     }
 
-    get uri () {
+    get uri() {
         return this._uri
     }
-    set uri ( value ) {
+    set uri( value ) {
         if ( isNotDefined( value ) ) { throw new ReferenceError( 'WebAPIOrigin uri cannot be null or undefined !' )}
         if ( isNotString( value ) ) { throw new TypeError( `WebAPIOrigin uri expect to be a string. Got '${ typeof value }' !` )}
         if ( isEmptyString( value ) ) { throw new RangeError( 'WebAPIOrigin uri cannot be an empty string !' )}
 
         this._uri = value
     }
-    get allowedMethods () {
+    get allowedMethods() {
         return this._allowedMethods
     }
-    set allowedMethods ( value ) {
+    set allowedMethods( value ) {
         if ( isNotDefined( value ) ) { throw new ReferenceError( 'WebAPIOrigin methods cannot be null or undefined ! Expect an array of method name.' )}
         if ( isNotArray( value ) ) { throw new TypeError( `WebAPIOrigin methods expect to be an array of method name (string).Got '${ typeof value }' !` )}
         if ( isEmptyArray( value ) ) { throw new RangeError( 'WebAPIOrigin methods cannot be an empty array ! Expect an array of method name.' )}
 
         this._allowedMethods = value
     }
-    get window () {
+    get window() {
         return this._window
     }
-    set window ( value ) {
+    set window( value ) {
         //        if ( isNotDefined( value ) ) { throw new ReferenceError( 'WebAPIOrigin window cannot be null or undefined ! Expect a Window object.' )}
         //        if ( isDefined( value ) && !( value instanceof Window ) ) { throw new TypeError( `WebAPIOrigin window expect to be a Window. Got '${ typeof value }' !` )}
 
         this._window = value
     }
-    get isReady () {
+    get isReady() {
         return this._isReady
     }
-    set isReady ( value ) {
+    set isReady( value ) {
         if ( isNotDefined( value ) ) { throw new ReferenceError( 'WebAPIOrigin isReady cannot be null or undefined !' )}
         if ( isNotBoolean( value ) ) { throw new TypeError( `WebAPIOrigin isReady expect a Boolean. Got '${ typeof value }' !` )}
 
         this._isReady = value
     }
-    get isReachable () {
+    get isReachable() {
         return this._isReachable
     }
-    set isReachable ( value ) {
+    set isReachable( value ) {
         if ( isNotDefined( value ) ) { throw new ReferenceError( 'WebAPIOrigin isReachable cannot be null or undefined !' )}
         if ( isNotBoolean( value ) ) { throw new TypeError( `WebAPIOrigin isReachable expect a Boolean. Got '${ typeof value }' !` )}
 
         this._isReachable = value
     }
-    get messageQueue () {
+    get messageQueue() {
         return this._messageQueue
     }
-    set messageQueue ( value ) {
+    set messageQueue( value ) {
         this._messageQueue = value
     }
-    setUri ( value ) {
+    setUri( value ) {
         this.uri = value
         return this
     }
-    setAllowedMethods ( arrayOfMethodNames ) {
+    setAllowedMethods( arrayOfMethodNames ) {
         this.allowedMethods = arrayOfMethodNames
         return this
     }
-    addAllowedMethod ( methodName ) {
+    addAllowedMethod( methodName ) {
         if ( !this.allowedMethods.includes( methodName ) ) {
             this.allowedMethods.push( methodName )
         }
         return this
     }
-    removeAllowedMethod ( methodName ) {
+    removeAllowedMethod( methodName ) {
         const index = this.allowedMethods.indexOf( methodName )
         if ( index >= 0 ) {
             this.allowedMethods.slice( index, methodName )
         }
         return this
     }
-    setWindow ( value ) {
+    setWindow( value ) {
         this.window = value
         return this
     }
-    setReadyState ( value ) {
+    setReadyState( value ) {
         this.isReady = value
         return this
     }
-    setReachableState ( value ) {
+    setReachableState( value ) {
         this.isReachable = value
         return this
     }

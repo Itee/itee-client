@@ -30,7 +30,7 @@ class WebAPIMessage {
      *
      * @param {string} type
      */
-    constructor ( type ) {
+    constructor( type ) {
         this._id  = uuidv4()
         this.type = type
     }
@@ -38,7 +38,7 @@ class WebAPIMessage {
     /**
      *
      */
-    get id () {
+    get id() {
         return this._id
     }
 
@@ -46,11 +46,11 @@ class WebAPIMessage {
      *
      * @returns {string}
      */
-    get type () {
+    get type() {
         return this._type
     }
 
-    set type ( value ) {
+    set type( value ) {
         if ( isNotString( value ) ) { throw new ReferenceError( 'WebAPIMessage type cannot be null or undefined !' )}
         if ( isEmptyString( value ) ) { throw new TypeError( 'WebAPIMessage type cannot be an empty string !' )}
 
@@ -61,7 +61,7 @@ class WebAPIMessage {
      *
      * @returns {{id: String, type: String}}
      */
-    toJSON () {
+    toJSON() {
 
         return {
             id:   this.id,

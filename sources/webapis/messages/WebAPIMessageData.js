@@ -1,4 +1,4 @@
-import { WebAPIMessage } from './WebAPIMessage'
+import { WebAPIMessage } from './WebAPIMessage.js'
 
 /**
  * @typedef {Object} WebAPIMessageDataSerialized
@@ -24,7 +24,7 @@ class WebAPIMessageData extends WebAPIMessage {
      *
      * @param data
      */
-    constructor ( data ) {
+    constructor( data ) {
         super( '_data' )
 
         this.data = data
@@ -34,7 +34,7 @@ class WebAPIMessageData extends WebAPIMessage {
      *
      * @returns {{id: String, type: String, data: String}}
      */
-    toJSON () {
+    toJSON() {
 
         const isPlainObject = this.data === Object( this.data )
         return {

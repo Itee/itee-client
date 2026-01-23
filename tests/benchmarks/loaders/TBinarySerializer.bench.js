@@ -1,7 +1,9 @@
-
-import Benchmark   from 'benchmark'
-import { Testing }      from 'itee-utils'
 import * as TBinarySerializerNamespace from '../../../sources/loaders/TBinarySerializer.js'
+import { getBenchmarkPackage } from '../../import.benchmarks.js'
+import { getTestingPackage } from '../../import.testing.js'
+
+const Benchmark = await getBenchmarkPackage()
+const Testing   = await getTestingPackage()
 
 const isDateSuite = Benchmark.Suite( 'TBinarySerializerNamespace.isDate', Testing.createSuiteOptions() )
                                      .add( 'isDate()', Testing.iterateOverDataMap( TBinarySerializerNamespace.isDate ), Testing.createBenchmarkOptions() )

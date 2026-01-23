@@ -16,13 +16,13 @@ import {
     isUndefined,
     isZero
 }                                from 'itee-validators'
-import { WebAPIMessageData }     from './messages/WebAPIMessageData'
-import { WebAPIMessageError }    from './messages/WebAPIMessageError'
-import { WebAPIMessageEvent }    from './messages/WebAPIMessageEvent'
-import { WebAPIMessageReady }    from './messages/WebAPIMessageReady'
-import { WebAPIMessageRequest }  from './messages/WebAPIMessageRequest'
-import { WebAPIMessageResponse } from './messages/WebAPIMessageResponse'
-import { WebAPIOrigin }          from './WebAPIOrigin'
+import { WebAPIMessageData }     from './messages/WebAPIMessageData.js'
+import { WebAPIMessageError }    from './messages/WebAPIMessageError.js'
+import { WebAPIMessageEvent }    from './messages/WebAPIMessageEvent.js'
+import { WebAPIMessageReady }    from './messages/WebAPIMessageReady.js'
+import { WebAPIMessageRequest }  from './messages/WebAPIMessageRequest.js'
+import { WebAPIMessageResponse } from './messages/WebAPIMessageResponse.js'
+import { WebAPIOrigin }          from './WebAPIOrigin.js'
 
 /**
  * A POJO object containg datas about a distant source to allow
@@ -47,7 +47,7 @@ class WebAPI {
      * @param {Array<AllowedOrigin>} [parameters.allowedOrigins=[]] - An array containing configured allowed origins
      * @param {Number} [parameters.requestTimeout=2000] - The request timeout before throw an error
      */
-    constructor ( parameters = {} ) {
+    constructor( parameters = {} ) {
 
         const _parameters = {
             ...{
@@ -84,14 +84,14 @@ class WebAPI {
      *
      * @returns {TLogger}
      */
-    get logger () {
+    get logger() {
         return this._logger
     }
     /**
      *
      * @param value {TLogger}
      */
-    set logger ( value ) {
+    set logger( value ) {
         if ( isNull( value ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: The logger cannot be null, expect a TLogger.` )}
         if ( isUndefined( value ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: The logger cannot be undefined, expect a TLogger.` )}
         if ( !value.isLogger ) { throw new ReferenceError( `[${ this._localOriginUri }]: The logger cannot be undefined, expect a TLogger.` )}
@@ -102,14 +102,14 @@ class WebAPI {
      *
      * @returns {Array<WebAPIOrigin>}
      */
-    get allowedOrigins () {
+    get allowedOrigins() {
         return this._allowedOrigins
     }
     /**
      *
      * @param value {Array<WebAPIOrigin>}
      */
-    set allowedOrigins ( value ) {
+    set allowedOrigins( value ) {
 
         this._allowedOrigins  = []
         const _allowedOrigins = toArray( value )
@@ -140,14 +140,14 @@ class WebAPI {
      *
      * @returns {Number}
      */
-    get requestTimeout () {
+    get requestTimeout() {
         return this._requestTimeout
     }
     /**
      *
      * @param value {Number}
      */
-    set requestTimeout ( value ) {
+    set requestTimeout( value ) {
         if ( isNull( value ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: The request timeout cannot be null, expect to be 0 or a positive number.` )}
         if ( isUndefined( value ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: The request timeout cannot be undefined, expect to be 0 or a positive number.` )}
         if ( isNotNumber( value ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: The request timeout expect to be 0 or a positive number.` )}
@@ -159,14 +159,14 @@ class WebAPI {
      *
      * @returns {Array<Function>}
      */
-    get methods () {
+    get methods() {
         return this._methods
     }
     /**
      *
      * @param value Array<Function>
      */
-    set methods ( value ) {
+    set methods( value ) {
         if ( isNull( value ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: The methods cannot be null, expect any keyed collection of function.` )}
         if ( isUndefined( value ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: The methods cannot be undefined, expect any keyed collection of function.` )}
         // Todo: isNotObject && isNotMap && isNotSet && isNotApi
@@ -178,7 +178,7 @@ class WebAPI {
      * @param value {TLogger}
      * @returns {AbstractWebAPI}
      */
-    setLogger ( value ) {
+    setLogger( value ) {
         this.logger = value
         return this
     }
@@ -187,7 +187,7 @@ class WebAPI {
      * @param value {Array<WebAPIOrigin>}
      * @returns {AbstractWebAPI}
      */
-    setAllowedOrigins ( value ) {
+    setAllowedOrigins( value ) {
         this.allowedOrigins = value
         return this
     }
@@ -196,7 +196,7 @@ class WebAPI {
      * @param value {Number}
      * @returns {AbstractWebAPI}
      */
-    setRequestTimeout ( value ) {
+    setRequestTimeout( value ) {
         this.requestTimeout = value
         return this
     }
@@ -205,19 +205,19 @@ class WebAPI {
      * @param value Array<Function>
      * @returns {AbstractWebAPI}
      */
-    setMethods ( value ) {
+    setMethods( value ) {
         this.methods = value
         return this
     }
 
-    addEventListener ( eventName, listener ) {
+    addEventListener( eventName, listener ) {
         if ( isNotDefined( this._eventListeners[ eventName ] ) ) {
             this._eventListeners[ eventName ] = []
         }
 
         this._eventListeners[ eventName ].push( listener )
     }
-    removeListener ( eventName, listener ) {
+    removeListener( eventName, listener ) {
         if ( isNotDefined( this._eventListeners[ eventName ] ) ) {
             return
         }
@@ -234,11 +234,11 @@ class WebAPI {
      * @returns {boolean}
      * @private
      */
-    _isInIframe () {
+    _isInIframe() {
 
         try {
             return window.self !== window.top
-        } catch ( e ) {
+        } catch ( error ) {
             return true
         }
 
@@ -249,7 +249,7 @@ class WebAPI {
      * @returns {boolean}
      * @private
      */
-    _isNotAllowedForAllOrigins () {
+    _isNotAllowedForAllOrigins() {
 
         return !this._allowedOrigins.includes( '*' )
         //        return !this.allowAnyOrigins
@@ -261,7 +261,7 @@ class WebAPI {
      * @returns {boolean}
      * @private
      */
-    _isNotAllowedOrigin ( originURI ) {
+    _isNotAllowedOrigin( originURI ) {
 
         return !this._allowedOrigins
                     .filter( origin => origin !== '*' )
@@ -276,7 +276,7 @@ class WebAPI {
      * @returns {boolean}
      * @private
      */
-    _isSameOrigin ( originURI ) {
+    _isSameOrigin( originURI ) {
         return this._localOriginUri === originURI
     }
 
@@ -286,7 +286,7 @@ class WebAPI {
      * @returns {boolean}
      * @private
      */
-    _isNotAllowedForAllMethods ( origin ) {
+    _isNotAllowedForAllMethods( origin ) {
         return ( origin.allowedMethods.indexOf( '*' ) === -1 )
     }
 
@@ -297,7 +297,7 @@ class WebAPI {
      * @returns {boolean}
      * @private
      */
-    _isNotAllowedMethod ( origin, methodName ) {
+    _isNotAllowedMethod( origin, methodName ) {
         return ( origin.allowedMethods.indexOf( methodName ) === -1 )
     }
 
@@ -307,7 +307,7 @@ class WebAPI {
      * @returns {boolean}
      * @private
      */
-    _methodNotExist ( methodName ) {
+    _methodNotExist( methodName ) {
         return isNotDefined( this.methods[ methodName ] )
     }
 
@@ -320,7 +320,7 @@ class WebAPI {
      * @returns {WebAPIOrigin}
      * @private
      */
-    _getAllowedOriginBy ( propertyName, value ) {
+    _getAllowedOriginBy( propertyName, value ) {
         return this.allowedOrigins.find( origin => origin[ propertyName ] === value )
     }
 
@@ -330,7 +330,7 @@ class WebAPI {
      * @returns {Window}
      * @private
      */
-    _getOriginWindow ( originURI ) {
+    _getOriginWindow( originURI ) {
 
         let originWindow
 
@@ -360,7 +360,7 @@ class WebAPI {
      * @param origin {WebAPIOrigin}
      * @private
      */
-    _processMessageQueueOf ( origin ) {
+    _processMessageQueueOf( origin ) {
 
         const messageQueue = origin.messageQueue
         for ( let messageIndex = messageQueue.length - 1 ; messageIndex >= 0 ; messageIndex-- ) {
@@ -373,7 +373,7 @@ class WebAPI {
      *
      * @private
      */
-    _broadcastReadyMessage () {
+    _broadcastReadyMessage() {
 
         const ready       = new WebAPIMessageReady()
         let checkInterval = 250
@@ -405,7 +405,7 @@ class WebAPI {
      * @returns {Promise<void>}
      * @private
      */
-    async _onMessage ( event ) {
+    async _onMessage( event ) {
 
         // Is allowed origin
         if ( this._isNotAllowedForAllOrigins() && this._isNotAllowedOrigin( event.origin ) ) {
@@ -457,7 +457,7 @@ class WebAPI {
      * @param message
      * @private
      */
-    async _dispatchMessageFrom ( origin, message ) {
+    async _dispatchMessageFrom( origin, message ) {
 
         this.logger.log( `[${ this._localOriginUri }]: Recieve message of type '${ message.type }' from [${ origin.uri }].` )
 
@@ -499,7 +499,7 @@ class WebAPI {
      * @param origin
      * @param message
      */
-    _onReadyFrom ( origin, message ) {
+    _onReadyFrom( origin, message ) {
 
         if ( !origin.isReady ) {
             origin.isReady = true
@@ -520,7 +520,7 @@ class WebAPI {
      * @param origin
      * @param request
      */
-    async _onRequestFrom ( origin, request ) {
+    async _onRequestFrom( origin, request ) {
 
         let message
         const methodName = request.method
@@ -557,7 +557,7 @@ class WebAPI {
      * @param origin
      * @param response
      */
-    _onResponseFrom ( origin, response ) {
+    _onResponseFrom( origin, response ) {
 
         const requestId = response.request.id
         if ( !this._awaitingRequest.has( requestId ) ) { return }
@@ -590,8 +590,8 @@ class WebAPI {
      * @param message
      * @private
      */
-    // eslint-disable-next-line no-unused-vars
-    onErrorFrom ( origin, message ) {
+     
+    onErrorFrom( origin, message ) {
         // Need to be reimplemented if needed
         this.logger.error( `[${ this._localOriginUri }]: the origin [${ origin.uri }] send error => ${ JSON.stringify( message.error, null, 4 ) }. Need you to reimplement this method ?` )
     }
@@ -601,8 +601,8 @@ class WebAPI {
      * @param origin
      * @param message
      */
-    // eslint-disable-next-line no-unused-vars
-    onDataFrom ( origin, message ) {
+     
+    onDataFrom( origin, message ) {
         // Need to be reimplemented if needed
         this.logger.log( `[${ this._localOriginUri }]: the origin [${ origin.uri }] send data => ${ JSON.stringify( message.data, null, 4 ) }. Need you to reimplement this method ?` )
     }
@@ -612,13 +612,13 @@ class WebAPI {
      * @param origin
      * @param message
      */
-    // eslint-disable-next-line no-unused-vars
-    onMessageFrom ( origin, message ) {
+     
+    onMessageFrom( origin, message ) {
         // Need to be reimplemented if needed
         this.logger.log( `[${ this._localOriginUri }]: the origin [${ origin.uri }] send custom message => ${ JSON.stringify( message, null, 4 ) }. Need you to reimplement this method ?` )
     }
 
-    onEventFrom ( origin, event ) {
+    onEventFrom( origin, event ) {
         const listeners = this._eventListeners[ event.name ]
         for ( const listener of listeners ) {
             listener( event.data )
@@ -631,7 +631,7 @@ class WebAPI {
      * @param originId
      * @param ready
      */
-    postReadyTo ( originId, ready ) {
+    postReadyTo( originId, ready ) {
 
         const _ready = ( ready && ready.constructor.isWebAPIMessageReady ) ? ready : new WebAPIMessageReady()
         this.postMessageTo( originId, _ready, true )
@@ -645,7 +645,7 @@ class WebAPI {
      * @param params
      * @returns {Promise<unknown>}
      */
-    postRequestTo ( originId, request, ...params ) {
+    postRequestTo( originId, request, ...params ) {
 
         const _request = ( request && request.constructor.isWebAPIMessageRequest ) ? request : new WebAPIMessageRequest( request, params )
 
@@ -682,7 +682,7 @@ class WebAPI {
      * @param request
      * @param reponse
      */
-    postResponseTo ( originId, request, reponse ) {
+    postResponseTo( originId, request, reponse ) {
 
         const _response = ( reponse && reponse.constructor.isWebAPIMessageResponse ) ? reponse : new WebAPIMessageResponse( request, reponse )
         this.postMessageTo( originId, _response )
@@ -694,7 +694,7 @@ class WebAPI {
      * @param originId
      * @param error {WebAPIMessageError|String}
      */
-    postErrorTo ( originId, error ) {
+    postErrorTo( originId, error ) {
 
         const _error = ( error && error.constructor.isWebAPIMessageError ) ? error : new WebAPIMessageError( error )
         this.postMessageTo( originId, _error )
@@ -706,7 +706,7 @@ class WebAPI {
      * @param originId
      * @param data
      */
-    postDataTo ( originId, data ) {
+    postDataTo( originId, data ) {
 
         const _data = ( data && data.constructor.isWebAPIMessageData ) ? data : new WebAPIMessageData( data )
         this.postMessageTo( originId, _data )
@@ -719,7 +719,7 @@ class WebAPI {
      * @param message
      * @param force
      */
-    postMessageTo ( originId, message, force = false ) {
+    postMessageTo( originId, message, force = false ) {
 
         if ( isNotDefined( originId ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: Unable to post message to null or undefined origin id !` ) }
         if ( isNotDefined( message ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: Unable to post null or undefined message !` ) }
@@ -755,7 +755,7 @@ class WebAPI {
 
     }
 
-    postEvent ( name = 'DefaultEventName', data ) {
+    postEvent( name = 'DefaultEventName', data ) {
 
         const _data = ( data && data.constructor.isWebAPIMessageEvent ) ? data : new WebAPIMessageEvent( name, data )
 

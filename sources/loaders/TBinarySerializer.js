@@ -6,24 +6,24 @@
 import {
     isArray,
     isBoolean,
+    isNotDefined,
     isNull,
     isNumber,
     isObject,
     isString,
-    isUndefined,
-    isNotDefined
+    isUndefined
 }                                   from 'itee-validators'
-import { NullBinaryConverter }      from './converters/NullBinaryConverter'
-import { UndefinedBinaryConverter } from './converters/UndefinedBinaryConverter'
-import { BooleanBinaryConverter }   from './converters/BooleanBinaryConverter'
-import { NumberBinaryConverter }    from './converters/NumberBinaryConverter'
-import { StringBinaryConverter }    from './converters/StringBinaryConverter'
-import { DateBinaryConverter }      from './converters/DateBinaryConverter'
-import { RegExBinaryConverter }     from './converters/RegExBinaryConverter'
-import { ArrayBinaryConverter }     from './converters/ArrayBinaryConverter'
-import { ObjectBinaryConverter }    from './converters/ObjectBinaryConverter'
-import { TBinaryReader }            from './TBinaryReader'
-import { TBinaryWriter }            from './TBinaryWriter'
+import { ArrayBinaryConverter }     from './converters/ArrayBinaryConverter.js'
+import { BooleanBinaryConverter }   from './converters/BooleanBinaryConverter.js'
+import { DateBinaryConverter }      from './converters/DateBinaryConverter.js'
+import { NullBinaryConverter }      from './converters/NullBinaryConverter.js'
+import { NumberBinaryConverter }    from './converters/NumberBinaryConverter.js'
+import { ObjectBinaryConverter }    from './converters/ObjectBinaryConverter.js'
+import { RegExBinaryConverter }     from './converters/RegExBinaryConverter.js'
+import { StringBinaryConverter }    from './converters/StringBinaryConverter.js'
+import { UndefinedBinaryConverter } from './converters/UndefinedBinaryConverter.js'
+import { TBinaryReader }            from './TBinaryReader.js'
+import { TBinaryWriter }            from './TBinaryWriter.js'
 
 //const BinaryType = toEnum( {
 //    Null:        0,
@@ -50,8 +50,8 @@ const BinaryType = {
     UserDefined: 255
 }
 
-function isDate ( value ) {
-    if(isNotDefined( value )){
+function isDate( value ) {
+    if ( isNotDefined( value ) ) {
         return false
     }
 
@@ -71,8 +71,8 @@ function isDate ( value ) {
     }
 }
 
-function isRegEx ( value ) {
-    if(isNotDefined( value )){
+function isRegEx( value ) {
+    if ( isNotDefined( value ) ) {
         return false
     }
 
@@ -81,21 +81,21 @@ function isRegEx ( value ) {
 
 class TBinarySerializer {
 
-    constructor () {
+    constructor() {
 
         this.reader = new TBinaryReader()
         this.writer = new TBinaryWriter()
 
         this.converters = new Map( [
-            [ BinaryType.Null, new NullBinaryConverter(this) ],
-            [ BinaryType.Undefined, new UndefinedBinaryConverter(this) ],
-            [ BinaryType.Boolean, new BooleanBinaryConverter(this) ],
-            [ BinaryType.Number, new NumberBinaryConverter(this) ],
-            [ BinaryType.String, new StringBinaryConverter(this) ],
-            [ BinaryType.Date, new DateBinaryConverter(this) ],
-            [ BinaryType.RegEx, new RegExBinaryConverter(this) ],
-            [ BinaryType.Array, new ArrayBinaryConverter(this) ],
-            [ BinaryType.Object, new ObjectBinaryConverter(null, this) ],
+            [ BinaryType.Null, new NullBinaryConverter( this ) ],
+            [ BinaryType.Undefined, new UndefinedBinaryConverter( this ) ],
+            [ BinaryType.Boolean, new BooleanBinaryConverter( this ) ],
+            [ BinaryType.Number, new NumberBinaryConverter( this ) ],
+            [ BinaryType.String, new StringBinaryConverter( this ) ],
+            [ BinaryType.Date, new DateBinaryConverter( this ) ],
+            [ BinaryType.RegEx, new RegExBinaryConverter( this ) ],
+            [ BinaryType.Array, new ArrayBinaryConverter( this ) ],
+            [ BinaryType.Object, new ObjectBinaryConverter( null, this ) ],
             [ BinaryType.UserDefined, new Map( [] ) ]
         ] )
 
@@ -103,7 +103,7 @@ class TBinarySerializer {
         //        this.converters.set( 'String', new StringBinaryConverter() )
     }
 
-    addConverter ( converter ) {
+    addConverter( converter ) {
 
         converter.serializer = this
 
@@ -111,12 +111,12 @@ class TBinarySerializer {
         userDefinedConverters.set( converter.targetCtor.name, converter )
 
     }
-    removeConverter ( converter ) {
+    removeConverter( converter ) {
         const userDefinedConverters = this.converters.get( BinaryType.UserDefined )
         userDefinedConverters.remove( converter.targetCtor.name )
     }
 
-    serialize ( instance, options = {} ) {
+    serialize( instance, options = {} ) {
 
         // Reset writer buffer
         this.writer.buffer = new ArrayBuffer( 1024 )
@@ -133,7 +133,7 @@ class TBinarySerializer {
         // Clip buffer to current writer offset
         return buffer.slice( 0, this.writer.offset )
     }
-    _serialize ( instance ) {
+    _serialize( instance ) {
         const binaryType = this._getBinaryTypeOf( instance )
 
         // Prepend internal binary type for deserialization process to be able to target correct converter
@@ -160,7 +160,7 @@ class TBinarySerializer {
 
         return this.writer.buffer
     }
-    _getBinaryTypeOf ( instance ) {
+    _getBinaryTypeOf( instance ) {
         let binaryType
         if ( isNull( instance ) ) {
             binaryType = BinaryType.Null
@@ -187,7 +187,7 @@ class TBinarySerializer {
         return binaryType
     }
 
-    deserialize ( buffer ) {
+    deserialize( buffer ) {
         if ( isNotDefined( buffer ) || buffer.length === 0 ) { return }
 
         // Reset writer buffer
@@ -196,7 +196,7 @@ class TBinarySerializer {
         return this._deserialize()
 
     }
-    _deserialize () {
+    _deserialize() {
 
         const binaryType = this.reader.getUint8()
 
@@ -209,8 +209,8 @@ class TBinarySerializer {
             // var ctor = this._getCtorOf( ctorName )
 
             converter = converter.has( ctorName )
-                ? converter.get( ctorName )
-                : null //converter.get( null )
+                        ? converter.get( ctorName )
+                        : null //converter.get( null )
 
             // Get specific or create default converter for userdefined type
             //            const ctorNameLength = this.reader.getUint8()
@@ -250,6 +250,8 @@ class TBinarySerializer {
 const binarySerializerInstance = /*#__PURE__*/new TBinarySerializer()
 
 export {
+    isDate,
+    isRegEx,
     binarySerializerInstance as DefaultBinarySerializer,
     TBinarySerializer,
     BinaryType

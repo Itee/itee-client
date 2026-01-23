@@ -6,7 +6,7 @@ import {
     isNotBoolean,
     isNotDefined
 }                        from 'itee-validators'
-import { WebAPIMessage } from './WebAPIMessage'
+import { WebAPIMessage } from './WebAPIMessage.js'
 
 /**
  * @class
@@ -23,7 +23,7 @@ class WebAPIMessageReady extends WebAPIMessage {
     /**
      *
      */
-    constructor ( parameters = {} ) {
+    constructor( parameters = {} ) {
         super( '_ready' )
 
         const _parameters = {
@@ -36,11 +36,11 @@ class WebAPIMessageReady extends WebAPIMessage {
         this.isBind = _parameters.isBind
     }
 
-    get isBind () {
+    get isBind() {
         return this._isBind
     }
 
-    set isBind ( value ) {
+    set isBind( value ) {
         if ( isNotDefined( value ) ) { throw new ReferenceError( 'WebAPIMessageReady isBind cannot be null or undefined ! Expect a boolean value.' )}
         if ( isNotBoolean( value ) ) { throw new TypeError( 'WebAPIMessageReady isBind expect a boolean value.' )}
 
@@ -51,7 +51,7 @@ class WebAPIMessageReady extends WebAPIMessage {
      *
      * @returns {{id: String, type: String, isBind: Boolean}}
      */
-    toJSON () {
+    toJSON() {
 
         return {
             ...super.toJSON(),

@@ -1,11 +1,11 @@
-import { TBinaryConverter } from '../TBinaryConverter'
+import { TBinaryConverter } from '../TBinaryConverter.js'
 
 class UndefinedBinaryConverter extends TBinaryConverter {
-    constructor ( serializer ) { super( null, serializer ) }
+    constructor( serializer ) { super( null, serializer ) }
 
-    to ( writer, instance, options = {} ) {}
+    to( writer, instance, options = {} ) {}
 
-    from ( reader, options = {} ) {
+    from( reader, options = {} ) {
         return undefined
     }
 }

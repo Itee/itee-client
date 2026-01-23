@@ -1,4 +1,4 @@
-import { TStore } from './TStore'
+import { TStore } from './TStore.js'
 
 /**
  * @class
@@ -15,7 +15,7 @@ class TAbstractFactory extends TStore {
      * @constructor
      * @param parameters
      */
-    constructor ( parameters = {} ) {
+    constructor( parameters = {} ) {
 
         const _parameters = { ...{}, ...parameters }
 
@@ -31,7 +31,7 @@ class TAbstractFactory extends TStore {
      * @param parameters
      */
     // eslint-disable-next-line no-unused-vars
-    create ( key, ...parameters ) {
+    create( key, ...parameters ) {
 
         // Need to be reimplemented
 

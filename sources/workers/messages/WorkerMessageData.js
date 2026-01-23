@@ -2,19 +2,19 @@
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
 
-import { WorkerMessage } from './WorkerMessage'
+import { WorkerMessage } from './WorkerMessage.js'
 
 class WorkerMessageData extends WorkerMessage {
 
     static isWorkerMessageData = true
 
-    constructor ( type, buffer ) {
+    constructor( type, buffer ) {
         super( type )
 
         this.buffer = buffer
     }
 
-    toJSON () {
+    toJSON() {
 
         return {
             ...super.toJSON(),

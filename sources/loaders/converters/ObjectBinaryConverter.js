@@ -1,16 +1,17 @@
-import { TBinaryConverter }        from '../TBinaryConverter'
+import { TBinaryConverter } from '../TBinaryConverter.js'
+
 // import { DefaultBinarySerializer } from '../TBinarySerializer'
 
 class ObjectBinaryConverter extends TBinaryConverter {
-    constructor ( subType, serializer ) { super( subType || Object, serializer ) }
+    constructor( subType, serializer ) { super( subType || Object, serializer ) }
 
-    to ( writer, instance, options = {} ) {
+    to( writer, instance, options = {} ) {
 
         // Keep only writable properties from instance
         // Read-only property are considered as it ! And won't be serialized.
         const descriptors             = Object.getOwnPropertyDescriptors( instance )
-        const writablePropertyEntries = Object.entries( descriptors )
-                                              .filter( ( [ key, value ] ) => value.writable && value.enumerable )
+        const writablePropertyEntries = Object.values( descriptors )
+                                              .filter( ( value ) => value.writable && value.enumerable )
 
         // Store number of writable properties of object for future deserialization loop
         writer.setUint8( writablePropertyEntries.length )
@@ -70,7 +71,7 @@ class ObjectBinaryConverter extends TBinaryConverter {
 
     }
 
-    from ( reader, options = {} ) {
+    from( reader, options = {} ) {
         const instance = super.from( reader, options )
 
 

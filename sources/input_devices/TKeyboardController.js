@@ -1,7 +1,7 @@
 /* eslint-env browser */
 
 import { DefaultLogger as TLogger } from 'itee-core'
-import { Keys }                     from '../cores/TConstants'
+import { Keys }                     from '../cores/TConstants.js'
 
 /**
  * @class
@@ -26,45 +26,10 @@ class TKeyboardController {
 
     /**
      *
-     * @param keyCode
-     * @return {string}
-     */
-    static keyName ( keyCode ) {
-        return ( TKeyboardController.k[ keyCode ] !== null ) ?
-            TKeyboardController.k[ keyCode ] :
-            String.fromCharCode( keyCode )
-    }
-    /**
-     *
-     * @param event
-     */
-    static onKeyUp ( event ) {
-        var key = TKeyboardController.keyName( event.keyCode )
-        if ( TKeyboardController.status[ key ] ) {
-            TKeyboardController.status[ key ].pressed = false
-        }
-    }
-    /**
-     *
-     * @param event
-     */
-    static onKeyDown ( event ) {
-        var key = TKeyboardController.keyName( event.keyCode )
-        if ( !TKeyboardController.status[ key ] ) {
-            TKeyboardController.status[ key ] = {
-                down:              false,
-                pressed:           false,
-                up:                false,
-                updatedPreviously: false
-            }
-        }
-    }
-    /**
-     *
      * @param parameters
      */
     // eslint-disable-next-line no-unused-vars
-    constructor ( parameters = {} ) {
+    constructor( parameters = {} ) {
 
         //         const _parameters = {
         //             ...{},
@@ -78,8 +43,43 @@ class TKeyboardController {
     }
     /**
      *
+     * @param keyCode
+     * @return {string}
      */
-    update () {
+    static keyName( keyCode ) {
+        return ( TKeyboardController.k[ keyCode ] !== null ) ?
+               TKeyboardController.k[ keyCode ] :
+               String.fromCharCode( keyCode )
+    }
+    /**
+     *
+     * @param event
+     */
+    static onKeyUp( event ) {
+        var key = TKeyboardController.keyName( event.keyCode )
+        if ( TKeyboardController.status[ key ] ) {
+            TKeyboardController.status[ key ].pressed = false
+        }
+    }
+    /**
+     *
+     * @param event
+     */
+    static onKeyDown( event ) {
+        var key = TKeyboardController.keyName( event.keyCode )
+        if ( !TKeyboardController.status[ key ] ) {
+            TKeyboardController.status[ key ] = {
+                down:              false,
+                pressed:           false,
+                up:                false,
+                updatedPreviously: false
+            }
+        }
+    }
+    /**
+     *
+     */
+    update() {
         for ( var key in TKeyboardController.status ) {
             // insure that every keypress has "down" status exactly once
             if ( !TKeyboardController.status[ key ].updatedPreviously ) {
@@ -108,7 +108,7 @@ class TKeyboardController {
      * @param keyName
      * @return {*}
      */
-    down ( keyName ) {
+    down( keyName ) {
         return ( TKeyboardController.status[ keyName ] && TKeyboardController.status[ keyName ].down )
     }
 
@@ -117,7 +117,7 @@ class TKeyboardController {
      * @param keyName
      * @return {*|pressed|boolean}
      */
-    pressed ( keyName ) {
+    pressed( keyName ) {
         return ( TKeyboardController.status[ keyName ] && TKeyboardController.status[ keyName ].pressed )
     }
 
@@ -126,14 +126,14 @@ class TKeyboardController {
      * @param keyName
      * @return {*}
      */
-    up ( keyName ) {
+    up( keyName ) {
         return ( TKeyboardController.status[ keyName ] && TKeyboardController.status[ keyName ].up )
     }
 
     /**
      *
      */
-    debug () {
+    debug() {
         var list = 'Keys active: '
         for ( var arg in TKeyboardController.status ) {
             list += ' ' + arg

@@ -1,4 +1,4 @@
-import { TAbstractFactory } from './TAbstractFactory'
+import { TAbstractFactory } from './TAbstractFactory.js'
 
 /**
  * @class
@@ -14,7 +14,7 @@ class TInstancingFactory extends TAbstractFactory {
      * The ctor description
      * @param parameters
      */
-    constructor ( parameters = {} ) {
+    constructor( parameters = {} ) {
 
         const _parameters = { ...{}, ...parameters }
 
@@ -28,7 +28,7 @@ class TInstancingFactory extends TAbstractFactory {
      * @param parameters
      * @returns {*}
      */
-    create ( key, ...parameters ) {
+    create( key, ...parameters ) {
         super.create( key, ...parameters )
 
         return new this.get( key )( ...parameters )

@@ -2,13 +2,13 @@
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
 
-import { WorkerMessage } from './WorkerMessage'
+import { WorkerMessage } from './WorkerMessage.js'
 
 class WorkerMessageProgress extends WorkerMessage {
 
     static isWorkerMessageProgress = true
 
-    constructor ( loaded = 0, total = 0 ) {
+    constructor( loaded = 0, total = 0 ) {
         super( 'progress' )
 
         this.lengthComputable = false
@@ -16,25 +16,25 @@ class WorkerMessageProgress extends WorkerMessage {
         this.total            = total
     }
 
-    get loaded () {
+    get loaded() {
         return this._loaded
     }
 
-    set loaded ( value ) {
+    set loaded( value ) {
         this._loaded = value
         this._checkIfLengthComputable()
     }
 
-    get total () {
+    get total() {
         return this._total
     }
 
-    set total ( value ) {
+    set total( value ) {
         this._total = value
         this._checkIfLengthComputable()
     }
 
-    _checkIfLengthComputable () {
+    _checkIfLengthComputable() {
 
         this.lengthComputable = false
 
@@ -49,7 +49,7 @@ class WorkerMessageProgress extends WorkerMessage {
 
     }
 
-    toJSON () {
+    toJSON() {
 
         return {
             ...super.toJSON(),

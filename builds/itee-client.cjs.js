@@ -10,8 +10,6 @@
  */
 'use strict';
 
-Object.defineProperty(exports, '__esModule', { value: true });
-
 var iteeUtils = require('itee-utils');
 var iteeValidators = require('itee-validators');
 var iteeCore = require('itee-core');
@@ -454,12 +452,137 @@ const ResponseType = /*#__PURE__*/iteeUtils.toEnum( {
 class TStore {
 
     /**
+     * @constructor
+     * @param {Object} [parameters={}]
+     * @param {Object} [parameters.collection={}]
+     * @param {Boolean} [parameters.allowOverride=false]
+     * @param {Array.<function>} [parameters.keyValidators=[]]
+     * @param {Array.<function>} [parameters.valueValidators=[]]
+     */
+    constructor( parameters = {} ) {
+
+        const _parameters = {
+            ...{
+                collection:      {},
+                allowOverride:   false,
+                keyValidators:   [],
+                valueValidators: []
+            }, ...parameters
+        };
+
+        this.collection      = _parameters.collection;
+        this.allowOverride   = _parameters.allowOverride;
+        this.keyValidators   = _parameters.keyValidators;
+        this.valueValidators = _parameters.valueValidators;
+
+    }
+    /**
+     *
+     * @return {{}}
+     */
+    get collection() {
+
+        return this._collection
+
+    }
+    set collection( value ) {
+
+        const memberName = 'Collection';
+        const expect     = 'Expect an object.';
+
+        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( iteeValidators.isNotObject( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
+
+        this._collection = value;
+
+    }
+    /**
+     *
+     * @return {*}
+     */
+    get allowOverride() {
+
+        return this._allowOverride
+
+    }
+    set allowOverride( value ) {
+
+        const memberName = 'Allow override';
+        const expect     = 'Expect a boolean.';
+
+        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( iteeValidators.isNotBoolean( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
+
+        this._allowOverride = value;
+
+    }
+    /**
+     *
+     * @return {*}
+     */
+    get keyValidators() {
+
+        return this._keyValidators
+
+    }
+    set keyValidators( value ) {
+
+        const memberName = 'Keys validators';
+        const expect     = 'Expect an array of TValidator or an empty array.';
+
+        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( iteeValidators.isNotArray( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
+
+        this._keyValidators = value;
+
+    }
+    /**
+     *
+     * @return {*}
+     */
+    get valueValidators() {
+        return this._valueValidators
+    }
+    set valueValidators( value ) {
+
+        const memberName = 'Values validators';
+        const expect     = 'Expect an array of TValidator or an empty array.';
+
+        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( iteeValidators.isNotArray( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
+
+        this._valueValidators = value;
+
+    }
+    /**
+     *
+     * @return {string[]}
+     */
+    get keys() {
+
+        return Object.keys( this._collection )
+
+    }
+    /**
+     *
+     * @return {unknown[] | any[]}
+     */
+    get values() {
+
+        return Object.values( this._collection )
+
+    }
+    /**
      *
      * @param value
      * @param validators
      * @private
      */
-    static _validate ( value, validators ) {
+    static _validate( value, validators ) {
 
         for ( let validatorIndex = 0, numberOfValidators = validators.length ; validatorIndex < numberOfValidators ; validatorIndex++ ) {
 
@@ -482,136 +605,11 @@ class TStore {
 
     }
     /**
-     * @constructor
-     * @param {Object} [parameters={}]
-     * @param {Object} [parameters.collection={}]
-     * @param {Boolean} [parameters.allowOverride=false]
-     * @param {Array.<function>} [parameters.keyValidators=[]]
-     * @param {Array.<function>} [parameters.valueValidators=[]]
-     */
-    constructor ( parameters = {} ) {
-
-        const _parameters = {
-            ...{
-                collection:      {},
-                allowOverride:   false,
-                keyValidators:   [],
-                valueValidators: []
-            }, ...parameters
-        };
-
-        this.collection      = _parameters.collection;
-        this.allowOverride   = _parameters.allowOverride;
-        this.keyValidators   = _parameters.keyValidators;
-        this.valueValidators = _parameters.valueValidators;
-
-    }
-    /**
-     *
-     * @return {{}}
-     */
-    get collection () {
-
-        return this._collection
-
-    }
-    set collection ( value ) {
-
-        const memberName = 'Collection';
-        const expect     = 'Expect an object.';
-
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
-        if ( iteeValidators.isNotObject( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
-
-        this._collection = value;
-
-    }
-    /**
-     *
-     * @return {*}
-     */
-    get allowOverride () {
-
-        return this._allowOverride
-
-    }
-    set allowOverride ( value ) {
-
-        const memberName = 'Allow override';
-        const expect     = 'Expect a boolean.';
-
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
-        if ( iteeValidators.isNotBoolean( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
-
-        this._allowOverride = value;
-
-    }
-    /**
-     *
-     * @return {*}
-     */
-    get keyValidators () {
-
-        return this._keyValidators
-
-    }
-    set keyValidators ( value ) {
-
-        const memberName = 'Keys validators';
-        const expect     = 'Expect an array of TValidator or an empty array.';
-
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
-        if ( iteeValidators.isNotArray( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
-
-        this._keyValidators = value;
-
-    }
-    /**
-     *
-     * @return {*}
-     */
-    get valueValidators () {
-        return this._valueValidators
-    }
-    set valueValidators ( value ) {
-
-        const memberName = 'Values validators';
-        const expect     = 'Expect an array of TValidator or an empty array.';
-
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
-        if ( iteeValidators.isNotArray( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
-
-        this._valueValidators = value;
-
-    }
-    /**
-     *
-     * @return {string[]}
-     */
-    get keys () {
-
-        return Object.keys( this._collection )
-
-    }
-    /**
-     *
-     * @return {unknown[] | any[]}
-     */
-    get values () {
-
-        return Object.values( this._collection )
-
-    }
-    /**
      *
      * @param value
      * @return {TStore} The current instance (this)
      */
-    setCollection ( value ) {
+    setCollection( value ) {
 
         this.collection = value;
         return this
@@ -623,7 +621,7 @@ class TStore {
      * @param value
      * @return {TStore} The current instance (this)
      */
-    setAllowOverride ( value ) {
+    setAllowOverride( value ) {
 
         this.allowOverride = value;
         return this
@@ -635,7 +633,7 @@ class TStore {
      * @param value
      * @return {TStore} The current instance (this)
      */
-    setKeyValidators ( value ) {
+    setKeyValidators( value ) {
 
         this.keyValidators( value );
         return this
@@ -647,7 +645,7 @@ class TStore {
      * @param value
      * @return {TStore} The current instance (this)
      */
-    setValueValidators ( value ) {
+    setValueValidators( value ) {
 
         this.valueValidators( value );
         return this
@@ -664,7 +662,7 @@ class TStore {
      * @param {Boolean} force
      * @return {TStore} The current instance (this)
      */
-    add ( key, value, force = false ) {
+    add( key, value, force = false ) {
 
         if ( this.contain( key ) && ( !this._allowOverride && !force ) ) {
             throw new TypeError( `Item with key (${ key }) already exist in collection !` )
@@ -684,7 +682,7 @@ class TStore {
      * @param key
      * @return {boolean}
      */
-    contain ( key ) {
+    contain( key ) {
 
         return iteeValidators.isNotUndefined( this._collection[ key ] )
 
@@ -696,7 +694,7 @@ class TStore {
      * @param key
      * @returns {*}
      */
-    get ( key ) {
+    get( key ) {
 
         return this._collection[ key ]
 
@@ -708,7 +706,7 @@ class TStore {
      * @param key
      * @return {TStore} The current instance (this)
      */
-    remove ( key ) {
+    remove( key ) {
 
         delete this._collection[ key ];
 
@@ -720,7 +718,7 @@ class TStore {
      * Clear the cache and reset collection to an empty object.
      * @return {TStore} The current instance (this)
      */
-    clear () {
+    clear() {
 
         this._collection = {};
 
@@ -745,7 +743,7 @@ class TAbstractFactory extends TStore {
      * @constructor
      * @param parameters
      */
-    constructor ( parameters = {} ) {
+    constructor( parameters = {} ) {
 
         const _parameters = { ...{}, ...parameters };
 
@@ -761,7 +759,7 @@ class TAbstractFactory extends TStore {
      * @param parameters
      */
     // eslint-disable-next-line no-unused-vars
-    create ( key, ...parameters ) {
+    create( key, ...parameters ) {
 
         // Need to be reimplemented
 
@@ -782,7 +780,7 @@ class TCloningFactory extends TAbstractFactory {
     /**
      * @param parameters
      */
-    constructor ( parameters = {} ) {
+    constructor( parameters = {} ) {
 
         const _parameters = { ...{}, ...parameters };
 
@@ -796,7 +794,7 @@ class TCloningFactory extends TAbstractFactory {
      * @param parameters
      * @returns {*}
      */
-    create ( key, ...parameters ) {
+    create( key, ...parameters ) {
         super.create( key, ...parameters );
 
         return this.get( key ).clone( ...parameters )
@@ -818,7 +816,7 @@ class TInstancingFactory extends TAbstractFactory {
      * The ctor description
      * @param parameters
      */
-    constructor ( parameters = {} ) {
+    constructor( parameters = {} ) {
 
         const _parameters = { ...{}, ...parameters };
 
@@ -832,7 +830,7 @@ class TInstancingFactory extends TAbstractFactory {
      * @param parameters
      * @returns {*}
      */
-    create ( key, ...parameters ) {
+    create( key, ...parameters ) {
         super.create( key, ...parameters );
 
         return new this.get( key )( ...parameters )
@@ -842,6 +840,7 @@ class TInstancingFactory extends TAbstractFactory {
 }
 
 /* eslint-env browser */
+
 
 /**
  * @class
@@ -866,45 +865,10 @@ class TKeyboardController {
 
     /**
      *
-     * @param keyCode
-     * @return {string}
-     */
-    static keyName ( keyCode ) {
-        return ( TKeyboardController.k[ keyCode ] !== null ) ?
-            TKeyboardController.k[ keyCode ] :
-            String.fromCharCode( keyCode )
-    }
-    /**
-     *
-     * @param event
-     */
-    static onKeyUp ( event ) {
-        var key = TKeyboardController.keyName( event.keyCode );
-        if ( TKeyboardController.status[ key ] ) {
-            TKeyboardController.status[ key ].pressed = false;
-        }
-    }
-    /**
-     *
-     * @param event
-     */
-    static onKeyDown ( event ) {
-        var key = TKeyboardController.keyName( event.keyCode );
-        if ( !TKeyboardController.status[ key ] ) {
-            TKeyboardController.status[ key ] = {
-                down:              false,
-                pressed:           false,
-                up:                false,
-                updatedPreviously: false
-            };
-        }
-    }
-    /**
-     *
      * @param parameters
      */
     // eslint-disable-next-line no-unused-vars
-    constructor ( parameters = {} ) {
+    constructor( parameters = {} ) {
 
         //         const _parameters = {
         //             ...{},
@@ -918,8 +882,43 @@ class TKeyboardController {
     }
     /**
      *
+     * @param keyCode
+     * @return {string}
      */
-    update () {
+    static keyName( keyCode ) {
+        return ( TKeyboardController.k[ keyCode ] !== null ) ?
+               TKeyboardController.k[ keyCode ] :
+               String.fromCharCode( keyCode )
+    }
+    /**
+     *
+     * @param event
+     */
+    static onKeyUp( event ) {
+        var key = TKeyboardController.keyName( event.keyCode );
+        if ( TKeyboardController.status[ key ] ) {
+            TKeyboardController.status[ key ].pressed = false;
+        }
+    }
+    /**
+     *
+     * @param event
+     */
+    static onKeyDown( event ) {
+        var key = TKeyboardController.keyName( event.keyCode );
+        if ( !TKeyboardController.status[ key ] ) {
+            TKeyboardController.status[ key ] = {
+                down:              false,
+                pressed:           false,
+                up:                false,
+                updatedPreviously: false
+            };
+        }
+    }
+    /**
+     *
+     */
+    update() {
         for ( var key in TKeyboardController.status ) {
             // insure that every keypress has "down" status exactly once
             if ( !TKeyboardController.status[ key ].updatedPreviously ) {
@@ -948,7 +947,7 @@ class TKeyboardController {
      * @param keyName
      * @return {*}
      */
-    down ( keyName ) {
+    down( keyName ) {
         return ( TKeyboardController.status[ keyName ] && TKeyboardController.status[ keyName ].down )
     }
 
@@ -957,7 +956,7 @@ class TKeyboardController {
      * @param keyName
      * @return {*|pressed|boolean}
      */
-    pressed ( keyName ) {
+    pressed( keyName ) {
         return ( TKeyboardController.status[ keyName ] && TKeyboardController.status[ keyName ].pressed )
     }
 
@@ -966,14 +965,14 @@ class TKeyboardController {
      * @param keyName
      * @return {*}
      */
-    up ( keyName ) {
+    up( keyName ) {
         return ( TKeyboardController.status[ keyName ] && TKeyboardController.status[ keyName ].up )
     }
 
     /**
      *
      */
-    debug () {
+    debug() {
         var list = 'Keys active: ';
         for ( var arg in TKeyboardController.status ) {
             list += ' ' + arg;
@@ -1019,7 +1018,7 @@ class TMouseController {
     /**
      * @constructor
      */
-    constructor ( /*parameters = {}*/ ) {
+    constructor( /*parameters = {}*/ ) {
 
     }
 
@@ -1029,7 +1028,7 @@ class TMouseController {
 
 class TBinaryConverter {
 
-    constructor ( targetType, serializer = null ) {
+    constructor( targetType, serializer = null ) {
 //    constructor ( targetType, serializer = DefaultBinarySerializer ) {
 
         this.targetCtor = targetType;
@@ -1043,7 +1042,7 @@ class TBinaryConverter {
      * @param instance
      * @param options
      */
-    to ( writer, instance, options = {} ) { }
+    to( writer, instance, options = {} ) { }
 
     /**
      *
@@ -1051,7 +1050,7 @@ class TBinaryConverter {
      * @param options
      * @returns {*}
      */
-    from ( reader, options = {} ) {
+    from( reader, options = {} ) {
 
         return new this.targetCtor()
 
@@ -1111,7 +1110,7 @@ class TBinaryReader {
      * @param parameters.length
      * @param parameters.endianness
      */
-    constructor ( parameters = {} ) {
+    constructor( parameters = {} ) {
 
         const _parameters = {
             ...{
@@ -1143,11 +1142,11 @@ class TBinaryReader {
      *
      * @returns {*}
      */
-    get buffer () {
+    get buffer() {
         return this._buffer
     }
 
-    set buffer ( value ) {
+    set buffer( value ) {
 
         const memberName = 'Buffer';
         const expect     = 'Expect an instance of ArrayBuffer.';
@@ -1168,11 +1167,11 @@ class TBinaryReader {
      *
      * @returns {*}
      */
-    get offset () {
+    get offset() {
         return this._offset
     }
 
-    set offset ( value ) {
+    set offset( value ) {
 
         const memberName = 'Offset';
         const expect     = 'Expect a number.';
@@ -1187,7 +1186,7 @@ class TBinaryReader {
 
     }
 
-    get length () {
+    get length() {
         return this._length
     }
 
@@ -1195,7 +1194,7 @@ class TBinaryReader {
      *
      * @param value
      */
-    set length ( value ) {
+    set length( value ) {
 
         const memberName = 'Length';
         const expect     = 'Expect a number.';
@@ -1214,11 +1213,11 @@ class TBinaryReader {
      *
      * @returns {*}
      */
-    get endianness () {
+    get endianness() {
         return this._endianness
     }
 
-    set endianness ( value ) {
+    set endianness( value ) {
 
         const memberName = 'Endianness';
         const expect     = 'Expect a boolean.';
@@ -1237,7 +1236,7 @@ class TBinaryReader {
      * @param length
      * @returns {TBinaryReader}
      */
-    setBuffer ( buffer, offset, length ) {
+    setBuffer( buffer, offset, length ) {
 
         this.buffer = buffer;
         this.offset = offset || 0;
@@ -1252,7 +1251,7 @@ class TBinaryReader {
      * @param value
      * @returns {TBinaryReader}
      */
-    setOffset ( value ) {
+    setOffset( value ) {
 
         this.offset = value;
         return this
@@ -1264,7 +1263,7 @@ class TBinaryReader {
      * @param value
      * @returns {TBinaryReader}
      */
-    setLength ( value ) {
+    setLength( value ) {
 
         this.length = value;
         return this
@@ -1276,7 +1275,7 @@ class TBinaryReader {
      * @param endianness
      * @returns {TBinaryReader}
      */
-    setEndianness ( endianness ) {
+    setEndianness( endianness ) {
 
         this.endianness = endianness;
         return this
@@ -1289,7 +1288,7 @@ class TBinaryReader {
      * @returns {*}
      * @private
      */
-    _getAndUpdateOffsetBy ( increment ) {
+    _getAndUpdateOffsetBy( increment ) {
 
         const currentOffset = this._offset;
         this._offset += increment;
@@ -1302,7 +1301,7 @@ class TBinaryReader {
      *
      * @private
      */
-    _updateDataView () {
+    _updateDataView() {
 
         this._dataView = new DataView( this._buffer, this._offset, this._length );
 
@@ -1312,7 +1311,7 @@ class TBinaryReader {
      *
      * @returns {boolean}
      */
-    isEndOfFile () {
+    isEndOfFile() {
 
         return ( this._offset === this._length )
 
@@ -1320,49 +1319,49 @@ class TBinaryReader {
 
     // Bits
 
-    _isNullBitBuffer () {
+    _isNullBitBuffer() {
 
         return this._bits.buffer === null
 
     }
-    _nextBit () {
+    _nextBit() {
         this._bits.offset += 1;
     }
-    _isEndOfBitBuffer () {
+    _isEndOfBitBuffer() {
 
         return this._bits.offset === this._bits.length
 
     }
-    _isOutOfRangeBitOffset ( offset ) {
+    _isOutOfRangeBitOffset( offset ) {
         return offset > this._bits.length
     }
-    _readBit8 () {
+    _readBit8() {
         this._bits.buffer = this.getUint8();
         this._bits.length = 8;
         this._bits.offset = 0;
     }
-    _readBit16 () {
+    _readBit16() {
         this._bits.buffer = this.getUint16();
         this._bits.length = 16;
         this._bits.offset = 0;
     }
-    _readBit32 () {
+    _readBit32() {
         this._bits.buffer = this.getUint32();
         this._bits.length = 32;
         this._bits.offset = 0;
     }
-    _getBitAt ( bitOffset ) {
+    _getBitAt( bitOffset ) {
 
         return ( this._bits.buffer & ( 1 << bitOffset ) ) === 0 ? 0 : 1
 
     }
-    _resetBits () {
+    _resetBits() {
         this._bits.buffer = null;
         this._bits.length = 0;
         this._bits.offset = 0;
     }
 
-    skipBitOffsetTo ( bitOffset ) {
+    skipBitOffsetTo( bitOffset ) {
         //todo is positive bitoffset
 
         // In case we start directly by a skip offset try to determine which kind of data is expected
@@ -1395,13 +1394,13 @@ class TBinaryReader {
 
     }
 
-    skipBitOffsetOf ( nBits ) {
+    skipBitOffsetOf( nBits ) {
 
         this.skipBitOffsetTo( this._bits.offset + nBits );
 
     }
 
-    getBit8 ( moveNext = true ) {
+    getBit8( moveNext = true ) {
 
         if ( this._isNullBitBuffer() ) {
             this._readBit8();
@@ -1420,7 +1419,7 @@ class TBinaryReader {
 
     }
 
-    getBits8 ( numberOfBitToRead, moveNext = true ) {
+    getBits8( numberOfBitToRead, moveNext = true ) {
 
         const currentOffset = this._bits.offset;
 
@@ -1444,7 +1443,7 @@ class TBinaryReader {
 
     }
 
-    getBit16 ( moveNext = true ) {
+    getBit16( moveNext = true ) {
 
         if ( this._isNullBitBuffer() ) {
             this._readBit16();
@@ -1463,7 +1462,7 @@ class TBinaryReader {
 
     }
 
-    getBits16 ( numberOfBitToRead, moveNext = true ) {
+    getBits16( numberOfBitToRead, moveNext = true ) {
 
         const currentOffset = this._bits.offset;
 
@@ -1487,7 +1486,7 @@ class TBinaryReader {
 
     }
 
-    getBit32 ( moveNext = true ) {
+    getBit32( moveNext = true ) {
 
         if ( this._isNullBitBuffer() ) {
             this._readBit32();
@@ -1506,7 +1505,7 @@ class TBinaryReader {
 
     }
 
-    getBits32 ( numberOfBitToRead, moveNext = true ) {
+    getBits32( numberOfBitToRead, moveNext = true ) {
 
         const currentOffset = this._bits.offset;
 
@@ -1536,7 +1535,7 @@ class TBinaryReader {
      *
      * @param offset
      */
-    skipOffsetTo ( offset ) {
+    skipOffsetTo( offset ) {
 
         this._offset = offset;
 
@@ -1546,7 +1545,7 @@ class TBinaryReader {
      *
      * @param nBytes
      */
-    skipOffsetOf ( nBytes ) {
+    skipOffsetOf( nBytes ) {
 
         this._offset += nBytes;
 
@@ -1556,7 +1555,7 @@ class TBinaryReader {
      *
      * @returns {boolean}
      */
-    getBoolean ( moveNext = true ) {
+    getBoolean( moveNext = true ) {
 
         return ( ( this.getUint8( moveNext ) & 1 ) === 1 )
 
@@ -1568,7 +1567,7 @@ class TBinaryReader {
      * @param moveNext
      * @returns {Array}
      */
-    getBooleanArray ( length, moveNext = true ) {
+    getBooleanArray( length, moveNext = true ) {
 
         const currentOffset = this._offset;
         const array         = [];
@@ -1591,7 +1590,7 @@ class TBinaryReader {
      *
      * @returns {number}
      */
-    getInt8 ( moveNext = true ) {
+    getInt8( moveNext = true ) {
 
         const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.One ) : this._offset;
         return this._dataView.getInt8( offset )
@@ -1604,7 +1603,7 @@ class TBinaryReader {
      * @param moveNext
      * @returns {Array}
      */
-    getInt8Array ( length, moveNext = true ) {
+    getInt8Array( length, moveNext = true ) {
 
         const currentOffset = this._offset;
         const array         = [];
@@ -1627,7 +1626,7 @@ class TBinaryReader {
      *
      * @returns {number}
      */
-    getUint8 ( moveNext = true ) {
+    getUint8( moveNext = true ) {
 
         const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.One ) : this._offset;
         return this._dataView.getUint8( offset )
@@ -1640,7 +1639,7 @@ class TBinaryReader {
      * @param moveNext
      * @returns {Array}
      */
-    getUint8Array ( length, moveNext = true ) {
+    getUint8Array( length, moveNext = true ) {
 
         const currentOffset = this._offset;
         const array         = [];
@@ -1663,7 +1662,7 @@ class TBinaryReader {
      *
      * @returns {number}
      */
-    getInt16 ( moveNext = true ) {
+    getInt16( moveNext = true ) {
 
         const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Two ) : this._offset;
         return this._dataView.getInt16( offset, this._endianness )
@@ -1676,7 +1675,7 @@ class TBinaryReader {
      * @param moveNext
      * @returns {Array}
      */
-    getInt16Array ( length, moveNext = true ) {
+    getInt16Array( length, moveNext = true ) {
 
         const currentOffset = this._offset;
         const array         = [];
@@ -1699,7 +1698,7 @@ class TBinaryReader {
      *
      * @returns {number}
      */
-    getUint16 ( moveNext = true ) {
+    getUint16( moveNext = true ) {
 
         const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Two ) : this._offset;
         return this._dataView.getUint16( offset, this._endianness )
@@ -1712,7 +1711,7 @@ class TBinaryReader {
      * @param moveNext
      * @returns {Array}
      */
-    getUint16Array ( length, moveNext = true ) {
+    getUint16Array( length, moveNext = true ) {
 
         const currentOffset = this._offset;
         const array         = [];
@@ -1735,7 +1734,7 @@ class TBinaryReader {
      *
      * @returns {number}
      */
-    getInt32 ( moveNext = true ) {
+    getInt32( moveNext = true ) {
 
         const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Four ) : this._offset;
         return this._dataView.getInt32( offset, this._endianness )
@@ -1748,7 +1747,7 @@ class TBinaryReader {
      * @param moveNext
      * @returns {Array}
      */
-    getInt32Array ( length, moveNext = true ) {
+    getInt32Array( length, moveNext = true ) {
 
         const currentOffset = this._offset;
         const array         = [];
@@ -1771,7 +1770,7 @@ class TBinaryReader {
      *
      * @returns {number}
      */
-    getUint32 ( moveNext = true ) {
+    getUint32( moveNext = true ) {
 
         const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Four ) : this._offset;
         return this._dataView.getUint32( offset, this._endianness )
@@ -1784,7 +1783,7 @@ class TBinaryReader {
      * @param moveNext
      * @returns {Array}
      */
-    getUint32Array ( length, moveNext = true ) {
+    getUint32Array( length, moveNext = true ) {
 
         const currentOffset = this._offset;
         const array         = [];
@@ -1807,7 +1806,7 @@ class TBinaryReader {
      *
      * @returns {number}
      */
-    getInt64 ( moveNext = true ) {
+    getInt64( moveNext = true ) {
 
         // From THREE.FBXLoader
         // JavaScript doesn't support 64-bit integer so attempting to calculate by ourselves.
@@ -1871,7 +1870,7 @@ class TBinaryReader {
      * @param moveNext
      * @returns {Array}
      */
-    getInt64Array ( length, moveNext = true ) {
+    getInt64Array( length, moveNext = true ) {
 
         const currentOffset = this._offset;
         const array         = [];
@@ -1894,7 +1893,7 @@ class TBinaryReader {
      *
      * @returns {number}
      */
-    getUint64 ( moveNext = true ) {
+    getUint64( moveNext = true ) {
         // Note: see getInt64() comment
 
         let low  = null;
@@ -1936,7 +1935,7 @@ class TBinaryReader {
      * @param moveNext
      * @returns {Array}
      */
-    getUint64Array ( length, moveNext = true ) {
+    getUint64Array( length, moveNext = true ) {
 
         const currentOffset = this._offset;
         const array         = [];
@@ -1959,7 +1958,7 @@ class TBinaryReader {
      *
      * @returns {number}
      */
-    getFloat32 ( moveNext = true ) {
+    getFloat32( moveNext = true ) {
 
         const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Four ) : this._offset;
         return this._dataView.getFloat32( offset, this._endianness )
@@ -1972,7 +1971,7 @@ class TBinaryReader {
      * @param moveNext
      * @returns {Array}
      */
-    getFloat32Array ( length, moveNext = true ) {
+    getFloat32Array( length, moveNext = true ) {
 
         const currentOffset = this._offset;
         const array         = [];
@@ -1995,7 +1994,7 @@ class TBinaryReader {
      *
      * @return {number}
      */
-    getFloat64 ( moveNext = true ) {
+    getFloat64( moveNext = true ) {
 
         const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Eight ) : this._offset;
         return this._dataView.getFloat64( offset, this._endianness )
@@ -2008,7 +2007,7 @@ class TBinaryReader {
      * @param moveNext
      * @returns {Array}
      */
-    getFloat64Array ( length, moveNext = true ) {
+    getFloat64Array( length, moveNext = true ) {
 
         const currentOffset = this._offset;
         const array         = [];
@@ -2031,7 +2030,7 @@ class TBinaryReader {
      *
      * @returns {string}
      */
-    getChar ( moveNext = true ) {
+    getChar( moveNext = true ) {
 
         return String.fromCharCode( this.getUint8( moveNext ) )
 
@@ -2043,7 +2042,7 @@ class TBinaryReader {
      * @param moveNext
      * @return {string}
      */
-    getString ( length, moveNext = true ) {
+    getString( length, moveNext = true ) {
 
         const currentOffset = this._offset;
         let string          = '';
@@ -2065,7 +2064,7 @@ class TBinaryReader {
      * @param size
      * @returns {ArrayBuffer}
      */
-    getArrayBuffer ( size ) {
+    getArrayBuffer( size ) {
 
         const offset = this._getAndUpdateOffsetBy( size );
         return this._dataView.buffer.slice( offset, offset + size )
@@ -2074,116 +2073,12 @@ class TBinaryReader {
 
 }
 
-class NullBinaryConverter extends TBinaryConverter {
-    constructor ( serializer ) { super( null, serializer ); }
-
-    to ( writer, instance, options = {} ) {}
-
-    from ( reader, options = {} ) {
-        return null
-    }
-}
-
-class UndefinedBinaryConverter extends TBinaryConverter {
-    constructor ( serializer ) { super( null, serializer ); }
-
-    to ( writer, instance, options = {} ) {}
-
-    from ( reader, options = {} ) {
-        return undefined
-    }
-}
-
-/**
- * @author [Tristan Valcke]{@link https://github.com/Itee}
- * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
- */
-
-class BooleanBinaryConverter extends TBinaryConverter {
-
-    constructor ( serializer ) { super( Boolean, serializer ); }
-
-    to ( writer, instance, options = {} ) {
-
-        writer.setBoolean( instance );
-
-    }
-
-    from ( reader, options = {} ) {
-
-        return reader.getBoolean()
-
-    }
-}
-
-class NumberBinaryConverter extends TBinaryConverter {
-    constructor ( serializer ) { super( Number, serializer ); }
-
-    to ( writer, instance, options = {} ) {
-        writer.setFloat64( instance );
-    }
-
-    from ( reader, options = {} ) {
-        return reader.getFloat64()
-    }
-}
-
-/**
- * @author [Tristan Valcke]{@link https://github.com/Itee}
- * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
- */
-
-class StringBinaryConverter extends TBinaryConverter {
-
-    constructor ( serializer ) { super( String, serializer ); }
-
-    to ( writer, instance, options = {} ) {
-
-        writer.setUint32( instance.length );
-        writer.setString( instance );
-
-    }
-
-    from ( reader, options = {} ) {
-
-        const stringLength = reader.getUint32();
-        return reader.getString( stringLength )
-
-    }
-}
-
-// import { DefaultBinarySerializer } from '../TBinarySerializer'
-
-class DateBinaryConverter extends TBinaryConverter {
-    constructor ( serializer ) { super( Date, serializer ); }
-
-    to ( writer, instance, options = {} ) {
-        const utc = instance.toUTCString();
-        this.serializer._serialize( utc );
-//        DefaultBinarySerializer._serialize( utc )
-    }
-
-    from ( reader, options = {} ) {
-        const utcString = this.serializer._deserialize();
-//        const utcString = DefaultBinarySerializer._deserialize()
-        return new Date( utcString )
-    }
-}
-
-class RegExBinaryConverter extends TBinaryConverter {
-    constructor ( serializer ) { super( RegExp, serializer ); }
-
-    from ( reader, options = {} ) {
-        return new RegExp()
-    }
-}
-
 // import { DefaultBinarySerializer } from '../TBinarySerializer'
 
 class ArrayBinaryConverter extends TBinaryConverter {
-    constructor ( serializer ) { super( Array, serializer ); }
+    constructor( serializer ) { super( Array, serializer ); }
 
-    to ( writer, instance, options = {} ) {
+    to( writer, instance, options = {} ) {
 
         const numberOfElements = instance.length;
         writer.setUint32( numberOfElements );
@@ -2193,7 +2088,7 @@ class ArrayBinaryConverter extends TBinaryConverter {
         }
 
     }
-    from ( reader, options = {} ) {
+    from( reader, options = {} ) {
 
         const numberOfElements = reader.getUint32();
         const result           = [];
@@ -2208,18 +2103,80 @@ class ArrayBinaryConverter extends TBinaryConverter {
     }
 }
 
+/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ */
+
+class BooleanBinaryConverter extends TBinaryConverter {
+
+    constructor( serializer ) { super( Boolean, serializer ); }
+
+    to( writer, instance, options = {} ) {
+
+        writer.setBoolean( instance );
+
+    }
+
+    from( reader, options = {} ) {
+
+        return reader.getBoolean()
+
+    }
+}
+
+// import { DefaultBinarySerializer } from '../TBinarySerializer'
+
+class DateBinaryConverter extends TBinaryConverter {
+    constructor( serializer ) { super( Date, serializer ); }
+
+    to( writer, instance, options = {} ) {
+        const utc = instance.toUTCString();
+        this.serializer._serialize( utc );
+//        DefaultBinarySerializer._serialize( utc )
+    }
+
+    from( reader, options = {} ) {
+        const utcString = this.serializer._deserialize();
+//        const utcString = DefaultBinarySerializer._deserialize()
+        return new Date( utcString )
+    }
+}
+
+class NullBinaryConverter extends TBinaryConverter {
+    constructor( serializer ) { super( null, serializer ); }
+
+    to( writer, instance, options = {} ) {}
+
+    from( reader, options = {} ) {
+        return null
+    }
+}
+
+class NumberBinaryConverter extends TBinaryConverter {
+    constructor( serializer ) { super( Number, serializer ); }
+
+    to( writer, instance, options = {} ) {
+        writer.setFloat64( instance );
+    }
+
+    from( reader, options = {} ) {
+        return reader.getFloat64()
+    }
+}
+
 // import { DefaultBinarySerializer } from '../TBinarySerializer'
 
 class ObjectBinaryConverter extends TBinaryConverter {
-    constructor ( subType, serializer ) { super( subType || Object, serializer ); }
+    constructor( subType, serializer ) { super( subType || Object, serializer ); }
 
-    to ( writer, instance, options = {} ) {
+    to( writer, instance, options = {} ) {
 
         // Keep only writable properties from instance
         // Read-only property are considered as it ! And won't be serialized.
         const descriptors             = Object.getOwnPropertyDescriptors( instance );
-        const writablePropertyEntries = Object.entries( descriptors )
-                                              .filter( ( [ key, value ] ) => value.writable && value.enumerable );
+        const writablePropertyEntries = Object.values( descriptors )
+                                              .filter( ( value ) => value.writable && value.enumerable );
 
         // Store number of writable properties of object for future deserialization loop
         writer.setUint8( writablePropertyEntries.length );
@@ -2279,7 +2236,7 @@ class ObjectBinaryConverter extends TBinaryConverter {
 
     }
 
-    from ( reader, options = {} ) {
+    from( reader, options = {} ) {
         const instance = super.from( reader, options );
 
 
@@ -2306,6 +2263,48 @@ class ObjectBinaryConverter extends TBinaryConverter {
     }
 }
 
+class RegExBinaryConverter extends TBinaryConverter {
+    constructor( serializer ) { super( RegExp, serializer ); }
+
+    from( reader, options = {} ) {
+        return new RegExp()
+    }
+}
+
+/**
+ * @author [Tristan Valcke]{@link https://github.com/Itee}
+ * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
+ */
+
+class StringBinaryConverter extends TBinaryConverter {
+
+    constructor( serializer ) { super( String, serializer ); }
+
+    to( writer, instance, options = {} ) {
+
+        writer.setUint32( instance.length );
+        writer.setString( instance );
+
+    }
+
+    from( reader, options = {} ) {
+
+        const stringLength = reader.getUint32();
+        return reader.getString( stringLength )
+
+    }
+}
+
+class UndefinedBinaryConverter extends TBinaryConverter {
+    constructor( serializer ) { super( null, serializer ); }
+
+    to( writer, instance, options = {} ) {}
+
+    from( reader, options = {} ) {
+        return undefined
+    }
+}
+
 /**
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
@@ -2313,98 +2312,7 @@ class ObjectBinaryConverter extends TBinaryConverter {
 
 class TBinaryWriter {
 
-    /**
-     *
-     * @returns {*}
-     */
-    get buffer () {
-        return this._buffer
-    }
-
-    set buffer ( value ) {
-
-        const memberName = 'Buffer';
-        const expect     = 'Expect an instance of ArrayBuffer.';
-
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
-        if ( iteeValidators.isNotArrayBuffer( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
-
-        this._buffer = value;
-        this._offset = 0;
-        this._length = value.byteLength;
-
-        this._updateDataView();
-
-    }
-
-    /**
-     *
-     * @returns {*}
-     */
-    get offset () {
-        return this._offset
-    }
-
-    set offset ( value ) {
-
-        const memberName = 'Offset';
-        const expect     = 'Expect a number.';
-
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
-        if ( iteeValidators.isNotNumber( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
-
-        this._offset = value;
-
-        this._updateDataView();
-
-    }
-
-    /**
-     *
-     * @param value
-     */
-    get length () {
-        return this._length
-    }
-
-    set length ( value ) {
-
-        const memberName = 'Length';
-        const expect     = 'Expect a number.';
-
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
-        if ( iteeValidators.isNotNumber( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
-
-        this._length = value;
-
-        this._updateDataView();
-
-    }
-
-    /**
-     *
-     * @returns {*}
-     */
-    get endianness () {
-        return this._endianness
-    }
-
-    set endianness ( value ) {
-
-        const memberName = 'Endianness';
-        const expect     = 'Expect a boolean.';
-
-        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
-        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
-        if ( iteeValidators.isNotBoolean( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
-
-        this._endianness = value;
-    }
-
-    constructor ( {
+    constructor( {
         buffer = new ArrayBuffer( 1024 ),
         endianness = Endianness.Little
     } = {} ) {
@@ -2421,8 +2329,89 @@ class TBinaryWriter {
 
         this._updateDataView();
     }
+    /**
+     *
+     * @returns {*}
+     */
+    get buffer() {
+        return this._buffer
+    }
+    set buffer( value ) {
 
+        const memberName = 'Buffer';
+        const expect     = 'Expect an instance of ArrayBuffer.';
 
+        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( iteeValidators.isNotArrayBuffer( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
+
+        this._buffer = value;
+        this._offset = 0;
+        this._length = value.byteLength;
+
+        this._updateDataView();
+
+    }
+    /**
+     *
+     * @returns {*}
+     */
+    get offset() {
+        return this._offset
+    }
+    set offset( value ) {
+
+        const memberName = 'Offset';
+        const expect     = 'Expect a number.';
+
+        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( iteeValidators.isNotNumber( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
+
+        this._offset = value;
+
+        this._updateDataView();
+
+    }
+    /**
+     *
+     * @param value
+     */
+    get length() {
+        return this._length
+    }
+    set length( value ) {
+
+        const memberName = 'Length';
+        const expect     = 'Expect a number.';
+
+        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( iteeValidators.isNotNumber( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
+
+        this._length = value;
+
+        this._updateDataView();
+
+    }
+    /**
+     *
+     * @returns {*}
+     */
+    get endianness() {
+        return this._endianness
+    }
+    set endianness( value ) {
+
+        const memberName = 'Endianness';
+        const expect     = 'Expect a boolean.';
+
+        if ( iteeValidators.isNull( value ) ) { throw new TypeError( `${ memberName } cannot be null ! ${ expect }` ) }
+        if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( `${ memberName } cannot be undefined ! ${ expect }` ) }
+        if ( iteeValidators.isNotBoolean( value ) ) { throw new TypeError( `${ memberName } cannot be an instance of ${ value.constructor.name } ! ${ expect }` ) }
+
+        this._endianness = value;
+    }
     /**
      *
      * @param buffer
@@ -2430,7 +2419,7 @@ class TBinaryWriter {
      * @param length
      * @returns {TBinaryReader}
      */
-    setBuffer ( buffer, offset, length ) {
+    setBuffer( buffer, offset, length ) {
 
         this.buffer = buffer;
         this.offset = offset || 0;
@@ -2445,7 +2434,7 @@ class TBinaryWriter {
      * @param value
      * @returns {TBinaryReader}
      */
-    setOffset ( value ) {
+    setOffset( value ) {
 
         this.offset = value;
         return this
@@ -2457,7 +2446,7 @@ class TBinaryWriter {
      * @param value
      * @returns {TBinaryReader}
      */
-    setLength ( value ) {
+    setLength( value ) {
 
         this.length = value;
         return this
@@ -2469,7 +2458,7 @@ class TBinaryWriter {
      * @param endianess
      * @returns {TBinaryReader}
      */
-    setEndianess ( endianess ) {
+    setEndianess( endianess ) {
 
         this.endianness = endianess;
         return this
@@ -2482,7 +2471,7 @@ class TBinaryWriter {
      * @returns {*}
      * @private
      */
-    _getAndUpdateOffsetBy ( increment ) {
+    _getAndUpdateOffsetBy( increment ) {
 
         const currentOffset = this._offset;
         this._offset += increment;
@@ -2501,7 +2490,7 @@ class TBinaryWriter {
             }
 
             // Update local
-            this._buffer = newBuffer;
+            this._buffer   = newBuffer;
             this._dataView = newDataView;
 
         }
@@ -2514,7 +2503,7 @@ class TBinaryWriter {
      *
      * @private
      */
-    _updateDataView () {
+    _updateDataView() {
 
         this._dataView = new DataView( this._buffer, this._offset, this._length );
 
@@ -2524,13 +2513,13 @@ class TBinaryWriter {
      *
      * @returns {boolean}
      */
-    isEndOfFile () {
+    isEndOfFile() {
 
         return ( this._offset === this._length )
 
     }
 
-    _iterArray ( values, func, moveNext ) {
+    _iterArray( values, func, moveNext ) {
 
         const currentOffset = this._offset;
 
@@ -2550,7 +2539,7 @@ class TBinaryWriter {
      *
      * @param offset
      */
-    skipOffsetTo ( offset ) {
+    skipOffsetTo( offset ) {
 
         this._offset = offset;
 
@@ -2560,103 +2549,103 @@ class TBinaryWriter {
      *
      * @param nBytes
      */
-    skipOffsetOf ( nBytes ) {
+    skipOffsetOf( nBytes ) {
 
         this._offset += nBytes;
 
     }
 
-    setBoolean ( value, moveNext = true ) {
+    setBoolean( value, moveNext = true ) {
 
         this.setUint8( ( ( value & 1 ) === 1 ), moveNext );
 
     }
 
-    setBooleanArray ( values, moveNext = true ) {
+    setBooleanArray( values, moveNext = true ) {
 
         this._iterArray( values, this.setBoolean.bind( this ), moveNext );
 
     }
 
-    setInt8 ( value, moveNext = true ) {
+    setInt8( value, moveNext = true ) {
 
         const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.One ) : this._offset;
         this._dataView.setInt8( offset, value );
 
     }
 
-    setInt8Array ( values, moveNext = true ) {
+    setInt8Array( values, moveNext = true ) {
 
         this._iterArray( values, this.setInt8.bind( this ), moveNext );
 
     }
 
-    setUint8 ( value, moveNext = true ) {
+    setUint8( value, moveNext = true ) {
 
         const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.One ) : this._offset;
         this._dataView.setUint8( offset, value );
 
     }
 
-    setUint8Array ( values, moveNext = true ) {
+    setUint8Array( values, moveNext = true ) {
 
         this._iterArray( values, this.setUint8.bind( this ), moveNext );
 
     }
 
-    setInt16 ( value, moveNext = true ) {
+    setInt16( value, moveNext = true ) {
 
         const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Two ) : this._offset;
         this._dataView.setInt16( offset, value, this._endianness );
 
     }
 
-    setInt16Array ( values, moveNext = true ) {
+    setInt16Array( values, moveNext = true ) {
 
         this._iterArray( values, this.setInt16.bind( this ), moveNext );
 
     }
 
-    setUint16 ( value, moveNext = true ) {
+    setUint16( value, moveNext = true ) {
 
         const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Two ) : this._offset;
         this._dataView.setUint16( offset, value, this._endianness );
 
     }
 
-    setUint16Array ( values, moveNext = true ) {
+    setUint16Array( values, moveNext = true ) {
 
         this._iterArray( values, this.setUint16.bind( this ), moveNext );
 
     }
 
-    setInt32 ( value, moveNext = true ) {
+    setInt32( value, moveNext = true ) {
 
         const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Four ) : this._offset;
         this._dataView.setInt32( offset, value, this._endianness );
 
     }
 
-    setInt32Array ( values, moveNext = true ) {
+    setInt32Array( values, moveNext = true ) {
 
         this._iterArray( values, this.setInt32.bind( this ), moveNext );
 
     }
 
-    setUint32 ( value, moveNext = true ) {
+    setUint32( value, moveNext = true ) {
 
         const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Four ) : this._offset;
         this._dataView.setUint32( offset, value, this._endianness );
 
     }
 
-    setUint32Array ( values, moveNext = true ) {
+    setUint32Array( values, moveNext = true ) {
 
         this._iterArray( values, this.setUint32.bind( this ), moveNext );
 
     }
 
-    setInt64 ( /*value, moveNext = true*/ ) {
+    setInt64( /*value, moveNext = true*/ ) {
 
         // From THREE.FBXLoader
         // JavaScript doesn't support 64-bit integer so attempting to calculate by ourselves.
@@ -2668,56 +2657,56 @@ class TBinaryWriter {
         throw new Error( 'Not implemented, sorry... any help is welcome !' )
     }
 
-    setInt64Array ( values, moveNext = true ) {
+    setInt64Array( values, moveNext = true ) {
 
         this._iterArray( values, this.setInt64.bind( this ), moveNext );
 
     }
 
-    setUint64 ( /*value, moveNext = true*/ ) {
+    setUint64( /*value, moveNext = true*/ ) {
         // Note: see setInt64() comment
         throw new Error( 'Not implemented, sorry... any help is welcome !' )
     }
 
-    setUint64Array ( values, moveNext = true ) {
+    setUint64Array( values, moveNext = true ) {
 
         this._iterArray( values, this.setUint64.bind( this ), moveNext );
 
     }
 
-    setFloat32 ( value, moveNext = true ) {
+    setFloat32( value, moveNext = true ) {
 
         const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Four ) : this._offset;
         this._dataView.setFloat32( offset, value, this._endianness );
 
     }
 
-    setFloat32Array ( values, moveNext = true ) {
+    setFloat32Array( values, moveNext = true ) {
 
         this._iterArray( values, this.setFloat32.bind( this ), moveNext );
 
     }
 
-    setFloat64 ( value, moveNext = true ) {
+    setFloat64( value, moveNext = true ) {
 
         const offset = ( moveNext ) ? this._getAndUpdateOffsetBy( Byte.Eight ) : this._offset;
         this._dataView.setFloat64( offset, value, this._endianness );
 
     }
 
-    setFloat64Array ( values, moveNext = true ) {
+    setFloat64Array( values, moveNext = true ) {
 
         this._iterArray( values, this.setFloat64.bind( this ), moveNext );
 
     }
 
-    setChar ( value, moveNext = true ) {
+    setChar( value, moveNext = true ) {
 
         this.setUint8( value.charCodeAt( 0 ), moveNext );
 
     }
 
-    setString ( values, moveNext = true ) {
+    setString( values, moveNext = true ) {
 
         this._iterArray( values, this.setChar.bind( this ), moveNext );
 
@@ -2736,6 +2725,7 @@ class TBinaryWriter {
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  */
+
 
 //const BinaryType = toEnum( {
 //    Null:        0,
@@ -2762,8 +2752,8 @@ const BinaryType = {
     UserDefined: 255
 };
 
-function isDate ( value ) {
-    if(iteeValidators.isNotDefined( value )){
+function isDate( value ) {
+    if ( iteeValidators.isNotDefined( value ) ) {
         return false
     }
 
@@ -2783,8 +2773,8 @@ function isDate ( value ) {
     }
 }
 
-function isRegEx ( value ) {
-    if(iteeValidators.isNotDefined( value )){
+function isRegEx( value ) {
+    if ( iteeValidators.isNotDefined( value ) ) {
         return false
     }
 
@@ -2793,21 +2783,21 @@ function isRegEx ( value ) {
 
 class TBinarySerializer {
 
-    constructor () {
+    constructor() {
 
         this.reader = new TBinaryReader();
         this.writer = new TBinaryWriter();
 
         this.converters = new Map( [
-            [ BinaryType.Null, new NullBinaryConverter(this) ],
-            [ BinaryType.Undefined, new UndefinedBinaryConverter(this) ],
-            [ BinaryType.Boolean, new BooleanBinaryConverter(this) ],
-            [ BinaryType.Number, new NumberBinaryConverter(this) ],
-            [ BinaryType.String, new StringBinaryConverter(this) ],
-            [ BinaryType.Date, new DateBinaryConverter(this) ],
-            [ BinaryType.RegEx, new RegExBinaryConverter(this) ],
-            [ BinaryType.Array, new ArrayBinaryConverter(this) ],
-            [ BinaryType.Object, new ObjectBinaryConverter(null, this) ],
+            [ BinaryType.Null, new NullBinaryConverter( this ) ],
+            [ BinaryType.Undefined, new UndefinedBinaryConverter( this ) ],
+            [ BinaryType.Boolean, new BooleanBinaryConverter( this ) ],
+            [ BinaryType.Number, new NumberBinaryConverter( this ) ],
+            [ BinaryType.String, new StringBinaryConverter( this ) ],
+            [ BinaryType.Date, new DateBinaryConverter( this ) ],
+            [ BinaryType.RegEx, new RegExBinaryConverter( this ) ],
+            [ BinaryType.Array, new ArrayBinaryConverter( this ) ],
+            [ BinaryType.Object, new ObjectBinaryConverter( null, this ) ],
             [ BinaryType.UserDefined, new Map( [] ) ]
         ] );
 
@@ -2815,7 +2805,7 @@ class TBinarySerializer {
         //        this.converters.set( 'String', new StringBinaryConverter() )
     }
 
-    addConverter ( converter ) {
+    addConverter( converter ) {
 
         converter.serializer = this;
 
@@ -2823,12 +2813,12 @@ class TBinarySerializer {
         userDefinedConverters.set( converter.targetCtor.name, converter );
 
     }
-    removeConverter ( converter ) {
+    removeConverter( converter ) {
         const userDefinedConverters = this.converters.get( BinaryType.UserDefined );
         userDefinedConverters.remove( converter.targetCtor.name );
     }
 
-    serialize ( instance, options = {} ) {
+    serialize( instance, options = {} ) {
 
         // Reset writer buffer
         this.writer.buffer = new ArrayBuffer( 1024 );
@@ -2845,7 +2835,7 @@ class TBinarySerializer {
         // Clip buffer to current writer offset
         return buffer.slice( 0, this.writer.offset )
     }
-    _serialize ( instance ) {
+    _serialize( instance ) {
         const binaryType = this._getBinaryTypeOf( instance );
 
         // Prepend internal binary type for deserialization process to be able to target correct converter
@@ -2872,7 +2862,7 @@ class TBinarySerializer {
 
         return this.writer.buffer
     }
-    _getBinaryTypeOf ( instance ) {
+    _getBinaryTypeOf( instance ) {
         let binaryType;
         if ( iteeValidators.isNull( instance ) ) {
             binaryType = BinaryType.Null;
@@ -2899,7 +2889,7 @@ class TBinarySerializer {
         return binaryType
     }
 
-    deserialize ( buffer ) {
+    deserialize( buffer ) {
         if ( iteeValidators.isNotDefined( buffer ) || buffer.length === 0 ) { return }
 
         // Reset writer buffer
@@ -2908,7 +2898,7 @@ class TBinarySerializer {
         return this._deserialize()
 
     }
-    _deserialize () {
+    _deserialize() {
 
         const binaryType = this.reader.getUint8();
 
@@ -2921,8 +2911,8 @@ class TBinarySerializer {
             // var ctor = this._getCtorOf( ctorName )
 
             converter = converter.has( ctorName )
-                ? converter.get( ctorName )
-                : null; //converter.get( null )
+                        ? converter.get( ctorName )
+                        : null; //converter.get( null )
 
             // Get specific or create default converter for userdefined type
             //            const ctorNameLength = this.reader.getUint8()
@@ -2979,16 +2969,17 @@ const binarySerializerInstance = /*#__PURE__*/new TBinarySerializer();
  */
 
 
+
 /**
  * @deprecated
  */
 class IdGenerator {
 
-    constructor () {
+    constructor() {
         this._id = 0;
     }
 
-    get id () {
+    get id() {
         this._id += 1;
         return this._id
     }
@@ -3025,17 +3016,9 @@ class TDataBaseManager {
 
     /**
      *
-     * @returns {number}
-     */
-    static get requestId () {
-        TDataBaseManager._requestId++;
-        return TDataBaseManager._requestId
-    }
-    /**
-     *
      * @param parameters
      */
-    constructor ( parameters = {} ) {
+    constructor( parameters = {} ) {
 
         const _parameters = {
             ...{
@@ -3067,13 +3050,21 @@ class TDataBaseManager {
     }
     /**
      *
+     * @returns {number}
+     */
+    static get requestId() {
+        TDataBaseManager._requestId++;
+        return TDataBaseManager._requestId
+    }
+    /**
+     *
      * @returns {*}
      */
-    get basePath () {
+    get basePath() {
         return this._basePath
     }
 
-    set basePath ( value ) {
+    set basePath( value ) {
 
         if ( iteeValidators.isNull( value ) ) { throw new TypeError( 'Base path cannot be null ! Expect a non empty string.' ) }
         if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( 'Base path cannot be undefined ! Expect a non empty string.' ) }
@@ -3089,11 +3080,11 @@ class TDataBaseManager {
      *
      * @returns {*}
      */
-    get responseType () {
+    get responseType() {
         return this._responseType
     }
 
-    set responseType ( value ) {
+    set responseType( value ) {
 
         if ( iteeValidators.isNull( value ) ) { throw new Error( 'TDataBaseManager: responseType cannot be null !' ) }
         if ( iteeValidators.isNull( value ) ) { throw new TypeError( 'Response type cannot be null ! Expect a non empty string.' ) }
@@ -3108,11 +3099,11 @@ class TDataBaseManager {
      *
      * @returns {*}
      */
-    get bunchSize () {
+    get bunchSize() {
         return this._bunchSize
     }
 
-    set bunchSize ( value ) {
+    set bunchSize( value ) {
 
         if ( iteeValidators.isNull( value ) ) { throw new TypeError( 'Bunch size cannot be null ! Expect a positive number.' ) }
         if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( 'Bunch size cannot be undefined ! Expect a positive number.' ) }
@@ -3127,11 +3118,11 @@ class TDataBaseManager {
      *
      * @returns {*}
      */
-    get requestAggregationTime () {
+    get requestAggregationTime() {
         return this._requestAggregationTime
     }
 
-    set requestAggregationTime ( value ) {
+    set requestAggregationTime( value ) {
 
         if ( iteeValidators.isNull( value ) ) {
             throw new TypeError( 'Requests aggregation time cannot be null ! Expect a positive number.' )
@@ -3157,11 +3148,11 @@ class TDataBaseManager {
      *
      * @returns {*}
      */
-    get requestsConcurrency () {
+    get requestsConcurrency() {
         return this._requestsConcurrency
     }
 
-    set requestsConcurrency ( value ) {
+    set requestsConcurrency( value ) {
 
         if ( iteeValidators.isNull( value ) ) {
             throw new TypeError( 'Minimum of simultaneous request cannot be null ! Expect a positive number.' )
@@ -3187,11 +3178,11 @@ class TDataBaseManager {
      *
      * @returns {TLogger}
      */
-    get logger () {
+    get logger() {
         return this._logger
     }
 
-    set logger ( value ) {
+    set logger( value ) {
 
         if ( iteeValidators.isNull( value ) ) { throw new TypeError( 'Progress manager cannot be null ! Expect an instance of TProgressManager.' ) }
         if ( iteeValidators.isUndefined( value ) ) { throw new TypeError( 'Progress manager cannot be undefined ! Expect an instance of TProgressManager.' ) }
@@ -3206,7 +3197,7 @@ class TDataBaseManager {
      * @param value
      * @returns {TDataBaseManager}
      */
-    setBasePath ( value ) {
+    setBasePath( value ) {
 
         this.basePath = value;
         return this
@@ -3218,7 +3209,7 @@ class TDataBaseManager {
      * @param value
      * @returns {TDataBaseManager}
      */
-    setResponseType ( value ) {
+    setResponseType( value ) {
 
         this.responseType = value;
         return this
@@ -3230,7 +3221,7 @@ class TDataBaseManager {
      * @param value
      * @returns {TDataBaseManager}
      */
-    setBunchSize ( value ) {
+    setBunchSize( value ) {
 
         this.bunchSize = value;
         return this
@@ -3242,7 +3233,7 @@ class TDataBaseManager {
      * @param value
      * @returns {TDataBaseManager}
      */
-    setRequestAggregationTime ( value ) {
+    setRequestAggregationTime( value ) {
 
         this.requestAggregationTime = value;
         return this
@@ -3254,7 +3245,7 @@ class TDataBaseManager {
      * @param value
      * @returns {TDataBaseManager}
      */
-    setRequestsConcurrency ( value ) {
+    setRequestsConcurrency( value ) {
 
         this.requestsConcurrency = value;
         return this
@@ -3266,7 +3257,7 @@ class TDataBaseManager {
      * @param value
      * @returns {TDataBaseManager}
      */
-    setLogger ( value ) {
+    setLogger( value ) {
 
         this.logger = value;
         return this
@@ -3276,7 +3267,7 @@ class TDataBaseManager {
     /**
      *
      */
-    aggregateQueue () {
+    aggregateQueue() {
 
         clearTimeout( this._aggregationTimeoutId );
 
@@ -3316,7 +3307,7 @@ class TDataBaseManager {
     /**
      *
      */
-    processQueue () {
+    processQueue() {
 
         while ( this._requestQueue.length > 0 && this._processQueue.length < this._requestsConcurrency ) {
 
@@ -3325,7 +3316,8 @@ class TDataBaseManager {
 
             const request              = new XMLHttpRequest();
             request.onloadstart        = _onLoadStart.bind( this );
-            request.onload             = this._onLoad.bind( this,
+            request.onload             = this._onLoad.bind(
+                this,
                 requestSkull,
                 this._onEnd.bind( this, requestSkull, requestSkull.onLoad ),
                 this._onProgress.bind( this, requestSkull.onProgress ),
@@ -3347,15 +3339,15 @@ class TDataBaseManager {
 
         }
 
-        function _onLoadStart ( loadStartEvent ) { this.logger.progress( loadStartEvent ); }
+        function _onLoadStart( loadStartEvent ) { this.logger.progress( loadStartEvent ); }
 
-        function _onLoadEnd ( loadEndEvent ) { this.logger.progress( loadEndEvent ); }
+        function _onLoadEnd( loadEndEvent ) { this.logger.progress( loadEndEvent ); }
 
-        function _onReadyStateChange ( readyStateEvent ) { this.logger.debug( readyStateEvent ); }
+        function _onReadyStateChange( readyStateEvent ) { this.logger.debug( readyStateEvent ); }
 
-        function _onAbort ( abortEvent ) { this.logger.error( abortEvent ); }
+        function _onAbort( abortEvent ) { this.logger.error( abortEvent ); }
 
-        function _onTimeout ( timeoutEvent ) { this.logger.error( timeoutEvent ); }
+        function _onTimeout( timeoutEvent ) { this.logger.error( timeoutEvent ); }
 
     }
 
@@ -3368,7 +3360,7 @@ class TDataBaseManager {
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      */
-    create ( data, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    create( data, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         if ( iteeValidators.isArray( data ) && iteeValidators.isNotEmptyArray( data ) ) {
 
@@ -3402,7 +3394,7 @@ class TDataBaseManager {
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      */
-    read ( condition, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    read( condition, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         if ( iteeValidators.isString( condition ) && iteeValidators.isNotEmptyString( condition ) && iteeValidators.isNotBlankString( condition ) ) {
 
@@ -3449,7 +3441,7 @@ class TDataBaseManager {
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      */
-    update ( condition, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    update( condition, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         if ( iteeValidators.isNotDefined( update ) ) {
             onErrorCallback( 'TDataBaseManager.update: Update data cannot be null or undefined !' );
@@ -3505,7 +3497,7 @@ class TDataBaseManager {
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      */
-    delete ( condition, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    delete( condition, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         if ( iteeValidators.isString( condition ) && iteeValidators.isNotEmptyString( condition ) && iteeValidators.isNotBlankString( condition ) ) {
 
@@ -3557,7 +3549,7 @@ class TDataBaseManager {
      * @param {object} loadEvent - The server response object to parse.
      * @private
      */
-    _onLoad ( request, onLoadCallback, onProgressCallback, onErrorCallback, loadEvent ) {
+    _onLoad( request, onLoadCallback, onProgressCallback, onErrorCallback, loadEvent ) {
 
         const target       = loadEvent.target;
         const status       = target.status;
@@ -3668,7 +3660,7 @@ class TDataBaseManager {
      * @param {object} progressEvent - The server progress event.
      * @private
      */
-    _onProgress ( onProgressCallback, progressEvent ) {
+    _onProgress( onProgressCallback, progressEvent ) {
 
         if ( iteeValidators.isDefined( this.logger ) ) {
 
@@ -3689,7 +3681,7 @@ class TDataBaseManager {
      * @param {object} errorEvent - A server error event
      * @private
      */
-    _onError ( request, onErrorCallback, errorEvent ) {
+    _onError( request, onErrorCallback, errorEvent ) {
 
         this._closeRequest( request );
 
@@ -3714,7 +3706,7 @@ class TDataBaseManager {
      * @param response
      * @private
      */
-    _onEnd ( request, onLoadCallback, response ) {
+    _onEnd( request, onLoadCallback, response ) {
 
         const type = request._type;
 
@@ -3768,7 +3760,7 @@ class TDataBaseManager {
      * @param onErrorCallback
      * @private
      */
-    _dispatchResponse ( response, responseType, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _dispatchResponse( response, responseType, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         switch ( responseType ) {
 
@@ -3822,7 +3814,7 @@ class TDataBaseManager {
      * @param request
      * @private
      */
-    _closeRequest ( request ) {
+    _closeRequest( request ) {
 
         this._processQueue.splice( this._processQueue.indexOf( request ), 1 );
 
@@ -3848,7 +3840,7 @@ class TDataBaseManager {
      * @returns {Object}
      * @private
      */
-    _retrieveCachedValues ( ids ) {
+    _retrieveCachedValues( ids ) {
 
         let results      = {};
         let underRequest = [];
@@ -3882,7 +3874,7 @@ class TDataBaseManager {
      * @param datas
      * @private
      */
-    _updateCache ( datas ) {
+    _updateCache( datas ) {
 
         if ( iteeValidators.isNull( datas ) ) { throw new TypeError( 'Data cannot be null ! Expect an array of object.' ) }
         if ( iteeValidators.isUndefined( datas ) ) { throw new TypeError( 'Data cannot be undefined ! Expect an array of object.' ) }
@@ -3921,7 +3913,7 @@ class TDataBaseManager {
      *
      * @private
      */
-    _updateWaitingQueue () {
+    _updateWaitingQueue() {
 
         const haveNoRequestToProcess = ( this._requestQueue.length === 0 && this._processQueue.length === 0 );
 
@@ -3975,7 +3967,7 @@ class TDataBaseManager {
      * @param {function} onError - The onError callback, which is call when parser throw an error during parsing.
      */
     // eslint-disable-next-line no-unused-vars
-    _onArrayBuffer ( data, onSuccess, onProgress, onError ) {}
+    _onArrayBuffer( data, onSuccess, onProgress, onError ) {}
 
     /**
      * The abstract private _onBlob method must be overridden in case the parser expect a blob as input data.
@@ -3988,7 +3980,7 @@ class TDataBaseManager {
      * @param {function} onError - The onError callback, which is call when parser throw an error during parsing.
      */
     // eslint-disable-next-line no-unused-vars
-    _onBlob ( data, onSuccess, onProgress, onError ) {}
+    _onBlob( data, onSuccess, onProgress, onError ) {}
 
     /**
      * The abstract private _onJson method must be overridden in case the parser expect json as input data.
@@ -4001,7 +3993,7 @@ class TDataBaseManager {
      * @param {function} onError - The onError callback, which is call when parser throw an error during parsing.
      */
     // eslint-disable-next-line no-unused-vars
-    _onJson ( data, onSuccess, onProgress, onError ) {}
+    _onJson( data, onSuccess, onProgress, onError ) {}
 
     /**
      * The abstract private _onText method must be overridden in case the parser expect a string/text as input data.
@@ -4014,7 +4006,7 @@ class TDataBaseManager {
      * @param {function} onError - The onError callback, which is call when parser throw an error during parsing.
      */
     // eslint-disable-next-line no-unused-vars
-    _onText ( data, onSuccess, onProgress, onError ) {}
+    _onText( data, onSuccess, onProgress, onError ) {}
 
     // REST Api calls
     /**
@@ -4026,7 +4018,7 @@ class TDataBaseManager {
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      */
-    _createOne ( data, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _createOne( data, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
             _id:          `createOne_${ Generate.id }`,
@@ -4053,7 +4045,7 @@ class TDataBaseManager {
      * @param onErrorCallback
      * @private
      */
-    _createMany ( datas, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _createMany( datas, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
             _id:          `createMany_${ Generate.id }`,
@@ -4081,7 +4073,7 @@ class TDataBaseManager {
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      */
-    _readOne ( id, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _readOne( id, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         // Filter requested values by cached values
         const datas = this._retrieveCachedValues( [ id ] );
@@ -4136,7 +4128,7 @@ class TDataBaseManager {
      * @param {function} onProgressCallback - The onProgress callback, which is call during the response incoming.
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      */
-    _readMany ( ids, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _readMany( ids, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         // Filter requested values by cached values
         const datas = this._retrieveCachedValues( ids );
@@ -4201,7 +4193,7 @@ class TDataBaseManager {
      * @param onErrorCallback
      * @private
      */
-    _readWhere ( query, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _readWhere( query, projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         //        // Filter requested values by cached values
         //                const datas = {
@@ -4241,7 +4233,7 @@ class TDataBaseManager {
      * @param onErrorCallback
      * @private
      */
-    _readAll ( projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _readAll( projection, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         //        const datas = {
         //            results: {},
@@ -4284,7 +4276,7 @@ class TDataBaseManager {
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      * @private
      */
-    _updateOne ( id, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _updateOne( id, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
             _id:        `updateOne_${ Generate.id }`,
@@ -4315,7 +4307,7 @@ class TDataBaseManager {
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      * @private
      */
-    _updateMany ( ids, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _updateMany( ids, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
             _id:        `updateMany_${ Generate.id }`,
@@ -4346,7 +4338,7 @@ class TDataBaseManager {
      * @param onErrorCallback
      * @private
      */
-    _updateWhere ( query, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _updateWhere( query, update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
             _id:        `updateWhere_${ Generate.id }`,
@@ -4376,7 +4368,7 @@ class TDataBaseManager {
      * @param onErrorCallback
      * @private
      */
-    _updateAll ( update, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _updateAll( update, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         const query = {};
 
@@ -4409,7 +4401,7 @@ class TDataBaseManager {
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      * @private
      */
-    _deleteOne ( id, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _deleteOne( id, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
             _id:          `deleteOne_${ Generate.id }`,
@@ -4437,7 +4429,7 @@ class TDataBaseManager {
      * @param {function} onErrorCallback - The onError callback, which is call when server respond with an error to the request.
      * @private
      */
-    _deleteMany ( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _deleteMany( ids, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
             _id:        `deleteMany_${ Generate.id }`,
@@ -4466,7 +4458,7 @@ class TDataBaseManager {
      * @param onErrorCallback
      * @private
      */
-    _deleteWhere ( query, onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _deleteWhere( query, onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         this._requestQueue.push( {
             _id:        `deleteWhere_${ Generate.id }`,
@@ -4494,7 +4486,7 @@ class TDataBaseManager {
      * @param onErrorCallback
      * @private
      */
-    _deleteAll ( onLoadCallback, onProgressCallback, onErrorCallback ) {
+    _deleteAll( onLoadCallback, onProgressCallback, onErrorCallback ) {
 
         const query = {};
 
@@ -4581,7 +4573,7 @@ const TIdFactoryType = /*#__PURE__*/iteeUtils.toEnum( {
  */
 class TIdFactory {
 
-    constructor ( type = TIdFactoryType.Number, base = null ) {
+    constructor( type = TIdFactoryType.Number, base = null ) {
 
         this.type = type;
         this.base = base;
@@ -4590,11 +4582,11 @@ class TIdFactory {
 
     }
 
-    get type () {
+    get type() {
         return this._type
     }
 
-    set type ( value ) {
+    set type( value ) {
 
         if ( iteeValidators.isNull( value ) ) { throw new Error( `Type cannot be null ! Expect an value from TIdFactoryType enum: ${ TIdFactoryType.types() }` ) }
         if ( iteeValidators.isUndefined( value ) ) { throw new Error( `Type cannot be undefined ! Expect an value from TIdFactoryType enum: ${ TIdFactoryType.types() }` ) }
@@ -4603,11 +4595,11 @@ class TIdFactory {
         this._type = value;
     }
 
-    get base () {
+    get base() {
         return this._base
     }
 
-    set base ( value ) {
+    set base( value ) {
 
         if ( iteeValidators.isUndefined( value ) ) { throw new Error( 'Base cannot be undefined ! Expect an instance of Object3D.' ) }
 
@@ -4618,103 +4610,89 @@ class TIdFactory {
         this._base = value;
     }
 
-    setType ( value ) {
+    setType( value ) {
 
         this.type = value;
         return this
 
     }
 
-    setBase ( value ) {
+    setBase( value ) {
 
         this.base = value;
         return this
 
     }
 
-    createId () {
+    createId() {
         return this._base + this._counter++
     }
 
 }
 
-// Unique ID creation requires a high quality random # generator. In the browser we therefore
-// require the crypto API and do not support built-in fallback to lower quality random number
-// generators (like Math.random()).
-var getRandomValues;
-var rnds8 = new Uint8Array(16);
+const byteToHex = [];
+for (let i = 0; i < 256; ++i) {
+    byteToHex.push((i + 0x100).toString(16).slice(1));
+}
+function unsafeStringify(arr, offset = 0) {
+    return (byteToHex[arr[offset + 0]] +
+        byteToHex[arr[offset + 1]] +
+        byteToHex[arr[offset + 2]] +
+        byteToHex[arr[offset + 3]] +
+        '-' +
+        byteToHex[arr[offset + 4]] +
+        byteToHex[arr[offset + 5]] +
+        '-' +
+        byteToHex[arr[offset + 6]] +
+        byteToHex[arr[offset + 7]] +
+        '-' +
+        byteToHex[arr[offset + 8]] +
+        byteToHex[arr[offset + 9]] +
+        '-' +
+        byteToHex[arr[offset + 10]] +
+        byteToHex[arr[offset + 11]] +
+        byteToHex[arr[offset + 12]] +
+        byteToHex[arr[offset + 13]] +
+        byteToHex[arr[offset + 14]] +
+        byteToHex[arr[offset + 15]]).toLowerCase();
+}
+
+let getRandomValues;
+const rnds8 = new Uint8Array(16);
 function rng() {
-  // lazy load so that environments that need to polyfill have a chance to do so
-  if (!getRandomValues) {
-    // getRandomValues needs to be invoked in a context where "this" is a Crypto implementation. Also,
-    // find the complete implementation of crypto (msCrypto) on IE11.
-    getRandomValues = typeof crypto !== 'undefined' && crypto.getRandomValues && crypto.getRandomValues.bind(crypto) || typeof msCrypto !== 'undefined' && typeof msCrypto.getRandomValues === 'function' && msCrypto.getRandomValues.bind(msCrypto);
-
     if (!getRandomValues) {
-      throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
+        if (typeof crypto === 'undefined' || !crypto.getRandomValues) {
+            throw new Error('crypto.getRandomValues() not supported. See https://github.com/uuidjs/uuid#getrandomvalues-not-supported');
+        }
+        getRandomValues = crypto.getRandomValues.bind(crypto);
     }
-  }
-
-  return getRandomValues(rnds8);
+    return getRandomValues(rnds8);
 }
 
-var REGEX = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
+const randomUUID = typeof crypto !== 'undefined' && crypto.randomUUID && crypto.randomUUID.bind(crypto);
+var native = { randomUUID };
 
-function validate(uuid) {
-  return typeof uuid === 'string' && REGEX.test(uuid);
+function _v4(options, buf, offset) {
+    options = options || {};
+    const rnds = options.random ?? options.rng?.() ?? rng();
+    if (rnds.length < 16) {
+        throw new Error('Random bytes length must be >= 16');
+    }
+    rnds[6] = (rnds[6] & 0x0f) | 0x40;
+    rnds[8] = (rnds[8] & 0x3f) | 0x80;
+    return unsafeStringify(rnds);
 }
-
-/**
- * Convert array of 16 byte values to UUID string format of the form:
- * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
- */
-
-var byteToHex = [];
-
-for (var i = 0; i < 256; ++i) {
-  byteToHex.push((i + 0x100).toString(16).substr(1));
-}
-
-function stringify(arr) {
-  var offset = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
-  // Note: Be careful editing this code!  It's been tuned for performance
-  // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
-  var uuid = (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase(); // Consistency check for valid UUID.  If this throws, it's likely due to one
-  // of the following:
-  // - One or more input array values don't map to a hex octet (leading to
-  // "undefined" in the uuid)
-  // - Invalid input values for the RFC `version` or `variant` fields
-
-  if (!validate(uuid)) {
-    throw TypeError('Stringified UUID is invalid');
-  }
-
-  return uuid;
-}
-
 function v4(options, buf, offset) {
-  options = options || {};
-  var rnds = options.random || (options.rng || rng)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
-
-  rnds[6] = rnds[6] & 0x0f | 0x40;
-  rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
-
-  if (buf) {
-    offset = offset || 0;
-
-    for (var i = 0; i < 16; ++i) {
-      buf[offset + i] = rnds[i];
+    if (native.randomUUID && true && !options) {
+        return native.randomUUID();
     }
-
-    return buf;
-  }
-
-  return stringify(rnds);
+    return _v4(options);
 }
 
 /**
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
+
 
 /**
  * @typedef {Object} WebAPIMessageSerialized
@@ -4738,7 +4716,7 @@ class WebAPIMessage {
      *
      * @param {string} type
      */
-    constructor ( type ) {
+    constructor( type ) {
         this._id  = v4();
         this.type = type;
     }
@@ -4746,7 +4724,7 @@ class WebAPIMessage {
     /**
      *
      */
-    get id () {
+    get id() {
         return this._id
     }
 
@@ -4754,11 +4732,11 @@ class WebAPIMessage {
      *
      * @returns {string}
      */
-    get type () {
+    get type() {
         return this._type
     }
 
-    set type ( value ) {
+    set type( value ) {
         if ( iteeValidators.isNotString( value ) ) { throw new ReferenceError( 'WebAPIMessage type cannot be null or undefined !' )}
         if ( iteeValidators.isEmptyString( value ) ) { throw new TypeError( 'WebAPIMessage type cannot be an empty string !' )}
 
@@ -4769,7 +4747,7 @@ class WebAPIMessage {
      *
      * @returns {{id: String, type: String}}
      */
-    toJSON () {
+    toJSON() {
 
         return {
             id:   this.id,
@@ -4804,7 +4782,7 @@ class WebAPIMessageData extends WebAPIMessage {
      *
      * @param data
      */
-    constructor ( data ) {
+    constructor( data ) {
         super( '_data' );
 
         this.data = data;
@@ -4814,7 +4792,7 @@ class WebAPIMessageData extends WebAPIMessage {
      *
      * @returns {{id: String, type: String, data: String}}
      */
-    toJSON () {
+    toJSON() {
 
         const isPlainObject = this.data === Object( this.data );
         return {
@@ -4832,18 +4810,15 @@ class WebAPIMessageData extends WebAPIMessage {
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
 
+
 class WebAPIMessageError extends WebAPIMessage {
 
     static isWebAPIMessageError = true
-    // Utils
-    static isError ( value ) {
-        return value instanceof Error || iteeValidators.isObject( value ) && ( iteeValidators.isDefined( value.name ) || iteeValidators.isDefined( value.message ) || iteeValidators.isDefined( value.stack ) )
-    }
     /**
      *
      * @param error
      */
-    constructor ( error ) {
+    constructor( error ) {
         super( '_error' );
 
         /**
@@ -4852,10 +4827,10 @@ class WebAPIMessageError extends WebAPIMessage {
          */
         this.error = error;
     }
-    get error () {
+    get error() {
         return this._error
     }
-    set error ( value ) {
+    set error( value ) {
         if ( iteeValidators.isNotDefined( value ) ) { throw new ReferenceError( `Expect a string, or Error like. But got value of '${ typeof value }' type: ${ JSON.stringify( value, null, 4 ) }` ) }
 
         if ( iteeValidators.isString( value ) ) {
@@ -4880,13 +4855,16 @@ class WebAPIMessageError extends WebAPIMessage {
         }
 
     }
-
+    // Utils
+    static isError( value ) {
+        return value instanceof Error || iteeValidators.isObject( value ) && ( iteeValidators.isDefined( value.name ) || iteeValidators.isDefined( value.message ) || iteeValidators.isDefined( value.stack ) )
+    }
     // Serialization
     /**
      *
      * @returns {{id: String, type: String, name: String, stack: String, message: String}}
      */
-    toJSON () {
+    toJSON() {
 
         return {
             ...super.toJSON(),
@@ -4903,6 +4881,7 @@ class WebAPIMessageError extends WebAPIMessage {
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  */
+
 
 /**
  * @typedef {Object} WebAPIMessageDataSerialized
@@ -4928,7 +4907,7 @@ class WebAPIMessageEvent extends WebAPIMessage {
      *
      * @param data
      */
-    constructor ( name, data ) {
+    constructor( name, data ) {
         super( '_event' );
 
         this.name = name;
@@ -4939,7 +4918,7 @@ class WebAPIMessageEvent extends WebAPIMessage {
      *
      * @returns {{id: String, type: String, data: String}}
      */
-    toJSON () {
+    toJSON() {
 
         const isPlainObject = this.data === Object( this.data );
         return {
@@ -4958,6 +4937,7 @@ class WebAPIMessageEvent extends WebAPIMessage {
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
 
+
 /**
  * @class
  * @classdesc Internal ready message to broadcast for prevent bad or dead messager
@@ -4973,7 +4953,7 @@ class WebAPIMessageReady extends WebAPIMessage {
     /**
      *
      */
-    constructor ( parameters = {} ) {
+    constructor( parameters = {} ) {
         super( '_ready' );
 
         const _parameters = {
@@ -4986,11 +4966,11 @@ class WebAPIMessageReady extends WebAPIMessage {
         this.isBind = _parameters.isBind;
     }
 
-    get isBind () {
+    get isBind() {
         return this._isBind
     }
 
-    set isBind ( value ) {
+    set isBind( value ) {
         if ( iteeValidators.isNotDefined( value ) ) { throw new ReferenceError( 'WebAPIMessageReady isBind cannot be null or undefined ! Expect a boolean value.' )}
         if ( iteeValidators.isNotBoolean( value ) ) { throw new TypeError( 'WebAPIMessageReady isBind expect a boolean value.' )}
 
@@ -5001,7 +4981,7 @@ class WebAPIMessageReady extends WebAPIMessage {
      *
      * @returns {{id: String, type: String, isBind: Boolean}}
      */
-    toJSON () {
+    toJSON() {
 
         return {
             ...super.toJSON(),
@@ -5016,6 +4996,7 @@ class WebAPIMessageReady extends WebAPIMessage {
 /**
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
+
 
 /**
  * @class
@@ -5034,7 +5015,7 @@ class WebAPIMessageRequest extends WebAPIMessage {
      * @param method
      * @param parameters
      */
-    constructor ( method, parameters = [] ) {
+    constructor( method, parameters = [] ) {
         super( '_request' );
 
         this.method     = method;
@@ -5045,7 +5026,7 @@ class WebAPIMessageRequest extends WebAPIMessage {
      *
      * @returns {String}
      */
-    get method () {
+    get method() {
         return this._method
     }
 
@@ -5053,7 +5034,7 @@ class WebAPIMessageRequest extends WebAPIMessage {
      *
      * @param value {String}
      */
-    set method ( value ) {
+    set method( value ) {
         if ( iteeValidators.isNotDefined( value ) ) { throw new ReferenceError( 'Expect a string that represent a api method name, but got undefined or null value.' ) }
         if ( iteeValidators.isNotString( value ) ) { throw new TypeError( `Expect a string that represent a api method name, but got value of '${ typeof value }' type: ${ JSON.stringify( value, null, 4 ) }` ) }
         if ( iteeValidators.isEmptyString( value ) || iteeValidators.isBlankString( value ) ) { throw new TypeError( 'Expect a string that represent a api method name, but got empty or blank string.' ) }
@@ -5065,7 +5046,7 @@ class WebAPIMessageRequest extends WebAPIMessage {
      *
      * @returns {Array<*>}
      */
-    get parameters () {
+    get parameters() {
         return this._parameters
     }
 
@@ -5073,7 +5054,7 @@ class WebAPIMessageRequest extends WebAPIMessage {
      *
      * @param value {Array<*>}
      */
-    set parameters ( value ) {
+    set parameters( value ) {
         if ( iteeValidators.isNotArray( value ) ) { throw new TypeError( `Expect an array of parameters, but got value of '${ typeof value }' type: ${ JSON.stringify( value, null, 4 ) }` ) }
 
         this._parameters = value;
@@ -5083,7 +5064,7 @@ class WebAPIMessageRequest extends WebAPIMessage {
      *
      * @returns {{method: String, parameters: Array<*>}}
      */
-    toJSON () {
+    toJSON() {
 
         return {
             ...super.toJSON(),
@@ -5100,6 +5081,7 @@ class WebAPIMessageRequest extends WebAPIMessage {
 /**
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
+
 
 /**
  * @class
@@ -5118,7 +5100,7 @@ class WebAPIMessageResponse extends WebAPIMessage {
      * @param request
      * @param result
      */
-    constructor ( request, result ) {
+    constructor( request, result ) {
         super( '_response' );
 
         this.request = request;
@@ -5129,11 +5111,11 @@ class WebAPIMessageResponse extends WebAPIMessage {
      *
      * @returns {*}
      */
-    get request () {
+    get request() {
         return this._request
     }
 
-    set request ( value ) {
+    set request( value ) {
         if ( iteeValidators.isNull( value ) ) { return }
         if ( iteeValidators.isUndefined( value ) ) { return }
 
@@ -5144,11 +5126,11 @@ class WebAPIMessageResponse extends WebAPIMessage {
      *
      * @returns {*}
      */
-    get result () {
+    get result() {
         return this._result
     }
 
-    set result ( value ) {
+    set result( value ) {
         this._result = value;
     }
 
@@ -5156,7 +5138,7 @@ class WebAPIMessageResponse extends WebAPIMessage {
      *
      * @returns {{result: *, request: *}}
      */
-    toJSON () {
+    toJSON() {
 
         return {
             ...super.toJSON(),
@@ -5175,9 +5157,10 @@ class WebAPIMessageResponse extends WebAPIMessage {
  * @license [BSD-3-Clause]{@link https://opensource.org/licenses/BSD-3-Clause}
  */
 
+
 class WebAPIOrigin {
 
-    constructor ( parameters = {} ) {
+    constructor( parameters = {} ) {
 
         const _parameters = {
             ...{
@@ -5207,93 +5190,93 @@ class WebAPIOrigin {
     /**
      *
      */
-    get id () {
+    get id() {
         return this._id
     }
 
-    get uri () {
+    get uri() {
         return this._uri
     }
-    set uri ( value ) {
+    set uri( value ) {
         if ( iteeValidators.isNotDefined( value ) ) { throw new ReferenceError( 'WebAPIOrigin uri cannot be null or undefined !' )}
         if ( iteeValidators.isNotString( value ) ) { throw new TypeError( `WebAPIOrigin uri expect to be a string. Got '${ typeof value }' !` )}
         if ( iteeValidators.isEmptyString( value ) ) { throw new RangeError( 'WebAPIOrigin uri cannot be an empty string !' )}
 
         this._uri = value;
     }
-    get allowedMethods () {
+    get allowedMethods() {
         return this._allowedMethods
     }
-    set allowedMethods ( value ) {
+    set allowedMethods( value ) {
         if ( iteeValidators.isNotDefined( value ) ) { throw new ReferenceError( 'WebAPIOrigin methods cannot be null or undefined ! Expect an array of method name.' )}
         if ( iteeValidators.isNotArray( value ) ) { throw new TypeError( `WebAPIOrigin methods expect to be an array of method name (string).Got '${ typeof value }' !` )}
         if ( iteeValidators.isEmptyArray( value ) ) { throw new RangeError( 'WebAPIOrigin methods cannot be an empty array ! Expect an array of method name.' )}
 
         this._allowedMethods = value;
     }
-    get window () {
+    get window() {
         return this._window
     }
-    set window ( value ) {
+    set window( value ) {
         //        if ( isNotDefined( value ) ) { throw new ReferenceError( 'WebAPIOrigin window cannot be null or undefined ! Expect a Window object.' )}
         //        if ( isDefined( value ) && !( value instanceof Window ) ) { throw new TypeError( `WebAPIOrigin window expect to be a Window. Got '${ typeof value }' !` )}
 
         this._window = value;
     }
-    get isReady () {
+    get isReady() {
         return this._isReady
     }
-    set isReady ( value ) {
+    set isReady( value ) {
         if ( iteeValidators.isNotDefined( value ) ) { throw new ReferenceError( 'WebAPIOrigin isReady cannot be null or undefined !' )}
         if ( iteeValidators.isNotBoolean( value ) ) { throw new TypeError( `WebAPIOrigin isReady expect a Boolean. Got '${ typeof value }' !` )}
 
         this._isReady = value;
     }
-    get isReachable () {
+    get isReachable() {
         return this._isReachable
     }
-    set isReachable ( value ) {
+    set isReachable( value ) {
         if ( iteeValidators.isNotDefined( value ) ) { throw new ReferenceError( 'WebAPIOrigin isReachable cannot be null or undefined !' )}
         if ( iteeValidators.isNotBoolean( value ) ) { throw new TypeError( `WebAPIOrigin isReachable expect a Boolean. Got '${ typeof value }' !` )}
 
         this._isReachable = value;
     }
-    get messageQueue () {
+    get messageQueue() {
         return this._messageQueue
     }
-    set messageQueue ( value ) {
+    set messageQueue( value ) {
         this._messageQueue = value;
     }
-    setUri ( value ) {
+    setUri( value ) {
         this.uri = value;
         return this
     }
-    setAllowedMethods ( arrayOfMethodNames ) {
+    setAllowedMethods( arrayOfMethodNames ) {
         this.allowedMethods = arrayOfMethodNames;
         return this
     }
-    addAllowedMethod ( methodName ) {
+    addAllowedMethod( methodName ) {
         if ( !this.allowedMethods.includes( methodName ) ) {
             this.allowedMethods.push( methodName );
         }
         return this
     }
-    removeAllowedMethod ( methodName ) {
+    removeAllowedMethod( methodName ) {
         const index = this.allowedMethods.indexOf( methodName );
         if ( index >= 0 ) {
             this.allowedMethods.slice( index, methodName );
         }
         return this
     }
-    setWindow ( value ) {
+    setWindow( value ) {
         this.window = value;
         return this
     }
-    setReadyState ( value ) {
+    setReadyState( value ) {
         this.isReady = value;
         return this
     }
-    setReachableState ( value ) {
+    setReachableState( value ) {
         this.isReachable = value;
         return this
     }
@@ -5302,6 +5285,7 @@ class WebAPIOrigin {
 /**
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
+
 
 /**
  * A POJO object containg datas about a distant source to allow
@@ -5326,7 +5310,7 @@ class WebAPI {
      * @param {Array<AllowedOrigin>} [parameters.allowedOrigins=[]] - An array containing configured allowed origins
      * @param {Number} [parameters.requestTimeout=2000] - The request timeout before throw an error
      */
-    constructor ( parameters = {} ) {
+    constructor( parameters = {} ) {
 
         const _parameters = {
             ...{
@@ -5363,14 +5347,14 @@ class WebAPI {
      *
      * @returns {TLogger}
      */
-    get logger () {
+    get logger() {
         return this._logger
     }
     /**
      *
      * @param value {TLogger}
      */
-    set logger ( value ) {
+    set logger( value ) {
         if ( iteeValidators.isNull( value ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: The logger cannot be null, expect a TLogger.` )}
         if ( iteeValidators.isUndefined( value ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: The logger cannot be undefined, expect a TLogger.` )}
         if ( !value.isLogger ) { throw new ReferenceError( `[${ this._localOriginUri }]: The logger cannot be undefined, expect a TLogger.` )}
@@ -5381,14 +5365,14 @@ class WebAPI {
      *
      * @returns {Array<WebAPIOrigin>}
      */
-    get allowedOrigins () {
+    get allowedOrigins() {
         return this._allowedOrigins
     }
     /**
      *
      * @param value {Array<WebAPIOrigin>}
      */
-    set allowedOrigins ( value ) {
+    set allowedOrigins( value ) {
 
         this._allowedOrigins  = [];
         const _allowedOrigins = iteeUtils.toArray( value );
@@ -5419,14 +5403,14 @@ class WebAPI {
      *
      * @returns {Number}
      */
-    get requestTimeout () {
+    get requestTimeout() {
         return this._requestTimeout
     }
     /**
      *
      * @param value {Number}
      */
-    set requestTimeout ( value ) {
+    set requestTimeout( value ) {
         if ( iteeValidators.isNull( value ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: The request timeout cannot be null, expect to be 0 or a positive number.` )}
         if ( iteeValidators.isUndefined( value ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: The request timeout cannot be undefined, expect to be 0 or a positive number.` )}
         if ( iteeValidators.isNotNumber( value ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: The request timeout expect to be 0 or a positive number.` )}
@@ -5438,14 +5422,14 @@ class WebAPI {
      *
      * @returns {Array<Function>}
      */
-    get methods () {
+    get methods() {
         return this._methods
     }
     /**
      *
      * @param value Array<Function>
      */
-    set methods ( value ) {
+    set methods( value ) {
         if ( iteeValidators.isNull( value ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: The methods cannot be null, expect any keyed collection of function.` )}
         if ( iteeValidators.isUndefined( value ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: The methods cannot be undefined, expect any keyed collection of function.` )}
         // Todo: isNotObject && isNotMap && isNotSet && isNotApi
@@ -5457,7 +5441,7 @@ class WebAPI {
      * @param value {TLogger}
      * @returns {AbstractWebAPI}
      */
-    setLogger ( value ) {
+    setLogger( value ) {
         this.logger = value;
         return this
     }
@@ -5466,7 +5450,7 @@ class WebAPI {
      * @param value {Array<WebAPIOrigin>}
      * @returns {AbstractWebAPI}
      */
-    setAllowedOrigins ( value ) {
+    setAllowedOrigins( value ) {
         this.allowedOrigins = value;
         return this
     }
@@ -5475,7 +5459,7 @@ class WebAPI {
      * @param value {Number}
      * @returns {AbstractWebAPI}
      */
-    setRequestTimeout ( value ) {
+    setRequestTimeout( value ) {
         this.requestTimeout = value;
         return this
     }
@@ -5484,19 +5468,19 @@ class WebAPI {
      * @param value Array<Function>
      * @returns {AbstractWebAPI}
      */
-    setMethods ( value ) {
+    setMethods( value ) {
         this.methods = value;
         return this
     }
 
-    addEventListener ( eventName, listener ) {
+    addEventListener( eventName, listener ) {
         if ( iteeValidators.isNotDefined( this._eventListeners[ eventName ] ) ) {
             this._eventListeners[ eventName ] = [];
         }
 
         this._eventListeners[ eventName ].push( listener );
     }
-    removeListener ( eventName, listener ) {
+    removeListener( eventName, listener ) {
         if ( iteeValidators.isNotDefined( this._eventListeners[ eventName ] ) ) {
             return
         }
@@ -5513,11 +5497,11 @@ class WebAPI {
      * @returns {boolean}
      * @private
      */
-    _isInIframe () {
+    _isInIframe() {
 
         try {
             return window.self !== window.top
-        } catch ( e ) {
+        } catch ( error ) {
             return true
         }
 
@@ -5528,7 +5512,7 @@ class WebAPI {
      * @returns {boolean}
      * @private
      */
-    _isNotAllowedForAllOrigins () {
+    _isNotAllowedForAllOrigins() {
 
         return !this._allowedOrigins.includes( '*' )
         //        return !this.allowAnyOrigins
@@ -5540,7 +5524,7 @@ class WebAPI {
      * @returns {boolean}
      * @private
      */
-    _isNotAllowedOrigin ( originURI ) {
+    _isNotAllowedOrigin( originURI ) {
 
         return !this._allowedOrigins
                     .filter( origin => origin !== '*' )
@@ -5555,7 +5539,7 @@ class WebAPI {
      * @returns {boolean}
      * @private
      */
-    _isSameOrigin ( originURI ) {
+    _isSameOrigin( originURI ) {
         return this._localOriginUri === originURI
     }
 
@@ -5565,7 +5549,7 @@ class WebAPI {
      * @returns {boolean}
      * @private
      */
-    _isNotAllowedForAllMethods ( origin ) {
+    _isNotAllowedForAllMethods( origin ) {
         return ( origin.allowedMethods.indexOf( '*' ) === -1 )
     }
 
@@ -5576,7 +5560,7 @@ class WebAPI {
      * @returns {boolean}
      * @private
      */
-    _isNotAllowedMethod ( origin, methodName ) {
+    _isNotAllowedMethod( origin, methodName ) {
         return ( origin.allowedMethods.indexOf( methodName ) === -1 )
     }
 
@@ -5586,7 +5570,7 @@ class WebAPI {
      * @returns {boolean}
      * @private
      */
-    _methodNotExist ( methodName ) {
+    _methodNotExist( methodName ) {
         return iteeValidators.isNotDefined( this.methods[ methodName ] )
     }
 
@@ -5599,7 +5583,7 @@ class WebAPI {
      * @returns {WebAPIOrigin}
      * @private
      */
-    _getAllowedOriginBy ( propertyName, value ) {
+    _getAllowedOriginBy( propertyName, value ) {
         return this.allowedOrigins.find( origin => origin[ propertyName ] === value )
     }
 
@@ -5609,7 +5593,7 @@ class WebAPI {
      * @returns {Window}
      * @private
      */
-    _getOriginWindow ( originURI ) {
+    _getOriginWindow( originURI ) {
 
         let originWindow;
 
@@ -5639,7 +5623,7 @@ class WebAPI {
      * @param origin {WebAPIOrigin}
      * @private
      */
-    _processMessageQueueOf ( origin ) {
+    _processMessageQueueOf( origin ) {
 
         const messageQueue = origin.messageQueue;
         for ( let messageIndex = messageQueue.length - 1 ; messageIndex >= 0 ; messageIndex-- ) {
@@ -5652,7 +5636,7 @@ class WebAPI {
      *
      * @private
      */
-    _broadcastReadyMessage () {
+    _broadcastReadyMessage() {
 
         const ready       = new WebAPIMessageReady();
         let checkInterval = 250;
@@ -5684,7 +5668,7 @@ class WebAPI {
      * @returns {Promise<void>}
      * @private
      */
-    async _onMessage ( event ) {
+    async _onMessage( event ) {
 
         // Is allowed origin
         if ( this._isNotAllowedForAllOrigins() && this._isNotAllowedOrigin( event.origin ) ) {
@@ -5736,7 +5720,7 @@ class WebAPI {
      * @param message
      * @private
      */
-    async _dispatchMessageFrom ( origin, message ) {
+    async _dispatchMessageFrom( origin, message ) {
 
         this.logger.log( `[${ this._localOriginUri }]: Recieve message of type '${ message.type }' from [${ origin.uri }].` );
 
@@ -5778,7 +5762,7 @@ class WebAPI {
      * @param origin
      * @param message
      */
-    _onReadyFrom ( origin, message ) {
+    _onReadyFrom( origin, message ) {
 
         if ( !origin.isReady ) {
             origin.isReady = true;
@@ -5799,7 +5783,7 @@ class WebAPI {
      * @param origin
      * @param request
      */
-    async _onRequestFrom ( origin, request ) {
+    async _onRequestFrom( origin, request ) {
 
         let message;
         const methodName = request.method;
@@ -5836,7 +5820,7 @@ class WebAPI {
      * @param origin
      * @param response
      */
-    _onResponseFrom ( origin, response ) {
+    _onResponseFrom( origin, response ) {
 
         const requestId = response.request.id;
         if ( !this._awaitingRequest.has( requestId ) ) { return }
@@ -5869,8 +5853,8 @@ class WebAPI {
      * @param message
      * @private
      */
-    // eslint-disable-next-line no-unused-vars
-    onErrorFrom ( origin, message ) {
+     
+    onErrorFrom( origin, message ) {
         // Need to be reimplemented if needed
         this.logger.error( `[${ this._localOriginUri }]: the origin [${ origin.uri }] send error => ${ JSON.stringify( message.error, null, 4 ) }. Need you to reimplement this method ?` );
     }
@@ -5880,8 +5864,8 @@ class WebAPI {
      * @param origin
      * @param message
      */
-    // eslint-disable-next-line no-unused-vars
-    onDataFrom ( origin, message ) {
+     
+    onDataFrom( origin, message ) {
         // Need to be reimplemented if needed
         this.logger.log( `[${ this._localOriginUri }]: the origin [${ origin.uri }] send data => ${ JSON.stringify( message.data, null, 4 ) }. Need you to reimplement this method ?` );
     }
@@ -5891,13 +5875,13 @@ class WebAPI {
      * @param origin
      * @param message
      */
-    // eslint-disable-next-line no-unused-vars
-    onMessageFrom ( origin, message ) {
+     
+    onMessageFrom( origin, message ) {
         // Need to be reimplemented if needed
         this.logger.log( `[${ this._localOriginUri }]: the origin [${ origin.uri }] send custom message => ${ JSON.stringify( message, null, 4 ) }. Need you to reimplement this method ?` );
     }
 
-    onEventFrom ( origin, event ) {
+    onEventFrom( origin, event ) {
         const listeners = this._eventListeners[ event.name ];
         for ( const listener of listeners ) {
             listener( event.data );
@@ -5910,7 +5894,7 @@ class WebAPI {
      * @param originId
      * @param ready
      */
-    postReadyTo ( originId, ready ) {
+    postReadyTo( originId, ready ) {
 
         const _ready = ( ready && ready.constructor.isWebAPIMessageReady ) ? ready : new WebAPIMessageReady();
         this.postMessageTo( originId, _ready, true );
@@ -5924,7 +5908,7 @@ class WebAPI {
      * @param params
      * @returns {Promise<unknown>}
      */
-    postRequestTo ( originId, request, ...params ) {
+    postRequestTo( originId, request, ...params ) {
 
         const _request = ( request && request.constructor.isWebAPIMessageRequest ) ? request : new WebAPIMessageRequest( request, params );
 
@@ -5961,7 +5945,7 @@ class WebAPI {
      * @param request
      * @param reponse
      */
-    postResponseTo ( originId, request, reponse ) {
+    postResponseTo( originId, request, reponse ) {
 
         const _response = ( reponse && reponse.constructor.isWebAPIMessageResponse ) ? reponse : new WebAPIMessageResponse( request, reponse );
         this.postMessageTo( originId, _response );
@@ -5973,7 +5957,7 @@ class WebAPI {
      * @param originId
      * @param error {WebAPIMessageError|String}
      */
-    postErrorTo ( originId, error ) {
+    postErrorTo( originId, error ) {
 
         const _error = ( error && error.constructor.isWebAPIMessageError ) ? error : new WebAPIMessageError( error );
         this.postMessageTo( originId, _error );
@@ -5985,7 +5969,7 @@ class WebAPI {
      * @param originId
      * @param data
      */
-    postDataTo ( originId, data ) {
+    postDataTo( originId, data ) {
 
         const _data = ( data && data.constructor.isWebAPIMessageData ) ? data : new WebAPIMessageData( data );
         this.postMessageTo( originId, _data );
@@ -5998,7 +5982,7 @@ class WebAPI {
      * @param message
      * @param force
      */
-    postMessageTo ( originId, message, force = false ) {
+    postMessageTo( originId, message, force = false ) {
 
         if ( iteeValidators.isNotDefined( originId ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: Unable to post message to null or undefined origin id !` ) }
         if ( iteeValidators.isNotDefined( message ) ) { throw new ReferenceError( `[${ this._localOriginUri }]: Unable to post null or undefined message !` ) }
@@ -6034,7 +6018,7 @@ class WebAPI {
 
     }
 
-    postEvent ( name = 'DefaultEventName', data ) {
+    postEvent( name = 'DefaultEventName', data ) {
 
         const _data = ( data && data.constructor.isWebAPIMessageEvent ) ? data : new WebAPIMessageEvent( name, data );
 
@@ -6053,6 +6037,7 @@ class WebAPI {
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
 
+
 /**
  * @class
  */
@@ -6065,7 +6050,7 @@ class WebAPIMessageProgress extends WebAPIMessage {
      * @param loaded
      * @param total
      */
-    constructor ( loaded = 0, total = 0 ) {
+    constructor( loaded = 0, total = 0 ) {
         super( '_progress' );
 
         this.lengthComputable = false;
@@ -6077,11 +6062,11 @@ class WebAPIMessageProgress extends WebAPIMessage {
      *
      * @returns {*}
      */
-    get loaded () {
+    get loaded() {
         return this._loaded
     }
 
-    set loaded ( value ) {
+    set loaded( value ) {
         this._loaded = value;
         this._checkIfLengthComputable();
     }
@@ -6090,11 +6075,11 @@ class WebAPIMessageProgress extends WebAPIMessage {
      *
      * @returns {*}
      */
-    get total () {
+    get total() {
         return this._total
     }
 
-    set total ( value ) {
+    set total( value ) {
         this._total = value;
         this._checkIfLengthComputable();
     }
@@ -6103,7 +6088,7 @@ class WebAPIMessageProgress extends WebAPIMessage {
      *
      * @private
      */
-    _checkIfLengthComputable () {
+    _checkIfLengthComputable() {
 
         this.lengthComputable = false;
 
@@ -6122,7 +6107,7 @@ class WebAPIMessageProgress extends WebAPIMessage {
      *
      * @returns {{loaded: *, lengthComputable: boolean, total: *}}
      */
-    toJSON () {
+    toJSON() {
 
         return {
             ...super.toJSON(),
@@ -6145,21 +6130,21 @@ class WorkerMessage {
 
     static isWorkerMessage = true
 
-    constructor ( type ) {
+    constructor( type ) {
 
         this.type = type;
 
     }
 
-    get type () {
+    get type() {
         return this._type
     }
 
-    set type ( type ) {
+    set type( type ) {
         this._type = type;
     }
 
-    toJSON () {
+    toJSON() {
 
         return {
             type: this.type
@@ -6173,17 +6158,18 @@ class WorkerMessage {
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
 
+
 class WorkerMessageData extends WorkerMessage {
 
     static isWorkerMessageData = true
 
-    constructor ( type, buffer ) {
+    constructor( type, buffer ) {
         super( type );
 
         this.buffer = buffer;
     }
 
-    toJSON () {
+    toJSON() {
 
         return {
             ...super.toJSON(),
@@ -6200,18 +6186,19 @@ class WorkerMessageData extends WorkerMessage {
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
 
+
 class WorkerMessageError extends WorkerMessage {
 
     static isWorkerMessageError = true
 
-    constructor ( error ) {
+    constructor( error ) {
         super( 'error' );
 
         this.message = error.message;
         this.stack   = error.stack;
     }
 
-    toJSON () {
+    toJSON() {
 
         return {
             ...super.toJSON(),
@@ -6229,11 +6216,12 @@ class WorkerMessageError extends WorkerMessage {
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
 
+
 class WorkerMessageProgress extends WorkerMessage {
 
     static isWorkerMessageProgress = true
 
-    constructor ( loaded = 0, total = 0 ) {
+    constructor( loaded = 0, total = 0 ) {
         super( 'progress' );
 
         this.lengthComputable = false;
@@ -6241,25 +6229,25 @@ class WorkerMessageProgress extends WorkerMessage {
         this.total            = total;
     }
 
-    get loaded () {
+    get loaded() {
         return this._loaded
     }
 
-    set loaded ( value ) {
+    set loaded( value ) {
         this._loaded = value;
         this._checkIfLengthComputable();
     }
 
-    get total () {
+    get total() {
         return this._total
     }
 
-    set total ( value ) {
+    set total( value ) {
         this._total = value;
         this._checkIfLengthComputable();
     }
 
-    _checkIfLengthComputable () {
+    _checkIfLengthComputable() {
 
         this.lengthComputable = false;
 
@@ -6274,7 +6262,7 @@ class WorkerMessageProgress extends WorkerMessage {
 
     }
 
-    toJSON () {
+    toJSON() {
 
         return {
             ...super.toJSON(),
@@ -6293,6 +6281,7 @@ class WorkerMessageProgress extends WorkerMessage {
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
 
+
 /**
  * @class
  * @classdesc Base worker interface that allow messaging between callee and caller
@@ -6303,7 +6292,7 @@ class AbstractWorker {
      *
      * @param progress
      */
-    postProgress ( progress ) {
+    postProgress( progress ) {
 
         if ( progress.isWorkerMessageProgress ) {
             postMessage( progress.toJSON() );
@@ -6317,7 +6306,7 @@ class AbstractWorker {
      *
      * @param error
      */
-    postError ( error ) {
+    postError( error ) {
 
         if ( error.isWorkerMessageError ) {
             postMessage( error.toJSON() );
@@ -6332,7 +6321,7 @@ class AbstractWorker {
      * @param type
      * @param arrayBuffer
      */
-    postData ( type, arrayBuffer ) {
+    postData( type, arrayBuffer ) {
 
         if ( iteeValidators.isArray( arrayBuffer ) ) {
             postMessage( new WorkerMessageData( type, arrayBuffer ).toJSON(), [ ...arrayBuffer ] );
@@ -6349,7 +6338,7 @@ class AbstractWorker {
      * @param message
      * @returns {boolean}
      */
-    onMessage ( message ) {
+    onMessage( message ) {
 
         if ( iteeValidators.isNotDefined( message ) ) {
             this.postError( new Error( 'Message event cannot be null or undefined !' ) );
@@ -6405,7 +6394,7 @@ class AbstractWorker {
      * @param parameters
      * @private
      */
-    _invoke ( name, parameters = [] ) {
+    _invoke( name, parameters = [] ) {
 
         try {
 
@@ -6429,22 +6418,23 @@ class AbstractWorker {
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
 
+
 class WorkerMessageMethodCall extends WorkerMessage {
 
     static isWorkerMessageMethodCall = true
 
-    constructor ( method, parameters = [] ) {
+    constructor( method, parameters = [] ) {
         super( 'methodCall' );
 
         this.method     = method;
         this.parameters = parameters;
     }
 
-    get method () {
+    get method() {
         return this._method
     }
 
-    set method ( value ) {
+    set method( value ) {
         if ( iteeValidators.isNull( value ) ) { return }
         if ( iteeValidators.isUndefined( value ) ) { return }
         if ( iteeValidators.isNotString( value ) ) { return }
@@ -6452,17 +6442,17 @@ class WorkerMessageMethodCall extends WorkerMessage {
         this._method = value;
     }
 
-    get parameters () {
+    get parameters() {
         return this._parameters
     }
 
-    set parameters ( value ) {
+    set parameters( value ) {
         if ( iteeValidators.isNotArray( value ) ) { return }
 
         this._parameters = value;
     }
 
-    toJSON () {
+    toJSON() {
 
         return {
             ...super.toJSON(),
@@ -6522,4 +6512,6 @@ exports.WorkerMessageData = WorkerMessageData;
 exports.WorkerMessageError = WorkerMessageError;
 exports.WorkerMessageMethodCall = WorkerMessageMethodCall;
 exports.WorkerMessageProgress = WorkerMessageProgress;
+exports.isDate = isDate;
+exports.isRegEx = isRegEx;
 //# sourceMappingURL=itee-client.cjs.js.map

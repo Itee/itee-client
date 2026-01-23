@@ -2,7 +2,7 @@
 
 class TBinaryConverter {
 
-    constructor ( targetType, serializer = null ) {
+    constructor( targetType, serializer = null ) {
 //    constructor ( targetType, serializer = DefaultBinarySerializer ) {
 
         this.targetCtor = targetType
@@ -16,7 +16,7 @@ class TBinaryConverter {
      * @param instance
      * @param options
      */
-    to ( writer, instance, options = {} ) { }
+    to( writer, instance, options = {} ) { }
 
     /**
      *
@@ -24,7 +24,7 @@ class TBinaryConverter {
      * @param options
      * @returns {*}
      */
-    from ( reader, options = {} ) {
+    from( reader, options = {} ) {
 
         return new this.targetCtor()
 

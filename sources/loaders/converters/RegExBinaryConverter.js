@@ -1,9 +1,9 @@
-import { TBinaryConverter } from '../TBinaryConverter'
+import { TBinaryConverter } from '../TBinaryConverter.js'
 
 class RegExBinaryConverter extends TBinaryConverter {
-    constructor ( serializer ) { super( RegExp, serializer ) }
+    constructor( serializer ) { super( RegExp, serializer ) }
 
-    from ( reader, options = {} ) {
+    from( reader, options = {} ) {
         return new RegExp()
     }
 }

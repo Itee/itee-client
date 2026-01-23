@@ -2,20 +2,20 @@
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
 
-import { WorkerMessage } from './WorkerMessage'
+import { WorkerMessage } from './WorkerMessage.js'
 
 class WorkerMessageError extends WorkerMessage {
 
     static isWorkerMessageError = true
 
-    constructor ( error ) {
+    constructor( error ) {
         super( 'error' )
 
         this.message = error.message
         this.stack   = error.stack
     }
 
-    toJSON () {
+    toJSON() {
 
         return {
             ...super.toJSON(),

@@ -1,10 +1,11 @@
-import { TBinaryConverter }        from '../TBinaryConverter'
+import { TBinaryConverter } from '../TBinaryConverter.js'
+
 // import { DefaultBinarySerializer } from '../TBinarySerializer'
 
 class ArrayBinaryConverter extends TBinaryConverter {
-    constructor ( serializer ) { super( Array, serializer ) }
+    constructor( serializer ) { super( Array, serializer ) }
 
-    to ( writer, instance, options = {} ) {
+    to( writer, instance, options = {} ) {
 
         const numberOfElements = instance.length
         writer.setUint32( numberOfElements )
@@ -14,7 +15,7 @@ class ArrayBinaryConverter extends TBinaryConverter {
         }
 
     }
-    from ( reader, options = {} ) {
+    from( reader, options = {} ) {
 
         const numberOfElements = reader.getUint32()
         const result           = []
