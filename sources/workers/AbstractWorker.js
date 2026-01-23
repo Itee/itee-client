@@ -9,7 +9,7 @@ import {
     isNotArray,
     isNotDefined,
     isNotString
-}                                from 'itee-validators'
+}                                from '@itee/validators'
 import { WorkerMessageData }     from './messages/WorkerMessageData.js'
 import { WorkerMessageError }    from './messages/WorkerMessageError.js'
 import { WorkerMessageProgress } from './messages/WorkerMessageProgress.js'

@@ -7,7 +7,7 @@ import {
     isNotString,
     isNull,
     isUndefined
-}                        from 'itee-validators'
+}                        from '@itee/validators'
 import { WorkerMessage } from './WorkerMessage.js'
 
 class WorkerMessageMethodCall extends WorkerMessage {

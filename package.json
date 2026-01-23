@@ -1,5 +1,5 @@
 {
-  "name": "itee-client",
+  "name": "@itee/client",
   "version": "9.0.0",
   "description": "The client side of the Itee solution for 3d web, this package is design to work with an Itee server.",
   "keywords": [
@@ -21,7 +21,7 @@
   "private": false,
   "repository": {
     "type": "git",
-    "url": "https://github.com/Itee/client"
+    "url": "git+https://github.com/Itee/client.git"
   },
   "type": "module",
   "main": "builds/client.cjs.js",
@@ -69,12 +69,19 @@
     "semantic-release": "semantic-release --dry-run --no-ci"
   },
   "dependencies": {
-    "itee-core": "^2.0.0",
-    "itee-utils": "^6.0.6",
-    "itee-validators": "^6.1.3",
+    "@itee/core": "^3.0.1",
+    "@itee/utils": "^7.0.1",
+    "@itee/validators": "^7.0.1",
     "uuid": "^13.0.0"
   },
   "devDependencies": {
-    "@itee/tasks": "^1.4.4"
+    "@itee/tasks": "^1.4.6"
+  },
+  "overrides": {
+    "semantic-release-gitmoji": {
+      "semantic-release": "<26",
+      "@semantic-release/github": "12.0.2",
+      "@semantic-release/npm": "13.1.3"
+    }
   }
 }

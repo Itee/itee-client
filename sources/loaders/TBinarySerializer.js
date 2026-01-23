@@ -12,7 +12,7 @@ import {
     isObject,
     isString,
     isUndefined
-}                                   from 'itee-validators'
+}                                   from '@itee/validators'
 import { ArrayBinaryConverter }     from './converters/ArrayBinaryConverter.js'
 import { BooleanBinaryConverter }   from './converters/BooleanBinaryConverter.js'
 import { DateBinaryConverter }      from './converters/DateBinaryConverter.js'

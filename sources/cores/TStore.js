@@ -7,7 +7,7 @@ import {
     isNull,
     isString,
     isUndefined
-} from 'itee-validators'
+} from '@itee/validators'
 
 /**
  * @class

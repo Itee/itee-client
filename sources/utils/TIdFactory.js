@@ -1,10 +1,10 @@
-import { toEnum } from 'itee-utils'
+import { toEnum } from '@itee/utils'
 import {
     isNotNumber,
     isNotString,
     isNull,
     isUndefined
-}                 from 'itee-validators'
+}                 from '@itee/validators'
 
 /**
  * @deprecated
