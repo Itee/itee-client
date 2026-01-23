@@ -5,7 +5,7 @@
 import {
     isEmptyString,
     isNotString
-}                       from 'itee-validators'
+}                       from '@itee/validators'
 import { v4 as uuidv4 } from 'uuid'
 
 /**

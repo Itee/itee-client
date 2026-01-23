@@ -4,7 +4,7 @@ import {
     isNotNumber,
     isNull,
     isUndefined
-} from 'itee-validators'
+} from '@itee/validators'
 import {
     Byte,
     Endianness

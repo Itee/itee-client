@@ -7,7 +7,7 @@ import {
     isNotDefined,
     isObject,
     isString
-}                        from 'itee-validators'
+}                        from '@itee/validators'
 import { WebAPIMessage } from './WebAPIMessage.js'
 
 class WebAPIMessageError extends WebAPIMessage {

@@ -1,11 +1,11 @@
-import { toEnum } from 'itee-utils'
+import { toEnum } from '@itee/utils'
 import {
     isNotArrayBuffer,
     isNotBoolean,
     isNotNumber,
     isNull,
     isUndefined
-}                 from 'itee-validators'
+}                 from '@itee/validators'
 
 /* eslint-env browser */
 

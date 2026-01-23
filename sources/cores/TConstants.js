@@ -24,7 +24,7 @@
  * // ['Tartiflette', 'Saint-Emilion', 'Mousse au chocolat' ]
  *
  */
-import { toEnum } from 'itee-utils'
+import { toEnum } from '@itee/utils'
 
 /**
  * @typedef {Enum} FileFormat

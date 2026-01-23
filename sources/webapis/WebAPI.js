@@ -2,8 +2,8 @@
  * @author [Tristan Valcke]{@link https://github.com/Itee}
  */
 
-import { DefaultLogger }         from 'itee-core'
-import { toArray }               from 'itee-utils'
+import { DefaultLogger }         from '@itee/core'
+import { toArray }               from '@itee/utils'
 import {
     isDefined,
     isEmptyArray,
@@ -15,7 +15,7 @@ import {
     isString,
     isUndefined,
     isZero
-}                                from 'itee-validators'
+}                                from '@itee/validators'
 import { WebAPIMessageData }     from './messages/WebAPIMessageData.js'
 import { WebAPIMessageError }    from './messages/WebAPIMessageError.js'
 import { WebAPIMessageEvent }    from './messages/WebAPIMessageEvent.js'

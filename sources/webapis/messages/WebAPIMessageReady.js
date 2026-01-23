@@ -5,7 +5,7 @@
 import {
     isNotBoolean,
     isNotDefined
-}                        from 'itee-validators'
+}                        from '@itee/validators'
 import { WebAPIMessage } from './WebAPIMessage.js'
 
 /**

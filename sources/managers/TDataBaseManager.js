@@ -20,8 +20,8 @@
 import {
     DefaultLogger,
     TLogger
-}                 from 'itee-core'
-import { toEnum } from 'itee-utils'
+}                 from '@itee/core'
+import { toEnum } from '@itee/utils'
 import {
     isArray,
     isArrayOfSingleElement,
@@ -44,7 +44,7 @@ import {
     isString,
     isUndefined,
     isZero
-}                 from 'itee-validators'
+}                 from '@itee/validators'
 import {
     HttpStatusCode,
     HttpVerb,
