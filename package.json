@@ -1,5 +1,5 @@
 {
-  "name": "itee-client",
+  "name": "@itee/client",
   "version": "9.0.0",
   "description": "The client side of the Itee solution for 3d web, this package is design to work with an Itee server.",
   "keywords": [
