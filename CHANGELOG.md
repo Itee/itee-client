@@ -1,3 +1,11 @@
+# [v10.0.0](https://github.com/Itee/client/compare/v9.0.0...v10.0.0) (2026-01-23)
+
+## 🐛 Bug Fixes
+- [`5968e3b`](https://github.com/Itee/client/commit/5968e3b)  (package) apply package override to fix trust publishing 
+
+## 💥 Breaking Changes
+- [`3d9c5f3`](https://github.com/Itee/client/commit/3d9c5f3)  (package) change package name itee-client to scoped version @itee/client
+
 # [v9.0.0](https://github.com/Itee/client/compare/v8.3.0...v9.0.0) (2026-01-23)
 
 ## ✨ New Features
